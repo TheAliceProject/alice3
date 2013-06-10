@@ -40,42 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.alice.ide.croquet.models.project;
+
+import org.lgna.project.ast.AbstractMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+public class ReferencesComposite extends FindComposite {
 
-	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {
-			public HighlightFieldOperation initialize( org.lgna.project.ast.UserField field ) {
-				return new HighlightFieldOperation( field );
+	private AbstractMethod method;
+
+	public ReferencesComposite( AbstractMethod method ) {
+		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ), null );
+		assert method != null;
+		this.method = method;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		getSearchState().setValueTransactionlessly( method.getName() );
+		if( getSearchResults().getItemCount() > 0 ) {
+			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
+				if( getSearchResults().getItemAt( i ).getSearchObject().equals( method ) ) {
+					getSearchResults().setSelectedIndex( i );
+				}
 			}
-		} );
-	}
-
-	private final org.lgna.project.ast.UserField field;
-
-	public HighlightFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+		}
 	}
 }

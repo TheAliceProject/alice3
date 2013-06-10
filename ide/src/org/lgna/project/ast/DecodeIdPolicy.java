@@ -40,42 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+public enum DecodeIdPolicy {
+	PRESERVE_IDS( true ),
+	NEW_IDS( false );
+	private final boolean isIdPreserved;
 
-	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {
-			public HighlightFieldOperation initialize( org.lgna.project.ast.UserField field ) {
-				return new HighlightFieldOperation( field );
-			}
-		} );
+	private DecodeIdPolicy( boolean isIdPreserved ) {
+		this.isIdPreserved = isIdPreserved;
 	}
 
-	private final org.lgna.project.ast.UserField field;
-
-	public HighlightFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+	public boolean isIdPreserved() {
+		return this.isIdPreserved;
 	}
 }

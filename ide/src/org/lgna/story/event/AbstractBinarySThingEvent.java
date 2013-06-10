@@ -40,42 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.lgna.story.event;
+
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+public class AbstractBinarySThingEvent extends AbstractEvent {
 
-	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {
-			public HighlightFieldOperation initialize( org.lgna.project.ast.UserField field ) {
-				return new HighlightFieldOperation( field );
-			}
-		} );
+	private final SThing a;
+	private final SThing b;
+	private final org.lgna.story.SMovableTurnable[] movables;
+
+	public AbstractBinarySThingEvent( SThing a, SThing b ) {
+		this.a = a;
+		this.b = b;
+		movables = new SMovableTurnable[ 2 ];
+		if( a instanceof SMovableTurnable ) {
+			movables[ 0 ] = (SMovableTurnable)a;
+		}
+		if( b instanceof SMovableTurnable ) {
+			movables[ 1 ] = (SMovableTurnable)b;
+		}
 	}
 
-	private final org.lgna.project.ast.UserField field;
-
-	public HighlightFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
+	public SThing getSThingFromSetA() {
+		return a;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
+	public SThing getSThingFromSetB() {
+		return b;
 	}
 
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+	@Deprecated
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public org.lgna.story.SMovableTurnable[] getModels() {
+		return movables;
 	}
 }
