@@ -67,7 +67,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
 	}
 
-	private double currTime = 5;
+	private double currTime = 0;
 	private double endTime = 10;
 
 	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
@@ -174,6 +174,10 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 	public double getEndTime() {
 		return endTime;
+	}
+
+	public void addMoreTime( double timeToAdd ) {
+		endTime += timeToAdd;
 	}
 
 	public double getCurrentTime() {

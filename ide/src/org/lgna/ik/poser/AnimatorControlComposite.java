@@ -47,13 +47,16 @@ import java.util.Map;
 
 import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Group;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.events.TimeLineListener;
 import org.lgna.ik.poser.view.AnimatorControlView;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
@@ -74,6 +77,17 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	public AnimatorControlComposite( IkPoser ikPoser ) {
 		super( ikPoser, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		posesList.addValueListener( poseAnimationListener );
+		timeLine.addTimeLineListener( listener );
+		currentTime.addValueListener( new ValueListener<Double>() {
+
+			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+				timeLine.setCurrentTime( nextValue );
+			}
+		} );
+		currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
 	}
 
 	protected ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class,
@@ -98,6 +112,15 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			}, -1 );
 	protected Map<PoseAnimation, Detail[]> animationToDetailMap = Collections.newHashMap();
 	protected TimeLineComposite timeLine = new TimeLineComposite();
+	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
+	private AppendTimeToAnimationComposite appendTimeComposite = new AppendTimeToAnimationComposite( this );
+	private TimeLineListener listener = new TimeLineListener() {
+
+		public void changed() {
+			currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
+			System.out.println( currentTime );
+		}
+	};
 
 	private ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
 
@@ -106,6 +129,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 		public void changed( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
 			if( nextValue != null ) {
+				timeLine.addTimeLineListener( listener );
 				final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
 				final org.lgna.story.SBiped ogre = ikPoser.getBiped();
 				nextValue.animate( programImp, ogre );
@@ -121,6 +145,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			PoseAnimation pAnimation = new PoseAnimation( pose );
 			posesList.addItem( pAnimation );
 			timeLine.addEventAtCurrentTime( pose );
+			timeLine.setCurrentTime( timeLine.getCurrentTime() + 1 );
 			return null;
 		}
 	} );
@@ -187,6 +212,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	}
 
 	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
+	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 
 	public UserMethod createUserMethod( String name ) {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
@@ -248,6 +274,22 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	@Override
 	protected AnimatorControlView createView() {
 		return new AnimatorControlView( this );
+	}
+
+	public BoundedDoubleState getCurrentTime() {
+		return this.currentTime;
+	}
+
+	public AppendTimeToAnimationComposite getAppendTimeComposite() {
+		return this.appendTimeComposite;
+	}
+
+	public Group getGroup() {
+		return GROUP;
+	}
+
+	public void addTime( Double value ) {
+		timeLine.setCurrentTime( value );
 	}
 
 }

@@ -62,7 +62,7 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	private MethodNameValidator validator;
 
 	public NameAndExportAnimationCompositeInHonorOfJenLapp( AnimatorControlComposite poserControlComposite ) {
-		super( java.util.UUID.fromString( "c1a0cf60-a454-4b31-a4f1-718279d8e8e2" ), null );
+		super( java.util.UUID.fromString( "c1a0cf60-a454-4b31-a4f1-718279d8e8e2" ), poserControlComposite.getGroup() );
 		this.parent = poserControlComposite;
 	}
 
@@ -96,7 +96,7 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		UserMethod method = parent.createUserMethod( animationName.getValue() );
-		boolean IS_READY_FOR_PRIME_TIME = true;
+		boolean IS_READY_FOR_PRIME_TIME = false;
 		if( IS_READY_FOR_PRIME_TIME ) {
 			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
 			return new DeclareMethodEdit( completionStep, declaringType, method );

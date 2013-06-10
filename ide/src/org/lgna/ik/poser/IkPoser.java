@@ -61,7 +61,7 @@ import test.ik.IkTestApplication;
  * @author Matt May
  */
 public class IkPoser extends SProgram {
-	private static final boolean SHOULD_I_ANIMATE = false;
+	private static final boolean SHOULD_I_ANIMATE = true;
 	private final SCamera camera = new SCamera();
 	private final SBiped biped;
 	public final PoserScene scene;

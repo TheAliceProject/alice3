@@ -40,56 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-
-import org.lgna.croquet.components.Button;
-import org.lgna.ik.poser.AnimatorControlComposite;
+import org.lgna.croquet.BoundedDoubleState;
+import org.lgna.croquet.OperationInputDialogCoreComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.view.AppendTimeToAnimationView;
 
 /**
  * @author Matt May
  */
-public class AnimatorControlView extends AbstractPoserControlView {
+public class AppendTimeToAnimationComposite extends OperationInputDialogCoreComposite<AppendTimeToAnimationView> {
 
-	private Button exportButton;
+	BoundedDoubleState amount = createBoundedDoubleState( createKey( "amountToAppend" ), new BoundedDoubleDetails() );
+	private AnimatorControlComposite parent;
 
-	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
-		super( controlComposite );
-
-		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
-
-		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
-
-		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
-
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "grow" );
-		exportButton = controlComposite.getExportAnimation().getOperation().createButton();
-		this.addComponent( exportButton, "grow, wrap" );
-
-		OuterTimeLineView component = controlComposite.getTimeLine().createView();
-		this.addComponent( component, "grow, span 2, wrap" );
-		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
-		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
-		if( controlComposite.getPosesList().getItemCount() == 0 ) {
-			disableExport();
-		}
+	public AppendTimeToAnimationComposite( AnimatorControlComposite parent ) {
+		super( java.util.UUID.fromString( "f446d14c-3113-404f-bac3-2fa0b1ba8dd4" ), parent.getGroup() );
+		this.parent = parent;
+		amount.setValueTransactionlessly( 10. );
 	}
 
-	public void enableExport() {
-		if( !exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( true );
-		}
+	@Override
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		return null;
 	}
 
-	public void disableExport() {
-		if( exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( false );
-		}
+	@Override
+	protected String getName() {
+		return null;
+	}
+
+	@Override
+	protected AppendTimeToAnimationView createView() {
+		return new AppendTimeToAnimationView( this );
+	}
+
+	@Override
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		this.parent.addTime( amount.getValue() );
+		return null;
+	}
+
+	public BoundedDoubleState getAmount() {
+		return this.amount;
 	}
 }

@@ -42,54 +42,18 @@
  */
 package org.lgna.ik.poser.view;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-
-import org.lgna.croquet.components.Button;
-import org.lgna.ik.poser.AnimatorControlComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.ik.poser.AppendTimeToAnimationComposite;
 
 /**
  * @author Matt May
  */
-public class AnimatorControlView extends AbstractPoserControlView {
+public class AppendTimeToAnimationView extends BorderPanel {
 
-	private Button exportButton;
-
-	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
-		super( controlComposite );
-
-		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
-
-		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
-
-		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
-
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "grow" );
-		exportButton = controlComposite.getExportAnimation().getOperation().createButton();
-		this.addComponent( exportButton, "grow, wrap" );
-
-		OuterTimeLineView component = controlComposite.getTimeLine().createView();
-		this.addComponent( component, "grow, span 2, wrap" );
-		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
-		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
-		if( controlComposite.getPosesList().getItemCount() == 0 ) {
-			disableExport();
-		}
-	}
-
-	public void enableExport() {
-		if( !exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( true );
-		}
-	}
-
-	public void disableExport() {
-		if( exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( false );
-		}
+	public AppendTimeToAnimationView( AppendTimeToAnimationComposite composite ) {
+		super( composite );
+		GridPanel panel = GridPanel.createGridPane( 1, 2, composite.getAmount().getSidekickLabel().createImmutableTextArea(), composite.getAmount().createSpinner() );
+		addCenterComponent( panel );
 	}
 }
