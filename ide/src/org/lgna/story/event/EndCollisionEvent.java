@@ -1,7 +1,11 @@
 package org.lgna.story.event;
 
+import org.lgna.story.SThing;
+
 public class EndCollisionEvent extends CollisionEvent {
-	public EndCollisionEvent( org.lgna.story.SMovableTurnable... movable ) {
-		super( movable );
+
+	public EndCollisionEvent( SThing a, SThing b ) {
+		super( a, b );
 	}
+
 }
