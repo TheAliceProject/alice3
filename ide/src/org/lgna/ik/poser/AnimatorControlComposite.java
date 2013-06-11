@@ -289,7 +289,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	}
 
 	public void addTime( Double value ) {
-		timeLine.setCurrentTime( value );
+		timeLine.setMaxTime( value );
 	}
 
 }

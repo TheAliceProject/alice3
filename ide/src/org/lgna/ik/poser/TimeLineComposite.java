@@ -217,4 +217,8 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 	public void setJComponent( TimeLineView jTimeLineView ) {
 		this.jTimeLineView = jTimeLineView;
 	}
+
+	public void setMaxTime( Double value ) {
+		endTime = value;
+	}
 }
