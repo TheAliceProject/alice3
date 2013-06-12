@@ -118,7 +118,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 		public void changed() {
 			currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
-			System.out.println( currentTime );
 		}
 	};
 
@@ -222,11 +221,11 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
 			try {
-				miArr[ i ] = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, expressionCreator.createExpression( animation.getPose() ) );
+				miArr[ i ] = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, expressionCreator.createExpression( animation.getPose() ), timeLine.getDetailsFor( i ) );
 			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 				throw new RuntimeException( ccee );
 			}
-			//miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new SetPose.Detail[ 0 ] ) );
+			//			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new SetPose.Detail[ 0 ] ) );
 			++i;
 		}
 		BlockStatement body = new BlockStatement( miArr );
