@@ -1,9 +1,7 @@
 package org.lgna.story.event;
 
-import org.lgna.story.SThing;
-
 public abstract class CollisionEvent extends AbstractBinarySThingEvent {
-	public CollisionEvent( SThing a, SThing b ) {
+	public CollisionEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
 		super( a, b );
 	}
 }

@@ -1,10 +1,8 @@
 package org.lgna.story.event;
 
-import org.lgna.story.SThing;
-
 public class EndCollisionEvent extends CollisionEvent {
 
-	public EndCollisionEvent( SThing a, SThing b ) {
+	public EndCollisionEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
 		super( a, b );
 	}
 
