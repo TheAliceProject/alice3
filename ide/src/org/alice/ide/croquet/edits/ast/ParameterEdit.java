@@ -87,7 +87,7 @@ public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit<org.lgna
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		org.lgna.project.ast.AstUtilities.addParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	protected void removeParameter( int index ) {
@@ -95,7 +95,7 @@ public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit<org.lgna
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		org.lgna.project.ast.AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override

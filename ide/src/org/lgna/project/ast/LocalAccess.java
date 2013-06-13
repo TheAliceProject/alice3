@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAccess extends Expression {
+public final class LocalAccess extends Expression {
 	public DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
 
 	public LocalAccess() {
@@ -78,6 +78,15 @@ public class LocalAccess extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			LocalAccess other = (LocalAccess)o;
+			return this.local.valueContentEquals( other.local, strictness );
+		}
+		return false;
 	}
 
 	@Override

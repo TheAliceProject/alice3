@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatenation extends Expression {
+public final class StringConcatenation extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -66,6 +66,17 @@ public class StringConcatenation extends Expression {
 	public StringConcatenation( Expression leftOperand, Expression rightOperand ) {
 		this.leftOperand.setValue( leftOperand );
 		this.rightOperand.setValue( rightOperand );
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			StringConcatenation other = (StringConcatenation)o;
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
+				return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
+			}
+		}
+		return false;
 	}
 
 	@Override

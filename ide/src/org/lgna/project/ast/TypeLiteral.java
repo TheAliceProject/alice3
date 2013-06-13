@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeLiteral extends AbstractValueLiteral {
+public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?>> {
 	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 
 	public TypeLiteral() {
@@ -72,8 +72,14 @@ public class TypeLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
 		return this.value;
+	}
+
+	@Override
+	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness ) {
+		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
+		return this.value.valueContentEquals( otherTypeLiteral.value, strictness );
 	}
 
 	@Override

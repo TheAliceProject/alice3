@@ -67,7 +67,7 @@ public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
 	protected void localize() {
 		super.localize();
 		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.FIELD_ICON );
+		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
 	}
 
 	@Override

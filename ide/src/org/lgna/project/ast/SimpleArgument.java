@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleArgument extends AbstractArgument {
+public final class SimpleArgument extends AbstractArgument {
 	public SimpleArgument() {
 	}
 

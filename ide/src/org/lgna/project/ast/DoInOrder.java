@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrder extends AbstractStatementWithBody {
+public final class DoInOrder extends AbstractStatementWithBody {
 	public DoInOrder() {
 	}
 

@@ -65,6 +65,16 @@ public abstract class AbstractNode extends Element implements Node {
 		this.id = id;
 	}
 
+	public boolean contentEquals( Node other, ContentEqualsStrictness strictness ) {
+		if( other != null ) {
+			Class<?> thisCls = this.getClass();
+			Class<?> otherCls = other.getClass();
+			return thisCls.equals( otherCls );
+		} else {
+			return false;
+		}
+	}
+
 	public Node getParent() {
 		return this.parent;
 	}
@@ -434,7 +444,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return uniqueKey;
 	}
 
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
+	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
@@ -504,12 +514,16 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+	public static java.util.Map<AbstractDeclaration, Integer> createEncodeMapFromDeclarationSet( java.util.Set<AbstractDeclaration> set ) {
 		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( AbstractDeclaration declaration : set ) {
 			getUniqueKeyAndPutInEncodeMap( declaration, map );
 		}
-		return this.encode( xmlDocument, map );
+		return map;
+	}
+
+	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+		return this.encode( xmlDocument, createEncodeMapFromDeclarationSet( set ) );
 	}
 
 	public final org.w3c.dom.Document encode( java.util.Set<AbstractDeclaration> set ) {
@@ -632,11 +646,11 @@ public abstract class AbstractNode extends Element implements Node {
 	protected void postDecode() {
 	}
 
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map, boolean isIdDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
-			Decoder decoder = new Decoder( projectVersion, org.lgna.project.ProjectVersion.getCurrentVersion(), isIdDecodingDesired );
+			Decoder decoder = new Decoder( projectVersion, org.lgna.project.ProjectVersion.getCurrentVersion(), policy );
 			return decoder.decode( xmlElement, map );
 		} else {
 			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );
@@ -644,7 +658,7 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map ) throws org.lgna.project.VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, map, true );
+		return decode( xmlDocument, projectVersion, map, DecodeIdPolicy.PRESERVE_IDS );
 	}
 
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion ) throws org.lgna.project.VersionNotSupportedException {

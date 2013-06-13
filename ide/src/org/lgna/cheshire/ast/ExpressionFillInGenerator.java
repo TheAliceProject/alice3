@@ -125,7 +125,7 @@ public class ExpressionFillInGenerator {
 				bufferForCompletionStepSubTransactionHistory[ 0 ] = new org.lgna.croquet.history.TransactionHistory();
 				org.lgna.croquet.history.Transaction subTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( bufferForCompletionStepSubTransactionHistory[ 0 ] );
 				org.lgna.croquet.history.CompletionStep textChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( subTransaction, composite.getValueState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance(), null );
-				textChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( textChangeStep, "", value ) );
+				textChangeStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.lgna.croquet.edits.StateEdit<String>( textChangeStep, "", value ) );
 				org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( bufferForCompletionStepSubTransactionHistory[ 0 ] );
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, composite.getCommitOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
 			}
@@ -138,8 +138,16 @@ public class ExpressionFillInGenerator {
 			if( field.isStatic() ) {
 				fillIn = org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field );
 			} else {
-				fillIn = null;
+				org.lgna.project.ast.Expression instanceExpression = fieldAccess.expression.getValue();
+				if( instanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
+					fillIn = org.alice.ide.croquet.models.cascade.ThisFieldAccessFillIn.getInstance( field );
+				} else {
+					// currently, fields should only be accessible statically via a class or from the this expression
+					fillIn = null;
+				}
 			}
+		} else if( expression instanceof org.lgna.project.ast.ThisExpression ) {
+			fillIn = org.alice.ide.croquet.models.cascade.ThisExpressionFillIn.getInstance();
 		} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			org.lgna.project.ast.AbstractType<?, ?, ?> arrayType = arrayInstanceCreation.arrayType.getValue();

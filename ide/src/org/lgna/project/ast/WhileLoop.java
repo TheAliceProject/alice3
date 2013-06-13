@@ -63,6 +63,15 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			WhileLoop other = (WhileLoop)o;
+			return this.conditional.valueContentEquals( other.conditional, strictness );
+		}
+		return false;
+	}
+
+	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "while " );
 		NodeUtilities.safeAppendRepr( rv, this.conditional.getValue(), locale );

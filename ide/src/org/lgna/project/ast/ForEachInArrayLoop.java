@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayLoop extends AbstractForEachLoop implements EachInArrayStatement {
+public final class ForEachInArrayLoop extends AbstractForEachLoop implements EachInArrayStatement {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

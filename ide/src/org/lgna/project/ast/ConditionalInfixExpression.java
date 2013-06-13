@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
+public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
 	public enum Operator {
 		AND() {
 			@Override
