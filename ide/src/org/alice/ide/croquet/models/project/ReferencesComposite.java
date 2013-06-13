@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project;
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+import org.lgna.project.ast.AbstractMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ParameterArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final org.lgna.project.ast.UserParameter parameter;
+public class ReferencesComposite extends FindComposite {
 
-	public ParameterArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, parameter.getValueType(), parameter.getDetails() );
-		this.parameter = parameter;
+	private AbstractMethod method;
+
+	public ReferencesComposite( AbstractMethod method ) {
+		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ), null );
+		assert method != null;
+		this.method = method;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		getSearchState().setValueTransactionlessly( method.getName() );
+		if( getSearchResults().getItemCount() > 0 ) {
+			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
+				if( getSearchResults().getItemAt( i ).getSearchObject().equals( method ) ) {
+					getSearchResults().setSelectedIndex( i );
+				}
+			}
+		}
 	}
 }

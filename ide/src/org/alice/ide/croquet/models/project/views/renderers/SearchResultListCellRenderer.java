@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project.views.renderers;
 
-package org.alice.ide.ast.draganddrop.statement;
+import org.lgna.project.ast.AbstractDeclaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized LocalAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalAssignmentTemplateDragModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAssignmentTemplateDragModel( local );
-			map.put( local, rv );
-		}
+public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T>> {
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T> value, int index, boolean isSelected, boolean cellHasFocus ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( value.getName() );
+		sb.append( " (" );
+		sb.append( value.getReferences().size() );
+		sb.append( ")" );
+		rv.setText( sb.toString() );
+		rv.setIcon( value.getIcon() );
 		return rv;
-	}
-
-	private org.lgna.project.ast.UserLocal local;
-
-	private LocalAssignmentTemplateDragModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignmentStatement( local ) );
-		this.local = local;
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserLocal.class, this.local );
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.LocalAssignmentInsertCascade( blockStatementIndexPair, this.local );
 	}
 }

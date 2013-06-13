@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project.views.renderers;
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.alice.ide.swing.BasicTreeNodeRenderer;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
-	}
-
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
+public class SearchReferencesTreeCellRenderer extends BasicTreeNodeRenderer {
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new org.lgna.project.ast.ExpressionStatement( expression );
-		} else {
-			return null;
+	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		assert rv instanceof DefaultTreeCellRenderer;
+		assert value instanceof SearchObjectNode;
+		SearchObjectNode node = (SearchObjectNode)value;
+		if( node.getParent() != null ) {
+			if( node.getIsLeaf() ) {
+				Object astValue = node.getValue();
+				assert astValue != null;
+				assert astValue instanceof Expression : astValue.getClass();
+				return PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
+			} else {
+				Object astValue = node.getValue();
+				assert astValue instanceof UserMethod;
+				UserMethod uMethod = (UserMethod)astValue;
+				return new JLabel( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
+			}
 		}
+		return rv;
 	}
 }

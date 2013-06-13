@@ -654,11 +654,11 @@ public abstract class AbstractNode extends Element implements Node {
 	protected void postDecode() {
 	}
 
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map, boolean isIdDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
-			Decoder decoder = new Decoder( projectVersion, org.lgna.project.ProjectVersion.getCurrentVersion(), isIdDecodingDesired );
+			Decoder decoder = new Decoder( projectVersion, org.lgna.project.ProjectVersion.getCurrentVersion(), policy );
 			return decoder.decode( xmlElement, map );
 		} else {
 			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );
@@ -666,7 +666,7 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map ) throws org.lgna.project.VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, map, true );
+		return decode( xmlDocument, projectVersion, map, DecodeIdPolicy.PRESERVE_IDS );
 	}
 
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion ) throws org.lgna.project.VersionNotSupportedException {

@@ -152,6 +152,12 @@ public class IncompleteAstUtilities {
 		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
 
+	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = null;
+		org.lgna.project.ast.FieldAccess leftSideExpression = null;
+		return new org.lgna.project.ast.AssignmentExpression( valueType, leftSideExpression, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
+	}
+
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
 		return IncompleteAstUtilities.createIncompleteAssignmentExpression( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
@@ -162,6 +168,10 @@ public class IncompleteAstUtilities {
 
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( field ) );
+	}
+
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement() {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression() );
 	}
 
 	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {

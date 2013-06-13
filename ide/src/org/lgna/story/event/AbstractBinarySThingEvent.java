@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.event;
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class AbstractBinarySThingEvent extends AbstractEvent {
+
+	private final org.lgna.story.SThing a;
+	private final org.lgna.story.SThing b;
+	private final org.lgna.story.SMovableTurnable[] movables;
+
+	public AbstractBinarySThingEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
+		this.a = a;
+		this.b = b;
+		movables = new org.lgna.story.SMovableTurnable[ 2 ];
+		if( a instanceof org.lgna.story.SMovableTurnable ) {
+			movables[ 0 ] = (org.lgna.story.SMovableTurnable)a;
+		}
+		if( b instanceof org.lgna.story.SMovableTurnable ) {
+			movables[ 1 ] = (org.lgna.story.SMovableTurnable)b;
+		}
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
+	public org.lgna.story.SThing getSThingFromSetA() {
+		return a;
+	}
 
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new org.lgna.project.ast.ExpressionStatement( expression );
-		} else {
-			return null;
-		}
+	public org.lgna.story.SThing getSThingFromSetB() {
+		return b;
+	}
+
+	@Deprecated
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public org.lgna.story.SMovableTurnable[] getModels() {
+		return movables;
 	}
 }

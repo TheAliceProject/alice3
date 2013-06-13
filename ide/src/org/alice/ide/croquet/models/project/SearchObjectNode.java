@@ -40,42 +40,100 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.alice.ide.croquet.models.project;
+
+import java.util.List;
+
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+public class SearchObjectNode {
 
-	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {
-			public HighlightFieldOperation initialize( org.lgna.project.ast.UserField field ) {
-				return new HighlightFieldOperation( field );
+	private AbstractDeclaration decValue;
+	private Expression exValue;
+	private SearchObjectNode parent;
+	private List<SearchObjectNode> children = Collections.newArrayList();
+
+	public SearchObjectNode( Object reference, SearchObjectNode parent ) {
+		this.parent = parent;
+		if( reference != null ) {
+			if( reference instanceof Expression ) {
+				exValue = (Expression)reference;
+			} else if( reference instanceof AbstractDeclaration ) {
+				decValue = (AbstractDeclaration)reference;
 			}
-		} );
+		}
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	public SearchObjectNode getParent() {
+		return parent;
+	}
 
-	public HighlightFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
+	public List<SearchObjectNode> getChildren() {
+		return children;
+	}
+
+	public Object getValue() {
+		if( decValue != null ) {
+			return decValue;
+		} else if( exValue != null ) {
+			return exValue;
+		}
+		return null;
+	}
+
+	public boolean getIsLeaf() {
+		return this.children.size() == 0;
+	}
+
+	public boolean childrenContains( Object reference ) {
+		return getChildForReference( reference ) != null;
+	}
+
+	public void addChild( SearchObjectNode newChildNode ) {
+		this.children.add( newChildNode );
+	}
+
+	public void removeAllChildren() {
+		this.children.clear();
+	}
+
+	public SearchObjectNode getChildForReference( Object reference ) {
+		for( SearchObjectNode child : children ) {
+			if( child.getValue().equals( reference ) ) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public int getLocationAmongstSiblings() {
+		return this.getParent().getChildren().indexOf( this );
+	}
+
+	public SearchObjectNode getYoungerSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location < ( this.parent.children.size() - 1 );
+		return this.getParent().children.get( location + 1 );
+	}
+
+	public SearchObjectNode getOlderSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location > 0;
+		return this.getParent().children.get( location - 1 );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+	public String toString() {
+		if( getValue() instanceof MethodInvocation ) {
+			return ( (MethodInvocation)getValue() ).method.getValue().getName();
+		}
+		return getValue() != null ? getValue().toString() : "ROOT";
 	}
 }
