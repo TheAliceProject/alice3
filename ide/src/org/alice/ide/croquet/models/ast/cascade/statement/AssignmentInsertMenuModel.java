@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class AssignmentInsertMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	public static AssignmentInsertMenuModel createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+		if( selectedType != null ) {
+			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
+				if( field instanceof org.lgna.project.ast.UserField ) {
+					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+					if( userField.isFinal() ) {
+						//pass
+					} else {
+						nonFinalUserFields.add( userField );
+					}
+				}
+			}
+			if( nonFinalUserFields.size() > 0 ) {
+				models.add( FieldsSeparatorModel.getInstance() );
+				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
+					models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					if( field.getValueType().isArray() ) {
+						models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					}
+				}
+			}
+		}
+		if( models.size() == 0 ) {
+			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
+		}
+		return new AssignmentInsertMenuModel( models );
 	}
 
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
-
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	private AssignmentInsertMenuModel( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+		super( java.util.UUID.fromString( "3a849c6b-13c4-42cf-a79c-3dec56d36d6c" ), models );
 	}
 }

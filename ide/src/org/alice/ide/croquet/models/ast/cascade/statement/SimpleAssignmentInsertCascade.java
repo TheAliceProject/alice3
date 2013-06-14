@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized LocalArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalArrayAtIndexAssignmentTemplateDragModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayAtIndexAssignmentTemplateDragModel( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
-
-	private org.lgna.project.ast.UserLocal local;
-
-	private LocalArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignmentStatement( local ) );
-		this.local = local;
+public abstract class SimpleAssignmentInsertCascade extends AssignmentInsertCascade {
+	public SimpleAssignmentInsertCascade( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank[] blanks ) {
+		super( migrationId, blockStatementIndexPair, blanks );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserLocal.class, this.local );
+	protected final int getIndexOfRightHandSide() {
+		return 0;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.LocalArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.local );
+	protected final java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
+		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
+		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				assignmentExpression.rightHandSide.getValue()
+				);
 	}
 }

@@ -119,12 +119,12 @@ public class Decoder {
 
 	private final org.lgna.project.Version srcVersion;
 	private final org.lgna.project.Version dstVersion;
-	private final boolean isIdDecodingDesired;
+	private final DecodeIdPolicy policy;
 
-	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, boolean isIdDecodingDesired ) {
+	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, DecodeIdPolicy policy ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
-		this.isIdDecodingDesired = isIdDecodingDesired;
+		this.policy = policy;
 	}
 
 	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
@@ -366,7 +366,7 @@ public class Decoder {
 			}
 			rv.decodeNode( this, xmlElement, map );
 			if( xmlElement.hasAttribute( CodecConstants.ID_ATTRIBUTE ) ) {
-				if( this.isIdDecodingDesired ) {
+				if( this.policy.isIdPreserved() ) {
 					rv.setId( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.ID_ATTRIBUTE ) ) );
 				}
 			}

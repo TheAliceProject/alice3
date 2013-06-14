@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public final class NoVariablesOrFieldsAccessibleSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static NoVariablesOrFieldsAccessibleSeparatorModel instance = new NoVariablesOrFieldsAccessibleSeparatorModel();
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
+	public static NoVariablesOrFieldsAccessibleSeparatorModel getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new org.lgna.project.ast.ExpressionStatement( expression );
-		} else {
-			return null;
-		}
+	private NoVariablesOrFieldsAccessibleSeparatorModel() {
+		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
 	}
 }
