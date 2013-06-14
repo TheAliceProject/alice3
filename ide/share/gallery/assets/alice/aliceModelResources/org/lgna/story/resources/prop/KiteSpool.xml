@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east:kite</ThemeTag>
     </ThemeTags>
-    <Resource modelName="KiteSpool" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="KiteSpool" resourceName="KITE_SPOOL" textureName="KITE_SPOOL"/>
 </AliceModel>

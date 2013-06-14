@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="ShortHairCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="ShortHairCat" resourceName="SHORT_HAIR_CAT" textureName="SHORT_HAIR_CAT"/>
 </AliceModel>

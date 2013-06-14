@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Hippo">
+    <BoundingBox>
+        <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+        <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>river</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.948134183883667" y="-0.0139884352684021" z="-0.6509260535240173"/>
+            <Max x="0.948134183883667" y="2.5775487422943115" z="0.48637261986732483"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_DARK_RED" textureName="DARK_RED">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_TEAL" textureName="TEAL">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-1.05415940284729" y="-0.0139884352684021" z="-1.0466136932373047"/>
+            <Max x="1.0317232608795166" y="2.5775487422943115" z="0.9609256386756897"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

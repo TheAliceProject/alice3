@@ -245,10 +245,18 @@ public abstract class AbstractThumbnailMaker {
 		return true;
 	}
 
+	protected static final boolean DEBUG_SAVE_TEST_IMAGES = false;
+	protected static final String THUMBNAIL_SCRATCH_SPACE = "C:/batchOutput/thumbnailScratchSpace/";
+
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+
+		if( DEBUG_SAVE_TEST_IMAGES ) {
+			ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "rawFinal.png", rv );
+		}
+
 		if( trimWhitespace ) {
 			int topBorder = getTopBorder( rv );
 			int bottomBorder = getBottomBorder( rv );

@@ -22,7 +22,7 @@
             <Max x="0.06659507751464844" y="3.658020496368408" z="7.748603820800781E-7"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="WallWithFlag" resourceName="WALL_WITH_FLAG" textureName="DEFAULT">
+    <Resource modelName="WallWithFlag" resourceName="WALL_WITH_FLAG" textureName="WALL_WITH_FLAG">
         <BoundingBox>
             <Min x="-5.19873046875" y="0.0" z="-1.2191908359527588"/>
             <Max x="0.3586890697479248" y="5.793804168701172" z="7.748603820800781E-7"/>

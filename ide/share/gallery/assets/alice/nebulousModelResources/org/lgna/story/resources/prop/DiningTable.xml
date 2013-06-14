@@ -2,7 +2,7 @@
 <AliceModel creator="EA" name="DiningTable">
     <BoundingBox>
         <Min x="-0.835536003112793" y="0.0" z="-0.3829505145549774"/>
-        <Max x="0.835536003112793" y="0.7208480834960938" z="0.3829505145549774"/>
+        <Max x="0.835536003112793" y="0.7236319184303284" z="0.3829505145549774"/>
     </BoundingBox>
     <Tags>
         <Tag>table</Tag>
@@ -87,42 +87,6 @@
             <Max x="0.829173743724823" y="0.7208012938499451" z="0.3790720999240875"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_DRAGON_BROWN" textureName="DRAGON_BROWN">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_DRAGON_RED" textureName="DRAGON_RED">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_FISH_BROWN" textureName="FISH_BROWN">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_FISH_RED" textureName="FISH_RED">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_LOTUS_BLACK" textureName="LOTUS_BLACK">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="Oriental" resourceName="ORIENTAL_LOTUS_ORANGE" textureName="LOTUS_ORANGE">
-        <BoundingBox>
-            <Min x="-0.38150665163993835" y="0.0" z="-0.36916103959083557"/>
-            <Max x="0.38150665163993835" y="0.7202985882759094" z="0.36916103959083557"/>
-        </BoundingBox>
-    </Resource>
     <Resource modelName="Outdoor" resourceName="OUTDOOR_ASH" textureName="ASH">
         <BoundingBox>
             <Min x="-0.38035884499549866" y="0.0" z="-0.38188260793685913"/>
@@ -175,6 +139,36 @@
         <BoundingBox>
             <Min x="-0.8217060565948486" y="0.0" z="-0.37136417627334595"/>
             <Max x="0.8217060565948486" y="0.7162896990776062" z="0.37136417627334595"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LIGHT_WOOD" textureName="LIGHT_WOOD">
+        <BoundingBox>
+            <Min x="-0.8315867185592651" y="0.0" z="-0.3804748058319092"/>
+            <Max x="0.8315867185592651" y="0.7236319184303284" z="0.3804748058319092"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8315867185592651" y="0.0" z="-0.3804748058319092"/>
+            <Max x="0.8315867185592651" y="0.7236319184303284" z="0.3804748058319092"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.8315867185592651" y="0.0" z="-0.3804748058319092"/>
+            <Max x="0.8315867185592651" y="0.7236319184303284" z="0.3804748058319092"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.8315867185592651" y="0.0" z="-0.3804748058319092"/>
+            <Max x="0.8315867185592651" y="0.7236319184303284" z="0.3804748058319092"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_ORANGE_WOOD" textureName="ORANGE_WOOD">
+        <BoundingBox>
+            <Min x="-0.8315867185592651" y="0.0" z="-0.3804748058319092"/>
+            <Max x="0.8315867185592651" y="0.7236319184303284" z="0.3804748058319092"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

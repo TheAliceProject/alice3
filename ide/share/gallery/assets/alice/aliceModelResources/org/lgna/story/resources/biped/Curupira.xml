@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Curupira" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Curupira" resourceName="CURUPIRA" textureName="CURUPIRA"/>
 </AliceModel>

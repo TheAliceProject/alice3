@@ -43,6 +43,7 @@
 
 package org.lgna.story.resourceutilities;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -126,6 +127,10 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		testImageLG.clearAndRenderOffscreen();
 		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
+		if( DEBUG_SAVE_TEST_IMAGES ) {
+			ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "initial.png", testImage );
+		}
+
 		Point3 testPosition = getRecenterPositionBasedOnImage( testImage, cameraTransform.translation, bbox );
 		getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 		Point3 lastGoodPosition = new Point3( testPosition );
@@ -146,6 +151,10 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
+			if( DEBUG_SAVE_TEST_IMAGES ) {
+				ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "test" + limitCount + ".png", testImage );
+			}
+
 			framed = isFullyFramed( testImage );
 			if( framed )
 			{
@@ -157,6 +166,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		if( limitCount > COUNT_LIMIT ) {
 			System.err.println( "hit thumbnail limit count" );
 		}
+		int firstLimit = limitCount;
 		limitCount = 0;
 		//zoom in until just framed
 		while( ( limitCount < COUNT_LIMIT ) && framed && ( ( distanceToEdge - currentT ) > getSGCamera().nearClippingPlaneDistance.getValue() ) )
@@ -165,6 +175,10 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+
+			if( DEBUG_SAVE_TEST_IMAGES ) {
+				ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "test" + ( firstLimit + limitCount ) + ".png", testImage );
+			}
 
 			framed = isFullyFramed( testImage );
 			if( framed )
@@ -177,7 +191,6 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		if( limitCount > COUNT_LIMIT ) {
 			System.err.println( "hit thumbnail limit count" );
 		}
-
 		getSGCameraVehicle().setTranslationOnly( lastGoodPosition, this.getScene().getSgReferenceFrame() );
 		AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation();
 		return finalCameraTransform;

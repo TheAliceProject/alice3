@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Phoenix" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Phoenix" resourceName="PHOENIX" textureName="PHOENIX"/>
 </AliceModel>

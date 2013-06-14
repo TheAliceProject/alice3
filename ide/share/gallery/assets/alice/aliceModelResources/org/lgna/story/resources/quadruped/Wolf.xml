@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="Wolf" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Wolf" resourceName="WOLF" textureName="WOLF"/>
 </AliceModel>

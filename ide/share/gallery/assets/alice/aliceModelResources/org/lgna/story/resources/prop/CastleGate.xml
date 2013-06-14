@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>fantasy:castle</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CastleGate" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="CastleGate" resourceName="CASTLE_GATE" textureName="CASTLE_GATE"/>
 </AliceModel>

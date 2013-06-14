@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="StoneBridge" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="StoneBridge" resourceName="STONE_BRIDGE" textureName="STONE_BRIDGE"/>
 </AliceModel>

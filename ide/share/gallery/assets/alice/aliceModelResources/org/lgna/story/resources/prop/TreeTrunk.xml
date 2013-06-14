@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="TreeTrunk" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="TreeTrunk" resourceName="TREE_TRUNK" textureName="TREE_TRUNK"/>
 </AliceModel>

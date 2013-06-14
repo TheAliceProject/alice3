@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="SpellBook" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="SpellBook" resourceName="SPELL_BOOK" textureName="SPELL_BOOK"/>
 </AliceModel>

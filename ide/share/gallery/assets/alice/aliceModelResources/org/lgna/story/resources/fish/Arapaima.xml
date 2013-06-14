@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Arapaima" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Arapaima" resourceName="ARAPAIMA" textureName="ARAPAIMA"/>
 </AliceModel>

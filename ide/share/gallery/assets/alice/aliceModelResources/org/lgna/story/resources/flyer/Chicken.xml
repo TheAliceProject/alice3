@@ -11,8 +11,8 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="Chicken" resourceName="DEFAULT" textureName="DEFAULT"/>
-    <Resource modelName="MeanChicken" resourceName="MEAN_CHICKEN" textureName="DEFAULT">
+    <Resource modelName="Chicken" resourceName="CHICKEN" textureName="CHICKEN"/>
+    <Resource modelName="MeanChicken" resourceName="MEAN_CHICKEN" textureName="MEAN_CHICKEN">
         <BoundingBox>
             <Min x="-0.1955900937318802" y="7.270490097400546E-17" z="-0.2131776511669159"/>
             <Max x="0.1955900937318802" y="0.602681040763855" z="0.24082796275615692"/>

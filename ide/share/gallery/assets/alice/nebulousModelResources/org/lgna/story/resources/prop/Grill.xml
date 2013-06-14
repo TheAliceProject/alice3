@@ -14,9 +14,14 @@
     <ThemeTags>
         <ThemeTag>household:yard</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Grill" resourceName="GREEN" textureName="GREEN"/>
-    <Resource modelName="Grill" resourceName="BLACK" textureName="BLACK"/>
-    <Resource modelName="Grill" resourceName="YELLOW" textureName="YELLOW"/>
-    <Resource modelName="Grill" resourceName="RED" textureName="RED"/>
-    <Resource modelName="Grill" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="Grill" resourceName="GREEN_LIT" textureName="GREEN_LIT"/>
+    <Resource modelName="Grill" resourceName="GREEN_UNLIT" textureName="GREEN_UNLIT"/>
+    <Resource modelName="Grill" resourceName="BLACK_LIT" textureName="BLACK_LIT"/>
+    <Resource modelName="Grill" resourceName="BLACK_UNLIT" textureName="BLACK_UNLIT"/>
+    <Resource modelName="Grill" resourceName="YELLOW_LIT" textureName="YELLOW_LIT"/>
+    <Resource modelName="Grill" resourceName="YELLOW_UNLIT" textureName="YELLOW_UNLIT"/>
+    <Resource modelName="Grill" resourceName="RED_LIT" textureName="RED_LIT"/>
+    <Resource modelName="Grill" resourceName="RED_UNLIT" textureName="RED_UNLIT"/>
+    <Resource modelName="Grill" resourceName="BLUE_LIT" textureName="BLUE_LIT"/>
+    <Resource modelName="Grill" resourceName="BLUE_UNLIT" textureName="BLUE_UNLIT"/>
 </AliceModel>

@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BigBadWolf" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="BigBadWolf" resourceName="BIG_BAD_WOLF" textureName="BIG_BAD_WOLF"/>
 </AliceModel>

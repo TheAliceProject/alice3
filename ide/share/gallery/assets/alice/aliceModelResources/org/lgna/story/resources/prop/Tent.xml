@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Tent" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Tent" resourceName="TENT" textureName="TENT"/>
 </AliceModel>

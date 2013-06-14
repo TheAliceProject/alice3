@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Hedge" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Hedge" resourceName="HEDGE" textureName="HEDGE"/>
 </AliceModel>

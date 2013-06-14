@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="PocketWatch" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="PocketWatch" resourceName="POCKET_WATCH" textureName="POCKET_WATCH"/>
 </AliceModel>

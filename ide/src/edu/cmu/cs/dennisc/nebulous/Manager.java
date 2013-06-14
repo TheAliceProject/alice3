@@ -28,6 +28,8 @@ public class Manager {
 
 	private static native void unloadUnusedTextures( javax.media.opengl.GL gl );
 
+	public static native void setDebugDraw( boolean debugDraw );
+
 	private static void doInitializationIfNecessary() {
 		try {
 			initializeIfNecessary();

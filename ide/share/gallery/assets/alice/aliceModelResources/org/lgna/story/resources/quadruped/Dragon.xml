@@ -19,4 +19,76 @@
     <Resource modelName="Dragon" resourceName="BLUE" textureName="BLUE"/>
     <Resource modelName="Dragon" resourceName="ORANGE" textureName="ORANGE"/>
     <Resource modelName="Dragon" resourceName="RED" textureName="RED"/>
+    <Resource modelName="Tutu" resourceName="TUTU_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_DARK_RED" textureName="DARK_RED">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_TEAL" textureName="TEAL">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-2.0979039669036865" y="-0.4325602650642395" z="-1.0104763507843018"/>
+            <Max x="2.4653570652008057" y="3.258998394012451" z="5.533850193023682"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
 </AliceModel>

@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Piranha" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Piranha" resourceName="PIRANHA" textureName="PIRANHA"/>
 </AliceModel>
