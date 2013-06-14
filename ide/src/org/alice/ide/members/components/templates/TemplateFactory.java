@@ -122,27 +122,4 @@ public class TemplateFactory {
 		}
 		return rv;
 	}
-
-	public static org.lgna.croquet.components.DragComponent getMutatorTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToMutatorTemplate.get( field );
-		if( rv != null ) {
-
-		} else {
-			rv = new org.alice.ide.members.components.templates.SetFieldTemplate( field );
-			mapMethodToMutatorTemplate.put( field, rv );
-		}
-		return rv;
-	}
-
-	public static org.lgna.croquet.components.DragComponent getMutateArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToMutateArrayAtIndexTemplate.get( field );
-		if( rv != null ) {
-
-		} else {
-			rv = new org.alice.ide.members.components.templates.SetFieldArrayAtIndexTemplate( field );
-			mapMethodToMutateArrayAtIndexTemplate.put( field, rv );
-		}
-		return rv;
-	}
-
 }

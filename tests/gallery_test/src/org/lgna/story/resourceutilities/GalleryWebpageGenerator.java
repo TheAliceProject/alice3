@@ -543,32 +543,32 @@ public class GalleryWebpageGenerator {
 		ResourceNode classBasedNode = TreeUtilities.getTreeBasedOnClassHierarchy();
 		ResourceNode themeBasedNode = TreeUtilities.getTreeBasedOnTheme();
 		ResourceNode groupBasedNode = TreeUtilities.getTreeBasedOnGroup();
-//		createHTMLTree(classBasedNode, webpageDir);
-//		createHTMLTree(themeBasedNode, webpageDir);
-//		createHTMLTree(groupBasedNode, webpageDir);
-//		
-//		indexPageContent.append(createClassWebpageBodyHTML(classBasedNode));
-//		indexPageContent.append("<br/>\n");
-//		indexPageContent.append(createClassWebpageBodyHTML(themeBasedNode));
-//		indexPageContent.append("<br/>\n");
-//		indexPageContent.append(createClassWebpageBodyHTML(groupBasedNode));
-//
-//		StringBuilder html = new StringBuilder();
-//		html.append(HTML_HEADER);
-//		html.append("<title>Alice 3.1 Gallery</title>\n</head>\n");
-//		html.append("<body>\n");
-//		html.append(indexPageContent);
-//		html.append(HTML_FOOTER);
-//		
-//		
-//		String relativeURL = "index.html";
-//		File htmlFile = new File(webpageDir + "/"+relativeURL);
-//		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary(htmlFile);
-//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(htmlFile, html.toString());
-//		
-//		System.out.println("\nDONE");
-//		System.out.println("DONE");
-//		System.out.println("DONE!!!\n\n");
+		createHTMLTree(classBasedNode, webpageDir);
+		createHTMLTree(themeBasedNode, webpageDir);
+		createHTMLTree(groupBasedNode, webpageDir);
+		
+		indexPageContent.append(createClassWebpageBodyHTML(classBasedNode));
+		indexPageContent.append("<br/>\n");
+		indexPageContent.append(createClassWebpageBodyHTML(themeBasedNode));
+		indexPageContent.append("<br/>\n");
+		indexPageContent.append(createClassWebpageBodyHTML(groupBasedNode));
+
+		StringBuilder html = new StringBuilder();
+		html.append(HTML_HEADER);
+		html.append("<title>Alice 3.1 Gallery</title>\n</head>\n");
+		html.append("<body>\n");
+		html.append(indexPageContent);
+		html.append(HTML_FOOTER);
+		
+		
+		String relativeURL = "index.html";
+		File htmlFile = new File(webpageDir + "/"+relativeURL);
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary(htmlFile);
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(htmlFile, html.toString());
+		
+		System.out.println("\nDONE");
+		System.out.println("DONE");
+		System.out.println("DONE!!!\n\n");
 		
 		List<String> themeNames = getClassList(themeBasedNode);
 		List<String> classNames = getClassList(classBasedNode);

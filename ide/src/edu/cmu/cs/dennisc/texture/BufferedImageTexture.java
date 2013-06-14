@@ -92,6 +92,12 @@ public class BufferedImageTexture extends Texture {
 		}
 	}
 
+	public void directSetMipMappingDesired( boolean isMipMappingDesired ) {
+		if( m_isMipMappingDesired != isMipMappingDesired ) {
+			m_isMipMappingDesired = isMipMappingDesired;
+		}
+	}
+
 	@Override
 	public boolean isPotentiallyAlphaBlended() {
 		return m_isPotentiallyAlphaBlended;

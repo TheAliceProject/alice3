@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="SunFace" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="SunFace" resourceName="SUN_FACE" textureName="SUN_FACE"/>
 </AliceModel>

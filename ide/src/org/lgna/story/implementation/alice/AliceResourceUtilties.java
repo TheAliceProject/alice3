@@ -187,7 +187,11 @@ public class AliceResourceUtilties {
 		{
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-			return decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
+			TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
+			for( TexturedAppearance ta : rv ) {
+				( (edu.cmu.cs.dennisc.texture.BufferedImageTexture)ta.diffuseColorTexture.getValue() ).directSetMipMappingDesired( false );
+			}
+			return rv;
 		} catch( Exception e )
 		{
 			e.printStackTrace();
@@ -456,7 +460,7 @@ public class AliceResourceUtilties {
 	}
 
 	public static String getDefaultTextureEnumName( String resourceName ) {
-		return "DEFAULT";
+		return AliceResourceUtilties.makeEnumName( resourceName );
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {

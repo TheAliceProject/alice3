@@ -13,5 +13,7 @@
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="CandyFactory" resourceName="CANDY_FACTORY" textureName="CANDY_FACTORY"/>
+    <Resource modelName="CandyFactory" resourceName="LIGHT_GREEN" textureName="LIGHT_GREEN"/>
+    <Resource modelName="CandyFactory" resourceName="LIGHT_OFF" textureName="LIGHT_OFF"/>
+    <Resource modelName="CandyFactory" resourceName="LIGHT_RED" textureName="LIGHT_RED"/>
 </AliceModel>

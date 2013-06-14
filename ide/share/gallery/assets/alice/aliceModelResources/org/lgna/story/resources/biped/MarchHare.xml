@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MarchHare" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="MarchHare" resourceName="MARCH_HARE" textureName="MARCH_HARE"/>
 </AliceModel>

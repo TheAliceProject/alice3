@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="AbyssinianCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="AbyssinianCat" resourceName="ABYSSINIAN_CAT" textureName="ABYSSINIAN_CAT"/>
 </AliceModel>

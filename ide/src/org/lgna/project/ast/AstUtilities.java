@@ -51,13 +51,13 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root, boolean areNewIdsRequired ) {
+	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		try {
-			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, areNewIdsRequired == false );
+			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
@@ -66,11 +66,11 @@ public class AstUtilities {
 	}
 
 	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root ) {
-		return createCopy( original, root, true );
+		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
 	}
 
-	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, boolean areNewIdsRequired ) {
-		UserMethod copy = createCopy( original, root, areNewIdsRequired );
+	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
+		UserMethod copy = createCopy( original, root, policy );
 		copy.body.getValue().statements.clear();
 		return copy;
 	}

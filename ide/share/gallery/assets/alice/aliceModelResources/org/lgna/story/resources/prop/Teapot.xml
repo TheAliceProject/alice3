@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>wonderland:tea set</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Teapot" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Teapot" resourceName="TEAPOT" textureName="TEAPOT"/>
 </AliceModel>

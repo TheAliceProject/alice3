@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>amazon:bananatree</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BananaTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="BananaTree" resourceName="BANANA_TREE" textureName="BANANA_TREE"/>
 </AliceModel>

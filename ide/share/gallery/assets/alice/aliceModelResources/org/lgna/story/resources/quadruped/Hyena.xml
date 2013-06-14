@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Hyena" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Hyena" resourceName="HYENA" textureName="HYENA"/>
 </AliceModel>

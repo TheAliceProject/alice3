@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Sled" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Sled" resourceName="SLED" textureName="SLED"/>
 </AliceModel>

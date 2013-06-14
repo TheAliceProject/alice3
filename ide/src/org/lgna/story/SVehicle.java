@@ -20,11 +20,20 @@ public class SVehicle extends SJointedModel {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: driveTo" );
 	}
 
-	public SJoint getRightDoor() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.RIGHT_DOOR );
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
+	public SJoint getRoot() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.ROOT );
 	}
 
-	public SJoint getLeftDoor() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.LEFT_DOOR );
+	public SJoint getFrontRightWheel() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.FRONT_RIGHT_WHEEL );
+	}
+
+	public SJoint getFrontLeftWheel() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.FRONT_LEFT_WHEEL );
+	}
+
+	public SJoint getBackWheels() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.VehicleResource.BACK_WHEELS );
 	}
 }

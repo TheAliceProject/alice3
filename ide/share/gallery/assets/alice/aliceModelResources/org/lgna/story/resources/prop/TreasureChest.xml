@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="TreasureChest" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="TreasureChest" resourceName="TREASURE_CHEST" textureName="TREASURE_CHEST"/>
 </AliceModel>

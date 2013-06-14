@@ -70,6 +70,7 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
 		this.addHeader( composite.getLocalHeader() );
 		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel.getInstance() );
 		this.returnHeader = this.createHeader( composite.getReturnHeader() );
 		this.returnDragComponent = this.createDragComponent( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( null ) );
 		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );

@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Gong" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Gong" resourceName="GONG" textureName="GONG"/>
 </AliceModel>

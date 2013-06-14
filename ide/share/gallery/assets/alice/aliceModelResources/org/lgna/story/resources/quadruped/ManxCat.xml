@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="ManxCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="ManxCat" resourceName="MANX_CAT" textureName="MANX_CAT"/>
 </AliceModel>

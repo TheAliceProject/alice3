@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MagicStaff" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="MagicStaff" resourceName="MAGIC_STAFF" textureName="MAGIC_STAFF"/>
 </AliceModel>

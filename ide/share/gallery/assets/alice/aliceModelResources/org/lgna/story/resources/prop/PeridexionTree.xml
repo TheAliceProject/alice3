@@ -16,13 +16,13 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+    <Resource modelName="Tall" resourceName="TALL" textureName="TALL">
         <BoundingBox>
             <Min x="-1.9519413709640503" y="-0.053463637828826904" z="-2.448800802230835"/>
             <Max x="2.5936546325683594" y="9.736775398254395" z="2.114880084991455"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="Short" resourceName="SHORT" textureName="DEFAULT">
+    <Resource modelName="Short" resourceName="SHORT" textureName="SHORT">
         <BoundingBox>
             <Min x="-1.9519413709640503" y="-0.053463637828826904" z="-2.4133682250976562"/>
             <Max x="2.4851388931274414" y="6.274207592010498" z="2.150312662124634"/>

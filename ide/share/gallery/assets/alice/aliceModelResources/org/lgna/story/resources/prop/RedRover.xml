@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>outer space</ThemeTag>
     </ThemeTags>
-    <Resource modelName="RedRover" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="RedRover" resourceName="RED_ROVER" textureName="RED_ROVER"/>
 </AliceModel>

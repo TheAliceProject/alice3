@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>*wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CheshireCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="CheshireCat" resourceName="CHESHIRE_CAT" textureName="CHESHIRE_CAT"/>
 </AliceModel>

@@ -17,5 +17,5 @@
         <ThemeTag>wonderland</ThemeTag>
         <ThemeTag>household:dining room</ThemeTag>
     </ThemeTags>
-    <Resource modelName="TeaTable" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="TeaTable" resourceName="TEA_TABLE" textureName="TEA_TABLE"/>
 </AliceModel>

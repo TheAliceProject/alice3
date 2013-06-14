@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Mandril" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Mandril" resourceName="MANDRIL" textureName="MANDRIL"/>
 </AliceModel>

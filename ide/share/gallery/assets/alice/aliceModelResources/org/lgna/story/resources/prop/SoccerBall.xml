@@ -14,5 +14,5 @@
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="SoccerBall" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="SoccerBall" resourceName="SOCCER_BALL" textureName="SOCCER_BALL"/>
 </AliceModel>

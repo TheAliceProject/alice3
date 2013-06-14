@@ -18,6 +18,6 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Rose" resourceName="ROSE_RED" textureName="ROSE_RED"/>
-    <Resource modelName="Rose" resourceName="ROSE_WHITE" textureName="ROSE_WHITE"/>
+    <Resource modelName="Rose" resourceName="RED" textureName="RED"/>
+    <Resource modelName="Rose" resourceName="WHITE" textureName="WHITE"/>
 </AliceModel>

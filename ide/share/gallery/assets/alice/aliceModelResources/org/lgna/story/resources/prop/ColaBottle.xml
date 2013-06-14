@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>household:kitchen</ThemeTag>
     </ThemeTags>
-    <Resource modelName="ColaBottle" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="ColaBottle" resourceName="COLA_BOTTLE" textureName="COLA_BOTTLE"/>
 </AliceModel>

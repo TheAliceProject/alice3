@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="WonderlandTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="WonderlandTree" resourceName="WONDERLAND_TREE" textureName="WONDERLAND_TREE"/>
 </AliceModel>

@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Staff" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Staff" resourceName="STAFF" textureName="STAFF"/>
 </AliceModel>

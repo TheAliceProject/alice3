@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>far east:fishing boat</ThemeTag>
     </ThemeTags>
-    <Resource modelName="FishingBoat" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="FishingBoat" resourceName="FISHING_BOAT" textureName="FISHING_BOAT"/>
 </AliceModel>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="Panda">
     <BoundingBox>
-        <Min x="-0.5045931339263916" y="-0.013405265286564827" z="-0.4059273302555084"/>
-        <Max x="0.47515350580215454" y="1.1543643474578857" z="0.1818086951971054"/>
+        <Min x="-0.37642890214920044" y="-0.013405265286564827" z="-0.36506906151771545"/>
+        <Max x="0.3896937370300293" y="1.137041687965393" z="0.1773960143327713"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>
@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Panda" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Panda" resourceName="PANDA" textureName="PANDA"/>
 </AliceModel>

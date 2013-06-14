@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="PrayerFlags" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="PrayerFlags" resourceName="PRAYER_FLAGS" textureName="PRAYER_FLAGS"/>
 </AliceModel>

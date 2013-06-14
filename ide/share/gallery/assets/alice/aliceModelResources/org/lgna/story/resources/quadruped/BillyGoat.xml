@@ -15,13 +15,13 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BigHorns" resourceName="BIG_HORNS" textureName="DEFAULT">
+    <Resource modelName="BigHorns" resourceName="BIG_HORNS" textureName="BIG_HORNS">
         <BoundingBox>
             <Min x="-0.39913979172706604" y="-6.291198660619557E-4" z="-0.6523829698562622"/>
             <Max x="0.39913979172706604" y="1.2763521671295166" z="0.4542766213417053"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="LittleHorns" resourceName="LITTLE_HORNS" textureName="DEFAULT">
+    <Resource modelName="LittleHorns" resourceName="LITTLE_HORNS" textureName="LITTLE_HORNS">
         <BoundingBox>
             <Min x="-0.1670951247215271" y="-6.291198660619557E-4" z="-0.6523829698562622"/>
             <Max x="0.16709519922733307" y="1.0237737894058228" z="0.4542766213417053"/>
