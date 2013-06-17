@@ -43,17 +43,8 @@
 
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
-
-import org.lgna.croquet.BooleanState.InternalMenuItemPrepModel;
-import org.lgna.ik.walkandtouch.PoserScene;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserType;
-import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
-import org.lgna.story.SCamera;
 import org.lgna.story.SProgram;
-import org.lgna.story.TurnDirection;
 
 import test.ik.IkTestApplication;
 
@@ -62,79 +53,6 @@ import test.ik.IkTestApplication;
  */
 public class IkPoser extends SProgram {
 	private static final boolean SHOULD_I_ANIMATE = true;
-	private final SCamera camera = new SCamera();
-	private final SBiped biped;
-	public final PoserScene scene;
-
-	protected AbstractPoserSplitComposite composite;
-	private UserType<?> userType;
-
-	public IkPoser( NamedUserType userType ) {
-		//		this.biped = userType.getDeclaredConstructor().;
-		//		Object value = userType.superType.getValue();
-		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
-		this.biped = deriveBipedFromUserType( userType );
-		scene = new PoserScene( camera, biped );
-		this.userType = userType;
-	}
-
-	public InternalMenuItemPrepModel getMenuItemPrepModel() {
-		return composite.getBooleanState().getMenuItemPrepModel();
-	}
-
-	private SBiped deriveBipedFromUserType( NamedUserType type ) {
-
-		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-
-		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
-		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
-
-		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
-		final int N = userConstructor.requiredParameters.size();
-		Object[] arguments = new Object[ N ];
-		switch( N ) {
-		case 0:
-			break;
-		case 1:
-			arguments[ 0 ] = bipedResource;
-			break;
-		case 2:
-			assert false : N;
-		}
-		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
-		return userInstance.getJavaInstance( SBiped.class );
-	}
-
-	public SBiped getBiped() {
-		return this.biped;
-	}
-
-	private void initializeTest() {
-		this.setActiveScene( this.scene );
-		this.camera.turn( TurnDirection.RIGHT, .5 );
-		this.camera.move( MoveDirection.BACKWARD, 8 );
-		this.camera.move( MoveDirection.UP, 1 );
-	}
-
-	private AbstractPoserSplitComposite getComposite() {
-		return composite;
-	}
-
-	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
-		return scene.getJointSelectionSheres();
-	}
-
-	public void setAdapter( PoserControllerAdapter adapter ) {
-		scene.setAdapter( adapter );
-	}
-
-	public Pose getPose() {
-		return Pose.createPoseFromBiped( biped );
-	}
-
-	public UserType<?> getDeclaringType() {
-		return userType;
-	}
 
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
@@ -165,19 +83,22 @@ public class IkPoser extends SProgram {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
 		IkPoser program;
+		AbstractPoserSplitComposite composite;
 		if( SHOULD_I_ANIMATE ) {
-			program = new AnimatorProgram( type );
+			//			program = new AnimatorProgram( type );
+			composite = new AnimatorSplitComposite( type );
 		} else {
-			program = new PoserProgram( type );
+			//			program = new PoserProgram( type );
+			composite = new PoserSplitComposite( type );
 		}
 		//		IkPoser program = new IkPoser( type, SHOULD_I_ANIMATE );
-		app.getFrame().setMainComposite( program.getComposite() );
+		app.getFrame().setMainComposite( composite );
 
 		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
 		test.ik.croquet.IsAngularEnabledState.getInstance().setValueTransactionlessly( false );
 
-		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
-		program.initializeTest();
+		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( composite.getProgram() );
+		composite.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );
 		app.getFrame().setVisible( true );

@@ -56,6 +56,7 @@ import org.lgna.ik.poser.view.AbstractPoserControlView;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
 
 /**
@@ -73,12 +74,30 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	protected StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	protected AbstractPoserSplitComposite parent;
 
-	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
+	//	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
+	//		super( uid );
+	//		this.ikPoser = ikPoser;
+	//		ikPoser.getJointSelectionSheres();
+	//		PoserScene scene = ikPoser.scene;
+	//		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
+	//		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
+	//		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
+	//		leftLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_LEG ) );
+	//		rightArmAnchor.getValue().setPaint( Color.GREEN );
+	//		leftArmAnchor.getValue().setPaint( Color.GREEN );
+	//		rightLegAnchor.getValue().setPaint( Color.GREEN );
+	//		leftLegAnchor.getValue().setPaint( Color.GREEN );
+	//		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
+	//	}
+
+	public AbstractPoserControlComposite( AbstractPoserSplitComposite parent, UUID uid ) {
 		super( uid );
-		this.ikPoser = ikPoser;
-		ikPoser.getJointSelectionSheres();
-		PoserScene scene = ikPoser.scene;
+		//		this.ikPoser = ikPoser;
+		this.parent = parent;
+		parent.getJointSelectionSheres();
+		PoserScene scene = parent.scene;
 		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
 		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
 		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
@@ -87,13 +106,13 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftArmAnchor.getValue().setPaint( Color.GREEN );
 		rightLegAnchor.getValue().setPaint( Color.GREEN );
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
-		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
+		parent.setAdapter( new PoserControllerAdapter( this ) );
 	}
 
 	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			ikPoser.getBiped().straightenOutJoints();
+			parent.getBiped().straightenOutJoints();
 			return null;
 		}
 
@@ -175,4 +194,9 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 			break;
 		}
 	}
+
+	public UserType<?> getDeclaringType() {
+		return parent.getDeclaringType();
+	}
+
 }

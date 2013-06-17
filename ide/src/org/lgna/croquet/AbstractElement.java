@@ -105,6 +105,7 @@ public abstract class AbstractElement implements Element {
 				if( cls == this.getClass() ) {
 					//pass
 				} else {
+					assert migrationId != null : this;
 					String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
 					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
 					String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";

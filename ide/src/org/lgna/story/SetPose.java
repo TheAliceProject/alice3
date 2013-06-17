@@ -48,10 +48,19 @@ package org.lgna.story;
 public class SetPose {
 
 	public interface Detail {
+
 	}
 
 	private SetPose() {
 		super();
+	}
+
+	public static double getDuration( Detail[] details ) {
+		return Duration.getValue( details );
+	}
+
+	public static AnimationStyle getStyle( Detail[] details ) {
+		return AnimationStyle.getValue( details );
 	}
 
 }

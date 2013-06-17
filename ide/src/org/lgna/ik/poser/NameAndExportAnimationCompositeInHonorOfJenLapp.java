@@ -80,7 +80,7 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 		if( validator != null ) {
 			//pass
 		} else {
-			this.validator = new MethodNameValidator( parent.getIkPoser().getDeclaringType() );
+			this.validator = new MethodNameValidator( parent.getDeclaringType() );
 		}
 		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 		String candidate = animationName.getValue();
@@ -95,10 +95,10 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		UserMethod method = parent.createUserMethod( animationName.getValue() );
-		boolean IS_READY_FOR_PRIME_TIME = false;
+		UserMethod method = parent.createUserMethod( completionStep, animationName.getValue() );
+		boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
-			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
+			UserType<?> declaringType = this.parent.getDeclaringType();
 			return new DeclareMethodEdit( completionStep, declaringType, method );
 		} else {
 			org.lgna.project.ast.NamedUserType bogusType = new org.lgna.project.ast.NamedUserType();

@@ -124,7 +124,7 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 		if( validator != null ) {
 			//pass
 		} else {
-			this.validator = new FieldNameValidator( parent.getIkPoser().getDeclaringType() );
+			this.validator = new FieldNameValidator( parent.getDeclaringType() );
 		}
 		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 		String candidate = poseName.getValue();
@@ -147,7 +147,7 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 		UserField field = createPoseField( poseName.getValue() );
 		boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
-			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
+			UserType<?> declaringType = this.parent.getDeclaringType();
 			return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
 
 		} else {
@@ -163,7 +163,7 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 
 	private UserField createPoseField( String value ) {
 		try {
-			Pose pose = parent.ikPoser.getPose();
+			Pose pose = parent.parent.getPose();
 			Expression rhSide = new ExpressionCreator().createExpression( pose );
 			UserField rv = new UserField( "name", JavaType.getInstance( Pose.class ), rhSide );
 			return rv;

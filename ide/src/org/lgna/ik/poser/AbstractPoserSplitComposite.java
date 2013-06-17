@@ -42,47 +42,110 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.lgna.croquet.FrameComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SplitPane;
+import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserType;
 import org.lgna.story.MoveDirection;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.TurnDirection;
 
 import test.ik.croquet.SceneComposite;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserSplitComposite extends FrameComposite<SplitPane> {
+public abstract class AbstractPoserSplitComposite extends FrameComposite<SplitPane> {
 
-	private SplitComposite splitComposite;
-	private IkPoser program;
+	private IkPoser poser;
 
-	protected AbstractPoserSplitComposite( IkPoser ikPoser, boolean isAnimationDesired, UUID uuid ) {
+	private final SCamera camera = new SCamera();
+	private final SBiped biped;
+	public final PoserScene scene;
+	private UserType<?> userType;
+
+	protected AbstractPoserSplitComposite( NamedUserType userType, UUID uuid ) {
 		super( uuid, null );
-		this.program = ikPoser;
-		this.splitComposite = new SplitComposite( null, isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), test.ik.croquet.SceneComposite.getInstance() ) {
-
-			@Override
-			protected SplitPane createView() {
-				return new HorizontalSplitPane( splitComposite );
-			}
-		};
-	}
-
-	@Override
-	protected SplitPane createView() {
-		return new HorizontalSplitPane( splitComposite );
+		this.biped = deriveBipedFromUserType( userType );
+		scene = new PoserScene( camera, biped );
+		this.userType = userType;
+		this.poser = new IkPoser();
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		SceneComposite.getInstance().getView().initializeInAwtContainer( program );
-		program.getBiped().move( MoveDirection.UP, 1 );
-		program.getBiped().move( MoveDirection.DOWN, 1 );
+		SceneComposite.getInstance().getView().initializeInAwtContainer( poser );
+		initializeTest();
+		getBiped().move( MoveDirection.UP, 1 );
+		getBiped().move( MoveDirection.DOWN, 1 );
+	}
+
+	//	public InternalMenuItemPrepModel getMenuItemPrepModel() {
+	//		return composite.getBooleanState().getMenuItemPrepModel();
+	//	}
+
+	private SBiped deriveBipedFromUserType( NamedUserType type ) {
+
+		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+
+		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
+		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
+
+		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
+		final int N = userConstructor.requiredParameters.size();
+		Object[] arguments = new Object[ N ];
+		switch( N ) {
+		case 0:
+			break;
+		case 1:
+			arguments[ 0 ] = bipedResource;
+			break;
+		case 2:
+			assert false : N;
+		}
+		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
+		return userInstance.getJavaInstance( SBiped.class );
+	}
+
+	public SBiped getBiped() {
+		return this.biped;
+	}
+
+	public void initializeTest() {
+		this.poser.setActiveScene( this.scene );
+		this.camera.turn( TurnDirection.RIGHT, .5 );
+		this.camera.move( MoveDirection.BACKWARD, 8 );
+		this.camera.move( MoveDirection.UP, 1 );
+	}
+
+	private AbstractPoserSplitComposite getComposite() {
+		return this;
+	}
+
+	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
+		return scene.getJointSelectionSheres();
+	}
+
+	public void setAdapter( PoserControllerAdapter adapter ) {
+		scene.setAdapter( adapter );
+	}
+
+	public Pose getPose() {
+		return Pose.createPoseFromBiped( biped );
+	}
+
+	public UserType<?> getDeclaringType() {
+		return userType;
+	}
+
+	public IkPoser getProgram() {
+		return this.poser;
 	}
 
 }

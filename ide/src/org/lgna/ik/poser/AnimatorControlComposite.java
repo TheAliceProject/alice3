@@ -58,10 +58,14 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.events.TimeLineListener;
 import org.lgna.ik.poser.view.AnimatorControlView;
+import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.story.AnimationStyle;
 import org.lgna.story.SetPose;
 import org.lgna.story.SetPose.Detail;
 
@@ -74,8 +78,9 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class AnimatorControlComposite extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	public AnimatorControlComposite( IkPoser ikPoser ) {
-		super( ikPoser, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
+	public AnimatorControlComposite( AbstractPoserSplitComposite parent ) {
+		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
+		System.out.println( "parent: " + parent );
 		posesList.addValueListener( poseAnimationListener );
 		timeLine.addTimeLineListener( listener );
 		currentTime.addValueListener( new ValueListener<Double>() {
@@ -130,7 +135,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			if( nextValue != null ) {
 				timeLine.addTimeLineListener( listener );
 				final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-				final org.lgna.story.SBiped ogre = ikPoser.getBiped();
+				final org.lgna.story.SBiped ogre = parent.getBiped();
 				nextValue.animate( programImp, ogre );
 			}
 		}
@@ -140,7 +145,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			( (AnimatorControlView)AnimatorControlComposite.this.getView() ).enableExport();
-			Pose pose = ikPoser.getPose();
+			Pose pose = parent.getPose();
 			PoseAnimation pAnimation = new PoseAnimation( pose );
 			posesList.addItem( pAnimation );
 			timeLine.addEventAtCurrentTime( pose );
@@ -155,14 +160,15 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 			posesList.setSelectedIndex( -1 );
 
-			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-			final org.lgna.story.SBiped ogre = ikPoser.getBiped();
+			//			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+			final org.lgna.story.SBiped ogre = parent.getBiped();
 			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
 
 			ComponentThread thread = new ComponentThread( new Runnable() {
 				public void run() {
 					for( PoseAnimation pAnimation : posesList ) {
-						pAnimation.animate( programImp, ogre );
+						System.out.println( "run Animation!!!" );
+						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
 					}
 				}
 			}, "noDescription" );
@@ -195,7 +201,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			List<PoseAnimation> newValues = Collections.newArrayList();
 			for( int i = 0; i != posesList.getItemCount(); ++i ) {
 				if( i == index ) {
-					newValues.add( new PoseAnimation( ikPoser.getPose() ) );
+					newValues.add( new PoseAnimation( parent.getPose() ) );
 				} else {
 					newValues.add( posesList.getItemAt( i ) );
 				}
@@ -213,7 +219,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 
-	public UserMethod createUserMethod( String name ) {
+	public UserMethod createUserMethod( CompletionStep<?> completionStep, String name ) {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
@@ -221,11 +227,25 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
 			try {
-				miArr[ i ] = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, expressionCreator.createExpression( animation.getPose() ), timeLine.getDetailsFor( i ) );
+				Detail[] details = timeLine.getParametersForPose( animation.getPose() );
+				Expression argumentExpression = expressionCreator.createExpression( animation.getPose() );
+				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
+				//
+				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
+				methodInv.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument(
+						methodInv.method.getValue().getKeyedParameter(), durationKeyMethod, new org.lgna.project.ast.DoubleLiteral( SetPose.getDuration( details ) ) ) );
+
+				//animationStyle
+				org.lgna.project.ast.JavaMethod styleKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
+						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class );
+				methodInv.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInv.method.getValue().getKeyedParameter(),
+						styleKeyMethod, expressionCreator.createExpression( SetPose.getStyle( details ) ) ) );
+				//
+				ExpressionStatement statement = new ExpressionStatement( methodInv );
+				miArr[ i ] = statement;
 			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 				throw new RuntimeException( ccee );
 			}
-			//			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new SetPose.Detail[ 0 ] ) );
 			++i;
 		}
 		BlockStatement body = new BlockStatement( miArr );

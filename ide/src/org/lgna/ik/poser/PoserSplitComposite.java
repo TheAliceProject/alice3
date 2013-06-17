@@ -42,13 +42,27 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.components.HorizontalSplitPane;
+import org.lgna.croquet.components.SplitPane;
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Matt May
  */
 public class PoserSplitComposite extends AbstractPoserSplitComposite {
 
-	protected PoserSplitComposite( IkPoser ikPoser ) {
-		super( ikPoser, false, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
+	private SplitComposite splitComposite = createHorizontalSplitComposite(
+			new PoserControlComposite( this ), test.ik.croquet.SceneComposite.getInstance(), 0.5 );
+
+	public PoserSplitComposite( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
+
+	}
+
+	@Override
+	protected SplitPane createView() {
+		return new HorizontalSplitPane( splitComposite );
 	}
 
 }

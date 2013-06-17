@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.croquet.ItemCodec;
@@ -52,7 +51,6 @@ import org.lgna.croquet.SimpleComposite;
 import org.lgna.ik.poser.events.TimeLineListener;
 import org.lgna.ik.poser.view.OuterTimeLineView;
 import org.lgna.ik.poser.view.TimeLineView;
-import org.lgna.project.ast.Expression;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SetPose.Detail;
@@ -224,12 +222,4 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		endTime = value;
 	}
 
-	public Expression getDetailsFor( int i ) {
-		ArrayList<Object> detailArr = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		if( i == 0 ) {
-			//do something special
-		}
-		//		posesInTimeline.
-		return null;
-	}
 }
