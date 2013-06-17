@@ -42,12 +42,35 @@
  */
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.statementfactory.LocalArrayAtIndexAssignmentFillIn;
+import org.alice.ide.statementfactory.LocalAssignmentFillIn;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentInsertMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public static AssignmentInsertMenuModel createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWithInternalBlank<org.lgna.project.ast.Expression> {
+	public static TemplateAssignmentInsertCascade createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return new TemplateAssignmentInsertCascade( blockStatementIndexPair );
+	}
+
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+
+	private TemplateAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), org.lgna.project.ast.Expression.class );
+		this.blockStatementIndexPair = blockStatementIndexPair;
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+				completionStep,
+				this.blockStatementIndexPair,
+				new org.lgna.project.ast.ExpressionStatement( values[ 0 ] ) );
+	}
+
+	@Override
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		//java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 		if( selectedType != null ) {
 			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -57,27 +80,38 @@ public class AssignmentInsertMenuModel extends org.lgna.croquet.PredeterminedMen
 					if( userField.isFinal() ) {
 						//pass
 					} else {
+						rv.add( FieldAssignmentFillIn.getInstance( userField ) );
 						nonFinalUserFields.add( userField );
 					}
 				}
 			}
 			if( nonFinalUserFields.size() > 0 ) {
-				models.add( FieldsSeparatorModel.getInstance() );
+				//models.add( FieldsSeparatorModel.getInstance() );
 				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
-					models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					//models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
 					if( field.getValueType().isArray() ) {
-						models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+						//models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+						rv.add( FieldArrayAtIndexAssignmentFillIn.getInstance( field ) );
 					}
 				}
 			}
 		}
-		if( models.size() == 0 ) {
-			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
-		}
-		return new AssignmentInsertMenuModel( models );
-	}
+		//		if( models.size() == 0 ) {
+		//			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
+		//		}
 
-	private AssignmentInsertMenuModel( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "3a849c6b-13c4-42cf-a79c-3dec56d36d6c" ), models );
+		for( org.lgna.project.ast.UserLocal local : org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
+			if( local.isFinal.getValue() ) {
+				//pass
+			} else {
+				rv.add( LocalAssignmentFillIn.getInstance( local ) );
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = local.getValueType();
+				if( type.isArray() ) {
+					rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( local ) );
+				}
+			}
+		}
+
+		return rv;
 	}
 }

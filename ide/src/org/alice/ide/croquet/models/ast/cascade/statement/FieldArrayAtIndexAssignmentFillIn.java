@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
-package org.alice.ide.statementfactory;
+import org.alice.ide.ast.EmptyExpression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public final class FieldArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
+	private static java.util.Map<org.lgna.project.ast.UserField, FieldArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalArrayAtIndexAssignmentFillIn rv = map.get( local );
+	public static synchronized FieldArrayAtIndexAssignmentFillIn getInstance( org.lgna.project.ast.UserField field ) {
+		FieldArrayAtIndexAssignmentFillIn rv = map.get( field );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new LocalArrayAtIndexAssignmentFillIn( local );
-			map.put( local, rv );
+			rv = new FieldArrayAtIndexAssignmentFillIn( field );
+			map.put( field, rv );
 		}
 		return rv;
 	}
 
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
 
-	private LocalArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
+	private FieldArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "3385e94e-3299-42d2-941f-435af105dee4" ) );
+		this.transientValue = org.lgna.project.ast.AstUtilities.createFieldArrayAssignment( new org.lgna.project.ast.ThisExpression(), field, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( field.valueType.getValue().getComponentType() ) );
 	}
 
-	private org.lgna.project.ast.UserLocal getLocal() {
+	private org.lgna.project.ast.UserField getField() {
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)this.transientValue.leftHandSide.getValue();
-		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)arrayAccess.array.getValue();
-		return localAccess.local.getValue();
+		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)arrayAccess.array.getValue();
+		return (org.lgna.project.ast.UserField)fieldAccess.field.getValue();
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.mod
 
 	@Override
 	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignment( this.getLocal(), expressions[ 0 ], expressions[ 1 ] );
+		return org.lgna.project.ast.AstUtilities.createFieldArrayAssignment( this.getField(), expressions[ 0 ], expressions[ 1 ] );
 	}
 
 	@Override
