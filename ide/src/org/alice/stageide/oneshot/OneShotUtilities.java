@@ -42,8 +42,8 @@
  */
 package org.alice.stageide.oneshot;
 
-import org.lgna.ik.poser.AnimatorSplitComposite;
-import org.lgna.ik.poser.PoserSplitComposite;
+import org.lgna.ik.poser.AnimatorFrameComposite;
+import org.lgna.ik.poser.PoserFrameComposite;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SBiped;
 
@@ -69,8 +69,8 @@ public class OneShotUtilities {
 				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 			}
 			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
-				models.add( new AnimatorSplitComposite( (NamedUserType)field.getValueType() ).getBooleanState().getMenuItemPrepModel() );
-				models.add( new PoserSplitComposite( (NamedUserType)field.getValueType() ).getBooleanState().getMenuItemPrepModel() );
+				models.add( new AnimatorFrameComposite( (NamedUserType)field.getValueType() ).getBooleanState().getMenuItemPrepModel() );
+				models.add( new PoserFrameComposite( (NamedUserType)field.getValueType() ).getBooleanState().getMenuItemPrepModel() );
 				//				models.add( new PoserProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
 				//				models.add( new AnimatorProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
 			}

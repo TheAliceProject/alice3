@@ -78,9 +78,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class AnimatorControlComposite extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	public AnimatorControlComposite( AbstractPoserSplitComposite parent ) {
+	public AnimatorControlComposite( AbstractPoserFrameComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
-		System.out.println( "parent: " + parent );
 		posesList.addValueListener( poseAnimationListener );
 		timeLine.addTimeLineListener( listener );
 		currentTime.addValueListener( new ValueListener<Double>() {

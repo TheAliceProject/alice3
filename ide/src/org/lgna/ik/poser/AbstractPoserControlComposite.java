@@ -74,30 +74,13 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	protected StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	protected AbstractPoserSplitComposite parent;
+	protected AbstractPoserFrameComposite parent;
 
-	//	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
-	//		super( uid );
-	//		this.ikPoser = ikPoser;
-	//		ikPoser.getJointSelectionSheres();
-	//		PoserScene scene = ikPoser.scene;
-	//		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
-	//		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
-	//		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
-	//		leftLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_LEG ) );
-	//		rightArmAnchor.getValue().setPaint( Color.GREEN );
-	//		leftArmAnchor.getValue().setPaint( Color.GREEN );
-	//		rightLegAnchor.getValue().setPaint( Color.GREEN );
-	//		leftLegAnchor.getValue().setPaint( Color.GREEN );
-	//		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
-	//	}
-
-	public AbstractPoserControlComposite( AbstractPoserSplitComposite parent, UUID uid ) {
+	public AbstractPoserControlComposite( AbstractPoserFrameComposite parent, UUID uid ) {
 		super( uid );
-		//		this.ikPoser = ikPoser;
 		this.parent = parent;
 		parent.getJointSelectionSheres();
-		PoserScene scene = parent.scene;
+		PoserScene scene = parent.getScene();
 		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
 		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
 		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );

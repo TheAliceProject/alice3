@@ -82,23 +82,14 @@ public class IkPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		IkPoser program;
-		AbstractPoserSplitComposite composite;
+		AbstractPoserFrameComposite composite;
+
 		if( SHOULD_I_ANIMATE ) {
-			//			program = new AnimatorProgram( type );
-			composite = new AnimatorSplitComposite( type );
+			composite = new AnimatorFrameComposite( type );
 		} else {
-			//			program = new PoserProgram( type );
-			composite = new PoserSplitComposite( type );
+			composite = new PoserFrameComposite( type );
 		}
-		//		IkPoser program = new IkPoser( type, SHOULD_I_ANIMATE );
 		app.getFrame().setMainComposite( composite );
-
-		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
-		test.ik.croquet.IsAngularEnabledState.getInstance().setValueTransactionlessly( false );
-
-		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( composite.getProgram() );
-		composite.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );
 		app.getFrame().setVisible( true );

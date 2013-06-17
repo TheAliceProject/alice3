@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.SplitPane;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
@@ -60,21 +61,27 @@ import test.ik.croquet.SceneComposite;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserSplitComposite extends FrameComposite<SplitPane> {
+public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPane> {
 
 	private IkPoser poser;
 
 	private final SCamera camera = new SCamera();
 	private final SBiped biped;
-	public final PoserScene scene;
+	private final PoserScene scene;
 	private UserType<?> userType;
 
-	protected AbstractPoserSplitComposite( NamedUserType userType, UUID uuid ) {
+	private final SplitComposite splitComposite;
+
+	//note: this relies on very specific ordering at the moment
+	protected abstract AbstractPoserControlComposite<?> createControlComposite();
+
+	protected AbstractPoserFrameComposite( NamedUserType userType, UUID uuid ) {
 		super( uuid, null );
 		this.biped = deriveBipedFromUserType( userType );
-		scene = new PoserScene( camera, biped );
+		this.scene = new PoserScene( camera, biped );
 		this.userType = userType;
 		this.poser = new IkPoser();
+		this.splitComposite = createHorizontalSplitComposite( this.createControlComposite(), test.ik.croquet.SceneComposite.getInstance(), 0.5 );
 	}
 
 	@Override
@@ -113,6 +120,10 @@ public abstract class AbstractPoserSplitComposite extends FrameComposite<SplitPa
 		return userInstance.getJavaInstance( SBiped.class );
 	}
 
+	public PoserScene getScene() {
+		return this.scene;
+	}
+
 	public SBiped getBiped() {
 		return this.biped;
 	}
@@ -122,10 +133,6 @@ public abstract class AbstractPoserSplitComposite extends FrameComposite<SplitPa
 		this.camera.turn( TurnDirection.RIGHT, .5 );
 		this.camera.move( MoveDirection.BACKWARD, 8 );
 		this.camera.move( MoveDirection.UP, 1 );
-	}
-
-	private AbstractPoserSplitComposite getComposite() {
-		return this;
 	}
 
 	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
@@ -148,4 +155,8 @@ public abstract class AbstractPoserSplitComposite extends FrameComposite<SplitPa
 		return this.poser;
 	}
 
+	@Override
+	protected SplitPane createView() {
+		return this.splitComposite.getView();
+	}
 }

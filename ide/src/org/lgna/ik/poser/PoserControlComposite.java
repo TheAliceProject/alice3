@@ -49,7 +49,7 @@ import org.lgna.ik.poser.view.PoserControlView;
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
-	public PoserControlComposite( AbstractPoserSplitComposite parent ) {
+	public PoserControlComposite( AbstractPoserFrameComposite parent ) {
 		super( parent,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 	}
