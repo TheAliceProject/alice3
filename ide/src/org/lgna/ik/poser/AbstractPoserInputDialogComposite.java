@@ -74,6 +74,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 
 	private final SplitComposite splitComposite;
 
+	private SceneComposite sceneComposite;
+
 	//note: this relies on very specific ordering at the moment
 	protected abstract T createControlComposite();
 
@@ -84,13 +86,14 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 		this.userType = userType;
 		this.poser = new IkPoser();
 		controlComposite = this.createControlComposite();
-		this.splitComposite = createHorizontalSplitComposite( controlComposite, test.ik.croquet.SceneComposite.getInstance(), 0.25 );
+		sceneComposite = new SceneComposite();
+		this.splitComposite = createHorizontalSplitComposite( controlComposite, sceneComposite, 0.25 );
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		SceneComposite.getInstance().getView().initializeInAwtContainer( poser );
+		sceneComposite.getView().initializeInAwtContainer( poser );
 		initializeTest();
 	}
 
