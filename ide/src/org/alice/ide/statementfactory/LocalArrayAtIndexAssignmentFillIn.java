@@ -44,7 +44,7 @@
 package org.alice.ide.statementfactory;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
 	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class LambdaExpression extends Expression {
+public final class LambdaExpression extends Expression {
 	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
 		//todo?
 		@Override
@@ -70,6 +70,15 @@ public class LambdaExpression extends Expression {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			LambdaExpression other = (LambdaExpression)o;
+			return this.value.valueContentEquals( other.value, strictness );
+		}
+		return false;
 	}
 
 	@Override

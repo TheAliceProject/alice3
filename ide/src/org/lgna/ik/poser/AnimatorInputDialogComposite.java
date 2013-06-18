@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -67,8 +66,10 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		UserMethod method = getControlComposite().createUserMethod( completionStep, getControlComposite().getNameState().getValue() );
-		return new DeclareMethodEdit( completionStep, getDeclaringType(), method );
+		UserMethod method = getControlComposite().createUserMethod( getControlComposite().getNameState().getValue() );
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: DeclareAnimationMethodEdit" );
+		return null;
+		//return new DeclareMethodEdit( completionStep, getDeclaringType(), method );
 	}
 
 	@Override

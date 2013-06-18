@@ -60,6 +60,11 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	}
 
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+		if( this.menuItemText != null ) {
+			//pass
+		} else {
+			this.initializeIfNecessary();
+		}
 		return this.menuItemText;
 	}
 

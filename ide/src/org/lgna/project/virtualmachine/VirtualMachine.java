@@ -98,7 +98,7 @@ public abstract class VirtualMachine {
 
 	private org.lgna.project.ast.NamedUserConstructor getConstructor( org.lgna.project.ast.NamedUserType entryPointType, Object[] arguments ) {
 		for( org.lgna.project.ast.NamedUserConstructor constructor : entryPointType.constructors ) {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == arguments.length ) {
 				//todo: check types
 				return constructor;
@@ -157,10 +157,35 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	private java.util.Map<Class<?>, Class<?>> mapAnonymousClsToAdapterCls = new java.util.HashMap<Class<?>, Class<?>>();
+	private final java.util.Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<java.lang.reflect.Method, java.lang.reflect.Method> mapProtectedMthdToAdapterMthd = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public void registerAnonymousAdapter( Class<?> anonymousCls, Class<?> adapterCls ) {
-		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
+	public void registerAbstractClassAdapter( Class<?> abstractCls, Class<?> adapterCls ) {
+		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isAbstract( abstractCls ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( abstractCls );
+		}
+		this.mapAbstractClsToAdapterCls.put( abstractCls, adapterCls );
+	}
+
+	public void registerProtectedMethodAdapter( java.lang.reflect.Method anonymousMthd, java.lang.reflect.Method adapterMthd ) {
+		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( adapterMthd ) : adapterMthd;
+		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isStatic( adapterMthd ) : adapterMthd;
+
+		Class<?>[] anonymousParameterTypes = anonymousMthd.getParameterTypes();
+		Class<?>[] adapterParameterTypes = adapterMthd.getParameterTypes();
+
+		assert anonymousParameterTypes.length == ( adapterParameterTypes.length - 1 ) : anonymousMthd;
+		assert adapterParameterTypes.length > 0 : anonymousMthd;
+		assert adapterParameterTypes[ 0 ] == anonymousMthd.getDeclaringClass();
+
+		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( anonymousMthd ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( anonymousMthd );
+		}
+		this.mapProtectedMthdToAdapterMthd.put( anonymousMthd, adapterMthd );
 	}
 
 	protected UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
@@ -174,7 +199,7 @@ public abstract class VirtualMachine {
 
 	/* package-private */Object createInstance( org.lgna.project.ast.UserType<?> type, final UserInstance userInstance, java.lang.reflect.Constructor<?> cnstrctr, Object... arguments ) {
 		Class<?> cls = cnstrctr.getDeclaringClass();
-		Class<?> adapterCls = this.mapAnonymousClsToAdapterCls.get( cls );
+		Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( cls );
 		if( adapterCls != null ) {
 			MethodContext context = new MethodContext() {
 				public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
@@ -282,7 +307,7 @@ public abstract class VirtualMachine {
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> arguments,
 			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> variableArguments, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.JavaKeyedArgument> keyedArguments ) {
 		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated 
-		java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
+		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
 		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
 		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
 
@@ -490,9 +515,14 @@ public abstract class VirtualMachine {
 		}
 
 		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
-			Class<?> adapterCls = mapAnonymousClsToAdapterCls.get( mthd.getDeclaringClass() );
-			assert adapterCls != null;
-			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
+			Class<?> adapterCls = mapAbstractClsToAdapterCls.get( mthd.getDeclaringClass() );
+			if( adapterCls != null ) {
+				mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
+			} else {
+				mthd = this.mapProtectedMthdToAdapterMthd.get( mthd );
+				assert mthd != null : method;
+				arguments = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( Object.class, instance, arguments );
+			}
 		}
 		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd ) : mthd;
 
@@ -513,10 +543,29 @@ public abstract class VirtualMachine {
 
 	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
 		assert method != null;
+
+		if( method.isStatic() ) {
+			//pass
+		} else {
+			if( instance != null ) {
+				//pass
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "instance is null" );
+				throw new LgnaVmNullPointerException( sb.toString(), this );
+			}
+		}
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
 		} else if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			return this.invokeMethodDeclaredInJava( instance, (org.lgna.project.ast.JavaMethod)method, arguments );
+		} else if( method instanceof org.lgna.project.ast.Getter ) {
+			org.lgna.project.ast.Getter getter = (org.lgna.project.ast.Getter)method;
+			return this.get( getter.getField(), instance );
+		} else if( method instanceof org.lgna.project.ast.Setter ) {
+			org.lgna.project.ast.Setter setter = (org.lgna.project.ast.Setter)method;
+			this.set( setter.getField(), instance, arguments[ 0 ] );
+			return null;
 		} else {
 			throw new RuntimeException();
 		}
@@ -576,7 +625,21 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateFieldAccess( org.lgna.project.ast.FieldAccess fieldAccess ) {
-		return this.get( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ) );
+		Object o = fieldAccess.field.getValue();
+		if( o instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+			org.lgna.project.ast.Expression expression = fieldAccess.expression.getValue();
+			Object value = this.evaluate( expression );
+			return this.get( field, value );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field access field is not a field", o );
+			org.lgna.project.ast.Node node = fieldAccess;
+			while( node != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", node );
+				node = node.getParent();
+			}
+			return null;
+		}
 	}
 
 	protected Object evaluateLocalAccess( org.lgna.project.ast.LocalAccess localAccess ) {
@@ -729,7 +792,7 @@ public abstract class VirtualMachine {
 
 			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 			Class<?> interfaceCls = javaType.getClassReflectionProxy().getReification();
-			Class<?> adapterCls = this.mapAnonymousClsToAdapterCls.get( interfaceCls );
+			Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( interfaceCls );
 			assert adapterCls != null : interfaceCls;
 			Class<?>[] parameterTypes = { org.lgna.project.virtualmachine.LambdaContext.class, org.lgna.project.ast.Lambda.class, org.lgna.project.virtualmachine.UserInstance.class };
 			Object[] arguments = {

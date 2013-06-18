@@ -77,12 +77,12 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.ADULT );
 		}
-	} );
+	}, "randomAdult" );
 	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomChildValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.CHILD );
 		}
-	} );
+	}, "randomChild" );
 	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> previousResourceExpressionValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializePreviousExpression();

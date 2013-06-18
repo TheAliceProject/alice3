@@ -72,4 +72,17 @@ public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 	protected abstract AbstractType<?, ?, ?> getLeftOperandType();
 
 	protected abstract AbstractType<?, ?, ?> getRightOperandType();
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			InfixExpression<E> other = (InfixExpression<E>)o;
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
+				if( this.operator.valueEquals( other.operator ) ) {
+					return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
+				}
+			}
+		}
+		return false;
+	}
 }

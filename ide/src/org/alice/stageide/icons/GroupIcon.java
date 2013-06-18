@@ -73,7 +73,7 @@ public class GroupIcon extends ShapeIcon {
 	private final javax.swing.Icon[] icons = { null, null, null, null, null };
 	private final int[] drawOrder;
 
-	public GroupIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories ) {
+	public GroupIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( size );
 		if( size.width > 64 ) {
 			int subWidth = ( 2 * size.width ) / 3;

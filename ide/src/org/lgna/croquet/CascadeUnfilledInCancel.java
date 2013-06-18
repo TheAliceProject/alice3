@@ -56,7 +56,7 @@ public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
 	}
 
 	private CascadeUnfilledInCancel() {
-		super( null );
+		super( java.util.UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
 	}
 
 	@Override

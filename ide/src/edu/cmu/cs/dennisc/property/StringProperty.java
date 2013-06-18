@@ -56,7 +56,7 @@ public class StringProperty extends InstanceProperty<String> {
 
 	@Override
 	public void setValue( PropertyOwner owner, String value ) {
-		assert ( value != null ) || isNullAcceptable();
+		assert ( value != null ) || isNullAcceptable() : this;
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );
 		}

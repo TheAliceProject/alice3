@@ -92,7 +92,7 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return returnType.getValue();
 	}
 
-	public final java.util.ArrayList<? extends AbstractParameter> getRequiredParameters() {
+	public final java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
 

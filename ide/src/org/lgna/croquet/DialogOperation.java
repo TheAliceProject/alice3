@@ -114,7 +114,7 @@ public abstract class DialogOperation extends Operation {
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
-				owner = Application.getActiveInstance().getFrame().getContentPanel();
+				owner = Application.getActiveInstance().getFrame().getContentPane();
 			}
 		}
 		final Dialog dialog = new Dialog( owner ) {

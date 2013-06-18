@@ -52,34 +52,37 @@ public class BackwardForwardView extends org.lgna.croquet.components.MigPanel {
 		// trigger side effect to initialize isEnabled
 		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
 
-		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
-		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
+		final boolean ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED = false;
+		if( ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED ) {
+			org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
+			org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
 
-		backwardButton.tightenUpMargin();
-		forwardButton.tightenUpMargin();
+			backwardButton.tightenUpMargin();
+			forwardButton.tightenUpMargin();
 
-		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
-		if( ARE_CASCADE_BUTTONS_DESIRED ) {
-			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+			final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
+			if( ARE_CASCADE_BUTTONS_DESIRED ) {
+				org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+				org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-			backwardPopupButton.tightenUpMargin();
-			forwardPopupButton.tightenUpMargin();
+				backwardPopupButton.tightenUpMargin();
+				forwardPopupButton.tightenUpMargin();
 
-			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( backwardButton )
-					.lineEnd( backwardPopupButton )
-					.build();
-			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( forwardButton )
-					.lineEnd( forwardPopupButton )
-					.build();
+				org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+						.center( backwardButton )
+						.lineEnd( backwardPopupButton )
+						.build();
+				org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+						.center( forwardButton )
+						.lineEnd( forwardPopupButton )
+						.build();
 
-			this.addComponent( backwardPanel );
-			this.addComponent( forwardPanel, "growy" );
-		} else {
-			this.addComponent( backwardButton );
-			this.addComponent( forwardButton, "growy" );
+				this.addComponent( backwardPanel );
+				this.addComponent( forwardPanel, "growy" );
+			} else {
+				this.addComponent( backwardButton );
+				this.addComponent( forwardButton, "growy" );
+			}
 		}
 
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {

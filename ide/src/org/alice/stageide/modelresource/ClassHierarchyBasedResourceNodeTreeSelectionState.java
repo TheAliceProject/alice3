@@ -57,4 +57,9 @@ public final class ClassHierarchyBasedResourceNodeTreeSelectionState extends Res
 	private ClassHierarchyBasedResourceNodeTreeSelectionState() {
 		super( java.util.UUID.fromString( "c37c9803-2482-4f1b-9731-b110f1f6fde7" ), TreeUtilities.getTreeBasedOnClassHierarchy() );
 	}
+
+	@Override
+	protected boolean isBreadcrumbButtonIconDesired() {
+		return true;
+	}
 }

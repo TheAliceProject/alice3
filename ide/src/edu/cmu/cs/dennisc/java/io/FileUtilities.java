@@ -284,11 +284,11 @@ public class FileUtilities {
 		return listFiles( new java.io.File( rootPath ), extension );
 	}
 
-	private static java.util.Vector<java.io.File> updateDescendants( java.util.Vector<java.io.File> rv, java.io.File dir, java.io.FileFilter fileFilter, int depth ) {
+	private static void appendDescendants( java.util.List<java.io.File> descendants, java.io.File dir, java.io.FileFilter fileFilter, int depth ) {
 		java.io.File[] files = dir.listFiles( fileFilter );
 		if( files != null ) {
 			for( java.io.File childFile : files ) {
-				rv.add( childFile );
+				descendants.add( childFile );
 			}
 		}
 
@@ -303,18 +303,16 @@ public class FileUtilities {
 			} );
 			if( files != dirs ) {
 				for( java.io.File childDir : dirs ) {
-					updateDescendants( rv, childDir, fileFilter, depth );
+					appendDescendants( descendants, childDir, fileFilter, depth );
 				}
 			}
 		}
-		return rv;
 	}
 
 	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter, int depth ) {
-		java.util.Vector<java.io.File> v = updateDescendants( new java.util.Vector<java.io.File>(), root, fileFilter, depth );
-		java.io.File[] rv = new java.io.File[ v.size() ];
-		v.copyInto( rv );
-		return rv;
+		java.util.List<java.io.File> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		appendDescendants( list, root, fileFilter, depth );
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, java.io.File.class );
 	}
 
 	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter ) {

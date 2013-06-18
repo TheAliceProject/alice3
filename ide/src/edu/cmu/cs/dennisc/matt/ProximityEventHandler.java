@@ -49,7 +49,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
@@ -102,18 +101,24 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 		Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = new HashMap<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>>();
 		Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = new HashMap<Object, HashMap<SThing, HashMap<SThing, Boolean>>>();
 		Map<Object, Double> distMap = new HashMap<Object, Double>();
+		Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {
 				for( Object proxList : eventMap.get( changedEntity ).get( m ) ) {
 					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
-						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
-						models.add( changedEntity );
-						models.add( m );
 						if( proxList instanceof ProximityEnterListener ) {
-							fireEvent( proxList, new EnterProximityEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
+							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
+								fireEvent( proxList, new EnterProximityEvent( m, changedEntity ) );
+							} else {
+								fireEvent( proxList, new EnterProximityEvent( changedEntity, m ) );
+							}
 						} else if( proxList instanceof ProximityExitListener ) {
-							fireEvent( proxList, new ExitProximityEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
+							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
+								fireEvent( proxList, new ExitProximityEvent( m, changedEntity ) );
+							} else {
+								fireEvent( proxList, new ExitProximityEvent( changedEntity, m ) );
+							}
 						}
 					}
 					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get( proxList ) );
@@ -133,6 +138,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 		}
 
 		public void register( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
+			listenerToGroupAMap.put( proximityEventListener, groupOne );
 			distMap.put( proximityEventListener, dist );
 			wereClose.put( proximityEventListener, new HashMap<SThing, HashMap<SThing, Boolean>>() );
 			for( SThing m : groupOne ) {

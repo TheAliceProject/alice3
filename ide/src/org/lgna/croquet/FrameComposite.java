@@ -60,11 +60,9 @@ package org.lgna.croquet;
 		}
 
 		public void windowOpened( java.awt.event.WindowEvent e ) {
-			frameComposite.handlePreActivation();
 		}
 
 		public void windowClosing( java.awt.event.WindowEvent e ) {
-			frameComposite.handlePostDeactivation();
 			IsShowingButtonModel.this.setSelected( false );
 		}
 
@@ -81,7 +79,7 @@ package org.lgna.croquet;
 			//pass
 		} else {
 			this.frame = new org.lgna.croquet.components.Frame();
-			this.frame.getContentPanel().addCenterComponent( this.frameComposite.getView() );
+			this.frame.getContentPane().addCenterComponent( this.frameComposite.getView() );
 			this.frame.setTitle( this.frameComposite.getFrameTitle() );
 			this.frameComposite.updateWindowSize( this.frame );
 			this.frame.addWindowListener( this.windowListener );
@@ -94,9 +92,11 @@ package org.lgna.croquet;
 		super.setSelected( b );
 		if( b ) {
 			org.lgna.croquet.components.Frame frame = this.getFrame();
+			frameComposite.handlePreActivation();
 			frame.setVisible( true );
 		} else {
 			if( this.frame != null ) {
+				frameComposite.handlePostDeactivation();
 				this.frame.setVisible( false );
 			} else {
 				//pass

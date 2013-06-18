@@ -274,7 +274,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		java.util.List<org.lgna.project.ast.NamedUserType> types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( getTopLevelGalleryTypes() );
 		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == 1 ) {
 				if( parameters.get( 0 ).getValueType().isAssignableFrom( argumentType ) ) {
 					return constructor;
@@ -338,12 +338,12 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
 		//todo: check to see if only referenced from Program and Program type is hidden
-		return super.isSignatureLocked( code ) || "myFirstMethod".equalsIgnoreCase( code.getName() );
+		return super.isSignatureLocked( code ) || org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() );
 	}
 
 	@Override
 	public boolean isTabClosable( org.lgna.project.ast.AbstractCode code ) {
-		return "myFirstMethod".equalsIgnoreCase( code.getName() ) == false;
+		return org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() ) == false;
 	}
 
 	@Override

@@ -87,8 +87,10 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 	}
 
+	private static final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
+
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
-		super( model );
+		super( model, false );
 
 		if( model.isInstanceCreator() ) {
 			this.baseColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
@@ -106,21 +108,25 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 
 		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
-			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
-			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
-			if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
-				org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
-				Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
-				Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
-				if( modelResourceInterfaces.length > 0 ) {
-					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						javax.swing.Icon icon = org.alice.stageide.icons.IconFactoryManager.getSmallImageIconFor( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-						if( icon != null ) {
-							icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( icon, 0.8f );
-							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
-							superclsLabel.getAwtComponent().setIcon( icon );
-							this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
+			if( model instanceof org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode ) {
+				//pass
+			} else {
+				org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
+				org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
+				if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
+					org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
+					Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
+					Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
+					if( modelResourceInterfaces.length > 0 ) {
+						Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
+						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
+							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+							if( iconFactory != null ) {
+								javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
+								SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
+								superclsLabel.getAwtComponent().setIcon( icon );
+								this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
+							}
 						}
 					}
 				}
@@ -138,6 +144,12 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		this.setBackgroundColor( this.baseColor );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
+	}
+
+	@Override
+	protected boolean isClickAndClackAppropriate() {
+		org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model = this.getModel();
+		return model.isClickAndClackAppropriate();
 	}
 
 	@Override
@@ -176,32 +188,28 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
-	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
-		super.handleMouseClicked( e );
-		int button = e.getButton();
-		switch( button ) {
-		case java.awt.event.MouseEvent.BUTTON1:
-			switch( e.getClickCount() ) {
-			case 1:
-				org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
-				if( leftButtonClickModel != null ) {
-					leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
-				}
-				break;
+	protected void handleLeftMouseButtonQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+		super.handleLeftMouseButtonQuoteClickedUnquote( e );
+		switch( e.getClickCount() ) {
+		case 1:
+			org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
+			if( leftButtonClickModel != null ) {
+				leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
-			break;
-		case 4:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
-			break;
-		case 5:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
 			break;
 		}
 	}
 
 	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return false;
+	protected void handleBackButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleBackButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
+	}
+
+	@Override
+	protected void handleForwardButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleForwardButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
 	}
 
 	@Override
@@ -242,38 +250,33 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
-		if( this.isPressed() ) {
-			g2.setPaint( this.baseColor );
+		int y1 = y + height;
+		int yCenter = y + ( height / 2 );
+		int yA = y + ( height / 3 );
+		int yB = y1 - ( height / 3 );
+
+		java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
+		java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
+
+		java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
+		java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
+
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Shape prevClip = g2.getClip();
+
+		try {
+			java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, y, width, yCenter - y ) );
+			g2.setClip( topArea );
+			g2.setPaint( paintTop );
 			g2.fill( shape );
-		} else {
-			int y1 = y + height;
-			int yCenter = y + ( height / 2 );
-			int yA = y + ( height / 3 );
-			int yB = y1 - ( height / 3 );
 
-			java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
-			java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
-
-			java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
-			java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
-
-			java.awt.Paint prevPaint = g2.getPaint();
-			java.awt.Shape prevClip = g2.getClip();
-
-			try {
-				java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, y, width, yCenter - y ) );
-				g2.setClip( topArea );
-				g2.setPaint( paintTop );
-				g2.fill( shape );
-
-				java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, width, y1 - yCenter ) );
-				g2.setClip( bottomArea );
-				g2.setPaint( paintBottom );
-				g2.fill( shape );
-			} finally {
-				g2.setClip( prevClip );
-				g2.setPaint( prevPaint );
-			}
+			java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, width, y1 - yCenter ) );
+			g2.setClip( bottomArea );
+			g2.setPaint( paintBottom );
+			g2.fill( shape );
+		} finally {
+			g2.setClip( prevClip );
+			g2.setPaint( prevPaint );
 		}
 	}
 
@@ -306,31 +309,34 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 
 			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
 			if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
-				org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)resourceKey;
 
-				final int PAD_X = 6;
-				final int PAD_Y = 4;
-				final int WIDTH = 24;
-				final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
+				final boolean IS_PERSON_EDITOR_ICON_DESIRED = false;
 
-				final int X_OFFSET = ( x + width ) - WIDTH - PAD_X;
-				final int Y_OFFSET = y + PAD_Y;
+				if( IS_PERSON_EDITOR_ICON_DESIRED ) {
+					final int PAD_X = 6;
+					final int PAD_Y = 4;
+					final int WIDTH = 24;
+					final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
 
-				final int TITLE_HEIGHT = 3;
+					final int X_OFFSET = ( x + width ) - WIDTH - PAD_X;
+					final int Y_OFFSET = y + PAD_Y;
 
-				g2.setPaint( java.awt.Color.BLUE );
-				g2.fillRect( X_OFFSET, Y_OFFSET, WIDTH, TITLE_HEIGHT );
+					final int TITLE_HEIGHT = 3;
 
-				final int LEADING_WIDTH = ( WIDTH * 2 ) / 5;
+					g2.setPaint( java.awt.Color.BLUE );
+					g2.fillRect( X_OFFSET, Y_OFFSET, WIDTH, TITLE_HEIGHT );
 
-				g2.setPaint( new java.awt.Color( 0x7f7fff ) );
-				g2.fillRect( X_OFFSET, Y_OFFSET + TITLE_HEIGHT, LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+					final int LEADING_WIDTH = ( WIDTH * 2 ) / 5;
 
-				g2.setPaint( new java.awt.Color( 0xada7d0 ) );
-				g2.fillRect( X_OFFSET + LEADING_WIDTH, Y_OFFSET + TITLE_HEIGHT, WIDTH - LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+					g2.setPaint( new java.awt.Color( 0x7f7fff ) );
+					g2.fillRect( X_OFFSET, Y_OFFSET + TITLE_HEIGHT, LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
 
-				g2.setPaint( java.awt.Color.DARK_GRAY );
-				g2.draw3DRect( X_OFFSET, Y_OFFSET, WIDTH, HEIGHT, true );
+					g2.setPaint( new java.awt.Color( 0xada7d0 ) );
+					g2.fillRect( X_OFFSET + LEADING_WIDTH, Y_OFFSET + TITLE_HEIGHT, WIDTH - LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+
+					g2.setPaint( java.awt.Color.DARK_GRAY );
+					g2.draw3DRect( X_OFFSET, Y_OFFSET, WIDTH, HEIGHT, true );
+				}
 
 			} else {
 				java.util.List<org.alice.stageide.modelresource.ResourceNode> nodeChildren = resourceNode.getNodeChildren();

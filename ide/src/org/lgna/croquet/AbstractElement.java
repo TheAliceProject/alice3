@@ -100,19 +100,22 @@ public abstract class AbstractElement implements Element {
 	public AbstractElement( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
 		if( mapMigrationIdToCls != null ) {
-			Class<? extends Element> cls = mapMigrationIdToCls.get( migrationId );
-			if( cls != null ) {
-				if( cls == this.getClass() ) {
-					//pass
+			if( migrationId != null ) {
+				Class<? extends Element> cls = mapMigrationIdToCls.get( migrationId );
+				if( cls != null ) {
+					if( cls == this.getClass() ) {
+						//pass
+					} else {
+						String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
+						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
+						String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";
+						Application.getActiveInstance().showMessageDialog( message );
+					}
 				} else {
-					assert migrationId != null : this;
-					String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
-					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
-					String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";
-					Application.getActiveInstance().showMessageDialog( message );
+					mapMigrationIdToCls.put( migrationId, this.getClass() );
 				}
 			} else {
-				mapMigrationIdToCls.put( migrationId, this.getClass() );
+				Application.getActiveInstance().showMessageDialog( "migrationId is null for " + this + " " + this.getClass() );
 			}
 		}
 	}

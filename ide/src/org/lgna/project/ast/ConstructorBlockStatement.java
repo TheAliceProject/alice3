@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorBlockStatement extends BlockStatement {
+public final class ConstructorBlockStatement extends BlockStatement {
 	public NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );
 
 	public ConstructorBlockStatement() {
@@ -56,6 +56,15 @@ public class ConstructorBlockStatement extends BlockStatement {
 	public ConstructorBlockStatement( ConstructorInvocationStatement constructorInvocationStatement, Statement... statements ) {
 		super( statements );
 		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ConstructorBlockStatement other = (ConstructorBlockStatement)o;
+			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement, strictness );
+		}
+		return false;
 	}
 
 	@Override

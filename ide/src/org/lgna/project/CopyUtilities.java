@@ -46,11 +46,11 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public class CopyUtilities {
-	public static Project createCopy( Project other ) {
+	public static Project createCopy( Project other, org.lgna.project.ast.DecodeIdPolicy policy ) {
 		org.w3c.dom.Document xmlDocument = other.getProgramType().encode();
 		try {
 			java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
+			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)dst;
 
 			java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = java.util.Collections.emptySet();
@@ -70,5 +70,10 @@ public class CopyUtilities {
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new AssertionError( vnse );
 		}
+	}
+
+	@Deprecated
+	public static Project createCopy( Project other ) {
+		return createCopy( other, org.lgna.project.ast.DecodeIdPolicy.NEW_IDS );
 	}
 }

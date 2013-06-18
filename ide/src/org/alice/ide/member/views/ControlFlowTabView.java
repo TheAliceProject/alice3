@@ -46,8 +46,11 @@ package org.alice.ide.member.views;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
-	private static final boolean IS_MINI_DESIRED = false;
+	private static final boolean IS_MINI_DESIRED = true;
 	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
+
+	private final org.lgna.croquet.components.AbstractLabel returnHeader;
+	private final org.lgna.croquet.components.DragComponent<?> returnDragComponent;
 
 	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
 		super( composite, "insets 4, gap 0" );
@@ -67,26 +70,100 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
 		this.addHeader( composite.getLocalHeader() );
 		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel.getInstance() );
+		this.returnHeader = this.createHeader( composite.getReturnHeader() );
+		this.returnDragComponent = this.createDragComponent( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( null ) );
 		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );
 	}
 
-	private void addHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+	private org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+		return stringValue.createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	}
+
+	private void addHeader( org.lgna.croquet.components.AbstractLabel label ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "wrap" );
 		if( this.getComponentCount() > 0 ) {
 			sb.append( ", gaptop " );
 			sb.append( GAP_TOP );
 		}
-		this.addComponent( stringValue.createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
+		this.addComponent( label, sb.toString() );
 	}
 
-	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+	private void addHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+		this.addHeader( this.createHeader( stringValue ) );
+	}
+
+	private org.lgna.croquet.components.DragComponent<?> createDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		org.lgna.croquet.components.DragComponent<?> dragComponent;
 		if( IS_MINI_DESIRED ) {
 			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
 		} else {
 			dragComponent = new org.alice.ide.controlflow.components.CompleteControlFlowStatementTemplate( dragModel );
 		}
+		return dragComponent;
+	}
+
+	private void addDragComponent( org.lgna.croquet.components.DragComponent<?> dragComponent ) {
 		this.addComponent( dragComponent, "wrap, gapleft 8" );
+	}
+
+	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+		this.addDragComponent( this.createDragComponent( dragModel ) );
+	}
+
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationTabListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			updateReturn( nextValue );
+		}
+	};
+
+	private void updateReturn( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+		final boolean isReturnDesired;
+		if( declarationComposite instanceof org.alice.ide.declarationseditor.CodeComposite ) {
+			org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)declarationComposite;
+			org.lgna.project.ast.AbstractCode code = codeComposite.getDeclaration();
+			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+				isReturnDesired = method.isFunction();
+			} else {
+				isReturnDesired = false;
+			}
+		} else {
+			isReturnDesired = false;
+		}
+		boolean isReturnShowing = this.returnHeader.isShowing();
+		if( isReturnDesired != isReturnShowing ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					synchronized( getTreeLock() ) {
+						if( isReturnDesired ) {
+							addHeader( returnHeader );
+							addDragComponent( returnDragComponent );
+						} else {
+							removeComponent( returnDragComponent );
+							removeComponent( returnHeader );
+						}
+					}
+					revalidateAndRepaint();
+				}
+			} );
+		}
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( declarationComposite );
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeValueListener( this.declarationTabListener );
+	}
+
+	@Override
+	public void handleCompositePostDeactivation() {
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationTabListener );
+		super.handleCompositePostDeactivation();
 	}
 }

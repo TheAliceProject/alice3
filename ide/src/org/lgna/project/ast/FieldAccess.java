@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccess extends Expression {
+public final class FieldAccess extends Expression {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -59,7 +59,18 @@ public class FieldAccess extends Expression {
 			}
 		}
 	};
-	public DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this );
+	public DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this ) {
+		@Override
+		public AbstractField getValue( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+			Object o = super.getValue( owner );
+			if( o instanceof AbstractField ) {
+				return (AbstractField)o;
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( o );
+				return null;
+			}
+		}
+	};
 
 	public FieldAccess() {
 	}
@@ -71,7 +82,8 @@ public class FieldAccess extends Expression {
 
 	@Override
 	public AbstractType<?, ?, ?> getType() {
-		return field.getValue().getValueType();
+		AbstractField fieldValue = this.field.getValue();
+		return fieldValue != null ? fieldValue.getValueType() : null;
 	}
 
 	@Override
@@ -105,6 +117,17 @@ public class FieldAccess extends Expression {
 			rv = false;
 		}
 		return rv;
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			FieldAccess other = (FieldAccess)o;
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				return this.field.valueContentEquals( other.field, strictness );
+			}
+		}
+		return false;
 	}
 
 	@Override

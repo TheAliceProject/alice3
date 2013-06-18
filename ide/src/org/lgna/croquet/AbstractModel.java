@@ -128,7 +128,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
+	protected abstract void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
 
 	public final String getTutorialNoteText( org.lgna.croquet.history.Step<?> step, String triggerText, org.lgna.croquet.edits.Edit<?> edit ) {
 		StringBuilder sb = new StringBuilder();
@@ -137,7 +137,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		if( step.getTrigger() instanceof org.lgna.croquet.triggers.DropTrigger ) {
 			sb.append( "<strong>here</strong>." );
 		} else {
-			this.updateTutorialStepText( sb, step, edit );
+			this.appendTutorialStepText( sb, step, edit );
 		}
 		return sb.toString();
 	}

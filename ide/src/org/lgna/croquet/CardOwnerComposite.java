@@ -127,6 +127,15 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 			}
 			this.showingCard = card;
 		}
+
+		if( this.showingCard != null ) {
+			if( this.cards.contains( this.showingCard ) ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "note: problems may result from showing a card that has not been added:", this.showingCard );
+			}
+		}
+
 		synchronized( this.getView().getTreeLock() ) {
 			this.getView().showComposite( this.showingCard );
 		}

@@ -60,7 +60,7 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
 	public abstract boolean isStrictFloatingPoint();
 
 	public boolean isOverride() {
-		java.util.ArrayList<? extends AbstractParameter> parameters = this.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> parameters = this.getRequiredParameters();
 		final int N = parameters.size();
 		AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[ N ];
 		for( int i = 0; i < N; i++ ) {

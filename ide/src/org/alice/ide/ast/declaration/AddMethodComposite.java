@@ -66,8 +66,19 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
-	private org.lgna.project.ast.UserMethod createMethod() {
-		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
+	@Override
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
+		if( text != null ) {
+			String declaringTypeName;
+			if( this.declaringType != null ) {
+				declaringTypeName = this.declaringType.getName();
+			} else {
+				declaringTypeName = "";
+			}
+			text = text.replace( "</declaringType/>", declaringTypeName );
+		}
+		return text;
 	}
 
 	@Override
@@ -77,12 +88,12 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 
 	@Override
 	public org.lgna.project.ast.UserMethod getPreviewValue() {
-		return this.createMethod();
+		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override

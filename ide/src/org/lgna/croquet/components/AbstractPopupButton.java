@@ -46,8 +46,12 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepModel> extends AbstractButton<javax.swing.AbstractButton, M> {
+	public AbstractPopupButton( M model, String uiDefaultsName ) {
+		super( model, uiDefaultsName );
+	}
+
 	public AbstractPopupButton( M model ) {
-		super( model );
+		this( model, null );
 	}
 
 	protected static final int TRAILING_PAD = -2;

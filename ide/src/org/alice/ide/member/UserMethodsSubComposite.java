@@ -59,6 +59,16 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 			getView().refreshLater();
 		}
 	};
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserField> fieldPropertyListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		}
+
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+			getView().refreshLater();
+		}
+	};
 
 	public UserMethodsSubComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type, org.lgna.croquet.Operation addMethodOperation ) {
 		super( migrationId, true );
@@ -68,6 +78,7 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 
 		//todo: move to handlePreActivation/handlePostDeactivation
 		type.methods.addListPropertyListener( this.methodPropertyListener );
+		type.fields.addListPropertyListener( this.fieldPropertyListener );
 	}
 
 	public final org.lgna.croquet.Operation getAddMethodOperation() {
@@ -76,14 +87,27 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
 
+	protected abstract org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field );
+
+	@Override
+	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
+		return true;
+	}
+
 	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
-		java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
 			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
 				if( this.isAcceptable( method ) ) {
 					rv.add( method );
 				}
+			}
+		}
+		for( org.lgna.project.ast.UserField field : this.type.getDeclaredFields() ) {
+			org.lgna.project.ast.AbstractMethod method = this.getGetterOrSetter( field );
+			if( method != null ) {
+				rv.add( method );
 			}
 		}
 		return rv;
@@ -92,6 +116,14 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	@Override
 	protected org.alice.ide.member.views.UserMethodsSubView createView() {
 		return new org.alice.ide.member.views.UserMethodsSubView( this );
+	}
+
+	public boolean isRelevant() {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			return true;
+		} else {
+			return this.getMethods().size() > 0;
+		}
 	}
 
 	//	@Override

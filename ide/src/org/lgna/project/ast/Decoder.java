@@ -119,12 +119,12 @@ public class Decoder {
 
 	private final org.lgna.project.Version srcVersion;
 	private final org.lgna.project.Version dstVersion;
-	private final boolean isIdDecodingDesired;
+	private final DecodeIdPolicy policy;
 
-	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, boolean isIdDecodingDesired ) {
+	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, DecodeIdPolicy policy ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
-		this.isIdDecodingDesired = isIdDecodingDesired;
+		this.policy = policy;
 	}
 
 	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
@@ -276,6 +276,10 @@ public class Decoder {
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
 	}
 
+	private static int getUniqueKey( org.w3c.dom.Element xmlElement ) {
+		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ), 16 );
+	}
+
 	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
@@ -288,6 +292,22 @@ public class Decoder {
 				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( JavaMethod.class.getName() ) ) {
 				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
+			} else if( clsName.equals( Getter.class.getName() ) || clsName.equals( Setter.class.getName() ) ) {
+				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
+				assert nodeList.getLength() == 1;
+				org.w3c.dom.Element xmlField = (org.w3c.dom.Element)nodeList.item( 0 );
+				UserField field = (UserField)decode( xmlField, map );
+				if( clsName.equals( Getter.class.getName() ) ) {
+					rv = field.getGetter();
+				} else {
+					rv = field.getSetter();
+				}
+			} else if( clsName.equals( SetterParameter.class.getName() ) ) {
+				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
+				assert nodeList.getLength() == 1;
+				org.w3c.dom.Element xmlSetter = (org.w3c.dom.Element)nodeList.item( 0 );
+				Setter setter = (Setter)decode( xmlSetter, map );
+				rv = setter.getRequiredParameters().get( 0 );
 			} else if( clsName.equals( JavaField.class.getName() ) ) {
 				rv = JavaField.getInstance( decodeField( xmlElement, "field" ) );
 			} else if( clsName.equals( AnonymousUserConstructor.class.getName() ) ) {
@@ -342,19 +362,18 @@ public class Decoder {
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {
-				int key = Integer.parseInt( xmlElement.getAttribute( CodecConstants.KEY_ATTRIBUTE ), 16 );
-				map.put( key, (AbstractDeclaration)rv );
+				map.put( getUniqueKey( xmlElement ), (AbstractDeclaration)rv );
 			}
 			rv.decodeNode( this, xmlElement, map );
 			if( xmlElement.hasAttribute( CodecConstants.ID_ATTRIBUTE ) ) {
-				if( this.isIdDecodingDesired ) {
+				if( this.policy.isIdPreserved() ) {
 					rv.setId( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.ID_ATTRIBUTE ) ) );
 				}
 			}
 		} else {
-			int key = Integer.parseInt( xmlElement.getAttribute( CodecConstants.KEY_ATTRIBUTE ), 16 );
+			int key = getUniqueKey( xmlElement );
 			rv = map.get( key );
-			assert rv != null;
+			assert rv != null : key;
 		}
 		return rv;
 	}

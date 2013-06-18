@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FloatLiteral extends AbstractValueLiteral {
+public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	public edu.cmu.cs.dennisc.property.FloatProperty value = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
 
 	public FloatLiteral() {
@@ -67,7 +67,7 @@ public class FloatLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Float> getValueProperty() {
 		return this.value;
 	}
 

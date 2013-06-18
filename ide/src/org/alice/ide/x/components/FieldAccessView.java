@@ -124,7 +124,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
 		if( fieldAccess != null ) {
-			return fieldAccess.field.getValue().getValueType();
+			return fieldAccess.getType();
 		} else {
 			return null;
 		}

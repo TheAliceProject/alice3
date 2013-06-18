@@ -54,7 +54,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
 				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
+				java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 				if( requiredParameters.size() > 0 ) {
 					return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldInitializerInstanceCreationArgument0State>() {
 						public FieldInitializerInstanceCreationArgument0State initialize( org.lgna.project.ast.UserField field ) {

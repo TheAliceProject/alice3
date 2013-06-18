@@ -98,7 +98,7 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 		
 		this.testAction.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ) );
 
-		java.awt.Container contentPanel = this.getFrame().getContentPanel().getAwtComponent();
+		java.awt.Container contentPanel = this.getFrame().getContentPane().getAwtComponent();
 		contentPanel.add( this.find, java.awt.BorderLayout.PAGE_START );
 		contentPanel.add( new javax.swing.JScrollPane( this.editor ), java.awt.BorderLayout.CENTER );
 		contentPanel.add( this.programContainer.getAwtComponent(), java.awt.BorderLayout.PAGE_END );
@@ -130,7 +130,15 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 			
 			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)node;
 			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( programType );
-			runProgramContext.initializeInContainer( this.programContainer.getAwtComponent() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "initializeInContainer" );
+			//programContainer.getAwtComponent()
+			runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
+				@Override
+				public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
+					programContainer.getAwtComponent().add( onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+					programContainer.revalidateAndRepaint();
+				}
+			} );
 			runProgramContext.setActiveScene();
 			
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( runProgramContext );

@@ -138,7 +138,7 @@ public abstract class Feature {
 	}
 
 	private static void repaintAll() {
-		org.lgna.croquet.Application.getActiveInstance().getFrame().getContentPanel().repaint();
+		org.lgna.croquet.Application.getActiveInstance().getFrame().getContentPane().repaint();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "repaintAll" );
 	}
 

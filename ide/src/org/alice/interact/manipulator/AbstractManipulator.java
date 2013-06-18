@@ -44,7 +44,6 @@
 package org.alice.interact.manipulator;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
@@ -70,7 +69,7 @@ public abstract class AbstractManipulator {
 	protected boolean hasDoneUpdate = false;
 
 	protected ManipulationEvent mainManipulationEvent;
-	protected List<ManipulationEvent> manipulationEvents = new Vector<ManipulationEvent>();
+	protected List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable )
 	{

@@ -51,6 +51,11 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 
 	@Override
+	protected boolean isClickAndClackAppropriate() {
+		return true;
+	}
+
+	@Override
 	public final org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		return ( (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel() ).getType();
 	}
@@ -58,12 +63,18 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	@Override
 	protected void handleMouseQuoteEnteredUnquote() {
 		super.handleMouseQuoteEnteredUnquote();
-		org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.showDropReceptorsStencilOver( this, getExpressionType() );
+		}
 	}
 
 	@Override
 	protected void handleMouseQuoteExitedUnquote() {
-		org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.hideDropReceptorsStencil();
+		}
 		super.handleMouseQuoteExitedUnquote();
 	}
 }

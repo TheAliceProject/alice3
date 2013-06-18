@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.InstanceCreation> {
+public final class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.InstanceCreation> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized InstanceCreationFillInWithPredeterminedFieldAccessArgument getInstance( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {

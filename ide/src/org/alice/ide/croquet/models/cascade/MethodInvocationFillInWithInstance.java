@@ -52,7 +52,7 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance>() {
 			public MethodInvocationFillInWithInstance initialize( org.lgna.project.ast.JavaMethod key ) {
 				org.lgna.project.ast.AbstractType<?, ?, ?> type = key.getDeclaringType();
-				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();
+				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();
 				org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks = new org.lgna.croquet.CascadeBlank[ 1 + parameters.size() ];
 				blanks[ 0 ] = CascadeManager.getBlankForType( type );
 				int i = 1;

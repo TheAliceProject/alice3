@@ -48,9 +48,45 @@ package org.alice.stageide.sceneeditor.side;
 public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
 	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
 
+	private org.lgna.project.ast.NamedUserType sceneType = null;
+
+	private final edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField> sceneTypeFieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		}
+
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+			updateTitle();
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> sceneTypeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+			if( sceneType != null ) {
+				sceneType.fields.removeListPropertyListener( sceneTypeFieldsListener );
+			}
+			sceneType = e.getNextValue();
+			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> fieldProperty;
+			if( sceneType != null ) {
+				fieldProperty = sceneType.fields;
+			} else {
+				fieldProperty = null;
+			}
+
+			( (MarkerFieldData)markerListState.getData() ).setListProperty( fieldProperty );
+			updateTitle();
+
+			if( sceneType != null ) {
+				sceneType.fields.addListPropertyListener( sceneTypeFieldsListener );
+			}
+		}
+	};
+
 	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId, false );
 		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
+		org.alice.stageide.perspectives.SetupScenePerspective.getInstance().getSceneTypeMetaState().addAndInvokeValueListener( this.sceneTypeListener );
 	}
 
 	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
@@ -62,4 +98,15 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 	}
 
 	public abstract org.lgna.croquet.Operation getAddOperation();
+
+	@Override
+	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
+		text = super.modifyTextIfNecessary( text, isExpanded );
+		text += " (" + this.markerListState.getItemCount() + ")";
+		return text;
+	}
+
+	private void updateTitle() {
+		this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
+	}
 }

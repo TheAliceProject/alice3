@@ -135,10 +135,9 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
-		rv.append( " <strong>" );
-		rv.append( this.getTutorialItemText() );
-		rv.append( "</strong>." );
-		return rv;
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+		text.append( " <strong>" );
+		text.append( this.getTutorialItemText() );
+		text.append( "</strong>." );
 	}
 }

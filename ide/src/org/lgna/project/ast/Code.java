@@ -49,7 +49,7 @@ package org.lgna.project.ast;
 public interface Code extends Member {
 	public AbstractParameter[] getAllParameters();
 
-	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters();
+	public java.util.List<? extends AbstractParameter> getRequiredParameters();
 
 	public AbstractParameter getVariableLengthParameter();
 

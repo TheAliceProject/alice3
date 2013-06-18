@@ -83,10 +83,15 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.swingModel;
 	}
 
+	protected String modifyNameIfNecessary( String text ) {
+		return text;
+	}
+
 	@Override
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
+			name = modifyNameIfNecessary( name );
 			int mnemonicKey = this.getLocalizedMnemonicKey();
 			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
@@ -102,17 +107,16 @@ public abstract class Operation extends AbstractCompletionModel {
 	//	}
 	//
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		this.initializeIfNecessary();
-		rv.append( " <strong>" );
+		text.append( " <strong>" );
 		String name = this.getName();
 		if( name != null ) {
-			rv.append( name );
+			text.append( name );
 		} else {
-			rv.append( this.getClass().getSimpleName() );
+			text.append( this.getClass().getSimpleName() );
 		}
-		rv.append( "</strong>" );
-		return rv;
+		text.append( "</strong>" );
 	}
 
 	@Override
@@ -250,8 +254,8 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-			return this.operation.updateTutorialStepText( rv, step, edit );
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			this.operation.appendTutorialStepText( text, step, edit );
 		}
 	}
 

@@ -51,18 +51,28 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root ) {
+	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		try {
-			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
+			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new AssertionError( vnse );
 		}
+	}
+
+	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root ) {
+		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
+	}
+
+	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
+		UserMethod copy = createCopy( original, root, policy );
+		copy.body.getValue().statements.clear();
+		return copy;
 	}
 
 	public static boolean isKeywordExpression( Expression expression ) {
@@ -305,7 +315,7 @@ public class AstUtilities {
 		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.ArrayList<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i = 0; i < ( N - 1 ); i++ ) {
 			AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
@@ -334,7 +344,7 @@ public class AstUtilities {
 	}
 
 	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
-		java.util.ArrayList<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 		assert requiredParameters.size() == argumentExpressions.length : method;
 
 		MethodInvocation rv = new MethodInvocation();
@@ -413,8 +423,44 @@ public class AstUtilities {
 		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 
+	public static AssignmentExpression createFieldAssignment( Expression expression, UserField field, Expression valueExpression ) {
+		assert field.isFinal() == false : field;
+		Expression fieldAccess = new FieldAccess( expression, field );
+		return new AssignmentExpression( field.valueType.getValue(), fieldAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldAssignmentStatement( Expression expression, UserField field, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldAssignment( expression, field, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldAssignment( UserField field, Expression valueExpression ) {
+		return createFieldAssignment( new ThisExpression(), field, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldAssignmentStatement( UserField field, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldAssignment( field, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldArrayAssignment( Expression expression, UserField field, Expression indexExpression, Expression valueExpression ) {
+		Expression fieldAccess = new FieldAccess( expression, field );
+		ArrayAccess arrayAccess = new ArrayAccess( field.valueType.getValue(), fieldAccess, indexExpression );
+		return new AssignmentExpression( field.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldArrayAssignmentStatement( Expression expression, UserField field, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldArrayAssignment( expression, field, indexExpression, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldArrayAssignment( UserField field, Expression indexExpression, Expression valueExpression ) {
+		return createFieldArrayAssignment( new ThisExpression(), field, indexExpression, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldArrayAssignmentStatement( UserField field, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldArrayAssignment( field, indexExpression, valueExpression ) );
+	}
+
 	public static AssignmentExpression createLocalAssignment( UserLocal local, Expression valueExpression ) {
-		assert local.isFinal.getValue() == false;
+		assert local.isFinal.getValue() == false : local;
 		Expression localAccess = new LocalAccess( local );
 		return new AssignmentExpression( local.valueType.getValue(), localAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
 	}
@@ -484,7 +530,7 @@ public class AstUtilities {
 	}
 
 	public static AbstractType<?, ?, ?>[] getParameterValueTypes( AbstractMethod method ) {
-		java.util.ArrayList<? extends AbstractParameter> parameters = method.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> parameters = method.getRequiredParameters();
 		AbstractType<?, ?, ?>[] rv = new AbstractType[ parameters.size() ];
 		int i = 0;
 		for( AbstractParameter parameter : parameters ) {
@@ -504,7 +550,7 @@ public class AstUtilities {
 
 	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
 		AbstractMethod singleAbstractMethod = getSingleAbstractMethod( type );
-		java.util.ArrayList<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
 		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
 		for( int i = 0; i < dstRequiredParameters.length; i++ ) {
 			AbstractParameter srcRequiredParameter = srcRequiredParameters.get( i );
