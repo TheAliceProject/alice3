@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser.animationTimeLine.views;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -58,9 +58,9 @@ import javax.swing.JPanel;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.CustomRadioButtons;
-import org.lgna.ik.poser.TimeLineComposite;
-import org.lgna.ik.poser.TimeLineComposite.PoseEvent;
-import org.lgna.ik.poser.events.TimeLineListener;
+import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
+import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
+import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 
@@ -104,6 +104,7 @@ class TimeLineLayout implements LayoutManager {
 	}
 
 	public void layoutContainer( Container parent ) {
+		assert parent instanceof TimeLineView.JTimeLineView;
 		for( Component child : parent.getComponents() ) {
 			if( child instanceof JTimeLinePoseMarker ) {
 				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
@@ -174,7 +175,50 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 	private static final java.awt.Shape ARROW = createArrow();
 
-	private class JTimeLineView extends JItemSelectablePanel {
+	private TimeLineComposite composite;
+	private TimeLineLayout timeLineLayout;
+
+	public TimeLineView( TimeLineComposite composite ) {
+		super( composite.getPoseEventListSelectionState() );
+		this.composite = composite;
+		composite.setJComponent( this );
+	}
+
+	@Override
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		timeLineLayout = new TimeLineLayout( composite );
+		return timeLineLayout;
+	}
+
+	@Override
+	protected void addPrologue( int count ) {
+	}
+
+	@Override
+	protected void addItem( PoseEvent item, BooleanStateButton<?> button ) {
+		this.internalAddComponent( button );
+	}
+
+	@Override
+	protected void addEpilogue() {
+	}
+
+	@Override
+	protected BooleanStateButton<?> createButtonForItemSelectedState( PoseEvent item, BooleanState itemSelectedState ) {
+		return new TimeLinePoseMarker( itemSelectedState, item );
+	}
+
+	@Override
+	protected void removeAllDetails() {
+		this.internalRemoveAllComponents();
+	}
+
+	@Override
+	protected JPanel createJPanel() {
+		return new JTimeLineView( composite );
+	}
+
+	class JTimeLineView extends JItemSelectablePanel {
 		private final TimeLineComposite timeLine;
 		private final TimeLineListener timeLineListener = new TimeLineListener() {
 			public void changed() {
@@ -253,6 +297,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / timeLine.getEndTime();
 				locationOnScreen.x = (int)( deltax );
 				locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
+				//				for(TimeLinePoseMarker marker : )
 				isSliding = ARROW.contains( locationOnScreen );
 			}
 
@@ -266,46 +311,4 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 			}
 		};
 	}
-
-	private TimeLineComposite composite;
-
-	public TimeLineView( TimeLineComposite composite ) {
-		super( composite.getPoseEventListSelectionState() );
-		this.composite = composite;
-		composite.setJComponent( this );
-	}
-
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new TimeLineLayout( composite );
-	}
-
-	@Override
-	protected void addPrologue( int count ) {
-	}
-
-	@Override
-	protected void addItem( PoseEvent item, BooleanStateButton<?> button ) {
-		this.internalAddComponent( button );
-	}
-
-	@Override
-	protected void addEpilogue() {
-	}
-
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( PoseEvent item, BooleanState itemSelectedState ) {
-		return new TimeLinePoseMarker( itemSelectedState, item );
-	}
-
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
-
-	@Override
-	protected JPanel createJPanel() {
-		return new JTimeLineView( composite );
-	}
-
 }

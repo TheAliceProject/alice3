@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.poser.animationTimeLine.models;
 
 import java.util.List;
 
@@ -48,9 +48,10 @@ import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.MutableDataListSelectionState;
 import org.lgna.croquet.SimpleComposite;
-import org.lgna.ik.poser.events.TimeLineListener;
-import org.lgna.ik.poser.view.OuterTimeLineView;
-import org.lgna.ik.poser.view.TimeLineView;
+import org.lgna.ik.poser.Pose;
+import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
+import org.lgna.ik.poser.animationTimeLine.views.OuterTimeLineView;
+import org.lgna.ik.poser.animationTimeLine.views.TimeLineView;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SetPose.Detail;

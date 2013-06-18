@@ -46,6 +46,7 @@ import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
 import org.lgna.ik.poser.AnimatorControlComposite;
+import org.lgna.ik.poser.animationTimeLine.views.OuterTimeLineView;
 
 /**
  * @author Matt May
