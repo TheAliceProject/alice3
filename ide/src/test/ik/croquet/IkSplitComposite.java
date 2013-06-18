@@ -48,7 +48,7 @@ package test.ik.croquet;
  */
 public class IkSplitComposite extends org.lgna.croquet.SplitComposite {
 	public IkSplitComposite() {
-		super( java.util.UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), SceneComposite.getInstance() );
+		super( java.util.UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), new SceneComposite() );
 	}
 
 	@Override

@@ -60,6 +60,7 @@ import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.JointId;
 
+import test.ik.croquet.SceneComposite;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -493,7 +494,7 @@ class IkProgram extends SProgram {
 
 		IkProgram program = new IkProgram();
 
-		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		new SceneComposite().getView().initializeInAwtContainer( program );
 		program.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );
