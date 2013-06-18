@@ -292,6 +292,22 @@ public class Decoder {
 				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( JavaMethod.class.getName() ) ) {
 				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
+			} else if( clsName.equals( Getter.class.getName() ) || clsName.equals( Setter.class.getName() ) ) {
+				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
+				assert nodeList.getLength() == 1;
+				org.w3c.dom.Element xmlField = (org.w3c.dom.Element)nodeList.item( 0 );
+				UserField field = (UserField)decode( xmlField, map );
+				if( clsName.equals( Getter.class.getName() ) ) {
+					rv = field.getGetter();
+				} else {
+					rv = field.getSetter();
+				}
+			} else if( clsName.equals( SetterParameter.class.getName() ) ) {
+				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
+				assert nodeList.getLength() == 1;
+				org.w3c.dom.Element xmlSetter = (org.w3c.dom.Element)nodeList.item( 0 );
+				Setter setter = (Setter)decode( xmlSetter, map );
+				rv = setter.getRequiredParameters().get( 0 );
 			} else if( clsName.equals( JavaField.class.getName() ) ) {
 				rv = JavaField.getInstance( decodeField( xmlElement, "field" ) );
 			} else if( clsName.equals( AnonymousUserConstructor.class.getName() ) ) {

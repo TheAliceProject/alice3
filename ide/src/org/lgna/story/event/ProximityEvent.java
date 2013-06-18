@@ -42,14 +42,12 @@
  */
 package org.lgna.story.event;
 
-import org.lgna.story.SThing;
-
 /**
  * @author Matt May
  */
 public class ProximityEvent extends AbstractBinarySThingEvent {
 
-	public ProximityEvent( SThing a, SThing b ) {
+	public ProximityEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
 		super( a, b );
 	}
 

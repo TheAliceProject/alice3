@@ -55,6 +55,11 @@ public class LocalArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	}
 
 	@Override
+	protected String getDeclarationName() {
+		return this.local.getName();
+	}
+
+	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}

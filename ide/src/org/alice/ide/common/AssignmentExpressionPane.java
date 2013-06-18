@@ -65,38 +65,42 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		}
 
 		boolean isSetter = false;
-		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-			org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( fieldAccess.field.getValue() );
-			//			nameLabel.setFontToScaledFont( 1.5f );
-			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
-			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
-			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
-			} else {
-				parent.addComponent( new org.lgna.croquet.components.Label( " " ) );
-			}
-			if( isSetter ) {
-				parent.addComponent( new org.lgna.croquet.components.Label( "set" ) );
-			}
-			parent.addComponent( nameLabel );
-			if( isSetter ) {
+		if( expression != null ) {
+			if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+				org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( fieldAccess.field.getValue() );
+				//			nameLabel.setFontToScaledFont( 1.5f );
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
+				isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+				parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-					parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
+					parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
+				} else {
+					parent.addComponent( new org.lgna.croquet.components.Label( " " ) );
 				}
+				if( isSetter ) {
+					parent.addComponent( new org.lgna.croquet.components.Label( "set" ) );
+				}
+				parent.addComponent( nameLabel );
+				if( isSetter ) {
+					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+						parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
+					}
+				}
+			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
+				org.lgna.project.ast.UserLocal local = localAccess.local.getValue();
+				parent.addComponent( new LocalPane( local ) );
+			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
+				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
+				org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
+				parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.UserParameter)parameter ) );
+			} else {
+				parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );
 			}
-		} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
-			org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
-			org.lgna.project.ast.UserLocal local = localAccess.local.getValue();
-			parent.addComponent( new LocalPane( local ) );
-		} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
-			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
-			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
-			parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.UserParameter)parameter ) );
 		} else {
-			parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );
+			parent.addComponent( new org.lgna.croquet.components.Label( "???" ) );
 		}
 
 		if( left instanceof org.lgna.project.ast.ArrayAccess ) {

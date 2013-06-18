@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components.templates;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class SetFieldTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
+public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+	private static class SingletonHolder {
+		private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
+	}
 
-	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
+	public static NoVariablesOrFieldsAccessibleCancelFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private NoVariablesOrFieldsAccessibleCancelFillIn() {
+		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( this.field );
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode step ) {
+		return null;
 	}
 }

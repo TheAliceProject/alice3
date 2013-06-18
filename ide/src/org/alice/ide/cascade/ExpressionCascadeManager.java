@@ -178,7 +178,7 @@ public abstract class ExpressionCascadeManager {
 		return rv;
 	}
 
-	private Iterable<org.lgna.project.ast.UserLocal> getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public Iterable<org.lgna.project.ast.UserLocal> getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		java.util.LinkedList<org.lgna.project.ast.UserLocal> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex() );
 		updateAccessibleLocals( rv, blockStatementIndexPair.getBlockStatement() );

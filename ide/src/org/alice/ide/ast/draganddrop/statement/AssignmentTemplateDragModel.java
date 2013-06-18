@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
+public final class AssignmentTemplateDragModel extends ExpressionStatementTemplateDragModel {
 	private static class SingletonHolder {
-		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
+		private static AssignmentTemplateDragModel instance = new AssignmentTemplateDragModel();
 	}
 
-	public static <F> CascadeUnfilledInCancel<F> getInstance() {
+	public static AssignmentTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private CascadeUnfilledInCancel() {
-		super( java.util.UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
+	private AssignmentTemplateDragModel() {
+		super( java.util.UUID.fromString( "c3695947-71f1-46b8-9fbc-cd1b5e7993b1" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement(), org.lgna.project.ast.AssignmentExpression.class );
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
-		return null;
-	}
-
-	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
-		return "No suitable fillins were found.  Canceling.";
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		//return org.alice.ide.croquet.models.ast.cascade.statement.AssignmentInsertMenuModel.createInstance( blockStatementIndexPair ).getPopupPrepModel();
+		return org.alice.ide.croquet.models.ast.cascade.statement.TemplateAssignmentInsertCascade.createInstance( blockStatementIndexPair );
 	}
 }

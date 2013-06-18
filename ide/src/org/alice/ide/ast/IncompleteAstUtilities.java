@@ -146,10 +146,16 @@ public class IncompleteAstUtilities {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
 
-	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
+	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createFieldAccess( expression, field );
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
 		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
+	}
+
+	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = null;
+		org.lgna.project.ast.FieldAccess leftSideExpression = null;
+		return new org.lgna.project.ast.AssignmentExpression( valueType, leftSideExpression, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
 
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
@@ -162,6 +168,10 @@ public class IncompleteAstUtilities {
 
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( field ) );
+	}
+
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement() {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression() );
 	}
 
 	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {
