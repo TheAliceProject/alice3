@@ -297,6 +297,8 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		public void thumbReleased( float position ) {
 			if( this.wasPlaying ) {
 				play();
+			} else {
+				pause();
 			}
 		}
 	};
