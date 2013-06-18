@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.view;
 
+import org.lgna.croquet.components.BorderPanel;
 import org.lgna.ik.poser.PoserControlComposite;
 
 /**
@@ -51,7 +52,9 @@ public class PoserControlView extends AbstractPoserControlView {
 
 	public PoserControlView( PoserControlComposite controlComposite ) {
 		super( controlComposite );
-		this.addComponent( controlComposite.getSaveAndExportPose().getOperation().createButton(), "dock south" );
+		BorderPanel southPanel = new BorderPanel();
+		southPanel.addCenterComponent( controlComposite.getNameState().createTextField() );
+		southPanel.addLineStartComponent( controlComposite.getNameState().getSidekickLabel().createImmutableTextArea() );
+		this.addComponent( southPanel, "dock south" );
 	}
-
 }

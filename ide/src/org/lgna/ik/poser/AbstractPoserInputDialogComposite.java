@@ -45,23 +45,24 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.lgna.croquet.FrameComposite;
+import org.alice.ide.IDE;
+import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.SplitPane;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.Duration;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
-import org.lgna.story.TurnDirection;
 
 import test.ik.croquet.SceneComposite;
 
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPane> {
+public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserControlComposite> extends OperationInputDialogCoreComposite<SplitPane> {
 
 	private IkPoser poser;
 
@@ -69,19 +70,21 @@ public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPa
 	private final SBiped biped;
 	private final PoserScene scene;
 	private UserType<?> userType;
+	private T controlComposite;
 
 	private final SplitComposite splitComposite;
 
 	//note: this relies on very specific ordering at the moment
-	protected abstract AbstractPoserControlComposite<?> createControlComposite();
+	protected abstract T createControlComposite();
 
-	protected AbstractPoserFrameComposite( NamedUserType userType, UUID uuid ) {
-		super( uuid, null );
+	protected AbstractPoserInputDialogComposite( NamedUserType userType, UUID uuid ) {
+		super( uuid, IDE.PROJECT_GROUP );
 		this.biped = deriveBipedFromUserType( userType );
 		this.scene = new PoserScene( camera, biped );
 		this.userType = userType;
 		this.poser = new IkPoser();
-		this.splitComposite = createHorizontalSplitComposite( this.createControlComposite(), test.ik.croquet.SceneComposite.getInstance(), 0.5 );
+		controlComposite = this.createControlComposite();
+		this.splitComposite = createHorizontalSplitComposite( controlComposite, test.ik.croquet.SceneComposite.getInstance(), 0.25 );
 	}
 
 	@Override
@@ -89,8 +92,6 @@ public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPa
 		super.handlePreActivation();
 		SceneComposite.getInstance().getView().initializeInAwtContainer( poser );
 		initializeTest();
-		getBiped().move( MoveDirection.UP, 1 );
-		getBiped().move( MoveDirection.DOWN, 1 );
 	}
 
 	//	public InternalMenuItemPrepModel getMenuItemPrepModel() {
@@ -130,9 +131,10 @@ public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPa
 
 	public void initializeTest() {
 		this.poser.setActiveScene( this.scene );
-		this.camera.turn( TurnDirection.RIGHT, .5 );
-		this.camera.move( MoveDirection.BACKWARD, 8 );
-		this.camera.move( MoveDirection.UP, 1 );
+		//		this.camera.turn( TurnDirection.RIGHT, .5 );
+		this.camera.move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
+		this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
+		this.biped.turnToFace( camera, new Duration( 0 ) );
 	}
 
 	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
@@ -158,5 +160,9 @@ public abstract class AbstractPoserFrameComposite extends FrameComposite<SplitPa
 	@Override
 	protected SplitPane createView() {
 		return this.splitComposite.getView();
+	}
+
+	protected T getControlComposite() {
+		return this.controlComposite;
 	}
 }

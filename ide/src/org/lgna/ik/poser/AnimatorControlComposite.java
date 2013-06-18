@@ -54,6 +54,7 @@ import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.events.TimeLineListener;
@@ -78,7 +79,9 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class AnimatorControlComposite extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	public AnimatorControlComposite( AbstractPoserFrameComposite parent ) {
+	private StringState nameState = createStringState( createKey( "nameState" ) );
+
+	public AnimatorControlComposite( AbstractPoserInputDialogComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		posesList.addValueListener( poseAnimationListener );
 		timeLine.addTimeLineListener( listener );
@@ -143,7 +146,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			( (AnimatorControlView)AnimatorControlComposite.this.getView() ).enableExport();
 			Pose pose = parent.getPose();
 			PoseAnimation pAnimation = new PoseAnimation( pose );
 			posesList.addItem( pAnimation );
@@ -166,7 +168,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			ComponentThread thread = new ComponentThread( new Runnable() {
 				public void run() {
 					for( PoseAnimation pAnimation : posesList ) {
-						System.out.println( "run Animation!!!" );
 						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
 					}
 				}
@@ -180,9 +181,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			posesList.removeItem( posesList.getValue() );
-			if( posesList.getItemCount() == 0 ) {
-				( (AnimatorControlView)AnimatorControlComposite.this.getView() ).disableExport();
-			}
 			return null;
 		}
 	} );
@@ -209,11 +207,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			return null;
 		}
 	} );
-	protected NameAndExportAnimationCompositeInHonorOfJenLapp nameAndExportAnimationComposite = new NameAndExportAnimationCompositeInHonorOfJenLapp( this );
-
-	public NameAndExportAnimationCompositeInHonorOfJenLapp getExportAnimation() {
-		return this.nameAndExportAnimationComposite;
-	}
 
 	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
@@ -310,4 +303,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		timeLine.setMaxTime( value );
 	}
 
+	public StringState getNameState() {
+		return this.nameState;
+	}
 }

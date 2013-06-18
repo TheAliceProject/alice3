@@ -40,26 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser;
 
-import org.lgna.croquet.components.ImmutableTextArea;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.TextField;
-import org.lgna.ik.poser.NameAndExportAnimationCompositeInHonorOfJenLapp;
+import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
+import org.alice.ide.name.validators.MethodNameValidator;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
  */
-public class AnimationNamingView extends MigPanel {
+public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
-	public AnimationNamingView( NameAndExportAnimationCompositeInHonorOfJenLapp composite ) {
-		super( composite, "fill", "[100]0[150]" );
-		TextField textField = composite.getAnimationName().createTextField();
-		textField.setToolTipText( composite.getAnimationName().getTextForBlankCondition() );
-		ImmutableTextArea sidekickLabel = composite.getAnimationName().getSidekickLabel().createImmutableTextArea();
-		sidekickLabel.setAlignmentX( javax.swing.JComponent.RIGHT_ALIGNMENT );
-		sidekickLabel.setAlignmentY( javax.swing.JComponent.CENTER_ALIGNMENT );
-		this.addComponent( sidekickLabel, "align right" );
-		this.addComponent( textField, "growx" );
+	private MethodNameValidator validator;
+
+	public AnimatorInputDialogComposite( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+	}
+
+	@Override
+	protected AnimatorControlComposite createControlComposite() {
+		return new AnimatorControlComposite( this );
+	}
+
+	@Override
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		UserMethod method = getControlComposite().createUserMethod( completionStep, getControlComposite().getNameState().getValue() );
+		return new DeclareMethodEdit( completionStep, getDeclaringType(), method );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		if( validator != null ) {
+			//pass
+		} else {
+			this.validator = new MethodNameValidator( getDeclaringType() );
+		}
+		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+		String candidate = getControlComposite().getNameState().getValue();
+		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+		if( explanation != null ) {
+			errorStatus.setText( explanation );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
 	}
 }

@@ -40,30 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser;
 
-import org.lgna.croquet.components.ImmutableTextArea;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.TextField;
-import org.lgna.ik.poser.NameYourPoseComposite;
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+import org.alice.ide.name.validators.FieldNameValidator;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
 
 /**
  * @author Matt May
  */
-public class NameYourPoseView extends MigPanel {
+public class PoserInputDialogComposite extends AbstractPoserInputDialogComposite<PoserControlComposite> {
 
-	public NameYourPoseView( NameYourPoseComposite composite ) {
-		super( composite, "fill", "[100]0[150]" );
-		TextField textField = composite.getPoseName().createTextField();
-		textField.setToolTipText( composite.getPoseName().getTextForBlankCondition() );
-		ImmutableTextArea sidekickLabel = composite.getPoseName().getSidekickLabel().createImmutableTextArea();
-		sidekickLabel.setAlignmentX( javax.swing.JComponent.RIGHT_ALIGNMENT );
-		sidekickLabel.setAlignmentY( javax.swing.JComponent.CENTER_ALIGNMENT );
-		this.addComponent( sidekickLabel, "align right" );
-		this.addComponent( textField, "growx, wrap" );
-		this.addComponent( composite.getHierarchySelection().getSidekickLabel().createLabel() );
-		//		this.addComponent( composite.getHierarchySelection().createItemDropDown() );
-		this.addComponent( composite.getHierarchySelection().createVerticalDefaultRadioButtons() );
+	private FieldNameValidator validator;
+
+	public PoserInputDialogComposite( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
 	}
 
+	@Override
+	protected PoserControlComposite createControlComposite() {
+		return new PoserControlComposite( this );
+	}
+
+	@Override
+	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
+		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
+		UserType<?> declaringType = this.getDeclaringType();
+		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		if( validator != null ) {
+			//pass
+		} else {
+			this.validator = new FieldNameValidator( getDeclaringType() );
+		}
+		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+		String candidate = getControlComposite().getNameState().getValue();
+		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+		if( explanation != null ) {
+			errorStatus.setText( explanation );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
+	}
 }

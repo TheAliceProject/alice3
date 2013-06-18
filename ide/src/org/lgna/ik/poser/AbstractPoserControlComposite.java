@@ -74,9 +74,9 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	protected StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	protected AbstractPoserFrameComposite parent;
+	protected AbstractPoserInputDialogComposite parent;
 
-	public AbstractPoserControlComposite( AbstractPoserFrameComposite parent, UUID uid ) {
+	public AbstractPoserControlComposite( AbstractPoserInputDialogComposite parent, UUID uid ) {
 		super( uid );
 		this.parent = parent;
 		parent.getJointSelectionSheres();
@@ -107,10 +107,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public ActionOperation getStraightenJointsOperation() {
 		return this.straightenJointsOperation;
-	}
-
-	public IkPoser getIkPoser() {
-		return this.ikPoser;
 	}
 
 	public void addRightArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {

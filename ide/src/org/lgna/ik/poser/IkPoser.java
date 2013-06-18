@@ -82,12 +82,12 @@ public class IkPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		AbstractPoserFrameComposite composite;
+		AbstractPoserInputDialogComposite composite;
 
 		if( SHOULD_I_ANIMATE ) {
-			composite = new AnimatorFrameComposite( type );
+			composite = new AnimatorInputDialogComposite( type );
 		} else {
-			composite = new PoserFrameComposite( type );
+			composite = new PoserInputDialogComposite( type );
 		}
 		app.getFrame().setMainComposite( composite );
 

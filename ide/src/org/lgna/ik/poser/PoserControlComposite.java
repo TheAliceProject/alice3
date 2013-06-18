@@ -42,24 +42,45 @@
  */
 package org.lgna.ik.poser;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.alice.stageide.ast.ExpressionCreator;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.StringState;
 import org.lgna.ik.poser.view.PoserControlView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
-	public PoserControlComposite( AbstractPoserFrameComposite parent ) {
+	StringState nameState = createStringState( createKey( "poseName" ) );
+
+	public PoserControlComposite( AbstractPoserInputDialogComposite parent ) {
 		super( parent,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
-	}
-
-	public NameYourPoseComposite getSaveAndExportPose() {
-		return new NameYourPoseComposite( this );
 	}
 
 	@Override
 	protected PoserControlView createView() {
 		return new PoserControlView( this );
 	}
+
+	public StringState getNameState() {
+		return this.nameState;
+	}
+
+	public UserField createPoseField( String value ) {
+		try {
+			Pose pose = parent.getPose();
+			Expression rhSide = new ExpressionCreator().createExpression( pose );
+			UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
+			return rv;
+		} catch( CannotCreateExpressionException e ) {
+			throw new CancelException();
+		}
+	}
+
 }

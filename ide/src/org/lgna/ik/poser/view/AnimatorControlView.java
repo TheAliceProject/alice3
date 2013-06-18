@@ -45,15 +45,12 @@ package org.lgna.ik.poser.view;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
-import org.lgna.croquet.components.Button;
 import org.lgna.ik.poser.AnimatorControlComposite;
 
 /**
  * @author Matt May
  */
 public class AnimatorControlView extends AbstractPoserControlView {
-
-	private Button exportButton;
 
 	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
 		super( controlComposite );
@@ -68,28 +65,13 @@ public class AnimatorControlView extends AbstractPoserControlView {
 		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
 		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "grow" );
-		exportButton = controlComposite.getExportAnimation().getOperation().createButton();
-		this.addComponent( exportButton, "grow, wrap" );
+		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
+		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
+		this.addComponent( controlComposite.getNameState().createTextField(), "grow, wrap" );
 
 		OuterTimeLineView component = controlComposite.getTimeLine().createView();
 		this.addComponent( component, "grow, span 2, wrap" );
 		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
 		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
-		if( controlComposite.getPosesList().getItemCount() == 0 ) {
-			disableExport();
-		}
-	}
-
-	public void enableExport() {
-		if( !exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( true );
-		}
-	}
-
-	public void disableExport() {
-		if( exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( false );
-		}
 	}
 }
