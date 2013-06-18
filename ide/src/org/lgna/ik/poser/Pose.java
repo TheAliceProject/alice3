@@ -62,7 +62,7 @@ public class Pose {
 		return ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
 	}
 
-	public static Pose createPoseFromBiped( SBiped biped ) {
+	/* package-private */static Pose createPoseFromBiped( SBiped biped ) {
 		JointQPair rightArmBase = new JointQPair( getIDFor( biped.getRightClavicle() ), getOrientation( biped.getRightClavicle() ),
 				new JointQPair( getIDFor( biped.getRightShoulder() ), getOrientation( biped.getRightShoulder() ),
 						new JointQPair( getIDFor( biped.getRightElbow() ), getOrientation( biped.getRightElbow() ),
@@ -83,7 +83,7 @@ public class Pose {
 						new JointQPair( getIDFor( biped.getLeftKnee() ), getOrientation( biped.getLeftKnee() ),
 								new JointQPair( getIDFor( biped.getLeftAnkle() ), getOrientation( biped.getLeftAnkle() ) ) ) ) );
 
-		return new Pose( rightArmBase, leftArmBase, rightLegBase, leftLegBase );
+		return new Pose( rightArmBase, rightLegBase, leftArmBase, leftLegBase );
 	}
 
 	private static AffineMatrix4x4 TODO_DELETE_AND_USE_QUATERNION( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
@@ -103,10 +103,10 @@ public class Pose {
 
 		public Builder rightArm( org.lgna.story.Orientation rightClavicleOrientation, org.lgna.story.Orientation rightShoulderOrientation, org.lgna.story.Orientation rightElbowOrientation, org.lgna.story.Orientation rightWristOrientation ) {
 			assert this.rightArmBase == null : this;
-			assert rightClavicleOrientation == null : this;
-			assert rightShoulderOrientation == null : this;
-			assert rightElbowOrientation == null : this;
-			assert rightWristOrientation == null : this;
+			assert rightClavicleOrientation != null : this;
+			assert rightShoulderOrientation != null : this;
+			assert rightElbowOrientation != null : this;
+			assert rightWristOrientation != null : this;
 			this.rightArmBase =
 					new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightClavicleOrientation ) ),
 							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_SHOULDER, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightShoulderOrientation ) ),
@@ -117,10 +117,10 @@ public class Pose {
 
 		public Builder leftArm( org.lgna.story.Orientation leftClavicleOrientation, org.lgna.story.Orientation leftShoulderOrientation, org.lgna.story.Orientation leftElbowOrientation, org.lgna.story.Orientation leftWristOrientation ) {
 			assert this.leftArmBase == null : this;
-			assert leftClavicleOrientation == null : this;
-			assert leftShoulderOrientation == null : this;
-			assert leftElbowOrientation == null : this;
-			assert leftWristOrientation == null : this;
+			assert leftClavicleOrientation != null : this;
+			assert leftShoulderOrientation != null : this;
+			assert leftElbowOrientation != null : this;
+			assert leftWristOrientation != null : this;
 			this.leftArmBase =
 					new JointQPair( org.lgna.story.resources.BipedResource.LEFT_CLAVICLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftClavicleOrientation ) ),
 							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_SHOULDER, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftShoulderOrientation ) ),
@@ -131,10 +131,10 @@ public class Pose {
 
 		public Builder rightLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation rightHipOrientation, org.lgna.story.Orientation rightKneeOrientation, org.lgna.story.Orientation rightAnkleOrientation ) {
 			assert this.rightLegBase == null : this;
-			assert pelvisOrientation == null : this;
-			assert rightHipOrientation == null : this;
-			assert rightKneeOrientation == null : this;
-			assert rightAnkleOrientation == null : this;
+			assert pelvisOrientation != null : this;
+			assert rightHipOrientation != null : this;
+			assert rightKneeOrientation != null : this;
+			assert rightAnkleOrientation != null : this;
 			this.rightLegBase =
 					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( pelvisOrientation ) ),
 							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_HIP, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightHipOrientation ) ),
@@ -145,10 +145,10 @@ public class Pose {
 
 		public Builder leftLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation leftHipOrientation, org.lgna.story.Orientation leftKneeOrientation, org.lgna.story.Orientation leftAnkleOrientation ) {
 			assert this.leftLegBase == null : this;
-			assert pelvisOrientation == null : this;
-			assert leftHipOrientation == null : this;
-			assert leftKneeOrientation == null : this;
-			assert leftAnkleOrientation == null : this;
+			assert pelvisOrientation != null : this;
+			assert leftHipOrientation != null : this;
+			assert leftKneeOrientation != null : this;
+			assert leftAnkleOrientation != null : this;
 			this.leftLegBase =
 					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( pelvisOrientation ) ),
 							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_HIP, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftHipOrientation ) ),
@@ -238,20 +238,8 @@ public class Pose {
 		return createOrientation( this.leftLegBase.getChild().getChild().getChild().getUnitQuaternion() );
 	}
 
-	public JointQPair getRightArmBase() {
-		return this.rightArmBase;
-	}
-
-	public JointQPair getLeftArmBase() {
-		return this.leftArmBase;
-	}
-
-	public JointQPair getRightLegBase() {
-		return this.rightLegBase;
-	}
-
-	public JointQPair getLeftLegBase() {
-		return this.leftLegBase;
+	/* package-private */JointQPair[] getChains() {
+		return new JointQPair[] { this.rightArmBase, this.leftArmBase, this.rightLegBase, this.leftLegBase };
 	}
 
 	@Override

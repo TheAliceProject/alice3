@@ -254,5 +254,8 @@ public class SBiped extends SJointedModel implements Articulable {
 	}
 
 	public void setPose( org.lgna.ik.poser.Pose pose, SetPose.Detail... details ) {
+		double duration = Duration.getValue( details );
+		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
+		this.getImplementation().setPose( pose, duration, style );
 	}
 }

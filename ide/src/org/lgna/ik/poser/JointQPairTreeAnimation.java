@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import edu.cmu.cs.dennisc.animation.Style;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,8 +53,8 @@ public class JointQPairTreeAnimation extends edu.cmu.cs.dennisc.animation.Durati
 		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
 		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
 
-		public JointInfo( org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
-			this.jointImp = org.lgna.story.ImplementationAccessor.getImplementation( jointedModel.getJoint( jointQPair.getJointId() ) );
+		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointQPair jointQPair ) {
+			this.jointImp = jointedModel.getJointImplementation( jointQPair.getJointId() );
 			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
 			this.q1 = jointQPair.getUnitQuaternion();
 		}
@@ -67,16 +69,17 @@ public class JointQPairTreeAnimation extends edu.cmu.cs.dennisc.animation.Durati
 		}
 	}
 
-	private final org.lgna.story.SJointedModel jointedModel;
-	private final JointQPair jointQPair;
+	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel;
+	private final Pose pose;
 	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-	public JointQPairTreeAnimation( org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
+	public JointQPairTreeAnimation( double duration, Style style, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, Pose pose ) {
+		super( duration, style );
 		this.jointedModel = jointedModel;
-		this.jointQPair = jointQPair;
+		this.pose = pose;
 	}
 
-	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
+	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointQPair jointQPair ) {
 		jointInfos.add( new JointInfo( jointedModel, jointQPair ) );
 		JointQPair child = jointQPair.getChild();
 		if( child != null ) {
@@ -87,7 +90,9 @@ public class JointQPairTreeAnimation extends edu.cmu.cs.dennisc.animation.Durati
 	@Override
 	protected void prologue() {
 		this.jointInfos.clear();
-		appendJointInfos( this.jointInfos, this.jointedModel, this.jointQPair );
+		for( JointQPair jointQPair : this.pose.getChains() ) {
+			appendJointInfos( this.jointInfos, this.jointedModel, jointQPair );
+		}
 	}
 
 	@Override

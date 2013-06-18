@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.ik.poser.JointQPairTreeAnimation;
+import org.lgna.ik.poser.Pose;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.ImplementationAccessor;
@@ -102,5 +104,9 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 
 	public void walkTo( final SThing entity ) {
 		IKMagicWand.walkTo( this, entity );
+	}
+
+	public void setPose( Pose pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.getProgram().perform( new JointQPairTreeAnimation( duration, style, this, pose ), null );
 	}
 }

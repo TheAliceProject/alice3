@@ -42,80 +42,54 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.story.SBiped;
-import org.lgna.story.implementation.ProgramImp;
-
-import edu.cmu.cs.dennisc.animation.AnimationThread;
-
 /**
  * @author Matt May
  */
+@Deprecated
 public class PoseAnimation {
 
-	private Pose pose;
-	ExpressionCreator blah = new ExpressionCreator();
+	private final Pose pose;
 
 	public PoseAnimation( Pose pose ) {
 		this.pose = pose;
 	}
 
-	public void animate( final ProgramImp programImp, final SBiped ogre ) {
-		AnimationThread rAThread = new AnimationThread( programImp.getAnimator(), getRightArmAnimation( ogre ), null );
-		AnimationThread lAThread = new AnimationThread( programImp.getAnimator(), getLeftArmAnimation( ogre ), null );
-		AnimationThread rLThread = new AnimationThread( programImp.getAnimator(), getRightLegAnimation( ogre ), null );
-		AnimationThread lLThread = new AnimationThread( programImp.getAnimator(), getLeftLegAnimation( ogre ), null );
-		org.lgna.common.ThreadUtilities.doTogether( rAThread, lAThread, rLThread, lLThread );
-	}
-
-	private JointQPairTreeAnimation getRightArmAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getRightArmBase() );
-	}
-
-	private JointQPairTreeAnimation getLeftArmAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getLeftArmBase() );
-	}
-
-	private JointQPairTreeAnimation getRightLegAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getRightLegBase() );
-	}
-
-	private JointQPairTreeAnimation getLeftLegAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getLeftLegBase() );
-	}
-
+	//	public void animate( ProgramImp programImp, BipedImp bipedImp ) {
+	//		AnimationThread rAThread = new AnimationThread( programImp.getAnimator(), getRightArmAnimation( bipedImp ), null );
+	//		AnimationThread lAThread = new AnimationThread( programImp.getAnimator(), getLeftArmAnimation( bipedImp ), null );
+	//		AnimationThread rLThread = new AnimationThread( programImp.getAnimator(), getRightLegAnimation( bipedImp ), null );
+	//		AnimationThread lLThread = new AnimationThread( programImp.getAnimator(), getLeftLegAnimation( bipedImp ), null );
+	//		org.lgna.common.ThreadUtilities.doTogether( rAThread, lAThread, rLThread, lLThread );
+	//	}
+	//
+	//	public void animate( ProgramImp programImp, SBiped biped ) {
+	//		this.animate( programImp, (BipedImp)ImplementationAccessor.getImplementation( biped ) );
+	//	}
+	//
+	//	private JointQPairTreeAnimation getRightArmAnimation( BipedImp biped ) {
+	//		return new JointQPairTreeAnimation( biped, pose.getRightArmBase() );
+	//	}
+	//
+	//	private JointQPairTreeAnimation getLeftArmAnimation( BipedImp biped ) {
+	//		return new JointQPairTreeAnimation( biped, pose.getLeftArmBase() );
+	//	}
+	//
+	//	private JointQPairTreeAnimation getRightLegAnimation( BipedImp biped ) {
+	//		return new JointQPairTreeAnimation( biped, pose.getRightLegBase() );
+	//	}
+	//
+	//	private JointQPairTreeAnimation getLeftLegAnimation( BipedImp biped ) {
+	//		return new JointQPairTreeAnimation( biped, pose.getLeftLegBase() );
+	//	}
+	//
 	public Pose getPose() {
 		return this.pose;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		return sb.toString();
-	}
-
-	//	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
-	//		Expression[] exArr = new Expression[ details.length + 1 ];
-	//		try {
-	//			exArr[ 0 ] = blah.createExpression( this );
-	//		} catch( CannotCreateExpressionException e1 ) {
-	//			e1.printStackTrace();
-	//		}
-	//		int i = 1;
-	//		for( AnimateToPose.Detail detail : details ) {
-	//			try {
-	//				exArr[ i ] = blah.createExpression( detail );
-	//			} catch( CannotCreateExpressionException e ) {
-	//				e.printStackTrace();
-	//			}
-	//			++i;
-	//		}
-	//		AstUtilities.createI
-	//		//newThisExpresson
-	//		//		AddProcedureComposite
-	//		AstUtilities.createMethodInvocation( new ThisExpression(), ADD_POSE_ANIMATION, exArr );
-	//		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, details, details );
-	//		return null;
+	//
+	//	@Override
+	//	public String toString() {
+	//		StringBuilder sb = new StringBuilder();
+	//		sb.append( this.getClass().getSimpleName() );
+	//		return sb.toString();
 	//	}
 }

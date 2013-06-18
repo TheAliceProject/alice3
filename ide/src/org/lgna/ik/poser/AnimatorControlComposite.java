@@ -45,7 +45,6 @@ package org.lgna.ik.poser;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
@@ -137,7 +136,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 				timeLine.addTimeLineListener( listener );
 				final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
 				final org.lgna.story.SBiped ogre = parent.getBiped();
-				nextValue.animate( programImp, ogre );
+				//nextValue.animate( programImp, ogre );
 			}
 		}
 	};
@@ -164,14 +163,14 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			final org.lgna.story.SBiped ogre = parent.getBiped();
 			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
 
-			ComponentThread thread = new ComponentThread( new Runnable() {
-				public void run() {
-					for( PoseAnimation pAnimation : posesList ) {
-						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
-					}
-				}
-			}, "noDescription" );
-			thread.start();
+			//			ComponentThread thread = new ComponentThread( new Runnable() {
+			//				public void run() {
+			//					for( PoseAnimation pAnimation : posesList ) {
+			//						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
+			//					}
+			//				}
+			//			}, "noDescription" );
+			//			thread.start();
 			return null;
 		}
 	} );
@@ -218,19 +217,23 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
 			try {
-				Detail[] details = timeLine.getParametersForPose( animation.getPose() );
 				Expression argumentExpression = expressionCreator.createExpression( animation.getPose() );
+				double duration = timeLine.getDurationForPose( animation.getPose() );
+				AnimationStyle style = timeLine.getStyleForPose( animation.getPose() );
 				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
 				//
 				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-				methodInv.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument(
-						methodInv.method.getValue().getKeyedParameter(), durationKeyMethod, new org.lgna.project.ast.DoubleLiteral( SetPose.getDuration( details ) ) ) );
+				methodInv.keyedArguments.add(
+						new org.lgna.project.ast.JavaKeyedArgument(
+								methodInv.method.getValue().getKeyedParameter(),
+								durationKeyMethod,
+								new org.lgna.project.ast.DoubleLiteral( duration ) ) );
 
 				//animationStyle
 				org.lgna.project.ast.JavaMethod styleKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
 						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class );
 				methodInv.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInv.method.getValue().getKeyedParameter(),
-						styleKeyMethod, expressionCreator.createExpression( SetPose.getStyle( details ) ) ) );
+						styleKeyMethod, expressionCreator.createExpression( style ) ) );
 				//
 				ExpressionStatement statement = new ExpressionStatement( methodInv );
 				miArr[ i ] = statement;

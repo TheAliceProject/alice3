@@ -53,8 +53,6 @@ import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
 import org.lgna.ik.poser.animationTimeLine.views.OuterTimeLineView;
 import org.lgna.ik.poser.animationTimeLine.views.TimeLineView;
 import org.lgna.story.AnimationStyle;
-import org.lgna.story.Duration;
-import org.lgna.story.SetPose.Detail;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -153,20 +151,28 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		this.fireChanged();
 	}
 
-	public Detail[] getParametersForPose( Pose pose ) {
-		Detail[] rv = new Detail[ 2 ];//duration, style
+	public double getDurationForPose( Pose pose ) {
 		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
 			PoseEvent itr = posesInTimeline.getItemAt( i );
 			if( itr.pose.equals( pose ) ) {
-				rv[ 0 ] = itr.style;
 				if( i == 0 ) {
-					rv[ 1 ] = new Duration( 0 );
+					return itr.eventTime;
 				} else {
-					rv[ 1 ] = new Duration( itr.eventTime - itr.eventTime );
+					return itr.eventTime - posesInTimeline.getItemAt( i - 1 ).eventTime;
 				}
 			}
 		}
-		return rv;
+		throw new RuntimeException( "Pose Not Found:" + pose );
+	}
+
+	public AnimationStyle getStyleForPose( Pose pose ) {
+		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
+			PoseEvent itr = posesInTimeline.getItemAt( i );
+			if( itr.pose.equals( pose ) ) {
+				return itr.style;
+			}
+		}
+		throw new RuntimeException( "Pose Not Found:" + pose );
 	}
 
 	public List<PoseEvent> getPosesInTimeline() {
