@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final org.lgna.project.ast.UserParameter parameter;
-
-	public ParameterArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, parameter.getValueType(), parameter.getDetails() );
-		this.parameter = parameter;
+public abstract class AssignmentInsertCascade extends ExpressionStatementInsertCascade {
+	public AssignmentInsertCascade( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank[] blanks ) {
+		super( migrationId, blockStatementIndexPair, blanks );
 	}
 
+	protected abstract String getDeclarationName();
+
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	protected final String modifyMenuTextIfDesired( String text ) {
+		text = super.modifyMenuTextIfDesired( text );
+		if( text != null ) {
+			text = text.replace( "</name/>", this.getDeclarationName() );
+		}
+		return text;
+	}
+
+	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getValueType();
+
+	protected abstract org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions );
+
+	protected abstract int getIndexOfRightHandSide();
+
+	@Override
+	protected final org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions ) {
+		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
+				this.getValueType(),
+				this.createLeftHandSide( expressions ),
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
+				expressions[ this.getIndexOfRightHandSide() ]
+				);
+		return rv;
 	}
 }

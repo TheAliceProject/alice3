@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInsertCascade {
+public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInsertCascade {
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
 
 	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, org.lgna.project.annotations.ValueDetails<?> parameterDetails ) {
@@ -76,17 +76,20 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInser
 	protected abstract org.lgna.project.ast.Expression createAccessExpression();
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.AssignmentExpression assignmentExpression = new org.lgna.project.ast.AssignmentExpression(
-				this.arrayType.getComponentType(),
-				new org.lgna.project.ast.ArrayAccess(
-						this.arrayType,
-						this.createAccessExpression(),
-						expressions[ 0 ]
-				),
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-				expressions[ 1 ]
-				);
-		return new org.lgna.project.ast.ExpressionStatement( assignmentExpression );
+	protected org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions ) {
+		return new org.lgna.project.ast.ArrayAccess(
+				this.arrayType,
+				this.createAccessExpression(),
+				expressions[ 0 ] );
+	}
+
+	@Override
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+		return this.arrayType.getComponentType();
+	}
+
+	@Override
+	protected int getIndexOfRightHandSide() {
+		return 1;
 	}
 }

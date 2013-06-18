@@ -44,35 +44,33 @@ package org.lgna.story.event;
 
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThing;
 
 /**
  * @author Matt May
  */
 public class AbstractBinarySThingEvent extends AbstractEvent {
 
-	private final SThing a;
-	private final SThing b;
+	private final org.lgna.story.SThing a;
+	private final org.lgna.story.SThing b;
 	private final org.lgna.story.SMovableTurnable[] movables;
 
-	public AbstractBinarySThingEvent( SThing a, SThing b ) {
+	public AbstractBinarySThingEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
 		this.a = a;
 		this.b = b;
-		movables = new SMovableTurnable[ 2 ];
-		if( a instanceof SMovableTurnable ) {
-			movables[ 0 ] = (SMovableTurnable)a;
+		movables = new org.lgna.story.SMovableTurnable[ 2 ];
+		if( a instanceof org.lgna.story.SMovableTurnable ) {
+			movables[ 0 ] = (org.lgna.story.SMovableTurnable)a;
 		}
-		if( b instanceof SMovableTurnable ) {
-			movables[ 1 ] = (SMovableTurnable)b;
+		if( b instanceof org.lgna.story.SMovableTurnable ) {
+			movables[ 1 ] = (org.lgna.story.SMovableTurnable)b;
 		}
 	}
 
-	public SThing getSThingFromSetA() {
+	public org.lgna.story.SThing getSThingFromSetA() {
 		return a;
 	}
 
-	public SThing getSThingFromSetB() {
+	public org.lgna.story.SThing getSThingFromSetB() {
 		return b;
 	}
 

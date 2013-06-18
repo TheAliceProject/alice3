@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class Setter extends AbstractMethodContainedByUserField {
+	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new SetterParameter( this ) ) );
+
+	/* package-private */Setter( UserField field ) {
+		super( field );
 	}
 
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	public AbstractType<?, ?, ?> getReturnType() {
+		return JavaType.VOID_TYPE;
+	}
+
+	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+		return this.requiredParameters;
+	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public String getName() {
+		//todo: handle boolean and is
+		String fieldName = this.getField().getName();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "set" );
+		if( fieldName.length() > 0 ) {
+			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
+			sb.append( fieldName.substring( 1 ) );
+		}
+		return sb.toString();
 	}
 }

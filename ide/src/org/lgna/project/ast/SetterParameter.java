@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,52 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldArrayAtIndexAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SetterParameter extends AbstractParameter {
+	private final Setter setter;
 
-	public static synchronized FieldArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldArrayAtIndexAssignmentTemplateDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayAtIndexAssignmentTemplateDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
-
-	private org.lgna.project.ast.AbstractField field;
-
-	private FieldArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ), org.lgna.project.ast.ExpressionStatement.class,
-				new org.lgna.project.ast.ExpressionStatement(
-						new org.lgna.project.ast.AssignmentExpression(
-								field.getValueType().getComponentType(),
-								new org.lgna.project.ast.ArrayAccess(
-										field.getValueType(),
-										org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ),
-										new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE )
-								),
-								org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-								new org.alice.ide.ast.EmptyExpression( field.getValueType().getComponentType() )
-						)
-				) );
-		this.field = field;
+	/* package-private */SetterParameter( Setter setter ) {
+		this.setter = setter;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldArrayAtIndexAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldArrayAtIndexAssignmentTemplateDragModel>( this, org.lgna.project.ast.AbstractField.class, this.field );
+	public Setter getCode() {
+		return this.setter;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, this.field );
+	public AbstractType<?, ?, ?> getValueType() {
+		return this.setter.getField().getValueType();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return this.setter.getField().getName();
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return false; //todo?
+	}
+
+	@Override
+	public boolean isVariableLength() {
+		return false;
+	}
+
+	@Override
+	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+		return null;
 	}
 }
