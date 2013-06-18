@@ -65,8 +65,6 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.SetPose;
 import org.lgna.story.SetPose.Detail;
@@ -212,7 +210,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 
-	public UserMethod createUserMethod( String name ) {
+	public BlockStatement createMethodBody() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
@@ -241,10 +239,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			}
 			++i;
 		}
-		BlockStatement body = new BlockStatement( miArr );
-		UserMethod rv = new UserMethod( name, Void.TYPE, new UserParameter[ 0 ], body );
-
-		return rv;
+		return new BlockStatement( miArr );
 	}
 
 	private Detail[] getParametersForAnimation( PoseAnimation animation ) {
