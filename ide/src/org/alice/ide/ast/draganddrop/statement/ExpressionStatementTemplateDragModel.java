@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterArrayAtIndexAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class ExpressionStatementTemplateDragModel extends StatementTemplateDragModel {
+	private final Class<? extends org.lgna.project.ast.Expression> expressionCls;
 
-	public static synchronized ParameterArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
-		ParameterArrayAtIndexAssignmentTemplateDragModel rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterArrayAtIndexAssignmentTemplateDragModel( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
+	public ExpressionStatementTemplateDragModel( java.util.UUID migrationId, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement, Class<? extends org.lgna.project.ast.Expression> expressionCls ) {
+		super( migrationId, statementCls, possiblyIncompleteStatement );
+		this.expressionCls = expressionCls;
 	}
 
-	private org.lgna.project.ast.UserParameter parameter;
-
-	private ParameterArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
-		this.parameter = parameter;
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterArrayAtIndexAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterArrayAtIndexAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserParameter.class, this.parameter );
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.ParameterArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.parameter );
+	public Class<? extends org.lgna.project.ast.Expression> getExpressionCls() {
+		return this.expressionCls;
 	}
 }

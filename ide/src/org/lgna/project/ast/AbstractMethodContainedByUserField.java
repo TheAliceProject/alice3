@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,92 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class AbstractMethodContainedByUserField extends AbstractMethod {
+	private final UserField field;
 
-	public static synchronized LocalArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalArrayAtIndexAssignmentTemplateDragModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayAtIndexAssignmentTemplateDragModel( local );
-			map.put( local, rv );
-		}
-		return rv;
+	/* package-private */AbstractMethodContainedByUserField( UserField field ) {
+		this.field = field;
 	}
 
-	private org.lgna.project.ast.UserLocal local;
-
-	private LocalArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignmentStatement( local ) );
-		this.local = local;
+	public final UserField getField() {
+		return this.field;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserLocal.class, this.local );
+	public final org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
+		return this.field.getDeclaringType();
+	}
+
+	public final AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+
+	public final AbstractParameter getKeyedParameter() {
+		return null;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.LocalArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.local );
+	public final org.lgna.project.annotations.Visibility getVisibility() {
+		return org.lgna.project.annotations.Visibility.PRIME_TIME;
+	}
+
+	@Override
+	public final AccessLevel getAccessLevel() {
+		return AccessLevel.PUBLIC;
+	}
+
+	@Override
+	public final edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+
+	@Override
+	public final boolean isSignatureLocked() {
+		return true;
+	}
+
+	@Override
+	public final boolean isStatic() {
+		return false;
+	}
+
+	@Override
+	public final boolean isAbstract() {
+		return false;
+	}
+
+	@Override
+	public final boolean isFinal() {
+		return false;
+	}
+
+	@Override
+	public final boolean isNative() {
+		return false;
+	}
+
+	@Override
+	public final boolean isSynchronized() {
+		return false;
+	}
+
+	@Override
+	public final boolean isStrictFloatingPoint() {
+		return false;
+	}
+
+	@Override
+	public final AbstractCode getNextLongerInChain() {
+		return null;
+	}
+
+	@Override
+	public final AbstractCode getNextShorterInChain() {
+		return null;
 	}
 }

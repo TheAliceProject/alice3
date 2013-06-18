@@ -161,7 +161,10 @@ public class FindContentManager {
 			}
 		}
 		if( parent != null ) {
-			tunnelSuper( parent.getSuperType() );
+			AbstractType grandparent = parent.getSuperType();
+			if( ( grandparent != null ) && grandparent.isFollowToSuperClassDesired() ) {
+				tunnelSuper( grandparent );
+			}
 		}
 	}
 

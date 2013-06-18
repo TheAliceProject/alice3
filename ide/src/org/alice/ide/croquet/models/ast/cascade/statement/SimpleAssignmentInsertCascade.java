@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components.templates;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-
-	public SetFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.statement.FieldArrayAtIndexAssignmentTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
+public abstract class SimpleAssignmentInsertCascade extends AssignmentInsertCascade {
+	public SimpleAssignmentInsertCascade( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank[] blanks ) {
+		super( migrationId, blockStatementIndexPair, blanks );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.AssignmentExpression(
-				this.field.getValueType().getComponentType(),
-				new org.lgna.project.ast.ArrayAccess(
-						field.getValueType(),
-						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ),
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE )
-				),
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() ) );
+	protected final int getIndexOfRightHandSide() {
+		return 0;
+	}
+
+	@Override
+	protected final java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
+		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
+		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				assignmentExpression.rightHandSide.getValue()
+				);
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAssignmentInsertCascade extends ExpressionStatementInsertCascade {
+public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade {
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldAssignmentInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized FieldAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
@@ -72,27 +72,18 @@ public class FieldAssignmentInsertCascade extends ExpressionStatementInsertCasca
 	}
 
 	@Override
-	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
-		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
-		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-
-		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
-		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				assignmentExpression.rightHandSide.getValue()
-				);
+	protected String getDeclarationName() {
+		return this.field.getName();
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
-				this.field.getValueType(),
-				new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-				expressions[ 0 ]
-				);
-		return rv;
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+		return this.field.getValueType();
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions ) {
+		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
 	}
 
 	@Override

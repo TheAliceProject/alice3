@@ -200,7 +200,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 
 		private InternalMenuModel( Cascade<T> cascade ) {
 			super( java.util.UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
-			assert cascade != null;
 			this.cascade = cascade;
 		}
 
@@ -273,6 +272,13 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		private java.util.Map<org.lgna.croquet.components.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		@Override
+		protected String findDefaultLocalizedText() {
+			String rv = super.findDefaultLocalizedText();
+			rv = this.cascade.modifyMenuTextIfDesired( rv );
+			return rv;
+		}
+
+		@Override
 		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
@@ -318,6 +324,10 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	private InternalMenuModel<T> menuModel;
+
+	protected String modifyMenuTextIfDesired( String text ) {
+		return text;
+	}
 
 	public synchronized InternalMenuModel<T> getMenuModel() {
 		if( this.menuModel != null ) {

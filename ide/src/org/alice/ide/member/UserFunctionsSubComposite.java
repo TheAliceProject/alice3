@@ -69,4 +69,9 @@ public class UserFunctionsSubComposite extends UserMethodsSubComposite {
 	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
 		return method.isFunction();
 	}
+
+	@Override
+	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
+		return field.getGetter();
+	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
-	private static class SingletonHolder {
-		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
+public class Getter extends AbstractMethodContainedByUserField {
+	private final UserField field;
+
+	/* package-private */Getter( UserField field ) {
+		super( field );
+		this.field = field;
 	}
 
-	public static <F> CascadeUnfilledInCancel<F> getInstance() {
-		return SingletonHolder.instance;
+	public AbstractType<?, ?, ?> getReturnType() {
+		return this.field.getValueType();
 	}
 
-	private CascadeUnfilledInCancel() {
-		super( java.util.UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
+	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+		return java.util.Collections.emptyList();
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
-		return null;
-	}
-
-	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
-		return "No suitable fillins were found.  Canceling.";
+	public String getName() {
+		//todo: handle boolean and is
+		String fieldName = this.field.getName();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "get" );
+		if( fieldName.length() > 0 ) {
+			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
+			sb.append( fieldName.substring( 1 ) );
+		}
+		return sb.toString();
 	}
 }
