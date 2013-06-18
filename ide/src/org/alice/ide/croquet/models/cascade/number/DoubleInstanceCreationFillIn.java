@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleFillerInner extends AbstractNumberFillerInner {
-	public static double[] getLiterals( org.lgna.project.annotations.ValueDetails<?> details ) {
-		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
-			return ( (org.lgna.project.annotations.NumberValueDetails)details ).getLiterals();
-		} else {
-			return new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
-		}
+public class DoubleInstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn {
+	private static class SingletonHolder {
+		private static DoubleInstanceCreationFillIn instance = new DoubleInstanceCreationFillIn();
 	}
 
-	public DoubleFillerInner() {
-		super( Double.class );
+	public static DoubleInstanceCreationFillIn getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.appendItems( items, details, isTop, prevExpression );
-		double[] literals = getLiterals( details );
-		for( double d : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
-		}
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu.getInstance() );
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.number.IntegerToRealCascadeMenu.getInstance() );
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
-		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		org.lgna.croquet.CascadeItem item = apiConfigurationManager.getCustomFillInFor( details );
-		if( item != null ) {
-			items.add( item );
-		} else {
-			items.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		}
+	//note: we would like to fill in an Integer for double parameter, hence the semi-madness below 
+	private DoubleInstanceCreationFillIn() {
+		super( java.util.UUID.fromString( "f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce" ), org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor( Double.TYPE ), IntegerBlank.getInstance() );
 	}
 }

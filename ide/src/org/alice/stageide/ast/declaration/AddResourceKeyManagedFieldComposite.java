@@ -148,7 +148,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
 				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				rv.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillIn.getInstance( constructor ) );
+				rv.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
 			rv.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
