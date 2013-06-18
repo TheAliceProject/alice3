@@ -70,7 +70,6 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		//java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 		if( selectedType != null ) {
 			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -80,36 +79,44 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 					if( userField.isFinal() ) {
 						//pass
 					} else {
-						rv.add( FieldAssignmentFillIn.getInstance( userField ) );
 						nonFinalUserFields.add( userField );
 					}
 				}
 			}
 			if( nonFinalUserFields.size() > 0 ) {
-				//models.add( FieldsSeparatorModel.getInstance() );
+				rv.add( FieldsSeparatorModel.getInstance() );
 				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
-					//models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					rv.add( FieldAssignmentFillIn.getInstance( field ) );
 					if( field.getValueType().isArray() ) {
-						//models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
 						rv.add( FieldArrayAtIndexAssignmentFillIn.getInstance( field ) );
 					}
 				}
 			}
 		}
-		//		if( models.size() == 0 ) {
-		//			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
-		//		}
 
+		java.util.List<org.lgna.project.ast.UserLocal> nonFinalLocals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserLocal local : org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
 			if( local.isFinal.getValue() ) {
 				//pass
 			} else {
+				nonFinalLocals.add( local );
+			}
+		}
+
+		if( nonFinalLocals.size() > 0 ) {
+			rv.add( VariablesSeparatorModel.getInstance() );
+			for( org.lgna.project.ast.UserLocal local : nonFinalLocals ) {
 				rv.add( LocalAssignmentFillIn.getInstance( local ) );
 				org.lgna.project.ast.AbstractType<?, ?, ?> type = local.getValueType();
 				if( type.isArray() ) {
 					rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( local ) );
 				}
 			}
+		}
+
+		//todo: check nonFinalUserFields and nonFinalLocals instead?
+		if( rv.size() == 0 ) {
+			rv.add( NoVariablesOrFieldsAccessibleCancelFillIn.getInstance() );
 		}
 
 		return rv;

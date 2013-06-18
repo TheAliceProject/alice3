@@ -45,16 +45,21 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public final class NoVariablesOrFieldsAccessibleSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
 	private static class SingletonHolder {
-		private static NoVariablesOrFieldsAccessibleSeparatorModel instance = new NoVariablesOrFieldsAccessibleSeparatorModel();
+		private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
 	}
 
-	public static NoVariablesOrFieldsAccessibleSeparatorModel getInstance() {
+	public static NoVariablesOrFieldsAccessibleCancelFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private NoVariablesOrFieldsAccessibleSeparatorModel() {
+	private NoVariablesOrFieldsAccessibleCancelFillIn() {
 		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
+	}
+
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode step ) {
+		return null;
 	}
 }

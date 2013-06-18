@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.cancels;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel<F> {
+public abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel<F> {
 	private String menuItemText;
 
 	public CancelFillIn( java.util.UUID id ) {
