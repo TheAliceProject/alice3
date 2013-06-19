@@ -60,25 +60,24 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
 		org.lgna.project.ast.Expression prevExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 		if( prevExpression != null ) {
 			if( prevExpression.getType().isAssignableTo( Number.class ) ) {
 				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-					rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+					blankChildren.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 				}
 			}
 		}
 		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+			blankChildren.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
-		rv.add( FloorCeilingCascadeMenu.getInstance() );
-		rv.add( PowerCascadeMenu.getInstance() );
-		rv.add( TrigonometryCascadeMenu.getInstance() );
-		rv.add( ExponentCascadeMenu.getInstance() );
-		return rv;
+		blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		blankChildren.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
+		blankChildren.add( FloorCeilingCascadeMenu.getInstance() );
+		blankChildren.add( PowerCascadeMenu.getInstance() );
+		blankChildren.add( TrigonometryCascadeMenu.getInstance() );
+		blankChildren.add( ExponentCascadeMenu.getInstance() );
 	}
 }

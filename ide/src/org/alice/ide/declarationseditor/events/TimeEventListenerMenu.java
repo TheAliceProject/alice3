@@ -1,7 +1,5 @@
 package org.alice.ide.declarationseditor.events;
 
-import java.util.List;
-
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
@@ -30,10 +28,9 @@ public class TimeEventListenerMenu extends EventListenerMenuModel {
 	}
 
 	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode ) {
-		rv.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
-		rv.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
-		return rv;
+	protected void updateBlankChildren( java.util.List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
+		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
+		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
 	}
 
 }

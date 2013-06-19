@@ -152,12 +152,12 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
-		rv.add(
+		blankChildren.add(
 				createFillInMenuComboIfNecessary(
 						InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
 						apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
@@ -186,14 +186,14 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
 						);
 				for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {
-					rv.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
+					blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
 				}
 				for( org.alice.ide.ast.fieldtree.TypeNode typeNode : root.getTypeNodes() ) {
-					rv.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
+					blankChildren.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
 				}
 			} else {
 				for( org.lgna.project.ast.UserField field : filteredFields ) {
-					rv.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
+					blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
 				}
 			}
 
@@ -232,15 +232,15 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					}
 				}
 				if( ( parameters.size() > 0 ) || ( locals.size() > 0 ) ) {
-					rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-					rv.add( this.parametersVariablesConstantsSeparator );
+					blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+					blankChildren.add( this.parametersVariablesConstantsSeparator );
 					StringBuilder sb = new StringBuilder();
 					org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, code );
 					sb.append( " " );
 					String prefix = "";
 					if( parameters.size() > 0 ) {
 						sb.append( "parameters" );
-						rv.addAll( parameters );
+						blankChildren.addAll( parameters );
 						prefix = ", ";
 					}
 					if( locals.size() > 0 ) {
@@ -254,13 +254,12 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 							sb.append( "constants" );
 							prefix = ", ";
 						}
-						rv.addAll( locals );
+						blankChildren.addAll( locals );
 					}
 					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
 				}
 			}
 		}
-		return rv;
 	}
 
 	@Override
