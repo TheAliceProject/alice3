@@ -80,9 +80,8 @@ public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.lgna.project.ast.AbstractParameter parameter = this.method.getRequiredParameters().get( 0 );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, parameter.getValueType(), parameter.getDetails() );
-		return rv;
+		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, parameter.getValueType(), parameter.getDetails() );
 	}
 }

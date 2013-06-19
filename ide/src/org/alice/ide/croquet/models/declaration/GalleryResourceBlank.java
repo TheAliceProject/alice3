@@ -70,7 +70,7 @@ public class GalleryResourceBlank extends org.lgna.croquet.CascadeBlank<org.lgna
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		return GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		GalleryResourceUtilities.updateChildren( children, blankNode, this.type );
 	}
 }
