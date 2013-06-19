@@ -221,7 +221,24 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	class JTimeLineView extends JItemSelectablePanel {
 		private final TimeLineComposite timeLine;
 		private final TimeLineListener timeLineListener = new TimeLineListener() {
-			public void changed() {
+
+			public void currentTimeChanged( double currentTime ) {
+				repaint();
+			}
+
+			public void selectedEventChanged( PoseEvent event ) {
+				repaint();
+			}
+
+			public void eventDeleted( PoseEvent event ) {
+				repaint();
+			}
+
+			public void eventAdded( PoseEvent event ) {
+				repaint();
+			}
+
+			public void eventModified( PoseEvent event ) {
 				repaint();
 			}
 		};

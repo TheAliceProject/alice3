@@ -62,12 +62,16 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  * @author Matt May
  */
 public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
-	public TimeLineComposite() {
-		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
-	}
 
 	private double currTime = 0;
 	private double endTime = 10;
+	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
+	private TimeLineView jTimeLineView;
+	private boolean isTimeMutable = true;
+
+	public TimeLineComposite() {
+		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+	}
 
 	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
 
@@ -88,9 +92,6 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		}
 	}, -1 );
 
-	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
-	private TimeLineView jTimeLineView;
-
 	public class PoseEvent {
 
 		private double eventTime;
@@ -110,6 +111,10 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 			return this.eventTime;
 		}
 
+		public Pose getPose() {
+			return pose;
+		}
+
 	}
 
 	public void addTimeLineListener( TimeLineListener listener ) {
@@ -120,16 +125,14 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		this.listeners.remove( listener );
 	}
 
-	private void fireChanged() {
-		for( TimeLineListener listener : this.listeners ) {
-			listener.changed();
-		}
-	}
-
 	public void addEventAtCurrentTime( Pose pose ) {
-		if( getPoseAtGivenTime( this.currTime ) == null ) {
+		PoseEvent conflictPose = getPoseAtGivenTime( this.currTime );
+		if( conflictPose == null ) {
 			PoseEvent poseEvent = new PoseEvent( currTime, pose );
 			insertPoseEvent( poseEvent );
+		} else {
+			conflictPose.pose = pose;
+			fireEventModified( conflictPose );
 		}
 	}
 
@@ -148,7 +151,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 	private void insertPoseEvent( PoseEvent poseEvent ) {
 		posesInTimeline.addItem( poseEvent );
-		this.fireChanged();
+		this.fireAdded( poseEvent );
 	}
 
 	public double getDurationForPose( Pose pose ) {
@@ -201,7 +204,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 			return;
 		}
 		this.currTime = time;
-		fireChanged();
+		fireTimeChanged( currTime );
 	}
 
 	@Override
@@ -229,4 +232,47 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		endTime = value;
 	}
 
+	public void removePose( PoseEvent item ) {
+		this.posesInTimeline.removeItem( item );
+		fireDeleted( item );
+	}
+
+	public void editEvent( PoseEvent selectedPose, Pose currentPose ) {
+		selectedPose.pose = currentPose;
+		fireEventModified( selectedPose );
+	}
+
+	public void setEditEnabled( boolean b ) {
+		isTimeMutable = !b;
+	}
+
+	private void fireTimeChanged( double newTime ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.currentTimeChanged( newTime );
+		}
+	}
+
+	private void fireAdded( PoseEvent poseEvent ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.eventAdded( poseEvent );
+		}
+	}
+
+	private void fireEventSelected( PoseEvent poseEvent ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.selectedEventChanged( poseEvent );
+		}
+	}
+
+	private void fireEventModified( PoseEvent poseEvent ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.eventModified( poseEvent );
+		}
+	}
+
+	private void fireDeleted( PoseEvent poseEvent ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.eventDeleted( poseEvent );
+		}
+	}
 }

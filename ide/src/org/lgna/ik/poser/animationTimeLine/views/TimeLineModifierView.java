@@ -40,56 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.poser.animationTimeLine.views;
+
+import org.lgna.croquet.components.MigPanel;
+import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
 
 /**
  * @author Matt May
  */
-@Deprecated
-public class PoseAnimation {
+public class TimeLineModifierView extends MigPanel {
 
-	private final Pose pose;
-
-	public PoseAnimation( Pose pose ) {
-		this.pose = pose;
+	public TimeLineModifierView( TimeLineModifierComposite composite ) {
+		super( composite, "fill", "", "" );
+		this.addComponent( composite.getStyleSelectionState().getPrepModel().createComboBox() );
+		this.addComponent( composite.getDeletePoseOperation().createButton(), "wrap" );
+		this.addComponent( composite.getIsEditing().createToggleButton() );
+		this.addComponent( composite.getSaveUpdatedPoseOperation().createButton(), "wrap" );
 	}
-
-	//	public void animate( ProgramImp programImp, BipedImp bipedImp ) {
-	//		AnimationThread rAThread = new AnimationThread( programImp.getAnimator(), getRightArmAnimation( bipedImp ), null );
-	//		AnimationThread lAThread = new AnimationThread( programImp.getAnimator(), getLeftArmAnimation( bipedImp ), null );
-	//		AnimationThread rLThread = new AnimationThread( programImp.getAnimator(), getRightLegAnimation( bipedImp ), null );
-	//		AnimationThread lLThread = new AnimationThread( programImp.getAnimator(), getLeftLegAnimation( bipedImp ), null );
-	//		org.lgna.common.ThreadUtilities.doTogether( rAThread, lAThread, rLThread, lLThread );
-	//	}
-	//
-	//	public void animate( ProgramImp programImp, SBiped biped ) {
-	//		this.animate( programImp, (BipedImp)ImplementationAccessor.getImplementation( biped ) );
-	//	}
-	//
-	//	private JointQPairTreeAnimation getRightArmAnimation( BipedImp biped ) {
-	//		return new JointQPairTreeAnimation( biped, pose.getRightArmBase() );
-	//	}
-	//
-	//	private JointQPairTreeAnimation getLeftArmAnimation( BipedImp biped ) {
-	//		return new JointQPairTreeAnimation( biped, pose.getLeftArmBase() );
-	//	}
-	//
-	//	private JointQPairTreeAnimation getRightLegAnimation( BipedImp biped ) {
-	//		return new JointQPairTreeAnimation( biped, pose.getRightLegBase() );
-	//	}
-	//
-	//	private JointQPairTreeAnimation getLeftLegAnimation( BipedImp biped ) {
-	//		return new JointQPairTreeAnimation( biped, pose.getLeftLegBase() );
-	//	}
-	//
-	public Pose getPose() {
-		return this.pose;
-	}
-	//
-	//	@Override
-	//	public String toString() {
-	//		StringBuilder sb = new StringBuilder();
-	//		sb.append( this.getClass().getSimpleName() );
-	//		return sb.toString();
-	//	}
 }

@@ -40,22 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine;
-
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
+package org.lgna.ik.poser.animationTimeLine.models;
 
 /**
  * @author Matt May
  */
-public interface TimeLineListener {
+public enum KeyFrameStyles {
+	ARRIVE_AND_EXIT_ABRUPTLY( false, false ),
+	ARRIVE_ABRUPTLY_AND_EXIT_GENTLY( false, true ),
+	ARRIVE_GENTLY_AND_EXIT_ABRUPTLY( true, false ),
+	ARRIVE_AND_EXIT_GENTLY( true, true );
+	private boolean isSlowInDesired;
+	private boolean isSlowOutDesired;
 
-	public void currentTimeChanged( double currentTime );
+	KeyFrameStyles( boolean isSlowInDesired, boolean isSlowOutDesired ) {
+		this.isSlowInDesired = isSlowInDesired;
+		this.isSlowOutDesired = isSlowOutDesired;
+	}
 
-	public void eventAdded( PoseEvent event );
+	public boolean getIsSlowOutDesired() {
+		return isSlowOutDesired;
+	}
 
-	public void selectedEventChanged( PoseEvent event );
-
-	public void eventModified( PoseEvent event );
-
-	public void eventDeleted( PoseEvent event );
+	public boolean getIsSlowInDesired() {
+		return isSlowInDesired;
+	}
 }

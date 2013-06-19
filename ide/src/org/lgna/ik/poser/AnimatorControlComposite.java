@@ -42,22 +42,19 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.List;
-import java.util.Map;
-
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
 import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
+import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
+import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
 import org.lgna.ik.poser.view.AnimatorControlView;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
@@ -66,11 +63,6 @@ import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.SetPose;
-import org.lgna.story.SetPose.Detail;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -81,8 +73,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 	public AnimatorControlComposite( AbstractPoserInputDialogComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
-		posesList.addValueListener( poseAnimationListener );
-		timeLine.addTimeLineListener( listener );
 		currentTime.addValueListener( new ValueListener<Double>() {
 
 			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
@@ -95,58 +85,15 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
 	}
 
-	protected ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class,
-			new ItemCodec<PoseAnimation>() {
-
-				public Class<PoseAnimation> getValueClass() {
-					return PoseAnimation.class;
-				}
-
-				public PoseAnimation decodeValue( BinaryDecoder binaryDecoder ) {
-					throw new RuntimeException( "todo" );
-				}
-
-				public void encodeValue( BinaryEncoder binaryEncoder, PoseAnimation value ) {
-					throw new RuntimeException( "todo" );
-				}
-
-				public void appendRepresentation( StringBuilder sb, PoseAnimation value ) {
-					sb.append( value );
-				}
-
-			}, -1 );
-	protected Map<PoseAnimation, Detail[]> animationToDetailMap = Collections.newHashMap();
-	protected TimeLineComposite timeLine = new TimeLineComposite();
+	private TimeLineComposite timeLine = new TimeLineComposite();
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
 	private AppendTimeToAnimationComposite appendTimeComposite = new AppendTimeToAnimationComposite( this );
-	private TimeLineListener listener = new TimeLineListener() {
-
-		public void changed() {
-			currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
-		}
-	};
-
-	private ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
-
-		public void changing( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
-			if( nextValue != null ) {
-				timeLine.addTimeLineListener( listener );
-				final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-				final org.lgna.story.SBiped ogre = parent.getBiped();
-				//nextValue.animate( programImp, ogre );
-			}
-		}
-	};
+	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( timeLine, this );
 
 	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			Pose pose = parent.getPose();
-			PoseAnimation pAnimation = new PoseAnimation( pose );
-			posesList.addItem( pAnimation );
 			timeLine.addEventAtCurrentTime( pose );
 			timeLine.setCurrentTime( timeLine.getCurrentTime() + 1 );
 			return null;
@@ -156,52 +103,21 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-
-			posesList.setSelectedIndex( -1 );
-
-			//			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-			final org.lgna.story.SBiped ogre = parent.getBiped();
-			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
-
-			//			ComponentThread thread = new ComponentThread( new Runnable() {
-			//				public void run() {
-			//					for( PoseAnimation pAnimation : posesList ) {
-			//						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
-			//					}
-			//				}
-			//			}, "noDescription" );
-			//			thread.start();
-			return null;
-		}
-	} );
-
-	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
-
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			posesList.removeItem( posesList.getValue() );
-			return null;
-		}
-	} );
-	private ActionOperation deselectPoseOperation = createActionOperation( createKey( "deselectPose" ), new Action() {
-
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			posesList.setSelectedIndex( -1 );
-			return null;
-		}
-	} );
-	private ActionOperation saveUpdatedPoseOperation = createActionOperation( createKey( "savePoseChanges" ), new Action() {
-
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			int index = posesList.indexOf( posesList.getValue() );
-			List<PoseAnimation> newValues = Collections.newArrayList();
-			for( int i = 0; i != posesList.getItemCount(); ++i ) {
-				if( i == index ) {
-					newValues.add( new PoseAnimation( parent.getPose() ) );
-				} else {
-					newValues.add( posesList.getItemAt( i ) );
-				}
-			}
-			posesList.setItems( newValues );
+			//
+			//			posesList.setSelectedIndex( -1 );
+			//
+			//			//			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+			//			final org.lgna.story.SBiped ogre = parent.getBiped();
+			//			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
+			//
+			//			//			ComponentThread thread = new ComponentThread( new Runnable() {
+			//			//				public void run() {
+			//			//					for( PoseAnimation pAnimation : posesList ) {
+			//			//						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
+			//			//					}
+			//			//				}
+			//			//			}, "noDescription" );
+			//			//			thread.start();
 			return null;
 		}
 	} );
@@ -213,13 +129,14 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
-		ExpressionStatement[] miArr = new ExpressionStatement[ posesList.getItemCount() ];
+		ListSelectionState<PoseEvent> poseEventList = timeLine.getPoseEventListSelectionState();
+		ExpressionStatement[] miArr = new ExpressionStatement[ poseEventList.getItemCount() ];
 		int i = 0;
-		for( PoseAnimation animation : posesList ) {
+		for( PoseEvent event : poseEventList ) {
 			try {
-				Expression argumentExpression = expressionCreator.createExpression( animation.getPose() );
-				double duration = timeLine.getDurationForPose( animation.getPose() );
-				AnimationStyle style = timeLine.getStyleForPose( animation.getPose() );
+				Expression argumentExpression = expressionCreator.createExpression( event.getPose() );
+				double duration = timeLine.getDurationForPose( event.getPose() );
+				AnimationStyle style = timeLine.getStyleForPose( event.getPose() );
 				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
 				//
 				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
@@ -245,36 +162,12 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		return new BlockStatement( miArr );
 	}
 
-	private Detail[] getParametersForAnimation( PoseAnimation animation ) {
-		if( animationToDetailMap.get( animation ) != null ) {
-			return animationToDetailMap.get( animation );
-		}
-		//timeline.getParametersForAnimation(Pose)
-		return new Detail[ 0 ];
-	}
-
 	public ActionOperation getSavePoseOperation() {
 		return this.savePoseOperation;
 	}
 
 	public ActionOperation getRunAnimationOperation() {
 		return this.runAnimationOperation;
-	}
-
-	public ActionOperation getDeletePoseOperation() {
-		return this.deletePoseOperation;
-	}
-
-	public ActionOperation getDeselectPoseOperation() {
-		return this.deselectPoseOperation;
-	}
-
-	public ActionOperation getSaveUpdatedPoseOperation() {
-		return this.saveUpdatedPoseOperation;
-	}
-
-	public ListSelectionState<PoseAnimation> getPosesList() {
-		return this.posesList;
 	}
 
 	public TimeLineComposite getTimeLine() {
@@ -302,7 +195,18 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		timeLine.setMaxTime( value );
 	}
 
+	public TimeLineModifierComposite getEditComposite() {
+		return this.editComposite;
+	}
+
 	public StringState getNameState() {
 		return this.nameState;
+	}
+
+	public void revertPose( PoseEvent selectedPose ) {
+	}
+
+	public Pose getCurrentPose() {
+		return parent.getPose();
 	}
 }

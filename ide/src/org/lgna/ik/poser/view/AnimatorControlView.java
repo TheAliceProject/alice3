@@ -47,6 +47,7 @@ import javax.swing.border.BevelBorder;
 
 import org.lgna.ik.poser.AnimatorControlComposite;
 import org.lgna.ik.poser.animationTimeLine.views.OuterTimeLineView;
+import org.lgna.ik.poser.animationTimeLine.views.TimeLineModifierView;
 
 /**
  * @author Matt May
@@ -56,15 +57,18 @@ public class AnimatorControlView extends AbstractPoserControlView {
 	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
 		super( controlComposite );
 
-		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
+		TimeLineModifierView editView = controlComposite.getEditComposite().getView();
+		editView.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		this.addComponent( editView, "span 2, grow, wrap" );
+		//		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
+		//		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
 
-		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
+		//		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
+		//		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		//		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
 
 		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
+		//		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
 		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
 		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
