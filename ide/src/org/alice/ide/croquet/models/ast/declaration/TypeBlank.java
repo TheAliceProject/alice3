@@ -59,17 +59,16 @@ public class TypeBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.as
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 		java.util.List<org.lgna.project.ast.JavaType> javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes();
 		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
-			rv.add( TypeFillIn.getInstance( javaType ) );
+			children.add( TypeFillIn.getInstance( javaType ) );
 		}
 
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( MyTypesMenuModel.getInstance() );
+		children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		children.add( MyTypesMenuModel.getInstance() );
 
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( OtherTypesMenuModel.getInstance() );
-		return rv;
+		children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		children.add( OtherTypesMenuModel.getInstance() );
 	}
 }

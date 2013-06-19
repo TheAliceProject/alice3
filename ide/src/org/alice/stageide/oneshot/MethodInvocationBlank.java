@@ -70,7 +70,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<MethodInvocationEditFactory> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<MethodInvocationEditFactory> blankNode ) {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
@@ -128,25 +128,23 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 			if( method != null ) {
 				//todo
 				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
-					rv.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setPaint".equals( method.getName() ) ) {
-					rv.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setCeilingPaint".equals( method.getName() ) ) {
-					rv.add( SetCeilingPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( SetCeilingPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setWallPaint".equals( method.getName() ) ) {
-					rv.add( SetWallPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( SetWallPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setFloorPaint".equals( method.getName() ) ) {
-					rv.add( SetFloorPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( SetFloorPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setOpacity".equals( method.getName() ) ) {
-					rv.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else {
-					rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+					children.add( LocalTransformationMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				}
 			} else {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
 		}
-
-		return rv;
 	}
 }

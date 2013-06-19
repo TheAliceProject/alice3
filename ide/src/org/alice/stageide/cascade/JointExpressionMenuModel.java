@@ -71,7 +71,7 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 	}
 
 	@Override
-	protected final java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected final void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
 		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() );
 		org.lgna.croquet.CascadeBlankChild child;
@@ -80,7 +80,7 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 		} else {
 			child = separator;
 		}
-		rv.add( child );
+		blankChildren.add( child );
 
 		org.alice.stageide.joint.JointsSubMenu<org.lgna.project.ast.MethodInvocation>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() );
 
@@ -97,15 +97,14 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 				if( isConsumed ) {
 					//pass
 				} else {
-					rv.add( fillIn );
+					blankChildren.add( fillIn );
 				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
 			}
 		}
 		for( org.alice.stageide.joint.JointsSubMenu<org.lgna.project.ast.MethodInvocation> subMenu : subMenus ) {
-			rv.add( subMenu );
+			blankChildren.add( subMenu );
 		}
-		return rv;
 	}
 }

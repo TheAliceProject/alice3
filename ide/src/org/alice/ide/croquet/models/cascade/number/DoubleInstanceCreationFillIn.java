@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.ArithmeticInfixExpression> {
+public class DoubleInstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn {
 	private static class SingletonHolder {
-		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
+		private static DoubleInstanceCreationFillIn instance = new DoubleInstanceCreationFillIn();
 	}
 
-	public static IncompleteDivideRemainderCascadeMenu getInstance() {
+	public static DoubleInstanceCreationFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private IncompleteDivideRemainderCascadeMenu() {
-		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
-	}
-
-	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
-		}
+	//note: we would like to fill in an Integer for double parameter, hence the semi-madness below 
+	private DoubleInstanceCreationFillIn() {
+		super( java.util.UUID.fromString( "f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce" ), org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor( Double.TYPE ), IntegerBlank.getInstance() );
 	}
 }

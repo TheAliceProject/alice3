@@ -143,15 +143,15 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 			this.pushedContext = null;
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.Expression initializer = getInitializer();
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
 				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				rv.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillIn.getInstance( constructor ) );
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				blankChildren.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
+				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			rv.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+			blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
 		}
 	}
 

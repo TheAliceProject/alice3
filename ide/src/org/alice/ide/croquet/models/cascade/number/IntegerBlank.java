@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.integer;
+package org.alice.ide.croquet.models.cascade.number;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.ArithmeticInfixExpression> {
+public class IntegerBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
 	private static class SingletonHolder {
-		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
+		private static IntegerBlank instance = new IntegerBlank();
 	}
 
-	public static IncompleteDivideRemainderCascadeMenu getInstance() {
+	public static IntegerBlank getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private IncompleteDivideRemainderCascadeMenu() {
-		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
-	}
-
-	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
-		}
+	private IntegerBlank() {
+		super( java.util.UUID.fromString( "a30136a1-06fe-40f7-baad-c6bd7f6f83da" ), Integer.class );
 	}
 }
