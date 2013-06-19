@@ -20,7 +20,7 @@ public class KeyboardEventListenerMenu extends EventListenerMenuModel {
 	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( SScene.class, "addObjectMoverFor", SMovableTurnable.class, AddObjectMoverFor.Detail[].class );
 	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance( SScene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
 	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Collections.newArrayList( ADD_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD );
+	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Collections.newArrayList( ADD_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD );
 
 	private static class SingletonHolder {
 		private static KeyboardEventListenerMenu instance = new KeyboardEventListenerMenu();
