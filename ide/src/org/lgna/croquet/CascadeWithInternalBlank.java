@@ -75,8 +75,8 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
 		}
 
 		@Override
-		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
-			return this.cascade.updateBlankChildren( rv, blankNode );
+		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+			this.cascade.updateBlankChildren( children, blankNode );
 		}
 	}
 

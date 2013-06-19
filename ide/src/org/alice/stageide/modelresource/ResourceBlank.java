@@ -54,10 +54,9 @@ public class ResourceBlank extends org.lgna.croquet.CascadeBlank<ResourceNode> {
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
 		for( ResourceNode child : resourceNode.getNodeChildren() ) {
-			rv.add( child.getAddFieldBlankChild() );
+			children.add( child.getAddFieldBlankChild() );
 		}
-		return rv;
 	}
 }

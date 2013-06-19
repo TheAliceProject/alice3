@@ -138,35 +138,35 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		public void epilogue() {
 		}
 
-		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
+		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || ( type != programType ) ) {
-					rv.add( this.getFillInFor( type ) );
+					blankChildren.add( this.getFillInFor( type ) );
 				}
 			}
 			for( edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
-				appendBlankChildren( rv, programType, child );
+				appendBlankChildren( blankChildren, programType, child );
 			}
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 			for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes() ) {
-				rv.add( this.getFillInFor( type ) );
+				blankChildren.add( this.getFillInFor( type ) );
 			}
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
-			appendBlankChildren( rv, programType, root );
+			appendBlankChildren( blankChildren, programType, root );
 
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass
 			} else {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				rv.add( otherTypesMenuModel );
+				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				blankChildren.add( otherTypesMenuModel );
 			}
 		}
 	}
@@ -239,10 +239,10 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		public void epilogue() {
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.annotations.ValueDetails valueDetails = null;
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = DeclarationLikeSubstanceComposite.this.getValueType();
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, type, valueDetails );
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, type, valueDetails );
 		}
 	}
 

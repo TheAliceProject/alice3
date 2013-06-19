@@ -54,11 +54,10 @@ public class ResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<Resourc
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<ResourceNode> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<ResourceNode> blankNode ) {
 		for( ResourceNode child : resourceNode.getNodeChildren() ) {
-			rv.add( child.getAddFieldBlankChild() );
+			blankChildren.add( child.getAddFieldBlankChild() );
 		}
-		return rv;
 	}
 
 	@Override

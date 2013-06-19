@@ -60,11 +60,10 @@ public class FloorCeilingCascadeMenu extends org.alice.ide.croquet.models.cascad
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "rint", Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "ceil", Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "floor", Double.TYPE ) );
-		return rv;
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Double.TYPE ) );
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "rint", Double.TYPE ) );
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "ceil", Double.TYPE ) );
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "floor", Double.TYPE ) );
 	}
 }
