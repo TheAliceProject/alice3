@@ -72,12 +72,11 @@ public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithI
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.story.resources.JointId> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.story.resources.JointId> blankNode ) {
 		org.lgna.story.resources.JointId[] rootIds = org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 		for( org.lgna.story.resources.JointId rootId : rootIds ) {
-			fillIn( rv, rootId );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			fillIn( blankChildren, rootId );
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
-		return rv;
 	}
 }

@@ -50,7 +50,7 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInse
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
 
 	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, org.lgna.project.annotations.ValueDetails<?> parameterDetails ) {
-		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
+		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}
 

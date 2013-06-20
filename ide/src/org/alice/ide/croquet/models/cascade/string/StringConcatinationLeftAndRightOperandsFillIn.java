@@ -58,9 +58,7 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 	private final org.lgna.project.ast.StringConcatenation transientValue;
 
 	private StringConcatinationLeftAndRightOperandsFillIn() {
-		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ),
-				org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ),
-				org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
+		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Object.class, Object.class ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStringConcatenation();
 	}
 

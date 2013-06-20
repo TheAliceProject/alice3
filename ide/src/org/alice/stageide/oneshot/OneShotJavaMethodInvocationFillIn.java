@@ -46,19 +46,19 @@ package org.alice.stageide.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
+public abstract class OneShotJavaMethodInvocationFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 
-	public MethodInvocationFillIn( java.util.UUID id, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+	public OneShotJavaMethodInvocationFillIn( java.util.UUID id, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		super( id, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.instanceFactory = instanceFactory;
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( method );
 		this.transientValue.expression.setValue( instanceFactory.createExpression() );
 	}
 
-	private org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.transientValue.method.getValue();
+	private org.lgna.project.ast.JavaMethod getMethod() {
+		return (org.lgna.project.ast.JavaMethod)this.transientValue.method.getValue();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.ImmutableC
 		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( new org.lgna.project.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
 	}
 
-	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
+	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
 
 	@Override
 	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
