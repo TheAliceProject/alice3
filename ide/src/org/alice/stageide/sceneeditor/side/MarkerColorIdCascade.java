@@ -59,7 +59,7 @@ public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascad
 	private final org.lgna.project.ast.UserField field;
 
 	private MarkerColorIdCascade( org.lgna.project.ast.UserField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.story.Color.class ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( org.lgna.story.Color.class ) );
 		this.field = field;
 	}
 

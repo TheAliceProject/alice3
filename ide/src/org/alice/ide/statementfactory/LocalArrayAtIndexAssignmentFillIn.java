@@ -63,7 +63,10 @@ public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.mod
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
 
 	private LocalArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ) );
+		super( java.util.UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ),
+				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ),
+				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( local.valueType.getValue().getComponentType() ) );
+
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
 	}
 
@@ -71,14 +74,6 @@ public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.mod
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)this.transientValue.leftHandSide.getValue();
 		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)arrayAccess.array.getValue();
 		return localAccess.local.getValue();
-	}
-
-	@Override
-	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
-		java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( this.transientValue.expressionType.getValue() ) );
-		return rv;
 	}
 
 	@Override

@@ -64,7 +64,9 @@ public final class FieldArrayAtIndexAssignmentFillIn extends org.alice.ide.croqu
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
 
 	private FieldArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "3385e94e-3299-42d2-941f-435af105dee4" ) );
+		super( java.util.UUID.fromString( "3385e94e-3299-42d2-941f-435af105dee4" ),
+				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ),
+				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( field.valueType.getValue().getComponentType() ) );
 		this.transientValue = org.lgna.project.ast.AstUtilities.createFieldArrayAssignment( new org.lgna.project.ast.ThisExpression(), field, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( field.valueType.getValue().getComponentType() ) );
 	}
 
@@ -72,14 +74,6 @@ public final class FieldArrayAtIndexAssignmentFillIn extends org.alice.ide.croqu
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)this.transientValue.leftHandSide.getValue();
 		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)arrayAccess.array.getValue();
 		return (org.lgna.project.ast.UserField)fieldAccess.field.getValue();
-	}
-
-	@Override
-	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
-		java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( this.transientValue.expressionType.getValue() ) );
-		return rv;
 	}
 
 	@Override
