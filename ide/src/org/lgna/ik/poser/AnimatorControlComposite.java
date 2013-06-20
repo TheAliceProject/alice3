@@ -50,6 +50,8 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
@@ -208,5 +210,11 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 	public Pose getCurrentPose() {
 		return parent.getPose();
+	}
+
+	public View getSouthViewForDialog() {
+		BorderPanel borderPanel = new BorderPanel();
+		borderPanel.addCenterComponent( timeLine.getView() );
+		return borderPanel;
 	}
 }

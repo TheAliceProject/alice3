@@ -48,6 +48,8 @@ import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.MutableDataListSelectionState;
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
 import org.lgna.ik.poser.animationTimeLine.views.OuterTimeLineView;
@@ -68,9 +70,20 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
 	private TimeLineView jTimeLineView;
 	private boolean isTimeMutable = true;
+	private ValueListener<TimeLineComposite.PoseEvent> valueListener = new ValueListener<TimeLineComposite.PoseEvent>() {
+
+		public void changing( State<PoseEvent> state, PoseEvent prevValue, PoseEvent nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<PoseEvent> state, PoseEvent prevValue, PoseEvent nextValue, boolean isAdjusting ) {
+			select( nextValue );
+		}
+	};
 
 	public TimeLineComposite() {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+
+		posesInTimeline.addValueListener( valueListener );
 	}
 
 	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
@@ -96,14 +109,14 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 		private double eventTime;
 		private Pose pose;
-		private AnimationStyle style = AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
+		private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
 
 		PoseEvent( double time, Pose pose ) {
 			this.eventTime = time;
 			this.pose = pose;
 		}
 
-		public void setStyle( AnimationStyle style ) {
+		public void setStyle( KeyFrameStyles style ) {
 			this.style = style;
 		}
 
@@ -115,6 +128,9 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 			return pose;
 		}
 
+		public KeyFrameStyles getEventStyle() {
+			return style;
+		}
 	}
 
 	public void addTimeLineListener( TimeLineListener listener ) {
@@ -170,10 +186,12 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 	public AnimationStyle getStyleForPose( Pose pose ) {
 		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
-			PoseEvent itr = posesInTimeline.getItemAt( i );
-			if( itr.pose.equals( pose ) ) {
-				return itr.style;
+			PoseEvent prev = null;
+			if( i != 0 ) {
+				prev = posesInTimeline.getItemAt( i - 1 );
 			}
+			PoseEvent itr = posesInTimeline.getItemAt( i );
+			KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles( prev.style, itr.style );
 		}
 		throw new RuntimeException( "Pose Not Found:" + pose );
 	}
@@ -246,6 +264,10 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		isTimeMutable = !b;
 	}
 
+	public boolean getIsTimeMutable() {
+		return isTimeMutable;
+	}
+
 	private void fireTimeChanged( double newTime ) {
 		for( TimeLineListener listener : listeners ) {
 			listener.currentTimeChanged( newTime );
@@ -274,5 +296,10 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		for( TimeLineListener listener : listeners ) {
 			listener.eventDeleted( poseEvent );
 		}
+	}
+
+	public void select( PoseEvent item ) {
+		this.posesInTimeline.setValueTransactionlessly( item );
+		fireEventSelected( item );
 	}
 }

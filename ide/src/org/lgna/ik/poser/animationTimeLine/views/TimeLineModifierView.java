@@ -42,7 +42,10 @@
  */
 package org.lgna.ik.poser.animationTimeLine.views;
 
+import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.components.ToggleButton;
+import org.lgna.ik.poser.animationTimeLine.models.KeyFrameStyles;
 import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
 
 /**
@@ -50,11 +53,21 @@ import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
  */
 public class TimeLineModifierView extends MigPanel {
 
+	private final ToggleButton toggleButton;
+	private final ComboBox<KeyFrameStyles> comboBox;
+
 	public TimeLineModifierView( TimeLineModifierComposite composite ) {
 		super( composite, "fill", "", "" );
-		this.addComponent( composite.getStyleSelectionState().getPrepModel().createComboBox() );
+		comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
+		this.addComponent( comboBox );
 		this.addComponent( composite.getDeletePoseOperation().createButton(), "wrap" );
-		this.addComponent( composite.getIsEditing().createToggleButton() );
+		toggleButton = composite.getIsEditing().createToggleButton();
+		this.addComponent( toggleButton );
 		this.addComponent( composite.getSaveUpdatedPoseOperation().createButton(), "wrap" );
+	}
+
+	public void enableOperations( boolean activate ) {
+		toggleButton.getAwtComponent().setEnabled( activate );
+		comboBox.getAwtComponent().setEnabled( activate );
 	}
 }

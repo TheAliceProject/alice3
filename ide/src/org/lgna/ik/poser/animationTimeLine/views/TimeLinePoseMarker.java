@@ -47,6 +47,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.event.ItemEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -59,6 +60,7 @@ import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
 
 class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
+
 	@Override
 	public void paint( Graphics g, JComponent c ) {
 		//note: do not invoke super
@@ -66,8 +68,8 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 		AbstractButton button = (AbstractButton)c;
 		ButtonModel buttonModel = button.getModel();
 		Paint circlePaint;
-		if( buttonModel.isPressed() ) {
-			circlePaint = Color.RED;
+		if( buttonModel.isSelected() ) {
+			circlePaint = Color.YELLOW;
 		} else {
 			if( buttonModel.isRollover() ) {
 				circlePaint = Color.GREEN;
@@ -107,6 +109,11 @@ class JTimeLinePoseMarker extends JToggleButton {
 
 	public TimeLinePoseMarker getTimeLinePoseMarker() {
 		return timeLinePoseMarker;
+	}
+
+	@Override
+	protected void fireItemStateChanged( ItemEvent event ) {
+		super.fireItemStateChanged( event );
 	}
 }
 

@@ -52,6 +52,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -63,6 +64,7 @@ import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
 import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 class TimeLineLayout implements LayoutManager {
 	public static int calculateMinX( Container parent ) {
@@ -176,7 +178,8 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	private static final java.awt.Shape ARROW = createArrow();
 
 	private TimeLineComposite composite;
-	private TimeLineLayout timeLineLayout;
+
+	private List<TimeLinePoseMarker> markers = Collections.newCopyOnWriteArrayList();
 
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite.getPoseEventListSelectionState() );
@@ -186,8 +189,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 	@Override
 	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		timeLineLayout = new TimeLineLayout( composite );
-		return timeLineLayout;
+		return new TimeLineLayout( composite );
 	}
 
 	@Override
@@ -205,7 +207,9 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 	@Override
 	protected BooleanStateButton<?> createButtonForItemSelectedState( PoseEvent item, BooleanState itemSelectedState ) {
-		return new TimeLinePoseMarker( itemSelectedState, item );
+		TimeLinePoseMarker timeLinePoseMarker = new TimeLinePoseMarker( itemSelectedState, item );
+		this.markers.add( timeLinePoseMarker );
+		return timeLinePoseMarker;
 	}
 
 	@Override
@@ -311,11 +315,20 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 			public void mousePressed( MouseEvent e ) {
 				Point locationOnScreen = e.getPoint();
+				for( TimeLinePoseMarker marker : markers ) {
+					Point mLocation = marker.getLocation();
+					Point check = new Point( locationOnScreen.x - mLocation.x, locationOnScreen.y - mLocation.y );
+					//					System.out.println( "locationOnScreen: ( " + locationOnScreen.x + ", " + locationOnScreen.y + " )" );
+					//					System.out.println( "mLocation: ( " + mLocation.x + ", " + mLocation.y + " )" );
+					//					if( marker.contains( check ) ) {
+					//						composite.select( marker.getItem() );
+					//					}
+				}
 				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / timeLine.getEndTime();
 				locationOnScreen.x = (int)( deltax );
 				locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
-				//				for(TimeLinePoseMarker marker : )
-				isSliding = ARROW.contains( locationOnScreen );
+
+				isSliding = ( ARROW.contains( locationOnScreen ) && composite.getIsTimeMutable() );
 			}
 
 			public void mouseExited( MouseEvent e ) {

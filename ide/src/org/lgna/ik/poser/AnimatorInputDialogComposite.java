@@ -44,6 +44,8 @@ package org.lgna.ik.poser;
 
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.NamedUserType;
@@ -86,5 +88,14 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 		} else {
 			return IS_GOOD_TO_GO_STATUS;
 		}
+	}
+
+	@Override
+	protected View createView() {
+		View splitPane = super.createView();
+		BorderPanel panel = new BorderPanel();
+		panel.addCenterComponent( splitPane );
+		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );
+		return panel;
 	}
 }

@@ -74,6 +74,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		this.parent = parent;
 		this.timeLine = timeLine;
 		timeLine.addTimeLineListener( listener );
+		updateSelectedEvent( null );
 	}
 
 	ValueListener<Boolean> isEditingListener = new ValueListener<Boolean>() {
@@ -109,6 +110,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		public void eventDeleted( PoseEvent event ) {
 			if( event.equals( selectedPose ) ) {
 				selectedPose = null;
+				TimeLineModifierComposite.this.updateSelectedEvent( null );
 			}
 		}
 
@@ -122,6 +124,14 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 	protected void updateSelectedEvent( PoseEvent event ) {
 		this.selectedPose = event;
+		boolean activate = event != null;
+		deletePoseOperation.setEnabled( activate );
+		saveUpdatedPoseOperation.setEnabled( activate );
+		getView().enableOperations( activate );
+		if( activate ) {
+			currentTime.setValueTransactionlessly( event.getEventTime() );
+			styleSelectionState.setValueTransactionlessly( event.getEventStyle() );
+		}
 	}
 
 	@Override

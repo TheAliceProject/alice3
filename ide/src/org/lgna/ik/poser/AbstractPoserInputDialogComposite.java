@@ -48,7 +48,7 @@ import java.util.UUID;
 import org.alice.ide.IDE;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.components.SplitPane;
+import org.lgna.croquet.components.View;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
@@ -62,7 +62,7 @@ import test.ik.croquet.SceneComposite;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserControlComposite> extends OperationInputDialogCoreComposite<SplitPane> {
+public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserControlComposite> extends OperationInputDialogCoreComposite<View> {
 
 	private IkPoser poser;
 
@@ -161,8 +161,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 	}
 
 	@Override
-	protected SplitPane createView() {
-		return this.splitComposite.getView();
+	protected View createView() {
+		return splitComposite.getView();
 	}
 
 	protected T getControlComposite() {

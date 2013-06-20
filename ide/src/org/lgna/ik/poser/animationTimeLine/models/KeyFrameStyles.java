@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser.animationTimeLine.models;
 
+import org.lgna.story.AnimationStyle;
+
 /**
  * @author Matt May
  */
@@ -64,5 +66,21 @@ public enum KeyFrameStyles {
 
 	public boolean getIsSlowInDesired() {
 		return isSlowInDesired;
+	}
+
+	public static AnimationStyle getAnimationStyleFromTwoKeyFramStyles( KeyFrameStyles previous, KeyFrameStyles current ) {
+		return getAnimationStyleForBooleanPair( ( previous == null ) || previous.isSlowOutDesired, current.isSlowInDesired );
+	}
+
+	private static AnimationStyle getAnimationStyleForBooleanPair( boolean startGently, boolean endGently ) {
+		if( startGently && endGently ) {
+			return AnimationStyle.BEGIN_AND_END_GENTLY;
+		} else if( startGently && !endGently ) {
+			return AnimationStyle.BEGIN_GENTLY_AND_END_ABRUPTLY;
+		} else if( !startGently && endGently ) {
+			return AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
+		} else {
+			return AnimationStyle.BEGIN_AND_END_ABRUPTLY;
+		}
 	}
 }
