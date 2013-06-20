@@ -47,6 +47,40 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
+	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<T> details ) {
+		ExpressionBlank rv;
+		if( type != null ) {
+			rv = new TypedExpressionBlank( type, details );
+		} else {
+			rv = org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
+		}
+		return rv;
+	}
+
+	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		return getBlankForType( type, null );
+	}
+
+	public static <T> ExpressionBlank getBlankForType( Class<T> cls, org.lgna.project.annotations.ValueDetails<T> details ) {
+		return getBlankForType( org.lgna.project.ast.JavaType.getInstance( cls ), details );
+	}
+
+	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
+		return getBlankForType( cls, null );
+	}
+
+	public static ExpressionBlank[] createBlanks( org.lgna.project.ast.AbstractType<?, ?, ?>... types ) {
+		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
+		for( int i = 0; i < rv.length; i++ ) {
+			rv[ i ] = getBlankForType( types[ i ] );
+		}
+		return rv;
+	}
+
+	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
+		return createBlanks( org.lgna.project.ast.JavaType.getInstances( clses ) );
+	}
+
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
 	private final org.lgna.project.annotations.ValueDetails<?> details;
 

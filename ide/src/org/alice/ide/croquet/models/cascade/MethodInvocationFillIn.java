@@ -47,10 +47,28 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
+	//
+	//
+	//
+	// todo: since a user method's signature can change, this should not inherit from ImmutableCascadeFillIn 
+	// extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> {
+	//
+	//
+	//
 	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> lockedBlanks;
+
+	private static java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> createBlanks( org.lgna.project.ast.AbstractMethod method ) {
+		return (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) ) );
+	}
 
 	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.Expression transientValueExpression, org.lgna.project.ast.AbstractMethod method ) {
-		super( id, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+		super( id );
+		if( method.isSignatureLocked() ) {
+			this.lockedBlanks = createBlanks( method );
+		} else {
+			this.lockedBlanks = null;
+		}
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
 	}
 
@@ -58,10 +76,10 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 
 	@Override
 	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
-		if( this.transientValue.method.getValue().isUserAuthored() ) {
-			return (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( this.transientValue.method.getValue() ) );
+		if( this.lockedBlanks != null ) {
+			return this.lockedBlanks;
 		} else {
-			return super.getBlanks();
+			return createBlanks( this.transientValue.method.getValue() );
 		}
 	}
 
