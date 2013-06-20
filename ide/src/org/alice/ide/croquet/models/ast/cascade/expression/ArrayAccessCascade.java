@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  */
 public abstract class ArrayAccessCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
 	public ArrayAccessCascade( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
+		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Integer.class ) );
 	}
 
 	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType();

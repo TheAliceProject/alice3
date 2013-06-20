@@ -62,15 +62,8 @@ public final class FieldAssignmentFillIn extends org.alice.ide.croquet.models.ca
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
 
 	private FieldAssignmentFillIn( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ) );
+		super( java.util.UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( field.valueType.getValue() ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( new org.lgna.project.ast.ThisExpression(), field );
-	}
-
-	@Override
-	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
-		java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( this.transientValue.expressionType.getValue() ) );
-		return rv;
 	}
 
 	private org.lgna.project.ast.UserField getField() {
