@@ -65,7 +65,7 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 	private final org.lgna.project.ast.ConditionalInfixExpression transientValue;
 
 	private ConditionalExpressionRightOperandOnlyFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ), org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Boolean.class ) );
 		this.transientValue = new org.lgna.project.ast.ConditionalInfixExpression(
 				new org.alice.ide.ast.PreviousValueExpression( Boolean.class ),
 				operator,

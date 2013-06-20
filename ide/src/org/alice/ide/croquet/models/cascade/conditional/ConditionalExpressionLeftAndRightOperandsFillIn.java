@@ -65,9 +65,7 @@ public class ConditionalExpressionLeftAndRightOperandsFillIn extends org.alice.i
 	private final org.lgna.project.ast.ConditionalInfixExpression transientValue;
 
 	private ConditionalExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "f7faea38-4071-4918-bea0-98971ddbd7a7" ),
-				org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ),
-				org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
+		super( java.util.UUID.fromString( "f7faea38-4071-4918-bea0-98971ddbd7a7" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Boolean.class, Boolean.class ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteConditionalInfixExpression( operator );
 	}
 

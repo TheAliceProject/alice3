@@ -81,7 +81,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
-		java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );
@@ -123,8 +123,8 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MODEL_SET_OPACITY_METHOD );
 		}
 
-		java.util.List<org.lgna.project.ast.AbstractMethod> sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
-		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
+		java.util.List<org.lgna.project.ast.JavaMethod> sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
+		for( org.lgna.project.ast.JavaMethod method : sortedMethods ) {
 			if( method != null ) {
 				//todo
 				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
