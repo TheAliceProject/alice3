@@ -48,13 +48,11 @@ package org.alice.ide.croquet.models.ast.cascade;
 public class ExpressionListPropertyCascade extends ExpressionsCascade {
 	private final int index;
 	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> desiredType;
 
 	public ExpressionListPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, int index, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
-		super( group, id, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		super( group, id, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( desiredType ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
-		this.desiredType = desiredType;
 	}
 
 	public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {

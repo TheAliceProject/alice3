@@ -45,19 +45,19 @@ package org.alice.stageide.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class SetPaintMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class SetPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetPaintMethodInvocationFillIn>() {
-			public SetPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetPaintMethodInvocationFillIn>() {
+			public SetPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new SetPaintMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaType type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
@@ -66,12 +66,12 @@ public class SetPaintMethodInvocationFillIn extends MethodInvocationFillIn {
 		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private SetPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+	private SetPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		super( java.util.UUID.fromString( "7fb8b1c7-242f-4662-8bea-b58ed0318003" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		return new SetPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

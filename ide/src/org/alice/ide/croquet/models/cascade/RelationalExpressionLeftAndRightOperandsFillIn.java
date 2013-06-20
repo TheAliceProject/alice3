@@ -64,7 +64,7 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 	private final org.lgna.project.ast.RelationalInfixExpression transientValue;
 
 	private RelationalExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ), CascadeManager.getBlankForType( operandType ), CascadeManager.getBlankForType( operandType ) );
+		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ), ExpressionBlank.createBlanks( operandType, operandType ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteRelationalInfixExpression( operandType, operator, operandType );
 	}
 

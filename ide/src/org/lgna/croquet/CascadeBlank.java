@@ -55,7 +55,7 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 	protected void localize() {
 	}
 
-	protected abstract java.util.List<CascadeBlankChild> updateChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+	protected abstract void updateChildren( java.util.List<CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<B> blankNode );
 
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
 		return ( child instanceof CascadeLineSeparator ) || ( ( child instanceof CascadeLabelSeparator ) && ( ( (CascadeLabelSeparator)child ).isValid() == false ) );

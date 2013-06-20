@@ -63,15 +63,8 @@ public class LocalAssignmentFillIn extends org.alice.ide.croquet.models.cascade.
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
 
 	private LocalAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ) );
+		super( java.util.UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( local.valueType.getValue() ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignment( local );
-	}
-
-	@Override
-	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
-		java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( this.transientValue.expressionType.getValue() ) );
-		return rv;
 	}
 
 	private org.lgna.project.ast.UserLocal getLocal() {

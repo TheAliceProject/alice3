@@ -52,13 +52,11 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 		}
 
 		@Override
-		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
-			AbstractCascadeMenuModel.this.updateBlankChildren( rv, blankNode );
-			return rv;
+		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
+			AbstractCascadeMenuModel.this.updateBlankChildren( children, blankNode );
 		}
 	}
 
-	private final InternalBlank blank = new InternalBlank();
 	private String menuItemText;
 
 	private final java.util.List<InternalBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new InternalBlank() ) );
@@ -78,7 +76,7 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 		this.menuItemText = this.findDefaultLocalizedText();
 	}
 
-	protected abstract java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+	protected abstract void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<B> blankNode );
 
 	private org.lgna.croquet.cascade.AbstractItemNode<B, ?, ?> getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode<? super F, B> itemNode ) {
 		org.lgna.croquet.cascade.BlankNode<B> blankNode = itemNode.getBlankStepAt( 0 );

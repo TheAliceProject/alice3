@@ -54,7 +54,7 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 				org.lgna.project.ast.AbstractType<?, ?, ?> type = key.getDeclaringType();
 				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();
 				org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks = new org.lgna.croquet.CascadeBlank[ 1 + parameters.size() ];
-				blanks[ 0 ] = CascadeManager.getBlankForType( type );
+				blanks[ 0 ] = ExpressionBlank.getBlankForType( type );
 				int i = 1;
 				for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
 					blanks[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter );

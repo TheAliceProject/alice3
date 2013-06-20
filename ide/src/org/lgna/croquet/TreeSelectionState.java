@@ -47,14 +47,13 @@ class TreeNodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static <T> java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode, TreeSelectionState<T> model, T node ) {
+	public static <T> void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode, TreeSelectionState<T> model, T node ) {
 		for( T childNode : model.getChildren( node ) ) {
 			CascadeBlankChild<T> child = model.getBlankChildFor( childNode );
 			if( child != null ) {
-				rv.add( child );
+				blankChildren.add( child );
 			}
 		}
-		return rv;
 	}
 
 }
@@ -136,8 +135,8 @@ class TreeNodeMenu<T> extends CascadeMenuModel<T> {
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
-		return TreeNodeUtilities.updateBlankChildren( rv, blankNode, this.model, this.node );
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+		TreeNodeUtilities.updateBlankChildren( blankChildren, blankNode, this.model, this.node );
 	}
 
 }
@@ -153,8 +152,8 @@ class TreeBlank<T> extends CascadeBlank<T> {
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
-		return TreeNodeUtilities.updateBlankChildren( rv, blankNode, this.model, this.node );
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+		TreeNodeUtilities.updateBlankChildren( children, blankNode, this.model, this.node );
 	}
 }
 

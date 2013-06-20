@@ -61,7 +61,7 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 	protected abstract JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index );
 
 	@Override
-	protected final java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
+	protected final void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
 		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
 		org.alice.stageide.cascade.JointedModelTypeSeparator separator = org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( info.getType() );
 		org.lgna.croquet.CascadeBlankChild child;
@@ -70,7 +70,7 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 		} else {
 			child = separator;
 		}
-		rv.add( child );
+		blankChildren.add( child );
 
 		org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() );
 
@@ -87,15 +87,14 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 				if( isConsumed ) {
 					//pass
 				} else {
-					rv.add( fillIn );
+					blankChildren.add( fillIn );
 				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
 			}
 		}
 		for( org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {
-			rv.add( subMenu );
+			blankChildren.add( subMenu );
 		}
-		return rv;
 	}
 }

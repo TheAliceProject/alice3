@@ -60,9 +60,8 @@ public class MinMaxCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "min", Double.TYPE, Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "max", Double.TYPE, Double.TYPE ) );
-		return rv;
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "min", Double.TYPE, Double.TYPE ) );
+		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "max", Double.TYPE, Double.TYPE ) );
 	}
 }

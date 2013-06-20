@@ -97,15 +97,10 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 		return new JointSelectionSphereStateDropDown( this );
 	}
 
-	private void fillIn( List<CascadeBlankChild> rv ) {
+	@Override
+	protected void updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
 		for( JointSelectionSphere sphere : possibleStates ) {
 			rv.add( JointSelectionSphereFillIn.getInstance( sphere ) );
 		}
-	}
-
-	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
-		fillIn( rv );
-		return rv;
 	}
 }
