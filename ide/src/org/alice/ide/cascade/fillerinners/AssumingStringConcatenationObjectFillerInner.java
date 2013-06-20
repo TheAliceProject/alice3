@@ -56,9 +56,7 @@ public class AssumingStringConcatenationObjectFillerInner extends ConcatenationF
 		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( String.class ) );
 		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( Double.class ) );
 		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( Integer.class ) );
-		//		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		//		items.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		//		items.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( org.lgna.story.SThing.class ) );
 		this.addConcatenationItems( items, details, isTop, prevExpression );
 	}
 }
