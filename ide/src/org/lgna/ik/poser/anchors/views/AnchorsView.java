@@ -46,10 +46,101 @@ package org.lgna.ik.poser.anchors.views;
  * @author Dennis Cosgrove
  */
 public class AnchorsView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+	private static class Node {
+		private static final java.awt.Shape SHAPE = new java.awt.geom.Ellipse2D.Float( -8, -8, 16, 16 );
+		private final double theta;
+		private final double length;
+		private boolean isSelected;
+
+		public Node( double theta, double length ) {
+			this.theta = theta;
+			this.length = length;
+		}
+
+		public boolean isSelected() {
+			return this.isSelected;
+		}
+
+		public void setSelected( boolean isSelected ) {
+			this.isSelected = isSelected;
+		}
+
+		public void paint( java.awt.Graphics2D g2 ) {
+			g2.rotate( this.theta );
+			g2.setPaint( java.awt.Color.BLACK );
+			g2.drawLine( 0, 0, 0, (int)this.length );
+
+			if( this.isSelected() ) {
+				g2.setPaint( java.awt.Color.GREEN );
+			} else {
+				g2.setPaint( java.awt.Color.GRAY );
+			}
+			g2.fill( SHAPE );
+
+			g2.setPaint( java.awt.Color.BLACK );
+			g2.draw( SHAPE );
+			g2.translate( 0, this.length );
+		}
+	}
+
+	private static abstract class Chain {
+		private final double tx;
+		private final double ty;
+		private final Node[] nodes;
+
+		public Chain( double tx, double ty, Node... nodes ) {
+			this.tx = tx;
+			this.ty = ty;
+			this.nodes = nodes;
+			this.nodes[ 0 ].setSelected( true );
+		}
+
+		public void paint( java.awt.Graphics2D g2 ) {
+			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			g2.translate( this.tx, this.ty );
+			for( Node node : this.nodes ) {
+				node.paint( g2 );
+			}
+			g2.setTransform( prevTransform );
+		}
+	}
+
+	private static class ArmChain extends Chain {
+		public ArmChain( double tx, double ty, double direction ) {
+			super( tx, ty, new Node( ( Math.PI / 8 ) * direction, 80 ), new Node( ( -Math.PI / 6 ) * direction, 60 ), new Node( 0, 24 ) );
+		}
+	}
+
+	private static class LegChain extends Chain {
+		public LegChain( double tx, double ty, double direction ) {
+			super( tx, ty, new Node( ( Math.PI / 24 ) * direction, 100 ), new Node( ( -Math.PI / 24 ) * direction, 80 ), new Node( 0, 16 ) );
+		}
+	}
+
 	private final class JAnchorsView extends javax.swing.JComponent {
+		private static final double LEFT__SIDE_DIRECTION = 1;
+		private static final double RIGHT_SIDE_DIRECTION = -1;
+		private static final double ARM_Y = 40;
+		private static final double LEG_Y = 180;
+		private final ArmChain leftArmChain = new ArmChain( 60, ARM_Y, LEFT__SIDE_DIRECTION );
+		private final ArmChain rightArmChain = new ArmChain( 160, ARM_Y, RIGHT_SIDE_DIRECTION );
+
+		private final LegChain leftLegChain = new LegChain( 80, LEG_Y, LEFT__SIDE_DIRECTION );
+		private final LegChain rightLegChain = new LegChain( 140, LEG_Y, RIGHT_SIDE_DIRECTION );
+
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			super.paintComponent( g );
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			this.leftArmChain.paint( g2 );
+			this.rightArmChain.paint( g2 );
+			this.leftLegChain.paint( g2 );
+			this.rightLegChain.paint( g2 );
+		}
+
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 240 );
 		}
 	}
 
@@ -82,4 +173,11 @@ public class AnchorsView extends org.lgna.croquet.components.JComponent<javax.sw
 		return new JAnchorsView();
 	}
 
+	public static void main( String[] args ) {
+		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
+		app.getFrame().getContentPane().addCenterComponent( new AnchorsView( null ) );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
+	}
 }
