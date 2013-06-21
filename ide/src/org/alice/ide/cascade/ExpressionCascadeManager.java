@@ -396,7 +396,7 @@ public abstract class ExpressionCascadeManager {
 					items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				}
 			}
-			if( type.isAssignableTo( String.class ) ) {
+			if( type == org.lgna.project.ast.JavaType.STRING_TYPE ) {
 				this.appendConcatenationItemsIfAppropriate( items, details, isRoot, prevExpression );
 			}
 
