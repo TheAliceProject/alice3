@@ -200,7 +200,17 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return type.isAssignableTo( org.lgna.story.SThing.class ) && ( type.isAssignableTo( org.lgna.story.SMarker.class ) == false );
+		if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
+			if( type.isAssignableTo( org.lgna.story.SMarker.class ) ) {
+				return false;
+			} else {
+				return true;
+			}
+		} else if( type.isAssignableTo( org.lgna.story.SProgram.class ) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
