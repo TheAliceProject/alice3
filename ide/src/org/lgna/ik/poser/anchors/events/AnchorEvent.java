@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.math;
+package org.lgna.ik.poser.anchors.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GoldenRatio {
-	public static final double PHI = 1.6180339887;
+public class AnchorEvent {
+	private final org.lgna.story.resources.JointId previousValue;
+	private final org.lgna.story.resources.JointId nextValue;
 
-	public static int getShorterSideLength( int longerSideLength ) {
-		return (int)( longerSideLength / PHI );
+	public AnchorEvent( org.lgna.story.resources.JointId previousValue, org.lgna.story.resources.JointId nextValue ) {
+		this.previousValue = previousValue;
+		this.nextValue = nextValue;
 	}
 
-	public static int getLongerSideLength( int shorterSideLength ) {
-		return (int)( shorterSideLength * PHI );
+	public org.lgna.story.resources.JointId getPreviousValue() {
+		return this.previousValue;
 	}
 
-	public static java.awt.Dimension createWiderSizeFromWidth( int width ) {
-		return new java.awt.Dimension( width, getShorterSideLength( width ) );
-	}
-
-	public static java.awt.Dimension createWiderSizeFromHeight( int height ) {
-		return new java.awt.Dimension( getLongerSideLength( height ), height );
-	}
-
-	public static java.awt.Dimension createTallerSizeFromWidth( int width ) {
-		return new java.awt.Dimension( width, getLongerSideLength( width ) );
-	}
-
-	public static java.awt.Dimension createTallerSizeFromHeight( int height ) {
-		return new java.awt.Dimension( getShorterSideLength( height ), height );
-	}
-
-	private GoldenRatio() {
-		throw new AssertionError();
+	public org.lgna.story.resources.JointId getNextValue() {
+		return this.nextValue;
 	}
 }
