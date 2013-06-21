@@ -40,20 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.ik.poser.AppendTimeToAnimationComposite;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public class AppendTimeToAnimationView extends BorderPanel {
+public class ModifyTimeOfExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 
-	public AppendTimeToAnimationView( AppendTimeToAnimationComposite composite ) {
-		super( composite );
-		GridPanel panel = GridPanel.createGridPane( 1, 2, composite.getAmount().getSidekickLabel().createImmutableTextArea(), composite.getAmount().createSpinner() );
-		addCenterComponent( panel );
+	private KeyFrameData keyFrameData;
+	private final double newTime;
+	private final double prevTime;
+
+	protected ModifyTimeOfExistingKeyFrameInTimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, KeyFrameData data, double newTime, double previousTime ) {
+		super( completionStep, timeLine );
+		this.keyFrameData = data;
+		this.newTime = newTime;
+		this.prevTime = previousTime;
 	}
+
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		getTimeLine().moveExistingKeyFrameData( keyFrameData, newTime );
+	}
+
+	@Override
+	protected void undoInternal() {
+		getTimeLine().moveExistingKeyFrameData( keyFrameData, prevTime );
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	}
+
 }

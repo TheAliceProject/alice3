@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.models;
+package org.lgna.ik.poser.animation;
 
 import org.lgna.story.AnimationStyle;
 

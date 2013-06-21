@@ -49,6 +49,7 @@ import org.alice.ide.IDE;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.View;
+import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;

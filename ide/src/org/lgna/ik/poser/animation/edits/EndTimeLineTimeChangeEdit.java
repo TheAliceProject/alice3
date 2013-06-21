@@ -40,34 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.views;
+package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.ToggleButton;
-import org.lgna.ik.poser.animationTimeLine.models.KeyFrameStyles;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public class TimeLineModifierView extends MigPanel {
+public class EndTimeLineTimeChangeEdit extends TimeLineEdit {
 
-	private final ToggleButton toggleButton;
-	private final ComboBox<KeyFrameStyles> comboBox;
+	private final double newTime;
+	private final double prevTime;
 
-	public TimeLineModifierView( TimeLineModifierComposite composite ) {
-		super( composite, "fill", "", "" );
-		comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
-		this.addComponent( comboBox );
-		this.addComponent( composite.getDeletePoseOperation().createButton(), "wrap" );
-		toggleButton = composite.getIsEditing().createToggleButton();
-		this.addComponent( toggleButton );
-		this.addComponent( composite.getSaveUpdatedPoseOperation().createButton(), "wrap" );
+	public EndTimeLineTimeChangeEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, double newTime, double previousTime ) {
+		super( completionStep, timeLine );
+		this.newTime = newTime;
+		this.prevTime = previousTime;
 	}
 
-	public void enableOperations( boolean activate ) {
-		toggleButton.getAwtComponent().setEnabled( activate );
-		comboBox.getAwtComponent().setEnabled( activate );
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		getTimeLine().setEndTime( newTime );
 	}
+
+	@Override
+	protected void undoInternal() {
+		getTimeLine().setEndTime( prevTime );
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	}
+
 }

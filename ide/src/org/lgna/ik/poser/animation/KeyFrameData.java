@@ -40,50 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser.animation;
 
-import org.lgna.croquet.components.AbstractLabel;
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
-import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
+import org.lgna.ik.poser.Pose;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" +
-				"[grow 0]" + //straightenOutJoints
-				"[grow 0]" + //delete row
-				"[]10" + //list section
-				"[grow 0]0[grow 0]" + //save and export rows
-				"10[grow 0]" ); //slider component
-		AbstractLabel label = poserControlComposite.getRightArmLabel().createLabel();
-		this.addComponent( label );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
+public class KeyFrameData {
 
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
+	private double eventTime;
+	private Pose pose;
+	private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
 
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
+	public KeyFrameData( double time, Pose pose ) {
+		this.eventTime = time;
+		this.pose = pose;
+	}
 
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
+	public void setStyle( KeyFrameStyles style ) {
+		this.style = style;
+	}
 
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
+	public double getEventTime() {
+		return this.eventTime;
+	}
 
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
-		this.addComponent( poserControlComposite.getStraightenJointsOperation().createButton(), "wrap, spanx 4, growx" );
+	public Pose getPose() {
+		return pose;
+	}
+
+	public KeyFrameStyles getEventStyle() {
+		return style;
+	}
+
+	public void setPose( Pose pose ) {
+		this.pose = pose;
+	}
+
+	public void setTime( double newTime ) {
+		this.eventTime = newTime;
 	}
 }

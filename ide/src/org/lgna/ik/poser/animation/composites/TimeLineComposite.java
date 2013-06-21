@@ -40,43 +40,96 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser.animation.composites;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
+import java.util.List;
 
-import org.lgna.ik.poser.AnimatorControlComposite;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.views.OuterTimeLineView;
-import org.lgna.ik.poser.animation.views.TimeLineModifierView;
+import org.lgna.ik.poser.animation.views.TimeLineView;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Matt May
  */
-public class AnimatorControlView extends AbstractPoserControlView {
+public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
-	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
-		super( controlComposite );
+	private TimeLineView jTimeLineView;
+	private boolean isTimeMutable = true;
+	private TimeLine timeLine = new TimeLine();
+	private KeyFrameData selected = null;
+	private ListSelectionState<KeyFrameData> listState =
+			createListSelectionState( createKey( "DO NOT TRANSLATE" ),
+					new RefreshableListData<KeyFrameData>( new ItemCodec<KeyFrameData>() {
 
-		TimeLineModifierView editView = controlComposite.getEditComposite().getView();
-		editView.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( editView, "span 2, grow, wrap" );
-		//		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
+						public Class<KeyFrameData> getValueClass() {
+							return KeyFrameData.class;
+						}
 
-		//		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		//		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		//		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
+						public KeyFrameData decodeValue( BinaryDecoder binaryDecoder ) {
+							throw new RuntimeException( "DO THIS YOURSELF" );
+						}
 
-		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
+						public void encodeValue( BinaryEncoder binaryEncoder, KeyFrameData value ) {
+							throw new RuntimeException( "DO THIS YOURSELF" );
+						}
 
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
-		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
-		this.addComponent( controlComposite.getNameState().createTextField(), "grow, wrap" );
+						public void appendRepresentation( StringBuilder sb, KeyFrameData value ) {
+							sb.append( value );
+						}
+					} ) {
 
-		OuterTimeLineView component = controlComposite.getTimeLine().createView();
-		this.addComponent( component, "grow, span 2, wrap" );
-		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
-		//		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
+						@Override
+						protected List<KeyFrameData> createValues() {
+							return timeLine.getKeyFrames();
+						}
+					}, -1 );
+
+	public TimeLineComposite() {
+		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+	}
+
+	public double getDurationForKeyFrame( KeyFrameData pose ) {
+		return timeLine.getDurationForKeyFrame( pose );
+	}
+
+	@Override
+	public OuterTimeLineView createView() {
+		return new OuterTimeLineView( this );
+	}
+
+	public int getViewWidth() {
+		return jTimeLineView.getWidth();
+	}
+
+	public int getViewHeight() {
+		return jTimeLineView.getHeight();
+	}
+
+	public void setJComponent( TimeLineView jTimeLineView ) {
+		this.jTimeLineView = jTimeLineView;
+	}
+
+	public void setEditEnabled( boolean b ) {
+		isTimeMutable = !b;
+	}
+
+	public boolean getIsTimeMutable() {
+		return isTimeMutable;
+	}
+
+	public TimeLine getTimeLine() {
+		return timeLine;
+	}
+
+	public ListSelectionState<KeyFrameData> getListState() {
+		return this.listState;
 	}
 }

@@ -40,22 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine;
+package org.lgna.ik.poser.animation.views;
 
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
+import org.lgna.croquet.components.ComboBox;
+import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.components.ToggleButton;
+import org.lgna.ik.poser.animation.KeyFrameStyles;
+import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
 
 /**
  * @author Matt May
  */
-public interface TimeLineListener {
+public class TimeLineModifierView extends MigPanel {
 
-	public void currentTimeChanged( double currentTime );
+	private final ToggleButton toggleButton;
+	private final ComboBox<KeyFrameStyles> comboBox;
 
-	public void eventAdded( PoseEvent event );
+	public TimeLineModifierView( TimeLineModifierComposite composite ) {
+		super( composite, "fill", "", "" );
+		comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
+		this.addComponent( comboBox );
+		this.addComponent( composite.getDeletePoseOperation().createButton(), "wrap" );
+		toggleButton = composite.getIsEditing().createToggleButton();
+		this.addComponent( toggleButton );
+		this.addComponent( composite.getSaveUpdatedPoseOperation().createButton(), "wrap" );
+	}
 
-	public void selectedEventChanged( PoseEvent event );
-
-	public void eventModified( PoseEvent event );
-
-	public void eventDeleted( PoseEvent event );
+	public void enableOperations( boolean activate ) {
+		toggleButton.getAwtComponent().setEnabled( activate );
+		comboBox.getAwtComponent().setEnabled( activate );
+	}
 }

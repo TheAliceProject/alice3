@@ -42,11 +42,12 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.List;
+
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
@@ -54,9 +55,10 @@ import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineModifierComposite;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
+import org.lgna.ik.poser.animation.composites.TimeLineComposite;
+import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
 import org.lgna.ik.poser.view.AnimatorControlView;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
@@ -81,23 +83,22 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			}
 
 			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
-				timeLine.setCurrentTime( nextValue );
+				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
-		currentTime.setValueTransactionlessly( timeLine.getCurrentTime() );
+		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 	}
 
-	private TimeLineComposite timeLine = new TimeLineComposite();
+	private TimeLineComposite tlComposite = new TimeLineComposite();
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
-	private AppendTimeToAnimationComposite appendTimeComposite = new AppendTimeToAnimationComposite( this );
-	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( timeLine, this );
+	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite, this );
 
 	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			Pose pose = parent.getPose();
-			timeLine.addEventAtCurrentTime( pose );
-			timeLine.setCurrentTime( timeLine.getCurrentTime() + 1 );
+			tlComposite.getTimeLine().addKeyFrameData( pose );
+			tlComposite.getTimeLine().setCurrentTime( tlComposite.getTimeLine().getCurrentTime() + 1 );
 			return null;
 		}
 	} );
@@ -131,14 +132,14 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
-		ListSelectionState<PoseEvent> poseEventList = timeLine.getPoseEventListSelectionState();
-		ExpressionStatement[] miArr = new ExpressionStatement[ poseEventList.getItemCount() ];
+		List<KeyFrameData> keyFrameList = tlComposite.getTimeLine().getKeyFrames();
+		ExpressionStatement[] miArr = new ExpressionStatement[ keyFrameList.size() ];
 		int i = 0;
-		for( PoseEvent event : poseEventList ) {
+		for( KeyFrameData event : keyFrameList ) {
 			try {
 				Expression argumentExpression = expressionCreator.createExpression( event.getPose() );
-				double duration = timeLine.getDurationForPose( event.getPose() );
-				AnimationStyle style = timeLine.getStyleForPose( event.getPose() );
+				double duration = tlComposite.getTimeLine().getDurationForKeyFrame( event );
+				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
 				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
 				//
 				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
@@ -173,7 +174,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	}
 
 	public TimeLineComposite getTimeLine() {
-		return this.timeLine;
+		return this.tlComposite;
 	}
 
 	@Override
@@ -185,16 +186,8 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		return this.currentTime;
 	}
 
-	public AppendTimeToAnimationComposite getAppendTimeComposite() {
-		return this.appendTimeComposite;
-	}
-
 	public Group getGroup() {
 		return GROUP;
-	}
-
-	public void addTime( Double value ) {
-		timeLine.setMaxTime( value );
 	}
 
 	public TimeLineModifierComposite getEditComposite() {
@@ -205,7 +198,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		return this.nameState;
 	}
 
-	public void revertPose( PoseEvent selectedPose ) {
+	public void revertPose( KeyFrameData selectedPose ) {
 	}
 
 	public Pose getCurrentPose() {
@@ -214,7 +207,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 
 	public View getSouthViewForDialog() {
 		BorderPanel borderPanel = new BorderPanel();
-		borderPanel.addCenterComponent( timeLine.getView() );
+		borderPanel.addCenterComponent( tlComposite.getView() );
 		return borderPanel;
 	}
 }

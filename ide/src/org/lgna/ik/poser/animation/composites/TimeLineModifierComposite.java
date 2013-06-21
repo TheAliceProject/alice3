@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.models;
+package org.lgna.ik.poser.animation.composites;
 
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -53,27 +53,28 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.AnimatorControlComposite;
-import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
-import org.lgna.ik.poser.animationTimeLine.views.TimeLineModifierView;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.KeyFrameStyles;
+import org.lgna.ik.poser.animation.TimeLineListener;
+import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 
 /**
  * @author Matt May
  */
 public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierView> {
 
-	private TimeLineComposite timeLine;
+	private TimeLineComposite composite;
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
-	private PoseEvent selectedPose;
+	private KeyFrameData selectedKeyFrame;
 	private BooleanState isEditing = createBooleanState( createKey( "isEditing" ), false );
 	private AnimatorControlComposite parent;
 	private ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
-	public TimeLineModifierComposite( TimeLineComposite timeLine, AnimatorControlComposite parent ) {
+	public TimeLineModifierComposite( TimeLineComposite composite, AnimatorControlComposite parent ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.parent = parent;
-		this.timeLine = timeLine;
-		timeLine.addTimeLineListener( listener );
+		this.composite = composite;
+		composite.getTimeLine().addListener( listener );
 		updateSelectedEvent( null );
 	}
 
@@ -85,10 +86,10 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		/** edit/revert **/
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( nextValue ) {
-				timeLine.setEditEnabled( true );
+				composite.setEditEnabled( true );
 			} else {
-				parent.revertPose( selectedPose );
-				timeLine.setEditEnabled( false );
+				parent.revertPose( selectedKeyFrame );
+				composite.setEditEnabled( false );
 			}
 		}
 	};
@@ -99,31 +100,34 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
 		}
 
-		public void eventAdded( PoseEvent event ) {
+		public void keyFrameAdded( KeyFrameData event ) {
 			//do nothing don't care here
 		}
 
-		public void selectedEventChanged( PoseEvent event ) {
+		public void selectedKeyFrameChanged( KeyFrameData event ) {
 			TimeLineModifierComposite.this.updateSelectedEvent( event );
 		}
 
-		public void eventDeleted( PoseEvent event ) {
-			if( event.equals( selectedPose ) ) {
-				selectedPose = null;
+		public void keyFrameDeleted( KeyFrameData event ) {
+			if( event.equals( selectedKeyFrame ) ) {
+				selectedKeyFrame = null;
 				TimeLineModifierComposite.this.updateSelectedEvent( null );
 			}
 		}
 
-		public void eventModified( PoseEvent event ) {
-			if( event == selectedPose ) {
+		public void keyFrameModified( KeyFrameData event ) {
+			if( event == selectedKeyFrame ) {
 				TimeLineModifierComposite.this.updateSelectedEvent( event );
 			}
 		}
 
+		public void endTimeChanged( double endTime ) {
+		}
+
 	};
 
-	protected void updateSelectedEvent( PoseEvent event ) {
-		this.selectedPose = event;
+	protected void updateSelectedEvent( KeyFrameData event ) {
+		this.selectedKeyFrame = event;
 		boolean activate = event != null;
 		deletePoseOperation.setEnabled( activate );
 		saveUpdatedPoseOperation.setEnabled( activate );
@@ -142,14 +146,14 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			timeLine.removePose( selectedPose );
+			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
 			return null;
 		}
 	} );
 	private ActionOperation saveUpdatedPoseOperation = createActionOperation( createKey( "savePoseChanges" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			timeLine.editEvent( selectedPose, parent.getCurrentPose() );
+			composite.getTimeLine().modifyExistingPose( selectedKeyFrame, parent.getCurrentPose() );
 			return null;
 		}
 	} );

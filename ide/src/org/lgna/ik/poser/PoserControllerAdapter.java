@@ -44,6 +44,7 @@ package org.lgna.ik.poser;
 
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.Color;
 import org.lgna.story.SetPaint;

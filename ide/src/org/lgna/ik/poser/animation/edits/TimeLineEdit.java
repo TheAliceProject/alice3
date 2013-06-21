@@ -40,19 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.views;
+package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public class OuterTimeLineView extends BorderPanel {
+public abstract class TimeLineEdit extends Edit<CompletionModel> {
 
-	public OuterTimeLineView( TimeLineComposite composite ) {
-		super( composite );
-		this.addCenterComponent( new TimeLineView( composite ) );
+	private final TimeLine timeLine;
+
+	protected TimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine ) {
+		super( completionStep );
+		this.timeLine = timeLine;
+	}
+
+	public TimeLine getTimeLine() {
+		return this.timeLine;
 	}
 
 }

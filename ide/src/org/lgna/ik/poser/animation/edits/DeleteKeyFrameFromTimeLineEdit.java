@@ -40,50 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.components.AbstractLabel;
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
-import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
+public class DeleteKeyFrameFromTimeLineEdit extends TimeLineEdit {
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" +
-				"[grow 0]" + //straightenOutJoints
-				"[grow 0]" + //delete row
-				"[]10" + //list section
-				"[grow 0]0[grow 0]" + //save and export rows
-				"10[grow 0]" ); //slider component
-		AbstractLabel label = poserControlComposite.getRightArmLabel().createLabel();
-		this.addComponent( label );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
+	private final KeyFrameData keyFrameData;
 
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
-
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
-
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
-
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
-
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
-		this.addComponent( poserControlComposite.getStraightenJointsOperation().createButton(), "wrap, spanx 4, growx" );
+	public DeleteKeyFrameFromTimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, KeyFrameData data ) {
+		super( completionStep, timeLine );
+		this.keyFrameData = data;
 	}
+
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		getTimeLine().removeKeyFrameData( keyFrameData );
+	}
+
+	@Override
+	protected void undoInternal() {
+		getTimeLine().addKeyFrameData( keyFrameData );
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	}
+
 }

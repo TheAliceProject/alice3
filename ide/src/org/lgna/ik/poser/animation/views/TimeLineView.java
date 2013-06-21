@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.views;
+package org.lgna.ik.poser.animation.views;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -59,9 +59,9 @@ import javax.swing.JPanel;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.CustomRadioButtons;
-import org.lgna.ik.poser.animationTimeLine.TimeLineListener;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.TimeLineListener;
+import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
@@ -90,7 +90,7 @@ class TimeLineLayout implements LayoutManager {
 		double xActual = x;
 		double xMin = calculateMinX( parent );
 		double xMax = calculateMaxX( parent );
-		double rv = ( ( xActual - xMin ) / ( xMax - xMin ) ) * timeLine.getEndTime();
+		double rv = ( ( xActual - xMin ) / ( xMax - xMin ) ) * composite.getTimeLine().getEndTime();
 		return rv;
 	}
 
@@ -98,11 +98,11 @@ class TimeLineLayout implements LayoutManager {
 		return calculateCenterXForJTimeLinePoseMarker( parent, portion ) - ( JTimeLinePoseMarker.SIZE.width / 2 );
 	}
 
-	private final TimeLineComposite timeLine;
+	private final TimeLineComposite composite;
 
 	public TimeLineLayout( TimeLineComposite masterComposite ) {
 		super();
-		this.timeLine = masterComposite;
+		this.composite = masterComposite;
 	}
 
 	public void layoutContainer( Container parent ) {
@@ -111,7 +111,7 @@ class TimeLineLayout implements LayoutManager {
 			if( child instanceof JTimeLinePoseMarker ) {
 				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
 				double time = jMarker.getTimeLinePoseMarker().getItem().getEventTime();
-				int x = calculateLeftXForJTimeLinePoseMarker( parent, time / timeLine.getEndTime() );
+				int x = calculateLeftXForJTimeLinePoseMarker( parent, time / composite.getTimeLine().getEndTime() );
 				child.setLocation( x, 0 );
 				child.setSize( child.getPreferredSize() );
 			} else {
@@ -162,7 +162,7 @@ class TimeLineLayout implements LayoutManager {
  * @author Matt May
  */
 
-public class TimeLineView extends CustomRadioButtons<PoseEvent> {
+public class TimeLineView extends CustomRadioButtons<KeyFrameData> {
 
 	private static java.awt.Shape createArrow() {
 		final int HALF_ARROW = 8;
@@ -182,7 +182,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	private List<TimeLinePoseMarker> markers = Collections.newCopyOnWriteArrayList();
 
 	public TimeLineView( TimeLineComposite composite ) {
-		super( composite.getPoseEventListSelectionState() );
+		super( composite.getListState() );
 		this.composite = composite;
 		composite.setJComponent( this );
 	}
@@ -197,7 +197,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	}
 
 	@Override
-	protected void addItem( PoseEvent item, BooleanStateButton<?> button ) {
+	protected void addItem( KeyFrameData item, BooleanStateButton<?> button ) {
 		this.internalAddComponent( button );
 	}
 
@@ -206,7 +206,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	}
 
 	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( PoseEvent item, BooleanState itemSelectedState ) {
+	protected BooleanStateButton<?> createButtonForItemSelectedState( KeyFrameData item, BooleanState itemSelectedState ) {
 		TimeLinePoseMarker timeLinePoseMarker = new TimeLinePoseMarker( itemSelectedState, item );
 		this.markers.add( timeLinePoseMarker );
 		return timeLinePoseMarker;
@@ -223,33 +223,36 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	}
 
 	class JTimeLineView extends JItemSelectablePanel {
-		private final TimeLineComposite timeLine;
+		private final TimeLineComposite composite;
 		private final TimeLineListener timeLineListener = new TimeLineListener() {
 
 			public void currentTimeChanged( double currentTime ) {
 				repaint();
 			}
 
-			public void selectedEventChanged( PoseEvent event ) {
+			public void selectedKeyFrameChanged( KeyFrameData event ) {
 				repaint();
 			}
 
-			public void eventDeleted( PoseEvent event ) {
+			public void keyFrameDeleted( KeyFrameData event ) {
 				repaint();
 			}
 
-			public void eventAdded( PoseEvent event ) {
+			public void keyFrameAdded( KeyFrameData event ) {
 				repaint();
 			}
 
-			public void eventModified( PoseEvent event ) {
+			public void keyFrameModified( KeyFrameData event ) {
 				repaint();
+			}
+
+			public void endTimeChanged( double endTime ) {
 			}
 		};
 
-		public JTimeLineView( TimeLineComposite timeLine ) {
-			this.timeLine = timeLine;
-			this.timeLine.addTimeLineListener( this.timeLineListener );
+		public JTimeLineView( TimeLineComposite composite ) {
+			this.composite = composite;
+			this.composite.getTimeLine().addListener( this.timeLineListener );
 			this.addMouseListener( mlAdapter );
 			this.addMouseMotionListener( mmlAdapter );
 		}
@@ -279,7 +282,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-			int currentTimeX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, timeLine.getCurrentTime() / timeLine.getEndTime() );
+			int currentTimeX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, composite.getTimeLine().getCurrentTime() / composite.getTimeLine().getEndTime() );
 
 			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 
@@ -302,7 +305,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
 			public void mouseDragged( MouseEvent e ) {
 				if( isSliding ) {
-					timeLine.setCurrentTime( ( (TimeLineLayout)getLayout() ).calculateTimeForX( e.getPoint().x, TimeLineView.this.getAwtComponent() ) );
+					composite.getTimeLine().setCurrentTime( ( (TimeLineLayout)getLayout() ).calculateTimeForX( e.getPoint().x, TimeLineView.this.getAwtComponent() ) );
 				}
 			}
 		};
@@ -324,7 +327,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 					//						composite.select( marker.getItem() );
 					//					}
 				}
-				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / timeLine.getEndTime();
+				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / composite.getTimeLine().getEndTime();
 				locationOnScreen.x = (int)( deltax );
 				locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
 

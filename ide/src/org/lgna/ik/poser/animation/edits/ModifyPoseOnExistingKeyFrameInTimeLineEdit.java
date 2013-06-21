@@ -40,50 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.BoundedDoubleState;
-import org.lgna.croquet.OperationInputDialogCoreComposite;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.view.AppendTimeToAnimationView;
+import org.lgna.ik.poser.Pose;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public class AppendTimeToAnimationComposite extends OperationInputDialogCoreComposite<AppendTimeToAnimationView> {
+public class ModifyPoseOnExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 
-	BoundedDoubleState amount = createBoundedDoubleState( createKey( "amountToAppend" ), new BoundedDoubleDetails() );
-	private AnimatorControlComposite parent;
+	private final KeyFrameData keyFrameData;
+	private final Pose newPose;
+	private final Pose prevPose;
 
-	public AppendTimeToAnimationComposite( AnimatorControlComposite parent ) {
-		super( java.util.UUID.fromString( "f446d14c-3113-404f-bac3-2fa0b1ba8dd4" ), parent.getGroup() );
-		this.parent = parent;
-		amount.setValueTransactionlessly( 10. );
+	public ModifyPoseOnExistingKeyFrameInTimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, KeyFrameData data, Pose newPose, Pose previousPose ) {
+		super( completionStep, timeLine );
+		this.keyFrameData = data;
+		this.newPose = newPose;
+		this.prevPose = previousPose;
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		return null;
+	protected void doOrRedoInternal( boolean isDo ) {
+		getTimeLine().modifyExistingPose( keyFrameData, newPose );
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected void undoInternal() {
+		getTimeLine().modifyExistingPose( keyFrameData, prevPose );
 	}
 
 	@Override
-	protected AppendTimeToAnimationView createView() {
-		return new AppendTimeToAnimationView( this );
+	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
 	}
 
-	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		this.parent.addTime( amount.getValue() );
-		return null;
-	}
-
-	public BoundedDoubleState getAmount() {
-		return this.amount;
-	}
 }

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animationTimeLine.views;
+package org.lgna.ik.poser.animation.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -57,7 +57,7 @@ import javax.swing.plaf.basic.BasicToggleButtonUI;
 
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.components.BooleanStateButton;
-import org.lgna.ik.poser.animationTimeLine.models.TimeLineComposite.PoseEvent;
+import org.lgna.ik.poser.animation.KeyFrameData;
 
 class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 
@@ -121,9 +121,9 @@ class JTimeLinePoseMarker extends JToggleButton {
  * @author Matt May
  */
 public class TimeLinePoseMarker extends BooleanStateButton<AbstractButton> {
-	private final PoseEvent item;
+	private final KeyFrameData item;
 
-	public TimeLinePoseMarker( BooleanState model, PoseEvent item ) {
+	public TimeLinePoseMarker( BooleanState model, KeyFrameData item ) {
 		super( model );
 		this.item = item;
 	}
@@ -138,7 +138,7 @@ public class TimeLinePoseMarker extends BooleanStateButton<AbstractButton> {
 		return rv;
 	}
 
-	public PoseEvent getItem() {
+	public KeyFrameData getItem() {
 		return this.item;
 	}
 }
