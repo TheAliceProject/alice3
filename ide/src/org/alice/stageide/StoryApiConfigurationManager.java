@@ -124,7 +124,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, 1.2 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, 1.3 );
-			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( String.class ), 1.4 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.STRING_TYPE, 1.4 );
 
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ), 10.1 );
 

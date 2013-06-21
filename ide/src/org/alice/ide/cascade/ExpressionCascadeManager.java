@@ -47,8 +47,8 @@ package org.alice.ide.cascade;
  */
 public abstract class ExpressionCascadeManager {
 	private final org.alice.ide.cascade.fillerinners.BooleanFillerInner booleanFillerInner = new org.alice.ide.cascade.fillerinners.BooleanFillerInner();
+	private final org.alice.ide.cascade.fillerinners.StringFillerInner stringFillerInner = new org.alice.ide.cascade.fillerinners.StringFillerInner();
 	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
 	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
@@ -56,7 +56,7 @@ public abstract class ExpressionCascadeManager {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		this.addExpressionFillerInner( this.booleanFillerInner );
-		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
+		this.addExpressionFillerInner( this.stringFillerInner );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.AudioResourceFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.ImageResourceFillerInner() );
 	}
@@ -380,16 +380,24 @@ public abstract class ExpressionCascadeManager {
 				}
 			}
 			this.addCustomFillIns( items, blankNode, type );
-			type = getTypeFor( type );
-			if( type == org.lgna.project.ast.JavaType.getInstance( Object.class ) ) {
-				this.assumingStringConcatenationObjectFillerInner.appendItems( items, details, isRoot, prevExpression );
-			} else {
-				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
-					if( expressionFillerInner.isAssignableTo( type ) ) {
-						expressionFillerInner.appendItems( items, details, isRoot, prevExpression );
-						items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-					}
+			type = this.getTypeFor( type );
+			boolean isOtherTypeMenuDesired = type == org.lgna.project.ast.JavaType.OBJECT_TYPE;
+			if( isOtherTypeMenuDesired ) {
+				if( isRoot && ( prevExpression != null ) ) {
+					type = prevExpression.getType();
 				}
+			}
+			if( type == org.lgna.project.ast.JavaType.OBJECT_TYPE ) {
+				type = org.lgna.project.ast.JavaType.STRING_TYPE;
+			}
+			for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
+				if( expressionFillerInner.isAssignableTo( type ) ) {
+					expressionFillerInner.appendItems( items, details, isRoot, prevExpression );
+					items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				}
+			}
+			if( type.isAssignableTo( String.class ) ) {
+				this.appendConcatenationItemsIfAppropriate( items, details, isRoot, prevExpression );
 			}
 
 			org.lgna.project.ast.AbstractType<?, ?, ?> enumType;
@@ -416,8 +424,43 @@ public abstract class ExpressionCascadeManager {
 			if( this.isNullLiteralAllowedForType( type, items ) ) {
 				items.add( org.alice.ide.croquet.models.cascade.literals.NullLiteralFillIn.getInstance() );
 			}
+
+			if( isOtherTypeMenuDesired ) {
+				java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> otherTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				this.appendOtherTypes( otherTypes );
+				for( org.lgna.project.ast.AbstractType<?, ?, ?> otherType : otherTypes ) {
+					if( type == otherType ) {
+						//pass
+					} else {
+						items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( otherType ) );
+					}
+				}
+			}
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "type is null" );
 		}
 	}
+
+	protected void appendOtherTypes( java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types ) {
+		types.add( org.lgna.project.ast.JavaType.STRING_TYPE );
+		types.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
+		types.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
+	}
+
+	private void appendConcatenationItemsIfAppropriate( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( isTop ) {
+			if( prevExpression != null ) {
+				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				if( prevExpression instanceof org.lgna.project.ast.NullLiteral ) {
+					//pass
+				} else {
+					if( prevExpression.getType().isAssignableTo( String.class ) ) {
+						items.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
+					}
+				}
+				items.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
+			}
+		}
+	}
+
 }
