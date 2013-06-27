@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
@@ -57,7 +56,7 @@ public class ModifyPoseOnExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 	private final Pose newPose;
 	private final Pose prevPose;
 
-	public ModifyPoseOnExistingKeyFrameInTimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, KeyFrameData data, Pose newPose, Pose previousPose ) {
+	public ModifyPoseOnExistingKeyFrameInTimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine, KeyFrameData data, Pose newPose, Pose previousPose ) {
 		super( completionStep, timeLine );
 		this.keyFrameData = data;
 		this.newPose = newPose;

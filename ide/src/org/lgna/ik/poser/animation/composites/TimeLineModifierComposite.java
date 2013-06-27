@@ -52,10 +52,10 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.AnimatorControlComposite;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
+import org.lgna.ik.poser.animation.edits.DeleteKeyFrameFromTimeLineEdit;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 
 /**
@@ -147,6 +147,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
+			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame );
 			return null;
 		}
 	} );

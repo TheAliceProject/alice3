@@ -48,6 +48,7 @@ import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.project.ast.NamedUserType;
 
 /**

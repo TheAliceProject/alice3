@@ -85,7 +85,7 @@ public class PoserScene extends SScene {
 	private ArrayList<JointSelectionSphere> jssArr;
 	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
-	private PoserDragAdapter dragAdapter;
+	private PoserDragAdapter dragAdapter = new PoserDragAdapter();
 	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
 	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
 	private JointImp currentlyShowingRotationHandles = null;
@@ -173,7 +173,6 @@ public class PoserScene extends SScene {
 	}
 
 	public void addCustomDragAdapter() {
-		this.dragAdapter = new PoserDragAdapter();
 		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
 		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
 		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
@@ -264,5 +263,9 @@ public class PoserScene extends SScene {
 
 	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
 		return limbToJointMap.get( key ).get( 1 );
+	}
+
+	public PoserDragAdapter getDragAdapter() {
+		return this.dragAdapter;
 	}
 }

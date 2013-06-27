@@ -53,7 +53,6 @@ import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
-import org.lgna.ik.poser.IkPoser;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControllerAdapter;
@@ -69,17 +68,17 @@ import org.lgna.story.Color;
  */
 public abstract class AbstractPoserControlComposite<T extends AbstractPoserControlView> extends SimpleComposite<T> {
 
-	protected IkPoser ikPoser;
-	protected JointSelectionSphereState rightArmAnchor;
-	protected JointSelectionSphereState leftArmAnchor;
-	protected JointSelectionSphereState rightLegAnchor;
-	protected JointSelectionSphereState leftLegAnchor;
-	protected StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
-	protected StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
-	protected StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
-	protected StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private JointSelectionSphereState rightArmAnchor;
+	private JointSelectionSphereState leftArmAnchor;
+	private JointSelectionSphereState rightLegAnchor;
+	private JointSelectionSphereState leftLegAnchor;
+	private StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
+	private StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
+	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
+	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
+	private BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
 	protected AbstractPoserInputDialogComposite parent;
+	private final PoserControllerAdapter adapter;
 
 	public AbstractPoserControlComposite( AbstractPoserInputDialogComposite parent, UUID uid ) {
 		super( uid );
@@ -94,7 +93,8 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftArmAnchor.getValue().setPaint( Color.GREEN );
 		rightLegAnchor.getValue().setPaint( Color.GREEN );
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
-		parent.setAdapter( new PoserControllerAdapter( this ) );
+		adapter = new PoserControllerAdapter( this );
+		parent.setAdapter( adapter );
 	}
 
 	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
@@ -181,6 +181,10 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public UserType<?> getDeclaringType() {
 		return parent.getDeclaringType();
+	}
+
+	public PoserControllerAdapter getAdapter() {
+		return this.adapter;
 	}
 
 }

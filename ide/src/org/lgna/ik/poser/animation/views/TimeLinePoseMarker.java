@@ -48,6 +48,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -55,9 +58,10 @@ import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.components.BooleanStateButton;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 
 class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 
@@ -86,11 +90,70 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 
 class JTimeLinePoseMarker extends JToggleButton {
 	public static Dimension SIZE = new Dimension( 32, 64 );
-	private TimeLinePoseMarker timeLinePoseMarker;
+	private KeyFrameData keyFrameData;
+	private boolean isSliding = false;
+	private final JTimeLineView parent;
+	private double prevEventTime;
 
-	public JTimeLinePoseMarker( TimeLinePoseMarker timeLinePoseMarker ) {
-		this.timeLinePoseMarker = timeLinePoseMarker;
+	public JTimeLinePoseMarker( KeyFrameData data, JTimeLineView jView ) {
+		this.keyFrameData = data;
+		this.parent = jView;
+		this.setOpaque( false );
+		this.setRolloverEnabled( true );
+		this.addMouseListener( listener );
+		this.addMouseMotionListener( motionListener );
 	}
+
+	private MouseListener listener = new MouseListener() {
+
+		public void mouseReleased( MouseEvent e ) {
+			if( isSliding ) {
+				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+
+				double newTime = keyFrameData.getEventTime();
+				if( Math.abs( newTime - prevEventTime ) > 1 ) {
+					step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, parent.getComposite().getTimeLine(), keyFrameData, newTime, prevEventTime ) );
+					JTimeLinePoseMarker.this.setSelected( true );
+				} else {
+					parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData,
+							prevEventTime );
+				}
+			}
+			isSliding = false;
+		}
+
+		public void mousePressed( MouseEvent e ) {
+			if( JTimeLinePoseMarker.this.isSelected() ) {
+				prevEventTime = keyFrameData.getEventTime();
+				isSliding = true;
+			}
+		}
+
+		public void mouseExited( MouseEvent e ) {
+		}
+
+		public void mouseEntered( MouseEvent e ) {
+		}
+
+		public void mouseClicked( MouseEvent e ) {
+		}
+	};
+	private MouseMotionListener motionListener = new MouseMotionListener() {
+
+		public void mouseMoved( MouseEvent e ) {
+		}
+
+		public void mouseDragged( MouseEvent e ) {
+			if( isSliding ) {
+				parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData,
+						parent.getTime( e ) );
+				revalidate();
+			}
+
+		}
+	};
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -107,38 +170,13 @@ class JTimeLinePoseMarker extends JToggleButton {
 		this.setUI( new TimeLinePoseMarkerUI() );
 	}
 
-	public TimeLinePoseMarker getTimeLinePoseMarker() {
-		return timeLinePoseMarker;
-	}
-
 	@Override
 	protected void fireItemStateChanged( ItemEvent event ) {
 		super.fireItemStateChanged( event );
 	}
-}
 
-/**
- * @author Matt May
- */
-public class TimeLinePoseMarker extends BooleanStateButton<AbstractButton> {
-	private final KeyFrameData item;
-
-	public TimeLinePoseMarker( BooleanState model, KeyFrameData item ) {
-		super( model );
-		this.item = item;
+	public KeyFrameData getKeyFrameData() {
+		return keyFrameData;
 	}
 
-	@Override
-	protected AbstractButton createAwtComponent() {
-		JTimeLinePoseMarker rv = new JTimeLinePoseMarker( this );
-		rv.setRolloverEnabled( true );
-		rv.setFocusPainted( false );
-		rv.setBorder( null );
-		rv.setOpaque( false );
-		return rv;
-	}
-
-	public KeyFrameData getItem() {
-		return this.item;
-	}
 }

@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.TimeLine;
@@ -50,12 +49,13 @@ import org.lgna.ik.poser.animation.TimeLine;
 /**
  * @author Matt May
  */
-public abstract class TimeLineEdit extends Edit<CompletionModel> {
+public abstract class TimeLineEdit extends Edit {
 
 	private final TimeLine timeLine;
 
-	protected TimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine ) {
+	protected TimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine ) {
 		super( completionStep );
+		System.out.println( "createEdit: " + this.getClass() );
 		this.timeLine = timeLine;
 	}
 

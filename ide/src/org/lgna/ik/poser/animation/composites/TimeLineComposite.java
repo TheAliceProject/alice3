@@ -50,7 +50,6 @@ import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
-import org.lgna.ik.poser.animation.views.OuterTimeLineView;
 import org.lgna.ik.poser.animation.views.TimeLineView;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -59,13 +58,13 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 /**
  * @author Matt May
  */
-public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
+public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 
 	private TimeLineView jTimeLineView;
 	private boolean isTimeMutable = true;
-	private TimeLine timeLine = new TimeLine();
+	private final TimeLine timeLine = new TimeLine();
 	private KeyFrameData selected = null;
-	private ListSelectionState<KeyFrameData> listState =
+	private final ListSelectionState<KeyFrameData> listState =
 			createListSelectionState( createKey( "DO NOT TRANSLATE" ),
 					new RefreshableListData<KeyFrameData>( new ItemCodec<KeyFrameData>() {
 
@@ -96,13 +95,20 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
 	}
 
+	public void selectKeyFrame( KeyFrameData keyFrameData ) {
+		if( selected != null ) {
+			getView().deselect( selected );
+		}
+		timeLine.setSelectedKeyFrame( keyFrameData );
+	}
+
 	public double getDurationForKeyFrame( KeyFrameData pose ) {
 		return timeLine.getDurationForKeyFrame( pose );
 	}
 
 	@Override
-	public OuterTimeLineView createView() {
-		return new OuterTimeLineView( this );
+	public TimeLineView createView() {
+		return new TimeLineView( this );
 	}
 
 	public int getViewWidth() {
@@ -132,4 +138,9 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 	public ListSelectionState<KeyFrameData> getListState() {
 		return this.listState;
 	}
+
+	public KeyFrameData getSelectedKeyFrame() {
+		return selected;
+	}
+
 }

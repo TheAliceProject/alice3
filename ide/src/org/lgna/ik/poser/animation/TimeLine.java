@@ -96,12 +96,14 @@ public class TimeLine {
 	}
 
 	public void moveExistingKeyFrameData( KeyFrameData data, double newTime ) {
-		data.setTime( newTime );
-		java.util.Collections.sort( datas, new Comparator<KeyFrameData>() {
-			public int compare( KeyFrameData o1, KeyFrameData o2 ) {
-				return new Double( o1.getEventTime() ).compareTo( o2.getEventTime() );
-			}
-		} );
+		if( ( newTime > 0 ) && ( newTime < endTime ) ) {
+			data.setTime( newTime );
+			java.util.Collections.sort( datas, new Comparator<KeyFrameData>() {
+				public int compare( KeyFrameData o1, KeyFrameData o2 ) {
+					return new Double( o1.getEventTime() ).compareTo( o2.getEventTime() );
+				}
+			} );
+		}
 	}
 
 	public void modifyExistingPose( KeyFrameData data, Pose newPose ) {
@@ -115,13 +117,25 @@ public class TimeLine {
 	}
 
 	public void setCurrentTime( double currentTime ) {
+		if( currentTime > endTime ) {
+			currentTime = endTime;
+		}
+		if( currentTime < 0 ) {
+			currentTime = 0;
+		}
 		this.currentTime = currentTime;
 		fireCurrentTimeChanged( currentTime );
+		fireSelectedKeyFrameChanged( getFrameForCurrentTime() );
 	}
 
 	public void setEndTime( double endTime ) {
-		this.endTime = endTime;
-		fireEndTimeChanged( endTime );
+		if( ( endTime > 0 ) && ( endTime > datas.get( datas.size() - 1 ).getEventTime() ) ) {
+			this.endTime = endTime;
+			fireEndTimeChanged( endTime );
+			if( this.endTime < currentTime ) {
+				setCurrentTime( this.endTime );
+			}
+		}
 	}
 
 	private void fireKeyFrameAdded( KeyFrameData item ) {
@@ -151,6 +165,12 @@ public class TimeLine {
 	private void fireEndTimeChanged( double endTime ) {
 		for( TimeLineListener listener : listeners ) {
 			listener.endTimeChanged( endTime );
+		}
+	}
+
+	private void fireSelectedKeyFrameChanged( KeyFrameData item ) {
+		for( TimeLineListener listener : listeners ) {
+			listener.selectedKeyFrameChanged( item );
 		}
 	}
 
@@ -190,5 +210,21 @@ public class TimeLine {
 
 	public List<KeyFrameData> getKeyFrames() {
 		return datas;
+	}
+
+	public KeyFrameData getFrameForCurrentTime() {
+		for( KeyFrameData frame : datas ) {
+			if( frame.getEventTime() == currentTime ) {
+				return frame;
+			} else if( frame.getEventTime() > currentTime ) {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	public void setSelectedKeyFrame( KeyFrameData keyFrameData ) {
+		this.setCurrentTime( keyFrameData.getEventTime() );
+		fireSelectedKeyFrameChanged( keyFrameData );
 	}
 }

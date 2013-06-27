@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
@@ -53,7 +52,7 @@ import org.lgna.ik.poser.animation.TimeLine;
 public class AddKeyFrameToTimeLineEdit extends TimeLineEdit {
 	private final KeyFrameData keyFrameData;
 
-	public AddKeyFrameToTimeLineEdit( CompletionStep<CompletionModel> completionStep, TimeLine timeLine, KeyFrameData data ) {
+	public AddKeyFrameToTimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine, KeyFrameData data ) {
 		super( completionStep, timeLine );
 		this.keyFrameData = data;
 	}

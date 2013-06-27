@@ -42,31 +42,104 @@
  */
 package org.lgna.ik.poser.animation.views;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Map;
 
+import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.components.BooleanStateButton;
-import org.lgna.croquet.components.CustomRadioButtons;
+import org.lgna.croquet.components.Panel;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+/**
+ * @author Matt May
+ */
+
+public class TimeLineView extends Panel {
+
+	private JTimeLineView jView;
+	private final Map<KeyFrameData, AbstractButton> map = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+
+	public TimeLineView( TimeLineComposite composite ) {
+		super( composite );
+		composite.getTimeLine().addListener( listener );
+		composite.setJComponent( this );
+	}
+
+	private TimeLineListener listener = new TimeLineListener() {
+
+		private ActionListener actionListener = new ActionListener() {
+
+			public void actionPerformed( ActionEvent e ) {
+				KeyFrameData data = ( (JTimeLinePoseMarker)e.getSource() ).getKeyFrameData();
+				if( ( (TimeLineComposite)getComposite() ).getSelectedKeyFrame() == data ) {
+					// do nothing
+				} else {
+					( (TimeLineComposite)getComposite() ).selectKeyFrame( data );
+				}
+			}
+		};
+
+		public void selectedKeyFrameChanged( KeyFrameData event ) {
+			revalidateAndRepaint();
+		}
+
+		public void keyFrameModified( KeyFrameData event ) {
+			revalidateAndRepaint();
+		}
+
+		public void keyFrameDeleted( KeyFrameData event ) {
+			jView.remove( map.get( event ) );
+			revalidateAndRepaint();
+		}
+
+		public void keyFrameAdded( KeyFrameData event ) {
+			JTimeLinePoseMarker comp = new JTimeLinePoseMarker( event, jView );
+			comp.addActionListener( actionListener );
+			map.put( event, comp );
+			jView.add( comp );
+			revalidateAndRepaint();
+		}
+
+		public void endTimeChanged( double endTime ) {
+			revalidateAndRepaint();
+		}
+
+		public void currentTimeChanged( double currentTime ) {
+			revalidateAndRepaint();
+		}
+	};
+
+	@Override
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new TimeLineLayout( (TimeLineComposite)getComposite() );
+	}
+
+	@Override
+	protected JPanel createJPanel() {
+		jView = new JTimeLineView( this );
+		return jView;
+	}
+
+	public void deselect( KeyFrameData selected ) {
+		( (AbstractButton)map.get( selected ) ).setSelected( false );
+	}
+}
 
 class TimeLineLayout implements LayoutManager {
+	private final TimeLineComposite composite;
+
+	public TimeLineLayout( TimeLineComposite masterComposite ) {
+		this.composite = masterComposite;
+	}
+
 	public static int calculateMinX( Container parent ) {
 		java.awt.Insets insets = parent.getInsets();
 		return insets.left + ( JTimeLinePoseMarker.SIZE.width / 2 );
@@ -98,19 +171,12 @@ class TimeLineLayout implements LayoutManager {
 		return calculateCenterXForJTimeLinePoseMarker( parent, portion ) - ( JTimeLinePoseMarker.SIZE.width / 2 );
 	}
 
-	private final TimeLineComposite composite;
-
-	public TimeLineLayout( TimeLineComposite masterComposite ) {
-		super();
-		this.composite = masterComposite;
-	}
-
 	public void layoutContainer( Container parent ) {
-		assert parent instanceof TimeLineView.JTimeLineView;
+		assert parent instanceof JTimeLineView;
 		for( Component child : parent.getComponents() ) {
 			if( child instanceof JTimeLinePoseMarker ) {
 				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
-				double time = jMarker.getTimeLinePoseMarker().getItem().getEventTime();
+				double time = jMarker.getKeyFrameData().getEventTime();
 				int x = calculateLeftXForJTimeLinePoseMarker( parent, time / composite.getTimeLine().getEndTime() );
 				child.setLocation( x, 0 );
 				child.setSize( child.getPreferredSize() );
@@ -156,192 +222,4 @@ class TimeLineLayout implements LayoutManager {
 	public void addLayoutComponent( String name, Component comp ) {
 	}
 
-}
-
-/**
- * @author Matt May
- */
-
-public class TimeLineView extends CustomRadioButtons<KeyFrameData> {
-
-	private static java.awt.Shape createArrow() {
-		final int HALF_ARROW = 8;
-		final int ARROW_HEIGHT = 24;
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-		rv.moveTo( 0, 0 );
-		rv.lineTo( HALF_ARROW, ARROW_HEIGHT );
-		rv.lineTo( -HALF_ARROW, ARROW_HEIGHT );
-		rv.closePath();
-		return rv;
-	}
-
-	private static final java.awt.Shape ARROW = createArrow();
-
-	private TimeLineComposite composite;
-
-	private List<TimeLinePoseMarker> markers = Collections.newCopyOnWriteArrayList();
-
-	public TimeLineView( TimeLineComposite composite ) {
-		super( composite.getListState() );
-		this.composite = composite;
-		composite.setJComponent( this );
-	}
-
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new TimeLineLayout( composite );
-	}
-
-	@Override
-	protected void addPrologue( int count ) {
-	}
-
-	@Override
-	protected void addItem( KeyFrameData item, BooleanStateButton<?> button ) {
-		this.internalAddComponent( button );
-	}
-
-	@Override
-	protected void addEpilogue() {
-	}
-
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( KeyFrameData item, BooleanState itemSelectedState ) {
-		TimeLinePoseMarker timeLinePoseMarker = new TimeLinePoseMarker( itemSelectedState, item );
-		this.markers.add( timeLinePoseMarker );
-		return timeLinePoseMarker;
-	}
-
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
-
-	@Override
-	protected JPanel createJPanel() {
-		return new JTimeLineView( composite );
-	}
-
-	class JTimeLineView extends JItemSelectablePanel {
-		private final TimeLineComposite composite;
-		private final TimeLineListener timeLineListener = new TimeLineListener() {
-
-			public void currentTimeChanged( double currentTime ) {
-				repaint();
-			}
-
-			public void selectedKeyFrameChanged( KeyFrameData event ) {
-				repaint();
-			}
-
-			public void keyFrameDeleted( KeyFrameData event ) {
-				repaint();
-			}
-
-			public void keyFrameAdded( KeyFrameData event ) {
-				repaint();
-			}
-
-			public void keyFrameModified( KeyFrameData event ) {
-				repaint();
-			}
-
-			public void endTimeChanged( double endTime ) {
-			}
-		};
-
-		public JTimeLineView( TimeLineComposite composite ) {
-			this.composite = composite;
-			this.composite.getTimeLine().addListener( this.timeLineListener );
-			this.addMouseListener( mlAdapter );
-			this.addMouseMotionListener( mmlAdapter );
-		}
-
-		@Override
-		public Dimension getPreferredSize() {
-			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
-		}
-
-		@Override
-		public void paintComponent( Graphics g ) {
-			super.paintComponent( g );
-			g.setColor( Color.RED );
-			g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
-
-			int minY = ( this.getHeight() * 2 ) / 5;
-			int maxY = this.getHeight() - minY;
-			int centerY = ( minY + maxY ) / 2;
-
-			int minX = TimeLineLayout.calculateMinX( this );
-			int maxX = TimeLineLayout.calculateMaxX( this );
-
-			g.setColor( Color.BLACK );
-			g.drawLine( minX, minY, minX, maxY );
-			g.drawLine( maxX, minY, maxX, maxY );
-			g.drawLine( minX, centerY, maxX, centerY );
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-
-			int currentTimeX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, composite.getTimeLine().getCurrentTime() / composite.getTimeLine().getEndTime() );
-
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-
-			g2.translate( currentTimeX, centerY );
-			g2.fill( ARROW );
-			g2.setTransform( prevTransform );
-
-			//			for( PoseEvent poseEvent : timeLine.getPosesInTimeline() ) {
-			//				int poseX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, poseEvent.getEventTime() / timeLine.getEndTime() );
-			//				g.drawLine( poseX, 0, poseX, getHeight() );
-			//			}
-		}
-
-		private boolean isSliding = false;
-
-		MouseMotionListener mmlAdapter = new MouseMotionListener() {
-
-			public void mouseMoved( MouseEvent e ) {
-			}
-
-			public void mouseDragged( MouseEvent e ) {
-				if( isSliding ) {
-					composite.getTimeLine().setCurrentTime( ( (TimeLineLayout)getLayout() ).calculateTimeForX( e.getPoint().x, TimeLineView.this.getAwtComponent() ) );
-				}
-			}
-		};
-
-		MouseListener mlAdapter = new MouseListener() {
-
-			public void mouseReleased( MouseEvent e ) {
-				isSliding = false;
-			}
-
-			public void mousePressed( MouseEvent e ) {
-				Point locationOnScreen = e.getPoint();
-				for( TimeLinePoseMarker marker : markers ) {
-					Point mLocation = marker.getLocation();
-					Point check = new Point( locationOnScreen.x - mLocation.x, locationOnScreen.y - mLocation.y );
-					//					System.out.println( "locationOnScreen: ( " + locationOnScreen.x + ", " + locationOnScreen.y + " )" );
-					//					System.out.println( "mLocation: ( " + mLocation.x + ", " + mLocation.y + " )" );
-					//					if( marker.contains( check ) ) {
-					//						composite.select( marker.getItem() );
-					//					}
-				}
-				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / composite.getTimeLine().getEndTime();
-				locationOnScreen.x = (int)( deltax );
-				locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
-
-				isSliding = ( ARROW.contains( locationOnScreen ) && composite.getIsTimeMutable() );
-			}
-
-			public void mouseExited( MouseEvent e ) {
-			}
-
-			public void mouseEntered( MouseEvent e ) {
-			}
-
-			public void mouseClicked( MouseEvent e ) {
-			}
-		};
-	}
 }
