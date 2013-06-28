@@ -141,7 +141,7 @@ public class JTimeLineView extends JPanel {
 	MouseListener mlAdapter = new MouseListener() {
 
 		private double prevCurrTime = 0;
-		private double prevEndTime = getComposite().getTimeLine().getEndTime();
+		private double prevEndTime = 10;//getComposite().getTimeLine().getEndTime();
 
 		public void mouseReleased( MouseEvent e ) {
 			if( isTimeSliding ) {

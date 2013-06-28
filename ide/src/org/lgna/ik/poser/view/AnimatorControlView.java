@@ -58,7 +58,6 @@ public class AnimatorControlView extends AbstractPoserControlView {
 
 		TimeLineModifierView editView = controlComposite.getEditComposite().getView();
 		editView.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( editView, "dock south" );
 		//		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
 		//		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
 
@@ -72,6 +71,7 @@ public class AnimatorControlView extends AbstractPoserControlView {
 		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
 		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
 		this.addComponent( controlComposite.getNameState().createTextField(), "grow, wrap" );
+		this.addComponent( editView, "span 2" );
 
 		//		OuterTimeLineView component = controlComposite.getTimeLine().createView();
 		//		this.addComponent( component, "grow, span 2, wrap" );

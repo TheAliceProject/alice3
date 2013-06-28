@@ -43,7 +43,7 @@
 package org.lgna.ik.poser.animation.composites;
 
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ListSelectionState;
@@ -52,10 +52,12 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.edits.DeleteKeyFrameFromTimeLineEdit;
+import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 
 /**
@@ -66,33 +68,15 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private TimeLineComposite composite;
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
 	private KeyFrameData selectedKeyFrame;
-	private BooleanState isEditing = createBooleanState( createKey( "isEditing" ), false );
-	private AnimatorControlComposite parent;
 	private ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
-	public TimeLineModifierComposite( TimeLineComposite composite, AnimatorControlComposite parent ) {
+	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
-		this.parent = parent;
 		this.composite = composite;
 		composite.getTimeLine().addListener( listener );
+		currentTime.addValueListener( timeListener );
 		updateSelectedEvent( null );
 	}
-
-	ValueListener<Boolean> isEditingListener = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		/** edit/revert **/
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			if( nextValue ) {
-				composite.setEditEnabled( true );
-			} else {
-				parent.revertPose( selectedKeyFrame );
-				composite.setEditEnabled( false );
-			}
-		}
-	};
 
 	private TimeLineListener listener = new TimeLineListener() {
 
@@ -125,12 +109,28 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		}
 
 	};
+	ValueListener<Double> timeListener = new ValueListener<Double>() {
+
+		public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			assert isAdjusting == ( prevValue == nextValue );
+			if( isAdjusting ) {
+				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+
+				new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue );
+			}
+		}
+	};
 
 	protected void updateSelectedEvent( KeyFrameData event ) {
 		this.selectedKeyFrame = event;
 		boolean activate = event != null;
 		deletePoseOperation.setEnabled( activate );
-		saveUpdatedPoseOperation.setEnabled( activate );
+		currentTime.setEnabled( activate );
 		getView().enableOperations( activate );
 		if( activate ) {
 			currentTime.setValueTransactionlessly( event.getEventTime() );
@@ -151,27 +151,16 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 			return null;
 		}
 	} );
-	private ActionOperation saveUpdatedPoseOperation = createActionOperation( createKey( "savePoseChanges" ), new Action() {
-
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			composite.getTimeLine().modifyExistingPose( selectedKeyFrame, parent.getCurrentPose() );
-			return null;
-		}
-	} );
 
 	public ActionOperation getDeletePoseOperation() {
 		return this.deletePoseOperation;
 	}
 
-	public ActionOperation getSaveUpdatedPoseOperation() {
-		return this.saveUpdatedPoseOperation;
-	}
-
-	public BooleanState getIsEditing() {
-		return this.isEditing;
-	}
-
 	public ListSelectionState<KeyFrameStyles> getStyleSelectionState() {
 		return this.styleSelectionState;
+	}
+
+	public BoundedDoubleState getCurrentTime() {
+		return this.currentTime;
 	}
 }

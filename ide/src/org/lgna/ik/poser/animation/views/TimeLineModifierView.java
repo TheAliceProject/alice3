@@ -42,9 +42,9 @@
  */
 package org.lgna.ik.poser.animation.views;
 
+import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.ToggleButton;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
 
@@ -53,21 +53,40 @@ import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
  */
 public class TimeLineModifierView extends MigPanel {
 
-	private final ToggleButton toggleButton;
 	private final ComboBox<KeyFrameStyles> comboBox;
 
 	public TimeLineModifierView( TimeLineModifierComposite composite ) {
-		super( composite, "fill", "", "" );
+		super( composite );
+		//		GridPanel gPanel = GridPanel.createGridPane( 2, 2 );
+
+		//		//row 1
 		comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
-		this.addComponent( comboBox );
-		this.addComponent( composite.getDeletePoseOperation().createButton(), "wrap" );
-		toggleButton = composite.getIsEditing().createToggleButton();
-		this.addComponent( toggleButton );
-		this.addComponent( composite.getSaveUpdatedPoseOperation().createButton(), "wrap" );
+		//		gPanel.addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextArea() );
+		//		gPanel.addComponent( comboBox );
+		//
+		//		//row 2
+		BoundedDoubleState currentTime = composite.getCurrentTime();
+		//		gPanel.addComponent( currentTime.getSidekickLabel().createImmutableTextArea() );
+		//		gPanel.addComponent( currentTime.createSpinner() );
+		//
+		//		this.addCenterComponent( gPanel );
+		//		this.addPageEndComponent( composite.getDeletePoseOperation().createButton() );
+		addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextArea() );
+		addComponent( comboBox, "wrap" );
+
+		addComponent( currentTime.getSidekickLabel().createImmutableTextArea() );
+		addComponent( currentTime.createSpinner(), "wrap" );
+		addComponent( composite.getDeletePoseOperation().createButton(), "growx, span2" );
+		//		this.setMinimumPreferredWidth( 0 );
+		//		this.setMaximumPreferredWidth( 100 );
 	}
 
 	public void enableOperations( boolean activate ) {
-		toggleButton.getAwtComponent().setEnabled( activate );
 		comboBox.getAwtComponent().setEnabled( activate );
 	}
+
+	//	public void addComponent( MigPanel panel) {
+	//		TimeLineModifierComposite composite = this.getComposite();
+	//		panel.addComponent(  )
+	//	}
 }

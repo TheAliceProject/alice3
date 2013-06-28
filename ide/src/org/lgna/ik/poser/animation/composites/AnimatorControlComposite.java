@@ -82,6 +82,9 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 	private StringState nameState = createStringState( createKey( "nameState" ) );
+	private TimeLineComposite tlComposite = new TimeLineComposite();
+	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
+	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite );
 
 	public AnimatorControlComposite( AbstractPoserInputDialogComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
@@ -98,20 +101,24 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 	}
 
-	private TimeLineComposite tlComposite = new TimeLineComposite();
-	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
-	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite, this );
+	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
 
-	//	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
-	//
-	//		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-	//			Pose pose = parent.getPose();
-	//			tlComposite.getTimeLine().addKeyFrameData( pose );
-	//			tlComposite.getTimeLine().setCurrentTime( tlComposite.getTimeLine().getCurrentTime() + 1 );
-	//			return null;
-	//		}
-	//	} );
+		public void fireStart( PoserEvent poserEvent ) {
+		}
 
+		public void fireFinish( PoserEvent poserEvent ) {
+			TimeLine timeLine = tlComposite.getTimeLine();
+			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
+			org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+			org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+			if( currentFrame != null ) {
+				step.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( step, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
+			} else {
+				step.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( step, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
+			}
+		}
+	};
 	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
@@ -133,24 +140,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			return null;
 		}
 	} );
-	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
-
-		public void fireStart( PoserEvent poserEvent ) {
-		}
-
-		public void fireFinish( PoserEvent poserEvent ) {
-			TimeLine timeLine = tlComposite.getTimeLine();
-			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
-			org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-			org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
-			if( currentFrame != null ) {
-				step.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( step, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
-			} else {
-				step.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( step, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
-			}
-		}
-	};
 
 	public BlockStatement createMethodBody() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
@@ -188,10 +177,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		}
 		return new BlockStatement( miArr );
 	}
-
-	//	public ActionOperation getSavePoseOperation() {
-	//		return this.savePoseOperation;
-	//	}
 
 	public ActionOperation getRunAnimationOperation() {
 		return this.runAnimationOperation;
@@ -232,6 +217,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	public View getSouthViewForDialog() {
 		BorderPanel borderPanel = new BorderPanel();
 		borderPanel.addCenterComponent( tlComposite.getView() );
+		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );
 		return borderPanel;
 	}
 }
