@@ -47,14 +47,16 @@ package org.alice.ide.ast.code;
  * @author Dennis Cosgrove
  */
 public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapSingle = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapMultiple = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
 
-	public static synchronized MoveStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+	public static synchronized MoveStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
+		edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
 		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new MoveStatementOperation( fromLocation, statement, toLocation );
+			rv = new MoveStatementOperation( fromLocation, statement, toLocation, isToTheEnd );
 			map.put( fromLocation, statement, toLocation, rv );
 		}
 		return rv;
@@ -63,12 +65,14 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private final org.lgna.project.ast.Statement statement;
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+	private final boolean isToTheEnd;
 
-	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
+		this.isToTheEnd = isToTheEnd;
 	}
 
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
@@ -83,6 +87,10 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 		return this.toLocation;
 	}
 
+	public boolean isToTheEnd() {
+		return this.isToTheEnd;
+	}
+
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver<MoveStatementOperation> createResolver() {
 		return new org.alice.ide.ast.code.resolvers.MoveStatementOperationResolver( this );
@@ -91,6 +99,6 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<MoveStatementOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );
-		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, this.fromLocation, this.statement, this.toLocation ) );
+		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, this.fromLocation, this.statement, this.toLocation, this.isToTheEnd ) );
 	}
 }

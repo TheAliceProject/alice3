@@ -49,18 +49,20 @@ package org.alice.ide.ast.code.edits;
 public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.code.MoveStatementOperation> {
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+	private final boolean isToTheEnd;
 
-	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
 		super( completionStep, statement );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
+		this.isToTheEnd = isToTheEnd;
 	}
 
 	public MoveStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.isToTheEnd = binaryDecoder.decodeBoolean();
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fromLocation );
 		binaryEncoder.encode( this.toLocation );
+		binaryEncoder.encode( this.isToTheEnd );
 	}
 
 	private int getToDelta() {
@@ -87,16 +90,26 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		int toDelta = this.getToDelta();
-		this.fromLocation.getBlockStatement().statements.remove( this.fromLocation.getIndex() );
-		this.toLocation.getBlockStatement().statements.add( this.toLocation.getIndex() + toDelta, this.getStatement() );
+		org.lgna.project.ast.StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+		org.lgna.project.ast.StatementListProperty to = this.toLocation.getBlockStatement().statements;
+		int fromIndex = this.fromLocation.getIndex();
+		int toIndex = this.toLocation.getIndex() + toDelta;
+		from.remove( fromIndex );
+		to.add( toIndex, this.getStatement() );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	public void undoInternal() {
 		int toDelta = this.getToDelta();
-		this.toLocation.getBlockStatement().statements.remove( this.toLocation.getIndex() + toDelta );
-		this.fromLocation.getBlockStatement().statements.add( this.fromLocation.getIndex(), this.getStatement() );
+
+		org.lgna.project.ast.StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+		org.lgna.project.ast.StatementListProperty to = this.toLocation.getBlockStatement().statements;
+		int fromIndex = this.fromLocation.getIndex();
+		int toIndex = this.toLocation.getIndex() + toDelta;
+
+		to.remove( toIndex );
+		from.add( fromIndex, this.getStatement() );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
