@@ -193,7 +193,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 										currentPotentialDropIndex = -1;
 									}
 								}
-								this.currentUnder.setCurrentPotentialDropIndex( currentPotentialDropIndex );
+								this.currentUnder.setCurrentPotentialDropIndexAndDragStep( currentPotentialDropIndex, step );
 							}
 						}
 					}
@@ -215,7 +215,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 							height = null;
 						} else {
 							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-							this.currentUnder.setCurrentPotentialDropIndex( index );
+							this.currentUnder.setCurrentPotentialDropIndexAndDragStep( index, step );
 							final boolean IS_SQUISHING_DESIRED = false;
 							if( index == 0 ) {
 								p.y = 0;

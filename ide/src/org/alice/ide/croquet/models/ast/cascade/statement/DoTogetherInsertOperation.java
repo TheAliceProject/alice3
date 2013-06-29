@@ -47,22 +47,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class DoTogetherInsertOperation extends TemplateStatementInsertOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoTogetherInsertOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoTogetherInsertOperation> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoTogetherInsertOperation> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized DoTogetherInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized DoTogetherInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoTogetherInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		DoTogetherInsertOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new DoTogetherInsertOperation( blockStatementIndexPair );
+			rv = new DoTogetherInsertOperation( blockStatementIndexPair, isEnveloping );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
 
-	private DoTogetherInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "e808bf50-d3bd-4256-a416-453542eff619" ), blockStatementIndexPair );
+	private DoTogetherInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( java.util.UUID.fromString( "e808bf50-d3bd-4256-a416-453542eff619" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override

@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplateDragModel extends StatementTemplateDragModel {
+public class DoTogetherTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static DoTogetherTemplateDragModel instance = new DoTogetherTemplateDragModel();
 	}
@@ -60,7 +60,7 @@ public class DoTogetherTemplateDragModel extends StatementTemplateDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance( blockStatementIndexPair );
+	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

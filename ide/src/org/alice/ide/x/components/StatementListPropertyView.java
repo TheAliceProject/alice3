@@ -147,8 +147,22 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 							int[] xPoints = new int[] { x1, x0, x0 };
 							int[] yPoints = new int[] { yC, y1, y0 };
 							g.setColor( FEEDBACK_COLOR );
-							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-							g.fillPolygon( xPoints, yPoints, 3 );
+
+							if( isShiftDown && ( currentDragModel instanceof org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel ) ) {
+								java.awt.Component lastComponent = this.getComponent( N - 1 );
+								final int X_INDENT = 2;
+								final int BRACKET_A_WIDTH = 4;
+								final int BRACKET_B_WIDTH = 8;
+								final int BRACKET_B_HEIGHT = 4;
+								int yMax = lastComponent.getY() + lastComponent.getHeight() + INTRASTICIAL_PAD;
+								g.fillRect( X_INDENT, y, BRACKET_A_WIDTH, yMax - y );
+								g.fillRect( X_INDENT, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+								g.fillRect( X_INDENT, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							} else {
+								g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+								g.fillPolygon( xPoints, yPoints, 3 );
+							}
+
 							//g.setColor( java.awt.Color.YELLOW );
 							//g.fillRect( 1, yC, w-2, 1 );
 						}
@@ -176,6 +190,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	private java.awt.Dimension dropSize = new java.awt.Dimension( 0, 0 );
 	private int currentPotentialDropIndex = -1;
+	private org.lgna.croquet.DragModel currentDragModel;
+	private boolean isShiftDown;
 
 	public static boolean EPIC_HACK_ignoreDrawingDesired = false;
 
@@ -183,7 +199,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		if( isCurrentUnder ) {
 			//pass
 		} else {
-			this.setCurrentPotentialDropIndex( -1 );
+			this.setCurrentPotentialDropIndexAndDragStep( -1, null );
 		}
 		this.statementListBorder.setDrawingDesired( isCurrentUnder == false );
 		//		if( this.getComponentCount() > 0 ) {
@@ -207,7 +223,19 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return this.currentPotentialDropIndex;
 	}
 
-	public void setCurrentPotentialDropIndex( int currentPotentialDropIndex ) {
+	public void setCurrentPotentialDropIndexAndDragStep( int currentPotentialDropIndex, org.lgna.croquet.history.DragStep dragStep ) {
+		if( dragStep != null ) {
+			this.currentDragModel = dragStep.getModel();
+			java.awt.event.MouseEvent e = dragStep.getLatestMouseEvent();
+			if( e != null ) {
+				this.isShiftDown = e.isShiftDown();
+			} else {
+				this.isShiftDown = false;
+			}
+		} else {
+			this.currentDragModel = null;
+			this.isShiftDown = false;
+		}
 		if( this.currentPotentialDropIndex != currentPotentialDropIndex ) {
 			this.currentPotentialDropIndex = currentPotentialDropIndex;
 			this.repaint();

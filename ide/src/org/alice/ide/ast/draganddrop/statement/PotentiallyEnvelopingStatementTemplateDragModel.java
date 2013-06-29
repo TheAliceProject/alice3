@@ -1,5 +1,6 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +41,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrderTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static DoInOrderTemplateDragModel instance = new DoInOrderTemplateDragModel();
+public abstract class PotentiallyEnvelopingStatementTemplateDragModel extends StatementTemplateDragModel {
+	public PotentiallyEnvelopingStatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
+		super( id, statementCls, possiblyIncompleteStatement );
 	}
 
-	public static DoInOrderTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private DoInOrderTemplateDragModel() {
-		super( java.util.UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ), org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.AstUtilities.createDoInOrder() );
-	}
+	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.getInstance( blockStatementIndexPair, isEnveloping );
+	protected final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		boolean isEnveloping = false;
+		java.awt.event.MouseEvent e = step.getLatestMouseEvent();
+		if( e != null ) {
+			isEnveloping = e.isShiftDown();
+		}
+		return this.getDropModel( step, blockStatementIndexPair, isEnveloping );
 	}
 }

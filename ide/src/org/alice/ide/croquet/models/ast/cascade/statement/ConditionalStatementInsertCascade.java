@@ -47,22 +47,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementInsertCascade extends StatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		ConditionalStatementInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ConditionalStatementInsertCascade( blockStatementIndexPair );
+			rv = new ConditionalStatementInsertCascade( blockStatementIndexPair, isEnveloping );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
 
-	private ConditionalStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
+	private ConditionalStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
 	}
 
 	@Override
