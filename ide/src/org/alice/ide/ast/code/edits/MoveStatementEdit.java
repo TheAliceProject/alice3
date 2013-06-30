@@ -49,20 +49,21 @@ package org.alice.ide.ast.code.edits;
 public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.code.MoveStatementOperation> {
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
-	private final boolean isToTheEnd;
+	private final boolean isMultiple;
+	private transient int count;
 
-	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
+	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
 		super( completionStep, statement );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
-		this.isToTheEnd = isToTheEnd;
+		this.isMultiple = isMultiple;
 	}
 
 	public MoveStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.isToTheEnd = binaryDecoder.decodeBoolean();
+		this.isMultiple = binaryDecoder.decodeBoolean();
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fromLocation );
 		binaryEncoder.encode( this.toLocation );
-		binaryEncoder.encode( this.isToTheEnd );
+		binaryEncoder.encode( this.isMultiple );
 	}
 
 	private int getToDelta() {
@@ -87,6 +88,47 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		return toDelta;
 	}
 
+	private static void move( org.lgna.project.ast.StatementListProperty remove, int removeIndex, org.lgna.project.ast.StatementListProperty add, int addIndex ) {
+		org.lgna.project.ast.Statement statement = remove.get( removeIndex );
+		remove.remove( removeIndex );
+		add.add( addIndex, statement );
+	}
+
+	private static boolean isEqualToOrAncestor( org.lgna.project.ast.Statement fromI, org.lgna.project.ast.Node toBlock ) {
+		if( toBlock instanceof org.lgna.project.ast.Statement ) {
+			if( fromI == toBlock ) {
+				return true;
+			} else {
+				return isEqualToOrAncestor( fromI, toBlock.getParent() );
+			}
+		} else {
+			return false;
+		}
+	}
+
+	private int getCount() {
+		if( this.isMultiple ) {
+			if( this.fromLocation.getBlockStatement() == this.toLocation.getBlockStatement() ) {
+				return 1;
+			} else {
+				org.lgna.project.ast.StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+				org.lgna.project.ast.BlockStatement toBlock = this.toLocation.getBlockStatement();
+				int count = 0;
+				for( int i = this.fromLocation.getIndex(); i < from.size(); i++ ) {
+					org.lgna.project.ast.Statement fromI = from.get( i );
+					if( isEqualToOrAncestor( fromI, toBlock ) ) {
+						break;
+					} else {
+						count++;
+					}
+				}
+				return count;
+			}
+		} else {
+			return 1;
+		}
+	}
+
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		int toDelta = this.getToDelta();
@@ -94,8 +136,11 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		org.lgna.project.ast.StatementListProperty to = this.toLocation.getBlockStatement().statements;
 		int fromIndex = this.fromLocation.getIndex();
 		int toIndex = this.toLocation.getIndex() + toDelta;
-		from.remove( fromIndex );
-		to.add( toIndex, this.getStatement() );
+
+		this.count = this.getCount();
+		for( int i = 0; i < this.count; i++ ) {
+			move( from, fromIndex, to, toIndex + i );
+		}
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
@@ -108,8 +153,9 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		int fromIndex = this.fromLocation.getIndex();
 		int toIndex = this.toLocation.getIndex() + toDelta;
 
-		to.remove( toIndex );
-		from.add( fromIndex, this.getStatement() );
+		for( int i = 0; i < this.count; i++ ) {
+			move( to, toIndex, from, fromIndex + i );
+		}
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 

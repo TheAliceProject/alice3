@@ -65,14 +65,14 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private final org.lgna.project.ast.Statement statement;
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
-	private final boolean isToTheEnd;
+	private final boolean isMultiple;
 
-	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
+	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
-		this.isToTheEnd = isToTheEnd;
+		this.isMultiple = isMultiple;
 	}
 
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
@@ -88,7 +88,7 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	public boolean isToTheEnd() {
-		return this.isToTheEnd;
+		return this.isMultiple;
 	}
 
 	@Override
@@ -99,6 +99,6 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<MoveStatementOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );
-		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, this.fromLocation, this.statement, this.toLocation, this.isToTheEnd ) );
+		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
 	}
 }
