@@ -342,8 +342,20 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 								if( ( prevOwner == nextOwner ) && ( ( prevIndex == nextIndex ) || ( prevIndex == ( nextIndex - 1 ) ) ) ) {
 									rv = null;
 								} else {
-									boolean isMultiple = eSource.isShiftDown() && ( prevBlockStatement != nextBlockStatement ); //todo
-									rv = org.alice.ide.ast.code.MoveStatementOperation.getInstance( new BlockStatementIndexPair( prevBlockStatement, prevIndex ), statement, new BlockStatementIndexPair( nextBlockStatement, nextIndex ), isMultiple );
+									boolean isMultiple = eSource.isShiftDown();// && ( prevBlockStatement != nextBlockStatement );
+									BlockStatementIndexPair fromLocation = new BlockStatementIndexPair( prevBlockStatement, prevIndex );
+									BlockStatementIndexPair toLocation = new BlockStatementIndexPair( nextBlockStatement, nextIndex );
+									int count;
+									if( isMultiple ) {
+										count = org.alice.ide.ast.code.ShiftMoveStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
+									} else {
+										count = 1;
+									}
+									if( count > 0 ) {
+										rv = org.alice.ide.ast.code.MoveStatementOperation.getInstance( fromLocation, statement, toLocation, isMultiple );
+									} else {
+										rv = null;
+									}
 								}
 							}
 						}

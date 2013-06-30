@@ -46,7 +46,7 @@ package org.alice.ide.ast.code;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
+public final class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapSingle = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
 	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapMultiple = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
 
