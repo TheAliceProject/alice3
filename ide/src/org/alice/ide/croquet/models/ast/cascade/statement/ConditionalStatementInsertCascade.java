@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementInsertCascade extends StatementInsertCascade {
+public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
 	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

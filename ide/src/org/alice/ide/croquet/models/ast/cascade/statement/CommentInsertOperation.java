@@ -71,4 +71,9 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
 		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
 	}
+
+	@Override
+	protected org.lgna.croquet.resolvers.Resolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
+	}
 }
