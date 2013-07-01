@@ -46,6 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
+@org.lgna.project.annotations.ClassTemplate( isFollowToSuperClassDesired = false )
 public/* abstract */class SProgram {
 	private final org.lgna.story.implementation.ProgramImp implementation = org.lgna.story.implementation.ProgramImp.createInstance( this );
 	private SScene activeScene;

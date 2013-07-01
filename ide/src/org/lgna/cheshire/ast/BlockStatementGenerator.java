@@ -233,12 +233,13 @@ public class BlockStatementGenerator {
 							org.lgna.croquet.triggers.DragTrigger dragTrigger = org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance();
 							org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( toLocation );
 							//org.lgna.croquet.Model tempDropModel = lastStatementDragModel.getDropModel( null, nextLocation );
-							org.alice.ide.ast.code.MoveStatementOperation dropModel = org.alice.ide.ast.code.MoveStatementOperation.getInstance( fromLocation, subStatement, toLocation );
+							boolean isMultiple = false;
+							org.alice.ide.ast.code.MoveStatementOperation dropModel = org.alice.ide.ast.code.MoveStatementOperation.getInstance( fromLocation, subStatement, toLocation, isMultiple );
 
 							org.lgna.croquet.history.Transaction moveStatementTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 							org.lgna.croquet.history.DragStep.createAndAddToTransaction( moveStatementTransaction, dragModel, dragTrigger );
 							org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( moveStatementTransaction, dropModel, dropTrigger, null );
-							org.alice.ide.ast.code.edits.MoveStatementEdit moveStatementEdit = new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, fromLocation, subStatement, toLocation );
+							org.alice.ide.ast.code.edits.MoveStatementEdit moveStatementEdit = new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, fromLocation, subStatement, toLocation, isMultiple );
 						}
 					}
 				} else {

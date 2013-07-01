@@ -47,22 +47,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized DoInOrderInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized DoInOrderInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		DoInOrderInsertOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new DoInOrderInsertOperation( blockStatementIndexPair );
+			rv = new DoInOrderInsertOperation( blockStatementIndexPair, isEnveloping );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
 
-	private DoInOrderInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair );
+	private DoInOrderInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( java.util.UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override

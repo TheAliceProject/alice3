@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.ast.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AssumingStringConcatenationObjectFillerInner extends ConcatenationFillerInner {
-	public AssumingStringConcatenationObjectFillerInner() {
-		super( Object.class );
+public final class EnvelopStatementsOperation extends org.lgna.croquet.ActionOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EnvelopStatementsOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	public static synchronized EnvelopStatementsOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+		EnvelopStatementsOperation rv = map.get( fromLocation, toLocation );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new EnvelopStatementsOperation( fromLocation, toLocation );
+			map.put( fromLocation, toLocation, rv );
+		}
+		return rv;
+	}
+
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+
+	private EnvelopStatementsOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
+		this.fromLocation = fromLocation;
+		this.toLocation = toLocation;
+	}
+
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
+		return this.fromLocation;
+	}
+
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getToLocation() {
+		return this.toLocation;
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( String.class ) );
-		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( Double.class ) );
-		items.add( org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu.getInstance( Integer.class ) );
-		//		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		//		items.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		//		items.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<EnvelopStatementsOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );
+		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.EnvelopStatementsEdit( completionStep, this.fromLocation, this.toLocation ) );
 	}
+
 }

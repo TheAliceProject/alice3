@@ -46,8 +46,8 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class InsertEachInArrayComposite<S extends org.lgna.project.ast.Statement> extends InsertEachInComposite<S> {
-	public InsertEachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, blockStatementIndexPair );
+	public InsertEachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( migrationId, blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override
