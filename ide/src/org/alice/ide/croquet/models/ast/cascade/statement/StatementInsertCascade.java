@@ -67,6 +67,10 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		return this.blockStatementIndexPair;
 	}
 
+	public boolean isEnveloping() {
+		return this.isEnveloping;
+	}
+
 	protected abstract java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement );
 
 	public java.util.List<org.lgna.project.ast.Expression> generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) throws org.lgna.croquet.UnsupportedGenerationException {
@@ -130,10 +134,5 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit retargetedEdit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( retargetedBlockStatement, originalInsertStatementEdit.getSpecifiedIndex() ), statement, retargetedValues );
 		//		retargetedEdit.retarget( retargeter );
 		return retargetedEdit;
-	}
-
-	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 }

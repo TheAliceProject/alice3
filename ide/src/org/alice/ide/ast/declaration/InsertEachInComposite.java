@@ -63,4 +63,9 @@ public abstract class InsertEachInComposite<S extends org.lgna.project.ast.State
 		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
 		return this.createStatement( item, this.getInitializer() );
 	}
+
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndBooleanStaticGetInstanceResolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndBooleanStaticGetInstanceResolver( this, this.getBlockStatementIndexPair(), this.isEnveloping() );
+	}
 }

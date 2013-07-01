@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopInsertCascade extends StatementInsertCascade {
+public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
 	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
