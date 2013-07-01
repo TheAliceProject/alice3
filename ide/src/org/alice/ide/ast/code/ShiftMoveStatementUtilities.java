@@ -86,4 +86,36 @@ public class ShiftMoveStatementUtilities {
 			return count;
 		}
 	}
+
+	public static boolean isCandidateForEnvelop( org.lgna.croquet.DragModel dragModel ) {
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel ) {
+			//org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel potentiallyEnvelopingStatementTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel)dragModel;
+			return true;
+		} else if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
+			org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+			org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+				return statementWithBody.body.getValue().statements.size() == 0;
+			} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
+				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+				if( conditionalStatement.elseBody.getValue().statements.size() == 0 ) {
+					for( org.lgna.project.ast.BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
+						if( booleanExpressionBodyPair.body.getValue().statements.size() == 0 ) {
+							//pass
+						} else {
+							return false;
+						}
+					}
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }
