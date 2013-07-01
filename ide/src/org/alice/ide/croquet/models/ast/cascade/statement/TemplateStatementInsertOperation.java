@@ -46,15 +46,18 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class TemplateStatementInsertOperation extends StatementInsertOperation {
-	public TemplateStatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	private final boolean isEnveloping;
+
+	public TemplateStatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		super( id, blockStatementIndexPair );
+		this.isEnveloping = isEnveloping;
 	}
 
 	protected abstract org.lgna.project.ast.Statement createStatement();
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement() );
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement(), new org.lgna.project.ast.Expression[ 0 ], this.isEnveloping );
 	}
 
 	@Override

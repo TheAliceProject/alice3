@@ -65,6 +65,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public static final JavaType[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
 
 	public static final JavaType OBJECT_TYPE = getInstance( Object.class );
+	public static final JavaType STRING_TYPE = getInstance( String.class );
 
 	private static java.util.Map<JavaType, JavaType> mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();;
 	static {

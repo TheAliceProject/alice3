@@ -62,7 +62,7 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
 	}
 
 	private CommentInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair );
+		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair, false );
 	}
 
 	@Override

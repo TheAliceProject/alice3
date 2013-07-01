@@ -47,13 +47,13 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class InsertEachInComposite<S extends org.lgna.project.ast.Statement> extends InsertStatementComposite<S> {
-	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		super( migrationId, new Details()
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
 				.name( ApplicabilityStatus.EDITABLE )
 				.initializer( ApplicabilityStatus.EDITABLE, null ),
-				blockStatementIndexPair );
+				blockStatementIndexPair, isEnveloping );
 	}
 
 	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );

@@ -45,7 +45,7 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ConcatenationFillerInner {
+public class StringFillerInner extends ExpressionFillerInner {
 	public static String[] getLiterals() {
 		return new String[] { "hello" };
 	}
@@ -62,6 +62,5 @@ public class StringFillerInner extends ConcatenationFillerInner {
 		}
 		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
 	}
 }
