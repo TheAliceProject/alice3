@@ -73,7 +73,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 
 	private ReturnStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
+		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, false, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
 	}
 
 	@Override

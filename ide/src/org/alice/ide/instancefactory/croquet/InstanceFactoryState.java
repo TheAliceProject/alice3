@@ -84,6 +84,13 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 
 	private void handleDeclarationChanged( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 		if( this.ignoreCount == 0 ) {
+			if( nextValue instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)nextValue;
+				if( method.isStatic() ) {
+					this.setValueTransactionlessly( null );
+					return;
+				}
+			}
 			InstanceFactory instanceFactory = this.getValue();
 			if( instanceFactory != null ) {
 				if( instanceFactory.isValid() ) {
@@ -155,45 +162,66 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.meta.DeclarationMeta.getDeclaration();
+		boolean isStaticMethod;
+		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+			isStaticMethod = method.isStatic();
+		} else {
+			isStaticMethod = false;
+		}
+		if( isStaticMethod ) {
+			//pass
+		} else {
+
+		}
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
-		blankChildren.add(
-				createFillInMenuComboIfNecessary(
-						InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
-						apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-				)
-				);
+		if( isStaticMethod ) {
+			//pass
+		} else {
+			blankChildren.add(
+					createFillInMenuComboIfNecessary(
+							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
+							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
+					)
+					);
+		}
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
-			java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
-			java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.lgna.project.ast.UserField field : fields ) {
-				if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-					filteredFields.add( field );
-				}
-			}
-			if( filteredFields.size() > 16 ) {
-				org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor(
-						filteredFields,
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ),
-
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
-						);
-				for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {
-					blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
-				}
-				for( org.alice.ide.ast.fieldtree.TypeNode typeNode : root.getTypeNodes() ) {
-					blankChildren.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
-				}
+			if( isStaticMethod ) {
+				//pass
 			} else {
-				for( org.lgna.project.ast.UserField field : filteredFields ) {
-					blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
+				java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
+				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				for( org.lgna.project.ast.UserField field : fields ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+						filteredFields.add( field );
+					}
+				}
+				if( filteredFields.size() > 16 ) {
+					org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor(
+							filteredFields,
+							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ),
+
+							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
+							);
+					for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {
+						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
+					}
+					for( org.alice.ide.ast.fieldtree.TypeNode typeNode : root.getTypeNodes() ) {
+						blankChildren.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
+					}
+				} else {
+					for( org.lgna.project.ast.UserField field : filteredFields ) {
+						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
+					}
 				}
 			}
 

@@ -63,7 +63,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 				.name( ApplicabilityStatus.EDITABLE )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
-				, blockStatementIndexPair );
+				, blockStatementIndexPair, false );
 	}
 
 	@Override

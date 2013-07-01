@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
+public class CountLoopTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
 	}
@@ -60,7 +60,7 @@ public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair );
+	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

@@ -101,17 +101,19 @@ public abstract class ProgramImp {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
 			javax.swing.ButtonModel buttonModel = button.getModel();
-			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJDialog( button );
-			java.awt.Rectangle bounds;
-			if( buttonModel.isSelected() ) {
-				this.prevNormalBounds = dialog.getBounds();
-				bounds = dialog.getGraphicsConfiguration().getBounds();
-			} else {
-				bounds = this.prevNormalBounds;
-				this.prevNormalBounds = null;
-			}
-			if( bounds != null ) {
-				dialog.setBounds( bounds );
+			java.awt.Component root = javax.swing.SwingUtilities.getRoot( button );
+			if( root != null ) {
+				java.awt.Rectangle bounds;
+				if( buttonModel.isSelected() ) {
+					this.prevNormalBounds = root.getBounds();
+					bounds = root.getGraphicsConfiguration().getBounds();
+				} else {
+					bounds = this.prevNormalBounds;
+					this.prevNormalBounds = null;
+				}
+				if( bounds != null ) {
+					root.setBounds( bounds );
+				}
 			}
 		}
 	};

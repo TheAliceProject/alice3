@@ -1,5 +1,6 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +41,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ConcatenationFillerInner extends ExpressionFillerInner {
-	public ConcatenationFillerInner( Class<?> cls ) {
-		super( cls );
+public abstract class PotentiallyEnvelopingStatementTemplateDragModel extends StatementTemplateDragModel {
+	public PotentiallyEnvelopingStatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
+		super( id, statementCls, possiblyIncompleteStatement );
 	}
 
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> addConcatenationItems( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		if( isTop ) {
-			if( prevExpression != null ) {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				if( prevExpression instanceof org.lgna.project.ast.NullLiteral ) {
-					//pass
-				} else {
-					if( prevExpression.getType().isAssignableTo( String.class ) ) {
-						rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
-					}
-				}
-				rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
-			}
+	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
+
+	@Override
+	protected final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		boolean isEnveloping = false;
+		java.awt.event.MouseEvent e = step.getLatestMouseEvent();
+		if( e != null ) {
+			isEnveloping = e.isShiftDown();
 		}
-		return rv;
+		return this.getDropModel( step, blockStatementIndexPair, isEnveloping );
 	}
 }

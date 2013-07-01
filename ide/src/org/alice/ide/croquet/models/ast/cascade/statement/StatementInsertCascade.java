@@ -55,10 +55,12 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private final boolean isEnveloping;
 
-	public StatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+	public StatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id, blanks );
 		this.blockStatementIndexPair = blockStatementIndexPair;
+		this.isEnveloping = isEnveloping;
 	}
 
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
@@ -112,7 +114,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	@Override
 	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
 		org.lgna.project.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values );
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values, this.isEnveloping );
 	}
 
 	@Override
