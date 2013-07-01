@@ -345,12 +345,12 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 									boolean isMultiple = eSource.isShiftDown();
 									BlockStatementIndexPair fromLocation = new BlockStatementIndexPair( prevBlockStatement, prevIndex );
 									BlockStatementIndexPair toLocation = new BlockStatementIndexPair( nextBlockStatement, nextIndex );
-									if( isMultiple && org.alice.ide.ast.code.ShiftMoveStatementUtilities.isCandidateForEnvelop( statementDragModel ) ) {
+									if( isMultiple && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( statementDragModel ) ) {
 										rv = org.alice.ide.ast.code.EnvelopStatementsOperation.getInstance( fromLocation, toLocation );
 									} else {
 										int count;
 										if( isMultiple ) {
-											count = org.alice.ide.ast.code.ShiftMoveStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
+											count = org.alice.ide.ast.code.ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
 										} else {
 											count = 1;
 										}

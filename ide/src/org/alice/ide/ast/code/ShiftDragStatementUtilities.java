@@ -45,8 +45,8 @@ package org.alice.ide.ast.code;
 /**
  * @author Dennis Cosgrove
  */
-public class ShiftMoveStatementUtilities {
-	private ShiftMoveStatementUtilities() {
+public class ShiftDragStatementUtilities {
+	private ShiftDragStatementUtilities() {
 		throw new AssertionError();
 	}
 

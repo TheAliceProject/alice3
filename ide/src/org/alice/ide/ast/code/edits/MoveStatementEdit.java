@@ -96,7 +96,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 
 	private int getCount() {
 		if( this.isMultiple ) {
-			return org.alice.ide.ast.code.ShiftMoveStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
+			return org.alice.ide.ast.code.ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
 		} else {
 			return 1;
 		}

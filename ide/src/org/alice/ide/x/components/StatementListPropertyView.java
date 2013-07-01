@@ -148,7 +148,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 							int[] yPoints = new int[] { yC, y1, y0 };
 							g.setColor( FEEDBACK_COLOR );
 
-							if( isShiftDown && org.alice.ide.ast.code.ShiftMoveStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
+							if( isShiftDown && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
 								java.awt.Component lastComponent = this.getComponent( N - 1 );
 								final int X_INDENT = 2;
 								final int BRACKET_A_WIDTH = 4;
