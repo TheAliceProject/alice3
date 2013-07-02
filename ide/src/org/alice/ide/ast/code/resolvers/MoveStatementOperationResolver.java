@@ -44,7 +44,7 @@
 package org.alice.ide.ast.code.resolvers;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.ast.code.MoveStatementOperation> {
 	public MoveStatementOperationResolver( org.alice.ide.ast.code.MoveStatementOperation instance ) {
@@ -52,12 +52,14 @@ public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.S
 				new Class[] {
 						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class,
 						org.lgna.project.ast.Statement.class,
-						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class
+						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class,
+						Boolean.TYPE
 				},
 				new Object[] {
 						instance.getFromLocation(),
 						instance.getStatement(),
-						instance.getToLocation()
+						instance.getToLocation(),
+						instance.isMultiple()
 				} );
 	}
 
@@ -72,7 +74,8 @@ public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.S
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return new Object[] { fromLocation, statement, toLocation };
+		boolean isMultiple = binaryDecoder.decodeBoolean();
+		return new Object[] { fromLocation, statement, toLocation, isMultiple };
 	}
 
 	@Override
@@ -80,8 +83,10 @@ public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.S
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
 		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)arguments[ 1 ];
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 2 ];
+		boolean isMultiple = (Boolean)arguments[ 3 ];
 		binaryEncoder.encode( fromLocation );
 		binaryEncoder.encode( statement.getId() );
 		binaryEncoder.encode( toLocation );
+		binaryEncoder.encode( isMultiple );
 	}
 }
