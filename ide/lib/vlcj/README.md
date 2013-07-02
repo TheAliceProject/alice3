@@ -12,7 +12,7 @@ that hides a lot of the complexities of working with libvlc.
 
 vlcj is primarily developed and therefore extensively tested on Linux - it does
 also work just fine on Windows and should work on Mac - but for Mac you likely
-need a bleeding-edge release of vlc.
+need to use release 2.0.3, 2.0.7 or later, *but not any version inbetween*.
 
 At least JDK 1.6 is required, and it works without changes on JDK 1.7.
 
@@ -29,27 +29,28 @@ Add the following Maven dependency to your own project pom.xml:
 <dependency>
     <groupId>uk.co.caprica</groupId>
     <artifactId>vlcj</artifactId>
-    <version>2.1.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
+
+Note that some features of vlcj 2.2.0 and later (access to the native log) require vlc 2.1.0 which has *not* yet been released.
 
 News
 ----
 
+01/07/2013 Made new release 2.4.0 at [Maven Central](http://search.maven.org/#search|ga|1|vlcj), added new audio player providing direct access to audio samples; automatically handle international characters in MRLs; support new application ID API.
+
+22/05/2013 Made new release 2.3.1 at [Maven Central](http://search.maven.org/#search|ga|1|vlcj), changed to fix execution of tests on Windows (you only need to uppdate to this version if you want to run the tests on Windows).
+
+10/05/2013 Made new release 2.3.0 at [Maven Central](http://search.maven.org/#search|ga|1|vlcj), minor API incompatibility with previous version caused by renaming SpuTrackInfo class to TextTrackInfo.
+
+24/01/2013 Made new release 2.2.0 at [Maven Central](http://search.maven.org/#search|ga|1|vlcj).
+
+Note: vlcj now *requires* JNA 3.5.0 or later.
+
 02/01/2013 Happy New Year! Current release artifacts are now available on [Maven Central](http://search.maven.org/#search|ga|1|vlcj).
 
 12/12/2012 github deprecated the downloads section, go to [googlecode](http://code.google.com/p/vlcj/downloads/list) for distribution archives.
-
-27/10/2012 New pre-release snapshot version 2.2.0:
-
-* new native log integration (libvlc 2.1.x);
-* new mini-framework to help make it easy to use media players in a synchronous way;
-* native media discoverer integration - it is now possible to get a list of audio and video (on Linux) capture devices;
-* media meta data now provides media length (if available);
-* minor bug fixes and memory leak fixes;
-* vlcj now works on Java7 on Linux without any workaround needed.
-
-Note: vlcj now *requires* JNA 3.5.0 or later.
 
 20/05/2012 Released version 2.1.0, for use with libvlc 2.0.
 
@@ -66,10 +67,13 @@ The vlcj project page is at [github](http://caprica.github.com/vlcj "vlcj at git
 
 Online Javadoc is available:
 
-* [2.1.0 (current)](http://caprica.github.com/vlcj/javadoc/2.1.0/index.html "2.1.0 Javadoc")
+* [2.4.0 (current)](http://caprica.github.com/vlcj/javadoc/2.4.0/index.html "2.4.0 Javadoc")
+* [2.3.0](http://caprica.github.com/vlcj/javadoc/2.3.0/index.html "2.3.0 Javadoc")
+* [2.2.0](http://caprica.github.com/vlcj/javadoc/2.2.0/index.html "2.2.0 Javadoc")
+* [2.1.0](http://caprica.github.com/vlcj/javadoc/2.1.0/index.html "2.1.0 Javadoc")
 * [2.0.0](http://caprica.github.com/vlcj/javadoc/2.0.0/index.html "2.0.0 Javadoc")
 
-Documentation is being made available at [Caprica Software](http://www.capricasoftware.co.uk/wiki "Caprica Software WIKI"). 
+Documentation is being made available at [Caprica Software](http://www.capricasoftware.co.uk/projects/vlcj/index.html "Caprica Software"). 
 
 Support
 -------
