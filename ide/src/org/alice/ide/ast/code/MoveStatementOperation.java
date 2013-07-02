@@ -87,7 +87,7 @@ public final class MoveStatementOperation extends org.lgna.croquet.ActionOperati
 		return this.toLocation;
 	}
 
-	public boolean isToTheEnd() {
+	public boolean isMultiple() {
 		return this.isMultiple;
 	}
 

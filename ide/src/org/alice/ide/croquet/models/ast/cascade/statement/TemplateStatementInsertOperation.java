@@ -55,6 +55,10 @@ public abstract class TemplateStatementInsertOperation extends StatementInsertOp
 
 	protected abstract org.lgna.project.ast.Statement createStatement();
 
+	public boolean isEnveloping() {
+		return this.isEnveloping;
+	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement(), new org.lgna.project.ast.Expression[ 0 ], this.isEnveloping );

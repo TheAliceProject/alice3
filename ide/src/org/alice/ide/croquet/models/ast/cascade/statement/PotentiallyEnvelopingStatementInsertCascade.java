@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, false, blanks );
-	}
-
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
-
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new org.lgna.project.ast.ExpressionStatement( expression );
-		} else {
-			return null;
-		}
+public abstract class PotentiallyEnvelopingStatementInsertCascade extends StatementInsertCascade {
+	public PotentiallyEnvelopingStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+		super( id, blockStatementIndexPair, isEnveloping, blanks );
 	}
 
 	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
+	protected org.lgna.croquet.resolvers.Resolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndBooleanStaticGetInstanceResolver( this, this.getBlockStatementIndexPair(), this.isEnveloping() );
 	}
 }

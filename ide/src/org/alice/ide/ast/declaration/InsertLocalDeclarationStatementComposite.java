@@ -91,4 +91,9 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
+
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
+	}
 }
