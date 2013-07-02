@@ -60,7 +60,6 @@ public class TimeLine {
 	//I used datas here, get over it
 	private List<KeyFrameData> datas = Collections.newArrayList();
 	private List<TimeLineListener> listeners = Collections.newArrayList();
-	private int index;
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
@@ -176,7 +175,7 @@ public class TimeLine {
 
 	public double getDurationForKeyFrame( KeyFrameData data ) {
 		for( int i = 0; i != datas.size(); ++i ) {
-			if( datas.get( index ).equals( data ) ) {
+			if( datas.get( i ) == data ) {
 				if( i == 0 ) {
 					return data.getEventTime();
 				} else {
@@ -189,13 +188,15 @@ public class TimeLine {
 	}
 
 	public AnimationStyle getStyleForKeyFramePose( KeyFrameData data ) {
+		KeyFrameData prev = null;
 		for( int i = 0; i != datas.size(); ++i ) {
-			KeyFrameData prev = null;
-			if( i != 0 ) {
-				prev = datas.get( i - 1 );
+			if( datas.get( i ) == data ) {
+				if( i != 0 ) {
+					prev = datas.get( i - 1 );
+				}
+				KeyFrameData itr = datas.get( i );
+				return KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles( prev != null ? prev.getEventStyle() : KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY, itr.getEventStyle() );
 			}
-			KeyFrameData itr = datas.get( i );
-			KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles( prev.getEventStyle(), itr.getEventStyle() );
 		}
 		throw new RuntimeException( "Pose Not Found:" + data );
 	}
@@ -226,5 +227,13 @@ public class TimeLine {
 	public void setSelectedKeyFrame( KeyFrameData keyFrameData ) {
 		this.setCurrentTime( keyFrameData.getEventTime() );
 		fireSelectedKeyFrameChanged( keyFrameData );
+	}
+
+	public void refresh() {
+		for( KeyFrameData data : datas ) {
+			removeKeyFrameData( data );
+		}
+		setCurrentTime( 0 );
+		setEndTime( 10 );
 	}
 }

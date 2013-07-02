@@ -50,6 +50,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
@@ -57,9 +58,15 @@ import org.lgna.project.ast.NamedUserType;
 public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
 	private MethodNameValidator validator;
+	private UserMethod method;
+
+	public AnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod ) {
+		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+		this.method = editedMethod;
+	}
 
 	public AnimatorInputDialogComposite( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+		this( valueType, null );
 	}
 
 	@Override

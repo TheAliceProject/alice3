@@ -45,6 +45,7 @@ package org.lgna.ik.poser.animation.views;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.components.Spinner;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
 
@@ -71,11 +72,13 @@ public class TimeLineModifierView extends MigPanel {
 		//
 		//		this.addCenterComponent( gPanel );
 		//		this.addPageEndComponent( composite.getDeletePoseOperation().createButton() );
-		addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextArea() );
+		addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextField() );
 		addComponent( comboBox, "wrap" );
 
-		addComponent( currentTime.getSidekickLabel().createImmutableTextArea() );
-		addComponent( currentTime.createSpinner(), "wrap" );
+		addComponent( currentTime.getSidekickLabel().createImmutableTextField() );
+		Spinner createSpinner = currentTime.createSpinner();
+		createSpinner.getAwtComponent().setEnabled( false ); // why do I have to do this to get it to be disabled on start?
+		addComponent( createSpinner, "grow, wrap" );
 		addComponent( composite.getDeletePoseOperation().createButton(), "growx, span2" );
 		//		this.setMinimumPreferredWidth( 0 );
 		//		this.setMaximumPreferredWidth( 100 );

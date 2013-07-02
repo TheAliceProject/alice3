@@ -48,6 +48,7 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
@@ -65,7 +66,7 @@ import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 public class TimeLineView extends Panel {
 
 	private JTimeLineView jView;
-	private final Map<KeyFrameData, AbstractButton> map = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+	private final Map<KeyFrameData, JTimeLinePoseMarker> map = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
 
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite );
@@ -78,7 +79,9 @@ public class TimeLineView extends Panel {
 		private ActionListener actionListener = new ActionListener() {
 
 			public void actionPerformed( ActionEvent e ) {
-				KeyFrameData data = ( (JTimeLinePoseMarker)e.getSource() ).getKeyFrameData();
+				select( ( (JTimeLinePoseMarker)e.getSource() ).getKeyFrameData() );
+				JTimeLinePoseMarker source = (JTimeLinePoseMarker)e.getSource();
+				KeyFrameData data = source.getKeyFrameData();
 				if( ( (TimeLineComposite)getComposite() ).getSelectedKeyFrame() == data ) {
 					// do nothing
 				} else {
@@ -88,6 +91,7 @@ public class TimeLineView extends Panel {
 		};
 
 		public void selectedKeyFrameChanged( KeyFrameData event ) {
+			select( event );
 			revalidateAndRepaint();
 		}
 
@@ -116,6 +120,19 @@ public class TimeLineView extends Panel {
 			revalidateAndRepaint();
 		}
 	};
+
+	private void select( KeyFrameData selected ) {
+
+		List<KeyFrameData> keyFrames = ( (TimeLineComposite)getComposite() ).getTimeLine().getKeyFrames();
+		for( KeyFrameData data : keyFrames ) {
+			JTimeLinePoseMarker button = map.get( data );
+			if( button.getKeyFrameData() != selected ) {
+				button.setSelected( false );
+			} else {
+				button.setSelected( true );
+			}
+		}
+	}
 
 	@Override
 	protected LayoutManager createLayoutManager( JPanel jPanel ) {
