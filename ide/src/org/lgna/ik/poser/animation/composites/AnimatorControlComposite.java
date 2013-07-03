@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.common.ComponentThread;
@@ -73,6 +74,8 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SBiped;
@@ -255,6 +258,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		tlComposite.getTimeLine().refresh();
+		parent.getBiped().straightenOutJoints( new Duration( 0 ) );
 	}
 
 	public View getSouthViewForDialog() {
@@ -262,5 +266,13 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		borderPanel.addCenterComponent( tlComposite.getView() );
 		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );
 		return borderPanel;
+	}
+
+	public void parseMethod( UserMethod method ) {
+		ArrayList<Statement> statements = method.body.getValue().statements.getValue();
+		for( Statement statement : statements ) {
+			MethodInvocation setPose = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
+			System.out.println( setPose.method.getName() );
+		}
 	}
 }

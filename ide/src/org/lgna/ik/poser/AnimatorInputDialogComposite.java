@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.ArrayList;
+
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.components.BorderPanel;
@@ -49,20 +51,29 @@ import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SBiped;
+import org.lgna.story.SetPose;
 
 /**
  * @author Matt May
  */
 public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
+	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );;
 	private MethodNameValidator validator;
 	private UserMethod method;
 
 	public AnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod ) {
 		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
 		this.method = editedMethod;
+		if( method != null ) {
+			getControlComposite().parseMethod( method );
+		}
 	}
 
 	public AnimatorInputDialogComposite( NamedUserType valueType ) {
@@ -105,5 +116,20 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 		panel.addCenterComponent( splitPane );
 		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );
 		return panel;
+	}
+
+	public static boolean isStrictlyAnimation( UserMethod candidate ) {
+		ArrayList<Statement> body = candidate.body.getValue().statements.getValue();
+		for( Statement statement : body ) {
+			MethodInvocation methodInv = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
+			if( methodInv != null ) {
+				if( !methodInv.method.getValue().equals( SET_POSE ) ) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 }

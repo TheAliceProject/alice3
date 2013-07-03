@@ -128,11 +128,13 @@ public class TimeLine {
 	}
 
 	public void setEndTime( double endTime ) {
-		if( ( endTime > 0 ) && ( endTime > datas.get( datas.size() - 1 ).getEventTime() ) ) {
-			this.endTime = endTime;
-			fireEndTimeChanged( endTime );
-			if( this.endTime < currentTime ) {
-				setCurrentTime( this.endTime );
+		if( endTime > 0 ) {
+			if( ( datas.size() == 0 ) || ( endTime > datas.get( datas.size() - 1 ).getEventTime() ) ) {
+				this.endTime = endTime;
+				fireEndTimeChanged( endTime );
+				if( this.endTime < currentTime ) {
+					setCurrentTime( this.endTime );
+				}
 			}
 		}
 	}
@@ -230,8 +232,8 @@ public class TimeLine {
 	}
 
 	public void refresh() {
-		for( KeyFrameData data : datas ) {
-			removeKeyFrameData( data );
+		while( !datas.isEmpty() ) {
+			removeKeyFrameData( datas.get( 0 ) );
 		}
 		setCurrentTime( 0 );
 		setEndTime( 10 );
