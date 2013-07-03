@@ -73,18 +73,36 @@ public class FFmpegProcess {
 			return null;
 		} else {
 			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
-			java.io.File installDir = new java.io.File( installPath );
-			java.io.File ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
-			StringBuilder sb = new StringBuilder();
-			sb.append( ffmpegFile.getAbsolutePath() );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				sb.append( "/windows" );
-			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				sb.append( "/macosx" );
+			if( installPath != null ) {
+				//pass
 			} else {
-				throw new RuntimeException();
+				installPath = System.getProperty( "user.dir" );
 			}
-			return sb.toString();
+			if( installPath != null ) {
+				java.io.File installDir = new java.io.File( installPath );
+				if( installDir.exists() ) {
+					java.io.File ffmpegFile = new java.io.File( installDir, "ext/ffmpeg" );
+					if( ffmpegFile.exists() ) {
+						//pass
+					} else {
+						ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
+					}
+					StringBuilder sb = new StringBuilder();
+					sb.append( ffmpegFile.getAbsolutePath() );
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+						sb.append( "/windows" );
+					} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+						sb.append( "/macosx" );
+					} else {
+						throw new RuntimeException();
+					}
+					return sb.toString();
+				} else {
+					throw new RuntimeException( "install directory does not exist" );
+				}
+			} else {
+				throw new RuntimeException( "install path is null" );
+			}
 		}
 	}
 
