@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Panda" resourceName="PANDA" textureName="PANDA"/>
+    <Resource modelName="Panda" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -21,7 +21,7 @@
             <Max x="0.5169071555137634" y="1.9650591611862183" z="0.5621671676635742"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="WithTutu" resourceName="WITH_TUTU" textureName="WITH_TUTU">
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
         <BoundingBox>
             <Min x="-0.5493486523628235" y="0.0010254621738567948" z="-0.5079571008682251"/>
             <Max x="0.5381690263748169" y="1.9650591611862183" z="0.5621671676635742"/>

@@ -13,13 +13,13 @@
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="Left" resourceName="LEFT" textureName="LEFT">
+    <Resource modelName="Left" resourceName="LEFT" textureName="DEFAULT">
         <BoundingBox>
             <Min x="-0.07089533656835556" y="-0.06896233558654785" z="-0.06479524821043015"/>
             <Max x="0.05096772685647011" y="0.15872757136821747" z="0.21607448160648346"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="Right" resourceName="RIGHT" textureName="RIGHT">
+    <Resource modelName="Right" resourceName="RIGHT" textureName="DEFAULT">
         <BoundingBox>
             <Min x="-0.05369200557470322" y="-0.06896233558654785" z="-0.06479524821043015"/>
             <Max x="0.06817106157541275" y="0.15872757136821747" z="0.21607448160648346"/>

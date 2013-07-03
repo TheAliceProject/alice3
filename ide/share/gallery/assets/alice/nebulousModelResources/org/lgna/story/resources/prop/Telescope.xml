@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creator="EA" name="Telescope">
+    <BoundingBox>
+        <Min x="-0.8731794357299805" y="0.0" z="-0.5869900584220886"/>
+        <Max x="0.8731792569160461" y="1.023549199104309" z="0.5869899392127991"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>telescope</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:yard</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Basic" resourceName="BASIC" textureName="BASIC">
+        <BoundingBox>
+            <Min x="-0.8573033213615417" y="0.0" z="-0.4848752021789551"/>
+            <Max x="0.857303261756897" y="1.023549199104309" z="0.48487529158592224"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY" textureName="FANCY">
+        <BoundingBox>
+            <Min x="-0.8731794357299805" y="0.0" z="-0.5869900584220886"/>
+            <Max x="0.8731792569160461" y="1.0204401016235352" z="0.5869899392127991"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

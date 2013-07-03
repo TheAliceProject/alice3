@@ -11,10 +11,11 @@
         <Tag>watch</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="PocketWatch" resourceName="POCKET_WATCH" textureName="POCKET_WATCH"/>
+    <Resource modelName="PocketWatch" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

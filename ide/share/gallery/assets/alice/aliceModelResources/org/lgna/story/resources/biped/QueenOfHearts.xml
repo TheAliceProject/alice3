@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>*wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="QueenOfHearts" resourceName="QUEEN_OF_HEARTS" textureName="QUEEN_OF_HEARTS"/>
+    <Resource modelName="QueenOfHearts" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

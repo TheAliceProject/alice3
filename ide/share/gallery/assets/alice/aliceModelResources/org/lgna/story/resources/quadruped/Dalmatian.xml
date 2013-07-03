@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="Dalmatian" resourceName="DALMATIAN" textureName="DALMATIAN"/>
+    <Resource modelName="Dalmatian" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

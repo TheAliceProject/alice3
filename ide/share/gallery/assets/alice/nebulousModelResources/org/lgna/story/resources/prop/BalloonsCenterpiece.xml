@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creator="EA" name="BalloonsCenterpiece">
+    <BoundingBox>
+        <Min x="0.0" y="0.0" z="0.0"/>
+        <Max x="0.0" y="0.0" z="0.0"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>balloons</Tag>
+        <Tag>centerpiece</Tag>
+        <Tag>party</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BalloonsCenterpiece" resourceName="CENTERPIECE_BALLOONS_BIRTHDAY_GIRL" textureName="CENTERPIECE_BALLOONS_BIRTHDAY_GIRL"/>
+    <Resource modelName="BalloonsCenterpiece" resourceName="CENTERPIECE_BALLOONS_BLACK" textureName="CENTERPIECE_BALLOONS_BLACK"/>
+    <Resource modelName="BalloonsCenterpiece" resourceName="CENTERPIECE_BALLOONS_WEDDING" textureName="CENTERPIECE_BALLOONS_WEDDING"/>
+    <Resource modelName="BalloonsCenterpiece" resourceName="CENTERPIECE_BALLOONS_BIRTHDAY_BOY" textureName="CENTERPIECE_BALLOONS_BIRTHDAY_BOY"/>
+    <Resource modelName="BalloonsCenterpiece" resourceName="CENTERPIECE_BALLOONS_HAPPY" textureName="CENTERPIECE_BALLOONS_HAPPY"/>
+</AliceModel>

@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Rhino" resourceName="RHINO" textureName="RHINO"/>
+    <Resource modelName="Rhino" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

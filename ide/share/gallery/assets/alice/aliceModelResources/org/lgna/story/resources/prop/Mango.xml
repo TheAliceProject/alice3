@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>amazon:mangotree</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Mango" resourceName="MANGO" textureName="MANGO"/>
+    <Resource modelName="Mango" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

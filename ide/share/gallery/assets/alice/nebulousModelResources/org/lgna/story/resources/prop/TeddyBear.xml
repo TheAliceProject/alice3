@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creator="EA" name="TeddyBear">
+    <BoundingBox>
+        <Min x="-0.15839995443820953" y="-1.7902456406204692E-8" z="-0.2626359462738037"/>
+        <Max x="0.15839995443820953" y="0.1658792346715927" z="0.2626359760761261"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>teddy</Tag>
+        <Tag>bear</Tag>
+        <Tag>stuffed</Tag>
+        <Tag>toy</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bedroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="TeddyBear" resourceName="CLEAN" textureName="CLEAN"/>
+    <Resource modelName="TeddyBear" resourceName="WORN" textureName="WORN"/>
+</AliceModel>

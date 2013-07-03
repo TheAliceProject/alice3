@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Hare" resourceName="HARE" textureName="HARE"/>
+    <Resource modelName="Hare" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

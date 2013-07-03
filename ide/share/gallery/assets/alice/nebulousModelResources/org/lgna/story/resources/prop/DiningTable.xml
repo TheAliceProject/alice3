@@ -9,10 +9,11 @@
         <Tag>dining</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
-        <ThemeTag>household:dining room</ThemeTag>
+        <ThemeTag>household:kitchen</ThemeTag>
         <ThemeTag>household:furniture</ThemeTag>
     </ThemeTags>
     <Resource modelName="Club" resourceName="CLUB_LIGHT_WOOD" textureName="LIGHT_WOOD">

@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Witch" resourceName="WITCH" textureName="WITCH"/>
+    <Resource modelName="Witch" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

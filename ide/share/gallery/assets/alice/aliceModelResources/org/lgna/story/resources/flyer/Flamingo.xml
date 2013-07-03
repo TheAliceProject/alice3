@@ -11,5 +11,5 @@
         <GroupTag>animals</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="Flamingo" resourceName="FLAMINGO" textureName="FLAMINGO"/>
+    <Resource modelName="Flamingo" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

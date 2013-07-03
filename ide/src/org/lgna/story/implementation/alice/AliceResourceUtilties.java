@@ -460,14 +460,15 @@ public class AliceResourceUtilties {
 	}
 
 	public static String getDefaultTextureEnumName( String resourceName ) {
-		return AliceResourceUtilties.makeEnumName( resourceName );
+		return "DEFAULT";
+		//		return AliceResourceUtilties.makeEnumName( resourceName );
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
-		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
+		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
 			textureName = "";
 		}
 		else if( textureName.length() > 0 ) {

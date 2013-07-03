@@ -19,5 +19,5 @@
     <ThemeTags>
         <ThemeTag>*amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Peccary" resourceName="PECCARY" textureName="PECCARY"/>
+    <Resource modelName="Peccary" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

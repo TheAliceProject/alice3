@@ -12,5 +12,5 @@
         <GroupTag>characters</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="StuffedTiger" resourceName="STUFFED_TIGER" textureName="STUFFED_TIGER"/>
+    <Resource modelName="StuffedTiger" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

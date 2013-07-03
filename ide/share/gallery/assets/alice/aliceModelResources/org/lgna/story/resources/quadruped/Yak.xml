@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Yak" resourceName="YAK" textureName="YAK"/>
+    <Resource modelName="Yak" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

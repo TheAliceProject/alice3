@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>fantasy:cauldron</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CauldronLid" resourceName="CAULDRON_LID" textureName="CAULDRON_LID"/>
+    <Resource modelName="CauldronLid" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

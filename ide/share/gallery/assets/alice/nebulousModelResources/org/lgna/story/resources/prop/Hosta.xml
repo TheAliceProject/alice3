@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creator="EA" name="Hosta">
+    <BoundingBox>
+        <Min x="-0.13877448439598083" y="0.0" z="-1.5595800876617432"/>
+        <Max x="0.13877448439598083" y="0.9801241159439087" z="1.5595800876617432"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Hosta" resourceName="HOSTA" textureName="HOSTA"/>
+</AliceModel>

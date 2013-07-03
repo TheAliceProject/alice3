@@ -16,5 +16,5 @@
         <ThemeTag>snow</ThemeTag>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BabyWalrus" resourceName="BABY_WALRUS" textureName="BABY_WALRUS"/>
+    <Resource modelName="BabyWalrus" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

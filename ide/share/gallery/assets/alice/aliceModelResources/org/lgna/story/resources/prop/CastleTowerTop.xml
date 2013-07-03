@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>fantasy:castle</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CastleTowerTop" resourceName="CASTLE_TOWER_TOP" textureName="CASTLE_TOWER_TOP"/>
+    <Resource modelName="CastleTowerTop" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

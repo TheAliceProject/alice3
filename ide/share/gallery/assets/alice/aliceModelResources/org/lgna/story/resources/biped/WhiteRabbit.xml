@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="WhiteRabbit" resourceName="WHITE_RABBIT" textureName="WHITE_RABBIT"/>
+    <Resource modelName="WhiteRabbit" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Troll" resourceName="TROLL" textureName="TROLL"/>
+    <Resource modelName="Troll" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>*amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Mapinguari" resourceName="MAPINGUARI" textureName="MAPINGUARI"/>
+    <Resource modelName="Mapinguari" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

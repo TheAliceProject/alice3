@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BaobabTree" resourceName="BAOBAB_TREE" textureName="BAOBAB_TREE"/>
+    <Resource modelName="BaobabTree" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

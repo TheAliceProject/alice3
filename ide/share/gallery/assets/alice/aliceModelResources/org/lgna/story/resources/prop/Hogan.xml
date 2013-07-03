@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Hogan" resourceName="HOGAN" textureName="HOGAN"/>
+    <Resource modelName="Hogan" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

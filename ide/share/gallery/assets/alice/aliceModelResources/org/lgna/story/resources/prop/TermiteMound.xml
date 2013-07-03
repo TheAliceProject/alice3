@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
-    <Resource modelName="TermiteMound" resourceName="TERMITE_MOUND" textureName="TERMITE_MOUND"/>
+    <Resource modelName="TermiteMound" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

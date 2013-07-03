@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>*wonderland</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MadHatter" resourceName="MAD_HATTER" textureName="MAD_HATTER"/>
+    <Resource modelName="MadHatter" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>
