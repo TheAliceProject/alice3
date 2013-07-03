@@ -138,8 +138,6 @@ public class LaunchUtilities {
 		}
 
 		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
-
-		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
 	}
 
 	private static Runnable createRunnable( final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {

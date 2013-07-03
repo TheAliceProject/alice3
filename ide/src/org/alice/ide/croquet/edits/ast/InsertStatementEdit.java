@@ -50,8 +50,9 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	private org.lgna.project.ast.BlockStatement blockStatement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
+	private final boolean isEnveloping;
 
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions, boolean isEnveloping ) {
 		super( completionStep, statement );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
@@ -62,6 +63,11 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.initialExpressions = initialExpressions;
+		this.isEnveloping = isEnveloping;
+	}
+
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+		this( completionStep, blockStatementIndexPair, statement, initialExpressions, false );
 	}
 
 	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
@@ -81,6 +87,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		for( int i = 0; i < N; i++ ) {
 			this.initialExpressions[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( project, ids[ i ] );
 		}
+		this.isEnveloping = binaryDecoder.decodeBoolean();
 	}
 
 	@Override
@@ -94,6 +101,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 			ids[ i ] = this.initialExpressions[ i ].getId();
 		}
 		binaryEncoder.encode( ids );
+		binaryEncoder.encode( this.isEnveloping );
 	}
 
 	public org.lgna.project.ast.BlockStatement getBlockStatement() {
@@ -112,10 +120,30 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		return Math.min( this.specifiedIndex, this.blockStatement.statements.size() );
 	}
 
+	private static org.lgna.project.ast.BlockStatement getDst( org.lgna.project.ast.Statement statement ) {
+		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+			return statementWithBody.body.getValue();
+		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+			return conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue();
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.Statement statement = this.getStatement();
 		int actualIndex = this.getActualIndex();
+		if( this.isEnveloping ) {
+			org.lgna.project.ast.BlockStatement dst = getDst( statement );
+			while( this.blockStatement.statements.size() > actualIndex ) {
+				org.lgna.project.ast.Statement s = this.blockStatement.statements.get( actualIndex );
+				this.blockStatement.statements.remove( actualIndex );
+				dst.statements.add( s );
+			}
+		}
 		this.blockStatement.statements.add( actualIndex, statement );
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
@@ -127,6 +155,14 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		int actualIndex = this.getActualIndex();
 		if( this.blockStatement.statements.get( actualIndex ) == statement ) {
 			this.blockStatement.statements.remove( actualIndex );
+			if( this.isEnveloping ) {
+				org.lgna.project.ast.BlockStatement dst = getDst( statement );
+				while( dst.statements.size() > 0 ) {
+					org.lgna.project.ast.Statement s = dst.statements.get( 0 );
+					dst.statements.remove( 0 );
+					this.blockStatement.statements.add( s );
+				}
+			}
 			//todo: remove
 			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
@@ -152,6 +188,8 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
 			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
+			//todo: check isEnveloping
+			//if( this.isEnveloping == insertStatementEdit.isEnveloping ) {
 			final int N = this.initialExpressions.length;
 			if( insertStatementEdit.initialExpressions.length == N ) {
 				org.lgna.croquet.edits.ReplacementAcceptability rv = org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;

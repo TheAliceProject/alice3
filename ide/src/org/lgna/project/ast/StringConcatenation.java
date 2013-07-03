@@ -81,7 +81,7 @@ public final class StringConcatenation extends Expression {
 
 	@Override
 	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( String.class );
+		return JavaType.STRING_TYPE;
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	private static SearchObjectNode root = new SearchObjectNode( null, null );
 
 	public FindReferencesTreeState() {
-		super( FindComposite.FIND_COMPOSITE_GROUP, null, root, codec );
+		super( FindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, codec );
 	}
 
 	@Override

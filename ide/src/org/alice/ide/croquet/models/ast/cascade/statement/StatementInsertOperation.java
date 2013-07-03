@@ -58,11 +58,6 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 		return this.blockStatementIndexPair;
 	}
 
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
-	}
-
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
 
 	@Override

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AssumingStringConcatenationObjectFillerInner extends ConcatenationFillerInner {
-	public AssumingStringConcatenationObjectFillerInner() {
-		super( Object.class );
+public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	public static TypeExpressionCascadeMenu getInstance( org.lgna.project.ast.AbstractType type ) {
+		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu>() {
+			public TypeExpressionCascadeMenu initialize( org.lgna.project.ast.AbstractType key ) {
+				return new TypeExpressionCascadeMenu( key, null );
+			}
+		} );
+	}
+
+	public static TypeExpressionCascadeMenu getInstance( Class<?> cls ) {
+		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	}
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
+	private final org.lgna.project.annotations.ValueDetails<?> details;
+
+	private TypeExpressionCascadeMenu( org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
+		super( java.util.UUID.fromString( "abafdc1c-7e12-4db4-94b2-17120c6a7110" ) );
+		this.valueType = valueType;
+		this.details = details;
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		items.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		items.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.valueType, this.details );
+		}
 	}
+
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> node ) {
+		return org.alice.ide.common.TypeIcon.getInstance( this.valueType );
+	}
+
 }

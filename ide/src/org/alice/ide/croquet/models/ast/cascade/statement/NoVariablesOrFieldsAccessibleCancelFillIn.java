@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ConcatenationFillerInner extends ExpressionFillerInner {
-	public ConcatenationFillerInner( Class<?> cls ) {
-		super( cls );
+public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+	private static class SingletonHolder {
+		private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
 	}
 
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> addConcatenationItems( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		if( isTop ) {
-			if( prevExpression != null ) {
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				if( prevExpression instanceof org.lgna.project.ast.NullLiteral ) {
-					//pass
-				} else {
-					if( prevExpression.getType().isAssignableTo( String.class ) ) {
-						rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn.getInstance() );
-					}
-				}
-				rv.add( org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn.getInstance() );
-			}
-		}
-		return rv;
+	public static NoVariablesOrFieldsAccessibleCancelFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private NoVariablesOrFieldsAccessibleCancelFillIn() {
+		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
+	}
+
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode step ) {
+		return null;
 	}
 }

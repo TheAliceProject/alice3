@@ -45,16 +45,39 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public final class NoVariablesOrFieldsAccessibleSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static class SingletonHolder {
-		private static NoVariablesOrFieldsAccessibleSeparatorModel instance = new NoVariablesOrFieldsAccessibleSeparatorModel();
+public final class FieldAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
+	private static java.util.Map<org.lgna.project.ast.UserField, FieldAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized FieldAssignmentFillIn getInstance( org.lgna.project.ast.UserField field ) {
+		FieldAssignmentFillIn rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldAssignmentFillIn( field );
+			map.put( field, rv );
+		}
+		return rv;
 	}
 
-	public static NoVariablesOrFieldsAccessibleSeparatorModel getInstance() {
-		return SingletonHolder.instance;
+	private final org.lgna.project.ast.AssignmentExpression transientValue;
+
+	private FieldAssignmentFillIn( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( field.valueType.getValue() ) );
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( new org.lgna.project.ast.ThisExpression(), field );
 	}
 
-	private NoVariablesOrFieldsAccessibleSeparatorModel() {
-		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
+	private org.lgna.project.ast.UserField getField() {
+		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue.leftHandSide.getValue();
+		return (org.lgna.project.ast.UserField)fieldAccess.field.getValue();
+	}
+
+	@Override
+	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
+		return org.lgna.project.ast.AstUtilities.createFieldAssignment( this.getField(), expressions[ 0 ] );
+	}
+
+	@Override
+	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
+		return this.transientValue;
 	}
 }

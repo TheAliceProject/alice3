@@ -65,25 +65,23 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 		for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes() ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+			blankChildren.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
-		updateBlankChildren( rv, programType, root );
+		updateBlankChildren( blankChildren, programType, root );
 
 		org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 		if( otherTypesMenuModel.isEmpty() ) {
 			//pass
 		} else {
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( otherTypesMenuModel );
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( otherTypesMenuModel );
 		}
-
-		return rv;
 	}
 }

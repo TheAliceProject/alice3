@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public final class VariablesSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class VariablesSeparatorModel extends org.lgna.croquet.CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static VariablesSeparatorModel instance = new VariablesSeparatorModel();
 	}

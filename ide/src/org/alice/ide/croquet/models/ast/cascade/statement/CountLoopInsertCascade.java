@@ -46,23 +46,25 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopInsertCascade extends StatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized CountLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized CountLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		CountLoopInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new CountLoopInsertCascade( blockStatementIndexPair );
+			rv = new CountLoopInsertCascade( blockStatementIndexPair, isEnveloping );
 			map.put( blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
 
-	private CountLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, CountBlank.getInstance() );
+	private CountLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, isEnveloping, CountBlank.getInstance() );
 	}
 
 	@Override

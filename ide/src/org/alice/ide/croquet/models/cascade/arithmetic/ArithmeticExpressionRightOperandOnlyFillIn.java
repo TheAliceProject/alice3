@@ -50,7 +50,7 @@ public abstract class ArithmeticExpressionRightOperandOnlyFillIn extends org.ali
 	private final org.lgna.project.ast.ArithmeticInfixExpression transientValue;
 
 	public ArithmeticExpressionRightOperandOnlyFillIn( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> resultType, org.lgna.project.ast.AbstractType<?, ?, ?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType ) {
-		super( id, org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
+		super( id, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( rightOperandType ) );
 		assert resultType != null : this;
 		assert rightOperandType != null : this;
 		this.transientValue = new org.lgna.project.ast.ArithmeticInfixExpression(

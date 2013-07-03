@@ -77,16 +77,23 @@ public class RPCUtilities {
 		rv.put( "project", project );
 		rv.put( "type", edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) );
 		rv.put( "summary", edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
-		rv.put( "description", jiraReport.getDescription() );
 
-		StringBuffer environment = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
+		sb.append( jiraReport.getDescription() );
+		sb.append( "\n\nsystem properties:\n" );
+		java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
+		for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
+			sb.append( property.getKey() );
+			sb.append( ": " );
+			sb.append( property.getValue() );
+			sb.append( "\n" );
+		}
+
+		rv.put( "description", sb.toString() );
+
 		String[] affectsVersions = jiraReport.getAffectsVersions();
 		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
 			String affectsVersion = affectsVersions[ 0 ];
-
-			environment.append( "version: " );
-			environment.append( affectsVersion );
-			environment.append( "\nsystem properties:\n" );
 
 			java.util.List<redstone.xmlrpc.XmlRpcStruct> versions = (java.util.List<redstone.xmlrpc.XmlRpcStruct>)client.invoke( "jira1.getVersions", new Object[] { token, project } );
 			//System.out.println( "versions: " );
@@ -102,8 +109,7 @@ public class RPCUtilities {
 				}
 			}
 		}
-		environment.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLString() );
-		rv.put( "environment", environment.toString() );
+		rv.put( "environment", jiraReport.getEnvironment() );
 		java.util.Vector<redstone.xmlrpc.XmlRpcStruct> customFields = new java.util.Vector<redstone.xmlrpc.XmlRpcStruct>();
 		customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
 		customFields.add( createCustomField( 10001, jiraReport.getException() ) );

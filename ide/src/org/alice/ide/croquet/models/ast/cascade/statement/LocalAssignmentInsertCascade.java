@@ -50,7 +50,7 @@ public class LocalAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 	private final org.lgna.project.ast.UserLocal local;
 
 	public LocalAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( local.getValueType() ) );
+		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( local.getValueType() ) );
 		this.local = local;
 	}
 

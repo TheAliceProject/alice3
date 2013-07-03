@@ -40,44 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentInsertMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public static AssignmentInsertMenuModel createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
-		if( selectedType != null ) {
-			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					if( userField.isFinal() ) {
-						//pass
-					} else {
-						nonFinalUserFields.add( userField );
-					}
-				}
-			}
-			if( nonFinalUserFields.size() > 0 ) {
-				models.add( FieldsSeparatorModel.getInstance() );
-				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
-					models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
-					if( field.getValueType().isArray() ) {
-						models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
-					}
-				}
-			}
-		}
-		if( models.size() == 0 ) {
-			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
-		}
-		return new AssignmentInsertMenuModel( models );
-	}
-
-	private AssignmentInsertMenuModel( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "3a849c6b-13c4-42cf-a79c-3dec56d36d6c" ), models );
+public final class TypedExpressionBlank extends ExpressionBlank {
+	public TypedExpressionBlank( org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
+		super( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), valueType, details );
 	}
 }
