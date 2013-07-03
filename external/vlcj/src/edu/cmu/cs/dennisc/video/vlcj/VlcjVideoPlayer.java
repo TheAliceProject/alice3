@@ -354,10 +354,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.mute( isMuted );
 	}
-
-	public java.awt.image.BufferedImage getSnapshot() {
+	
+	public boolean writeSnapshot( java.io.File file ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		return mediaPlayer.getSnapshot();
+		return mediaPlayer.saveSnapshot( file );
 	}
 
 	public void release() {
