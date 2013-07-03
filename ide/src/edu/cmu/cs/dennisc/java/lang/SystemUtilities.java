@@ -164,8 +164,7 @@ public class SystemUtilities {
 	}
 
 	public static boolean isPlatformSpecificLibraryLoadingDesired() {
-		//return isWindows();
-		return false;
+		return true;
 	}
 
 	public static String getPlatformSpecificLibraryNameIfAppropriate( String libraryName ) {
