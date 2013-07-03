@@ -18,5 +18,5 @@
     <ThemeTags>
         <ThemeTag>amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Caiman" resourceName="CAIMAN" textureName="CAIMAN"/>
+    <Resource modelName="Caiman" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

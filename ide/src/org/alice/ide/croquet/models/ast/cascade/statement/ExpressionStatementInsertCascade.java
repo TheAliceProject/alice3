@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
 	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+		super( id, blockStatementIndexPair, false, blanks );
 	}
 
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
@@ -61,5 +61,10 @@ public abstract class ExpressionStatementInsertCascade extends StatementInsertCa
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
 	}
 }

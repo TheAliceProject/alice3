@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>amazon:coconutpalm</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Coconut" resourceName="COCONUT" textureName="COCONUT"/>
+    <Resource modelName="Coconut" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

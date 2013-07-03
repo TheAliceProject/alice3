@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MagicWand" resourceName="MAGIC_WAND" textureName="MAGIC_WAND"/>
+    <Resource modelName="MagicWand" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

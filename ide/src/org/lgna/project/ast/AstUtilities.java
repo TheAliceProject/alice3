@@ -423,8 +423,44 @@ public class AstUtilities {
 		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 
+	public static AssignmentExpression createFieldAssignment( Expression expression, UserField field, Expression valueExpression ) {
+		assert field.isFinal() == false : field;
+		Expression fieldAccess = new FieldAccess( expression, field );
+		return new AssignmentExpression( field.valueType.getValue(), fieldAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldAssignmentStatement( Expression expression, UserField field, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldAssignment( expression, field, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldAssignment( UserField field, Expression valueExpression ) {
+		return createFieldAssignment( new ThisExpression(), field, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldAssignmentStatement( UserField field, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldAssignment( field, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldArrayAssignment( Expression expression, UserField field, Expression indexExpression, Expression valueExpression ) {
+		Expression fieldAccess = new FieldAccess( expression, field );
+		ArrayAccess arrayAccess = new ArrayAccess( field.valueType.getValue(), fieldAccess, indexExpression );
+		return new AssignmentExpression( field.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldArrayAssignmentStatement( Expression expression, UserField field, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldArrayAssignment( expression, field, indexExpression, valueExpression ) );
+	}
+
+	public static AssignmentExpression createFieldArrayAssignment( UserField field, Expression indexExpression, Expression valueExpression ) {
+		return createFieldArrayAssignment( new ThisExpression(), field, indexExpression, valueExpression );
+	}
+
+	public static ExpressionStatement createFieldArrayAssignmentStatement( UserField field, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createFieldArrayAssignment( field, indexExpression, valueExpression ) );
+	}
+
 	public static AssignmentExpression createLocalAssignment( UserLocal local, Expression valueExpression ) {
-		assert local.isFinal.getValue() == false;
+		assert local.isFinal.getValue() == false : local;
 		Expression localAccess = new LocalAccess( local );
 		return new AssignmentExpression( local.valueType.getValue(), localAccess, AssignmentExpression.Operator.ASSIGN, valueExpression );
 	}

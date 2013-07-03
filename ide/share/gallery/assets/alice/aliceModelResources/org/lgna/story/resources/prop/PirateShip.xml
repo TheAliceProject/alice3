@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="PirateShip" resourceName="PIRATE_SHIP" textureName="PIRATE_SHIP"/>
+    <Resource modelName="PirateShip" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -96,7 +96,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends SProp {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.ArmoireResource.CENTRAL_ASIAN_DRAGON );
+		super( org.lgna.story.resources.prop.ArmoireResource.LOFT_DARK_WOOD_BLACK_TRIM );
 	}
 
 	public org.lgna.story.SJoint getLeftDoor() {

@@ -16,5 +16,5 @@
         <ThemeTag>*ocean</ThemeTag>
         <ThemeTag>snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Orca" resourceName="ORCA" textureName="ORCA"/>
+    <Resource modelName="Orca" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

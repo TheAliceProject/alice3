@@ -63,7 +63,7 @@ public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 	private final org.lgna.project.ast.AbstractField field;
 
 	private FieldAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getValueType() ) );
+		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( field.getValueType() ) );
 		this.field = field;
 	}
 

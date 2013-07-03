@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>fantasy</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Tortoise" resourceName="TORTOISE" textureName="TORTOISE"/>
+    <Resource modelName="Tortoise" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

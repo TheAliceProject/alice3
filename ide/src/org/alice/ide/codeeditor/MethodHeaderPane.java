@@ -55,6 +55,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		} else {
 			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
+			if( userMethod.isStatic() ) {
+				sb.append( "*static* " );
+			}
 			if( userMethod.isProcedure() ) {
 				sb.append( "procedure " );
 			} else {

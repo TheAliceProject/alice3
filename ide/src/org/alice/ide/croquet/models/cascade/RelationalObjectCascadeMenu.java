@@ -60,9 +60,8 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<org.lgna.
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
-		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS ) );
-		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS ) );
-		return rv;
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
+		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS ) );
+		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS ) );
 	}
 }

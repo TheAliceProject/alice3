@@ -63,7 +63,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 				.name( ApplicabilityStatus.EDITABLE )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
-				, blockStatementIndexPair );
+				, blockStatementIndexPair, false );
 	}
 
 	@Override
@@ -90,5 +90,10 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, localDeclarationStatement.initializer.getValue() );
 
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	}
+
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
 	}
 }

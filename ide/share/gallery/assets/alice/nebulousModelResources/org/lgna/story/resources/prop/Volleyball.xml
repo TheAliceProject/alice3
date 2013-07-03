@@ -9,8 +9,11 @@
         <Tag>sport</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:yard</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
-    <ThemeTags/>
+    <ThemeTags>
+        <ThemeTag>household:yard</ThemeTag>
+    </ThemeTags>
     <Resource modelName="Volleyball" resourceName="VOLLEYBALL" textureName="VOLLEYBALL"/>
 </AliceModel>

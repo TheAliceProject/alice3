@@ -135,6 +135,8 @@ public class ModelResourceExporter {
 	private boolean shouldRecenter = false;
 	private boolean recenterXZ = false;
 	private boolean moveCenterToBottom = true;
+	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
+	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
 
 	private String attributionName;
 	private String attributionYear;
@@ -859,7 +861,7 @@ public class ModelResourceExporter {
 		if( modelName.equalsIgnoreCase( parentExporter.getClassName() ) ) {
 			return AliceResourceUtilties.makeEnumName( textureName );
 		}
-		else if( modelName.equalsIgnoreCase( textureName ) || textureName.equalsIgnoreCase( AliceResourceUtilties.getDefaultTextureEnumName( modelName ) ) ) {
+		else if( modelName.equalsIgnoreCase( textureName ) || textureName.equalsIgnoreCase( AliceResourceUtilties.getDefaultTextureEnumName( modelName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
 			return AliceResourceUtilties.makeEnumName( modelName );
 		}
 		else {
@@ -869,6 +871,10 @@ public class ModelResourceExporter {
 
 	private static String createResourceEnumName( ModelResourceExporter parentExporter, ModelSubResourceExporter resource ) {
 		return createResourceEnumName( parentExporter, resource.getModelName(), resource.getTextureName() );
+	}
+
+	public String createResourceEnumName( String modelName, String textureName ) {
+		return createResourceEnumName( this, modelName, textureName );
 	}
 
 	private boolean shouldSuppressJoint( String jointString ) {
@@ -891,26 +897,28 @@ public class ModelResourceExporter {
 		sb.append( "import org.lgna.project.annotations.*;" + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {" + JavaCodeUtilities.LINE_RETURN );
-		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
+		boolean isFirst = true;
 		for( int i = 0; i < this.subResources.size(); i++ )
 		{
 			ModelSubResourceExporter resource = this.subResources.get( i );
 			String resourceEnumName = createResourceEnumName( this, resource );
-			String typeString = "";
-			if( !resource.getTypeString().equals( ImplementationAndVisualType.ALICE.toString() ) ) {
-				typeString = "( ImplementationAndVisualType." + resource.getTypeString() + " )";
+			if( isValidEnumName( resource.getModelName(), resourceEnumName ) ) {
+				if( !isFirst ) {
+					sb.append( "," + JavaCodeUtilities.LINE_RETURN );
+				}
+				String typeString = "";
+				if( !resource.getTypeString().equals( ImplementationAndVisualType.ALICE.toString() ) ) {
+					typeString = "( ImplementationAndVisualType." + resource.getTypeString() + " )";
+				}
+				sb.append( "\t" + resourceEnumName + typeString );
+				isFirst = false;
 			}
-			sb.append( "\t" + resourceEnumName + typeString );
-			if( i < ( this.subResources.size() - 1 ) )
-			{
-				sb.append( "," + JavaCodeUtilities.LINE_RETURN );
-			}
-			else
-			{
-				sb.append( ";" + JavaCodeUtilities.LINE_RETURN );
+			else {
+				System.out.println( "SKIPPING ENUM NAME: " + resourceEnumName );
 			}
 		}
+		sb.append( ";" + JavaCodeUtilities.LINE_RETURN );
 		List<String> existingIds = getExistingJointIds( this.classData.superClass );
 		boolean addedRoots = false;
 		List<Tuple2<String, String>> trimmedSkeleton = makeCodeReadyTree( this.jointList );
@@ -1259,6 +1267,9 @@ public class ModelResourceExporter {
 				}
 			}
 		}
+		if( this.subResources.size() == 0 ) {
+			System.err.println( "NO SUB RESOURCES ON " + this.resourceName );
+		}
 		ModelSubResourceExporter firstSubResource = this.subResources.get( 0 );
 		String firstThumbName = AliceResourceUtilties.getThumbnailResourceFileName( firstSubResource.getModelName(), firstSubResource.getTextureName() );
 		String classThumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
@@ -1339,6 +1350,48 @@ public class ModelResourceExporter {
 		Document doc = XMLUtilities.read( xmlFile );
 		ModelResourceInfo returnInfo = new ModelResourceInfo( doc );
 		return returnInfo;
+	}
+
+	public boolean isValidEnumName( String modelName, String enumName ) {
+		if( this.forcedEnumNamesMap.containsKey( modelName ) ) {
+			List<String> validEnums = this.forcedEnumNamesMap.get( modelName );
+			for( String e : validEnums ) {
+				String otherToCheck = modelName.toUpperCase() + "_" + e;
+				if( e.equalsIgnoreCase( enumName ) || otherToCheck.equalsIgnoreCase( enumName ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+		//If we aren't forcing any enum names then all enum names are valid
+		if( this.forcedOverridingEnumNames.isEmpty() ) {
+			return true;
+		}
+		for( String e : this.forcedOverridingEnumNames ) {
+			if( e.equalsIgnoreCase( enumName ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void addForcedEnumNames( String resourceName, List<String> enumNames ) {
+		if( ( enumNames != null ) && ( enumNames.size() > 0 ) ) {
+			if( resourceName == null ) {
+				this.forcedOverridingEnumNames.addAll( enumNames );
+			}
+			else {
+				List<String> nameList;
+				if( !this.forcedEnumNamesMap.containsKey( resourceName ) ) {
+					nameList = new ArrayList<String>();
+					this.forcedEnumNamesMap.put( resourceName, nameList );
+				}
+				else {
+					nameList = this.forcedEnumNamesMap.get( resourceName );
+				}
+				nameList.addAll( enumNames );
+			}
+		}
 	}
 
 	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException

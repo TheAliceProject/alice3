@@ -12,5 +12,5 @@
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags/>
-    <Resource modelName="BowlingPin" resourceName="BOWLING_PIN" textureName="BOWLING_PIN"/>
+    <Resource modelName="BowlingPin" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

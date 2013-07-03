@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>india</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Peacock" resourceName="PEACOCK" textureName="PEACOCK"/>
+    <Resource modelName="Peacock" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

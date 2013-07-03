@@ -134,12 +134,12 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			return null;
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.AbstractParameter parameter = this.setter.getRequiredParameters().get( 0 );
 			org.lgna.project.ast.AbstractType<?, ?, ?> valueType = parameter.getValueType();
 			org.lgna.project.annotations.ValueDetails<?> valueDetails = parameter.getDetails();
 
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, valueType, valueDetails );
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, valueType, valueDetails );
 		}
 
 		public void appendDoStatements( EditCustomization editCustomization, org.lgna.project.ast.UserField field, org.lgna.project.ast.Expression expression ) {

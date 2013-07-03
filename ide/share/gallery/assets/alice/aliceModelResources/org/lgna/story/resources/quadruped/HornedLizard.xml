@@ -17,5 +17,5 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="HornedLizard" resourceName="HORNED_LIZARD" textureName="HORNED_LIZARD"/>
+    <Resource modelName="HornedLizard" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

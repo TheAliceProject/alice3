@@ -11,7 +11,8 @@
         <Tag>tea</Tag>
     </Tags>
     <GroupTags>
-        <GroupTag>*props:tea set</GroupTag>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
     </GroupTags>
     <ThemeTags>
         <ThemeTag>wonderland:tea set</ThemeTag>

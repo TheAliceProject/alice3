@@ -17,13 +17,13 @@
     <ThemeTags>
         <ThemeTag>amazon:coconutpalm</ThemeTag>
     </ThemeTags>
-    <Resource modelName="NoCoconuts" resourceName="NO_COCONUTS" textureName="NO_COCONUTS">
+    <Resource modelName="NoCoconuts" resourceName="NO_COCONUTS" textureName="DEFAULT">
         <BoundingBox>
             <Min x="-1.9163802862167358" y="0.0" z="-1.717828631401062"/>
             <Max x="1.8856638669967651" y="4.811116695404053" z="1.8283637762069702"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="WithCoconuts" resourceName="WITH_COCONUTS" textureName="WITH_COCONUTS">
+    <Resource modelName="WithCoconuts" resourceName="WITH_COCONUTS" textureName="DEFAULT">
         <BoundingBox>
             <Min x="-1.9163802862167358" y="0.0" z="-1.717828631401062"/>
             <Max x="1.8856638669967651" y="4.811116695404053" z="1.8283637762069702"/>

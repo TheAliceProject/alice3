@@ -13,5 +13,5 @@
     <ThemeTags>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="PajamaFish" resourceName="PAJAMA_FISH" textureName="PAJAMA_FISH"/>
+    <Resource modelName="PajamaFish" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldsSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class FieldsSeparatorModel extends org.lgna.croquet.CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static FieldsSeparatorModel instance = new FieldsSeparatorModel();
 	}

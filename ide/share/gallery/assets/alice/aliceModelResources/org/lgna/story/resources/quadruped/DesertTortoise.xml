@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="DesertTortoise" resourceName="DESERT_TORTOISE" textureName="DESERT_TORTOISE"/>
+    <Resource modelName="DesertTortoise" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

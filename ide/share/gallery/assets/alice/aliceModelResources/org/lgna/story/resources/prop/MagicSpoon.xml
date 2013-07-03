@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>fantasy:cauldron</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MagicSpoon" resourceName="MAGIC_SPOON" textureName="MAGIC_SPOON"/>
+    <Resource modelName="MagicSpoon" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

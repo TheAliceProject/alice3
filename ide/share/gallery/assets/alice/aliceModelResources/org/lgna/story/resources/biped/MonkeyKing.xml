@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="MonkeyKing" resourceName="MONKEY_KING" textureName="MONKEY_KING"/>
+    <Resource modelName="MonkeyKing" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

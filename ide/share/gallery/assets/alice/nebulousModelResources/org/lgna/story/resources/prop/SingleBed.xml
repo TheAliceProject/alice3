@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creator="EA" name="SingleBed">
+    <BoundingBox>
+        <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+        <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bed</Tag>
+        <Tag>sleep</Tag>
+        <Tag>bedroom</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bedroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bedroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_STRIPES_BLUE_FRAME" textureName="YELLOW_STRIPES_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_STRIPES_RED_FRAME" textureName="YELLOW_STRIPES_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_STRIPES_GREEN_FRAME" textureName="YELLOW_STRIPES_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_STRIPES_ORANGE_FRAME" textureName="YELLOW_STRIPES_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_BLUE_BLUE_FRAME" textureName="DARK_BLUE_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_BLUE_RED_FRAME" textureName="DARK_BLUE_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_BLUE_GREEN_FRAME" textureName="DARK_BLUE_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_BLUE_ORANGE_FRAME" textureName="DARK_BLUE_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_PINK_BLUE_FRAME" textureName="PINK_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_PINK_RED_FRAME" textureName="PINK_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_PINK_GREEN_FRAME" textureName="PINK_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_PINK_ORANGE_FRAME" textureName="PINK_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BROWN_BLUE_FRAME" textureName="BROWN_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BROWN_RED_FRAME" textureName="BROWN_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BROWN_GREEN_FRAME" textureName="BROWN_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BROWN_ORANGE_FRAME" textureName="BROWN_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_BLUE_FRAME" textureName="YELLOW_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_RED_FRAME" textureName="YELLOW_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_GREEN_FRAME" textureName="YELLOW_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_YELLOW_ORANGE_FRAME" textureName="YELLOW_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LEOPARD_BLUE_FRAME" textureName="LEOPARD_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LEOPARD_RED_FRAME" textureName="LEOPARD_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LEOPARD_GREEN_FRAME" textureName="LEOPARD_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LEOPARD_ORANGE_FRAME" textureName="LEOPARD_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LIGHT_BLUE_BLUE_FRAME" textureName="LIGHT_BLUE_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LIGHT_BLUE_RED_FRAME" textureName="LIGHT_BLUE_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LIGHT_BLUE_GREEN_FRAME" textureName="LIGHT_BLUE_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_LIGHT_BLUE_ORANGE_FRAME" textureName="LIGHT_BLUE_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_SQUARES_BLUE_FRAME" textureName="BLUE_SQUARES_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_SQUARES_RED_FRAME" textureName="BLUE_SQUARES_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_SQUARES_GREEN_FRAME" textureName="BLUE_SQUARES_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_SQUARES_ORANGE_FRAME" textureName="BLUE_SQUARES_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_STRIPES_BLUE_FRAME" textureName="BLUE_STRIPES_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_STRIPES_RED_FRAME" textureName="BLUE_STRIPES_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_STRIPES_GREEN_FRAME" textureName="BLUE_STRIPES_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BLUE_STRIPES_ORANGE_FRAME" textureName="BLUE_STRIPES_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_CIRCLES_BLUE_FRAME" textureName="CIRCLES_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_CIRCLES_RED_FRAME" textureName="CIRCLES_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_CIRCLES_GREEN_FRAME" textureName="CIRCLES_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_CIRCLES_ORANGE_FRAME" textureName="CIRCLES_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_GRAY_BLUE_FRAME" textureName="GRAY_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_GRAY_RED_FRAME" textureName="GRAY_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_GRAY_GREEN_FRAME" textureName="GRAY_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_GRAY_ORANGE_FRAME" textureName="GRAY_ORANGE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

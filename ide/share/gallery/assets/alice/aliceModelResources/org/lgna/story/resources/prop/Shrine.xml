@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Shrine" resourceName="SHRINE" textureName="SHRINE"/>
+    <Resource modelName="Shrine" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

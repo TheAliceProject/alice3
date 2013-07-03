@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="AcaciaTree">
+    <BoundingBox>
+        <Min x="-5.375590801239014" y="-0.04224281385540962" z="-6.024560451507568"/>
+        <Max x="4.60684871673584" y="9.361308097839355" z="6.130988121032715"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>tree</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AcaciaTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

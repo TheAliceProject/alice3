@@ -79,7 +79,7 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 	}
 
 	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
-		super( group, java.util.UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
+		super( group, java.util.UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( desiredType ) );
 	}
 
 	@Override

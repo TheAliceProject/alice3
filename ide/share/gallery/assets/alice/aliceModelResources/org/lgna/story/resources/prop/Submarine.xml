@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Submarine" resourceName="SUBMARINE" textureName="SUBMARINE"/>
+    <Resource modelName="Submarine" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

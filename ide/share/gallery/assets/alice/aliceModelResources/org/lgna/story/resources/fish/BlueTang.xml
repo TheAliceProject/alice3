@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BlueTang" resourceName="BLUE_TANG" textureName="BLUE_TANG"/>
+    <Resource modelName="BlueTang" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

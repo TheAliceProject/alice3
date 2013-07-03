@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="ShrineLantern" resourceName="SHRINE_LANTERN" textureName="SHRINE_LANTERN"/>
+    <Resource modelName="ShrineLantern" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

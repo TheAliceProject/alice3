@@ -16,5 +16,5 @@
     <ThemeTags>
         <ThemeTag>far east:fishing boat</ThemeTag>
     </ThemeTags>
-    <Resource modelName="FishingLantern" resourceName="FISHING_LANTERN" textureName="FISHING_LANTERN"/>
+    <Resource modelName="FishingLantern" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

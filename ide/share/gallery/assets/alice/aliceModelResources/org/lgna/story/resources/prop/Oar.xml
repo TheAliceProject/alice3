@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east:fishing boat</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Oar" resourceName="OAR" textureName="OAR"/>
+    <Resource modelName="Oar" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -14,5 +14,5 @@
     <ThemeTags>
         <ThemeTag>far east</ThemeTag>
     </ThemeTags>
-    <Resource modelName="JapaneseCypress" resourceName="JAPANESE_CYPRESS" textureName="JAPANESE_CYPRESS"/>
+    <Resource modelName="JapaneseCypress" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

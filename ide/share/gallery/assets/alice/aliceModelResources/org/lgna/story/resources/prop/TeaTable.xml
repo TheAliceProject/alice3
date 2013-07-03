@@ -11,11 +11,12 @@
         <Tag>table</Tag>
     </Tags>
     <GroupTags>
-        <GroupTag>props</GroupTag>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
     </GroupTags>
     <ThemeTags>
         <ThemeTag>wonderland</ThemeTag>
-        <ThemeTag>household:dining room</ThemeTag>
+        <ThemeTag>household:kitchen</ThemeTag>
     </ThemeTags>
-    <Resource modelName="TeaTable" resourceName="TEA_TABLE" textureName="TEA_TABLE"/>
+    <Resource modelName="TeaTable" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

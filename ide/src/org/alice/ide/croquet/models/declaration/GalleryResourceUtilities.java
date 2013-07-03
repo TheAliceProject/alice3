@@ -51,24 +51,23 @@ public class GalleryResourceUtilities {
 		throw new AssertionError();
 	}
 
-	public static <B> java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static <B> void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		Iterable<org.lgna.project.ast.AbstractDeclaration> declarations = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
 		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
 			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 				org.lgna.project.ast.AbstractType<?, ?, ?> childType = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 				if( childType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
-					rv.add( GalleryPersonResourceFillIn.getInstance( childType ) );
-					rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+					children.add( GalleryPersonResourceFillIn.getInstance( childType ) );
+					children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				} else {
-					rv.add( GalleryResourceMenu.getInstance( childType ) );
+					children.add( GalleryResourceMenu.getInstance( childType ) );
 				}
 			} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
 				org.lgna.project.ast.AbstractField childField = (org.lgna.project.ast.AbstractField)declaration;
-				rv.add( GalleryResourceFieldFillIn.getInstance( childField ) );
+				children.add( GalleryResourceFieldFillIn.getInstance( childField ) );
 			} else {
 				throw new AssertionError();
 			}
 		}
-		return rv;
 	}
 }

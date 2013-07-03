@@ -9,10 +9,11 @@
         <Tag>seat</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
-        <ThemeTag>household:dining room</ThemeTag>
+        <ThemeTag>household:kitchen</ThemeTag>
         <ThemeTag>household:furniture</ThemeTag>
     </ThemeTags>
     <Resource modelName="ArtNouveau" resourceName="ART_NOUVEAU_DARK_WOOD" textureName="DARK_WOOD">

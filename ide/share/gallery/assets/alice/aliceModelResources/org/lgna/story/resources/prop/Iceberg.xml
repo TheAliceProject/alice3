@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Iceberg" resourceName="ICEBERG" textureName="ICEBERG"/>
+    <Resource modelName="Iceberg" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

@@ -15,5 +15,5 @@
     <ThemeTags>
         <ThemeTag>*outer space</ThemeTag>
     </ThemeTags>
-    <Resource modelName="AlienRobot" resourceName="ALIEN_ROBOT" textureName="ALIEN_ROBOT"/>
+    <Resource modelName="AlienRobot" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>
