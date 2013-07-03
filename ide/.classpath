@@ -10,20 +10,13 @@
 	<classpathentry kind="lib" path="lib/jmf/JMF-2.1.1e/lib/jmf.jar"/>
 	<classpathentry kind="lib" path="lib/jmfmp3/lib/ext/mp3plugin.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar" sourcepath="dev/jogl/src"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar"/>
 	<classpathentry kind="lib" path="lib/rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/guava-r07.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-core-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-media-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
 	<classpathentry kind="lib" path="lib/mail/lib/mailapi.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/mig_layout/miglayout-4.0-swing.jar" sourcepath="lib/mig_layout/miglayout-4.0-sources.jar"/>
@@ -32,5 +25,7 @@
 	<classpathentry kind="lib" path="lib/vlcj-2.4.0/jna-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/vlcj-2.4.0/platform-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/vlcj-2.4.0/vlcj-2.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-youtube-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/guava/lib/guava-14.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
