@@ -78,7 +78,7 @@ public interface VideoPlayer {
 
 	public void setVolume( float volume );
 
-	public java.awt.image.BufferedImage getSnapshot();
+	public boolean writeSnapshot( java.io.File file );
 
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 
