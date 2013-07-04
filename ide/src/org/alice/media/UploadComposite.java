@@ -49,6 +49,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import org.alice.ide.croquet.models.help.LogInOutComposite;
@@ -226,13 +227,16 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	}
 
 	private void setEnabled( boolean isEnabled ) {
-		final boolean IS_VIEW_BASED = false; //what is this? (mmay)
+		final boolean IS_VIEW_BASED = true; //what is this? (mmay)
 		if( IS_VIEW_BASED ) {
 			for( java.awt.Component awtComponent : this.getView().getYoutubeDetailsPanel().getAwtComponent().getComponents() ) {
-				awtComponent.setEnabled( false );
+				awtComponent.setEnabled( isEnabled );
 				if( awtComponent instanceof javax.swing.JScrollPane ) {
 					javax.swing.JScrollPane jScrollPane = (javax.swing.JScrollPane)awtComponent;
-					jScrollPane.getViewport().getView().setEnabled( false );
+					jScrollPane.getViewport().getView().setEnabled( isEnabled );
+				}
+				if( awtComponent instanceof JComboBox ) {
+					awtComponent.setEnabled( isEnabled && categoriesEnabled );
 				}
 			}
 		} else {
