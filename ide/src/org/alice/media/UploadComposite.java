@@ -79,7 +79,6 @@ import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
  * @author Matt May
  */
 public class UploadComposite extends WizardPageComposite<UploadView> {
-
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
 
@@ -94,8 +93,18 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
+			File videosDirectory = org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
+
+			String filename;
+			String title = titleState.getValue();
+			if( ( title != null ) && ( title.length() > 0 ) ) {
+				filename = title + ".webm";
+			} else {
+				filename = "*.webm";
+			}
+
 			File exportFile = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
-					UploadComposite.this.getView().getAwtComponent(), "Save Video", owner.getFile(), titleState.getValue(), FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
+					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
 			if( exportFile != null ) {
 				try {
 					FileUtilities.copyFile( owner.getFile(), exportFile );
