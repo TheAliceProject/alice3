@@ -341,8 +341,19 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	public void setUri( java.net.URI uri ) {
-		this.uri = uri;
-		getVideoPlayer();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.uri, uri ) ) {
+			//pass
+		} else {
+			this.uri = uri;
+			if( this.videoPlayer != null ) {
+				if( this.videoPlayer.isPlaying() ) {
+					this.videoPlayer.stop();
+				}
+				this.videoPlayer.prepareMedia( this.uri );
+			} else {
+				getVideoPlayer();
+			}
+		}
 	}
 
 	public edu.cmu.cs.dennisc.video.VideoPlayer getVideoPlayer() {
