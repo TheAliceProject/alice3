@@ -23,13 +23,13 @@
 	<classpathentry kind="lib" path="lib/vlcj/platform-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/vlcj/vlcj-2.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-core-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-media-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/guava-r07.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
+        <classpathentry kind="lib" path="lib/guava/lib/guava-14.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-youtube-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-client-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-media-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/lib/gdata-youtube-meta-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

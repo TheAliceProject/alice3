@@ -76,24 +76,38 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 		if( lookAndFeelInfo != null ) {
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-		java.net.URI uri;
+		final java.net.URI uriA;
+		final java.net.URI uriB;
 		if( args.length > 0 ) {
-			uri = new java.net.URI( args[ 0 ] );
+			uriA = new java.net.URI( args[ 0 ] );
+			uriB = new java.net.URI( args[ 1 ] );
 		} else {
 			java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 				directory = directory.getParentFile();
 			}
-			java.io.File file = new java.io.File( directory, "Videos/a.webm" );
-			uri = file.toURI();
+			java.io.File fileA = new java.io.File( directory, "Videos/a.webm" );
+			java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
+			uriA = fileA.toURI();
+			uriB = fileB.toURI();
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
-		VideoComposite videoComposite = new VideoComposite();
-		videoComposite.getView().setUri( uri );
+		final VideoComposite videoComposite = new VideoComposite();
+		videoComposite.getView().setUri( uriA );
 		app.getFrame().setMainComposite( videoComposite );
+
+		javax.swing.Action action = new javax.swing.AbstractAction() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				videoComposite.getView().setUri( uriB );
+			}
+		};
+		action.putValue( javax.swing.Action.NAME, "set second video" );
+		app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
+
 		app.getFrame().pack();
 		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		app.getFrame().setVisible( true );
+
 	}
 }
