@@ -40,28 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package edu.cmu.cs.dennisc.video.nil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoUtilties {
-	private static java.lang.reflect.Method getVlcjUtilitiesMethodNamed( String methodName, Class<?>... parameterTypes ) {
-		Class<?> vlcjUtilitiesCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( "edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities" );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( vlcjUtilitiesCls, methodName, parameterTypes );
+public final class NilVideoCanvas extends java.awt.Canvas {
+	public NilVideoCanvas() {
+		this.setBackground( java.awt.Color.BLACK );
+		this.setForeground( java.awt.Color.WHITE );
 	}
 
-	private static Object invokeVlcjUtilitiesMethod( java.lang.reflect.Method mthd, Object... args ) {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( null, mthd, args );
-	}
-
-	public static VideoPlayer createVideoPlayer() {
-		VideoPlayer rv = (VideoPlayer)invokeVlcjUtilitiesMethod( getVlcjUtilitiesMethodNamed( "createVideoPlayer" ) );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new edu.cmu.cs.dennisc.video.nil.NilVideoPlayer();
-		}
-		return rv;
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "unable to find vlc", this.getSize() );
 	}
 }

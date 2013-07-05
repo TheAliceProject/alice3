@@ -40,28 +40,97 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package edu.cmu.cs.dennisc.video.nil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoUtilties {
-	private static java.lang.reflect.Method getVlcjUtilitiesMethodNamed( String methodName, Class<?>... parameterTypes ) {
-		Class<?> vlcjUtilitiesCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( "edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities" );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( vlcjUtilitiesCls, methodName, parameterTypes );
+public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
+	private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
+	private java.net.URI uri;
+	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+	private float position;
+	private boolean isMuted;
+	private float volume;
+
+	public java.awt.Canvas getVideoSurface() {
+		return this.nilVideoCanvas;
 	}
 
-	private static Object invokeVlcjUtilitiesMethod( java.lang.reflect.Method mthd, Object... args ) {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( null, mthd, args );
+	public java.awt.Dimension getVideoSize() {
+		return new java.awt.Dimension( 0, 0 );
 	}
 
-	public static VideoPlayer createVideoPlayer() {
-		VideoPlayer rv = (VideoPlayer)invokeVlcjUtilitiesMethod( getVlcjUtilitiesMethodNamed( "createVideoPlayer" ) );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new edu.cmu.cs.dennisc.video.nil.NilVideoPlayer();
-		}
-		return rv;
+	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
+		return this.painter;
+	}
+
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+		this.painter = painter;
+	}
+
+	public void prepareMedia( java.net.URI uri ) {
+		this.uri = uri;
+	}
+
+	public boolean isPlayable() {
+		return false;
+	}
+
+	public boolean isPlaying() {
+		return false;
+	}
+
+	public void playResume() {
+	}
+
+	public void pause() {
+	}
+
+	public void stop() {
+	}
+
+	public float getPosition() {
+		return this.position;
+	}
+
+	public void setPosition( float position ) {
+		//todo?
+		this.position = position;
+	}
+
+	public long getLengthInMilliseconds() {
+		return 0;
+	}
+
+	public boolean isMuted() {
+		return this.isMuted;
+	}
+
+	public void setMuted( boolean isMuted ) {
+		//todo?
+		this.isMuted = isMuted;
+	}
+
+	public float getVolume() {
+		return this.volume;
+	}
+
+	public void setVolume( float volume ) {
+		//todo?
+		this.volume = volume;
+	}
+
+	public boolean writeSnapshot( java.io.File file ) {
+		return false;
+	}
+
+	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	}
+
+	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	}
+
+	public void release() {
 	}
 }
