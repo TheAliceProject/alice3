@@ -81,8 +81,13 @@ public class Manager {
 				}
 				if( isLicenseAccepted ) {
 					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
+
 					String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( "jni_nebulous" );
-					System.loadLibrary( platformSpecificLibraryName );
+					try {
+						System.loadLibrary( platformSpecificLibraryName );
+					} catch( UnsatisfiedLinkError ule ) {
+						System.loadLibrary( "jni_nebulous" );
+					}
 					for( java.io.File directory : Manager.getPendingBundles() ) {
 						Manager.addBundlePath( directory.getAbsolutePath() );
 					}

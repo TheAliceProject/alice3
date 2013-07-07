@@ -171,7 +171,8 @@ public class SystemUtilities {
 		if( isPlatformSpecificLibraryLoadingDesired() ) {
 			StringBuilder sb = new StringBuilder();
 			if( isMac() ) {
-				sb.append( "macosx-universal/" );
+				//Do nothing. The Mac can't handle a library name that has a directory as part of the name
+				//We rely on the library path being properly set to the right directory for this to work
 			} else {
 				if( isWindows() ) {
 					sb.append( "windows-" );
