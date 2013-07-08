@@ -81,13 +81,7 @@ public class Manager {
 				}
 				if( isLicenseAccepted ) {
 					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-
-					String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( "jni_nebulous" );
-					try {
-						System.loadLibrary( platformSpecificLibraryName );
-					} catch( UnsatisfiedLinkError ule ) {
-						System.loadLibrary( "jni_nebulous" );
-					}
+					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( "jni_nebulous" );
 					for( java.io.File directory : Manager.getPendingBundles() ) {
 						Manager.addBundlePath( directory.getAbsolutePath() );
 					}
