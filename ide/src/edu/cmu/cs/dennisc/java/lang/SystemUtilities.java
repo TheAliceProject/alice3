@@ -163,6 +163,16 @@ public class SystemUtilities {
 		}
 	}
 
+	public static boolean is64Bit() {
+		Integer bitCount = getBitCount();
+		return ( bitCount != null ) && ( bitCount == 64 );
+	}
+
+	public static boolean is32Bit() {
+		Integer bitCount = getBitCount();
+		return ( bitCount != null ) && ( bitCount == 32 );
+	}
+
 	public static boolean isPlatformSpecificLibraryLoadingDesired() {
 		return true;
 	}

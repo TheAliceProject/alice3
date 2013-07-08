@@ -125,8 +125,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 						this.loadLibrary( libname, isIgnoringError, true );
 					}
 				} );
-				edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( "gluegen-rt" );
-				com.sun.gluegen.runtime.NativeLibLoader.disableLoading();
+
+				// the windows 64bit gluegen-rt.dll seems to have a bad dependency.  nicely, it does not seem to be necessary for windows. 
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() && edu.cmu.cs.dennisc.java.lang.SystemUtilities.is64Bit() ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( "gluegen-rt" );
+					com.sun.gluegen.runtime.NativeLibLoader.disableLoading();
+				}
 			}
 			com.sun.opengl.impl.NativeLibLoader.loadCore();
 		} catch( UnsatisfiedLinkError ule ) {
