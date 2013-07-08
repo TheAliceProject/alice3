@@ -167,7 +167,7 @@ public class SystemUtilities {
 		return true;
 	}
 
-	public static boolean loadPlatformSpecific( String libraryName ) {
+	public static void loadPlatformSpecific( String libraryName ) {
 		String postfix;
 		StringBuilder sb = new StringBuilder();
 		if( isMac() ) {
@@ -213,14 +213,13 @@ public class SystemUtilities {
 			java.io.File file = new java.io.File( libraryDirectory, subpath );
 			if( file.exists() ) {
 				System.load( file.getAbsolutePath() );
-				return true;
+				return;
 			}
 		}
-		return false;
+		System.loadLibrary( libraryName );
 	}
 
 	public static boolean areIconsDisplayedInMenus() {
-		//return isWindows();
 		return true;
 	}
 
