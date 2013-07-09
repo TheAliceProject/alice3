@@ -137,6 +137,7 @@ public class ModelResourceExporter {
 	private boolean moveCenterToBottom = true;
 	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
+	private boolean exportGalleryResources = true;
 
 	private String attributionName;
 	private String attributionYear;
@@ -240,6 +241,14 @@ public class ModelResourceExporter {
 		else if( date.after( this.lastEdited ) ) {
 			this.lastEdited = date;
 		}
+	}
+
+	public void setExportGalleryResources( boolean exportResources ) {
+		this.exportGalleryResources = exportResources;
+	}
+
+	public boolean getExportGalleryResources() {
+		return this.exportGalleryResources;
 	}
 
 	public static boolean isMoreRecentThan( Date dataDate, File file ) {
@@ -1291,10 +1300,10 @@ public class ModelResourceExporter {
 		if( ( rebuildXmlFile || !xmlFile.exists() || ( xmlFile.length() == 0 ) || isMoreRecentThan( this.lastEdited, xmlFile ) ) && ( resourceJarStream != null ) ) {
 			xmlFile = createXMLFile( resourceDirectory, rebuildXmlFile );
 		}
-		boolean shouldAddResources = resourceJarStream != null;
+		boolean shouldAddResources = ( resourceJarStream != null ) && this.getExportGalleryResources();
 		boolean addResources = false;
 		File resourceDir = null;
-		if( ( resourceJarStream != null ) && ( xmlFile != null ) ) {
+		if( shouldAddResources && ( xmlFile != null ) ) {
 			addResources = true;
 			resourceDir = xmlFile.getParentFile();
 			List<File> thumbnailFiles = saveThumbnailsToDir( resourceDirectory );

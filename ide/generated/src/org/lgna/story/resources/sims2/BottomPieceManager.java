@@ -37,7 +37,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				FemaleAdultBottomPieceCargoPants.class,
 				FemaleAdultBottomPieceFlairedPantsSandals.class,
 				FemaleAdultBottomPieceMomTailored.class,
-				FemaleAdultBottomPieceNaked.class,
 				FemaleAdultBottomPiecePantsCowboyBoots.class,
 				FemaleAdultBottomPieceShorts.class,
 				FemaleAdultBottomPieceShortShorts.class,
@@ -51,23 +50,8 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleAdultBottomPieceCargoPants.class,
 				MaleAdultBottomPieceCowboyJeans.class,
 				MaleAdultBottomPieceLongShorts.class,
-				MaleAdultBottomPieceNaked.class,
 				MaleAdultBottomPiecePants.class,
 				MaleAdultBottomPieceWillPants.class
-				);
-		this.add( FemaleElderBottomPiece.class, 
-				FemaleElderBottomPieceNaked.class,
-				FemaleElderBottomPiecePantsCowboyBoots.class,
-				FemaleElderBottomPieceSlacks.class,
-				FemaleElderBottomPieceSlacksHeels.class,
-				FemaleElderBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleElderBottomPiece.class, 
-				MaleElderBottomPieceCowboyJeans.class,
-				MaleElderBottomPieceLongShorts.class,
-				MaleElderBottomPieceNaked.class,
-				MaleElderBottomPiecePantsSocksShoes.class,
-				MaleElderBottomPieceShorts.class
 				);
 		this.add( FemaleTeenBottomPiece.class, 
 				FemaleTeenBottomPieceBaggyPants.class,
@@ -76,21 +60,18 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				FemaleTeenBottomPieceHipFlarePantsBoots.class,
 				FemaleTeenBottomPieceHipMicroMiniSkirt.class,
 				FemaleTeenBottomPieceMiniShorts.class,
-				FemaleTeenBottomPieceNaked.class,
 				FemaleTeenBottomPiecePantsCowboyBoots.class,
 				FemaleTeenBottomPieceShorts.class,
 				FemaleTeenBottomPieceShortShorts.class,
 				FemaleTeenBottomPieceSkirt.class,
 				FemaleTeenBottomPieceSkirtUBoots.class,
-				FemaleTeenBottomPieceSlacksHeels.class,
-				FemaleTeenBottomPieceSwimPantySmooth.class
+				FemaleTeenBottomPieceSlacksHeels.class
 				);
 		this.add( MaleTeenBottomPiece.class, 
 				MaleTeenBottomPieceBoardShorts.class,
 				MaleTeenBottomPieceBoxers.class,
 				MaleTeenBottomPieceCargoPants.class,
 				MaleTeenBottomPieceKneeShorts.class,
-				MaleTeenBottomPieceNaked.class,
 				MaleTeenBottomPiecePantsCuffsBoots.class,
 				MaleTeenBottomPieceSwimShort.class,
 				MaleTeenBottomPieceTightPantsPointyToe.class
@@ -100,7 +81,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleChildBottomPieceCowboyJeans.class,
 				MaleChildBottomPieceShorts.class,
 				ChildBottomPieceBaggyPants.class,
-				ChildBottomPieceNaked.class,
 				ChildBottomPiecePuffyLeg.class
 				);
 		this.add( FemaleChildBottomPiece.class, 
@@ -108,8 +88,19 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				FemaleChildBottomPiecePleatSkirt.class,
 				FemaleChildBottomPieceShorts.class,
 				ChildBottomPieceBaggyPants.class,
-				ChildBottomPieceNaked.class,
 				ChildBottomPiecePuffyLeg.class
+				);
+		this.add( FemaleElderBottomPiece.class, 
+				FemaleElderBottomPiecePantsCowboyBoots.class,
+				FemaleElderBottomPieceSlacks.class,
+				FemaleElderBottomPieceSlacksHeels.class,
+				FemaleElderBottomPieceSlinkySkirtBoots.class
+				);
+		this.add( MaleElderBottomPiece.class, 
+				MaleElderBottomPieceCowboyJeans.class,
+				MaleElderBottomPieceLongShorts.class,
+				MaleElderBottomPiecePantsSocksShoes.class,
+				MaleElderBottomPieceShorts.class
 				);
 	}
 
