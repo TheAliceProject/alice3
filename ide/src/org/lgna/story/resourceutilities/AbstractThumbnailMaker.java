@@ -44,6 +44,8 @@ package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractCameraAdapter;
@@ -248,7 +250,7 @@ public abstract class AbstractThumbnailMaker {
 	protected static final boolean DEBUG_SAVE_TEST_IMAGES = false;
 	protected static final String THUMBNAIL_SCRATCH_SPACE = "C:/batchOutput/thumbnailScratchSpace/";
 
-	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace ) {
+	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, java.awt.Color colorKey ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
@@ -276,6 +278,36 @@ public abstract class AbstractThumbnailMaker {
 			}
 
 		}
+		//If a color key is specified, go through the image and make all matching pixels transparent
+		//Make sure to do this before the image is scaled to prevent the scaling from blending the pixels and making the color keying harder
+		if( colorKey != null ) {
+			float[] chromaHSB = new float[ 3 ];
+			float[] pixelHSB = new float[ 3 ];
+			int[] pixelBuffer = new int[ 4 ];
+			java.awt.Color.RGBtoHSB( colorKey.getRed(), colorKey.getGreen(), colorKey.getBlue(), chromaHSB );
+			Raster imageData = rv.getRaster();
+			WritableRaster writableData = null;
+			if( imageData instanceof WritableRaster ) {
+				writableData = (WritableRaster)imageData;
+				for( int x = 0; x < writableData.getWidth(); x++ )
+				{
+					for( int y = 0; y < writableData.getHeight(); y++ )
+					{
+						try {
+							int[] imagePixel = writableData.getPixel( x, y, pixelBuffer );
+							java.awt.Color.RGBtoHSB( imagePixel[ 0 ], imagePixel[ 1 ], imagePixel[ 2 ], pixelHSB );
+							if( pixelHSB[ 0 ] == chromaHSB[ 0 ] ) {
+								imagePixel[ 3 ] = 0;
+								writableData.setPixel( x, y, imagePixel );
+							}
+						} catch( ArrayIndexOutOfBoundsException e ) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {
 			int finalWidth = this.width;
@@ -388,10 +420,14 @@ public abstract class AbstractThumbnailMaker {
 
 	protected abstract AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox );
 
-	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) {
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) {
+		return createThumbnail( v, bbox, trimWhitespace, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace, java.awt.Color colorKey ) {
 		v.setParent( this.sgModelTransformable );
 		AffineMatrix4x4 finalCameraTransform = getThumbnailTransform( v, bbox );
-		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace );
+		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace, colorKey );
 		v.setParent( null );
 		return returnImage;
 	}

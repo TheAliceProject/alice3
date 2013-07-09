@@ -27,9 +27,6 @@ public enum FemaleAdultFullBodyOutfitDressLongTwo implements FemaleAdultFullBody
 	RED,
 	BLUE,
 	BLACK,
-	RED_HOLE,
-	LEOPARD,
-	CREAM,
-	BLACK_HOLE;
+	CREAM;
 
 }

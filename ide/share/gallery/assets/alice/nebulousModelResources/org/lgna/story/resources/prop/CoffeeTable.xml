@@ -40,85 +40,13 @@
             <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_BLONDE_CHERRY" textureName="FANCY_BLONDE_CHERRY">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_BLONDE_DARK_WOOD" textureName="FANCY_BLONDE_DARK_WOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_BLONDE_REDWOOD" textureName="FANCY_BLONDE_REDWOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_CHERRY_BLONDE" textureName="FANCY_CHERRY_BLONDE">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
     <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_CHERRY_CHERRY" textureName="FANCY_CHERRY_CHERRY">
         <BoundingBox>
             <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
             <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_CHERRY_DARK_WOOD" textureName="FANCY_CHERRY_DARK_WOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_CHERRY_REDWOOD" textureName="FANCY_CHERRY_REDWOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_DARK_WOOD_BLONDE" textureName="FANCY_DARK_WOOD_BLONDE">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_DARK_WOOD_CHERRY" textureName="FANCY_DARK_WOOD_CHERRY">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
     <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_DARK_WOOD_DARK_WOOD" textureName="FANCY_DARK_WOOD_DARK_WOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_DARK_WOOD_REDWOOD" textureName="FANCY_DARK_WOOD_REDWOOD">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_REDWOOD_BLONDE" textureName="FANCY_REDWOOD_BLONDE">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_REDWOOD_CHERRY" textureName="FANCY_REDWOOD_CHERRY">
-        <BoundingBox>
-            <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
-            <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>
-        </BoundingBox>
-    </Resource>
-    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_FANCY_REDWOOD_DARK_WOOD" textureName="FANCY_REDWOOD_DARK_WOOD">
         <BoundingBox>
             <Min x="-0.8199055790901184" y="0.0" z="-0.33336976170539856"/>
             <Max x="0.8199055790901184" y="0.4869565963745117" z="0.33336976170539856"/>

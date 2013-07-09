@@ -188,12 +188,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		}
 	}
 
-	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
@@ -211,12 +215,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createBodyThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
@@ -234,12 +242,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createTopBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createTopBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createTopBodyThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createTopBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getTopBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getTopBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
@@ -257,12 +269,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createBottomBodyThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getBottomBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getBottomBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
@@ -280,12 +296,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createHeadThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createHeadThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createHeadThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createHeadThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getHeadThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getHeadThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
@@ -303,12 +323,16 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createFaceThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public java.awt.image.BufferedImage createFaceThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+		return createFaceThumbnailFromPersonVisualData( visualData, trim, null );
+	}
+
+	public synchronized java.awt.image.BufferedImage createFaceThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getFaceThumbnailCameraOrientationForLifeStageAndGender( visualData.getLifeStage(), visualData.getGender() ), trim );
+		java.awt.image.BufferedImage returnImage = takePicture( getFaceThumbnailCameraOrientationForLifeStageAndGender( visualData.getLifeStage(), visualData.getGender() ), trim, colorKey );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
