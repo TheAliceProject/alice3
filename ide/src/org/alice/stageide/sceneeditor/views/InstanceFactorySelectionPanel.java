@@ -239,12 +239,15 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 	}
 
 	public void setType( org.lgna.project.ast.UserType type ) {
-		if( this.type != null ) {
-			this.type.fields.removeListPropertyListener( this.fieldsListener );
-		}
-		this.type = type;
-		if( this.type != null ) {
-			this.type.fields.addListPropertyListener( this.fieldsListener );
+		if( this.type != type ) {
+			if( this.type != null ) {
+				this.type.fields.removeListPropertyListener( this.fieldsListener );
+			}
+			this.type = type;
+			if( this.type != null ) {
+				this.type.fields.addListPropertyListener( this.fieldsListener );
+			}
+			this.getInternalPanel().refreshLater();
 		}
 	}
 
