@@ -59,8 +59,8 @@ import org.lgna.croquet.history.CompletionStep;
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
 	private final BooleanState isRememberingUserNameAndPasswordDesiredState = this.createBooleanState( this.createKey( "isRememberingUserNameAndPasswordDesiredState" ), false );
-	protected final StringState userNameState = createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingUserNameAndPasswordDesiredState );
-	protected final StringState passwordState = createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingUserNameAndPasswordDesiredState, "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" );
+	protected final StringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingUserNameAndPasswordDesiredState, java.util.UUID.fromString( "989be44d-0650-4988-9990-02deac493e4d" ) );
+	protected final StringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingUserNameAndPasswordDesiredState, java.util.UUID.fromString( "c89fa2ec-48e2-432d-b2b1-8c2b1d886728" ), java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
 	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
