@@ -58,9 +58,9 @@ import org.lgna.croquet.history.CompletionStep;
  * @author Matt May
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
-
-	protected final StringState userNameState = createStringState( createKey( "userNameState" ) );
-	protected final StringState passwordState = createStringState( createKey( "passwordState" ) );
+	private final BooleanState isRememberingUserNameAndPasswordDesiredState = this.createBooleanState( this.createKey( "isRememberingUserNameAndPasswordDesiredState" ), false );
+	protected final StringState userNameState = createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingUserNameAndPasswordDesiredState );
+	protected final StringState passwordState = createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingUserNameAndPasswordDesiredState, "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" );
 	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
@@ -89,6 +89,10 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 
 	public BooleanState getIsLoggedIn() {
 		return this.isLoggedIn;
+	}
+
+	public BooleanState getIsRememberingUserNameAndPasswordDesiredState() {
+		return this.isRememberingUserNameAndPasswordDesiredState;
 	}
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {

@@ -78,6 +78,8 @@ public class LoginView extends FormPanel {
 		rows.add( new LabeledFormRow( loginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
 		rows.add( new LabeledFormRow( loginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
 		rows.add( new LabeledFormRow( null, loginComposite.getDisplayPasswordValue().createCheckBox() ) );
+		rows.add( new LabeledFormRow( null, new org.lgna.croquet.components.Label() ) );
+		rows.add( new LabeledFormRow( null, loginComposite.getIsRememberingUserNameAndPasswordDesiredState().createCheckBox() ) );
 	}
 
 	@Override
