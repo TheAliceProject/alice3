@@ -74,6 +74,7 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
@@ -272,7 +273,11 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		ArrayList<Statement> statements = method.body.getValue().statements.getValue();
 		for( Statement statement : statements ) {
 			MethodInvocation setPose = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
-			System.out.println( setPose.method.getName() );
+			System.out.println( "statement: " + statement.getClass() );
+			if( setPose != null ) {
+				SimpleArgument simpleArgument = setPose.requiredArguments.get( 0 );
+				System.out.println( "expression: " + simpleArgument.expression );
+			}
 		}
 	}
 }

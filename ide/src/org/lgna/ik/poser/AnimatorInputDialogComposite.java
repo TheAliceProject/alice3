@@ -119,6 +119,12 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 	}
 
 	public static boolean isStrictlyAnimation( UserMethod candidate ) {
+		if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
+			return false;
+		}
+		if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
+			return false;
+		}
 		ArrayList<Statement> body = candidate.body.getValue().statements.getValue();
 		for( Statement statement : body ) {
 			MethodInvocation methodInv = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
@@ -126,10 +132,16 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 				if( !methodInv.method.getValue().equals( SET_POSE ) ) {
 					return false;
 				}
-			} else {
-				return false;
+				//			} else {
+				//				return false;
 			}
 		}
 		return true;
 	}
+
+	//	@Override
+	//	public OwnedByCompositeOperation getOperation() {
+	//		Thread.dumpStack();
+	//		return super.getOperation();
+	//	}
 }
