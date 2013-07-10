@@ -256,15 +256,10 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		private final Key key;
 		private final BooleanState isStoringPreferenceDesiredState;
 
-		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, String encrytionText ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue, encrytionText );
+		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, java.util.UUID preferenceId, java.util.UUID encryptionId ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue, preferenceId.toString(), getEncryptionKey( encryptionId.toString() ) );
 			this.key = key;
 			this.isStoringPreferenceDesiredState = isStoringPreferenceDesiredState;
-		}
-
-		@Override
-		protected String getPreferenceKey() {
-			return super.getPreferenceKey() + "_" + this.key.getLocalizationKey();
 		}
 
 		@Override
@@ -988,16 +983,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return rv;
 	}
 
-	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue ) {
-		return createPreferenceStringState( key, initialValue, null );
+	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID preferenceId ) {
+		return createPreferenceStringState( key, initialValue, isStoringPreferenceDesiredState, preferenceId, null );
 	}
 
-	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
-		return createPreferenceStringState( key, initialValue, isStoringPreferenceDesiredState, null );
-	}
-
-	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, String encrytionText ) {
-		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, encrytionText );
+	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID preferenceId, java.util.UUID encryptionId ) {
+		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, preferenceId, encryptionId );
 		this.mapKeyToPreferenceStringState.put( key, rv );
 		return rv;
 	}
