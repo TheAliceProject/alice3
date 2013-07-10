@@ -145,6 +145,10 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		instances.add( this );
 	}
 
+	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue, byte[] encryptionKey ) {
+		this( group, migrationId, initialValue, migrationId.toString(), encryptionKey );
+	}
+
 	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue ) {
 		this( group, migrationId, initialValue, migrationId.toString(), getEncryptionKey( null ) );
 	}
