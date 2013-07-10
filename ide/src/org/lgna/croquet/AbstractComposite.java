@@ -369,7 +369,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		private final Key key;
 
 		private InternalPreferenceBooleanState( boolean initialValue, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue, key.getPreferenceKey() );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "034f99f7-74ec-4a89-8396-3c187d9684a2" ), initialValue, key.getPreferenceKey() );
 			this.key = key;
 		}
 
