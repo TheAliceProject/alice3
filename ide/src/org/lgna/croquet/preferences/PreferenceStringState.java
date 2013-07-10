@@ -46,7 +46,7 @@ package org.lgna.croquet.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceStringState extends org.lgna.croquet.StringState {
+public abstract class PreferenceStringState extends org.lgna.croquet.StringState {
 	private static final String NULL_VALUE = "__null__";
 
 	private static final String CHARSET_NAME = "UTF-8";
@@ -93,28 +93,28 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
-			String key = state.getMigrationId().toString();
+			String key = state.getPreferenceKey();
 			String value = state.getValue();
 			if( value != null ) {
 				//pass
 			} else {
 				value = NULL_VALUE;
 			}
-			String possiblyEncriptedValue;
+			String possiblyEncryptedValue;
 			if( state.encryptionKey != null ) {
 				try {
 					javax.crypto.Cipher cipher = getCypher( state.encryptionKey, javax.crypto.Cipher.ENCRYPT_MODE );
 					byte[] bytes = cipher.doFinal( value.getBytes( CHARSET_NAME ) );
-					possiblyEncriptedValue = org.apache.axis.encoding.Base64.encode( bytes );
+					possiblyEncryptedValue = org.apache.axis.encoding.Base64.encode( bytes );
 				} catch( Exception e ) {
-					possiblyEncriptedValue = null;
+					possiblyEncryptedValue = null;
 				}
 			} else {
-				possiblyEncriptedValue = value;
+				possiblyEncryptedValue = value;
 			}
-			if( possiblyEncriptedValue != null ) {
+			if( possiblyEncryptedValue != null ) {
 				if( state.isStoringPreferenceDesired() ) {
-					userPreferences.put( key, possiblyEncriptedValue );
+					userPreferences.put( key, possiblyEncryptedValue );
 				} else {
 					userPreferences.remove( key );
 				}
@@ -125,10 +125,14 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 	private final byte[] encryptionKey;
 
 	private static byte[] getEncryptionKey( String s ) {
-		try {
-			return s.getBytes( CHARSET_NAME );
-		} catch( java.io.UnsupportedEncodingException uee ) {
-			throw new RuntimeException( CHARSET_NAME, uee );
+		if( s != null ) {
+			try {
+				return s.getBytes( CHARSET_NAME );
+			} catch( java.io.UnsupportedEncodingException uee ) {
+				throw new RuntimeException( CHARSET_NAME, uee );
+			}
+		} else {
+			return null;
 		}
 	}
 
@@ -145,6 +149,10 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
 		this( group, id, initialValue, (byte[])null );
+	}
+
+	protected String getPreferenceKey() {
+		return this.getMigrationId().toString();
 	}
 
 	protected boolean isStoringPreferenceDesired() {

@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.preferences.PreferenceStringState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -149,6 +151,21 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	public static final class PreferenceStringStateKeyResolver extends KeyResolver<StringState> {
+		public PreferenceStringStateKeyResolver( Key key ) {
+			super( key );
+		}
+
+		public PreferenceStringStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected PreferenceStringState getResolved( Key key ) {
+			return key.getComposite().mapKeyToPreferenceStringState.get( key );
+		}
+	}
+
 	public static final class ItemStateKeyResolver<T> extends KeyResolver<ItemState<T>> {
 		public ItemStateKeyResolver( Key key ) {
 			super( key );
@@ -225,6 +242,53 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected StringStateKeyResolver createResolver() {
 			return new StringStateKeyResolver( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
+	private static final class InternalPreferenceStringState extends PreferenceStringState {
+		private final Key key;
+		private final BooleanState isStoringPreferenceDesiredState;
+
+		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, String encrytionText ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue, encrytionText );
+			this.key = key;
+			this.isStoringPreferenceDesiredState = isStoringPreferenceDesiredState;
+		}
+
+		@Override
+		protected String getPreferenceKey() {
+			return super.getPreferenceKey() + "_" + this.key.getLocalizationKey();
+		}
+
+		@Override
+		protected boolean isStoringPreferenceDesired() {
+			return ( this.isStoringPreferenceDesiredState == null ) || this.isStoringPreferenceDesiredState.getValue();
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected PreferenceStringStateKeyResolver createResolver() {
+			return new PreferenceStringStateKeyResolver( this.getKey() );
 		}
 
 		@Override
@@ -759,6 +823,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalImmutableListSelectionState> mapKeyToImmutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalRefreshableListSelectionState> mapKeyToRefreshableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalMutableListSelectionState> mapKeyToMutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -823,6 +888,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				this.mapKeyToRefreshableListSelectionState,
 				this.mapKeyToMutableListSelectionState,
 				this.mapKeyToTabSelectionState,
+				this.mapKeyToPreferenceStringState,
 				this.mapKeyToStringState );
 	}
 
@@ -835,6 +901,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 		for( Key key : this.mapKeyToStringState.keySet() ) {
 			InternalStringState state = this.mapKeyToStringState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToPreferenceStringState.keySet() ) {
+			InternalPreferenceStringState state = this.mapKeyToPreferenceStringState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -913,6 +985,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	protected StringState createStringState( Key key, String initialValue ) {
 		InternalStringState rv = new InternalStringState( initialValue, key );
 		this.mapKeyToStringState.put( key, rv );
+		return rv;
+	}
+
+	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue ) {
+		return createPreferenceStringState( key, initialValue, null );
+	}
+
+	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
+		return createPreferenceStringState( key, initialValue, isStoringPreferenceDesiredState, null );
+	}
+
+	protected PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, String encrytionText ) {
+		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, encrytionText );
+		this.mapKeyToPreferenceStringState.put( key, rv );
 		return rv;
 	}
 
