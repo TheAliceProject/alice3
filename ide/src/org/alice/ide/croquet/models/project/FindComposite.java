@@ -101,15 +101,10 @@ public class FindComposite extends FrameComposite<FindView> {
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResults.getValue() != null ) {
-				//				searchResults.getValue().getSearchObject().
 				AbstractDeclaration searchObject = searchResults.getValue().getSearchObject();
-				System.out.println( searchObject.getClass() );
 				AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo( AbstractMethod.class );
-				System.out.println( abstractMethod );
 				if( searchObject instanceof AbstractMethod ) {
 					AbstractType<?, ?, ?> declaringType = ( (AbstractMethod)searchObject ).getDeclaringType();
-					//					AnonymousConstructorPane.lookup( awtComponent )
-					//					MemberTabComposite.
 					IDE.getActiveInstance().getMethodInvocations( (AbstractMethod)searchObject );
 				}
 			}

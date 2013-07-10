@@ -42,8 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
-
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.components.BorderPanel;
@@ -52,9 +50,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.SBiped;
 import org.lgna.story.SetPose;
@@ -64,7 +60,7 @@ import org.lgna.story.SetPose;
  */
 public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
-	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );;
+	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
 
@@ -125,23 +121,6 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 		if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
 			return false;
 		}
-		ArrayList<Statement> body = candidate.body.getValue().statements.getValue();
-		for( Statement statement : body ) {
-			MethodInvocation methodInv = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
-			if( methodInv != null ) {
-				if( !methodInv.method.getValue().equals( SET_POSE ) ) {
-					return false;
-				}
-				//			} else {
-				//				return false;
-			}
-		}
-		return true;
+		return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
 	}
-
-	//	@Override
-	//	public OwnedByCompositeOperation getOperation() {
-	//		Thread.dumpStack();
-	//		return super.getOperation();
-	//	}
 }

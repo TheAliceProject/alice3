@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.common.ComponentThread;
@@ -74,8 +73,6 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
@@ -270,14 +267,6 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	}
 
 	public void parseMethod( UserMethod method ) {
-		ArrayList<Statement> statements = method.body.getValue().statements.getValue();
-		for( Statement statement : statements ) {
-			MethodInvocation setPose = statement.getFirstAncestorAssignableTo( MethodInvocation.class );
-			System.out.println( "statement: " + statement.getClass() );
-			if( setPose != null ) {
-				SimpleArgument simpleArgument = setPose.requiredArguments.get( 0 );
-				System.out.println( "expression: " + simpleArgument.expression );
-			}
-		}
+		AnimationParser.initializeAndParse( method );
 	}
 }
