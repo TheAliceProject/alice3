@@ -46,7 +46,7 @@ package org.lgna.croquet.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceStringState extends org.lgna.croquet.StringState {
+public abstract class PreferenceStringState extends org.lgna.croquet.StringState {
 	private static final String NULL_VALUE = "__null__";
 
 	private static final String CHARSET_NAME = "UTF-8";
@@ -60,7 +60,7 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 		return cipher;
 	}
 
-	private static String getInitialValue( java.util.UUID id, String defaultInitialValue, byte[] encryptionKey ) {
+	private static String getInitialValue( String preferenceKey, String defaultInitialValue, byte[] encryptionKey ) {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			if( defaultInitialValue != null ) {
@@ -68,7 +68,7 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 			} else {
 				defaultInitialValue = NULL_VALUE;
 			}
-			String rv = userPreferences.get( id.toString(), defaultInitialValue );
+			String rv = userPreferences.get( preferenceKey, defaultInitialValue );
 			if( encryptionKey != null ) {
 				try {
 					javax.crypto.Cipher cipher = getCypher( encryptionKey, javax.crypto.Cipher.DECRYPT_MODE );
@@ -93,28 +93,28 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
-			String key = state.getMigrationId().toString();
+			String key = state.getPreferenceKey();
 			String value = state.getValue();
 			if( value != null ) {
 				//pass
 			} else {
 				value = NULL_VALUE;
 			}
-			String possiblyEncriptedValue;
+			String possiblyEncryptedValue;
 			if( state.encryptionKey != null ) {
 				try {
 					javax.crypto.Cipher cipher = getCypher( state.encryptionKey, javax.crypto.Cipher.ENCRYPT_MODE );
 					byte[] bytes = cipher.doFinal( value.getBytes( CHARSET_NAME ) );
-					possiblyEncriptedValue = org.apache.axis.encoding.Base64.encode( bytes );
+					possiblyEncryptedValue = org.apache.axis.encoding.Base64.encode( bytes );
 				} catch( Exception e ) {
-					possiblyEncriptedValue = null;
+					possiblyEncryptedValue = null;
 				}
 			} else {
-				possiblyEncriptedValue = value;
+				possiblyEncryptedValue = value;
 			}
-			if( possiblyEncriptedValue != null ) {
+			if( possiblyEncryptedValue != null ) {
 				if( state.isStoringPreferenceDesired() ) {
-					userPreferences.put( key, possiblyEncriptedValue );
+					userPreferences.put( key, possiblyEncryptedValue );
 				} else {
 					userPreferences.remove( key );
 				}
@@ -122,29 +122,35 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 		}
 	}
 
+	private final String preferenceKey;
 	private final byte[] encryptionKey;
 
-	private static byte[] getEncryptionKey( String s ) {
-		try {
-			return s.getBytes( CHARSET_NAME );
-		} catch( java.io.UnsupportedEncodingException uee ) {
-			throw new RuntimeException( CHARSET_NAME, uee );
+	protected static byte[] getEncryptionKey( String s ) {
+		if( s != null ) {
+			try {
+				return s.getBytes( CHARSET_NAME );
+			} catch( java.io.UnsupportedEncodingException uee ) {
+				throw new RuntimeException( CHARSET_NAME, uee );
+			}
+		} else {
+			return null;
 		}
 	}
 
-	private PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue, byte[] encryptionKey ) {
-		super( group, id, getInitialValue( id, initialValue, encryptionKey ) );
+	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue, String preferenceKey, byte[] encryptionKey ) {
+		super( group, migrationId, getInitialValue( preferenceKey, initialValue, encryptionKey ) );
+		this.preferenceKey = preferenceKey;
 		this.encryptionKey = encryptionKey;
 		assert instances.contains( this ) == false;
 		instances.add( this );
 	}
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue, String encryptionText ) {
-		this( group, id, initialValue, getEncryptionKey( encryptionText ) );
+	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue ) {
+		this( group, migrationId, initialValue, migrationId.toString(), getEncryptionKey( null ) );
 	}
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
-		this( group, id, initialValue, (byte[])null );
+	public String getPreferenceKey() {
+		return this.preferenceKey;
 	}
 
 	protected boolean isStoringPreferenceDesired() {

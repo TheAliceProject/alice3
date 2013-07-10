@@ -64,6 +64,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			return this.localizationKey;
 		}
 
+		public String getPreferenceKey() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( this.composite.getClass().getName() );
+			sb.append( "_" );
+			sb.append( this.localizationKey );
+			return sb.toString();
+		}
+
 		@Override
 		public boolean equals( Object o ) {
 			if( o == this ) {
@@ -134,6 +142,36 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	public static final class BooleanStateKeyResolver extends KeyResolver<BooleanState> {
+		public BooleanStateKeyResolver( Key key ) {
+			super( key );
+		}
+
+		public BooleanStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected BooleanState getResolved( Key key ) {
+			return key.getComposite().mapKeyToBooleanState.get( key );
+		}
+	}
+
+	public static final class PreferenceBooleanStateKeyResolver extends KeyResolver<org.lgna.croquet.preferences.PreferenceBooleanState> {
+		public PreferenceBooleanStateKeyResolver( Key key ) {
+			super( key );
+		}
+
+		public PreferenceBooleanStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected org.lgna.croquet.preferences.PreferenceBooleanState getResolved( Key key ) {
+			return key.getComposite().mapKeyToPreferenceBooleanState.get( key );
+		}
+	}
+
 	public static final class StringStateKeyResolver extends KeyResolver<StringState> {
 		public StringStateKeyResolver( Key key ) {
 			super( key );
@@ -146,6 +184,21 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected StringState getResolved( Key key ) {
 			return key.getComposite().mapKeyToStringState.get( key );
+		}
+	}
+
+	public static final class PreferenceStringStateKeyResolver extends KeyResolver<StringState> {
+		public PreferenceStringStateKeyResolver( Key key ) {
+			super( key );
+		}
+
+		public PreferenceStringStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected org.lgna.croquet.preferences.PreferenceStringState getResolved( Key key ) {
+			return key.getComposite().mapKeyToPreferenceStringState.get( key );
 		}
 	}
 
@@ -235,6 +288,48 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	private static final class InternalPreferenceStringState extends org.lgna.croquet.preferences.PreferenceStringState {
+		private final Key key;
+		private final BooleanState isStoringPreferenceDesiredState;
+
+		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ad98acf0-db41-43a6-8619-269a7d8cbc2d" ), initialValue, key.getPreferenceKey(), getEncryptionKey( encryptionId != null ? encryptionId.toString() : null ) );
+			this.key = key;
+			this.isStoringPreferenceDesiredState = isStoringPreferenceDesiredState;
+		}
+
+		@Override
+		protected boolean isStoringPreferenceDesired() {
+			return ( this.isStoringPreferenceDesiredState == null ) || this.isStoringPreferenceDesiredState.getValue();
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected PreferenceStringStateKeyResolver createResolver() {
+			return new PreferenceStringStateKeyResolver( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
 	private static final class InternalBooleanState extends BooleanState {
 		private final Key key;
 
@@ -255,6 +350,46 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected BooleanStateKeyResolver createResolver() {
+			return new BooleanStateKeyResolver( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
+	private static final class InternalPreferenceBooleanState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+		private final Key key;
+
+		private InternalPreferenceBooleanState( boolean initialValue, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "034f99f7-74ec-4a89-8396-3c187d9684a2" ), initialValue, key.getPreferenceKey() );
+			this.key = key;
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected PreferenceBooleanStateKeyResolver createResolver() {
+			return new PreferenceBooleanStateKeyResolver( this.getKey() );
 		}
 
 		@Override
@@ -758,7 +893,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalImmutableListSelectionState> mapKeyToImmutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalRefreshableListSelectionState> mapKeyToRefreshableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalMutableListSelectionState> mapKeyToMutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -815,6 +952,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		this.localizeSidekicks(
 				this.mapKeyToActionOperation,
 				this.mapKeyToBooleanState,
+				this.mapKeyToPreferenceBooleanState,
 				this.mapKeyToBoundedDoubleState,
 				this.mapKeyToBoundedIntegerState,
 				this.mapKeyToCascade,
@@ -823,6 +961,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				this.mapKeyToRefreshableListSelectionState,
 				this.mapKeyToMutableListSelectionState,
 				this.mapKeyToTabSelectionState,
+				this.mapKeyToPreferenceStringState,
 				this.mapKeyToStringState );
 	}
 
@@ -833,8 +972,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				return true;
 			}
 		}
+		for( Key key : this.mapKeyToPreferenceBooleanState.keySet() ) {
+			InternalPreferenceBooleanState state = this.mapKeyToPreferenceBooleanState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
 		for( Key key : this.mapKeyToStringState.keySet() ) {
 			InternalStringState state = this.mapKeyToStringState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToPreferenceStringState.keySet() ) {
+			InternalPreferenceStringState state = this.mapKeyToPreferenceStringState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -920,9 +1071,25 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return createStringState( key, "" );
 	}
 
+	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
+		return createPreferenceStringState( key, initialValue, isStoringPreferenceDesiredState, null );
+	}
+
+	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
+		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, encryptionId );
+		this.mapKeyToPreferenceStringState.put( key, rv );
+		return rv;
+	}
+
 	protected BooleanState createBooleanState( Key key, boolean initialValue ) {
 		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
 		this.mapKeyToBooleanState.put( key, rv );
+		return rv;
+	}
+
+	protected org.lgna.croquet.preferences.PreferenceBooleanState createPreferenceBooleanState( Key key, boolean initialValue ) {
+		InternalPreferenceBooleanState rv = new InternalPreferenceBooleanState( initialValue, key );
+		this.mapKeyToPreferenceBooleanState.put( key, rv );
 		return rv;
 	}
 
