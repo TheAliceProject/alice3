@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="lib/jmf/JMF-2.1.1e/lib/jmf.jar"/>
 	<classpathentry kind="lib" path="lib/jmfmp3/lib/ext/mp3plugin.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar" sourcepath="lib/jogl/src_gluegen-rt.zip"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar" sourcepath="lib/jogl/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar" sourcepath="lib/jogl/src_jogl.zip"/>
 	<classpathentry kind="lib" path="lib/rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
