@@ -257,7 +257,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		private final BooleanState isStoringPreferenceDesiredState;
 
 		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, java.util.UUID preferenceId, java.util.UUID encryptionId ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue, preferenceId.toString(), getEncryptionKey( encryptionId.toString() ) );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ad98acf0-db41-43a6-8619-269a7d8cbc2d" ), initialValue, preferenceId.toString(), getEncryptionKey( encryptionId != null ? encryptionId.toString() : null ) );
 			this.key = key;
 			this.isStoringPreferenceDesiredState = isStoringPreferenceDesiredState;
 		}
