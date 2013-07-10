@@ -58,9 +58,9 @@ import org.lgna.croquet.history.CompletionStep;
  * @author Matt May
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
-	private final BooleanState isRememberingUserNameAndPasswordDesiredState = this.createBooleanState( this.createKey( "isRememberingUserNameAndPasswordDesiredState" ), false );
-	protected final StringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingUserNameAndPasswordDesiredState );
-	protected final StringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingUserNameAndPasswordDesiredState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
+	private final BooleanState isRememberingState = this.createPreferenceBooleanState( this.createKey( "isRememberingState" ), false );
+	protected final StringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
+	protected final StringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
 	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
@@ -91,8 +91,8 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return this.isLoggedIn;
 	}
 
-	public BooleanState getIsRememberingUserNameAndPasswordDesiredState() {
-		return this.isRememberingUserNameAndPasswordDesiredState;
+	public BooleanState getIsRememberingState() {
+		return this.isRememberingState;
 	}
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
@@ -145,7 +145,9 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	}
 
 	public void setParent( LogInOutComposite logInOutComposite ) {
-		assert parent == null : "why are we changing this parent?";
+		if( this.parent != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.parent );
+		}
 		this.parent = logInOutComposite;
 	}
 

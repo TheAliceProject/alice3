@@ -53,8 +53,15 @@ import com.atlassian.jira.rpc.soap.client.RemoteUser;
  * @author Matt May
  */
 public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
+	private static class SingletonHolder {
+		private static BugLoginComposite instance = new BugLoginComposite();
+	}
 
-	public BugLoginComposite() {
+	public static BugLoginComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private BugLoginComposite() {
 		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
 	}
 
