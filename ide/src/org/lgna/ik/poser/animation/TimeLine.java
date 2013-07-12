@@ -140,6 +140,7 @@ public class TimeLine {
 	}
 
 	private void fireKeyFrameAdded( KeyFrameData item ) {
+		System.out.println( "ADDING ITEM: " + item );
 		for( TimeLineListener listener : listeners ) {
 			listener.keyFrameAdded( item );
 		}
@@ -152,6 +153,7 @@ public class TimeLine {
 	}
 
 	private void fireKeyFrameDeleted( KeyFrameData item ) {
+		System.out.println( "REMOVING ITEM: " + item );
 		for( TimeLineListener listener : listeners ) {
 			listener.keyFrameDeleted( item );
 		}

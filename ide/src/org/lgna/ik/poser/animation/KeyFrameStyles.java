@@ -72,6 +72,22 @@ public enum KeyFrameStyles {
 		return getAnimationStyleForBooleanPair( ( previous == null ) || previous.isSlowOutDesired, current.isSlowInDesired );
 	}
 
+	public static KeyFrameStyles getKeyFrameStyleFromTwoAnimationStyles( AnimationStyle first, AnimationStyle second ) {
+		if( first.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || first.equals( AnimationStyle.BEGIN_AND_END_GENTLY ) ) {
+			if( second.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || second.equals( AnimationStyle.BEGIN_AND_END_ABRUPTLY ) ) {
+				return ARRIVE_GENTLY_AND_EXIT_ABRUPTLY;
+			} else {
+				return ARRIVE_AND_EXIT_GENTLY;
+			}
+		} else {
+			if( second.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || second.equals( AnimationStyle.BEGIN_AND_END_ABRUPTLY ) ) {
+				return ARRIVE_AND_EXIT_ABRUPTLY;
+			} else {
+				return ARRIVE_ABRUPTLY_AND_EXIT_GENTLY;
+			}
+		}
+	}
+
 	private static AnimationStyle getAnimationStyleForBooleanPair( boolean startGently, boolean endGently ) {
 		if( startGently && endGently ) {
 			return AnimationStyle.BEGIN_AND_END_GENTLY;

@@ -105,6 +105,7 @@ public class TimeLineView extends Panel {
 		}
 
 		public void keyFrameAdded( KeyFrameData event ) {
+			System.out.println( "addComponent" );
 			JTimeLinePoseMarker comp = new JTimeLinePoseMarker( event, jView );
 			comp.addActionListener( actionListener );
 			map.put( event, comp );
@@ -126,10 +127,12 @@ public class TimeLineView extends Panel {
 		List<KeyFrameData> keyFrames = ( (TimeLineComposite)getComposite() ).getTimeLine().getKeyFrames();
 		for( KeyFrameData data : keyFrames ) {
 			JTimeLinePoseMarker button = map.get( data );
-			if( button.getKeyFrameData() != selected ) {
-				button.setSelected( false );
-			} else {
-				button.setSelected( true );
+			if( button != null ) {
+				if( button.getKeyFrameData() != selected ) {
+					button.setSelected( false );
+				} else {
+					button.setSelected( true );
+				}
 			}
 		}
 	}
@@ -147,6 +150,13 @@ public class TimeLineView extends Panel {
 
 	public void deselect( KeyFrameData selected ) {
 		( (AbstractButton)map.get( selected ) ).setSelected( false );
+	}
+
+	@Override
+	public void revalidateAndRepaint() {
+		super.revalidateAndRepaint();
+		jView.revalidate();
+		jView.repaint();
 	}
 }
 

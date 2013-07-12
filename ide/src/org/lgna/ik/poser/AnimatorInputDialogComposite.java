@@ -67,9 +67,6 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 	public AnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod ) {
 		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
 		this.method = editedMethod;
-		if( method != null ) {
-			getControlComposite().parseMethod( method );
-		}
 	}
 
 	public AnimatorInputDialogComposite( NamedUserType valueType ) {
@@ -122,5 +119,9 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 			return false;
 		}
 		return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
+	}
+
+	public UserMethod getMethod() {
+		return this.method;
 	}
 }

@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.common.ComponentThread;
@@ -59,6 +60,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
+import org.lgna.ik.poser.AnimatorInputDialogComposite;
 import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
@@ -160,9 +162,9 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private TimeLineListener tlListener = new TimeLineListener() {
 
 		public void selectedKeyFrameChanged( KeyFrameData event ) {
-			if( event != null ) {
-				parent.getBiped().setPose( event.getPose(), new Duration( 0 ) );
-			}
+			//			if( event != null ) {
+			//				parent.getBiped().setPose( event.getPose(), new Duration( 0 ) );
+			//			}
 		}
 
 		public void keyFrameModified( KeyFrameData event ) {
@@ -255,8 +257,14 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		tlComposite.getTimeLine().refresh();
-		parent.getBiped().straightenOutJoints( new Duration( 0 ) );
+		UserMethod method = ( (AnimatorInputDialogComposite)parent ).getMethod();
+		if( method == null ) {
+			tlComposite.getTimeLine().refresh();
+			parent.getBiped().straightenOutJoints( new Duration( 0 ) );
+		} else {
+			parseMethod( method );
+			nameState.setValueTransactionlessly( method.getName() );
+		}
 	}
 
 	public View getSouthViewForDialog() {
@@ -267,6 +275,9 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	}
 
 	public void parseMethod( UserMethod method ) {
-		AnimationParser.initializeAndParse( method );
+		ArrayList<KeyFrameData> frames = AnimationParser.initializeAndParse( method );
+		for( KeyFrameData frame : frames ) {
+			tlComposite.getTimeLine().addKeyFrameData( frame );
+		}
 	}
 }

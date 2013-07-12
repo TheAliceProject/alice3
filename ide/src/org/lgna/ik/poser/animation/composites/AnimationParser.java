@@ -42,13 +42,21 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import java.util.ArrayList;
+
 import org.lgna.ik.poser.AnimatorInputDialogComposite;
-import org.lgna.project.ast.AbstractParameter;
+import org.lgna.ik.poser.Pose;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.JavaMethodParameter;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.story.AnimationStyle;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 
@@ -57,15 +65,27 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  */
 public class AnimationParser implements Crawler {
 
-	public static void initializeAndParse( UserMethod animation ) {
-		AnimationParser parser = new AnimationParser( animation );
+	org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	double currentTime = 0;
+	ArrayList<KeyFrameData> dataList = Collections.newArrayList();
+	ArrayList<AnimationStyle> styleList = Collections.newArrayList();
+
+	public static ArrayList<KeyFrameData> initializeAndParse( UserMethod animation ) {
+		AnimationParser parser = new AnimationParser();
 		animation.crawl( parser, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+		return parser.getKeyFrames();
 	}
 
-	private UserMethod method;
-
-	private AnimationParser( UserMethod method ) {
-		this.method = method;
+	private ArrayList<KeyFrameData> getKeyFrames() {
+		for( int i = 0; i != dataList.size(); ++i ) {
+			AnimationStyle second = AnimationStyle.BEGIN_AND_END_GENTLY;
+			if( i < ( dataList.size() - 1 ) ) {
+				second = styleList.get( i + 1 );
+			}
+			dataList.get( 0 ).setStyle( KeyFrameStyles.getKeyFrameStyleFromTwoAnimationStyles(
+					styleList.get( i ), second ) );
+		}
+		return dataList;
 	}
 
 	public void visit( Crawlable crawlable ) {
@@ -73,19 +93,35 @@ public class AnimationParser implements Crawler {
 
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
 			if( methodInv.method.getValue().equals( AnimatorInputDialogComposite.SET_POSE ) ) {
-				//				: methodInv.method.getValue().getName();
-				//				System.out.println( methodInv.requiredArguments.get( 0 ).expression.getValue().);
-				//				parse( methodInv.method.getValue().getAllParameters() );
+				Pose pose = null;
+				double duration = 0;
+				AnimationStyle style = null;
+				ArrayList<Expression> list = Collections.newArrayList();
+				list.add( methodInv.requiredArguments.get( 0 ).expression.getValue() );
+				for( JavaKeyedArgument kArg : methodInv.keyedArguments ) {
+					Expression value = ( (MethodInvocation)kArg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();
+					if( value instanceof DoubleLiteral ) {
+						duration = ( (DoubleLiteral)value ).value.getValue();
+					} else {
+						list.add( kArg.expression.getValue() );
+					}
+				}
+				Object[] argArr = vm.ENTRY_POINT_evaluate( null, list.toArray( new Expression[ 0 ] ) );
+				for( Object o : argArr ) {
+					if( o instanceof Pose ) {
+						pose = (Pose)o;
+					} else if( o instanceof AnimationStyle ) {
+						style = (AnimationStyle)o;
+					} else {
+						System.out.println( "asfd: " + o.getClass() );
+					}
+				}
+				//				assert duration > 0;
+				assert pose != null;
+				assert style != null;
+				dataList.add( new KeyFrameData( currentTime + duration, pose ) );
+				styleList.add( style );
 			}
 		}
-	}
-
-	private void parse( AbstractParameter[] allParameters ) {
-		JavaMethodParameter par = (JavaMethodParameter)allParameters[ 0 ];//
-		//		par.
-		//		System.out.println( par.getValueType(). );
-		//		for( AbstractParameter param : allParameters ) {
-		//			System.out.println( "param: " + param.getValueType() );
-		//		}
 	}
 }
