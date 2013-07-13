@@ -23,6 +23,7 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitLabcoat implements MaleTeenFullBodyOutfit {
-	YELLOW_WAVE_TANKINI;
+	RED_TIE_KHAKI,
+	BLUE_TIE_GREY;
 
 }

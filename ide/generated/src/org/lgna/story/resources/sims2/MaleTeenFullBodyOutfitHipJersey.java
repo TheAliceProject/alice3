@@ -23,6 +23,8 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitHipJersey implements MaleTeenFullBodyOutfit {
-	LIME_WAVE_TANKINI;
+	BLACK,
+	RED,
+	BLUE;
 
 }

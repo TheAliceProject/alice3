@@ -23,6 +23,7 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitHipOpenShirtOverPants implements MaleTeenFullBodyOutfit {
-	PINK_DIVING;
+	TAN,
+	STRIP;
 
 }

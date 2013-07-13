@@ -31,28 +31,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 	}
 
 	private BottomPieceManager() {
-		this.add( FemaleAdultBottomPiece.class, 
-				FemaleAdultBottomPieceBaggyPants.class,
-				FemaleAdultBottomPieceCapriSneaks.class,
-				FemaleAdultBottomPieceCargoPants.class,
-				FemaleAdultBottomPieceFlairedPantsSandals.class,
-				FemaleAdultBottomPieceMomTailored.class,
-				FemaleAdultBottomPiecePantsCowboyBoots.class,
-				FemaleAdultBottomPieceShorts.class,
-				FemaleAdultBottomPieceShortShorts.class,
-				FemaleAdultBottomPieceShortSkirtBoots.class,
-				FemaleAdultBottomPieceShortSkirtShoes.class,
-				FemaleAdultBottomPieceSkirtTight.class,
-				FemaleAdultBottomPieceSlacksHeels.class,
-				FemaleAdultBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleAdultBottomPiece.class, 
-				MaleAdultBottomPieceCargoPants.class,
-				MaleAdultBottomPieceCowboyJeans.class,
-				MaleAdultBottomPieceLongShorts.class,
-				MaleAdultBottomPiecePants.class,
-				MaleAdultBottomPieceWillPants.class
-				);
 		this.add( FemaleTeenBottomPiece.class, 
 				FemaleTeenBottomPieceBaggyPants.class,
 				FemaleTeenBottomPieceCargoPants.class,
@@ -101,6 +79,28 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleElderBottomPieceLongShorts.class,
 				MaleElderBottomPiecePantsSocksShoes.class,
 				MaleElderBottomPieceShorts.class
+				);
+		this.add( FemaleAdultBottomPiece.class, 
+				FemaleAdultBottomPieceBaggyPants.class,
+				FemaleAdultBottomPieceCapriSneaks.class,
+				FemaleAdultBottomPieceCargoPants.class,
+				FemaleAdultBottomPieceFlairedPantsSandals.class,
+				FemaleAdultBottomPieceMomTailored.class,
+				FemaleAdultBottomPiecePantsCowboyBoots.class,
+				FemaleAdultBottomPieceShorts.class,
+				FemaleAdultBottomPieceShortShorts.class,
+				FemaleAdultBottomPieceShortSkirtBoots.class,
+				FemaleAdultBottomPieceShortSkirtShoes.class,
+				FemaleAdultBottomPieceSkirtTight.class,
+				FemaleAdultBottomPieceSlacksHeels.class,
+				FemaleAdultBottomPieceSlinkySkirtBoots.class
+				);
+		this.add( MaleAdultBottomPiece.class, 
+				MaleAdultBottomPieceCargoPants.class,
+				MaleAdultBottomPieceCowboyJeans.class,
+				MaleAdultBottomPieceLongShorts.class,
+				MaleAdultBottomPiecePants.class,
+				MaleAdultBottomPieceWillPants.class
 				);
 	}
 

@@ -23,6 +23,7 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitKilt implements MaleTeenFullBodyOutfit {
-	RED_WAVE_TANKINI;
+	TAN_RED,
+	TAN_GREEN;
 
 }

@@ -23,6 +23,8 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitHoodedSweatShirtBoardShorts implements MaleTeenFullBodyOutfit {
-	RED_DIVING;
+	BLACK,
+	GREY,
+	REDSKULL;
 
 }

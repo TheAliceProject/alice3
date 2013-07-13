@@ -23,6 +23,11 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitHiphopBaggy implements MaleTeenFullBodyOutfit {
-	BLUE_WAVE_TANKINI;
+	GREEN,
+	BLUE,
+	ORANGE,
+	PURPLE,
+	RED,
+	WHITE;
 
 }

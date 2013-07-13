@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Elephant">
+    <BoundingBox>
+        <Min x="-1.333213210105896" y="-0.015999702736735344" z="-2.0763907432556152"/>
+        <Max x="1.333213210105896" y="5.552835941314697" z="3.775158405303955"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>asia</Tag>
+        <Tag>africa</Tag>
+        <Tag>pachyderm</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Asian" resourceName="ASIAN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.8855559229850769" y="-0.014284133911132812" z="-1.7381548881530762"/>
+            <Max x="0.8855559229850769" y="2.8809421062469482" z="3.3863415718078613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="AsianWithHowdah" resourceName="ASIAN_WITH_HOWDAH" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.8855559229850769" y="-0.014284133911132812" z="-1.7381548881530762"/>
+            <Max x="0.8855559229850769" y="4.9526166915893555" z="3.3863415718078613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="African" resourceName="AFRICAN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.333213210105896" y="-0.015999702736735344" z="-2.0763907432556152"/>
+            <Max x="1.333213210105896" y="3.28418231010437" z="3.775158405303955"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="AfricanWithHowdah" resourceName="AFRICAN_WITH_HOWDAH" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.333213210105896" y="-0.015999702736735344" z="-2.0763907432556152"/>
+            <Max x="1.333213210105896" y="5.552835941314697" z="3.775158405303955"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

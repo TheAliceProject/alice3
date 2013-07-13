@@ -16,8 +16,8 @@
     </ThemeTags>
     <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.948134183883667" y="-0.0139884352684021" z="-0.6509260535240173"/>
-            <Max x="0.948134183883667" y="2.5775487422943115" z="0.48637261986732483"/>
+            <Min x="-0.7023522853851318" y="-0.0139884352684021" z="-0.6509260535240173"/>
+            <Max x="0.7278886437416077" y="2.575470209121704" z="0.48637261986732483"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">

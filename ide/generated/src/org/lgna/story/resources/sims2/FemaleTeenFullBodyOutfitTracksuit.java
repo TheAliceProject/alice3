@@ -23,6 +23,10 @@
 
 package org.lgna.story.resources.sims2;
 public enum FemaleTeenFullBodyOutfitTracksuit implements FemaleTeenFullBodyOutfit {
-	BLACK_RAINBOW_TANKINI;
+	RED,
+	BLACK,
+	TURQ_GOLD,
+	PINK_SIL,
+	GREY_FLUOR;
 
 }
