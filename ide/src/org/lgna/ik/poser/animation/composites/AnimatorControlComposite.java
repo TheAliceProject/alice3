@@ -264,6 +264,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		} else {
 			parseMethod( method );
 			nameState.setValueTransactionlessly( method.getName() );
+			nameState.setEnabled( false );
 		}
 	}
 

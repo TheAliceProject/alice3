@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser;
 
+import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.components.BorderPanel;
@@ -49,6 +50,7 @@ import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
+import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
@@ -81,7 +83,12 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		AnimatorControlComposite controlComposite = this.getControlComposite();
-		return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, controlComposite.createMethodBody() );
+		BlockStatement body = controlComposite.createMethodBody();
+		if( method != null ) {
+			return new ChangeMethodBodyEdit( completionStep, method, body );
+		} else {
+			return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, body );
+		}
 	}
 
 	@Override
