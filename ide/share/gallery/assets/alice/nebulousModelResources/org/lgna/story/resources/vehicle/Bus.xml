@@ -10,9 +10,7 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Team" resourceName="TEAM" textureName="TEAM">
         <BoundingBox>
             <Min x="-1.2800021171569824" y="-3.076984667060856E-9" z="-3.8260843753814697"/>

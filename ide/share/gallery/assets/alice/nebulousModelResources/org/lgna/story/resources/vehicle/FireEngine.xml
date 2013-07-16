@@ -11,8 +11,6 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="FireEngine" resourceName="FIRE_ENGINE" textureName="FIRE_ENGINE"/>
 </AliceModel>

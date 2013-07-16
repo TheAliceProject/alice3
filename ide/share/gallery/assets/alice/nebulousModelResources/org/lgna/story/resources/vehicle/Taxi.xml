@@ -12,8 +12,6 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Taxi" resourceName="TAXI" textureName="TAXI"/>
 </AliceModel>

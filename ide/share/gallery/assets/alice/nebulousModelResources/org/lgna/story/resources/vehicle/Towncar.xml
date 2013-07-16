@@ -13,8 +13,6 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Towncar" resourceName="TOWNCAR" textureName="TOWNCAR"/>
 </AliceModel>

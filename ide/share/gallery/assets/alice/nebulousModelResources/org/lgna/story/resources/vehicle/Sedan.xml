@@ -10,8 +10,6 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Sedan" resourceName="SEDAN" textureName="SEDAN"/>
 </AliceModel>

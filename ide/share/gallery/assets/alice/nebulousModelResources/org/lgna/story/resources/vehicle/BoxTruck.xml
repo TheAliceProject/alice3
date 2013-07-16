@@ -11,9 +11,7 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Delivery" resourceName="DELIVERY" textureName="DELIVERY">
         <BoundingBox>
             <Min x="-1.2896655797958374" y="1.2307938668243423E-8" z="-2.2891733646392822"/>

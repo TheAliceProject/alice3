@@ -10,9 +10,7 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Super" resourceName="SUPER" textureName="SUPER">
         <BoundingBox>
             <Min x="-1.2652122974395752" y="1.3986293900813962E-8" z="-2.5533056259155273"/>

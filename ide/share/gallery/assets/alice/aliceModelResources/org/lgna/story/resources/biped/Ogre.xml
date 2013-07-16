@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="Ogre">
     <BoundingBox>
-        <Min x="-0.5425522923469543" y="6.299116683956254E-17" z="-0.46653875708580017"/>
-        <Max x="0.5249137282371521" y="1.9996050596237183" z="0.2690691649913788"/>
+        <Min x="-0.5191929340362549" y="6.299116683956254E-17" z="-0.46653875708580017"/>
+        <Max x="0.5154907703399658" y="1.9996050596237183" z="0.2690691649913788"/>
     </BoundingBox>
     <Tags>
         <Tag>monster</Tag>
@@ -10,7 +10,9 @@
     <GroupTags>
         <GroupTag>characters</GroupTag>
     </GroupTags>
-    <ThemeTags/>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
     <Resource modelName="Ogre" resourceName="BROWN" textureName="BROWN"/>
     <Resource modelName="Ogre" resourceName="GREEN" textureName="GREEN"/>
 </AliceModel>

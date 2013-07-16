@@ -15,8 +15,6 @@
     <GroupTags>
         <GroupTag>vehicles</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>city</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Ambulance" resourceName="AMBULANCE" textureName="AMBULANCE"/>
 </AliceModel>

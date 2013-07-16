@@ -51,7 +51,7 @@ import org.lgna.story.implementation.alice.AliceResourceUtilties;
  * @author Dennis Cosgrove
  */
 public class GalleryTest {
-	private static void test( java.util.List<Throwable> brokenModels,  org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
+	private static void test( java.util.List<Throwable> brokenModels,  java.util.List<String> brokenModelNames, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
 		if( node.getResourceKey() instanceof EnumConstantResourceKey) {
 			EnumConstantResourceKey key = (EnumConstantResourceKey)node.getResourceKey();
 			org.lgna.project.ast.JavaField field = key.getField();
@@ -65,6 +65,7 @@ public class GalleryTest {
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 				brokenModels.add( t );
+				brokenModelNames.add(field.getDeclaringType().getName()+"."+field.getName());
 			}
 //			if (jointedModel instanceof org.lgna.story.Swimmer) {
 //				jointedModel.straightenOutJoints();
@@ -72,7 +73,7 @@ public class GalleryTest {
 		}
 		
 		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			test( brokenModels, child, instanceCls, parameterClses );
+			test( brokenModels, brokenModelNames, child, instanceCls, parameterClses );
 		}
 	}
 
@@ -81,13 +82,14 @@ public class GalleryTest {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		java.util.List< Throwable > brokenModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< String > brokenModelNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
 			ResourceKey key = child.getResourceKey();
 			if (key instanceof ClassResourceKey) {
 				ClassResourceKey classKey = (ClassResourceKey)key;
 				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
-				test( brokenModels, child, modelClass, classKey.getModelResourceCls() );
+				test( brokenModels, brokenModelNames, child, modelClass, classKey.getModelResourceCls() );
 			}
 		}
 		
@@ -96,8 +98,11 @@ public class GalleryTest {
 			System.err.println();
 			System.err.println();
 			System.err.println();
-			for( Throwable t : brokenModels ) {
-				t.printStackTrace();
+			for( int i=0; i<brokenModels.size(); i++) {
+				System.err.println("BROKEN: "+brokenModelNames.get(i));
+				brokenModels.get(i).printStackTrace();
+				System.err.println();
+				System.err.println();
 			}
 //			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
 		}
