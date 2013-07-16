@@ -183,6 +183,9 @@ public class ImageUtilities {
 				java.io.InputStream is = url.openStream();
 				try {
 					rv = read( codecName, is, imageReadParam );
+				} catch( NoClassDefFoundError ncdfe ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( url );
+					rv = null;
 				} finally {
 					is.close();
 				}

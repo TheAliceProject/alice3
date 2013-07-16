@@ -84,7 +84,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 			final org.lgna.common.resources.AudioResource rv = new org.lgna.common.resources.AudioResource( file, contentType );
 			Runnable runnable = new Runnable() {
 				public void run() {
-					Player player = new Player( createJMFPlayer( rv ), 1.0, 0.0, Double.NaN );
+					Player player = new Player( createJMFPlayer( rv ), 1.0, 0.0, Double.NaN, rv );
 					player.realize();
 					rv.setDuration( player.getDuration() );
 				}
@@ -124,7 +124,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 
 	@Override
 	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
-		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime );
+		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime, audioResource );
 		if( Double.isNaN( audioResource.getDuration() ) ) {
 			player.realize();
 			audioResource.setDuration( player.getDuration() );

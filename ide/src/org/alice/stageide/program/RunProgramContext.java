@@ -43,6 +43,8 @@
 
 package org.alice.stageide.program;
 
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,6 +60,12 @@ public class RunProgramContext extends ProgramContext {
 	public void initializeInContainer( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( awtContainerInitializer );
+	}
+
+	public void initializeInContainer( java.awt.Container awtContainer, int width, int height ) {
+		this.disableRendering();
+		this.getProgramImp().initializeInAwtContainer( awtContainer );
+		this.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new Dimension( width, height ) );
 	}
 
 	public java.awt.Container getContainer() {

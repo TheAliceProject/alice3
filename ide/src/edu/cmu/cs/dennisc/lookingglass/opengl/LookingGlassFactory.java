@@ -83,7 +83,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	static {
 		try {
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPlatformSpecificLibraryLoadingDesired() ) {
-				com.sun.opengl.impl.NativeLibLoader.setLoadingAction( new com.sun.opengl.impl.NativeLibLoader.LoaderAction() {
+				com.jogamp.common.jvm.JNILibLoaderBase.setLoadingAction( new com.jogamp.common.jvm.JNILibLoaderBase.LoaderAction() {
 					private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 					private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
@@ -116,8 +116,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 						return isSuccessful;
 					}
 
-					public void loadLibrary( String libname, String[] preloadLibraryNames, boolean doPreload, boolean isIgnoringError ) {
-						if( doPreload ) {
+					@Override
+					public boolean loadLibrary( String libname, boolean isIgnoringError, ClassLoader classLoader ) {
+						return this.loadLibrary( libname, isIgnoringError, true );
+					}
+
+					@Override
+					public void loadLibrary( String libname, String[] preloadLibraryNames, boolean isIgnoringError, ClassLoader classLoader ) {
+						if( preloadLibraryNames != null ) {
 							for( String preloadLibraryName : preloadLibraryNames ) {
 								this.loadLibrary( preloadLibraryName, isIgnoringError, false );
 							}
@@ -131,10 +137,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					//pass
 				} else {
 					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( "gluegen-rt" );
-					com.sun.gluegen.runtime.NativeLibLoader.disableLoading();
+					// TODO: jogl2
+					//					com.sun.gluegen.runtime.NativeLibLoader.disableLoading();
 				}
 			}
-			com.sun.opengl.impl.NativeLibLoader.loadCore();
+			// TODO: jogl2
+			//			com.sun.opengl.impl.NativeLibLoader.loadCore();
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );

@@ -49,7 +49,20 @@ public class GraphicsUtilities {
 	public static void setRenderingHint( java.awt.Graphics g, java.awt.RenderingHints.Key key, Object value ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setRenderingHint( key, value );
+	}
 
+	public static Object setAntialiasing( java.awt.Graphics g, Object nextAntialiasing ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, nextAntialiasing );
+		return prevAntialiasing;
+	}
+
+	public static java.awt.Shape setClip( java.awt.Graphics g, java.awt.Shape nextClip ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Shape prevClip = g2.getClip();
+		g2.setClip( nextClip );
+		return prevClip;
 	}
 
 	public static void drawCenteredImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
@@ -274,5 +287,11 @@ public class GraphicsUtilities {
 
 	public static void fillGradientRectangle( java.awt.Graphics g, java.awt.Rectangle rect, java.awt.Color colorTop, java.awt.Color colorInner, java.awt.Color colorBottom, float portion ) {
 		fillGradientRectangle( g, rect, colorTop, 0.0f, colorInner, portion, colorInner, 1.0f - portion, colorBottom, 1.0f );
+	}
+
+	public static void paintIconCentered( javax.swing.Icon icon, java.awt.Component c, java.awt.Graphics g ) {
+		int x = ( c.getWidth() - icon.getIconWidth() ) / 2;
+		int y = ( c.getHeight() - icon.getIconHeight() ) / 2;
+		icon.paintIcon( c, g, x, y );
 	}
 }

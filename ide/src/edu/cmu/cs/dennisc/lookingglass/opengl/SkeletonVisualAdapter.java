@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_ALPHA_TEST;
 import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_GREATER;
+import static javax.media.opengl.GL2ES1.GL_ALPHA_TEST;
 
 import java.util.ArrayList;
 import java.util.HashMap;

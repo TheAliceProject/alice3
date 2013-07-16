@@ -42,25 +42,25 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_ALPHA_SCALE;
 import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_FILL;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
-import static javax.media.opengl.GL.GL_LIGHTING;
 import static javax.media.opengl.GL.GL_LINES;
 import static javax.media.opengl.GL.GL_LINE_LOOP;
-import static javax.media.opengl.GL.GL_LINE_STIPPLE;
 import static javax.media.opengl.GL.GL_LINE_STRIP;
-import static javax.media.opengl.GL.GL_MODELVIEW;
 import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_POLYGON;
-import static javax.media.opengl.GL.GL_PROJECTION;
 import static javax.media.opengl.GL.GL_RGBA;
 import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_TRIANGLE_FAN;
 import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
+import static javax.media.opengl.GL2.GL_LINE_STIPPLE;
+import static javax.media.opengl.GL2.GL_POLYGON;
+import static javax.media.opengl.GL2ES1.GL_ALPHA_SCALE;
+import static javax.media.opengl.GL2GL3.GL_FILL;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import javax.media.opengl.glu.GLU;
 
@@ -494,14 +494,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawString( String text, float x, float y ) {
-		ReferencedObject<com.sun.opengl.util.j2d.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( this.font );
+		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		//todo?
 		if( referencedObject == null ) {
 			remember( this.font );
 			referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		}
 		assert referencedObject != null;
-		com.sun.opengl.util.j2d.TextRenderer glTextRenderer = referencedObject.getObject();
+		com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = referencedObject.getObject();
 		glTextRenderer.beginRendering( this.width, this.height );
 		if( this.paint instanceof java.awt.Color ) {
 			java.awt.Color color = (java.awt.Color)this.paint;
@@ -543,9 +543,9 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	private void fill( java.awt.geom.PathIterator pi ) {
 
 		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
-			private javax.media.opengl.GL gl;
+			private javax.media.opengl.GL2 gl;
 
-			public MyTessAdapter( javax.media.opengl.GL gl ) {
+			public MyTessAdapter( javax.media.opengl.GL2 gl ) {
 				this.gl = gl;
 			}
 
@@ -612,34 +612,34 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		}
 
 		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
-		javax.media.opengl.glu.GLUtessellator tesselator = this.renderContext.glu.gluNewTess();
+		javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
 		try {
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
-			this.renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
 
 			double[] segment = new double[ 6 ];
 
 			//			this.renderContext.gl.glDisable( GL_CULL_FACE );
 			//			try {
-			this.renderContext.glu.gluBeginPolygon( tesselator );
+			javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
 			try {
 				while( !pi.isDone() ) {
 					double[] xyz = new double[ 3 ];
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
-						this.renderContext.glu.gluTessBeginContour( tesselator );
+						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
 						xyz[ 0 ] = segment[ 0 ];
 						xyz[ 1 ] = segment[ 1 ];
-						this.renderContext.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+						javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 						break;
 					case java.awt.geom.PathIterator.SEG_CLOSE:
-						this.renderContext.glu.gluTessEndContour( tesselator );
+						javax.media.opengl.glu.GLU.gluTessEndContour( tesselator );
 						break;
 
 					case java.awt.geom.PathIterator.SEG_QUADTO:
@@ -652,13 +652,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					pi.next();
 				}
 			} finally {
-				this.renderContext.glu.gluTessEndPolygon( tesselator );
+				javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 			}
 			//			} finally {
 			//				this.renderContext.gl.glEnable( GL_CULL_FACE );
 			//			}
 		} finally {
-			this.renderContext.glu.gluDeleteTess( tesselator );
+			javax.media.opengl.glu.GLU.gluDeleteTess( tesselator );
 		}
 	}
 
@@ -957,8 +957,8 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		}
 	}
 
-	private java.util.Map<java.awt.Font, ReferencedObject<com.sun.opengl.util.j2d.TextRenderer>> activeFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.sun.opengl.util.j2d.TextRenderer>>();
-	private java.util.Map<java.awt.Font, ReferencedObject<com.sun.opengl.util.j2d.TextRenderer>> forgottenFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.sun.opengl.util.j2d.TextRenderer>>();
+	private java.util.Map<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>> activeFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>>();
+	private java.util.Map<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>> forgottenFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>>();
 
 	@Override
 	public boolean isRemembered( java.awt.Font font ) {
@@ -967,7 +967,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void remember( java.awt.Font font ) {
-		ReferencedObject<com.sun.opengl.util.j2d.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
 		if( referencedObject != null ) {
 			//pass
 		} else {
@@ -975,8 +975,8 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			if( referencedObject != null ) {
 				this.forgottenFontToTextRendererMap.remove( font );
 			} else {
-				com.sun.opengl.util.j2d.TextRenderer glTextRenderer = new com.sun.opengl.util.j2d.TextRenderer( font );
-				referencedObject = new ReferencedObject<com.sun.opengl.util.j2d.TextRenderer>( glTextRenderer, 0 );
+				com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = new com.jogamp.opengl.util.awt.TextRenderer( font );
+				referencedObject = new ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>( glTextRenderer, 0 );
 			}
 			this.activeFontToTextRendererMap.put( font, referencedObject );
 		}
@@ -985,7 +985,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font ) {
-		ReferencedObject<com.sun.opengl.util.j2d.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		java.awt.geom.Rectangle2D bounds = referencedObject.getObject().getBounds( text );
@@ -995,7 +995,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void forget( java.awt.Font font ) {
-		ReferencedObject<com.sun.opengl.util.j2d.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		referencedObject.removeReference();
@@ -1011,7 +1011,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	public void disposeForgottenFonts() {
 		synchronized( this.forgottenFontToTextRendererMap ) {
 			for( java.awt.Font font : this.forgottenFontToTextRendererMap.keySet() ) {
-				ReferencedObject<com.sun.opengl.util.j2d.TextRenderer> referencedObject = this.forgottenFontToTextRendererMap.get( font );
+				ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.forgottenFontToTextRendererMap.get( font );
 				referencedObject.getObject().dispose();
 			}
 			this.forgottenFontToTextRendererMap.clear();

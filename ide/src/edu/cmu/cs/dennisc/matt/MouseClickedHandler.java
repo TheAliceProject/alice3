@@ -57,7 +57,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		map.put( ALL_VISUALS, new CopyOnWriteArrayList<Object>() );
 	}
 
-	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, SScene scene ) {
+	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /* int quoteClickCountUnquote, */SScene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
 			SModel model = mbe.getModelAtMouseLocation();

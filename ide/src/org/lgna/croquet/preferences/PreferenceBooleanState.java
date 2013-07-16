@@ -47,10 +47,10 @@ package org.lgna.croquet.preferences;
  * @author Dennis Cosgrove
  */
 public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanState {
-	private static boolean getInitialValue( java.util.UUID id, boolean defaultInitialValue ) {
+	private static boolean getInitialValue( String preferenceKey, boolean defaultInitialValue ) {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
-			return userPreferences.getBoolean( id.toString(), defaultInitialValue );
+			return userPreferences.getBoolean( preferenceKey, defaultInitialValue );
 		} else {
 			return defaultInitialValue;
 		}
@@ -60,13 +60,21 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceBooleanState state : instances ) {
-			userPreferences.putBoolean( state.getMigrationId().toString(), state.getValue() );
+			userPreferences.putBoolean( state.preferenceKey, state.getValue() );
 		}
 	}
 
-	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID id, boolean initialValue ) {
-		super( group, id, getInitialValue( id, initialValue ) );
+	private final String preferenceKey;
+
+	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID migrationId, boolean initialValue, String preferenceKey ) {
+		super( group, migrationId, getInitialValue( preferenceKey, initialValue ) );
 		assert instances.contains( this ) == false;
 		instances.add( this );
+
+		this.preferenceKey = preferenceKey;
+	}
+
+	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID migrationId, boolean initialValue ) {
+		this( group, migrationId, initialValue, migrationId.toString() );
 	}
 }

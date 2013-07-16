@@ -205,7 +205,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevValue, nextValue ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
+			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
 		}
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 	}
