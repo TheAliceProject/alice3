@@ -85,7 +85,11 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	@Override
 	public void initialize( SkeletonVisual element )
 	{
+		if( this.m_element != null ) {
+			this.m_element.setAdapter( null );
+		}
 		super.initialize( element );
+		element.setAdapter( this );
 		initializeDataIfNecessary();
 	}
 
@@ -195,6 +199,37 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 				}
 			}
 		}
+	}
+
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		initializeDataIfNecessary();
+		if( this.skeletonIsDirty )
+		{
+			this.processWeightedMesh();
+		}
+		int i = 0;
+		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		{
+			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
+			if( weightedMeshControls != null ) {
+				for( WeightedMeshControl wmc : weightedMeshControls )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+					edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( b, wmc.vertexBuffer );
+					rv.union( b );
+				}
+			}
+			MeshAdapter<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
+			if( meshAdapters != null )
+			{
+				for( MeshAdapter<Mesh> ma : meshAdapters )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = ma.m_element.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+		}
+		return rv;
 	}
 
 	@Override

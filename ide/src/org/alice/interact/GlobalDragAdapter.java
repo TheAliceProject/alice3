@@ -283,7 +283,13 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
 
+		org.alice.interact.handle.ManipulationHandleIndirection selectionIndicator = new ManipulationHandleIndirection( new org.alice.interact.handle.SelectionIndicator() );
+		selectionIndicator.addToGroup( HandleSet.HandleGroup.SELECTION );
+		this.manipulationEventManager.addManipulationListener( selectionIndicator );
+		selectionIndicator.setDragAdapterAndAddHandle( this );
+
 		ManipulationHandleIndirection handleAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.ManipulationAxes() );
+
 		handleAxis.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 
 		//		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
@@ -508,6 +514,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 
 		if( this.sceneEditor != null )
 		{
+			InteractionGroup selectionOnly = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
 			InteractionGroup defaultInteraction = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
 			InteractionGroup rotationInteraction = new InteractionGroup( HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
 			InteractionGroup translationInteraction = new InteractionGroup( HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
