@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="PocketWatch">
     <BoundingBox>
         <Min x="-0.10515174269676208" y="-0.10515176504850388" z="-0.03192894905805588"/>

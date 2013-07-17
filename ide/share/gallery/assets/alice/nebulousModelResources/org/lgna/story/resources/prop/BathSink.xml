@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="BathSink">
     <BoundingBox>
         <Min x="-0.3600711524486542" y="2.0559852487167518E-8" z="-0.30767807364463806"/>

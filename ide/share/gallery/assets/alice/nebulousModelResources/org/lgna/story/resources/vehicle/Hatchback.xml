@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="Hatchback">
     <BoundingBox>
         <Min x="-0.9791582822799683" y="5.035065697711616E-9" z="-2.1909446716308594"/>

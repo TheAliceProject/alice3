@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="PinballMachine">
     <BoundingBox>
         <Min x="-0.33569034934043884" y="0.0" z="-0.7917590737342834"/>

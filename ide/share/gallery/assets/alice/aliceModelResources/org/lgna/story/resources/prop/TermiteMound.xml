@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2013" creator="Ethan Gagorik" name="TermiteMound">
     <BoundingBox>
-        <Min x="-4.796051502227783" y="-0.012671485543251038" z="-3.9012410640716553"/>
-        <Max x="4.780032157897949" y="12.86729907989502" z="3.880397319793701"/>
+        <Min x="-1.8503817319869995" y="-0.0048888311721384525" z="-1.505151629447937"/>
+        <Max x="1.8442013263702393" y="4.964378356933594" z="1.4971097707748413"/>
     </BoundingBox>
     <Tags>
         <Tag>africa</Tag>

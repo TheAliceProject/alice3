@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2013" creator="Pei Hong Tan" name="Bison">
     <BoundingBox>
         <Min x="-0.5472020506858826" y="0.0013227843446657062" z="-1.636842131614685"/>

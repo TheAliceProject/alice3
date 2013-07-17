@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="Computer">
     <BoundingBox>
         <Min x="-0.3117891848087311" y="0.0" z="-0.35465922951698303"/>

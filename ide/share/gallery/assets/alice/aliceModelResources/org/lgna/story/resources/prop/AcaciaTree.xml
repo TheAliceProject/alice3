@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2013" creator="Greg Mirles" name="AcaciaTree">
     <BoundingBox>
-        <Min x="-5.375590801239014" y="-0.04224281385540962" z="-6.024560451507568"/>
-        <Max x="4.60684871673584" y="9.361308097839355" z="6.130988121032715"/>
+        <Min x="-6.55322265625" y="-0.0021441124845296144" z="-7.016857147216797"/>
+        <Max x="7.011462211608887" y="7.143265724182129" z="7.942366123199463"/>
     </BoundingBox>
     <Tags>
         <Tag>africa</Tag>

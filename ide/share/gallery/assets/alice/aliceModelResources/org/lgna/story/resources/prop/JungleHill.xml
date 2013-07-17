@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Gillmeister" name="JungleHill">
     <BoundingBox>
         <Min x="-2.146054744720459" y="-0.27829310297966003" z="-3.4836366176605225"/>

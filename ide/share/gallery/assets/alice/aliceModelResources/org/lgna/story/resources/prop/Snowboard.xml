@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="Snowboard">
     <BoundingBox>
         <Min x="-0.910112202167511" y="-0.015803121030330658" z="-0.16728253662586212"/>

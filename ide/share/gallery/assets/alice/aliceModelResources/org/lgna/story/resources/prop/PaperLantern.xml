@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="PaperLantern">
     <BoundingBox>
         <Min x="-0.10624613612890244" y="-0.1174074113368988" z="-0.10624612867832184"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="HotAirBalloon">
     <BoundingBox>
         <Min x="-8.722858428955078" y="0.0" z="-8.722861289978027"/>
