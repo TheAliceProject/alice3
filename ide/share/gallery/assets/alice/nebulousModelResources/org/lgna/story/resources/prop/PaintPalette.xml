@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PaintPalette">
+    <BoundingBox>
+        <Min x="-0.0948033556342125" y="0.0" z="-0.14972390234470367"/>
+        <Max x="0.0948033556342125" y="0.00443200534209609" z="0.14972390234470367"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>painting</Tag>
+        <Tag>art</Tag>
+        <Tag>paint</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PaintPalette" resourceName="PAINT_PALETTE" textureName="PAINT_PALETTE"/>
+</AliceModel>

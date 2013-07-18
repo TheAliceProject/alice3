@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/apple/AppleJavaExtensions.jar"/>
-	<classpathentry kind="lib" path="lib/gallery/stagePersonEditorLargeIcons.jar"/>
 	<classpathentry kind="lib" path="lib/jaf/activation.jar"/>
 	<classpathentry kind="lib" path="lib/jira/jira-soapclient-4.0-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="lib/jmf/JMF-2.1.1e/lib/jmf.jar"/>

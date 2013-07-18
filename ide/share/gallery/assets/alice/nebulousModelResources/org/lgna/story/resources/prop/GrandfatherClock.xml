@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="GrandfatherClock">
+    <BoundingBox>
+        <Min x="-0.2575456500053406" y="0.0" z="-0.13811343908309937"/>
+        <Max x="0.25754567980766296" y="2.1158225536346436" z="0.13811342418193817"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>clock</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:living room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:living room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GrandfatherClock" resourceName="GRANDFATHER_CLOCK" textureName="GRANDFATHER_CLOCK"/>
+</AliceModel>

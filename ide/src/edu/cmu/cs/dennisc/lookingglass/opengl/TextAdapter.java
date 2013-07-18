@@ -235,7 +235,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glText( rc, true );
 	}
 

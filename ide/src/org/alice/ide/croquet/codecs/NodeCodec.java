@@ -64,7 +64,7 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		mapIdToNode.put( node.getId(), node );
 	}
 
-	public static void removeNodeToGlobalMap( org.lgna.project.ast.Node node ) {
+	public static void removeNodeFromGlobalMap( org.lgna.project.ast.Node node ) {
 		mapIdToNode.remove( node.getId() );
 	}
 

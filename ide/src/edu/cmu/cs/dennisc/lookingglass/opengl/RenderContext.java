@@ -522,7 +522,8 @@ public class RenderContext extends Context {
 				int value = isDiffuseColorTextureClamped ? GL_CLAMP : GL_REPEAT;
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value );
-				//gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+				//				gl.glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+				//				gl.glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 				this.currDiffuseColorTextureAdapter = diffuseColorTextureAdapter;
 			}
 		} else {

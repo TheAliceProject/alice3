@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Pei Hong Tan" name="BillyGoat">
     <BoundingBox>
-        <Min x="-0.39913979172706604" y="0.0" z="-0.5533297955989838"/>
-        <Max x="0.39913979172706604" y="1.2769812869955786" z="0.5533297955989838"/>
+        <Min x="-0.39913979172706604" y="-6.291198660619557E-4" z="-0.6523829698562622"/>
+        <Max x="0.39913979172706604" y="1.2763521671295166" z="0.4542766213417053"/>
     </BoundingBox>
     <Tags>
         <Tag>magic</Tag>
@@ -17,14 +17,14 @@
     </ThemeTags>
     <Resource modelName="BigHorns" resourceName="BIG_HORNS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.39913979172706604" y="0.0" z="-0.5533297955989838"/>
-            <Max x="0.39913979172706604" y="1.2769812869955786" z="0.5533297955989838"/>
+            <Min x="-0.39913979172706604" y="-6.291198660619557E-4" z="-0.6523829698562622"/>
+            <Max x="0.39913979172706604" y="1.2763521671295166" z="0.4542766213417053"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="LittleHorns" resourceName="LITTLE_HORNS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.16709516197443008" y="0.0" z="-0.5533297955989838"/>
-            <Max x="0.16709516197443008" y="1.0244029092718847" z="0.5533297955989838"/>
+            <Min x="-0.1670951247215271" y="-6.291198660619557E-4" z="-0.6523829698562622"/>
+            <Max x="0.16709519922733307" y="1.0237737894058228" z="0.4542766213417053"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

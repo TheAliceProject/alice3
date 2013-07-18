@@ -4,6 +4,8 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -14,21 +16,27 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.loo
 	}
 
 	@Override
+	public boolean hasOpaque() {
+		return m_element.synchronizedHasOpaque();
+	}
+
+	@Override
 	public boolean isAlphaBlended() {
-		//		return m_element.isAlphaBlended();
-		return false;
+		return m_element.synchronizedIsAlphaBlended();
 	}
 
 	@Override
 	protected void pickGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, boolean isSubElementRequired ) {
-		m_element.pick();
+		m_element.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, VisualAdapter.RenderType renderType ) {
 		float globalBrightness = rc.getGlobalBrightness();
+		boolean renderAlpha = ( renderType == VisualAdapter.RenderType.ALPHA_BLENDED ) || ( renderType == VisualAdapter.RenderType.ALL );
+		boolean renderOpaque = ( renderType == VisualAdapter.RenderType.OPAQUE ) || ( renderType == VisualAdapter.RenderType.ALL );
 		rc.clearDiffuseColorTextureAdapter();
-		m_element.render( rc.gl, globalBrightness );
+		m_element.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
 	}
 
 	@Override

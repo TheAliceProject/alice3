@@ -19,6 +19,7 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
+import edu.cmu.cs.dennisc.nebulous.Manager;
 
 public class StorytellingResources {
 	private static class SingletonHolder {
@@ -60,6 +61,14 @@ public class StorytellingResources {
 		return null;
 	}
 
+	public static File getGalleryRootDirectory() {
+		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "share/gallery" } );
+		if( ( rootGallery != null ) && rootGallery.exists() ) {
+			return rootGallery;
+		}
+		return null;
+	}
+
 	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
 			for( String subPath : subPaths ) {
@@ -72,8 +81,8 @@ public class StorytellingResources {
 		return null;
 	}
 
-	private File findResourcePath( String relativePath ) {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery" } );
+	private static File findResourcePath( String relativePath ) {
+		File rootGallery = getGalleryRootDirectory();
 		if( ( rootGallery != null ) && rootGallery.exists() ) {
 			File path = new File( rootGallery, relativePath );
 			if( path.exists() ) {
@@ -367,7 +376,6 @@ public class StorytellingResources {
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}
 
-
 	private void clearAliceResourceInfo()
 	{
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -467,6 +475,17 @@ public class StorytellingResources {
 	}
 
 	public void loadSimsBundles() {
+
+		//DEBUG
+
+		String DEBUG_rawPathValue = System.getProperty( "org.alice.ide.simsDebugResourcePath" );
+		if( DEBUG_rawPathValue != null ) {
+			java.io.File rawResourcePath = new File( DEBUG_rawPathValue );
+			if( rawResourcePath.exists() ) {
+				Manager.setRawResourcePath( rawResourcePath );
+			}
+		}
+
 		List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
 			resourcePaths = findSimsBundles();

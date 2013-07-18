@@ -55,11 +55,13 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( SPINE_UPPER, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId HEAD = new org.lgna.story.resources.JointId( NECK, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_EYE = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId LEFT_EYELID = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId MOUTH = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
 	//	public static final org.lgna.story.resources.JointId JAW_TIP = new org.lgna.story.resources.JointId( MOUTH, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_EYE = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId RIGHT_EYELID = new org.lgna.story.resources.JointId( HEAD, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_LEFT_CLAVICLE = new org.lgna.story.resources.JointId( SPINE_UPPER, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_LEFT_SHOULDER = new org.lgna.story.resources.JointId( FRONT_LEFT_CLAVICLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_LEFT_KNEE = new org.lgna.story.resources.JointId( FRONT_LEFT_SHOULDER, QuadrupedResource.class );

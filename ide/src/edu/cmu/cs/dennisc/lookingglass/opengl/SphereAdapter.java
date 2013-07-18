@@ -57,7 +57,7 @@ public class SphereAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Sp
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		boolean isTextureEnabled = rc.isTextureEnabled();
 		//todo:
 		isTextureEnabled = true;

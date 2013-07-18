@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Hyena">
+    <BoundingBox>
+        <Min x="-0.2033606618642807" y="0.0019576512277126312" z="-0.7292599081993103"/>
+        <Max x="0.2033606618642807" y="0.9481198787689209" z="0.7893421053886414"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>savanna</Tag>
+        <Tag>dog</Tag>
+        <Tag>canine</Tag>
+        <Tag>wolf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hyena" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

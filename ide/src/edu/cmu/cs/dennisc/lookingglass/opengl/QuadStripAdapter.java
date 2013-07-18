@@ -50,7 +50,7 @@ import static javax.media.opengl.GL2.GL_QUAD_STRIP;
  */
 public class QuadStripAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.QuadStrip> {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		renderPrimative( rc, GL_QUAD_STRIP );
 	}
 

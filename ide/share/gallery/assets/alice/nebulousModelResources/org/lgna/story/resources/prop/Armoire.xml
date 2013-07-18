@@ -17,7 +17,7 @@
         <ThemeTag>household:bedroom</ThemeTag>
         <ThemeTag>household:furniture</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Loft" resourceName="LOFT_BLACK_TRIM" textureName="BLACK_TRIM">
+    <Resource modelName="Loft" resourceName="LOFT_RED_FINISH_BLACK_TRIM" textureName="RED_FINISH_BLACK_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
@@ -26,7 +26,7 @@
             <Tag>loft</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_DARK_HONEY_TRIM" textureName="DARK_HONEY_TRIM">
+    <Resource modelName="Loft" resourceName="LOFT_RED_FINISH_DARK_HONEY_TRIM" textureName="RED_FINISH_DARK_HONEY_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
@@ -35,7 +35,7 @@
             <Tag>loft</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_SWIRLY_BROWN_TRIM" textureName="SWIRLY_BROWN_TRIM">
+    <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD_BLACK_TRIM" textureName="DARK_WOOD_BLACK_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
@@ -44,7 +44,7 @@
             <Tag>loft</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_DARK_RED_TRIM" textureName="DARK_RED_TRIM">
+    <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD_DARK_HONEY_TRIM" textureName="DARK_WOOD_DARK_HONEY_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
@@ -53,7 +53,7 @@
             <Tag>loft</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_MEDIUM_BROWN_TRIM" textureName="MEDIUM_BROWN_TRIM">
+    <Resource modelName="Loft" resourceName="LOFT_OAK_BLACK_TRIM" textureName="OAK_BLACK_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
@@ -62,43 +62,7 @@
             <Tag>loft</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_RED_FINISH" textureName="RED_FINISH">
-        <BoundingBox>
-            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
-            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
-        </BoundingBox>
-        <Tags>
-            <Tag>loft</Tag>
-        </Tags>
-    </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD" textureName="DARK_WOOD">
-        <BoundingBox>
-            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
-            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
-        </BoundingBox>
-        <Tags>
-            <Tag>loft</Tag>
-        </Tags>
-    </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_OAK" textureName="OAK">
-        <BoundingBox>
-            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
-            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
-        </BoundingBox>
-        <Tags>
-            <Tag>loft</Tag>
-        </Tags>
-    </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_HONEY" textureName="HONEY">
-        <BoundingBox>
-            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
-            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
-        </BoundingBox>
-        <Tags>
-            <Tag>loft</Tag>
-        </Tags>
-    </Resource>
-    <Resource modelName="Loft" resourceName="LOFT_MAPLE" textureName="MAPLE">
+    <Resource modelName="Loft" resourceName="LOFT_OAK_DARK_HONEY_TRIM" textureName="OAK_DARK_HONEY_TRIM">
         <BoundingBox>
             <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
             <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>

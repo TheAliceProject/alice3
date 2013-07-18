@@ -49,18 +49,40 @@ package org.lgna.story.resources.sims2;
 public abstract class PersonResource implements org.lgna.story.resources.BipedResource {
 	private final Gender gender;
 	private final SkinTone skinTone;
+	private final org.lgna.story.Color skinColor;
 	private final EyeColor eyeColor;
 	private final Hair hair;
 	private final double obesityLevel;
 	private final Outfit outfit;
+	private final Face face;
 
-	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
+	private PersonResource( Gender gender, SkinTone skinTone, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
+		this.skinColor = skinColor;
 		this.eyeColor = eyeColor;
 		this.hair = hair;
 		this.obesityLevel = obesityLevel.doubleValue();
 		this.outfit = outfit;
+		this.face = face;
+	}
+
+	private static org.lgna.story.Color getClosestColor( SkinTone skinTone ) {
+		BaseSkinTone baseSkinTone;
+		if( skinTone instanceof BaseSkinTone ) {
+			baseSkinTone = (BaseSkinTone)skinTone;
+		} else {
+			baseSkinTone = BaseSkinTone.getRandom();
+		}
+		return org.lgna.story.EmployeesOnly.createColor( baseSkinTone.getColor() );
+	}
+
+	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
+		this( gender, skinTone, getClosestColor( skinTone ), eyeColor, hair, obesityLevel, outfit, face );
+	}
+
+	public PersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
+		this( gender, BaseSkinTone.getClosestToColor( org.lgna.story.EmployeesOnly.getAwtColor( skinColor ) ), skinColor, eyeColor, hair, obesityLevel, outfit, face );
 	}
 
 	public abstract LifeStage getLifeStage();
@@ -69,8 +91,13 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return this.gender;
 	}
 
+	@Deprecated
 	public SkinTone getSkinTone() {
 		return this.skinTone;
+	}
+
+	public org.lgna.story.Color getSkinColor() {
+		return this.skinColor;
 	}
 
 	public EyeColor getEyeColor() {
@@ -87,6 +114,10 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 
 	public Outfit getOutfit() {
 		return this.outfit;
+	}
+
+	public Face getFace() {
+		return this.face;
 	}
 
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
@@ -113,8 +144,10 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.skinTone, other.skinTone ) ) {
 						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.eyeColor, other.eyeColor ) ) {
 							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hair, other.hair ) ) {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
-									return this.obesityLevel == other.obesityLevel;
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.face, other.face ) ) {
+									if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
+										return this.obesityLevel == other.obesityLevel;
+									}
 								}
 							}
 						}
@@ -142,6 +175,9 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		}
 		if( this.outfit != null ) {
 			rv = ( 37 * rv ) + this.outfit.hashCode();
+		}
+		if( this.face != null ) {
+			rv = ( 37 * rv ) + this.face.hashCode();
 		}
 		long lng = Double.doubleToLongBits( this.obesityLevel );
 		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );

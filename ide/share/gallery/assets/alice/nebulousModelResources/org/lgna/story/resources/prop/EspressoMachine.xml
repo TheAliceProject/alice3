@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="EspressoMachine">
+    <BoundingBox>
+        <Min x="-0.2733958959579468" y="0.0" z="-0.24831433594226837"/>
+        <Max x="0.2733958959579468" y="0.48822468519210815" z="0.24831433594226837"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>food</Tag>
+        <Tag>appliance</Tag>
+        <Tag>coffee</Tag>
+        <Tag>breakfast</Tag>
+        <Tag>drink</Tag>
+        <Tag>beverage</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="EspressoMachine" resourceName="ESPRESSO_MACHINE" textureName="ESPRESSO_MACHINE"/>
+</AliceModel>

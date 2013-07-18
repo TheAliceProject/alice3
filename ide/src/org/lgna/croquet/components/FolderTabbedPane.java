@@ -503,7 +503,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
-			this.cardComposite.addCard( card );
+			if( card != null ) {
+				this.cardComposite.addCard( card );
+			}
 		}
 		this.cardComposite.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );

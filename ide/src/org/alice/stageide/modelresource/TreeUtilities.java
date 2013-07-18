@@ -226,7 +226,7 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<ResourceNode> createGroupTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup ) {
-		return createTagNodeList( mapGroup, false );
+		return createTagNodeList( mapGroup, false, "household" );
 	}
 
 	private static java.util.List<ResourceNode> createThemeTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme ) {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="YetiBaby">
+    <BoundingBox>
+        <Min x="-0.34082701802253723" y="-0.0023286938667297363" z="-0.21827976405620575"/>
+        <Max x="0.3332498073577881" y="0.7210588455200195" z="0.27033838629722595"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>yeti</Tag>
+        <Tag>monster</Tag>
+        <Tag>abominable</Tag>
+        <Tag>baby</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WithScarf" resourceName="WITH_SCARF" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.22710515558719635" y="-0.0023286938667297363" z="-0.17437855899333954"/>
+            <Max x="0.22710515558719635" y="0.7210588455200195" z="0.23285669088363647"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.22710515558719635" y="-0.0023286938667297363" z="-0.15403930842876434"/>
+            <Max x="0.23344191908836365" y="0.7210588455200195" z="0.23285669088363647"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.34082701802253723" y="-0.0023286938667297363" z="-0.21827976405620575"/>
+            <Max x="0.3332498073577881" y="0.7210588455200195" z="0.27033838629722595"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

@@ -173,7 +173,7 @@ public class SceneImp extends EntityImp {
 		this.setFogDensity( 0 );
 		this.putInstance( this.sgScene );
 
-		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -60.0 );
+		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -45.0 );
 		final float fromAboveBrightness = 0.533f;
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightA, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightB, new edu.cmu.cs.dennisc.math.AngleInDegrees( 120 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );

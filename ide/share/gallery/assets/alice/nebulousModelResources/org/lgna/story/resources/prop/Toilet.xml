@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Toilet">
+    <BoundingBox>
+        <Min x="-0.24964262545108795" y="0.0" z="-0.32421863079071045"/>
+        <Max x="0.24964262545108795" y="0.7758162617683411" z="0.32421860098838806"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bathroom</Tag>
+        <Tag>potty</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bathroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bathroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Value" resourceName="VALUE_CREAM_SEAT_CREAM" textureName="CREAM_SEAT_CREAM">
+        <BoundingBox>
+            <Min x="-0.24964262545108795" y="0.0" z="-0.3175755441188812"/>
+            <Max x="0.24964262545108795" y="0.7758162617683411" z="0.3175755441188812"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_GREEN_SEAT_GREEN" textureName="GREEN_SEAT_GREEN">
+        <BoundingBox>
+            <Min x="-0.24964262545108795" y="0.0" z="-0.3175755441188812"/>
+            <Max x="0.24964262545108795" y="0.7758162617683411" z="0.3175755441188812"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_PINK_SEAT_PINK" textureName="PINK_SEAT_PINK">
+        <BoundingBox>
+            <Min x="-0.24964262545108795" y="0.0" z="-0.3175755441188812"/>
+            <Max x="0.24964262545108795" y="0.7758162617683411" z="0.3175755441188812"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_ROSES_SEAT_WHITE" textureName="ROSES_SEAT_WHITE">
+        <BoundingBox>
+            <Min x="-0.24964262545108795" y="0.0" z="-0.3175755441188812"/>
+            <Max x="0.24964262545108795" y="0.7758162617683411" z="0.3175755441188812"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_CREAM" textureName="CREAM">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_CHROME" textureName="CHROME">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.232908695936203" y="0.0" z="-0.32421863079071045"/>
+            <Max x="0.23290874063968658" y="0.7650110125541687" z="0.32421860098838806"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

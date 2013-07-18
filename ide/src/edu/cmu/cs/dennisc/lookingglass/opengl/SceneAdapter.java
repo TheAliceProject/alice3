@@ -138,7 +138,12 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed 
 					if( ( visualAdapter.m_element != null ) && ( visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
-						visualAdapter.renderAlphaBlended( rc );
+						if( visualAdapter.isAllAlpha() ) {
+							visualAdapter.renderAllAlphaBlended( rc );
+						}
+						else {
+							visualAdapter.renderAlphaBlended( rc );
+						}
 					}
 				}
 			}
@@ -190,7 +195,7 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 				rc.gl.glStencilFunc( GL_ALWAYS, 1, 1 );
 				rc.gl.glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
 				rc.gl.glDisable( GL_DEPTH_TEST );
-				planarReflectorAdapter.renderStencil( rc );
+				planarReflectorAdapter.renderStencil( rc, VisualAdapter.RenderType.OPAQUE );
 				rc.gl.glEnable( GL_DEPTH_TEST );
 				rc.gl.glColorMask( true, true, true, true );
 				rc.gl.glStencilFunc( GL_EQUAL, 1, 1 );
@@ -208,7 +213,7 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 				setup( rc );
 				rc.gl.glEnable( GL_BLEND );
 				rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-				planarReflectorAdapter.renderStencil( rc );
+				planarReflectorAdapter.renderStencil( rc, VisualAdapter.RenderType.ALPHA_BLENDED );
 				rc.gl.glDisable( GL_BLEND );
 			} else {
 				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

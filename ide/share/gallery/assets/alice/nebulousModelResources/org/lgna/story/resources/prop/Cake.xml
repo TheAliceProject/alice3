@@ -2,7 +2,7 @@
 <AliceModel creator="EA" name="Cake">
     <BoundingBox>
         <Min x="-0.22152824699878693" y="0.0" z="-0.21897457540035248"/>
-        <Max x="0.22152824699878693" y="0.3136875331401825" z="0.21897457540035248"/>
+        <Max x="0.22152824699878693" y="0.3830285370349884" z="0.21897457540035248"/>
     </BoundingBox>
     <Tags>
         <Tag>cake</Tag>
@@ -10,6 +10,7 @@
         <Tag>dessert</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
@@ -27,7 +28,7 @@
     <Resource modelName="Wedding" resourceName="WEDDING" textureName="WEDDING">
         <BoundingBox>
             <Min x="-0.22152824699878693" y="0.0" z="-0.21897457540035248"/>
-            <Max x="0.22152824699878693" y="0.3136875331401825" z="0.21897457540035248"/>
+            <Max x="0.22152824699878693" y="0.3830285370349884" z="0.21897457540035248"/>
         </BoundingBox>
         <Tags>
             <Tag>wedding</Tag>

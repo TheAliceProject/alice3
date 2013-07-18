@@ -9,6 +9,8 @@ public interface SwimmerResource extends JointedModelResource {
 	//	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_EYE = new org.lgna.story.resources.JointId( HEAD, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_EYE = new org.lgna.story.resources.JointId( HEAD, SwimmerResource.class );
+	public static final org.lgna.story.resources.JointId LEFT_EYELID = new org.lgna.story.resources.JointId( HEAD, SwimmerResource.class );
+	public static final org.lgna.story.resources.JointId RIGHT_EYELID = new org.lgna.story.resources.JointId( HEAD, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN = new org.lgna.story.resources.JointId( NECK, SwimmerResource.class );
 	//	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN = new org.lgna.story.resources.JointId( NECK, SwimmerResource.class );
