@@ -57,8 +57,13 @@ public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineA
 		while( type != null ) {
 			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 				if( method.isFunction() ) {
-					this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
-					this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+					if( method.isPublicAccess() ) {
+						org.lgna.project.annotations.Visibility visibility = method.getVisibility();
+						if( ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME ) ) {
+							this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
+							this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+						}
+					}
 				}
 			}
 			if( type.isFollowToSuperClassDesired() ) {
