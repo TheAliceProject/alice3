@@ -84,6 +84,7 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 	@Override
 	public void mousePressed( MouseEvent e ) {
 		super.mousePressed( e );
+		System.out.println( "mouseEvent" );
 	}
 
 	@Override
