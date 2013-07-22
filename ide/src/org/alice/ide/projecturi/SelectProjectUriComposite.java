@@ -49,11 +49,12 @@ package org.alice.ide.projecturi;
 public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.alice.ide.uricontent.UriProjectLoader> {
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+	private final StartersTab startersTab = new StartersTab();
 	private final TemplatesTab templatesTab = new TemplatesTab();
 	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
 	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
-	private final org.lgna.croquet.TabSelectionState<SelectUriTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), SelectUriTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
+	private final org.lgna.croquet.TabSelectionState<SelectUriTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), SelectUriTab.class, -1, this.startersTab, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
 
 	private final class SelectedUriMetaState extends org.lgna.croquet.meta.TransactionHistoryTrackingMetaState<org.alice.ide.uricontent.UriProjectLoader> {
 		@Override
@@ -134,7 +135,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 	public void selectAppropriateTab( boolean isNew ) {
 		SelectUriTab tab;
 		if( isNew ) {
-			tab = this.templatesTab;
+			tab = this.startersTab;
 		} else {
 			tab = this.myProjectsTab; // todo: recentTab?
 		}
