@@ -108,7 +108,9 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 			org.lgna.croquet.components.Component<?> lookingGlassContainer = new org.lgna.croquet.components.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
 			org.lgna.croquet.components.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.components.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
 			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
-			runView.getAwtComponent().add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			if( controlPanel != null ) {
+				runView.getAwtComponent().add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			}
 			runView.addCenterComponent( fixedAspectRatioPanel );
 			runView.revalidateAndRepaint();
 		}
