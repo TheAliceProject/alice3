@@ -47,13 +47,13 @@ import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SModel;
 
 /**
- * @author user
+ * @author Matt May
  */
-public class AbstractMouseClickEvent extends AbstractEvent {
+public abstract class MouseClickEvent extends AbstractEvent {
 
 	private final MouseClickEventImp implementation;
 
-	public AbstractMouseClickEvent( MouseClickEventImp e ) {
+	public MouseClickEvent( MouseClickEventImp e ) {
 		this.implementation = e;
 	}
 

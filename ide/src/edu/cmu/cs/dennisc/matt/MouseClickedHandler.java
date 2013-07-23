@@ -8,13 +8,13 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
-import org.lgna.story.event.AbstractMouseClickEvent;
+import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenEvent;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
-public class MouseClickedHandler extends AbstractEventHandler<Object, AbstractMouseClickEvent> {
+public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
 	public static final Visual[] ALL_VISUALS = new Visual[ 0 ];
 	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
@@ -38,7 +38,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, AbstractMo
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, AbstractMouseClickEvent event ) {
+	protected void nameOfFireCall( Object listener, MouseClickEvent event ) {
 		if( listener instanceof MouseClickOnObjectListener ) {
 			if( event.getModelAtMouseLocation() != null ) {
 				MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
