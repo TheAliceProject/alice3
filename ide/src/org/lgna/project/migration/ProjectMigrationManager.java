@@ -4488,10 +4488,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "WITH_SCARF", "org.lgna.story.resources.biped.YetiBabyResource" ),
 
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.BabyYetiResource" ),
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.YetiBabyResource" ),
 
 					"name=\"org.lgna.story.resources.biped.BabyYetiResource",
-					"name=\"org.lgna.story.resources.biped.YetiResource",
+					"name=\"org.lgna.story.resources.biped.YetiBabyResource",
 
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.BabyWalrusResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.WalrusBabyResource" ),
