@@ -305,6 +305,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection( new StoodUpRotationRingHandle( MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ) );
 		rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );
+		rotateAboutYAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
 		rotateAboutYAxis.addToGroups( HandleSet.HandleGroup.DEFAULT, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		rotateAboutYAxis.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Rotate,
