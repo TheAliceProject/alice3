@@ -136,6 +136,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		uploader.addYouTubeListener( this.getUploadOperation() );
 		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
 		this.registerSubComposite( this.videoComposite );
+		this.registerSubComposite( logInOutComposite );
 		videoCategoryState.setEnabled( categoriesEnabled );
 	}
 
@@ -199,6 +200,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		//		logInOutComposite.handlePreActivation();
 		this.videoComposite.getView().setUri( owner.getFile().toURI() );
 	}
 
