@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.awt.Color;
-
 import org.alice.ide.croquet.models.help.views.LoginView;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
 
@@ -86,12 +84,11 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 				} finally {
 					service.logout( token );
 				}
+				System.out.println( "LOGIN!!!" );
 				return true;
-				//					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
 			} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
 				javax.swing.JOptionPane.showMessageDialog( null, rae );
 				return false;
-				//					edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
 			}
 		} catch( Exception e ) {
 			throw new RuntimeException( e );
@@ -106,7 +103,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	@Override
 	public String updateUserNameForWelcomeString() {
-		this.getParent().getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
+		//		this.getParent().getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 		if( getRemoteUser() != null ) {
 			return getRemoteUser().getFullname();
 		} else {

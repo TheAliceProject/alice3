@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.awt.Color;
+
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
@@ -62,12 +64,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
-
-	//	private final LogInCard logInCard = new LogInCard( BugLoginComposite.getInstance() );
-	//	private final LogOutCard logOutCard = new LogOutCard();
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
-
-	//	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createAndRegisterCardOwnerComposite( new BugLoginComposite() );
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
@@ -85,6 +82,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
 		this.registerSubComposite( logInOutComposite );
+		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 	}
 
 	@Override
