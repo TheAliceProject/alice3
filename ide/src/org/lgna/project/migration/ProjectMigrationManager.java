@@ -42,6 +42,7 @@
  */
 package org.lgna.project.migration;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -4987,7 +4988,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 						}
 					}
 				}
-			}
+			},
+			new UnderscoreFieldAccessAstMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.68.0.0" )
+			)
 	};
 
 	private static class SingletonHolder {

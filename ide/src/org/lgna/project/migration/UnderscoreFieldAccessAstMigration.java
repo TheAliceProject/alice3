@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,64 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.reflect.Field> {
-	private final String name;
-
-	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
-		super( declaringClassReflectionProxy );
-		this.name = name;
-	}
-
-	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
-		super( fld, fld.getDeclaringClass() );
-		this.name = fld.getName();
+public class UnderscoreFieldAccessAstMigration extends org.lgna.project.migration.FieldAccessAstMigration {
+	public UnderscoreFieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		super( minimumVersion, resultVersion );
 	}
 
 	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = super.hashCodeNonReifiable();
-		rv = ( 37 * rv ) + this.name.hashCode();
-		return rv;
-	}
-
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
-		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
-			FieldReflectionProxy other = (FieldReflectionProxy)o;
-			return this.name != null ? this.name.equals( other.name ) : other.name == null;
-		} else {
-			return false;
-		}
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	protected java.lang.reflect.Field reify() {
-		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			try {
-				return cls.getField( this.name );
-			} catch( NoSuchFieldException nsfe ) {
-				return null;
+	protected void migrate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+		if( field instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+			java.lang.reflect.Field reification = fieldReflectionProxy.getReification();
+			if( reification != null ) {
+				//pass
+			} else {
+				org.lgna.project.ast.JavaType declaringType = javaField.getDeclaringType();
+				Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
+				if( declaringCls != null ) {
+					String previousName = fieldReflectionProxy.getName();
+					for( java.lang.reflect.Field fld : declaringCls.getFields() ) {
+						String fldName = fld.getName();
+						if( fldName.replace( "_", "" ).contentEquals( fieldReflectionProxy.getName() ) ) {
+							org.lgna.project.ast.AbstractField replacementField = declaringType.findField( fldName );
+							fieldAccess.field.setValue( replacementField );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacing", javaField, "with", replacementField );
+							break;
+						}
+					}
+				}
 			}
-		} else {
-			return null;
 		}
-	}
-
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( ";name=" );
-		sb.append( this.name );
 	}
 }
