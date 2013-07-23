@@ -31,6 +31,18 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 	}
 
 	private BottomPieceManager() {
+		this.add( FemaleElderBottomPiece.class, 
+				FemaleElderBottomPiecePantsCowboyBoots.class,
+				FemaleElderBottomPieceSlacks.class,
+				FemaleElderBottomPieceSlacksHeels.class,
+				FemaleElderBottomPieceSlinkySkirtBoots.class
+				);
+		this.add( MaleElderBottomPiece.class, 
+				MaleElderBottomPieceCowboyJeans.class,
+				MaleElderBottomPieceLongShorts.class,
+				MaleElderBottomPiecePantsSocksShoes.class,
+				MaleElderBottomPieceShorts.class
+				);
 		this.add( FemaleTeenBottomPiece.class, 
 				FemaleTeenBottomPieceBaggyPants.class,
 				FemaleTeenBottomPieceCargoPants.class,
@@ -68,17 +80,12 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				ChildBottomPieceBaggyPants.class,
 				ChildBottomPiecePuffyLeg.class
 				);
-		this.add( FemaleElderBottomPiece.class, 
-				FemaleElderBottomPiecePantsCowboyBoots.class,
-				FemaleElderBottomPieceSlacks.class,
-				FemaleElderBottomPieceSlacksHeels.class,
-				FemaleElderBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleElderBottomPiece.class, 
-				MaleElderBottomPieceCowboyJeans.class,
-				MaleElderBottomPieceLongShorts.class,
-				MaleElderBottomPiecePantsSocksShoes.class,
-				MaleElderBottomPieceShorts.class
+		this.add( MaleAdultBottomPiece.class, 
+				MaleAdultBottomPieceCargoPants.class,
+				MaleAdultBottomPieceCowboyJeans.class,
+				MaleAdultBottomPieceLongShorts.class,
+				MaleAdultBottomPiecePants.class,
+				MaleAdultBottomPieceWillPants.class
 				);
 		this.add( FemaleAdultBottomPiece.class, 
 				FemaleAdultBottomPieceBaggyPants.class,
@@ -94,13 +101,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				FemaleAdultBottomPieceSkirtTight.class,
 				FemaleAdultBottomPieceSlacksHeels.class,
 				FemaleAdultBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleAdultBottomPiece.class, 
-				MaleAdultBottomPieceCargoPants.class,
-				MaleAdultBottomPieceCowboyJeans.class,
-				MaleAdultBottomPieceLongShorts.class,
-				MaleAdultBottomPiecePants.class,
-				MaleAdultBottomPieceWillPants.class
 				);
 	}
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PoliceCar">
+    <BoundingBox>
+        <Min x="-1.0333435535430908" y="1.1189035253877933E-9" z="-2.3958702087402344"/>
+        <Max x="1.0333434343338013" y="1.5803695917129517" z="2.3958702087402344"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>cops</Tag>
+        <Tag>police</Tag>
+        <Tag>crime</Tag>
+        <Tag>robber</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="PoliceCar" resourceName="POLICE_CAR" textureName="POLICE_CAR"/>
+</AliceModel>
