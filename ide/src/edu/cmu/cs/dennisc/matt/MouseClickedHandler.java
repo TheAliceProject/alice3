@@ -14,6 +14,8 @@ import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenEvent;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
 	public static final Visual[] ALL_VISUALS = new Visual[ 0 ];
@@ -42,12 +44,13 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		if( listener instanceof MouseClickOnObjectListener ) {
 			if( event.getModelAtMouseLocation() != null ) {
 				MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
-				System.out.println( "MouseClickOnObjectEvent: " + event );
 				mouseCOOL.mouseClicked( (MouseClickOnObjectEvent)event );
 			}
 		} else if( listener instanceof MouseClickOnScreenListener ) {
 			MouseClickOnScreenListener mouseCOSL = (MouseClickOnScreenListener)listener;
-			mouseCOSL.mouseClicked();
+			mouseCOSL.mouseClicked( (MouseClickOnScreenEvent)event );
+		} else {
+			Logger.severe( listener );
 		}
 	}
 
