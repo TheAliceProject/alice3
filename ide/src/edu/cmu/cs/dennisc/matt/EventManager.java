@@ -16,7 +16,6 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
@@ -86,7 +85,6 @@ public class EventManager {
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
 			e.translatePoint( scene );
-			MouseClickEvent event = new MouseClickEvent( e.getEvent(), scene.getAbstraction() );
 			mouseQuoteClickedUnquote( e.getEvent(), 0 );
 		}
 	};

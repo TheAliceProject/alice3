@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 /**
  * @author Dennis Cosgrove
  */
-public class MouseClickEvent extends AbstractEvent {
+public class MouseClickEventImp {
 	private final java.awt.event.MouseEvent e;
 	private final org.lgna.story.SScene scene;
 
@@ -66,7 +66,7 @@ public class MouseClickEvent extends AbstractEvent {
 	private boolean isPickPerformed = false;
 	private org.lgna.story.SModel modelAtMouseLocation;
 
-	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
+	public MouseClickEventImp( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		this.e = e;
 		this.scene = scene;
 	}
@@ -156,11 +156,11 @@ public class MouseClickEvent extends AbstractEvent {
 		return rv;
 	}
 
-	protected org.lgna.story.SScene getScene() {
+	public org.lgna.story.SScene getScene() {
 		return this.scene;
 	}
 
-	protected java.awt.event.MouseEvent getEvent() {
+	public java.awt.event.MouseEvent getEvent() {
 		return this.e;
 	}
 }

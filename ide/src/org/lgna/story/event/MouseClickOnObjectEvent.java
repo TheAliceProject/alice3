@@ -1,8 +1,8 @@
 package org.lgna.story.event;
 
-public class MouseClickOnObjectEvent extends MouseClickEvent {
+public class MouseClickOnObjectEvent extends AbstractMouseClickEvent {
 
-	public MouseClickOnObjectEvent( MouseClickEvent e ) {
-		super( e.getEvent(), e.getScene() );
+	public MouseClickOnObjectEvent( MouseClickEventImp e ) {
+		super( e );
 	}
 }
