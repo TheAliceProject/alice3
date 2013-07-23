@@ -42,30 +42,56 @@
  */
 package org.lgna.story.event;
 
+import java.awt.Rectangle;
+
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author Dennis Cosgrove
  */
 public class MouseClickEvent extends AbstractEvent {
-	protected java.awt.event.MouseEvent e;
-	protected org.lgna.story.SScene scene;
-	private double relativeX;
-	private double relativeY;
-	protected boolean isPickPerformed;
-	protected org.lgna.story.SModel modelAtMouseLocation;
+	private final java.awt.event.MouseEvent e;
+	private final org.lgna.story.SScene scene;
+
+	private Rectangle viewport;
+	private boolean isPickPerformed = false;
+	private org.lgna.story.SModel modelAtMouseLocation;
 
 	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		this.e = e;
 		this.scene = scene;
-		this.isPickPerformed = false;
-		relativeX = new Double( e.getX() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getWidth();
-		relativeY = new Double( e.getY() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getHeight();
+	}
+
+	private OnscreenLookingGlass getOnscreenLookingGlass() {
+		if( this.scene != null ) {
+			SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
+			ProgramImp programImp = sceneImp.getProgram();
+			if( programImp != null ) {
+				return programImp.getOnscreenLookingGlass();
+			}
+		}
+		return null;
+	}
+
+	private Rectangle getActualViewport() {
+		if( this.viewport != null ) {
+			//pass
+		} else {
+			OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
+			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
+			AbstractCamera sgCamera = lg.getCameraAt( 0 );
+			this.viewport = lg.getActualViewport( sgCamera );
+		}
+		return this.viewport;
 	}
 
 	protected synchronized void pickIfNecessary() {
@@ -73,30 +99,28 @@ public class MouseClickEvent extends AbstractEvent {
 			//pass
 		} else {
 			if( this.scene != null ) {
-				SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
-				ProgramImp programImp = sceneImp.getProgram();
-				if( programImp != null ) {
-					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = programImp.getOnscreenLookingGlass();
-					if( lg != null ) {
-						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
-						if( pickResult != null ) {
-							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
-							if( sgVisual != null ) {
-								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
-								while( true ) {
-									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
-									if( sgParent == null ) {
-										break;
-									}
-									if( sgParent == sceneImp.getSgComposite() ) {
-										org.lgna.story.SThing e = EntityImp.getAbstractionFromSgElement( sgComponent );
-										if( e instanceof org.lgna.story.SModel ) {
-											this.modelAtMouseLocation = (org.lgna.story.SModel)e;
-										}
-										break;
-									}
-									sgComponent = sgParent;
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
+				if( lg != null ) {
+					edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+					System.out.println( "PICK RESULT: " + pickResult );
+					if( pickResult != null ) {
+						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+						if( sgVisual != null ) {
+							SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
+							edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
+							while( true ) {
+								edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
+								if( sgParent == null ) {
+									break;
 								}
+								if( sgParent == sceneImp.getSgComposite() ) {
+									org.lgna.story.SThing e = EntityImp.getAbstractionFromSgElement( sgComponent );
+									if( e instanceof org.lgna.story.SModel ) {
+										this.modelAtMouseLocation = (org.lgna.story.SModel)e;
+									}
+									break;
+								}
+								sgComponent = sgParent;
 							}
 						}
 					}
@@ -106,63 +130,37 @@ public class MouseClickEvent extends AbstractEvent {
 		}
 	}
 
+	//	public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
+	//		this.pickIfNecessary();
+	//		return this.partAtMouseLocation;
+	//	}
 	public org.lgna.story.SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;
 	}
 
+	public Double getProportionalDistanceFromLeft() {
+		Rectangle viewport = this.getActualViewport();
+		return ( this.e.getX() - viewport.x ) / (double)this.viewport.width;
+	}
+
+	public Double getProportionalDistanceFromBottom() {
+		Rectangle viewport = this.getActualViewport();
+		return 1.0 - ( ( this.e.getY() - viewport.y ) / (double)this.viewport.height );
+	}
+
+	@Deprecated
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public Double[] getRelativeXYPosition() {
-		Double[] rv = { relativeX, relativeY };
+		Double[] rv = { this.getProportionalDistanceFromLeft(), this.getProportionalDistanceFromBottom() };
 		return rv;
 	}
 
-	//	private synchronized void pickIfNecessary() {
-	//		if( this.isPickPerformed ) {
-	//			//pass
-	//		} else {
-	//			if( this.scene != null )  {
-	//				SceneImplementation sceneImplementation = ImplementationAccessor.getImplementation(this.scene);
-	//				org.lookingglassandalice.storytelling.SceneOwner owner = this.scene.getOwner();
-	//				if( owner != null ) {
-	//					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
-	//					if( lg != null ) {
-	//						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.pickFrontMost( e.getX(), e.getY(), false );
-	//						if( pickResult != null ) {
-	//							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
-	//							if( sgVisual != null ) {
-	//								org.lookingglassandalice.storytelling.Entity element = org.lookingglassandalice.storytelling.Entity.getElement( sgVisual );
-	//								if( element instanceof org.lookingglassandalice.storytelling.Model ) {
-	//									this.partAtMouseLocation = (org.lookingglassandalice.storytelling.Model)element;
-	//								}
-	//								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
-	//								while( true ) {
-	//									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
-	//									if( sgParent == null ) {
-	//										break;
-	//									}
-	//									if( sgParent == this.scene.getSgComposite() ) {
-	//										org.lookingglassandalice.storytelling.Entity e = org.lookingglassandalice.storytelling.Entity.getElement( sgComponent );
-	//										if( e instanceof org.lookingglassandalice.storytelling.Model ) {
-	//											this.modelAtMouseLocation = (org.lookingglassandalice.storytelling.Model)e;
-	//										}
-	//										break;
-	//									}
-	//									sgComponent = sgParent;
-	//								}
-	//							}
-	//						}
-	//					}
-	//				}
-	//			}
-	//			this.isPickPerformed = true;
-	//		}
-	//	}
-	//	public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
-	//		this.pickIfNecessary();
-	//		return this.partAtMouseLocation;
-	//	}
-	//	public org.lookingglassandalice.storytelling.Model getModelAtMouseLocation() {
-	//		this.pickIfNecessary();
-	//		return this.modelAtMouseLocation;
-	//	}
+	protected org.lgna.story.SScene getScene() {
+		return this.scene;
+	}
+
+	protected java.awt.event.MouseEvent getEvent() {
+		return this.e;
+	}
 }
