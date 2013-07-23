@@ -139,12 +139,12 @@ public class MouseClickEvent extends AbstractEvent {
 		return this.modelAtMouseLocation;
 	}
 
-	public Double getProportionalDistanceFromLeft() {
+	public Double getScreenDistanceFromLeft() {
 		Rectangle viewport = this.getActualViewport();
 		return ( this.e.getX() - viewport.x ) / (double)this.viewport.width;
 	}
 
-	public Double getProportionalDistanceFromBottom() {
+	public Double getScreenDistanceFromBottom() {
 		Rectangle viewport = this.getActualViewport();
 		return 1.0 - ( ( this.e.getY() - viewport.y ) / (double)this.viewport.height );
 	}
@@ -152,7 +152,7 @@ public class MouseClickEvent extends AbstractEvent {
 	@Deprecated
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public Double[] getRelativeXYPosition() {
-		Double[] rv = { this.getProportionalDistanceFromLeft(), this.getProportionalDistanceFromBottom() };
+		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
 		return rv;
 	}
 
