@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creator="EA" name="HelicopterProp">
+<AliceModel creator="EA" deprecated="TRUE" name="HelicopterProp">
     <BoundingBox>
         <Min x="-5.480959415435791" y="-3.356710465141077E-8" z="-6.681793689727783"/>
         <Max x="5.480959892272949" y="3.912975788116455" z="6.681794166564941"/>
