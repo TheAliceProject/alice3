@@ -45,6 +45,8 @@ package org.lgna.project.migration;
 import java.util.ArrayList;
 
 import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.JavaMethodParameter;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
 
 /**
@@ -68,7 +70,9 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 					System.out.println( "ADD TIME LISTENER" );
 					ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
 					for( JavaKeyedArgument arg : keyedParameter ) {
-						System.out.println( "arg: " + arg );
+						JavaMethodParameter value = (JavaMethodParameter)arg.parameter.getValue();
+						JavaType valueType = (JavaType)value.getValueType();
+						System.out.println( "arg: " + valueType.getComponentType() );
 					}
 					//				} else if( methodName.equals( "addProximityEnterLIstener" ) ) {
 					//					System.out.println( "ADD ProximityEnter" );
