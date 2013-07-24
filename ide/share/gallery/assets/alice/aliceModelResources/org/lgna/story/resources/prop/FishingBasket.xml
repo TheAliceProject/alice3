@@ -9,10 +9,10 @@
         <Tag>basket</Tag>
     </Tags>
     <GroupTags>
-        <GroupTag>vehicles:fishing boat</GroupTag>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
     </GroupTags>
     <ThemeTags>
-        <ThemeTag>far east:fishing boat</ThemeTag>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
     </ThemeTags>
     <Resource modelName="FishingBasket" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

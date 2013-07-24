@@ -15,5 +15,6 @@
     <ThemeTags>
         <ThemeTag>*ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Cave" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Cave" resourceName="UNDERWATER" textureName="UNDERWATER"/>
+    <Resource modelName="Cave" resourceName="ROCKY" textureName="ROCKY"/>
 </AliceModel>
