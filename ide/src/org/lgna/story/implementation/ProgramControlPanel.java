@@ -144,6 +144,10 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 			gbc.insets.left = 0;//SMALL_PAD;
 			this.add( new javax.swing.JToggleButton( toggleFullScreenAction ), gbc );
 		}
+
+		for( java.awt.Component awtComponent : this.getComponents() ) {
+			awtComponent.setFocusable( false );
+		}
 	}
 
 	private final void updateLabel() {

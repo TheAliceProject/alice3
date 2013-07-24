@@ -50,5 +50,5 @@ public abstract class AstMigration extends AbstractMigration {
 		super( minimumVersion, resultVersion );
 	}
 
-	public abstract void migrate( org.lgna.project.ast.NamedUserType programType );
+	public abstract void migrate( org.lgna.project.ast.Node node );
 }

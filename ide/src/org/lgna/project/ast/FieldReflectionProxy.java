@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.reflect.Field> {
-	private String name;
+	private final String name;
 
 	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
 		super( declaringClassReflectionProxy );
@@ -85,7 +85,7 @@ public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.
 		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			try {
-				return cls.getField( name );
+				return cls.getField( this.name );
 			} catch( NoSuchFieldException nsfe ) {
 				return null;
 			}
