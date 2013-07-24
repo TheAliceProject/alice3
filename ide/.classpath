@@ -20,7 +20,7 @@
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="lib/vlcj/jna-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/vlcj/platform-3.5.2.jar"/>
-	<classpathentry kind="lib" path="lib/vlcj/vlcj-2.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/vlcj/vlcj-2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
         <classpathentry kind="lib" path="lib/guava/lib/guava-14.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/lib/gdata-youtube-2.0.jar"/>

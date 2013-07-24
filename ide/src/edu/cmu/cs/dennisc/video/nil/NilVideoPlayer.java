@@ -133,4 +133,8 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public void release() {
 	}
+
+	public java.awt.Image getSnapshot() {
+		return null;
+	}
 }
