@@ -109,8 +109,9 @@ public class MigrateProjects extends Batch {
 		return false;
 	}
 	public static void main( String[] args ) {
+		org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.67.0.0" );
 		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.58.0.0";
+		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
 		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );

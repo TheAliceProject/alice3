@@ -67,7 +67,7 @@ public class ReadGalleryAst {
 			if( fld != null ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( field.getDeclaringType(), field );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "FAILURE:", field.getDeclaringType(), field );
 			}
 		}
 	}
