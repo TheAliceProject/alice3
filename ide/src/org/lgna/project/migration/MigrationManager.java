@@ -54,7 +54,7 @@ public interface MigrationManager {
 
 	public String migrate( String source, org.lgna.project.Version version );
 
-	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version );
+	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version );
 
 	public void addVersionIndependentMigration( Migration migration );
 

@@ -81,6 +81,6 @@ public class GenerateGalleryAst {
 		org.w3c.dom.Document xmlDocument = blockStatement.encode();
 		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), org.lgna.project.ProjectVersion.getCurrentVersionText() + ".xml" );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, file );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( xmlDocument );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
 	}
 }
