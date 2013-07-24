@@ -56,5 +56,16 @@ public class ReadGalleryAst {
 		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, migrationManagerDecodedVersionPairs );
 		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)org.lgna.project.ast.BlockStatement.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( blockStatement.statements.size() );
+		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
+			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expressionStatement.expression.getValue();
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+			if( fld != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( field.getDeclaringType(), field );
+			}
+		}
 	}
 }
