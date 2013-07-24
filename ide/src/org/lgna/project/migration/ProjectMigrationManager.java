@@ -4836,16 +4836,16 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "QUAINT_YELLOW_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
 
 					createMoreSpecificFieldString( "QUAINT_BLUE", "org.lgna.story.resources.prop.EndTableResource" ),
-					createMoreSpecificFieldString( "QUAINT_BLUE_BLUE_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_BLUE_BLUE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
 
 					createMoreSpecificFieldString( "QUAINT_GREEN", "org.lgna.story.resources.prop.EndTableResource" ),
-					createMoreSpecificFieldString( "QUAINT_GREEN_GREEN_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_GREEN_GREEN_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
 
 					createMoreSpecificFieldString( "QUAINT_PINK", "org.lgna.story.resources.prop.EndTableResource" ),
-					createMoreSpecificFieldString( "QUAINT_PINK_RED_WOOD", "org.lgna.story.resources.prop.SofaResource" ),
+					createMoreSpecificFieldString( "QUAINT_PINK_RED_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
 
 					createMoreSpecificFieldString( "QUAINT_WHITE", "org.lgna.story.resources.prop.EndTableResource" ),
-					createMoreSpecificFieldString( "QUAINT_WHITE_WHITE_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_WHITE_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
 
 					createMoreSpecificFieldString( "QUAINT_FLOWERS", "org.lgna.story.resources.prop.EndTableResource" ),
 					createMoreSpecificFieldString( "QUAINT_FLOWERS_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
@@ -5029,7 +5029,22 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitMailDelivery" ),
 					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDeliveryPerson" ),
 					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitMailDelivery" ),
-					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" )
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" ),
+
+					"name=\"org.lgna.story.resources.prop.HelicopterResource",
+					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
+
+					"name=\"org.lgna.story.resources.prop.UFOResource",
+					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+
+					"name=\"org.lgna.story.resources.prop.PirateShipResource",
+					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
+
+					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
+					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
+
+					"name=\"org.lgna.story.resources.prop.SubmarineResource",
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
 			)
 
 	};
