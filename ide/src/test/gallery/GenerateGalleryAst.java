@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,64 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package test.gallery;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.reflect.Field> {
-	private final String name;
+public class GenerateGalleryAst {
+	private static org.lgna.project.ast.Statement createFieldAccessStatement( java.lang.reflect.Field fld ) {
+		org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( field.getDeclaringType(), field );
+		org.lgna.project.ast.FieldAccess fieldAccess = new org.lgna.project.ast.FieldAccess(
+				new org.lgna.project.ast.TypeLiteral( field.getDeclaringType() ),
+				field
+				);
+		return new org.lgna.project.ast.ExpressionStatement( fieldAccess );
 
-	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
-		super( declaringClassReflectionProxy );
-		this.name = name;
 	}
 
-	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
-		super( fld, fld.getDeclaringClass() );
-		this.name = fld.getName();
-	}
+	public static void main( String[] args ) throws Exception {
+		org.lgna.project.ast.BlockStatement blockStatement = new org.lgna.project.ast.BlockStatement();
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = super.hashCodeNonReifiable();
-		rv = ( 37 * rv ) + this.name.hashCode();
-		return rv;
-	}
-
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
-		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
-			FieldReflectionProxy other = (FieldReflectionProxy)o;
-			return this.name != null ? this.name.equals( other.name ) : other.name == null;
-		} else {
-			return false;
-		}
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	protected java.lang.reflect.Field reify() {
-		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			try {
-				return cls.getField( this.name );
-			} catch( NoSuchFieldException nsfe ) {
-				return null;
+		org.lgna.story.resources.sims2.IngredientManager<?>[] managers = {
+				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton(),
+				org.lgna.story.resources.sims2.HairManager.getSingleton(),
+		};
+		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
+			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
+				for( org.lgna.story.resources.sims2.IngredientManager<?> manager : managers ) {
+					Class<?>[] clses = manager.getImplementingClasses( lifeStage, gender );
+					for( Class<?> cls : clses ) {
+						for( Enum e : (Enum[])cls.getEnumConstants() ) {
+							java.lang.reflect.Field fld = cls.getField( e.name() );
+							blockStatement.statements.add( createFieldAccessStatement( fld ) );
+						}
+					}
+				}
 			}
-		} else {
-			return null;
 		}
-	}
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( ";name=" );
-		sb.append( this.name );
+		org.w3c.dom.Document xmlDocument = blockStatement.encode();
+		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), org.lgna.project.ProjectVersion.getCurrentVersionText() + ".xml" );
+		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, file );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( xmlDocument );
 	}
 }

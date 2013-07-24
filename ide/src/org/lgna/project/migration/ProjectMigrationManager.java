@@ -42,6 +42,7 @@
  */
 package org.lgna.project.migration;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -4488,10 +4489,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "WITH_SCARF", "org.lgna.story.resources.biped.YetiBabyResource" ),
 
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.BabyYetiResource" ),
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.YetiBabyResource" ),
 
 					"name=\"org.lgna.story.resources.biped.BabyYetiResource",
-					"name=\"org.lgna.story.resources.biped.YetiResource",
+					"name=\"org.lgna.story.resources.biped.YetiBabyResource",
 
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.BabyWalrusResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.WalrusBabyResource" ),
@@ -4955,7 +4956,72 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "GREYPINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
 					createMoreSpecificFieldString( "FORMAL_GREY_PINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
 					createMoreSpecificFieldString( "GREYTWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
-					createMoreSpecificFieldString( "FORMAL_GREY_TWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" )
+					createMoreSpecificFieldString( "FORMAL_GREY_TWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+
+					//map removed swimwear to existing swimwear
+					createMoreSpecificFieldString( "BLUEBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUESINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "GRAYSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "GREENSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "LIMEBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "LIME_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINKBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINK_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINKSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINK_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "REDBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "RED_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "REDSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "RED_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "YELLOWBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "YELLOW_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUEPAISLEY", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_FLOWER", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "CLASSICBIKINIBLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "SPORTBIKINIBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "SPORTBIKINIVIOLET", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "STRINGBIKINIBROWN", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "STRINGBIKINIBURGANDY", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+
+					//map removed dresses to existing dresses
+					createMoreSpecificFieldString( "REDHOLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "BLACKHOLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "LEOPARD", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "CREAM", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+
+					//Name change
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitPowerSuit" ),
+					createMoreSpecificFieldString( "BLUE_PINSTRIPE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitPowerSuit" ),
+
+					//Name change...Where did SOCIALWORKER come from?
+					createMoreSpecificFieldString( "SOCIALWORKER", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSuit" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSuit" ),
+
+					//map removed swimwear to existing swimwear
+					createMoreSpecificFieldString( "TANKINIGREEN", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_SEA_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TANKINIPINK", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_BERRY_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TANKINISTRIPES", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_FIRE_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "WHITEUNDER", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "WHITE_CAMISOLE", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+
+					//Name change
+					createMoreSpecificFieldString( "FRIED", "org.lgna.story.resources.sims2.ChildHairShocked" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.ChildHairShocked" )
+
 			)
 
 	};
@@ -4987,7 +5053,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 						}
 					}
 				}
-			}
+			},
+			new UnderscoreFieldAccessAstMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.68.0.0" )
+			)
 	};
 
 	private static class SingletonHolder {
