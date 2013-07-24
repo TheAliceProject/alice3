@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="C:/Users/dennisc/Documents/Git/alice/ide/lib/jogl2/lib/jogl-all.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dennisc/Documents/Git/alice/ide/lib/jogl2/lib/gluegen-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

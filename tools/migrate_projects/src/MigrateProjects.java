@@ -56,6 +56,7 @@ public class MigrateProjects extends Batch {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "problematic files:", this.problematicFiles.size() );
 		for( java.io.File problematicFile : this.problematicFiles ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( problematicFile );
 		}
@@ -116,5 +117,6 @@ public class MigrateProjects extends Batch {
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
 		migrateProjects.outputProblematicFiles();
+		System.exit( 0 );
 	}
 }
