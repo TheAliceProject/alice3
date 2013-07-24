@@ -5034,8 +5034,8 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.HelicopterResource",
 					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
 
-					"name=\"org.lgna.story.resources.prop.UFOResource",
-					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+					createMoreSpecificFieldString( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
+					createMoreSpecificFieldString( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
 
 					"name=\"org.lgna.story.resources.prop.PirateShipResource",
 					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
