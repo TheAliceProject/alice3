@@ -19,7 +19,6 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 /*
