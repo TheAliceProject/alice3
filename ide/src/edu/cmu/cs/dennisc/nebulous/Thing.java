@@ -11,6 +11,22 @@ public class Thing extends Model {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Thing.class, ThingAdapter.class );
 	}
 
+	private final Object o;
+	private final Object o2;
+
+	public Thing( Object o, Object o2 ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+		this.o = o;
+		this.o2 = o2;
+		synchronized( renderLock ) {
+			try {
+				this.initialize( o, o2 );
+			} catch( RuntimeException re ) {
+				System.err.println( this );
+				throw re;
+			}
+		}
+	}
+
 	private native void initialize( Object o, Object o2 );
 
 	private native void unload();
@@ -30,9 +46,16 @@ public class Thing extends Model {
 		}
 	}
 
-	public Thing( Object o, Object o2 ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		synchronized( renderLock ) {
-			initialize( o, o2 );
-		}
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( ";" );
+		sb.append( this.o != null ? this.o.getClass().getName() : null );
+		sb.append( "." );
+		sb.append( this.o );
+		sb.append( ";" );
+		sb.append( this.o2 != null ? this.o2.getClass().getName() : null );
+		sb.append( "." );
+		sb.append( this.o2 );
 	}
 }

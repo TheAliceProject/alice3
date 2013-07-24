@@ -66,7 +66,9 @@ public class MigrateProjects extends Batch {
 	}
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
+		if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
+		}
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
@@ -94,7 +96,9 @@ public class MigrateProjects extends Batch {
 				frame.dispose();
 			}
 			
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", project );
+			if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", project );
+			}
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
 		} catch( java.io.IOException ioe ) {
