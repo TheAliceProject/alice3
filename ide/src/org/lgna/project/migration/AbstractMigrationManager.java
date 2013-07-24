@@ -78,10 +78,10 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		return rv;
 	}
 
-	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
+	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
 			if( astMigration.isApplicable( version ) ) {
-				astMigration.migrate( programType );
+				astMigration.migrate( root );
 				version = astMigration.getResultVersion();
 			}
 		}
