@@ -357,7 +357,20 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	
 	public boolean writeSnapshot( java.io.File file ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		return mediaPlayer.saveSnapshot( file );
+		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+		try {
+			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( mediaPlayer.mrl(), seconds, file );
+			return true;
+		} catch( Exception e ) {
+			return false;
+		}
+	}
+
+	public java.awt.Image getSnapshot() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+		System.out.println( "TIME: " + seconds );
+		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( mediaPlayer.mrl(), seconds );
 	}
 
 	public void release() {

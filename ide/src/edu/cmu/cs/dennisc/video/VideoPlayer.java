@@ -80,6 +80,8 @@ public interface VideoPlayer {
 
 	public boolean writeSnapshot( java.io.File file );
 
+	public java.awt.Image getSnapshot();
+
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 
 	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
