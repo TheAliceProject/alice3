@@ -673,19 +673,17 @@ public class AstUtilities {
 	public static void fixRequiredArgumentsIfNecessary( MethodInvocation methodInvocation ) {
 		AbstractMethod method = methodInvocation.method.getValue();
 		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
-		java.util.List<SimpleArgument> requiredArguments = methodInvocation.requiredArguments.getValue();
 
-		assert requiredParameters.size() == requiredArguments.size() : method;
+		assert requiredParameters.size() == methodInvocation.requiredArguments.size() : method;
 
-		// note: we rely on methodInvocation.requiredArguments.getValue() not returning a copy
 		final int N = requiredParameters.size();
 		for( int i = 0; i < N; i++ ) {
-			SimpleArgument argumentI = requiredArguments.get( i );
+			SimpleArgument argumentI = methodInvocation.requiredArguments.get( i );
 			AbstractParameter parameterI = requiredParameters.get( i );
 			if( argumentI.parameter.getValue() == parameterI ) {
 				//pass
 			} else {
-				requiredArguments.set( i, new SimpleArgument( parameterI, argumentI.expression.getValue() ) );
+				methodInvocation.requiredArguments.set( i, new SimpleArgument( parameterI, argumentI.expression.getValue() ) );
 			}
 		}
 	}
