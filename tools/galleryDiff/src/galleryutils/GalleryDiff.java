@@ -713,7 +713,7 @@ public class GalleryDiff {
 				// "3.1.29.0.0",
 				// "3.1.46.0.0",
 				// "3.1.47.0.0",
-				"3.1.58.0.0", "3.1.59.0.0", "3.1.68.0.0" };
+				"3.1.68.0.0", "3.1.69.0.0" };
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < DATA_VERSIONS.length - 1; i++) {
