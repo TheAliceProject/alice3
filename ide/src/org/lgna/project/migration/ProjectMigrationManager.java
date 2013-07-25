@@ -5032,6 +5032,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" )
 			)
 
+			//			, EventAstMigration.getTextMigration() 
 	};
 	private final AstMigration[] astMigrations = {
 			new org.lgna.project.migration.MethodInvocationAstMigration(
@@ -5065,8 +5066,8 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			new UnderscoreFieldAccessAstMigration(
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
-			)
-			, new EventAstMigration() };
+			),
+			new EventAstMigration() };
 
 	private static class SingletonHolder {
 		private static ProjectMigrationManager instance = new ProjectMigrationManager();

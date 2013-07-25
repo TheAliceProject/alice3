@@ -62,7 +62,7 @@ public class JavaConstructorParameter extends JavaParameter {
 				}
 			}
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, constructorReflectionProxy, index );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( t, constructorReflectionProxy, index );
 		}
 		return rv;
 	}

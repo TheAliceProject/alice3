@@ -44,44 +44,116 @@ package org.lgna.project.migration;
 
 import java.util.ArrayList;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.alice.stageide.ast.ExpressionCreator;
+import org.lgna.project.Version;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.JavaMethodParameter;
-import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.UserLambda;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.story.event.MouseClickOnScreenEvent;
 
 /**
  * @author Matt May
  */
-public class EventAstMigration extends MethodInvocationAstMigration {
+public class EventAstMigration extends AstMigration {
+
+	ExpressionCreator creator = new ExpressionCreator();
 
 	public EventAstMigration() {
-		super( new org.lgna.project.Version( "3.1.68.0.0" ),
-				new org.lgna.project.Version( "3.1.70.0.0" ) );
+		super( new Version( "3.1.68.0.0" ), new Version( "3.1.70.0.0" ) );
 	}
 
 	@Override
-	protected void migrate( MethodInvocation methodInvocation ) {
+	public final void migrate( org.lgna.project.ast.Node node ) {
+		node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
+					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+					EventAstMigration.this.migrateMethodInv( methodInvocation );
+				} else if( crawlable instanceof JavaMethod ) {
+					JavaMethod javaMethod = (JavaMethod)crawlable;
+					EventAstMigration.this.migrateJavaMethod( javaMethod );
+				}
+			}
+		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+	}
+
+	protected void migrateMethodInv( MethodInvocation methodInvocation ) {
+
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+
 			if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
 				String methodName = method.getName();
 				if( methodName.equals( "addTimeListener" ) ) {
-					System.out.println( "ADD TIME LISTENER" );
-					ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
-					for( JavaKeyedArgument arg : keyedParameter ) {
-						JavaMethodParameter value = (JavaMethodParameter)arg.parameter.getValue();
-						JavaType valueType = (JavaType)value.getValueType();
-						System.out.println( "arg: " + valueType.getComponentType() );
-					}
-					//				} else if( methodName.equals( "addProximityEnterLIstener" ) ) {
-					//					System.out.println( "ADD ProximityEnter" );
-					//					ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
-					//					for( JavaKeyedArgument arg : keyedParameter ) {
-					//						System.out.println( "arg: " + arg );
-					//					}
+					handleAddTimeListener( methodInvocation, javaMethod );
+				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
+					changeDoubleToNumber( methodInvocation, javaMethod, 3 );
+				} else if( method.getName().equals( "addMouseClickOnScreenListener" ) ) {
+					addMouseClickOnScreenEventParameter( methodInvocation );
 				}
 			}
 		}
+	}
+
+	private void addMouseClickOnScreenEventParameter( MethodInvocation methodInvocation ) {
+		SimpleArgument simpleArgument = methodInvocation.requiredArguments.get( 0 );
+		LambdaExpression lambda = (LambdaExpression)simpleArgument.expression.getValue();
+		UserLambda value = (UserLambda)lambda.value.getValue();
+		value.requiredParameters.add( new UserParameter( "event", MouseClickOnScreenEvent.class ) );
+	}
+
+	private void changeDoubleToNumber( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod, int index ) {
+		Expression exp = methodInvocation.requiredArguments.get( index ).expression.getValue();
+		try {
+			assert exp instanceof DoubleLiteral : exp.getClass();
+			Number distance = ( (DoubleLiteral)exp ).value.getValue();
+			methodInvocation.requiredArguments.set( index, new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), creator.createExpression( distance ) ) );
+		} catch( CannotCreateExpressionException e ) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void migrateJavaMethod( JavaMethod javaMethod ) {
+		//		System.out.println( "javaMethod: " + javaMethod );
+		//		if( javaMethod.getName().equals( "addSceneActivationListener" ) ) {
+		//
+		//		}
+	}
+
+	private void handleAddTimeListener( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod ) {
+		ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
+		Number duration = null;
+		JavaKeyedArgument argToRemove = null;
+		for( JavaKeyedArgument arg : keyedParameter ) {
+			Expression value = ( (MethodInvocation)arg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();
+			if( value instanceof DoubleLiteral ) {
+				duration = ( (DoubleLiteral)value ).value.getValue();
+				argToRemove = arg;
+			} else {
+				//do nothing
+			}
+		}
+		if( duration != null ) {
+			keyedParameter.remove( argToRemove );
+		} else {
+			duration = 0;
+		}
+		try {
+			methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), creator.createExpression( duration ) ) );
+		} catch( CannotCreateExpressionException e ) {
+			e.printStackTrace();
+		}
+	}
+
+	public static TextMigration getTextMigration() {
+		return null;
 	}
 }
