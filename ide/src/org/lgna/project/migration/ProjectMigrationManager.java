@@ -5044,10 +5044,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
 
 					"name=\"org.lgna.story.resources.prop.SubmarineResource",
-					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
-
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
-					createMoreSpecificFieldString( "UNDERWATER", "org.lgna.story.resources.prop.CaveResource" )
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
 			)
 
 	};

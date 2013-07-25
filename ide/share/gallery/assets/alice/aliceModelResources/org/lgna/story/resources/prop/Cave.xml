@@ -17,4 +17,5 @@
     </ThemeTags>
     <Resource modelName="Cave" resourceName="UNDERWATER" textureName="UNDERWATER"/>
     <Resource modelName="Cave" resourceName="ROCKY" textureName="ROCKY"/>
+    <Resource modelName="Cave" resourceName="MOSSY" textureName="MOSSY"/>
 </AliceModel>
