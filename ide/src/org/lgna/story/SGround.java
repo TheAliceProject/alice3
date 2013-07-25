@@ -63,6 +63,7 @@ public class SGround extends SThing implements MutableRider, Visual {
 		SNOW( "snow" ),
 		ICE( "ice" ),
 		SWAMP( "swamp" ),
+		JUNGLE( "jungle" ),
 		OCEAN( "ocean" ),
 		OCEAN_NIGHT( "ocean_night" ),
 		WATER( "water" ),
