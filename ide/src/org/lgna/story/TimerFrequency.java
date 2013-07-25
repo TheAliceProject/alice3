@@ -6,10 +6,10 @@ public class TimerFrequency implements
 		AddTimeListener.Detail {
 
 	public final static TimerFrequency ASAP = new TimerFrequency( Double.doubleToLongBits( 0 ) );
-	private Long frequency;
+	private Double frequency;
 
 	public TimerFrequency( double frequency ) {
-		this.frequency = ( new Double( frequency ) ).longValue();
+		this.frequency = new Double( frequency );
 	}
 
 	public static TimerFrequency getValue( Detail[] details ) {
@@ -21,7 +21,7 @@ public class TimerFrequency implements
 		return ASAP;
 	}
 
-	public Long getFrequency() {
+	public Double getFrequency() {
 		return this.frequency;
 	}
 }

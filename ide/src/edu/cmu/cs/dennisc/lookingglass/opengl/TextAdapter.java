@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_QUAD_STRIP;
+import static javax.media.opengl.GL2.GL_QUAD_STRIP;
 import static javax.media.opengl.glu.GLU.GLU_OUT_OF_MEMORY;
 import static javax.media.opengl.glu.GLU.GLU_TESS_BEGIN;
 import static javax.media.opengl.glu.GLU.GLU_TESS_COMBINE;
@@ -61,7 +61,7 @@ import static javax.media.opengl.glu.GLU.GLU_TESS_VERTEX;
  * @author Dennis Cosgrove
  */
 class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
-	private javax.media.opengl.GL m_gl;
+	private javax.media.opengl.GL2 m_gl;
 	private javax.media.opengl.glu.GLU m_glu;
 	private double m_xOffset;
 	private double m_yOffset;
@@ -90,7 +90,7 @@ class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter
 		}
 	}
 
-	public void set( javax.media.opengl.GL gl, javax.media.opengl.glu.GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
+	public void set( javax.media.opengl.GL2 gl, javax.media.opengl.glu.GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
 		m_gl = gl;
 		m_glu = glu;
 		m_xOffset = xOffset;
@@ -151,19 +151,19 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 
 			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
-			javax.media.opengl.glu.GLUtessellator tesselator = context.glu.gluNewTess();
-			context.glu.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
-			//			context.glu.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+			javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
+			//			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
+			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
 			//			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
-				context.glu.gluBeginPolygon( tesselator );
+				javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
 				try {
 					for( java.util.Vector<edu.cmu.cs.dennisc.math.Point2f> faceContour : faceContours ) {
-						context.glu.gluTessBeginContour( tesselator );
+						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						try {
 							int n = faceContour.size();
 							for( int i = 0; i < n; i++ ) {
@@ -174,14 +174,14 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 									p = faceContour.elementAt( i );
 								}
 								double[] xyz = { p.x, p.y, 0 };
-								context.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+								javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 							}
 						} finally {
-							context.glu.gluTessEndContour( tesselator );
+							javax.media.opengl.glu.GLU.gluTessEndContour( tesselator );
 						}
 					}
 				} finally {
-					context.glu.gluTessEndPolygon( tesselator );
+					javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 				}
 			} finally {
 				m_element.getGlyphVector().releaseFaceContours();
@@ -235,7 +235,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glText( rc, true );
 	}
 

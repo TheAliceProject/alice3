@@ -42,5 +42,9 @@
  */
 package org.lgna.story.resources.sims2;
 
-public interface Hair extends Ingredient {
+public interface Hair {
+
+	public Boolean hasHat();
+
+	public Boolean hasHair();
 }

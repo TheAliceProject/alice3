@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class OffscreenDrawable {
-	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = com.sun.opengl.impl.Debug.isPropertyDefined( "jogl.gljpanel.nohw" ) == false;
+	/* package-private */static final boolean IS_HARDWARE_ACCELERATION_DESIRED = true;//edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
 
 	public static interface DisplayCallback {
-		public void display( javax.media.opengl.GL gl );
+		public void display( javax.media.opengl.GL2 gl );
 	}
 
 	public static OffscreenDrawable createInstance( DisplayCallback callback, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
@@ -119,7 +119,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
 
-	protected final void fireDisplay( javax.media.opengl.GL gl ) {
+	protected final void fireDisplay( javax.media.opengl.GL2 gl ) {
 		if( this.callback != null ) {
 			this.callback.display( gl );
 		}

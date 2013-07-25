@@ -67,6 +67,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	private final org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
 	private final org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
 	private final org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
+	private final org.alice.ide.ast.export.ExportTypeToFileDialogOperation exportOperation;
 
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
@@ -74,6 +75,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type ) );
 		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type ) );
 		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type ) );
+		this.exportOperation = new org.alice.ide.ast.export.ExportTypeToFileDialogOperation( type );
 	}
 
 	public org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
@@ -90,6 +92,10 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 
 	public org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
 		return this.fieldsToolPaletteCoreComposite;
+	}
+
+	public org.alice.ide.ast.export.ExportTypeToFileDialogOperation getExportOperation() {
+		return this.exportOperation;
 	}
 
 	@Override

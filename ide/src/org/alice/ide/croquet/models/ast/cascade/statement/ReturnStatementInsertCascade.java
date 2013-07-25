@@ -73,7 +73,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 
 	private ReturnStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
+		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, false, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
 	}
 
 	@Override
@@ -86,5 +86,10 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	@Override
 	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
+	}
+
+	@Override
+	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
 	}
 }

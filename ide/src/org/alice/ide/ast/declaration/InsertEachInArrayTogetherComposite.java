@@ -46,18 +46,20 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite<org.lgna.project.ast.EachInArrayTogether> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
 		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
 			public InsertEachInArrayTogetherComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-				return new InsertEachInArrayTogetherComposite( blockStatementIndexPair );
+				return new InsertEachInArrayTogetherComposite( blockStatementIndexPair, isEnveloping );
 			}
 		} );
 	}
 
-	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
+	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override

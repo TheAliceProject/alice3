@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.GL_POINTS;
  */
 public class PointArrayAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.PointArray> {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		renderPrimative( rc, GL_POINTS );
 	}
 

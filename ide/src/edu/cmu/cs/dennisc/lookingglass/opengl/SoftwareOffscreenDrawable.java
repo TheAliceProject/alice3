@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
-	private com.sun.opengl.impl.GLDrawableImpl glDrawable;
-	private com.sun.opengl.impl.GLContextImpl glContext;
+	private jogamp.opengl.GLDrawableImpl glDrawable;
+	private jogamp.opengl.GLContextImpl glContext;
 
 	private final Runnable displayAdapter = new Runnable() {
 		public void run() {
-			fireDisplay( glContext.getGL() );
+			fireDisplay( glContext.getGL().getGL2() );
 		}
 	};
 	private final Runnable initAdapter = new Runnable() {
 		public void run() {
 		}
 	};
-	private com.sun.opengl.impl.GLDrawableHelper drawableHelper;
+	private jogamp.opengl.GLDrawableHelper drawableHelper;
 
 	public SoftwareOffscreenDrawable( DisplayCallback callback ) {
 		super( callback );
@@ -72,12 +72,17 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	@Override
 	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
-		javax.media.opengl.GLCapabilities glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
-		glCapabilities.setHardwareAccelerated( false );
-		this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)GlDrawableUtilities.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
-		this.glDrawable.setSize( width, height );
-		this.glContext = (com.sun.opengl.impl.GLContextImpl)this.glDrawable.createContext( glShareContext );
-		this.glContext.setSynchronized( true );
+		javax.media.opengl.GLCapabilities glCapabilities;
+		if( IS_HARDWARE_ACCELERATION_DESIRED ) {
+			glCapabilities = glRequestedCapabilities;
+		} else {
+			glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
+			glCapabilities.setHardwareAccelerated( false );
+		}
+		this.glDrawable = GlDrawableUtilities.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
+		this.glDrawable.setRealized( true );
+		this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
+		//this.glContext.setSynchronized( true );
 	}
 
 	@Override
@@ -88,8 +93,12 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			this.glContext = null;
 		}
 		if( this.glDrawable != null ) {
+			javax.media.nativewindow.AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
 			this.glDrawable.setRealized( false );
 			this.glDrawable = null;
+			if( graphicsDevice != null ) {
+				graphicsDevice.close();
+			}
 		}
 	}
 
@@ -98,9 +107,10 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 		if( this.drawableHelper != null ) {
 			//pass
 		} else {
-			this.drawableHelper = new com.sun.opengl.impl.GLDrawableHelper();
+			this.drawableHelper = new jogamp.opengl.GLDrawableHelper();
 		}
 		if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.glContext );
 			this.drawableHelper.invokeGL( this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter );
 		} else {
 			StringBuilder sb = new StringBuilder();

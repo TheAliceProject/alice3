@@ -17,14 +17,14 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
 public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
-	private Map<TimeListener, Long> freqMap = Collections.newConcurrentHashMap();
+	private Map<TimeListener, Double> freqMap = Collections.newConcurrentHashMap();
 	private List<TimeListener> timerList = Collections.newCopyOnWriteArrayList();
-	private Long currentTime;
-	private Map<TimeListener, Long> mostRecentFire = Collections.newConcurrentHashMap();
+	private Double currentTime;
+	private Map<TimeListener, Double> mostRecentFire = Collections.newConcurrentHashMap();
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			currentTime = System.currentTimeMillis();
+			currentTime = scene.getProgram().getAnimator().getCurrentTime();
 			update();
 		}
 	};
@@ -42,29 +42,27 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 		LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
-	public void addListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
+	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {
 		activationMap.put( timerEventListener, true );
 		if( !isEnabled ) {
 			enable();
 		}
 		registerPolicyMap( timerEventListener, policy );
 		registerIsFiringMap( timerEventListener );
-		Long a = secondsToMills( frequency );
-		freqMap.put( timerEventListener, a );
-		mostRecentFire.put( timerEventListener, Double.doubleToLongBits( 0 ) );
+		freqMap.put( timerEventListener, frequency );
+		mostRecentFire.put( timerEventListener, Double.MIN_VALUE );
 		timerList.add( timerEventListener );
 	}
 
 	private void update() {
 		for( TimeListener listener : timerList ) {
 			if( timeToFire( listener ) ) {
-				trigger( listener, new TimeEvent( ( currentTime - mostRecentFire.get( listener ) ) * 0.001 ) );
+				trigger( listener, new TimeEvent( ( currentTime - mostRecentFire.get( listener ) ) ) );
 			}
 		}
 	}
 
 	private void trigger( TimeListener listener, TimeEvent timerEvent ) {
-		mostRecentFire.put( listener, currentTime );
 		if( isActivated ) {
 			fireEvent( listener, timerEvent );
 		}
@@ -74,13 +72,9 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 		return ( ( ( currentTime - mostRecentFire.get( listener ) ) > freqMap.get( listener ) ) && activationMap.get( listener ) );
 	}
 
-	private Long secondsToMills( Long frequency ) {
-		return 1000 * frequency;
-	}
-
 	@Override
 	protected void nameOfFireCall( TimeListener listener, TimeEvent event ) {
-		listener.timeElapsed( event );
+		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() + ( currentTime - mostRecentFire.get( listener ) ) ) );
 	}
 
 	public void sceneActivated( SceneActivationEvent e ) {

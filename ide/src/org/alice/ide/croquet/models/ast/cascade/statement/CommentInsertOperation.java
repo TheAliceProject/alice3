@@ -62,7 +62,7 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
 	}
 
 	private CommentInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair );
+		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair, false );
 	}
 
 	@Override
@@ -70,5 +70,10 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
 		org.lgna.project.ast.Comment rv = org.lgna.project.ast.AstUtilities.createComment();
 		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
+	}
+
+	@Override
+	protected org.lgna.croquet.resolvers.Resolver createResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
 	}
 }

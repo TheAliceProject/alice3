@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="TeaTray">
     <BoundingBox>
-        <Min x="-1.143547534942627" y="0.0" z="-1.2023967504501343"/>
-        <Max x="1.143547534942627" y="0.043446991592645645" z="1.2023967504501343"/>
+        <Min x="-1.143547534942627" y="-0.02835945039987564" z="-1.2023963928222656"/>
+        <Max x="1.143547534942627" y="0.015087541192770004" z="1.202397108078003"/>
     </BoundingBox>
     <Tags>
         <Tag>alice</Tag>
@@ -12,6 +12,7 @@
         <Tag>plate</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
         <GroupTag>props:tea set</GroupTag>
     </GroupTags>
     <ThemeTags>

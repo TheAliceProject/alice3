@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="PaperLantern">
     <BoundingBox>
-        <Min x="-0.10624613612890244" y="0.0" z="-0.10624612867832184"/>
-        <Max x="0.10624613612890244" y="0.2348148226737976" z="0.10624612867832184"/>
+        <Min x="-0.10624613612890244" y="-0.1174074113368988" z="-0.10624612867832184"/>
+        <Max x="0.10624613612890244" y="0.1174074113368988" z="0.10624612867832184"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>
@@ -17,26 +17,26 @@
     </ThemeTags>
     <Resource modelName="ShortAndRound" resourceName="SHORT_AND_ROUND" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.09999999403953552" y="0.0" z="-0.09999998658895493"/>
-            <Max x="0.09999999403953552" y="0.1761111170053482" z="0.09999998658895493"/>
+            <Min x="-0.09999999403953552" y="-0.0880555585026741" z="-0.09999998658895493"/>
+            <Max x="0.09999999403953552" y="0.0880555585026741" z="0.09999998658895493"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="TallOval" resourceName="TALL_OVAL" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.08499999344348907" y="0.0" z="-0.07499998807907104"/>
-            <Max x="0.08499999344348907" y="0.2348148226737976" z="0.07499998807907104"/>
+            <Min x="-0.08500000089406967" y="-0.1174074113368988" z="-0.07499998807907104"/>
+            <Max x="0.08499998599290848" y="0.1174074113368988" z="0.07499998807907104"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SquareHourglass" resourceName="SQUARE_HOURGLASS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.0810173973441124" y="0.0" z="-0.0799066312611103"/>
-            <Max x="0.0810173973441124" y="0.1825074404478073" z="0.0799066312611103"/>
+            <Min x="-0.08013194054365158" y="-0.09139584004878998" z="-0.08150723576545715"/>
+            <Max x="0.08190285414457321" y="0.09111160039901733" z="0.07830602675676346"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="RoundHourglass" resourceName="ROUND_HOURGLASS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.10624613612890244" y="0.0" z="-0.10624612867832184"/>
-            <Max x="0.10624613612890244" y="0.21133334934711456" z="0.10624612867832184"/>
+            <Min x="-0.10624613612890244" y="-0.10566667467355728" z="-0.10624612867832184"/>
+            <Max x="0.10624613612890244" y="0.10566667467355728" z="0.10624612867832184"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayLoopTemplateDragModel extends StatementTemplateDragModel {
+public class ForEachInArrayLoopTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static ForEachInArrayLoopTemplateDragModel instance = new ForEachInArrayLoopTemplateDragModel();
 	}
@@ -60,7 +60,7 @@ public class ForEachInArrayLoopTemplateDragModel extends StatementTemplateDragMo
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair ).getOperation();
+	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getOperation();
 	}
 }

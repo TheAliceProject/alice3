@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Shower">
+    <BoundingBox>
+        <Min x="-0.4121316373348236" y="0.0" z="-0.40362420678138733"/>
+        <Max x="0.41213157773017883" y="2.24674129486084" z="0.40362417697906494"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bath</Tag>
+        <Tag>bathroom</Tag>
+        <Tag>washing</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bathroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bathroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shower" resourceName="SHOWER" textureName="SHOWER"/>
+</AliceModel>

@@ -45,30 +45,35 @@ package org.alice.stageide.personresource.data;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<String> {
-	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<HairColorName> {
+	private HairHatStyle hairHatStyle;
 
 	public HairColorNameListData() {
-		super( org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+		super( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( HairColorName.class ) );
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
-		return this.lifeStage;
+	public HairHatStyle getHairHatStyle() {
+		return this.hairHatStyle;
 	}
 
-	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( this.lifeStage == lifeStage ) {
+	public void setHairHatStyle( HairHatStyle hairHatStyle ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairHatStyle, hairHatStyle ) ) {
 			//pass
 		} else {
-			this.lifeStage = lifeStage;
+			this.hairHatStyle = hairHatStyle;
 			this.refresh();
 		}
 	}
 
 	@Override
-	protected java.util.List<String> createValues() {
-		if( this.lifeStage != null ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.lifeStage.getHairColors() );
+	protected java.util.List<HairColorName> createValues() {
+		if( this.hairHatStyle != null ) {
+			java.util.List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
+			java.util.List<HairColorName> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( hairColorNameHairCombos.size() );
+			for( HairColorNameHairCombo hairColorNameHairCombo : hairColorNameHairCombos ) {
+				rv.add( hairColorNameHairCombo.getHairColorName() );
+			}
+			return rv;
 		} else {
 			return java.util.Collections.emptyList();
 		}

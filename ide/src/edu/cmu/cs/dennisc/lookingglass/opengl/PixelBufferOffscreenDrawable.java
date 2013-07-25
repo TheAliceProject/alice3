@@ -69,11 +69,11 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
 				}
 			} else {
-				fireDisplay( drawable.getGL() );
+				fireDisplay( drawable.getGL().getGL2() );
 			}
 		}
 
-		public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
+		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
 	};
 

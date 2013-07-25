@@ -57,6 +57,8 @@ import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
 public class MouseClickEvent extends AbstractEvent {
 	protected java.awt.event.MouseEvent e;
 	protected org.lgna.story.SScene scene;
+	private double relativeX;
+	private double relativeY;
 	protected boolean isPickPerformed;
 	protected org.lgna.story.SModel modelAtMouseLocation;
 
@@ -64,6 +66,8 @@ public class MouseClickEvent extends AbstractEvent {
 		this.e = e;
 		this.scene = scene;
 		this.isPickPerformed = false;
+		relativeX = new Double( e.getX() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getWidth();
+		relativeY = new Double( e.getY() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getHeight();
 	}
 
 	protected synchronized void pickIfNecessary() {
@@ -122,6 +126,12 @@ public class MouseClickEvent extends AbstractEvent {
 	public static boolean isThisRightClick( MouseClickEvent mouseClickEvent ) {
 		return mouseClickEvent.e.getButton() == 3;
 	}
+
+	public Double[] getRelativeXYPosition() {
+		Double[] rv = { relativeX, relativeY };
+		return rv;
+	}
+
 	//	private synchronized void pickIfNecessary() {
 	//		if( this.isPickPerformed ) {
 	//			//pass

@@ -183,6 +183,9 @@ public class ImageUtilities {
 				java.io.InputStream is = url.openStream();
 				try {
 					rv = read( codecName, is, imageReadParam );
+				} catch( NoClassDefFoundError ncdfe ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( url );
+					rv = null;
 				} finally {
 					is.close();
 				}
@@ -453,6 +456,8 @@ public class ImageUtilities {
 			outputStream.flush();
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
+		} catch( java.lang.IndexOutOfBoundsException ioobe ) {
+			throw new RuntimeException( ioobe );
 		}
 
 		// if( imageEncodeParam == null ) {

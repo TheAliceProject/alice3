@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Gillmeister" name="JungleLog">
     <BoundingBox>
-        <Min x="-0.9134584367275238" y="0.0" z="-3.1461238861083984"/>
-        <Max x="0.9134584367275238" y="1.776886373758316" z="3.1461238861083984"/>
+        <Min x="-0.9147180914878845" y="-0.48988309502601624" z="-3.146122455596924"/>
+        <Max x="0.9121987819671631" y="1.2870032787322998" z="3.146125316619873"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>

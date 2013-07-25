@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementTemplateDragModel extends StatementTemplateDragModel {
+public class ConditionalStatementTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static ConditionalStatementTemplateDragModel instance = new ConditionalStatementTemplateDragModel();
 	}
@@ -60,7 +60,7 @@ public class ConditionalStatementTemplateDragModel extends StatementTemplateDrag
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair );
+	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

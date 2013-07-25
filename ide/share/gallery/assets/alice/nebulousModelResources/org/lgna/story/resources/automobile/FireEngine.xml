@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="FireEngine">
+    <BoundingBox>
+        <Min x="-1.1406418085098267" y="8.951228203102346E-9" z="-3.6616921424865723"/>
+        <Max x="1.1406418085098267" y="2.5460736751556396" z="3.6616921424865723"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>fireman</Tag>
+        <Tag>truck</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="FireEngine" resourceName="FIRE_ENGINE" textureName="FIRE_ENGINE"/>
+</AliceModel>

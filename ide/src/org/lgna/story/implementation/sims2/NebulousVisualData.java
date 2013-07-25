@@ -89,10 +89,10 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 
 	public void unload() {
 		if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Person ) {
-			( (edu.cmu.cs.dennisc.nebulous.Person)this.nebModel ).unload();
+			( (edu.cmu.cs.dennisc.nebulous.Person)this.nebModel ).synchronizedUnload();
 		}
 		else if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Thing ) {
-			( (edu.cmu.cs.dennisc.nebulous.Thing)this.nebModel ).unload();
+			( (edu.cmu.cs.dennisc.nebulous.Thing)this.nebModel ).synchronizedUnload();
 		}
 	}
 

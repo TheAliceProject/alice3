@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +52,13 @@ public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.patter
 	protected E m_element;
 
 	public void handleReleased() {
+		if( m_element == null )
+		{
+			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
+		}
 		AdapterFactory.forget( m_element );
 		ChangeHandler.removeListenersAndObservers( m_element );
+		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + m_element.hashCode() + " : " + this + "->" + m_element );
 		m_element = null;
 	}
 

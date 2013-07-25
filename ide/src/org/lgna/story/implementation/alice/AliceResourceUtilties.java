@@ -58,6 +58,7 @@ import javax.imageio.ImageIO;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resourceutilities.ModelResourceExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
@@ -186,7 +187,11 @@ public class AliceResourceUtilties {
 		{
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-			return decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
+			TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
+			for( TexturedAppearance ta : rv ) {
+				( (edu.cmu.cs.dennisc.texture.BufferedImageTexture)ta.diffuseColorTexture.getValue() ).directSetMipMappingDesired( false );
+			}
+			return rv;
 		} catch( Exception e )
 		{
 			e.printStackTrace();
@@ -344,10 +349,16 @@ public class AliceResourceUtilties {
 		String visualName = AliceResourceClassUtilities.getAliceClassName( resourceClass.getSimpleName() );
 		String textureName = resourceName;
 
-		//Check the simple case and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
+		//Check the simple case (visual name is class name and texture name is resource name) and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
 		//Use that as the visual name and the remaining name as the texture name
 		boolean found = false;
 		if( checkVisualAndTextureName( resourceClass, visualName, textureName ) ) {
+			found = true;
+		}
+		//Try using the resourceName as the visual name and assume no specified texture
+		else if( checkVisualAndTextureName( resourceClass, enumToCamelCase( resourceName ), "" ) ) {
+			visualName = enumToCamelCase( resourceName );
+			textureName = "";
 			found = true;
 		}
 		else {
@@ -360,6 +371,7 @@ public class AliceResourceUtilties {
 					visualName = enumToCamelCase( modelName.toString() );
 					textureName = arrayToEnum( splitName, i + 1, splitName.length );
 					if( checkVisualAndTextureName( resourceClass, visualName, textureName ) ) {
+						checkVisualAndTextureName( resourceClass, visualName, textureName );
 						found = true;
 						break;
 					}
@@ -456,13 +468,14 @@ public class AliceResourceUtilties {
 
 	public static String getDefaultTextureEnumName( String resourceName ) {
 		return "DEFAULT";
+		//		return AliceResourceUtilties.makeEnumName( resourceName );
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
-		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
+		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
 			textureName = "";
 		}
 		else if( textureName.length() > 0 ) {
@@ -700,6 +713,7 @@ public class AliceResourceUtilties {
 
 	public static java.net.URL getThumbnailURL( Class<?> modelResource, String instanceName )
 	{
+
 		return getThumbnailURLInternal( modelResource, instanceName );
 	}
 
@@ -1060,6 +1074,11 @@ public class AliceResourceUtilties {
 	public static String[] getThemeTags( ResourceKey key, Locale locale )
 	{
 		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
+	}
+
+	public static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type )
+	{
+		return false;
 	}
 
 }

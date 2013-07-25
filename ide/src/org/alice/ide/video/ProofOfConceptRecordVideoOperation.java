@@ -69,7 +69,7 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 	}
 
 	@Override
-	protected org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
+	public org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
 		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
 	}
 

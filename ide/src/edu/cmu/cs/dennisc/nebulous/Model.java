@@ -14,31 +14,74 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	static {
 		StorytellingResources.getInstance().loadSimsBundles();
+		//		Manager.setDebugDraw( true );
 	}
 
 	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
 	protected edu.cmu.cs.dennisc.scenegraph.Visual associatedVisual;
 
+	protected final Object renderLock = new Object();
+
 	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		Manager.initializeIfNecessary();
 	}
 
-	public native void render( javax.media.opengl.GL gl, float globalBrightness );
+	private native void render( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
 
-	public native void pick();
+	public void synchronizedRender( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque )
+	{
+		synchronized( renderLock )
+		{
+			try {
+				this.render( gl, globalBrightness, renderAlpha, renderOpaque );
+			} catch( RuntimeException re ) {
+				System.err.println( this );
+				throw re;
+			}
+		}
+	}
 
-	//    public native boolean isAlphaBlended();
-	private native void getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId name, double[] bboxData );
+	private native void pick();
+
+	public void synchronizedPick()
+	{
+		synchronized( renderLock )
+		{
+			pick();
+		}
+	}
+
+	private native boolean isAlphaBlended();
+
+	public boolean synchronizedIsAlphaBlended()
+	{
+		synchronized( renderLock )
+		{
+			return isAlphaBlended();
+		}
+	}
+
+	private native boolean hasOpaque();
+
+	public boolean synchronizedHasOpaque()
+	{
+		synchronized( renderLock )
+		{
+			return hasOpaque();
+		}
+	}
+
+	private native void getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent, double[] bboxData );
 
 	private native void updateAxisAlignedBoundingBox( double[] bboxData );
 
-	public native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	private native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent );
 
-	public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	private native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent );
 
-	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
+	private native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent, double[] transformIn );
 
-	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	private native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 
 	public void setVisual( edu.cmu.cs.dennisc.scenegraph.Visual visual ) {
 		this.associatedVisual = visual;
@@ -55,7 +98,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		try {
-			getOriginalTransformationForPartNamed( buffer, joint );
+			getOriginalTransformationForPartNamed( buffer, joint, joint.getParent() );
 		} catch( RuntimeException re ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
 			throw re;
@@ -67,7 +110,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		try {
-			getLocalTransformationForPartNamed( buffer, joint );
+			getLocalTransformationForPartNamed( buffer, joint, joint.getParent() );
 		} catch( RuntimeException re ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
 			throw re;
@@ -77,7 +120,9 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 
 	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
-		setLocalTransformationForPartNamed( joint, localTrans.getAsColumnMajorArray12() );
+		synchronized( renderLock ) {
+			setLocalTransformationForPartNamed( joint, joint.getParent(), localTrans.getAsColumnMajorArray12() );
+		}
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformationForJoint( org.lgna.story.resources.JointId joint ) {
@@ -93,7 +138,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] bboxData = new double[ 6 ];
-		getAxisAlignedBoundingBoxForJoint( joint, bboxData );
+		getAxisAlignedBoundingBoxForJoint( joint, joint.getParent(), bboxData );
 		AxisAlignedBox bbox = new AxisAlignedBox( bboxData[ 0 ], bboxData[ 1 ], bboxData[ 2 ], bboxData[ 3 ], bboxData[ 4 ], bboxData[ 5 ] );
 		bbox.scale( this.associatedVisual.scale.getValue() );
 		return bbox;

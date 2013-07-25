@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Taxi">
+    <BoundingBox>
+        <Min x="-1.1474789381027222" y="-5.874243313996885E-9" z="-2.2970077991485596"/>
+        <Max x="1.1474789381027222" y="2.1098616123199463" z="2.2970077991485596"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>car</Tag>
+        <Tag>yellow</Tag>
+        <Tag>cab</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Taxi" resourceName="TAXI" textureName="TAXI"/>
+</AliceModel>

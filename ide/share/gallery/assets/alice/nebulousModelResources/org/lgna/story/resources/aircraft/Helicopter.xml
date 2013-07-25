@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Helicopter">
+    <BoundingBox>
+        <Min x="-5.480959415435791" y="-3.356710465141077E-8" z="-6.681793689727783"/>
+        <Max x="5.480959892272949" y="3.912975788116455" z="6.681794166564941"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Executive" resourceName="EXECUTIVE" textureName="EXECUTIVE">
+        <BoundingBox>
+            <Min x="-5.480959415435791" y="-3.356710465141077E-8" z="-6.681793689727783"/>
+            <Max x="5.480959892272949" y="3.912975788116455" z="6.681794166564941"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Military" resourceName="MILITARY" textureName="MILITARY">
+        <BoundingBox>
+            <Min x="-5.480959415435791" y="-3.356710465141077E-8" z="-6.681793689727783"/>
+            <Max x="5.480959892272949" y="3.912975788116455" z="6.681794166564941"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

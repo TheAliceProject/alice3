@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="Sofa">
     <BoundingBox>
-        <Min x="-1.2719825506210327" y="0.0" z="-0.3912557363510132"/>
+        <Min x="-1.2719824314117432" y="0.0" z="-0.3912557363510132"/>
         <Max x="1.2719825506210327" y="1.0551837682724" z="0.3912557363510132"/>
     </BoundingBox>
     <Tags>
@@ -10,6 +10,7 @@
         <Tag>seat</Tag>
     </Tags>
     <GroupTags>
+        <GroupTag>household:living room</GroupTag>
         <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
@@ -144,31 +145,31 @@
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_BLACK_LEATHER" textureName="BLACK_LEATHER">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_RED" textureName="RED">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_ALLIGATOR" textureName="ALLIGATOR">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_BRWON_LEATHER" textureName="BRWON_LEATHER">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_WHITE" textureName="WHITE">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
@@ -220,7 +221,7 @@
             <Max x="1.2707796096801758" y="0.8310412168502808" z="0.3421614170074463"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="Quaint" resourceName="QUAINT_WHITE" textureName="WHITE">
+    <Resource modelName="Quaint" resourceName="QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS" textureName="SOFA_QUAINT_FABRIC_WHITE_FLOWERS">
         <BoundingBox>
             <Min x="-1.2707796096801758" y="0.0" z="-0.3421614170074463"/>
             <Max x="1.2707796096801758" y="0.8310412168502808" z="0.3421614170074463"/>

@@ -66,7 +66,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 
 	private final TextureBinding textureBinding = new TextureBinding();
 	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private com.sun.opengl.util.texture.TextureData textureData;
+	private com.jogamp.opengl.util.texture.TextureData textureData;
 	private boolean isTextureDataDirty = true;
 
 	public void addRenderContext( RenderContext rc ) {
@@ -109,12 +109,13 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	protected static com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
-		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
-		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
+	protected static com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+		com.jogamp.opengl.util.texture.TextureData rv = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
+		return rv;
+		//return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
 
-	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
+	protected abstract com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTexture );
 
 	public ForgettableBinding bindTexture( RenderContext rc ) {
 		if( this.isDirty() ) {

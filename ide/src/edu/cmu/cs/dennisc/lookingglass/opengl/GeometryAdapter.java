@@ -43,8 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_COMPILE_AND_EXECUTE;
 import static javax.media.opengl.GL.GL_LINES;
+import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 
 /**
  * @author Dennis Cosgrove
@@ -73,61 +73,59 @@ public abstract class GeometryAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Ge
 	}
 
 	private boolean m_isGeometryChanged;
+    public abstract boolean isAlphaBlended();
+    public boolean hasOpaque() {
+    	return !isAlphaBlended();
+    }
 
 	protected boolean isGeometryChanged() {
 		return m_isGeometryChanged;
 	}
 
+    protected boolean isDisplayListDesired() {
+    	return true;
+    }
+    protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
+    	return isGeometryChanged();
+    }
 	protected void setIsGeometryChanged( boolean isGeometryChanged ) {
 		m_isGeometryChanged = isGeometryChanged;
 	}
 
-	public abstract boolean isAlphaBlended();
-
-	protected boolean isDisplayListDesired() {
-		return true;
-	}
-
-	protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
-		return isGeometryChanged();
-	}
-
-	//todo: better name
-	protected abstract void renderGeometry( RenderContext rc );
-
-	protected abstract void pickGeometry( PickContext pc, boolean isSubElementRequired );
-
-	public final void render( RenderContext rc ) {
-		if( isDisplayListDesired() ) {
-			Integer id = rc.getDisplayListID( this );
-			if( id == null ) {
-				id = rc.generateDisplayListID( this );
-				setIsGeometryChanged( true );
-			}
-			if( isDisplayListInNeedOfRefresh( rc ) || ( rc.gl.glIsList( id ) == false ) ) {
-				rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
-				try {
-					renderGeometry( rc );
-				} finally {
-					rc.gl.glEndList();
-					//    				int error = rc.gl.glGetError();
-					//    				if( error != GL_NO_ERROR ) {
-					//    					throw new javax.media.opengl.GLException( rc.gl.glGetString( error ) );
-					//    				}
-				}
-				setIsGeometryChanged( false );
-			} else {
-				if( rc.gl.glIsList( id ) ) {
-					rc.gl.glCallList( id );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				}
-			}
-		} else {
-			renderGeometry( rc );
-		}
-	}
-
+    //todo: better name
+    protected abstract void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType );
+    protected abstract void pickGeometry( PickContext pc, boolean isSubElementRequired );
+    
+    public final void render( RenderContext rc, VisualAdapter.RenderType renderType ) {
+    	if( isDisplayListDesired() ) {
+    		Integer id = rc.getDisplayListID( this );
+    		if( id == null ) {
+    			id = rc.generateDisplayListID( this );
+    			setIsGeometryChanged( true );
+    		}
+    		if( isDisplayListInNeedOfRefresh( rc ) || rc.gl.glIsList( id ) == false ) {
+    			rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
+    			try {
+            		renderGeometry( rc, renderType );
+    			} finally {
+    				rc.gl.glEndList();
+//    				int error = rc.gl.glGetError();
+//    				if( error != GL_NO_ERROR ) {
+//    					throw new javax.media.opengl.GLException( rc.gl.glGetString( error ) );
+//    				}
+    			}
+    			setIsGeometryChanged( false );
+    		} else {
+       			if( rc.gl.glIsList( id ) ) {
+           			rc.gl.glCallList( id );
+       			} else {
+       				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+       			}
+    		}
+    	} else {
+    		renderGeometry( rc, renderType );
+    	}
+    }
 	public final void pick( PickContext pc, boolean isSubElementRequired ) {
 		//todo: display lists?
 		pc.gl.glBegin( GL_LINES );

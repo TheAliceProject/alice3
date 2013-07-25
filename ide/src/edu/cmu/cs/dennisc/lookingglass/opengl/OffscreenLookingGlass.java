@@ -57,7 +57,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		} else {
 			share = null;
 		}
-		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
+		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
 	}
 
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {

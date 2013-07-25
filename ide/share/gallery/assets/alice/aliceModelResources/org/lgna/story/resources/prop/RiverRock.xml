@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Pei Hong Tan" name="RiverRock">
     <BoundingBox>
-        <Min x="-1.0689117312431335" y="0.0" z="-1.4153876900672913"/>
-        <Max x="1.0689117312431335" y="2.051267147064209" z="1.4153876900672913"/>
+        <Min x="-1.068911075592041" y="-1.0256335735321045" z="-1.4153881072998047"/>
+        <Max x="1.068912386894226" y="1.0256335735321045" z="1.4153872728347778"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>
@@ -23,14 +23,14 @@
     </ThemeTags>
     <Resource modelName="BigRock" resourceName="BIG_ROCK" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-1.0689117312431335" y="0.0" z="-1.4153876900672913"/>
-            <Max x="1.0689117312431335" y="2.051267147064209" z="1.4153876900672913"/>
+            <Min x="-1.068911075592041" y="-1.0256335735321045" z="-1.4153881072998047"/>
+            <Max x="1.068912386894226" y="1.0256335735321045" z="1.4153872728347778"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="LittleRock" resourceName="LITTLE_ROCK" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.2623448371887207" y="0.0" z="-0.2660122811794281"/>
-            <Max x="0.2623448371887207" y="0.627853661775589" z="0.2660122811794281"/>
+            <Min x="-0.2623451054096222" y="-0.3139268457889557" z="-0.2660122811794281"/>
+            <Max x="0.2623445689678192" y="0.3139268159866333" z="0.2660122811794281"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

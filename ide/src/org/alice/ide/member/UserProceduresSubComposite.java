@@ -68,6 +68,11 @@ public class UserProceduresSubComposite extends UserMethodsSubComposite {
 
 	@Override
 	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+		if( method.isStatic() ) {
+			if( "main".equals( method.getName() ) ) {
+				return false;
+			}
+		}
 		return method.isProcedure();
 	}
 

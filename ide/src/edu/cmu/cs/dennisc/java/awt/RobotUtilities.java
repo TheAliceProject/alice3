@@ -50,18 +50,29 @@ public class RobotUtilities {
 		throw new AssertionError();
 	}
 
+	private static java.awt.Robot robot = null;
+
 	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
 		try {
 			java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
 			java.awt.Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
 			java.awt.GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
-			java.awt.Robot robot = new java.awt.Robot( graphicsDevice );
+			robot = new java.awt.Robot( graphicsDevice );
 			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
 			p.x -= graphicsConfigurationBounds.x;
 			p.y -= graphicsConfigurationBounds.y;
 			robot.mouseMove( p.x, p.y );
 		} catch( Throwable t ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+		}
+	}
+
+	public static java.awt.Color getPixelColor( int x, int y ) {
+		if( robot != null ) {
+			return robot.getPixelColor( x, y );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
+			return null;
 		}
 	}
 }

@@ -43,12 +43,8 @@
 
 package org.alice.ide.swing.icons;
 
-import javax.swing.Icon;
-
-public class ColorIcon implements Icon
-{
-
-	private static final int DEFAULT_SIZE = 15;
+public class ColorIcon implements javax.swing.Icon {
+	public static final int DEFAULT_SIZE = 15;
 	private java.awt.Color fillColor;
 	private java.awt.Color outlineColor;
 	private int width;
@@ -60,6 +56,10 @@ public class ColorIcon implements Icon
 
 	public ColorIcon( java.awt.Color color, int size ) {
 		this( color, size, size );
+	}
+
+	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
+		this( color, size.width, size.height );
 	}
 
 	public ColorIcon( java.awt.Color color, int width, int height ) {
@@ -76,24 +76,20 @@ public class ColorIcon implements Icon
 		}
 	}
 
-	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
-		this( color, size.width, size.height );
-	}
-
 	public int getIconWidth() {
-		return this.width + 3 + 2;
+		return this.width;
 	}
 
 	public int getIconHeight() {
-		return this.height + 3;
+		return this.height;
 	}
 
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
-		g.fillRect( x + 1 + 2, y + 1, this.width, this.height );
+		g.fillRect( x, y, this.width, this.height );
 		if( this.outlineColor != null ) {
 			g.setColor( this.outlineColor );
-			g.drawRect( x + 1 + 2, y + 1, this.width, this.height );
+			g.drawRect( x, y, this.width, this.height );
 		}
 	}
 

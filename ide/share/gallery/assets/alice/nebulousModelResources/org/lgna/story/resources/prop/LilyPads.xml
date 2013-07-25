@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="LilyPads">
+    <BoundingBox>
+        <Min x="-0.4731646478176117" y="0.0" z="-0.4681472182273865"/>
+        <Max x="0.4731646478176117" y="0.05721766874194145" z="0.4681472182273865"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>flower</Tag>
+        <Tag>lily</Tag>
+        <Tag>pad</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="NoFlowers" resourceName="NO_FLOWERS_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.3767731785774231" y="0.0" z="-0.34344977140426636"/>
+            <Max x="0.3767731785774231" y="0.03215954452753067" z="0.34344977140426636"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoFlowers" resourceName="NO_FLOWERS_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.3767731785774231" y="0.0" z="-0.34344977140426636"/>
+            <Max x="0.3767731785774231" y="0.03215954452753067" z="0.34344977140426636"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoFlowers" resourceName="NO_FLOWERS_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-0.3767731785774231" y="0.0" z="-0.34344977140426636"/>
+            <Max x="0.3767731785774231" y="0.03215954452753067" z="0.34344977140426636"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SomeFlowers" resourceName="SOME_FLOWERS_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.4731646478176117" y="0.0" z="-0.4681472182273865"/>
+            <Max x="0.4731646478176117" y="0.047869011759757996" z="0.4681472182273865"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SomeFlowers" resourceName="SOME_FLOWERS_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.4731646478176117" y="0.0" z="-0.4681472182273865"/>
+            <Max x="0.4731646478176117" y="0.047869011759757996" z="0.4681472182273865"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SomeFlowers" resourceName="SOME_FLOWERS_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-0.4731646478176117" y="0.0" z="-0.4681472182273865"/>
+            <Max x="0.4731646478176117" y="0.047869011759757996" z="0.4681472182273865"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SomeFlowers" resourceName="SOME_FLOWERS_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.4731646478176117" y="0.0" z="-0.4681472182273865"/>
+            <Max x="0.4731646478176117" y="0.047869011759757996" z="0.4681472182273865"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ManyFlowers" resourceName="MANY_FLOWERS_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.4669860899448395" y="0.0" z="-0.4646509885787964"/>
+            <Max x="0.4669860899448395" y="0.05721766874194145" z="0.4646509885787964"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ManyFlowers" resourceName="MANY_FLOWERS_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.4669860899448395" y="0.0" z="-0.4646509885787964"/>
+            <Max x="0.4669860899448395" y="0.05721766874194145" z="0.4646509885787964"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ManyFlowers" resourceName="MANY_FLOWERS_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-0.4669860899448395" y="0.0" z="-0.4646509885787964"/>
+            <Max x="0.4669860899448395" y="0.05721766874194145" z="0.4646509885787964"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ManyFlowers" resourceName="MANY_FLOWERS_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.4669860899448395" y="0.0" z="-0.4646509885787964"/>
+            <Max x="0.4669860899448395" y="0.05721766874194145" z="0.4646509885787964"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Sparse" resourceName="SPARSE_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.39831891655921936" y="0.0" z="-0.4432865083217621"/>
+            <Max x="0.39831891655921936" y="0.051209863275289536" z="0.4432865083217621"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Sparse" resourceName="SPARSE_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.39831891655921936" y="0.0" z="-0.4432865083217621"/>
+            <Max x="0.39831891655921936" y="0.051209863275289536" z="0.4432865083217621"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Sparse" resourceName="SPARSE_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-0.39831891655921936" y="0.0" z="-0.4432865083217621"/>
+            <Max x="0.39831891655921936" y="0.051209863275289536" z="0.4432865083217621"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Sparse" resourceName="SPARSE_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.39831891655921936" y="0.0" z="-0.4432865083217621"/>
+            <Max x="0.39831891655921936" y="0.051209863275289536" z="0.4432865083217621"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

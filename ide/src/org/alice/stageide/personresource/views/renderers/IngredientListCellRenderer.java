@@ -45,14 +45,43 @@ package org.alice.stageide.personresource.views.renderers;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
+public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
+
+	private static final java.io.File GALLERY_ROOT = org.lgna.story.resourceutilities.StorytellingResources.getGalleryRootDirectory();
+	private static final java.io.File IMAGE_ROOT = new java.io.File( GALLERY_ROOT, "ide/person" );
+
+	public static javax.swing.Icon getIconForPath( String path ) {
+		java.net.URL urlForIcon;
+		java.io.File file = new java.io.File( IMAGE_ROOT, path );
+		if( file.exists() ) {
+			try {
+				urlForIcon = file.toURL();
+			} catch( java.net.MalformedURLException murle ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( murle, file );
+				urlForIcon = null;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
+			urlForIcon = null;
+		}
+		if( urlForIcon != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+	}
+
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 
 	protected abstract String getSubPath();
 
-	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
+	}
+
+	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
 		sb.append( this.getSubPath() );
 		sb.append( "/" );
 		sb.append( skinTone );
@@ -61,37 +90,46 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 		sb.append( "." );
 		sb.append( enumConstantName );
 		sb.append( ".png" );
-		java.net.URL rv = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( sb.toString() );
-		assert rv != null : sb;
-		return rv;
+		return sb.toString();
 	}
 
-	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getBaseSkinToneState().getValue();
+	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		return clsName;
+	}
+
+	protected Object getValue( E value ) {
+		return value;
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E val, int index, boolean isSelected, boolean cellHasFocus ) {
 		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
-			String enumConstantName = value.toString();
+		Object v = getValue( val );
+		if( v != null ) {
+			String clsName = v.getClass().getSimpleName();
+			clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
+			String enumConstantName = v.toString();
 
-			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
-
-			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
 			rv.setOpaque( isSelected );
-			if( isSelected ) {
-				rv.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
+
+			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
+			javax.swing.Icon icon;
+			if( baseSkinTone != null ) {
+				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+				icon = getIconForPath( path );
+			} else {
+				icon = null;
 			}
 
-			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );
+				if( isSelected ) {
+					rv.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
+				}
 			} else {
 				rv.setText( "image not found" );
 			}

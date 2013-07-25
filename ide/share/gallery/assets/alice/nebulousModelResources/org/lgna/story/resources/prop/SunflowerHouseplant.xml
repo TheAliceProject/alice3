@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="SunflowerHouseplant">
+    <BoundingBox>
+        <Min x="-0.21935346722602844" y="0.0" z="-0.22950953245162964"/>
+        <Max x="0.21935346722602844" y="1.0330778360366821" z="0.22950953245162964"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+        <Tag>yellow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="SunflowerHouseplant" resourceName="SUNFLOWER_HOUSEPLANT" textureName="SUNFLOWER_HOUSEPLANT"/>
+</AliceModel>

@@ -46,12 +46,24 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public enum BaseEyeColor implements EyeColor {
-	LIGHT_BLUE,
-	DARK_BLUE,
-	GREEN,
-	GRAY,
-	DARK_BROWN;
+	LIGHT_BLUE( new java.awt.Color( 87, 125, 185 ) ),
+	DARK_BLUE( new java.awt.Color( 56, 77, 121 ) ),
+	GREEN( new java.awt.Color( 37, 123, 75 ) ),
+	GRAY( new java.awt.Color( 140, 149, 164 ) ),
+	DARK_BROWN( new java.awt.Color( 106, 74, 57 ) );
+
+	private final java.awt.Color color;
+
+	private BaseEyeColor( java.awt.Color color ) {
+		this.color = color;
+	}
+
 	public static BaseEyeColor getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseEyeColor.class );
+	}
+
+	//todo: package-private
+	public java.awt.Color getColor() {
+		return this.color;
 	}
 }

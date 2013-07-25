@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="Yeti">
     <BoundingBox>
-        <Min x="-0.8277931809425354" y="0.0" z="-0.6280850470066071"/>
-        <Max x="0.8277931809425354" y="2.4585642595775425" z="0.6280850470066071"/>
+        <Min x="-0.9568517804145813" y="-1.8403725698590279E-4" z="-0.3485901653766632"/>
+        <Max x="0.9360443949699402" y="2.4934401512145996" z="0.8903805613517761"/>
     </BoundingBox>
     <Tags>
         <Tag>snow</Tag>
@@ -17,5 +17,19 @@
     <ThemeTags>
         <ThemeTag>*snow</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Yeti" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9568517804145813" y="-1.8403725698590279E-4" z="-0.32376089692115784"/>
+            <Max x="0.9360443949699402" y="2.4934401512145996" z="0.8605365753173828"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9277700781822205" y="-1.8403725698590279E-4" z="-0.3485901653766632"/>
+            <Max x="0.8866678476333618" y="2.479762554168701" z="0.8903805613517761"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
 </AliceModel>

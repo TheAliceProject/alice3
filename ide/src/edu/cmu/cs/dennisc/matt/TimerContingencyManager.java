@@ -36,28 +36,28 @@ public class TimerContingencyManager {
 		this.timer = timer;
 	}
 
-	public void register( WhileCollisionListener listener, List<SThing> groupOne, List<SThing> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileCollisionListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
 
-	public void register( WhileProximityListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileProximityListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
 
-	public void register( WhileOcclusionListener listener, List<SModel> groupOne, List<SModel> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileOcclusionListener listener, List<SModel> groupOne, List<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
 		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
 	}
 
-	public void register( WhileInViewListener listener, List<SModel> group, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileInViewListener listener, List<SModel> group, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addViewEnterListener( newEnterViewAdapter( listener ), (SModel[])toArray( group ) );

@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_FOG_END;
-import static javax.media.opengl.GL.GL_FOG_MODE;
-import static javax.media.opengl.GL.GL_FOG_START;
 import static javax.media.opengl.GL.GL_LINEAR;
+import static javax.media.opengl.GL2ES1.GL_FOG_END;
+import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
+import static javax.media.opengl.GL2ES1.GL_FOG_START;
 
 /**
  * @author Dennis Cosgrove

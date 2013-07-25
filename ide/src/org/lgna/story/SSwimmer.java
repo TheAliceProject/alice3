@@ -48,6 +48,14 @@ public class SSwimmer extends SJointedModel {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_EYE );
 	}
 
+	public SJoint getLeftEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_EYELID );
+	}
+
+	public SJoint getRightEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_EYELID );
+	}
+
 	public SJoint getFrontLeftFin() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN );
 	}

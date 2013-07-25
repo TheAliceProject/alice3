@@ -60,6 +60,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -154,8 +155,8 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 
 		this.statusLabel = new JLabel( NOT_LOGGED_IN_STATUS );
 		this.statusLabel.setForeground( ERROR_COLOR );
-		this.statusLabel.setHorizontalAlignment( JLabel.CENTER );
-		this.statusLabel.setVerticalAlignment( JLabel.CENTER );
+		this.statusLabel.setHorizontalAlignment( SwingConstants.CENTER );
+		this.statusLabel.setVerticalAlignment( SwingConstants.CENTER );
 
 		JPanel movieInfoPanel = new JPanel();
 		movieInfoPanel.setOpaque( true );

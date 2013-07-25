@@ -140,7 +140,7 @@ public abstract class ApiConfigurationManager {
 		rv.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
 		rv.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
 		rv.add( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( String.class ) );
+		rv.add( org.lgna.project.ast.JavaType.STRING_TYPE );
 		return rv;
 	}
 
@@ -185,7 +185,7 @@ public abstract class ApiConfigurationManager {
 			this.mapTypeToText.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
 			this.mapTypeToText.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
 			this.mapTypeToText.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
-			this.mapTypeToText.put( org.lgna.project.ast.JavaType.getInstance( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
+			this.mapTypeToText.put( org.lgna.project.ast.JavaType.STRING_TYPE, createExampleText( "\"hello\", \"goodbye\"" ) );
 		}
 		return this.mapTypeToText.get( type );
 	}
@@ -227,4 +227,6 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.project.ast.UserType<?> augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
 
 	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
+
+	public abstract boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type );
 }

@@ -232,7 +232,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			}
 			else
 			{
-				offsetTransform.translation.y += -box.getMinimum().y;
+				//				offsetTransform.translation.y += -box.getMinimum().y;
 				this.sgBoundingBoxDecorator.setBox( box );
 				this.sgAxes = new ModestAxes( box.getWidth() * .5 );
 			}

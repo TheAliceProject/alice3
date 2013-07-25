@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Gillmeister" name="Horse">
     <BoundingBox>
-        <Min x="-0.2721165120601654" y="0.0" z="-0.9276220798492432"/>
-        <Max x="0.2721165120601654" y="1.7127380715683103" z="0.9276220798492432"/>
+        <Min x="-0.2722427546977997" y="-0.006146346218883991" z="-0.8915166258811951"/>
+        <Max x="0.27199026942253113" y="1.7065917253494263" z="0.9668990969657898"/>
     </BoundingBox>
     <Tags>
         <Tag>southwest</Tag>
@@ -19,26 +19,26 @@
     </ThemeTags>
     <Resource modelName="LongMane" resourceName="LONG_MANE_INDIGO" textureName="INDIGO">
         <BoundingBox>
-            <Min x="-0.2721165120601654" y="0.0" z="-0.9276220798492432"/>
-            <Max x="0.2721165120601654" y="1.7127380715683103" z="0.9276220798492432"/>
+            <Min x="-0.2722427546977997" y="-0.006146346218883991" z="-0.8915166258811951"/>
+            <Max x="0.27199026942253113" y="1.7065917253494263" z="0.9637275338172913"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="LongMane" resourceName="LONG_MANE_RED" textureName="RED">
         <BoundingBox>
-            <Min x="-0.2721165120601654" y="0.0" z="-0.9276220798492432"/>
-            <Max x="0.2721165120601654" y="1.7127380715683103" z="0.9276220798492432"/>
+            <Min x="-0.2722427546977997" y="-0.006146346218883991" z="-0.8915166258811951"/>
+            <Max x="0.27199026942253113" y="1.7065917253494263" z="0.9637275338172913"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="ShortMane" resourceName="SHORT_MANE_INDIGO" textureName="INDIGO">
         <BoundingBox>
-            <Min x="-0.27145177125930786" y="0.0" z="-0.9252542853355408"/>
-            <Max x="0.27145177125930786" y="1.7062047603540123" z="0.9252542853355408"/>
+            <Min x="-0.27166861295700073" y="-0.003970015328377485" z="-0.8836094737052917"/>
+            <Max x="0.271234929561615" y="1.7022347450256348" z="0.9668990969657898"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="ShortMane" resourceName="SHORT_MANE_RED" textureName="RED">
         <BoundingBox>
-            <Min x="-0.27145177125930786" y="0.0" z="-0.9252542853355408"/>
-            <Max x="0.27145177125930786" y="1.7062047603540123" z="0.9252542853355408"/>
+            <Min x="-0.27166861295700073" y="-0.003970015328377485" z="-0.8836094737052917"/>
+            <Max x="0.271234929561615" y="1.7022347450256348" z="0.9668990969657898"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

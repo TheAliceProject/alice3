@@ -42,7 +42,7 @@
  */
 package org.lgna.story.resources.sims2;
 
-public abstract class IngredientManager<E extends Ingredient> {
+public abstract class IngredientManager<E> {
 	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	protected void add( Class<? extends E> interfaceCls, Class<? extends E>... implementingClses ) {
@@ -51,18 +51,14 @@ public abstract class IngredientManager<E extends Ingredient> {
 
 	protected abstract Class<Class<? extends E>> getImplementingClassesComponentType();
 
-	protected abstract Class<? extends E> getUnisexIntefaceClass( LifeStage lifeStage );
-
-	protected abstract Class<? extends E> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender );
+	protected abstract Class<? extends E> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender );
 
 	public Class<? extends E>[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
-		Class<? extends E> interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
-		Class<? extends E> interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
+		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
 
-		Class<? extends E>[] enumClsesUnisex = this.mapInterfaceClsToImplementingClses.get( interfaceClsUnisex );
 		Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
 
-		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered, enumClsesUnisex );
+		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered );
 	}
 
 	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
@@ -90,9 +86,8 @@ public abstract class IngredientManager<E extends Ingredient> {
 		assert lifeStage != null;
 		assert gender != null;
 		Class<?> eCls = e.getClass();
-		Class<? extends E> interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
-		Class<? extends E> interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
-		boolean rv = interfaceClsUnisex.isAssignableFrom( eCls ) || interfaceClsGendered.isAssignableFrom( eCls );
+		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
+		boolean rv = interfaceClsGendered.isAssignableFrom( eCls );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( rv, lifeStage, gender, eCls, interfaceClsGendered, interfaceClsUnisex );
 		return rv;
 	}

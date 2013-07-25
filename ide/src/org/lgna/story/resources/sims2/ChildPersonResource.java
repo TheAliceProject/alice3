@@ -47,8 +47,23 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public final class ChildPersonResource extends PersonResource {
+	public ChildPersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
+	}
+
+	@Deprecated
+	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
+	}
+
+	@Deprecated
 	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
+	}
+
+	@Deprecated
+	public ChildPersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
 	}
 
 	@Override

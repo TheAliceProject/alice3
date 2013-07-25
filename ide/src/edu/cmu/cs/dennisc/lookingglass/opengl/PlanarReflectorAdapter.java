@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_CLIP_PLANE0;
+import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
 
 /**
  * @author Dennis Cosgrove
@@ -179,12 +179,12 @@ public class PlanarReflectorAdapter extends VisualAdapter<edu.cmu.cs.dennisc.sce
 		rc.gl.glMultMatrixd( m_reflectionBuffer );
 	}
 
-	public void renderStencil( RenderContext rc ) {
+	public void renderStencil( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		rc.gl.glPushMatrix();
 		synchronized( this ) {
 			rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
 		}
-		actuallyRender( rc );
+		actuallyRender( rc, renderType );
 		rc.gl.glPopMatrix();
 	}
 }

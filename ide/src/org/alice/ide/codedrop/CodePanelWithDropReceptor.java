@@ -193,7 +193,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 										currentPotentialDropIndex = -1;
 									}
 								}
-								this.currentUnder.setCurrentPotentialDropIndex( currentPotentialDropIndex );
+								this.currentUnder.setCurrentPotentialDropIndexAndDragStep( currentPotentialDropIndex, step );
 							}
 						}
 					}
@@ -215,7 +215,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 							height = null;
 						} else {
 							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-							this.currentUnder.setCurrentPotentialDropIndex( index );
+							this.currentUnder.setCurrentPotentialDropIndexAndDragStep( index, step );
 							final boolean IS_SQUISHING_DESIRED = false;
 							if( index == 0 ) {
 								p.y = 0;
@@ -342,7 +342,24 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 								if( ( prevOwner == nextOwner ) && ( ( prevIndex == nextIndex ) || ( prevIndex == ( nextIndex - 1 ) ) ) ) {
 									rv = null;
 								} else {
-									rv = org.alice.ide.ast.code.MoveStatementOperation.getInstance( new BlockStatementIndexPair( prevBlockStatement, prevIndex ), statement, new BlockStatementIndexPair( nextBlockStatement, nextIndex ) );
+									boolean isMultiple = eSource.isShiftDown();
+									BlockStatementIndexPair fromLocation = new BlockStatementIndexPair( prevBlockStatement, prevIndex );
+									BlockStatementIndexPair toLocation = new BlockStatementIndexPair( nextBlockStatement, nextIndex );
+									if( isMultiple && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( statementDragModel ) ) {
+										rv = org.alice.ide.ast.code.EnvelopStatementsOperation.getInstance( fromLocation, toLocation );
+									} else {
+										int count;
+										if( isMultiple ) {
+											count = org.alice.ide.ast.code.ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
+										} else {
+											count = 1;
+										}
+										if( count > 0 ) {
+											rv = org.alice.ide.ast.code.MoveStatementOperation.getInstance( fromLocation, statement, toLocation, isMultiple );
+										} else {
+											rv = null;
+										}
+									}
 								}
 							}
 						}

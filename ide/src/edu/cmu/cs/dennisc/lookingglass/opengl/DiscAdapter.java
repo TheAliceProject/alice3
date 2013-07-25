@@ -75,7 +75,7 @@ public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glDisc( rc );
 	}
 

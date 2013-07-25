@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_QUAD_STRIP;
+import static javax.media.opengl.GL2.GL_QUAD_STRIP;
 
 /**
  * @author Dennis Cosgrove
@@ -105,7 +105,7 @@ public class TorusAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Tor
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glTorus( rc, true );
 	}
 

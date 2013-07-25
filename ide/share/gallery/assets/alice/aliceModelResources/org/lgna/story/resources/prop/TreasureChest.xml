@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="TreasureChest">
     <BoundingBox>
-        <Min x="-0.7566548883914948" y="0.0" z="-0.4661484509706497"/>
-        <Max x="0.7566548883914948" y="1.126922161579131" z="0.4661484509706497"/>
+        <Min x="-0.7568453550338745" y="-3.099441414633475E-8" z="-0.4661484658718109"/>
+        <Max x="0.756464421749115" y="1.1269221305847168" z="0.4661484360694885"/>
     </BoundingBox>
     <Tags>
         <Tag>underwater</Tag>

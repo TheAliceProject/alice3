@@ -2603,7 +2603,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.StaffResource" ),
 
 					"org.lgna.story.resources.prop.LogBridgeResource",
-					NO_REPLACEMENT,
+					"org.lgna.story.resources.prop.JungleLogResource",
 
 					createMoreSpecificFieldString( "DRAGON_BABY_GREEN", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
 					createMoreSpecificFieldString( "GREEN", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
@@ -4395,6 +4395,656 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					"name=\"org.lgna.story.resources.prop.WeddingCakeResource",
 					"name=\"org.lgna.story.resources.prop.CakeResource"
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.59.0.0" ),
+					new org.lgna.project.Version( "3.1.68.0.0" ),
+
+					createMoreSpecificFieldString( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT4_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "CURVE4_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW1_RIVERBANK3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "PINK", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_PINK", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
+
+					createMoreSpecificFieldString( "AQUA", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_AQUA", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
+
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_BLUE", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
+
+					createMoreSpecificFieldString( "GREEN", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_GREEN", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
+
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_RED", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
+
+					"name=\"org.lgna.story.resources.quadruped.BabyDragonResource",
+					"name=\"org.lgna.story.resources.quadruped.DragonBabyResource",
+
+					createMoreSpecificFieldString( "WITH_SCARF", "org.lgna.story.resources.biped.BabyYetiResource" ),
+					createMoreSpecificFieldString( "WITH_SCARF", "org.lgna.story.resources.biped.YetiBabyResource" ),
+
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.BabyYetiResource" ),
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.YetiBabyResource" ),
+
+					"name=\"org.lgna.story.resources.biped.BabyYetiResource",
+					"name=\"org.lgna.story.resources.biped.YetiBabyResource",
+
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.BabyWalrusResource" ),
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.WalrusBabyResource" ),
+
+					"name=\"org.lgna.story.resources.marinemammal.BabyWalrusResource",
+					"name=\"org.lgna.story.resources.marinemammal.WalrusBabyResource",
+
+					createMoreSpecificFieldString( "ROSE_RED", "org.lgna.story.resources.prop.RoseResource" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.prop.RoseResource" ),
+
+					createMoreSpecificFieldString( "ROSE_WHITE", "org.lgna.story.resources.prop.RoseResource" ),
+					createMoreSpecificFieldString( "WHITE", "org.lgna.story.resources.prop.RoseResource" ),
+
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.IceFloeResource" ),
+					createMoreSpecificFieldString( "ICE_FLOE1", "org.lgna.story.resources.prop.IceFloeResource" ),
+
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+
+					createMoreSpecificFieldString( "PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
+
+					createMoreSpecificFieldString( "GREEN", "org.lgna.story.resources.quadruped.DragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_GREEN", "org.lgna.story.resources.quadruped.DragonResource" ),
+
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.quadruped.DragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_BLUE", "org.lgna.story.resources.quadruped.DragonResource" ),
+
+					createMoreSpecificFieldString( "ORANGE", "org.lgna.story.resources.quadruped.DragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_ORANGE", "org.lgna.story.resources.quadruped.DragonResource" ),
+
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.quadruped.DragonResource" ),
+					createMoreSpecificFieldString( "DEFAULT_RED", "org.lgna.story.resources.quadruped.DragonResource" ),
+
+					createMoreSpecificFieldString( "ART_NOUVEAU_DARK_WOOD", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "ART_NOUVEAU_DARK_WOOD_GREEN", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "ART_NOUVEAU_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "ART_NOUVEAU_OAK_GREEN", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "ART_NOUVEAU_OAK", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "ART_NOUVEAU_OAK_GREEN", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_WHITE", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_WHITE_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_BLACK", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_BLACK_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_BLUE", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_BLUE_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_PINK", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_PINK_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_RED", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_RED_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_LIGHT_WOOD", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_WHITE_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_BLACK_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_REDWOOD", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_RED_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "CAMEL_BACK_WHITE_WOOD", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "CAMEL_BACK_WHITE_MAHOGANY", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE_BLUE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_GREEN", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_GREEN_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_RED", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_BROWN", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_BROWN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE_BLUE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_GREEN_GREEN_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_ORANGE_ORANGE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "MODERN_LOFT_WHITE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+					createMoreSpecificFieldString( "MODERN_LOFT_BLUE_BLUE_CUSHIONS", "org.lgna.story.resources.prop.LoveseatResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_WHITE", "org.lgna.story.resources.prop.SofaResource" ),
+					createMoreSpecificFieldString( "QUAINT_TAN", "org.lgna.story.resources.prop.SofaResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_BLONDE", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_BLONDE_BLONDE", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_CHERRY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_CHERRY_CHERRY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_DARK_WOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_DARK_WOOD_DARK_WOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_REDWOOD_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_BLONDE", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_BLONDE_BLONDE", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_CHERRY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_CHERRY_CHERRY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_DARK_WOOD_DARK_WOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_FANCY_REDWOOD_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_YELLOW_INLAY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_YELLOW_INLAY_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_FANCY_INLAY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_FANCY_INLAY_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_STARS_INLAY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_STARS_INLAY_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_TILE_INLAY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_TILE_INLAY_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_TILE_INLAY_BLACK", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_TILE_INLAY_REDWOOD", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_MAHOGANY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_TILE_INLAY_MAHOGANY", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "MOROCCAN_YELLOW", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_FANCY_INLAY_YELLOW", "org.lgna.story.resources.prop.CoffeeTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_DRAGON_BROWN", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_DRAGON_BROWN", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_DRAGON_RED", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_DRAGON_RED", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_FISH_BROWN", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_FISH_BROWN", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_FISH_RED", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_FISH_RED", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_LOTUS_BLACK", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_LOTUS_BLACK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "ORIENTAL_LOTUS_ORANGE", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "ORIENTAL_LOTUS_ORANGE", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "LOFT_BLACK_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_OAK_BLACK_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_OAK_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_SWIRLY_BROWN_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_DARK_WOOD_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_DARK_RED_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_RED_FINISH_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_MEDIUM_BROWN_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_DARK_WOOD_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_RED_FINISH", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_RED_FINISH_BLACK_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_DARK_WOOD", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_DARK_WOOD_BLACK_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OAK", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_OAK_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_HONEY", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_OAK_DARK_HONEY_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "LOFT_MAPLE", "org.lgna.story.resources.prop.ArmoireResource" ),
+					createMoreSpecificFieldString( "LOFT_DARK_WOOD_BLACK_TRIM", "org.lgna.story.resources.prop.ArmoireResource" ),
+
+					createMoreSpecificFieldString( "GREEN", "org.lgna.story.resources.prop.GrillResource" ),
+					createMoreSpecificFieldString( "GREEN_LIT", "org.lgna.story.resources.prop.GrillResource" ),
+
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.prop.GrillResource" ),
+					createMoreSpecificFieldString( "BLACK_LIT", "org.lgna.story.resources.prop.GrillResource" ),
+
+					createMoreSpecificFieldString( "YELLOW", "org.lgna.story.resources.prop.GrillResource" ),
+					createMoreSpecificFieldString( "YELLOW_LIT", "org.lgna.story.resources.prop.GrillResource" ),
+
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.prop.GrillResource" ),
+					createMoreSpecificFieldString( "RED_LIT", "org.lgna.story.resources.prop.GrillResource" ),
+
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.prop.GrillResource" ),
+					createMoreSpecificFieldString( "BLUE_LIT", "org.lgna.story.resources.prop.GrillResource" ),
+
+					createMoreSpecificFieldString( "HELICOPTER", "org.lgna.story.resources.prop.HelicopterResource" ),
+					createMoreSpecificFieldString( "MILITARY", "org.lgna.story.resources.prop.HelicopterResource" ),
+
+					createMoreSpecificFieldString( "CANDY_FACTORY", "org.lgna.story.resources.prop.CandyFactoryResource" ),
+					createMoreSpecificFieldString( "LIGHT_OFF", "org.lgna.story.resources.prop.CandyFactoryResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_WHITE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_RED_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_ORANGE_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_RED_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_RED_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_RED_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_BLUE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_BLUE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_GREEN", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_GREEN_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_YELLOW", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_YELLOW_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_RED", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_RED_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_FORK_WHITE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_WHITE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_WHITE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_WHITE_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_ORANGE_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_YELLOW_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_RED_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_FORK_RED_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_BLUE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_BLUE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_GREEN", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_GREEN_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_YELLOW", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_YELLOW_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_RED", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_RED_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "LOFT_OFFICE_WHITE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "LOFT_OFFICE_WHITE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_BLACK", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_BLUE_BLACK_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_BLUE_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_BLUE_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_RED_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_RED_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_TEAL_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_TEAL_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_BLUE_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_BLUE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_BLUE_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_YELLOW_STRIPES", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_YELLOW_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_GRAY", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_GRAY_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_RED", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_RED_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_TEAL", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_TEAL_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "MODERATE_YELLOW", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "MODERATE_YELLOW_WOOD_BODY", "org.lgna.story.resources.prop.ChairResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_TOP_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_WOOD_TOP_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_TOP_CHERRY", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_WOOD_TOP_CHERRY", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_TOP_RED_LAQUER", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD_TOP_RED_LAQUER", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_TOP_ROUGH", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_ROUGH_TOP_ROUGH", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_WOOD_TOP_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD_TOP_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_CHERRY", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_WOOD_TOP_CHERRY", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD_TOP_BLONDE", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_RED_LAQUER", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_DARK_WOOD_TOP_RED_LAQUER", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_ROUGH", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "CENTRAL_ASIAN_ROUGH_TOP_ROUGH", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_YELLOW", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_YELLOW_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_BLUE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_BLUE_BLUE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_GREEN", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_GREEN_GREEN_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_PINK", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_PINK_RED_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_WHITE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_WHITE_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "QUAINT_FLOWERS", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "QUAINT_FLOWERS_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_BLACK_MARBLE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_BLACK_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_CREAM_MARBLE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_GREEN_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_GREEN_MARBLE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_GREEN_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_RED_MARBLE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_GREEN_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_WHITE_MARBLE", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_WHITE_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_BLACK_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_BLACK_MARBLE_BLACK_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_CHERRY", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_GREEN_MARBLE_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_GREEN_MARBLE_OAK", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_DARK_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_BLACK_MARBLE_BLACK_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					createMoreSpecificFieldString( "TRAINGULAR_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+					createMoreSpecificFieldString( "TRIANGULAR_WHITE_MARBLE_WHITE_WOOD", "org.lgna.story.resources.prop.EndTableResource" ),
+
+					//sims person changes
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "BLACK_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "BLOND", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "BLOND_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "BROWN", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "BROWN_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "GREY", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "GREY_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+					createMoreSpecificFieldString( "RED_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairTopHat" ),
+
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "BLACK_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "BLOND", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "BLOND_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "BROWN", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "BROWN_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "GREY", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "GREY_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+					createMoreSpecificFieldString( "RED_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedoraCasual" ),
+
+					//map both KINKY and STRAIGHT to replacement
+					createMoreSpecificFieldString( "KINKY_BLACK", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLACK_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "KINKY_BLOND", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLOND_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "KINKY_BROWN", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BROWN_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "KINKY_GREY", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "GREY_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "KINKY_RED", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "RED_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+
+					createMoreSpecificFieldString( "STRAIGHT_BLACK", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLACK_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_BLOND", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLOND_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_BROWN", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BROWN_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_GREY", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "GREY_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_RED", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "RED_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+
+					createMoreSpecificFieldString( "STRAIGHT_BLACK", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLACK_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_BLOND", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BLOND_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_BROWN", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "BROWN_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_GREY", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "GREY_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "STRAIGHT_RED", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+					createMoreSpecificFieldString( "RED_BLACK_HAT", "org.lgna.story.resources.sims2.MaleAdultHairHatFedora" ),
+
+					createMoreSpecificFieldString( "STUBBLE_BLACK", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "STUBBLE_BLOND", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "BLOND", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "STUBBLE_BROWN", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "BROWN", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "STUBBLE_GREY", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "GREY", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "STUBBLE_RED", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.sims2.MaleAdultHairBald" ),
+
+					createMoreSpecificFieldString( "BLUEPINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "FORMAL_BLUE_PINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "BROWNTWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "FORMAL_BROWN_TWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "GREYPINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "FORMAL_GREY_PINSTRIPE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "GREYTWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+					createMoreSpecificFieldString( "FORMAL_GREY_TWEED", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitOpenCoatLongPants" ),
+
+					//map removed swimwear to existing swimwear
+					createMoreSpecificFieldString( "BLUEBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUESINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "GRAYSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "GREENSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "LIMEBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "LIME_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINKBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINK_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINKSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "PINK_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "REDBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "RED_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "REDSINGLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "RED_DIVING", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "YELLOWBIKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "YELLOW_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUEPAISLEY", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_FLOWER", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "CLASSICBIKINIBLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "SPORTBIKINIBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "SPORTBIKINIVIOLET", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLUE_WAVE_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "STRINGBIKINIBROWN", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "STRINGBIKINIBURGANDY", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+					createMoreSpecificFieldString( "BLACK_RAINBOW_TANKINI", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSwimwear" ),
+
+					//map removed dresses to existing dresses
+					createMoreSpecificFieldString( "REDHOLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "RED", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "BLACKHOLE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "LEOPARD", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+					createMoreSpecificFieldString( "CREAM", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDressLongTwo" ),
+
+					//Name change
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitPowerSuit" ),
+					createMoreSpecificFieldString( "BLUE_PINSTRIPE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitPowerSuit" ),
+
+					//Name change...Where did SOCIALWORKER come from?
+					createMoreSpecificFieldString( "SOCIALWORKER", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSuit" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitSuit" ),
+
+					//map removed swimwear to existing swimwear
+					createMoreSpecificFieldString( "TANKINIGREEN", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_SEA_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TANKINIPINK", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_BERRY_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TANKINISTRIPES", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "TROPIC_FIRE_SWIM", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "WHITEUNDER", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+					createMoreSpecificFieldString( "WHITE_CAMISOLE", "org.lgna.story.resources.sims2.ChildFullBodyOutfitNaked" ),
+
+					//Name change
+					createMoreSpecificFieldString( "FRIED", "org.lgna.story.resources.sims2.ChildHairShocked" ),
+					createMoreSpecificFieldString( "BLACK", "org.lgna.story.resources.sims2.ChildHairShocked" ),
+
+					//other fields handled by underscore migration
+					createMoreSpecificFieldString( "GREENPANTSFLOWERS", "org.lgna.story.resources.sims2.FemaleChildFullBodyOutfitTShirtPants" ),
+					createMoreSpecificFieldString( "GREEN_PANTS_SUNFLOWER", "org.lgna.story.resources.sims2.FemaleChildFullBodyOutfitTShirtPants" ),
+
+					//mail delivery changes class name as well as constant
+					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitMailDelivery" ),
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDeliveryPerson" ),
+					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitMailDelivery" ),
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" ),
+
+					"name=\"org.lgna.story.resources.prop.HelicopterResource",
+					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
+
+					createMoreSpecificFieldString( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
+					createMoreSpecificFieldString( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
+
+					"name=\"org.lgna.story.resources.prop.PirateShipResource",
+					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
+
+					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
+					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
+
+					"name=\"org.lgna.story.resources.prop.SubmarineResource",
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
 			)
 
 	};
@@ -4426,7 +5076,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 						}
 					}
 				}
-			}
+			},
+			new UnderscoreFieldAccessAstMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.68.0.0" )
+			)
 	};
 
 	private static class SingletonHolder {
