@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Hatchback">
+    <BoundingBox>
+        <Min x="-0.9791582822799683" y="5.035065697711616E-9" z="-2.1909446716308594"/>
+        <Max x="0.9791585206985474" y="2.025451421737671" z="2.1909449100494385"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>compact</Tag>
+        <Tag>car</Tag>
+        <Tag>pizza</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9791582822799683" y="5.035065697711616E-9" z="-2.1909446716308594"/>
+            <Max x="0.9791585206985474" y="1.5904954671859741" z="2.1909449100494385"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="PizzaDelivery" resourceName="PIZZA_DELIVERY" textureName="PIZZA_DELIVERY">
+        <BoundingBox>
+            <Min x="-0.9791582822799683" y="5.035065697711616E-9" z="-2.1909446716308594"/>
+            <Max x="0.9791585206985474" y="2.025451421737671" z="2.1909449100494385"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>delivery</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

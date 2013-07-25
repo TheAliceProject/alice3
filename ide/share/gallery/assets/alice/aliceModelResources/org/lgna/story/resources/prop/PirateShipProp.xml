@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" deprecated="TRUE" name="PirateShipProp">
+    <BoundingBox>
+        <Min x="-4.469298839569092" y="0.005569774191826582" z="-13.02575397491455"/>
+        <Max x="4.4566450119018555" y="16.04974365234375" z="13.02575397491455"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>boat</Tag>
+        <Tag>pirate</Tag>
+        <Tag>ship</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PirateShipProp" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

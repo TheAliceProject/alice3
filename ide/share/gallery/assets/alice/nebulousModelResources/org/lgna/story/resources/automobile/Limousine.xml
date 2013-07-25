@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Limousine">
+    <BoundingBox>
+        <Min x="-1.0326871871948242" y="-4.475614101551173E-9" z="-4.268883228302002"/>
+        <Max x="1.0326873064041138" y="1.454735279083252" z="4.268883228302002"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>limo</Tag>
+        <Tag>fancy</Tag>
+        <Tag>taxi</Tag>
+        <Tag>luxury</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Limousine" resourceName="LIMOUSINE" textureName="LIMOUSINE"/>
+</AliceModel>

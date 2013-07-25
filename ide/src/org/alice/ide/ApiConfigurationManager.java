@@ -227,4 +227,6 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.project.ast.UserType<?> augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
 
 	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
+
+	public abstract boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type );
 }

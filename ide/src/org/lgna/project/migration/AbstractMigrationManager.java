@@ -70,7 +70,9 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		String rv = source;
 		for( TextMigration textMigration : this.getTextMigrations() ) {
 			if( textMigration.isApplicable( version ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				}
 				rv = textMigration.migrate( rv );
 				version = textMigration.getResultVersion();
 			}
@@ -81,6 +83,9 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
 			if( astMigration.isApplicable( version ) ) {
+				if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
+				}
 				astMigration.migrate( root );
 				version = astMigration.getResultVersion();
 			}

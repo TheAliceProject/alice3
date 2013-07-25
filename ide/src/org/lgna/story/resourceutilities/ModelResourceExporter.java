@@ -138,6 +138,7 @@ public class ModelResourceExporter {
 	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
 	private boolean exportGalleryResources = true;
+	private boolean isDeprecated = false;
 
 	private String attributionName;
 	private String attributionYear;
@@ -193,6 +194,10 @@ public class ModelResourceExporter {
 
 	public void setHasNewData( boolean hasNewData ) {
 		this.hasNewData = hasNewData;
+	}
+
+	public void setIsDeprecated( boolean isDeprecated ) {
+		this.isDeprecated = isDeprecated;
 	}
 
 	public void setShouldRecenter( boolean shouldRecenter ) {
@@ -668,6 +673,10 @@ public class ModelResourceExporter {
 			{
 				modelRoot.setAttribute( "creationYear", this.attributionYear );
 			}
+			if( this.isDeprecated )
+			{
+				modelRoot.setAttribute( "deprecated", "TRUE" );
+			}
 			doc.appendChild( modelRoot );
 			if( this.boundingBoxes.get( this.className ) == null ) {
 				AxisAlignedBox superBox = new AxisAlignedBox();
@@ -905,6 +914,9 @@ public class ModelResourceExporter {
 		sb.append( "package " + this.classData.packageString + ";" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "import org.lgna.project.annotations.*;" + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+		if( this.isDeprecated ) {
+			sb.append( "@Deprecated" + JavaCodeUtilities.LINE_RETURN );
+		}
 		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {" + JavaCodeUtilities.LINE_RETURN );
 		assert this.subResources.size() > 0;
 		boolean isFirst = true;
