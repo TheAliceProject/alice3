@@ -19,7 +19,7 @@ public class ModelClassData extends BaseModelClassData
 	public static final BaseModelClassData SWIMMER_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SSwimmer.class, org.lgna.story.implementation.SwimmerImp.class );
 	public static final BaseModelClassData FLYER_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SFlyer.class, org.lgna.story.implementation.FlyerImp.class );
 	public static final BaseModelClassData QUADRUPED_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SQuadruped.class, org.lgna.story.implementation.QuadrupedImp.class );
-	public static final BaseModelClassData VEHICLE_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SVehicle.class, org.lgna.story.implementation.VehicleImp.class );
+	public static final BaseModelClassData VEHICLE_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.STransport.class, org.lgna.story.implementation.TransportImp.class );
 
 	public static final ModelClassData BIPED_CLASS_DATA = new ModelClassData( org.lgna.story.resources.BipedResource.class, "org.lgna.story.resources.biped", BIPED_BASE_CLASS_DATA );
 	public static final ModelClassData FLYER_CLASS_DATA = new ModelClassData( org.lgna.story.resources.FlyerResource.class, "org.lgna.story.resources.flyer", FLYER_BASE_CLASS_DATA );
@@ -28,6 +28,9 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData FISH_CLASS_DATA = new ModelClassData( org.lgna.story.resources.FishResource.class, "org.lgna.story.resources.fish", SWIMMER_BASE_CLASS_DATA );
 	public static final ModelClassData MARINE_MAMMAL_CLASS_DATA = new ModelClassData( org.lgna.story.resources.MarineMammalResource.class, "org.lgna.story.resources.marinemammal", SWIMMER_BASE_CLASS_DATA );
 	public static final ModelClassData PROP_CLASS_DATA = new ModelClassData( org.lgna.story.resources.PropResource.class, "org.lgna.story.resources.prop", PROP_BASE_CLASS_DATA );
-	public static final ModelClassData VEHICLE_CLASS_DATA = new ModelClassData( org.lgna.story.resources.VehicleResource.class, "org.lgna.story.resources.vehicle", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData VEHICLE_CLASS_DATA = new ModelClassData( org.lgna.story.resources.TransportResource.class, "org.lgna.story.resources.transport", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData AUTOMOBILE_CLASS_DATA = new ModelClassData( org.lgna.story.resources.AutomobileResource.class, "org.lgna.story.resources.automobile", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData AIRCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.AircraftResource.class, "org.lgna.story.resources.aircraft", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData WATERCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.WatercraftResource.class, "org.lgna.story.resources.watercraft", VEHICLE_BASE_CLASS_DATA );
 
 }

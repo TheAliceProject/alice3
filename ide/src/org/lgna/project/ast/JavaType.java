@@ -333,7 +333,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public JavaType[] getInterfaces() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return JavaType.getInstances( cls.getInterfaces() );
 	}
 
@@ -430,49 +430,49 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public AccessLevel getAccessLevel() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return AccessLevel.get( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isPrimitive() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return cls.isPrimitive();
 	}
 
 	@Override
 	public boolean isInterface() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return cls.isInterface();
 	}
 
 	@Override
 	public boolean isStatic() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return java.lang.reflect.Modifier.isStatic( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isAbstract() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isFinal() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isStrictFloatingPoint() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return java.lang.reflect.Modifier.isStrict( cls.getModifiers() );
 	}
 
@@ -483,7 +483,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	public JavaType getEnclosingType() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return JavaType.getInstance( cls.getEnclosingClass() );
 	}
 
@@ -495,7 +495,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public JavaType getArrayType() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null;
+		assert cls != null : this.classReflectionProxy;
 		return JavaType.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}
 

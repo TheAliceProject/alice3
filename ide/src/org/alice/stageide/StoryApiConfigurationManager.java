@@ -432,4 +432,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		}
 		return rv;
 	}
+
+	@Override
+	public boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type ) {
+		return false;
+		//return type.isAssignableTo( org.lgna.story.SScene.class ) == false;
+	}
 }

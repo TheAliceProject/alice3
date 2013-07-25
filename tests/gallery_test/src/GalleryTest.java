@@ -2,7 +2,6 @@ import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.

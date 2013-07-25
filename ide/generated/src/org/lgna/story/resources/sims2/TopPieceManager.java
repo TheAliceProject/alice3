@@ -31,6 +31,20 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 	}
 
 	private TopPieceManager() {
+		this.add( MaleElderTopPiece.class, 
+				MaleElderTopPieceDressShirt.class,
+				MaleElderTopPieceNaked.class,
+				MaleElderTopPieceShortSleeveCollar.class,
+				MaleElderTopPieceSweaterVestCollarShirt.class
+				);
+		this.add( FemaleElderTopPiece.class, 
+				FemaleElderTopPieceBlouse.class,
+				FemaleElderTopPieceCowgirlShirt.class,
+				FemaleElderTopPieceFlaredWaist.class,
+				FemaleElderTopPiecePoloShirt.class,
+				FemaleElderTopPieceSweaterSet.class,
+				FemaleElderTopPieceTuckedWaist.class
+				);
 		this.add( MaleTeenTopPiece.class, 
 				MaleTeenTopPieceCrewneckShirtOver.class,
 				MaleTeenTopPieceHipJacket.class,
@@ -68,20 +82,6 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 				FemaleChildTopPieceTShirt.class,
 				ChildTopPieceShortSleeve.class,
 				ChildTopPieceShortSleeveCollar.class
-				);
-		this.add( MaleElderTopPiece.class, 
-				MaleElderTopPieceDressShirt.class,
-				MaleElderTopPieceNaked.class,
-				MaleElderTopPieceShortSleeveCollar.class,
-				MaleElderTopPieceSweaterVestCollarShirt.class
-				);
-		this.add( FemaleElderTopPiece.class, 
-				FemaleElderTopPieceBlouse.class,
-				FemaleElderTopPieceCowgirlShirt.class,
-				FemaleElderTopPieceFlaredWaist.class,
-				FemaleElderTopPiecePoloShirt.class,
-				FemaleElderTopPieceSweaterSet.class,
-				FemaleElderTopPieceTuckedWaist.class
 				);
 		this.add( FemaleAdultTopPiece.class, 
 				FemaleAdultTopPieceBlousedWaist.class,

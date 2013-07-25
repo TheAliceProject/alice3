@@ -293,7 +293,11 @@ public abstract class ProgramImp {
 	public void initializeInAwtContainer( AwtContainerInitializer awtContainerInitializer ) {
 		this.addComponents( awtContainerInitializer );
 		this.startAnimator();
-		this.requestFocusInWindow();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				requestFocusInWindow();
+			}
+		} );
 	}
 
 	public void initializeInAwtContainer( java.awt.Container awtContainer ) {
