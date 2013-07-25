@@ -70,15 +70,15 @@ public class GlDrawableUtilities {
 		if( a.getHardwareAccelerated() != b.getHardwareAccelerated() ) {
 			return false;
 		}
-		if( a.getPbufferFloatingPointBuffers() != b.getPbufferFloatingPointBuffers() ) {
-			return false;
-		}
-		if( a.getPbufferRenderToTexture() != b.getPbufferRenderToTexture() ) {
-			return false;
-		}
-		if( a.getPbufferRenderToTextureRectangle() != b.getPbufferRenderToTextureRectangle() ) {
-			return false;
-		}
+		//		if( a.getPbufferFloatingPointBuffers() != b.getPbufferFloatingPointBuffers() ) {
+		//			return false;
+		//		}
+		//		if( a.getPbufferRenderToTexture() != b.getPbufferRenderToTexture() ) {
+		//			return false;
+		//		}
+		//		if( a.getPbufferRenderToTextureRectangle() != b.getPbufferRenderToTextureRectangle() ) {
+		//			return false;
+		//		}
 		if( a.getStencilBits() != b.getStencilBits() ) {
 			return false;
 		}
@@ -243,13 +243,13 @@ public class GlDrawableUtilities {
 	/* package-private */static boolean canCreateGlPixelBuffer() {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() );
+		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile );
 	}
 
 	/* package-private */static javax.media.opengl.GLPbuffer createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
+		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
 			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height, share );
 
 			// This is a work around for Linux users.

@@ -98,11 +98,13 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
+		if( apiConfigurationManager.isExportTypeDesiredFor( type ) ) {
 			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel(
 					typeHeader,
 					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					org.alice.ide.croquet.models.ast.ExportTypeOperation.getInstance( type ).createButton()
+					composite.getExportOperation().createButton()
 					);
 			this.addComponent( header, Constraint.PAGE_START );
 		} else {

@@ -149,6 +149,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent embeddedMediaPlayerComponent;
 
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+	private String mediaPath = null;
 
 	public VlcjVideoPlayer() {
 		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
@@ -262,16 +263,15 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public void prepareMedia( java.net.URI uri ) {
 		if( uri != null ) {
-			String path;
 			String scheme = uri.getScheme();
 			if( scheme.equalsIgnoreCase( "file" ) ) {
 				java.io.File file = new java.io.File( uri );
-				path = file.getAbsolutePath();
+				this.mediaPath = file.getAbsolutePath();
 			} else {
-				path = uri.toString();
+				this.mediaPath = uri.toString();
 			}
 			uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-			mediaPlayer.prepareMedia( path );
+			mediaPlayer.prepareMedia( this.mediaPath );
 		} else {
 			System.err.println( "uri is null" );
 		}
@@ -359,7 +359,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
 		try {
-			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( mediaPlayer.mrl(), seconds, file );
+			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
 			return true;
 		} catch( Exception e ) {
 			return false;
@@ -369,8 +369,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	public java.awt.Image getSnapshot() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
-		System.out.println( "TIME: " + seconds );
-		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( mediaPlayer.mrl(), seconds );
+		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 	}
 
 	public void release() {

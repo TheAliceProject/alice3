@@ -48,9 +48,9 @@ package edu.wustl.cse.lookingglass.media;
  */
 public class FFmpegImageExtractor {
 
-	public static void getFrameAt( String mrl, double seconds, java.io.File snapshotFile ) {
+	public static void getFrameAt( String videoPath, double seconds, java.io.File snapshotFile ) {
 		String frameTime = ( new Double( seconds ) ).toString();
-		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", frameTime, "-i", mrl, "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
+		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", frameTime, "-i", videoPath, "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
 		ffmpegProcess.start();
 		int status = ffmpegProcess.stop();
 		if( status != 0 ) {
