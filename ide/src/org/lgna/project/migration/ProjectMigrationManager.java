@@ -42,6 +42,8 @@
  */
 package org.lgna.project.migration;
 
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -5082,7 +5084,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
 			),
-			new EventAstMigration() };
+			new EventAstMigration(
+					new Version( "3.1.68.0.0" ),
+					new Version( "3.1.70.0.0" ) )
+	};
 
 	private static class SingletonHolder {
 		private static ProjectMigrationManager instance = new ProjectMigrationManager();

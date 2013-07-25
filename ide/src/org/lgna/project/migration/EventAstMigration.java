@@ -49,7 +49,6 @@ import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
 import org.alice.ide.declarationseditor.events.TimeEventListenerMenu;
 import org.alice.ide.declarationseditor.events.TransformationEventListenerMenu;
 import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.project.Version;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -65,47 +64,30 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
 /**
  * @author Matt May
  */
-public class EventAstMigration extends AstMigration {
+public class EventAstMigration extends MethodInvocationAstMigration {
 
-	private static JavaMethod[] removeTheseDetails = new JavaMethod[ 11 ];
+	private static JavaMethod[] removeTheseDetails = {
+			TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+			KeyboardEventListenerMenu.MOVE_WITH_ARROWS,
+			TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_START_COLLISION_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_END_COLLISION_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
+			TransformationEventListenerMenu.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
+	};
 
-	static {
-		removeTheseDetails[ 0 ] = TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD;
-		removeTheseDetails[ 1 ] = KeyboardEventListenerMenu.MOVE_WITH_ARROWS;
-		removeTheseDetails[ 2 ] = TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD;
-		removeTheseDetails[ 3 ] = TransformationEventListenerMenu.ADD_START_COLLISION_LISTENER_METHOD;
-		removeTheseDetails[ 4 ] = TransformationEventListenerMenu.ADD_END_COLLISION_LISTENER_METHOD;
-		removeTheseDetails[ 5 ] = TransformationEventListenerMenu.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD;
-		removeTheseDetails[ 6 ] = TransformationEventListenerMenu.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD;
-		removeTheseDetails[ 7 ] = TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD;
-		removeTheseDetails[ 8 ] = TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
-		removeTheseDetails[ 9 ] = TransformationEventListenerMenu.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD;
-		removeTheseDetails[ 10 ] = TransformationEventListenerMenu.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD;
-	}
+	private final ExpressionCreator creator = new ExpressionCreator();
 
-	ExpressionCreator creator = new ExpressionCreator();
-
-	public EventAstMigration() {
-		super( new Version( "3.1.68.0.0" ), new Version( "3.1.70.0.0" ) );
+	public EventAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+		super( minimumVersion, maximumVersion );
 	}
 
 	@Override
-	public final void migrate( org.lgna.project.ast.Node node ) {
-		node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
-					EventAstMigration.this.migrateMethodInv( methodInvocation );
-				} else if( crawlable instanceof JavaMethod ) {
-					JavaMethod javaMethod = (JavaMethod)crawlable;
-					EventAstMigration.this.migrateJavaMethod( javaMethod );
-				}
-			}
-		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
-	}
-
-	protected void migrateMethodInv( MethodInvocation methodInvocation ) {
-
+	protected void migrate( MethodInvocation methodInvocation ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
@@ -159,13 +141,6 @@ public class EventAstMigration extends AstMigration {
 		methodInvocation.method.setValue( newMethod );
 	}
 
-	protected void migrateJavaMethod( JavaMethod javaMethod ) {
-		//		System.out.println( "javaMethod: " + javaMethod );
-		//		if( javaMethod.getName().equals( "addSceneActivationListener" ) ) {
-		//
-		//		}
-	}
-
 	private void handleAddTimeListener( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod ) {
 		ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
 		Number duration = null;
@@ -190,9 +165,5 @@ public class EventAstMigration extends AstMigration {
 			e.printStackTrace();
 		}
 		methodInvocation.method.setValue( TimeEventListenerMenu.ADD_TIMER_EVENT_LISTENER_METHOD );
-	}
-
-	public static TextMigration getTextMigration() {
-		return null;
 	}
 }
