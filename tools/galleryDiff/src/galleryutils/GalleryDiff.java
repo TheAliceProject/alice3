@@ -432,7 +432,7 @@ public class GalleryDiff {
 				firstLine = "\"name=\\\"" + firstSymbol + "\"";
 				secondLine = "\"name=\\\"" + secondSymbol + "\"";
 			}
-			sb.append("\n\t"+firstLine+"\n");
+			sb.append("\n\t"+firstLine+",\n");
 			String lastComma = i < conversionMap.size() - 2 ? "," : "";
 			sb.append("\t"+secondLine + lastComma + "\n");
 		}
