@@ -53,6 +53,6 @@ public abstract class AddMethodView extends DeclarationView<org.lgna.project.ast
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.AddMethodComposite composite = (org.alice.ide.ast.declaration.AddMethodComposite)this.getComposite();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( composite.getPreviewValue(), null, true, composite.getDeclaringType() );
+		return new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), composite.getPreviewValue(), true );
 	}
 }

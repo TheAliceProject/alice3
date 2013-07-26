@@ -12,7 +12,10 @@ public class Person extends Model {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Person.class, PersonAdapter.class );
 	}
 
+	private final Object o;
+
 	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+		this.o = o;
 		synchronized( renderLock ) {
 			initialize( o );
 		}
@@ -95,5 +98,14 @@ public class Person extends Model {
 	public void synchronizedSetAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair )
 	{
 		synchronizedSetAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, "" );
+	}
+
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( ";" );
+		sb.append( this.o != null ? this.o.getClass().getName() : null );
+		sb.append( "." );
+		sb.append( this.o );
 	}
 }

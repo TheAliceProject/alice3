@@ -73,9 +73,6 @@ public class LogInOutComposite extends CardOwnerComposite {
 		this.logInCard = new LogInCard( loginComposite );
 		this.logOutCard = new LogOutCard( loginComposite.getLogOutOperation() );
 
-		composite.setParent( this );
-		logOutCard.setParent( this );
-
 		this.addCard( this.logInCard );
 		this.addCard( this.logOutCard );
 
@@ -98,5 +95,19 @@ public class LogInOutComposite extends CardOwnerComposite {
 
 	public LogOutCard getLogOutCard() {
 		return this.logOutCard;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		Thread loginThread = new Thread( new Runnable() {
+
+			public void run() {
+				if( composite.getIsRememberingState().getValue() && ( composite.getUserNameState().getValue().length() > 0 ) && ( composite.getPasswordState().getValue().length() > 0 ) ) {
+					composite.isClearedForCommit();
+				}
+			}
+		} );
+		loginThread.start();
 	}
 }

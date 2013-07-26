@@ -53,27 +53,35 @@ import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.preferences.PreferenceStringState;
 
 /**
  * @author Matt May
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
+
 	private final BooleanState isRememberingState = this.createPreferenceBooleanState( this.createKey( "isRememberingState" ), false );
-	protected final StringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
-	protected final StringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
+	protected final PreferenceStringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
+	protected final PreferenceStringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
 	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
 	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
+
+	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
+		super( migrationId, operationGroup );
+	}
+
 	private final ActionOperation logOutOperation = createActionOperation( createKey( "logOutOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			logout();
 			isLoggedIn.setValueTransactionlessly( false );
+			userNameState.setValueTransactionlessly( "" );
+			passwordState.setValueTransactionlessly( "" );
 			return null;
 		}
 	} );
-	protected LogInOutComposite parent;
 
 	public StringState getUserNameState() {
 		return this.userNameState;
@@ -93,10 +101,6 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 
 	public BooleanState getIsRememberingState() {
 		return this.isRememberingState;
-	}
-
-	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId, operationGroup );
 	}
 
 	@Override
@@ -142,16 +146,5 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 
 	public String updateUserNameForWelcomeString() {
 		return "";
-	}
-
-	public void setParent( LogInOutComposite logInOutComposite ) {
-		if( this.parent != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.parent );
-		}
-		this.parent = logInOutComposite;
-	}
-
-	public LogInOutComposite getParent() {
-		return this.parent;
 	}
 }

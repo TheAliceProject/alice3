@@ -16,10 +16,5 @@
         <ThemeTag>snow</ThemeTag>
         <ThemeTag>ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="BabyWalrus" resourceName="BABY_WALRUS" textureName="DEFAULT">
-        <BoundingBox>
-            <Min x="-0.42466455698013306" y="-0.0040577128529548645" z="-0.6369282603263855"/>
-            <Max x="0.42466455698013306" y="0.6607837677001953" z="0.6755363941192627"/>
-        </BoundingBox>
-    </Resource>
+    <Resource modelName="WalrusBaby" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>
