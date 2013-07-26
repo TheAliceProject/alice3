@@ -68,7 +68,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter<SkeletonVisual> implements PropertyListener {
+public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter<SkeletonVisual> implements PropertyListener, edu.cmu.cs.dennisc.scenegraph.SkeletonVisualBoundingBoxTracker {
 
 	private static float ALPHA_TEST_THRESHOLD = .5f;
 
@@ -88,10 +88,10 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	public void initialize( SkeletonVisual element )
 	{
 		if( this.m_element != null ) {
-			this.m_element.setAdapter( null );
+			this.m_element.setTracker( null );
 		}
 		super.initialize( element );
-		element.setAdapter( this );
+		element.setTracker( this );
 		initializeDataIfNecessary();
 	}
 

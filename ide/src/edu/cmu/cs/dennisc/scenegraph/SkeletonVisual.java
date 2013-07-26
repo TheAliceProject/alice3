@@ -51,7 +51,7 @@ public class SkeletonVisual extends Visual {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
 
-	private edu.cmu.cs.dennisc.lookingglass.opengl.SkeletonVisualAdapter adapter = null;
+	private SkeletonVisualBoundingBoxTracker tracker = null;
 
 	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
 	{
@@ -81,8 +81,12 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	public void setAdapter( edu.cmu.cs.dennisc.lookingglass.opengl.SkeletonVisualAdapter adapter ) {
-		this.adapter = adapter;
+	public SkeletonVisualBoundingBoxTracker getTracker() {
+		return this.tracker;
+	}
+
+	public void setTracker( SkeletonVisualBoundingBoxTracker tracker ) {
+		this.tracker = tracker;
 	}
 
 	@Override
@@ -129,8 +133,8 @@ public class SkeletonVisual extends Visual {
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-		if( this.adapter != null ) {
-			this.adapter.getAxisAlignedMinimumBoundingBox( rv );
+		if( this.tracker != null ) {
+			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
 		}
 		else {
 			if( this.weightedMeshes.getValue() != null ) {
