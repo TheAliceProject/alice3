@@ -252,10 +252,10 @@ public class HandleManager implements ManipulationListener {
 
 	public void setHandlesShowing( boolean showing )
 	{
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "Setting handle showing to: " + showing );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "Setting handle showing to: " + showing );
 		for( ManipulationHandle handle : this.handles )
 		{
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "   Setting handle " + handle + ", which is visible? " + handle.isHandleVisible() );
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "   Setting handle " + handle + ", which is visible? " + handle.isHandleVisible() );
 			handle.setVisualsShowing( showing );
 		}
 	}

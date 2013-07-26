@@ -83,7 +83,7 @@ public abstract class Geometry extends Element {
 	}
 
 	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		if( this.boundingBox.isNaN() || true )
+		if( this.boundingBox.isNaN() )
 		{
 			updateBoundingBox( this.boundingBox );
 		}

@@ -111,7 +111,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 	{
 		int maxIndices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_VERTICES );
-		if( ( ( vertexBuffer.capacity() / 3 ) >= maxVertices ) || ( indexBuffer.capacity() >= maxIndices ) || true )
+		if( ( ( vertexBuffer.capacity() / 3 ) >= maxVertices ) || ( indexBuffer.capacity() >= maxIndices ) )
 		{
 			renderMeshAsArrays( rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer );
 		}
