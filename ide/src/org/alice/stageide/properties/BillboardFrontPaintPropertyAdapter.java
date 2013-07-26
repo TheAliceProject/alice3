@@ -44,6 +44,8 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.croquet.State;
+import org.lgna.project.ast.Expression;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.BillboardImp;
 
@@ -56,6 +58,23 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 	public BillboardFrontPaintPropertyAdapter( BillboardImp instance, StandardExpressionState expressionState )
 	{
 		super( "Front Paint", instance, expressionState );
+		this.expressionState.addValueListener( new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+			@Override
+			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+			}
+
+			@Override
+			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+				if( BillboardFrontPaintPropertyAdapter.this.instance != null )
+				{
+					if( nextValue instanceof org.lgna.project.ast.InstanceCreation ) {
+						org.lgna.project.ast.InstanceCreation instanceValue = (org.lgna.project.ast.InstanceCreation)nextValue;
+						BillboardFrontPaintPropertyAdapter.this.instance.updateAspectRatio();
+					}
+				}
+			}
+
+		} );
 	}
 
 	@Override
@@ -64,7 +83,7 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 		super.setValue( value );
 		if( this.instance != null )
 		{
-			this.instance.setFrontPaint( value );
+			this.instance.paint.setValue( value );
 		}
 	}
 
@@ -79,7 +98,7 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 	{
 		if( this.instance != null )
 		{
-			return this.instance.getFrontPaint();
+			return this.instance.paint.getValue();
 		}
 		return null;
 	}
