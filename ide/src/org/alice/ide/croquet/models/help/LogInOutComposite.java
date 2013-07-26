@@ -86,7 +86,6 @@ public class LogInOutComposite extends CardOwnerComposite {
 		} else {
 			this.showCard( logInCard );
 		}
-		System.out.println( "updateLogInOut" );
 		this.getView().getAwtComponent().repaint();
 	}
 
@@ -104,8 +103,9 @@ public class LogInOutComposite extends CardOwnerComposite {
 		Thread loginThread = new Thread( new Runnable() {
 
 			public void run() {
-				System.out.println( "TRY" );
-				composite.isClearedForCommit();
+				if( composite.getIsRememberingState().getValue() && ( composite.getUserNameState().getValue().length() > 0 ) && ( composite.getPasswordState().getValue().length() > 0 ) ) {
+					composite.isClearedForCommit();
+				}
 			}
 		} );
 		loginThread.start();
