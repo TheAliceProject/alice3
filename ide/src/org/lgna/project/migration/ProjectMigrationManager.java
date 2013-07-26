@@ -42,6 +42,8 @@
  */
 package org.lgna.project.migration;
 
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -5047,6 +5049,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
 			)
 
+			//			, EventAstMigration.getTextMigration() 
 	};
 	private final AstMigration[] astMigrations = {
 			new org.lgna.project.migration.MethodInvocationAstMigration(
@@ -5080,7 +5083,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			new UnderscoreFieldAccessAstMigration(
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
-			)
+			),
+			new EventAstMigration(
+					new Version( "3.1.68.0.0" ),
+					new Version( "3.1.70.0.0" ) )
 	};
 
 	private static class SingletonHolder {
