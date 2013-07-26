@@ -1024,7 +1024,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.handleStateChange();
 	}
 
-	private PickResult pickIntoScene( Point mouseLocation )
+	protected PickResult pickIntoScene( Point mouseLocation )
 	{
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;

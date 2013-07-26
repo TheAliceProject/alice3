@@ -54,7 +54,6 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -62,7 +61,6 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public class JointSelectionAdapter {
 
-	private OnscreenLookingGlass onscreenLookingGlass;
 	private PoserScene scene;
 	private CameraImp camera;
 	private static final double MIN_SELECTION_DISTANCE = 50;
@@ -70,8 +68,6 @@ public class JointSelectionAdapter {
 	public JointSelectionAdapter( PoserScene poserScene ) {
 		this.scene = poserScene;
 		this.camera = ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera();
-		this.onscreenLookingGlass = ( (SceneImp)ImplementationAccessor.getImplementation( poserScene ) ).getProgram().getOnscreenLookingGlass();
-		onscreenLookingGlass.getAWTComponent().addMouseListener( listener );
 	}
 
 	private MouseListener listener = new MouseListener() {

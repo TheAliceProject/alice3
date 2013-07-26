@@ -42,7 +42,9 @@
  */
 package org.lgna.ik.poser;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter;
@@ -60,9 +62,17 @@ import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
 import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
+import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.CameraImp;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.SceneImp;
+import org.lgna.story.implementation.SphereImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.math.Point3;
 
 /**
  * @author Matt May
@@ -71,9 +81,16 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 
 	private PoserSphereManipulator manipulator;
 	private PoserEvent queuedPoserEvent;
-	private List<PoserSphereManipulatorListener> listeners = Collections.newArrayList();
+	private final PoserScene scene;
+	private CameraImp camera;
+	private final List<PoserSphereManipulatorListener> listeners = Collections.newArrayList();
+	private static final double MIN_SELECTION_DISTANCE = 500;
+	private static final boolean USING_MINE = true;
 
-	public PoserDragAdapter() {
+	public PoserDragAdapter( PoserScene scene ) {
+		this.scene = scene;
+		//		this.camera = ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera();
+		//		assert camera != null : scene;
 		manipulator.addListener( this );
 	}
 
@@ -82,9 +99,37 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 	}
 
 	@Override
-	public void mousePressed( MouseEvent e ) {
-		super.mousePressed( e );
-		System.out.println( "mouseEvent" );
+	protected PickResult pickIntoScene( Point mouseLocation ) {
+		if( !USING_MINE ) {
+			return super.pickIntoScene( mouseLocation );
+		}
+		if( camera == null ) {
+			this.camera = ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera();
+		}
+		ArrayList<Point> sphereLocations = Collections.newArrayList();
+		double minDist = MIN_SELECTION_DISTANCE;
+		JointSelectionSphere[] arr = scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+		JointSelectionSphere selected = null;
+		for( JointSelectionSphere sphere : arr ) {
+			EntityImp implementation = ImplementationAccessor.getImplementation( sphere );
+			Point3 point = implementation.getAbsoluteTransformation().translation;
+			sphereLocations.add( implementation.transformToAwt( point, camera ) );
+		}
+		for( int i = 0; i != arr.length; ++i ) {
+			double dist = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, mouseLocation.x, mouseLocation.y );
+			if( dist < minDist ) {
+				selected = arr[ i ];
+				minDist = dist;
+			}
+		}
+		if( selected != null ) {
+			System.out.println( "selected: " + selected );
+			SphereImp implementation = ImplementationAccessor.getImplementation( selected );
+			return implementation.createFauxPickResult( camera.getSgCamera() );
+		} else {
+			System.out.println( "FAIL FAIL FAIL" );
+			return new PickResult();
+		}
 	}
 
 	@Override
@@ -197,5 +242,4 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 		cameraMousePan.addCondition( leftAndShift );
 		this.manipulators.add( cameraMousePan );
 	}
-
 }

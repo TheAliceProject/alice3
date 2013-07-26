@@ -81,11 +81,11 @@ public class PoserScene extends SScene {
 	private ArrayList<JointSelectionSphere> jssArr;
 	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
-	private PoserDragAdapter dragAdapter = new PoserDragAdapter();
+	private PoserDragAdapter dragAdapter = new PoserDragAdapter( this );
 	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
 	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
 	private JointImp currentlyShowingRotationHandles = null;
-	private JointSelectionAdapter selector;
+	private JointSelectionAdapter selector = new JointSelectionAdapter( this );
 
 	public PoserScene( SCamera camera, SBiped ogre ) {
 		this.camera = camera;
