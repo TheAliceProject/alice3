@@ -133,7 +133,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 			operation.initializeIfNecessary();
 			Button button = operation.createButton();
 
-			button.tightenUpMargin( MARGIN );
+			//button.tightenUpMargin( MARGIN );
 			button.setIconTextGap( 0 );
 
 			this.internalAddComponent( selectChildButton, java.awt.BorderLayout.LINE_END );
