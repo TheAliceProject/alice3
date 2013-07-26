@@ -1,5 +1,5 @@
 package org.lgna.story.event;
 
 public interface MouseClickOnScreenListener {
-	public void mouseClicked();
+	public void mouseClicked( MouseClickOnScreenEvent event );
 }

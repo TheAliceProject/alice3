@@ -4,15 +4,6 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.story.AddEndCollisionListener;
-import org.lgna.story.AddEndOcclusionListener;
-import org.lgna.story.AddEnterProximityEventListener;
-import org.lgna.story.AddEnterViewListener;
-import org.lgna.story.AddExitProximityEventListener;
-import org.lgna.story.AddExitViewListener;
-import org.lgna.story.AddPositionOrientationChangeListener;
-import org.lgna.story.AddStartCollisionListener;
-import org.lgna.story.AddStartOcclusionListener;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
@@ -30,39 +21,40 @@ public class TransformationEventListenerMenu extends EventListenerMenuModel {
 	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addPointOfViewChangeListener",
-			PointOfViewChangeListener.class, SThing[].class, AddPositionOrientationChangeListener.Detail[].class );
+			PointOfViewChangeListener.class, SThing[].class );
 	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addCollisionStartListener",
-			CollisionStartListener.class, SThing[].class, SThing[].class, AddStartCollisionListener.Detail[].class );
+			CollisionStartListener.class, SThing[].class, SThing[].class );
+
 	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addCollisionEndListener",
-			CollisionEndListener.class, SThing[].class, SThing[].class, AddEndCollisionListener.Detail[].class );
+			CollisionEndListener.class, SThing[].class, SThing[].class );
 	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addProximityEnterListener",
-			ProximityEnterListener.class, SThing[].class, SThing[].class, Double.class, AddEnterProximityEventListener.Detail[].class );
+			ProximityEnterListener.class, SThing[].class, SThing[].class, Number.class );
 	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addProximityExitListener",
-			ProximityExitListener.class, SThing[].class, SThing[].class, Double.class, AddExitProximityEventListener.Detail[].class );
+			ProximityExitListener.class, SThing[].class, SThing[].class, Number.class );
 	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addViewEnterListener",
-			ViewEnterListener.class, SModel[].class, AddEnterViewListener.Detail[].class );
+			ViewEnterListener.class, SModel[].class );
 	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addViewExitListener",
-			ViewExitListener.class, SModel[].class, AddExitViewListener.Detail[].class );
+			ViewExitListener.class, SModel[].class );
 	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addOcclusionStartListener",
-			OcclusionStartListener.class, SModel[].class, SModel[].class, AddStartOcclusionListener.Detail[].class );
+			OcclusionStartListener.class, SModel[].class, SModel[].class );
 	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addOcclusionEndListener",
-			OcclusionEndListener.class, SModel[].class, SModel[].class, AddEndOcclusionListener.Detail[].class );
+			OcclusionEndListener.class, SModel[].class, SModel[].class );
 
 	private static class SingletonHolder {
 		private static TransformationEventListenerMenu instance = new TransformationEventListenerMenu();
