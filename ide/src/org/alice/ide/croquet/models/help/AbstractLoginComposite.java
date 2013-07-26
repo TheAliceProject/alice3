@@ -77,6 +77,8 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			logout();
 			isLoggedIn.setValueTransactionlessly( false );
+			userNameState.setValueTransactionlessly( "" );
+			passwordState.setValueTransactionlessly( "" );
 			return null;
 		}
 	} );
