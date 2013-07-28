@@ -141,15 +141,15 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 
 	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit );
+		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit, step );
 		replacementEdit.retarget( retargeter );
 		return replacementEdit;
 	}
 
 	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( completionStep, originalEdit, retargeter );
 		completionStep.commitAndInvokeDo( replacementEdit );
 
 		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
