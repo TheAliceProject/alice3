@@ -83,6 +83,8 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		declarationTabState.removeAllOrphans();
 	}
 
 	public void undoInternal() {

@@ -234,4 +234,26 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 			}
 		}
 	}
+
+	public void removeAllOrphans() {
+		java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( DeclarationComposite<?, ?> composite : this ) {
+			if( composite != null ) {
+				org.lgna.project.ast.AbstractDeclaration declaration = composite.getDeclaration();
+				if( declaration instanceof org.lgna.project.ast.UserCode ) {
+					org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)declaration;
+					org.lgna.project.ast.UserType<?> declaringType = code.getDeclaringType();
+					if( declaringType != null ) {
+						//pass
+					} else {
+						orphans.add( composite );
+					}
+				}
+			}
+		}
+
+		for( DeclarationComposite<?, ?> orphan : orphans ) {
+			this.removeItem( orphan );
+		}
+	}
 }
