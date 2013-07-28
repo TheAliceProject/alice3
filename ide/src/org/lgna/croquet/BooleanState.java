@@ -185,9 +185,9 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
+			return (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newArrayList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel ) );
 		} else {
 			return java.util.Collections.emptyList();
 		}

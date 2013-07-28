@@ -159,8 +159,6 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
 
-	public abstract Iterable<? extends PrepModel> getPotentialRootPrepModels();
-
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );

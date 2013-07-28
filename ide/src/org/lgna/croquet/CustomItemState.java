@@ -136,8 +136,8 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	}
 
 	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
+	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+		return (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newArrayList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() ) );
 	}
 
 	@Override

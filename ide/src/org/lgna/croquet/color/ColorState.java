@@ -143,7 +143,7 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

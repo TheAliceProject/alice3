@@ -91,7 +91,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 
