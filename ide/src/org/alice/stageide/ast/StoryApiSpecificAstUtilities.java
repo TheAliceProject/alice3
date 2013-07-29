@@ -96,7 +96,7 @@ public class StoryApiSpecificAstUtilities {
 						org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 						if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 							org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-							if( methodInvocation.method.getValue() == org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
+							if( methodInvocation.method.getValue() == org.alice.ide.declarationseditor.events.methodsignatures.MethodSignatures.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
 								org.lgna.project.ast.SimpleArgument arg0 = methodInvocation.requiredArguments.get( 0 );
 								org.lgna.project.ast.Expression arg0Expression = arg0.expression.getValue();
 								if( arg0Expression instanceof org.lgna.project.ast.LambdaExpression ) {

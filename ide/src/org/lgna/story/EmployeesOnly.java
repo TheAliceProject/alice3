@@ -66,14 +66,6 @@ public class EmployeesOnly {
 		return rv;
 	}
 
-	public static <T> T checkArgumentNotNull( T value, int index ) {
-		if( value != null ) {
-			return value;
-		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
-		}
-	}
-
 	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f color ) {
 		return color != null ? Color.createInstance( color ) : null;
 	}

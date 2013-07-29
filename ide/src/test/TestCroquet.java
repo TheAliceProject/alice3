@@ -46,6 +46,10 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
+	private static javax.swing.filechooser.FileFilter createFileFilter( boolean areDirectoriesAccepted ) {
+		return new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file", areDirectoriesAccepted, "mp3", "wav", "au" );
+	}
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -118,7 +122,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			}
 		}
 
-		javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFileFilter( true );
+		javax.swing.filechooser.FileFilter fileFilter = createFileFilter( true );
 		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );

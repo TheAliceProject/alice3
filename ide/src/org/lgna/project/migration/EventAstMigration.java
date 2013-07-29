@@ -44,11 +44,7 @@ package org.lgna.project.migration;
 
 import java.util.ArrayList;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
-import org.alice.ide.declarationseditor.events.TimeEventListenerMenu;
-import org.alice.ide.declarationseditor.events.TransformationEventListenerMenu;
-import org.alice.stageide.ast.ExpressionCreator;
+import org.alice.ide.declarationseditor.events.methodsignatures.MethodSignatures;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -66,21 +62,21 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
 
-	private static JavaMethod[] removeTheseDetails = {
-			TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-			KeyboardEventListenerMenu.MOVE_WITH_ARROWS,
-			TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_START_COLLISION_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_END_COLLISION_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
-			TransformationEventListenerMenu.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
-	};
+	// duplicated here for limited source code of plugin
 
-	private final ExpressionCreator creator = new ExpressionCreator();
+	private static JavaMethod[] removeTheseDetails = {
+			MethodSignatures.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+			MethodSignatures.MOVE_WITH_ARROWS,
+			MethodSignatures.ADD_TRANSFORMATION_LISTENER_METHOD,
+			MethodSignatures.ADD_START_COLLISION_LISTENER_METHOD,
+			MethodSignatures.ADD_END_COLLISION_LISTENER_METHOD,
+			MethodSignatures.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
+			MethodSignatures.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
+			MethodSignatures.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+			MethodSignatures.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
+			MethodSignatures.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
+			MethodSignatures.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
+	};
 
 	public EventAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
 		super( minimumVersion, maximumVersion );
@@ -97,7 +93,8 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 				if( methodName.equals( "addTimeListener" ) ) {
 					handleAddTimeListener( methodInvocation, javaMethod );
 				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
-					changeDoubleToNumber( methodInvocation, javaMethod );
+					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? MethodSignatures.ADD_ENTER_PROXIMITY_LISTENER_METHOD : MethodSignatures.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
+					methodInvocation.method.setValue( newMethod );
 				} else if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
 					addMouseClickOnScreenEventParameter( methodInvocation );
 				} else if( ( replacementMethod = needsKeyedParamsRemoved( methodName ) ) != null ) {
@@ -128,42 +125,26 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 		value.requiredParameters.add( new UserParameter( "event", MouseClickOnScreenEvent.class ) );
 	}
 
-	private void changeDoubleToNumber( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod ) {
-		Expression exp = methodInvocation.requiredArguments.get( 3 ).expression.getValue();
-		try {
-			assert exp instanceof DoubleLiteral : exp.getClass();
-			Number distance = ( (DoubleLiteral)exp ).value.getValue();
-			methodInvocation.requiredArguments.set( 3, new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), creator.createExpression( distance ) ) );
-		} catch( CannotCreateExpressionException e ) {
-			e.printStackTrace();
-		}
-		JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD : TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
-		methodInvocation.method.setValue( newMethod );
-	}
-
 	private void handleAddTimeListener( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod ) {
 		ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
-		Number duration = null;
+		Double duration = null;
 		JavaKeyedArgument argToRemove = null;
 		for( JavaKeyedArgument arg : keyedParameter ) {
 			Expression value = ( (MethodInvocation)arg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();
 			if( value instanceof DoubleLiteral ) {
 				duration = ( (DoubleLiteral)value ).value.getValue();
 				argToRemove = arg;
+				break;
 			} else {
-				//do nothing
+				//pass
 			}
 		}
 		if( duration != null ) {
 			keyedParameter.remove( argToRemove );
 		} else {
-			duration = 0;
+			duration = 0.0;
 		}
-		try {
-			methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), creator.createExpression( duration ) ) );
-		} catch( CannotCreateExpressionException e ) {
-			e.printStackTrace();
-		}
-		methodInvocation.method.setValue( TimeEventListenerMenu.ADD_TIMER_EVENT_LISTENER_METHOD );
+		methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), new DoubleLiteral( duration ) ) );
+		methodInvocation.method.setValue( MethodSignatures.ADD_TIMER_EVENT_LISTENER_METHOD );
 	}
 }

@@ -10,9 +10,14 @@ import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 
 public class TimeEventListenerMenu extends EventListenerMenuModel {
-
-	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addSceneActivationListener", SceneActivationListener.class );
-	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addTimeListener", TimeListener.class, Number.class, AddTimeListener.Detail[].class );
+	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addSceneActivationListener",
+			SceneActivationListener.class );
+	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addTimeListener",
+			TimeListener.class, Number.class, AddTimeListener.Detail[].class );
 
 	private static class SingletonHolder {
 		private static TimeEventListenerMenu instance = new TimeEventListenerMenu();

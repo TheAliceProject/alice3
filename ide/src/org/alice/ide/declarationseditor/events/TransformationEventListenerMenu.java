@@ -26,7 +26,6 @@ public class TransformationEventListenerMenu extends EventListenerMenuModel {
 			SScene.class,
 			"addCollisionStartListener",
 			CollisionStartListener.class, SThing[].class, SThing[].class );
-
 	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addCollisionEndListener",

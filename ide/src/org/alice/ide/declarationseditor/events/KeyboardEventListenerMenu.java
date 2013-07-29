@@ -14,12 +14,23 @@ import org.lgna.story.event.NumberKeyPressListener;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class KeyboardEventListenerMenu extends EventListenerMenuModel {
-
-	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( SScene.class, "addObjectMoverFor", SMovableTurnable.class );
-	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance( SScene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Collections.newArrayList( ADD_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD );
+	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addKeyPressListener",
+			KeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance(
+			SScene.class,
+			"addObjectMoverFor",
+			SMovableTurnable.class );
+	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance(
+			SScene.class,
+			"addArrowKeyPressListener",
+			ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addNumberKeyPressListener",
+			NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Collections.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
 
 	private static class SingletonHolder {
 		private static KeyboardEventListenerMenu instance = new KeyboardEventListenerMenu();
@@ -35,10 +46,9 @@ public class KeyboardEventListenerMenu extends EventListenerMenuModel {
 
 	@Override
 	protected void updateBlankChildren( java.util.List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_KEY_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_ARROW_KEY_PRESS_LISTENER ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_NUNBER_KEY_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( MOVE_WITH_ARROWS ) );
+		for( JavaMethod method : ALL_KEYBOARD_EVENT_METHODS ) {
+			blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( method ) );
+		}
 	}
 
 }
