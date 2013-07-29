@@ -43,6 +43,7 @@
 package org.lgna.project.migration;
 
 import org.lgna.project.Version;
+import org.lgna.project.migration.notsupportedinplugin.EventAstMigration;
 
 /**
  * @author Dennis Cosgrove
@@ -5053,34 +5054,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	};
 
 	private final AstMigration[] astMigrations = {
-			new org.lgna.project.migration.MethodInvocationAstMigration(
+			new org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration(
 					new org.lgna.project.Version( "3.1.38.0.0" ),
 					new org.lgna.project.Version( "3.1.39.0.0" )
-			) {
-				@Override
-				protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-					if( method instanceof org.lgna.project.ast.JavaMethod ) {
-						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
-						if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
-							String methodName = javaMethod.getName();
-							if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
-								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
-								}
-								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
-							} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
-								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
-								}
-								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
-							}
-						}
-					}
-				}
-			},
+			),
 			new UnderscoreFieldAccessAstMigration(
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )

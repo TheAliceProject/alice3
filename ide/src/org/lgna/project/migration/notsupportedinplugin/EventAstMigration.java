@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.migration.notsupportedinplugin;
 
 import java.util.ArrayList;
 
@@ -54,16 +54,14 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.project.migration.MethodInvocationAstMigration;
 import org.lgna.story.event.MouseClickOnScreenEvent;
 
 /**
  * @author Matt May
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
-
-	// duplicated here for limited source code of plugin
-
-	private static JavaMethod[] removeTheseDetails = {
+	private static final JavaMethod[] removeTheseDetails = {
 			org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
 			org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu.MOVE_WITH_ARROWS,
 			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD,
