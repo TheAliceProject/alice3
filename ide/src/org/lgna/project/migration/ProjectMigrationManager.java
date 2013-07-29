@@ -2750,7 +2750,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.marinemammal.DolphinResource" ),
 
 					createMoreSpecificFieldString( "CAVE", "org.lgna.story.resources.prop.CaveResource" ),
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
+					createMoreSpecificFieldString( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
 
 					createMoreSpecificFieldString( "MAGIC_WAND", "org.lgna.story.resources.prop.MagicWandResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.MagicWandResource" ),
@@ -2852,7 +2852,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.flyer.ToucanResource" ),
 
 					createMoreSpecificFieldString( "ICE_FLOE", "org.lgna.story.resources.prop.IceFloeResource" ),
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.IceFloeResource" ),
+					createMoreSpecificFieldString( "ICE_FLOE1", "org.lgna.story.resources.prop.IceFloeResource" ),
 
 					createMoreSpecificFieldString( "COLA_BOTTLE", "org.lgna.story.resources.prop.ColaBottleResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.ColaBottleResource" ),
@@ -2972,7 +2972,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.ShrineLanternResource" ),
 
 					createMoreSpecificFieldString( "PIRATE_SHIP", "org.lgna.story.resources.prop.PirateShipResource" ),
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.PirateShipResource" ),
+					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.PirateShipPropResource" ),
 
 					createMoreSpecificFieldString( "TEA_TABLE", "org.lgna.story.resources.prop.TeaTableResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.TeaTableResource" ),
@@ -4400,72 +4400,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.59.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 
-					createMoreSpecificFieldString( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "STRAIGHT4_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "CURVE4_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW1_RIVERBANK3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW1_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW2_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
-					createMoreSpecificFieldString( "BOW3_BROWN", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-
 					createMoreSpecificFieldString( "PINK", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
 					createMoreSpecificFieldString( "DEFAULT_PINK", "org.lgna.story.resources.quadruped.DragonBabyResource" ),
 
@@ -4511,8 +4445,14 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
 					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
 
+					createMoreSpecificFieldString( "CANYON_SPIRES", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CliffWallResource" ),
-					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldString( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+
+					createMoreSpecificFieldString( "CLIFF_WALL", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldString( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
 
 					createMoreSpecificFieldString( "PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
 					createMoreSpecificFieldString( "DEFAULT_PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
@@ -5029,7 +4969,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitMailDelivery" ),
 					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDeliveryPerson" ),
 					createMoreSpecificFieldString( "STANDARDBLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitMailDelivery" ),
-					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" ),
+					createMoreSpecificFieldString( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" )
+
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.68.0.0" ),
+					new org.lgna.project.Version( "3.1.69.0.0" ),
 
 					"name=\"org.lgna.story.resources.prop.HelicopterResource",
 					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
@@ -5044,12 +4990,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
 
 					"name=\"org.lgna.story.resources.prop.SubmarineResource",
-					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
-			),
-
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.68.0.0" ),
-					new org.lgna.project.Version( "3.1.69.0.0" ),
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
 
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
 					createMoreSpecificFieldString( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
@@ -5100,6 +5041,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createMoreSpecificFieldString( "SHARP_BEND", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldString( "SHARP_BEND_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "BOW1_RIVERBANK3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "BOW1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldString( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldString( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
 					createMoreSpecificFieldString( "WOODEN_BOAT", "org.lgna.story.resources.aircraft.WoodenBoatResource" ),
 					createMoreSpecificFieldString( "WOODEN_BOAT", "org.lgna.story.resources.watercraft.WoodenBoatResource" ),
