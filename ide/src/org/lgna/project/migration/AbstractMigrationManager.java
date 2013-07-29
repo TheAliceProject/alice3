@@ -82,12 +82,14 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 
 	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
-			if( astMigration.isApplicable( version ) ) {
-				if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
+			if( astMigration != null ) {
+				if( astMigration.isApplicable( version ) ) {
+					if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
+					}
+					astMigration.migrate( root );
+					version = astMigration.getResultVersion();
 				}
-				astMigration.migrate( root );
-				version = astMigration.getResultVersion();
 			}
 		}
 	}

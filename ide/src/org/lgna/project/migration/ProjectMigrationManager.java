@@ -42,9 +42,6 @@
  */
 package org.lgna.project.migration;
 
-import org.lgna.project.Version;
-import org.lgna.project.migration.notsupportedinplugin.EventAstMigration;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -5053,8 +5050,27 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			//			, EventAstMigration.getTextMigration() 
 	};
 
+	private static AstMigration createNotSupportedInPlugInMigration( String clsName, org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+		if( cls != null ) {
+			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, org.lgna.project.Version.class, org.lgna.project.Version.class );
+			try {
+				return (AstMigration)cnstrctr.newInstance( minimumVersion, maximumVersion );
+			} catch( InstantiationException ie ) {
+				throw new RuntimeException( clsName, ie );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( clsName, iae );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( clsName, ite );
+			}
+		} else {
+			return null;
+		}
+	}
+
 	private final AstMigration[] astMigrations = {
-			new org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration(
+			createNotSupportedInPlugInMigration(
+					"org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration",
 					new org.lgna.project.Version( "3.1.38.0.0" ),
 					new org.lgna.project.Version( "3.1.39.0.0" )
 			),
@@ -5062,9 +5078,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
 			),
-			new EventAstMigration(
-					new Version( "3.1.68.0.0" ),
-					new Version( "3.1.70.0.0" ) )
+			createNotSupportedInPlugInMigration(
+					"org.lgna.project.migration.notsupportedinplugin.EventAstMigration",
+					new org.lgna.project.Version( "3.1.68.0.0" ),
+					new org.lgna.project.Version( "3.1.70.0.0" )
+			)
 	};
 
 	private static class SingletonHolder {
