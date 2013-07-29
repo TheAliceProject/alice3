@@ -220,7 +220,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo: 
 		return java.util.Collections.emptyList();
 	}
