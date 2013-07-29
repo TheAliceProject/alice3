@@ -5051,8 +5051,8 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	};
 
 	private static AstMigration createNotSupportedInPlugInMigration( String clsName, org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
-		Class<?> cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-		if( cls != null ) {
+		try {
+			Class<?> cls = Class.forName( clsName );
 			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, org.lgna.project.Version.class, org.lgna.project.Version.class );
 			try {
 				return (AstMigration)cnstrctr.newInstance( minimumVersion, maximumVersion );
@@ -5063,7 +5063,8 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			} catch( java.lang.reflect.InvocationTargetException ite ) {
 				throw new RuntimeException( clsName, ite );
 			}
-		} else {
+		} catch( ClassNotFoundException cnfe ) {
+			// perhaps in netbeans plugin
 			return null;
 		}
 	}
