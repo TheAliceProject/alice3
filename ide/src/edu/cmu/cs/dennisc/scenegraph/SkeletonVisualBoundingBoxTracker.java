@@ -40,40 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
-
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.Visibility;
-import org.lgna.story.SModel;
+package edu.cmu.cs.dennisc.scenegraph;
 
 /**
- * @author Matt May
+ * @author Dave Culyba
  */
-public abstract class MouseClickEvent extends AbstractEvent {
-
-	private final MouseClickEventImp implementation;
-
-	public MouseClickEvent( MouseClickEventImp e ) {
-		this.implementation = e;
-	}
-
-	public Double getScreenDistanceFromLeft() {
-		return implementation.getScreenDistanceFromLeft();
-	}
-
-	public Double getScreenDistanceFromBottom() {
-		return implementation.getScreenDistanceFromBottom();
-	}
-
-	@Deprecated
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public Double[] getRelativeXYPosition() {
-		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
-		return rv;
-	}
-
-	public SModel getModelAtMouseLocation() {
-		return implementation.getModelAtMouseLocation();
-	}
-
+public interface SkeletonVisualBoundingBoxTracker {
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv );
 }

@@ -13,10 +13,17 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class MouseEventListenerMenu extends EventListenerMenuModel {
-
-	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class );
-	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addMouseClickOnObjectListener", MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class );
-	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance( SScene.class, "addDefaultModelManipulation" );
+	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addMouseClickOnScreenListener",
+			MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class );
+	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance(
+			SScene.class,
+			"addMouseClickOnObjectListener",
+			MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class );
+	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(
+			SScene.class,
+			"addDefaultModelManipulation" );
 	public static final java.util.List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Collections.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
 
 	private static class SingletonHolder {
@@ -33,9 +40,9 @@ public class MouseEventListenerMenu extends EventListenerMenuModel {
 
 	@Override
 	protected void updateBlankChildren( java.util.List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_DEFAULT_MODEL_MANIPULATOR ) );
+		for( JavaMethod method : ALL_MOUSE_CLICK_EVENT_METHODS ) {
+			blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( method ) );
+		}
 	}
 
 }

@@ -50,7 +50,7 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 	private edu.cmu.cs.dennisc.scenegraph.Box m_sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 
-	public BoundingBoxDecorator() {
+	public BoundingBoxDecorator( boolean isPickable ) {
 		m_sgFrontAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
 		m_sgFrontAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
 		m_sgFrontAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
@@ -60,6 +60,11 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		frontFacingAppearance.setValue( m_sgFrontAppearance );
 		backFacingAppearance.setValue( m_sgBackAppearance );
 		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { m_sgBox } );
+		this.isPickable.setValue( isPickable );
+	}
+
+	public BoundingBoxDecorator() {
+		this( true );
 	}
 
 	public void setBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box ) {

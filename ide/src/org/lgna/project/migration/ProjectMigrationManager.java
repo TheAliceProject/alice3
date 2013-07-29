@@ -5061,39 +5061,42 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT_MARS", "org.lgna.story.resources.prop.CliffWallResource" )
 			)
 
+			//			, EventAstMigration.getTextMigration() 
 	};
+
+	private static AstMigration createNotSupportedInPlugInMigration( String clsName, org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+		try {
+			Class<?> cls = Class.forName( clsName );
+			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, org.lgna.project.Version.class, org.lgna.project.Version.class );
+			try {
+				return (AstMigration)cnstrctr.newInstance( minimumVersion, maximumVersion );
+			} catch( InstantiationException ie ) {
+				throw new RuntimeException( clsName, ie );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( clsName, iae );
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				throw new RuntimeException( clsName, ite );
+			}
+		} catch( ClassNotFoundException cnfe ) {
+			// perhaps in netbeans plugin
+			return null;
+		}
+	}
+
 	private final AstMigration[] astMigrations = {
-			new org.lgna.project.migration.MethodInvocationAstMigration(
+			createNotSupportedInPlugInMigration(
+					"org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration",
 					new org.lgna.project.Version( "3.1.38.0.0" ),
 					new org.lgna.project.Version( "3.1.39.0.0" )
-			) {
-				@Override
-				protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-					if( method instanceof org.lgna.project.ast.JavaMethod ) {
-						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
-						if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
-							String methodName = javaMethod.getName();
-							if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
-								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
-								}
-								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
-							} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
-								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
-								}
-								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
-							}
-						}
-					}
-				}
-			},
+			),
 			new UnderscoreFieldAccessAstMigration(
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
+			),
+			createNotSupportedInPlugInMigration(
+					"org.lgna.project.migration.notsupportedinplugin.EventAstMigration",
+					new org.lgna.project.Version( "3.1.68.0.0" ),
+					new org.lgna.project.Version( "3.1.70.0.0" )
 			)
 	};
 

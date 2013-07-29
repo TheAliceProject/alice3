@@ -40,40 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
-
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.Visibility;
-import org.lgna.story.SModel;
+package org.lgna.project.migration.notsupportedinplugin;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public abstract class MouseClickEvent extends AbstractEvent {
-
-	private final MouseClickEventImp implementation;
-
-	public MouseClickEvent( MouseClickEventImp e ) {
-		this.implementation = e;
+public class MouseClickAstMigration extends org.lgna.project.migration.MethodInvocationAstMigration {
+	public MouseClickAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+		super( minimumVersion, maximumVersion );
 	}
 
-	public Double getScreenDistanceFromLeft() {
-		return implementation.getScreenDistanceFromLeft();
+	@Override
+	protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+		if( method instanceof org.lgna.project.ast.JavaMethod ) {
+			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+			if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
+				String methodName = javaMethod.getName();
+				if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
+					for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+					}
+					methodInvocation.keyedArguments.clear();
+					methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
+				} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
+					for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+					}
+					methodInvocation.keyedArguments.clear();
+					methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
+				}
+			}
+		}
 	}
-
-	public Double getScreenDistanceFromBottom() {
-		return implementation.getScreenDistanceFromBottom();
-	}
-
-	@Deprecated
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public Double[] getRelativeXYPosition() {
-		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
-		return rv;
-	}
-
-	public SModel getModelAtMouseLocation() {
-		return implementation.getModelAtMouseLocation();
-	}
-
 }
