@@ -44,7 +44,6 @@ package org.lgna.project.migration;
 
 import java.util.ArrayList;
 
-import org.alice.ide.declarationseditor.events.methodsignatures.MethodSignatures;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -65,17 +64,17 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 	// duplicated here for limited source code of plugin
 
 	private static JavaMethod[] removeTheseDetails = {
-			MethodSignatures.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-			MethodSignatures.MOVE_WITH_ARROWS,
-			MethodSignatures.ADD_TRANSFORMATION_LISTENER_METHOD,
-			MethodSignatures.ADD_START_COLLISION_LISTENER_METHOD,
-			MethodSignatures.ADD_END_COLLISION_LISTENER_METHOD,
-			MethodSignatures.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
-			MethodSignatures.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
-			MethodSignatures.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
-			MethodSignatures.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
-			MethodSignatures.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
-			MethodSignatures.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
+			org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu.MOVE_WITH_ARROWS,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_START_COLLISION_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_END_COLLISION_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
+			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
 	};
 
 	public EventAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
@@ -93,7 +92,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 				if( methodName.equals( "addTimeListener" ) ) {
 					handleAddTimeListener( methodInvocation, javaMethod );
 				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
-					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? MethodSignatures.ADD_ENTER_PROXIMITY_LISTENER_METHOD : MethodSignatures.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
+					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD : org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
 					methodInvocation.method.setValue( newMethod );
 				} else if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
 					addMouseClickOnScreenEventParameter( methodInvocation );
@@ -145,6 +144,6 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 			duration = 0.0;
 		}
 		methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), new DoubleLiteral( duration ) ) );
-		methodInvocation.method.setValue( MethodSignatures.ADD_TIMER_EVENT_LISTENER_METHOD );
+		methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_TIMER_EVENT_LISTENER_METHOD );
 	}
 }

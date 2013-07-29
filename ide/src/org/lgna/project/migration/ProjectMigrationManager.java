@@ -5069,13 +5069,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
 								}
 								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.methodsignatures.MethodSignatures.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
+								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
 							} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
 								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
 									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
 								}
 								methodInvocation.keyedArguments.clear();
-								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.methodsignatures.MethodSignatures.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
+								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
 							}
 						}
 					}
