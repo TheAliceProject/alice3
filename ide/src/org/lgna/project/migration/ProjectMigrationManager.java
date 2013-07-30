@@ -5068,64 +5068,64 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.69.0.0" ),
 
-					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
-					createMoreSpecificFieldString( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
 
-					createMoreSpecificFieldString( "DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
-					createMoreSpecificFieldString( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldPattern( "DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
 
-					createMoreSpecificFieldString( "MARS", "org.lgna.story.resources.prop.CliffWallResource" ),
-					createMoreSpecificFieldString( "DEFAULT_MARS", "org.lgna.story.resources.prop.CliffWallResource" )
+					createMoreSpecificFieldPattern( "MARS", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_MARS", "org.lgna.story.resources.prop.CliffWallResource" )
 			),
 
 			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version( "3.1.69.0.0" ),
 					new org.lgna.project.Version( "3.1.70.0.0" ),
 
-					createMoreSpecificFieldString( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "STRAIGHT2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "STRAIGHT2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "STRAIGHT3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "STRAIGHT3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "STRAIGHT4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "STRAIGHT4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "STRAIGHT4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "CURVE1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "CURVE1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "CURVE2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "CURVE2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "CURVE3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "CURVE3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "CURVE4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "CURVE4", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "CURVE4_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "BOW1", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "BOW1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "BOW2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "BOW2_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "BOW3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "BOW3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "BOW3_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "SHARP_BEND", "org.lgna.story.resources.prop.RiverPieceResource" ),
-					createMoreSpecificFieldString( "SHARP_BEND_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldPattern( "SHARP_BEND", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "SHARP_BEND_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
-					createMoreSpecificFieldString( "WOODEN_BOAT", "org.lgna.story.resources.aircraft.WoodenBoatResource" ),
-					createMoreSpecificFieldString( "WOODEN_BOAT", "org.lgna.story.resources.watercraft.WoodenBoatResource" ),
+					createMoreSpecificFieldPattern( "WOODEN_BOAT", "org.lgna.story.resources.aircraft.WoodenBoatResource" ),
+					createMoreSpecificFieldReplacement( "WOODEN_BOAT", "org.lgna.story.resources.watercraft.WoodenBoatResource" ),
 
 					"name=\"org.lgna.story.resources.aircraft.WoodenBoatResource",
 					"name=\"org.lgna.story.resources.watercraft.WoodenBoatResource",
 
-					createMoreSpecificFieldString( "SAILBOAT", "org.lgna.story.resources.aircraft.SailboatResource" ),
-					createMoreSpecificFieldString( "SAILBOAT", "org.lgna.story.resources.watercraft.SailboatResource" ),
+					createMoreSpecificFieldPattern( "SAILBOAT", "org.lgna.story.resources.aircraft.SailboatResource" ),
+					createMoreSpecificFieldReplacement( "SAILBOAT", "org.lgna.story.resources.watercraft.SailboatResource" ),
 
 					"name=\"org.lgna.story.resources.aircraft.SailboatResource",
 					"name=\"org.lgna.story.resources.watercraft.SailboatResource"
