@@ -43,6 +43,8 @@
 
 package org.alice.ide.project;
 
+import org.lgna.croquet.PrepModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,7 +64,7 @@ public class ProjectDocumentState extends org.lgna.croquet.ItemState<org.alice.i
 	}
 
 	@Override
-	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

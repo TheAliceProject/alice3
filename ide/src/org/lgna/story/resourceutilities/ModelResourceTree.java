@@ -73,6 +73,10 @@ public class ModelResourceTree {
 		while( !classes.isEmpty() )
 		{
 			Class<? extends org.lgna.story.resources.ModelResource> currentClass = classes.pop();
+			if( currentClass.isAnnotationPresent( Deprecated.class ) ) {
+				continue;
+			}
+
 			//The root class is the one at the top of the stack, so grab it the first time around
 			if( rootClass == null )
 			{

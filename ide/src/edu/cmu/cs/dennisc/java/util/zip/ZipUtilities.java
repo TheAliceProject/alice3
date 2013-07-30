@@ -163,6 +163,10 @@ public class ZipUtilities {
 				edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( outFile );
 				java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
 				byte[] data = extractBytes( zis, zipEntry );
+				//				final int BUFFER_SIZE = 8192;
+				//				for( int i = 0; i < data.length; i += BUFFER_SIZE ) {
+				//					fos.write( data, i, Math.min( data.length - i, BUFFER_SIZE ) );
+				//				}
 				fos.write( data, 0, data.length );
 				fos.close();
 			}
