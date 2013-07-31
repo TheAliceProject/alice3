@@ -55,10 +55,14 @@ class PicturePlaneProgram extends SProgram {
 		org.lgna.story.SSphere sphere = this.scene.getSphere();
 
 		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( this );
-		org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.ImplementationAccessor.getImplementation( sphere );
+		final org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.ImplementationAccessor.getImplementation( sphere );
 
-		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenLookingGlass() );
-		picturePlaneInteraction.setSgTransformable( sphereImp.getSgComposite() );
+		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenLookingGlass() ) {
+			@Override
+			protected edu.cmu.cs.dennisc.scenegraph.Transformable pick( java.awt.event.MouseEvent e ) {
+				return sphereImp.getSgComposite();
+			}
+		};
 		picturePlaneInteraction.startUp();
 	}
 
