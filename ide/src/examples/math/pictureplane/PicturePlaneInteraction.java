@@ -46,17 +46,15 @@ package examples.math.pictureplane;
  * @author Dennis Cosgrove
  */
 public class PicturePlaneInteraction {
-	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable;
-
 	private static enum Mode {
-		NONE,
 		PLANE,
 		RAY
 	}
 
-	private Mode mode = Mode.NONE;
+	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
+	private edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable;
+
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
@@ -91,9 +89,19 @@ public class PicturePlaneInteraction {
 		}
 	};
 
-	public PicturePlaneInteraction( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+	public PicturePlaneInteraction( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
-		this.sgCamera = sgCamera;
+		this.sgCamera = this.onscreenLookingGlass.getCameraAt( 0 ); //todo
+	}
+
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
+		return this.sgTransformable;
+	}
+
+	public void setSgTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+		Mode mode = this.getMode();
+		assert mode == null : mode;
+		//todo: assert not in the midst of drag
 		this.sgTransformable = sgTransformable;
 	}
 
@@ -109,26 +117,23 @@ public class PicturePlaneInteraction {
 		awtComponent.removeMouseListener( this.mouseListener );
 	}
 
-	private void handleMousePressed( java.awt.event.MouseEvent e ) {
-		if( e.isShiftDown() ) {
-			this.startRayDrag( e );
+	private Mode getMode() {
+		if( Double.isNaN( this.planeZ0 ) == false ) {
+			return Mode.PLANE;
+		} else if( this.ray != null ) {
+			return Mode.RAY;
 		} else {
-			this.startPlaneDrag( e );
+			return null;
 		}
 	}
 
-	private double zPlane = Double.NaN;
+	private double planeZ0 = Double.NaN;
 
 	private void startPlaneDrag( java.awt.event.MouseEvent e ) {
-		this.mode = Mode.PLANE;
-
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
-
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = new edu.cmu.cs.dennisc.math.Vector4( p.x, p.y, p.z, 1.0 );
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToViewport_New( xyzwInCameraSpace, this.onscreenLookingGlass, this.sgCamera );
-
-		this.zPlane = xyzwInViewportSpace.z / xyzwInViewportSpace.w;
-
+		this.planeZ0 = xyzwInViewportSpace.z / xyzwInViewportSpace.w;
 	}
 
 	private void planeDrag( java.awt.event.MouseEvent e ) {
@@ -136,18 +141,16 @@ public class PicturePlaneInteraction {
 		int x = e.getX();
 		int y = this.onscreenLookingGlass.getHeight() - e.getY();
 
-		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = new edu.cmu.cs.dennisc.math.Vector4( x, y, this.zPlane, 1.0 );
+		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = new edu.cmu.cs.dennisc.math.Vector4( x, y, this.planeZ0, 1.0 );
 
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromViewportToCamera_New( xyzwInViewportSpace, this.onscreenLookingGlass, this.sgCamera );
 
 		edu.cmu.cs.dennisc.math.Point3 p = new edu.cmu.cs.dennisc.math.Point3( xyzwInCameraSpace.x / xyzwInCameraSpace.w, xyzwInCameraSpace.y / xyzwInCameraSpace.w, xyzwInCameraSpace.z / xyzwInCameraSpace.w );
 		this.sgTransformable.setTranslationOnly( p, this.sgCamera );
-
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "planeDrag", p );
 	}
 
 	private void stopPlaneDrag( java.awt.event.MouseEvent e ) {
-		this.zPlane = Double.NaN;
+		this.planeZ0 = Double.NaN;
 	}
 
 	private static final double Y_PIXELS_TO_RAY_T_FACTOR = 0.025;
@@ -156,7 +159,6 @@ public class PicturePlaneInteraction {
 	private double rayPixelY0 = Double.NaN;
 
 	private void startRayDrag( java.awt.event.MouseEvent e ) {
-		this.mode = Mode.RAY;
 		this.ray = this.onscreenLookingGlass.getRayAtPixel( e.getX(), e.getY() );
 		this.rayPixelY0 = e.getY();
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
@@ -165,13 +167,9 @@ public class PicturePlaneInteraction {
 	}
 
 	private void rayDrag( java.awt.event.MouseEvent e ) {
-
 		double deltaY = e.getY() - this.rayPixelY0;
-
 		double rayT = this.rayT0 + ( deltaY * Y_PIXELS_TO_RAY_T_FACTOR );
-
 		edu.cmu.cs.dennisc.math.Point3 p = this.ray.getPointAlong( rayT );
-
 		this.sgTransformable.setTranslationOnly( p, this.sgCamera );
 	}
 
@@ -195,34 +193,50 @@ public class PicturePlaneInteraction {
 		this.rayPixelY0 = Double.NaN;
 	}
 
-	private void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		if( mode == Mode.PLANE ) {
-			this.stopPlaneDrag( e );
-		} else if( mode == Mode.RAY ) {
-			this.stopRayDrag( e );
+	private void handleMousePressed( java.awt.event.MouseEvent e ) {
+		if( this.sgTransformable != null ) {
+			if( e.isShiftDown() ) {
+				this.startRayDrag( e );
+			} else {
+				this.startPlaneDrag( e );
+			}
 		}
-		this.mode = Mode.NONE;
+	}
+
+	private void handleMouseReleased( java.awt.event.MouseEvent e ) {
+		if( this.sgTransformable != null ) {
+			Mode mode = this.getMode();
+			if( mode == Mode.PLANE ) {
+				this.stopPlaneDrag( e );
+			} else if( mode == Mode.RAY ) {
+				this.stopRayDrag( e );
+			}
+		}
 	}
 
 	private void handleMouseDragged( java.awt.event.MouseEvent e ) {
-		if( this.isInTheMidstOfACursorWarp ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "skip warped cursor", e );
-		} else {
-			if( e.isShiftDown() ) {
-				if( mode == Mode.PLANE ) {
-					this.stopPlaneDrag( e );
-					this.startRayDrag( e );
-				}
+		if( this.sgTransformable != null ) {
+			if( this.isInTheMidstOfACursorWarp ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "skip warped cursor", e );
 			} else {
-				if( mode == Mode.RAY ) {
-					this.stopRayDrag( e );
-					this.startPlaneDrag( e );
+				Mode mode = this.getMode();
+				if( e.isShiftDown() ) {
+					if( mode == Mode.PLANE ) {
+						this.stopPlaneDrag( e );
+						this.startRayDrag( e );
+					}
+				} else {
+					if( mode == Mode.RAY ) {
+						this.stopRayDrag( e );
+						this.startPlaneDrag( e );
+					}
 				}
-			}
-			if( mode == Mode.PLANE ) {
-				this.planeDrag( e );
-			} else if( mode == Mode.RAY ) {
-				this.rayDrag( e );
+				mode = this.getMode();
+				if( mode == Mode.PLANE ) {
+					this.planeDrag( e );
+				} else if( mode == Mode.RAY ) {
+					this.rayDrag( e );
+				}
 			}
 		}
 	}
