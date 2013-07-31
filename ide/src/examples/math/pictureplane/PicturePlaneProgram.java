@@ -52,14 +52,13 @@ class PicturePlaneProgram extends SProgram {
 
 	private void start() {
 		this.setActiveScene( this.scene );
-		org.lgna.story.SCamera camera = this.scene.getCamera();
 		org.lgna.story.SSphere sphere = this.scene.getSphere();
 
 		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( this );
-		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( camera );
 		org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.ImplementationAccessor.getImplementation( sphere );
 
-		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenLookingGlass(), cameraImp.getSgCamera(), sphereImp.getSgComposite() );
+		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenLookingGlass() );
+		picturePlaneInteraction.setSgTransformable( sphereImp.getSgComposite() );
 		picturePlaneInteraction.startUp();
 	}
 
