@@ -45,7 +45,7 @@ package examples.math.pictureplane;
 /**
  * @author Dennis Cosgrove
  */
-public class PicturePlaneInteraction {
+public abstract class PicturePlaneInteraction {
 	private static enum Mode {
 		PLANE,
 		RAY
@@ -94,15 +94,12 @@ public class PicturePlaneInteraction {
 		this.sgCamera = this.onscreenLookingGlass.getCameraAt( 0 ); //todo
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
-		return this.sgTransformable;
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return this.onscreenLookingGlass;
 	}
 
-	public void setSgTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
-		Mode mode = this.getMode();
-		assert mode == null : mode;
-		//todo: assert not in the midst of drag
-		this.sgTransformable = sgTransformable;
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCamera() {
+		return this.sgCamera;
 	}
 
 	public void startUp() {
@@ -193,7 +190,10 @@ public class PicturePlaneInteraction {
 		this.rayPixelY0 = Double.NaN;
 	}
 
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Transformable pick( java.awt.event.MouseEvent e );
+
 	private void handleMousePressed( java.awt.event.MouseEvent e ) {
+		this.sgTransformable = this.pick( e );
 		if( this.sgTransformable != null ) {
 			if( e.isShiftDown() ) {
 				this.startRayDrag( e );
