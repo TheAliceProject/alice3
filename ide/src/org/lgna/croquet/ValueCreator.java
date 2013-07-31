@@ -139,7 +139,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	}
 
 	@Override
-	public java.lang.Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

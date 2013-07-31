@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="PrayerFlags">
     <BoundingBox>
-        <Min x="-2.61159610748291" y="-2.611036777496338" z="-2.1290318965911865"/>
-        <Max x="0.04737132042646408" y="0.047725506126880646" z="2.2643089294433594"/>
+        <Min x="-2.617199659347534" y="-0.04748128354549408" z="-2.1290318965911865"/>
+        <Max x="1.5067247152328491" y="2.611417293548584" z="2.2643089294433594"/>
     </BoundingBox>
     <Tags>
         <Tag>snow</Tag>

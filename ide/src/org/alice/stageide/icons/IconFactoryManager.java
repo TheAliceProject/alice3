@@ -57,7 +57,11 @@ public class IconFactoryManager {
 			org.lgna.story.resources.PropResource.class,
 			org.lgna.story.resources.QuadrupedResource.class,
 			org.lgna.story.resources.SwimmerResource.class,
-			org.lgna.story.resources.MarineMammalResource.class
+			org.lgna.story.resources.MarineMammalResource.class,
+			org.lgna.story.resources.TransportResource.class,
+			org.lgna.story.resources.AutomobileResource.class,
+			org.lgna.story.resources.AircraftResource.class,
+			org.lgna.story.resources.WatercraftResource.class
 			);
 
 	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {

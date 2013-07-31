@@ -93,6 +93,14 @@ public class Collections {
 		return rv;
 	}
 
+	public static <E> java.util.ArrayList<java.util.ArrayList<E>> newArrayListOfSingleArrayList( E... list0Array ) {
+		java.util.ArrayList<java.util.ArrayList<E>> rv = new java.util.ArrayList<java.util.ArrayList<E>>();
+		java.util.ArrayList<E> list0 = new java.util.ArrayList<E>();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( list0, list0Array );
+		rv.add( list0 );
+		return rv;
+	}
+
 	public static java.util.List<Byte> newList( byte[] array ) {
 		if( array != null ) {
 			java.util.ArrayList<Byte> rv = newArrayListWithInitialCapacity( array.length );

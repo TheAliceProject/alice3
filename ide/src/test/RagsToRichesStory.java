@@ -250,7 +250,7 @@ class SnowScene extends SScene {
 		this.addDefaultModelManipulation();
 		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
-			public void mouseClicked() {
+			public void mouseClicked( org.lgna.story.event.MouseClickOnScreenEvent event ) {
 				susan.walkTo( ogre );
 				ogre.touch( redCone );
 			}

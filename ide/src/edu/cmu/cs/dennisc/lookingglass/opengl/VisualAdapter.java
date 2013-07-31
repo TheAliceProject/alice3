@@ -307,7 +307,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters ) {
-		if( isActuallyShowing() && ( isEthereal() == false ) ) {
+		if( this.m_element.isPickable.getValue() && isActuallyShowing() && ( isEthereal() == false ) ) {
 			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 
 			if( isSubElementActuallyRequired ) {

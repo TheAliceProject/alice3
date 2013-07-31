@@ -54,10 +54,11 @@ public abstract class OutfitTabView extends org.lgna.croquet.components.BorderPa
 		slider.setBackgroundColor( backgroundColor );
 
 		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
-				.lineStart( ingredientsComposite.getSetToInShapeOperation().createButton() )
+				.hgap( 4 )
+				.lineStart( ingredientsComposite.getObesityLevelState().getSidekickLabel().createLabel() )
 				.center( slider )
-				.lineEnd( ingredientsComposite.getSetToOutOfShapeOperation().createButton() )
 				.build();
+		obesityLevelPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 		this.addPageEndComponent( obesityLevelPane );
 		this.setBackgroundColor( backgroundColor );
 	}

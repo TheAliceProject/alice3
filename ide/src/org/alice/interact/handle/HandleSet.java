@@ -51,7 +51,8 @@ public class HandleSet extends BitSet
 {
 	public static HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
 	public static HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS );
-	public static HandleSet DEFAULT_INTERACTION = new HandleSet( HandleGroup.DEFAULT, HandleGroup.INTERACTION );
+	public static HandleSet DEFAULT_INTERACTION = new HandleSet( HandleGroup.DEFAULT, HandleGroup.INTERACTION, HandleGroup.SELECTION );
+	public static HandleSet SELECTION_ONLY = new HandleSet( HandleGroup.SELECTION );
 	public static HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
 	public static HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
 	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
@@ -69,6 +70,7 @@ public class HandleSet extends BitSet
 		ABSOLUTE,
 		VISUALIZATION,
 		INTERACTION,
+		SELECTION,
 		X_AXIS,
 		Y_AXIS,
 		Z_AXIS,

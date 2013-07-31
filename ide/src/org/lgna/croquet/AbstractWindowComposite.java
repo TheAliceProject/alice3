@@ -115,8 +115,7 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 					window.pack();
 					return goldenRatioPolicy.calculateWindowSize( window );
 				} else {
-					edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( window.getAwtComponent() );
-					window.getAwtComponent().doLayout();
+					window.pack();
 					return window.getAwtComponent().getPreferredSize();
 				}
 			}

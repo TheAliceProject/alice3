@@ -84,6 +84,8 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		owner.remove( this.index );
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		declarationTabState.removeAllOrphans();
 	}
 
 	@Override
@@ -92,6 +94,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		owner.add( this.index, member );
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+
 	}
 
 	@Override

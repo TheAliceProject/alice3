@@ -432,7 +432,7 @@ public class GalleryDiff {
 				firstLine = "\"name=\\\"" + firstSymbol + "\"";
 				secondLine = "\"name=\\\"" + secondSymbol + "\"";
 			}
-			sb.append("\n\t"+firstLine+"\n");
+			sb.append("\n\t"+firstLine+",\n");
 			String lastComma = i < conversionMap.size() - 2 ? "," : "";
 			sb.append("\t"+secondLine + lastComma + "\n");
 		}
@@ -698,9 +698,9 @@ public class GalleryDiff {
 		final String FILE_NAME = "\\galleryData.txt";
 		
 
-//		 GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(),
-//		 DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME,
-//		 jarFiles);
+		 GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(),
+		 DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME,
+		 jarFiles);
 
 		final String[] DATA_VERSIONS = {
 				// "3.1.0.0.0", //Not supported
@@ -713,7 +713,7 @@ public class GalleryDiff {
 				// "3.1.29.0.0",
 				// "3.1.46.0.0",
 				// "3.1.47.0.0",
-				"3.1.58.0.0", "3.1.59.0.0", "3.1.68.0.0" };
+				"3.1.69.0.0", "3.1.70.0.0" };
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < DATA_VERSIONS.length - 1; i++) {

@@ -781,7 +781,7 @@ public class AliceResourceUtilties {
 						classToInfoMap.put( parentKey, parentInfo );
 					}
 					else {
-						Logger.errln( "Failed to find class info for " + name );
+						//This is an acceptable case because classes like Biped don't have class infos
 						classToInfoMap.put( parentKey, null );
 					}
 				} catch( Exception e )

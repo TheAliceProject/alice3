@@ -16,7 +16,6 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
@@ -86,7 +85,6 @@ public class EventManager {
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
 			e.translatePoint( scene );
-			MouseClickEvent event = new MouseClickEvent( e.getEvent(), scene.getAbstraction() );
 			mouseQuoteClickedUnquote( e.getEvent(), 0 );
 		}
 	};
@@ -178,12 +176,12 @@ public class EventManager {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
 
-	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
-		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
+	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist ) {
+		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue() );
 	}
 
-	public void addTimerEventListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {
-		timer.addListener( timerEventListener, frequency, policy );
+	public void addTimerEventListener( TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy ) {
+		timer.addListener( timerEventListener, frequency.doubleValue(), policy );
 	}
 
 	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
@@ -264,8 +262,8 @@ public class EventManager {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
 
-	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
-		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
+	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Number dist, Double frequency, MultipleEventPolicy policy ) {
+		contingent.register( listener, groupOne, groupTwo, dist.doubleValue(), frequency, policy );
 	}
 
 	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
