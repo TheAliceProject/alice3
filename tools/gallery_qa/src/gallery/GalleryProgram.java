@@ -49,9 +49,7 @@ import java.util.logging.Level;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.State;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SFlyer;
@@ -80,7 +78,6 @@ import org.lgna.story.resources.sims2.FullBodyOutfitManager;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.HairManager;
 import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.PersonResource;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
