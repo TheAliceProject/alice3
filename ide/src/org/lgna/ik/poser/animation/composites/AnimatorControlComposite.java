@@ -105,7 +105,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
-		parent.getScene().getDragAdapter().addListener( sphereDragListener );
+		parent.getScene().addDragListener( sphereDragListener );
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 		tlComposite.getTimeLine().addListener( tlListener );
 	}

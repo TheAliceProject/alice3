@@ -138,6 +138,7 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 			this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
 			this.biped.turnToFace( camera, new Duration( 0 ) );
 			isInitialized = true;
+			scene.initDragAdapter();
 		}
 	}
 

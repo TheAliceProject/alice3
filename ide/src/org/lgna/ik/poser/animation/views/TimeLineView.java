@@ -105,7 +105,6 @@ public class TimeLineView extends Panel {
 		}
 
 		public void keyFrameAdded( KeyFrameData event ) {
-			System.out.println( "addComponent" );
 			JTimeLinePoseMarker comp = new JTimeLinePoseMarker( event, jView );
 			comp.addActionListener( actionListener );
 			map.put( event, comp );

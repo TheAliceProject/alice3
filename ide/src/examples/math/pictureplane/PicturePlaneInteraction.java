@@ -102,6 +102,10 @@ public abstract class PicturePlaneInteraction {
 		return this.sgCamera;
 	}
 
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgTransformable() {
+		return this.sgTransformable;
+	}
+
 	public void startUp() {
 		java.awt.Component awtComponent = this.onscreenLookingGlass.getAWTComponent();
 		awtComponent.addMouseListener( this.mouseListener );
@@ -192,7 +196,7 @@ public abstract class PicturePlaneInteraction {
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Transformable pick( java.awt.event.MouseEvent e );
 
-	private void handleMousePressed( java.awt.event.MouseEvent e ) {
+	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
 		this.sgTransformable = this.pick( e );
 		if( this.sgTransformable != null ) {
 			if( e.isShiftDown() ) {
@@ -203,7 +207,7 @@ public abstract class PicturePlaneInteraction {
 		}
 	}
 
-	private void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( this.sgTransformable != null ) {
 			Mode mode = this.getMode();
 			if( mode == Mode.PLANE ) {
@@ -214,7 +218,7 @@ public abstract class PicturePlaneInteraction {
 		}
 	}
 
-	private void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		if( this.sgTransformable != null ) {
 			if( this.isInTheMidstOfACursorWarp ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "skip warped cursor", e );

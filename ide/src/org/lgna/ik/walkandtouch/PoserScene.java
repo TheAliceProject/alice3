@@ -47,10 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserControllerAdapter;
-import org.lgna.ik.poser.PoserDragAdapter;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
@@ -63,6 +61,7 @@ import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
@@ -81,14 +80,17 @@ public class PoserScene extends SScene {
 	private ArrayList<JointSelectionSphere> jssArr;
 	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
-	private PoserDragAdapter dragAdapter = new PoserDragAdapter( this );
 	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
 	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
 	private JointImp currentlyShowingRotationHandles = null;
-	private JointSelectionAdapter selector = new JointSelectionAdapter( this );
+	private PoserPicturePlaneInteraction dragAdapter = null;
+	private List<PoserSphereManipulatorListener> dragListeners = Collections.newArrayList();
+
+	//	private JointSelectionAdapter selector = new JointSelectionAdapter( this );
 
 	public PoserScene( SCamera camera, SBiped ogre ) {
 		this.camera = camera;
+		this.camera.setVehicle( this );
 		this.ogre = ogre;
 		JointSelectionSphere pelvis = createJSS( ogre.getPelvis(), null );
 		JointSelectionSphere a = createJSS( ogre.getRightHip(), pelvis );
@@ -141,7 +143,8 @@ public class PoserScene extends SScene {
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 		performInitializeEvents();
-		selector = new JointSelectionAdapter( this );
+		//		selector = new JointSelectionAdapter( this );
+
 	}
 
 	private void performCustomSetup() {
@@ -165,10 +168,10 @@ public class PoserScene extends SScene {
 		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
 		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
 		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
-		this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
-		this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
-		this.dragAdapter.makeCameraActive( camera );
-		dragAdapter.addListener( new PoserSphereManipulatorListener() {
+		//		this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
+		//		this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
+		//		this.dragAdapter.makeCameraActive( camera );
+		addDragListener( new PoserSphereManipulatorListener() {
 
 			public void fireStart( PoserEvent poserEvent ) {
 				JointSelectionSphere jss = poserEvent.getJSS();
@@ -254,7 +257,25 @@ public class PoserScene extends SScene {
 		return limbToJointMap.get( key ).get( 1 );
 	}
 
-	public PoserDragAdapter getDragAdapter() {
+	public PoserPicturePlaneInteraction getDragAdapter() {
 		return this.dragAdapter;
+	}
+
+	public void initDragAdapter() {
+		ProgramImp program = ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram();
+		dragAdapter = new PoserPicturePlaneInteraction( this, program.getOnscreenLookingGlass() );
+		dragAdapter.startUp();
+		for( PoserSphereManipulatorListener listener : dragListeners ) {
+			dragAdapter.addListener( listener );
+		}
+		dragListeners.clear();
+	}
+
+	public void addDragListener( PoserSphereManipulatorListener sphereDragListener ) {
+		if( dragAdapter != null ) {
+			dragAdapter.addListener( sphereDragListener );
+		} else {
+			dragListeners.add( sphereDragListener );
+		}
 	}
 }
