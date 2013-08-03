@@ -60,6 +60,22 @@ public abstract class AbstractField extends AbstractMember implements Accessible
 
 	public abstract boolean isTransient();
 
+	@Override
+	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+		super.addModifiers( modifiers );
+		if( this.isFinal() ) {
+			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+		} else if( this.isVolatile() ) {
+			modifiers.add( javax.lang.model.element.Modifier.VOLATILE );
+		}
+		if( this.isStatic() ) {
+			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+		}
+		if( this.isTransient() ) {
+			modifiers.add( javax.lang.model.element.Modifier.TRANSIENT );
+		}
+	}
+
 	public String getValidName( Node context ) {
 		return this.getName();
 	}
