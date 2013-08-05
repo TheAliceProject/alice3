@@ -223,6 +223,11 @@ public class IconFactoryManager {
 					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
 					int width = thumbnailMaker.getWidth();
 					int height = thumbnailMaker.getHeight();
+
+					//Used for saving out gallery thumbnails for the sims lifestages
+					//					java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
+					//					edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
+
 					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
 						return new org.lgna.croquet.icon.ImageIconFactory( image );
 					} else {

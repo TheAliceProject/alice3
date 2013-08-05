@@ -194,22 +194,19 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
 		public void mediaChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", videoPlayer.getLengthInMilliseconds() );
 		}
 
 		public void newMedia( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "newMedia", videoPlayer.getLengthInMilliseconds() );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					jSlider.setPortion( 0.0f );
+				}
+			} );
 		}
 
 		public void videoOutput( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int count ) {
-			long msec = videoPlayer.getLengthInMilliseconds();
-			java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
-			calendar.setTimeInMillis( msec );
-			durationLabel.setText( FORMAT.format( calendar.getTime() ) );
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "videoOutput", videoPlayer.getLengthInMilliseconds() );
 			if( count > 0 ) {
 				java.awt.Dimension dimension = videoPlayer.getVideoSize();
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle video size:", dimension );
 			}
 		}
 
@@ -221,8 +218,13 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 			} );
 		}
 
+		public void lengthChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, long lengthInMsec ) {
+			java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
+			calendar.setTimeInMillis( lengthInMsec );
+			durationLabel.setText( FORMAT.format( calendar.getTime() ) );
+		}
+
 		public void opening( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "opening", videoPlayer.getLengthInMilliseconds() );
 		}
 
 		public void playing( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
@@ -295,6 +297,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		public void thumbReleased( float position ) {
+			getVideoPlayer().setPosition( position );
 			if( this.wasPlaying ) {
 				play();
 			} else {

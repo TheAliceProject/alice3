@@ -91,5 +91,7 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 
 	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
 
+	public abstract boolean placeOnGround();
+
 	public abstract boolean isInstanceCreator();
 }

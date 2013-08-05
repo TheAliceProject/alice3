@@ -69,6 +69,7 @@ import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
@@ -828,7 +829,13 @@ public class AliceResourceUtilties {
 		if( info != null ) {
 			return info.getBoundingBox();
 		}
-		return null;
+		//TODO: implement better solution for getting bounding boxes for general resources (like Swimmer, Flyer, etc.)
+		if( modelResource != null ) {
+			if( org.lgna.story.resources.SwimmerResource.class.isAssignableFrom( modelResource ) ) {
+				return new AxisAlignedBox( new Point3( -.5, -.5, -.5 ), new Point3( .5, .5, .5 ) );
+			}
+		}
+		return new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
 	}
 
 	public static AxisAlignedBox getBoundingBox( Class<?> modelResource )
@@ -838,6 +845,42 @@ public class AliceResourceUtilties {
 
 	public static AxisAlignedBox getBoundingBox( ResourceKey key ) {
 		return getBoundingBox( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
+	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getDefaultInitialTransform( Class<?> modelResource ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		AxisAlignedBox bbox = getBoundingBox( modelResource );
+		if( ( bbox != null ) && !bbox.isNaN() ) {
+			boolean placeOnGround = getPlaceOnGround( modelResource );
+			if( placeOnGround ) {
+				rv.translation.y = -bbox.getYMinimum();
+			}
+		}
+		return rv;
+	}
+
+	public static boolean getPlaceOnGround( Class<?> modelResource, String resourceName )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
+		if( info != null ) {
+			return info.getPlaceOnGround();
+		}
+		//TODO: implement better solution for getting placeOnGround for general resources (like Swimmer, Flyer, etc.)
+		if( modelResource != null ) {
+			if( org.lgna.story.resources.SwimmerResource.class.isAssignableFrom( modelResource ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean getPlaceOnGround( ResourceKey key ) {
+		return getPlaceOnGround( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
+	public static boolean getPlaceOnGround( Class<?> modelResource )
+	{
+		return getPlaceOnGround( modelResource, null );
 	}
 
 	private static String getModelName( Class<?> modelResource, String resourceName, Locale locale )
