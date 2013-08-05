@@ -57,7 +57,6 @@ import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
@@ -100,7 +99,6 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -1083,13 +1081,22 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
 			JavaType javaType = type.getFirstEncounteredJavaType();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
+			Class<? extends org.lgna.story.resources.ModelResource> resourceCls = null;
+			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) ) {
+				resourceCls = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends org.lgna.story.SModel>)cls );
+			}
+			Point3 location;
+			if( resourceCls != null ) {
+				ClassResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+				AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
+				boolean shouldPlaceOnGround = org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( childKey );
+				double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
+				location = new Point3( 0, y, 0 );
+			}
+			else {
+				location = Point3.createZero();
+			}
 
-			ResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
-
-			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
-			boolean shouldPlaceOnGround = AliceResourceUtilties.shouldPlaceModelAboveGround( type );
-			double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
-			Point3 location = new Point3( 0, y, 0 );
 			initialTransform = new AffineMatrix4x4( OrthogonalMatrix3x3.createIdentity(), location );
 		}
 		return SetUpMethodGenerator.getSetupStatementsForField( false, field, this.getActiveSceneInstance(), null, initialTransform );

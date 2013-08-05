@@ -847,6 +847,18 @@ public class AliceResourceUtilties {
 		return getBoundingBox( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
+	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getDefaultInitialTransform( Class<?> modelResource ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		AxisAlignedBox bbox = getBoundingBox( modelResource );
+		if( ( bbox != null ) && !bbox.isNaN() ) {
+			boolean placeOnGround = getPlaceOnGround( modelResource );
+			if( placeOnGround ) {
+				rv.translation.y = -bbox.getYMinimum();
+			}
+		}
+		return rv;
+	}
+
 	public static boolean getPlaceOnGround( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );

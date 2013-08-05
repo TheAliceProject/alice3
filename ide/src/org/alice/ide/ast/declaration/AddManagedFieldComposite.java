@@ -158,7 +158,15 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite;
 			initialTransform = sceneDropSite.getTransform();
 		} else {
-			initialTransform = null;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			Class<?> cls = javaType.getClassReflectionProxy().getReification();
+			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) ) {
+				initialTransform = org.lgna.story.implementation.alice.AliceResourceUtilties.getDefaultInitialTransform( org.lgna.story.implementation.alice.AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends org.lgna.story.SModel>)cls ) );
+			}
+			else {
+				initialTransform = null;
+			}
 		}
 		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
