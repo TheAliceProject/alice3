@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
-	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
-	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
-	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
-	private final ShapesTab shapesTab = new ShapesTab();
-	private final SearchTab searchTab = new SearchTab();
-	private final ImportTab importTab = new ImportTab();
-	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab );
-
-	public GalleryComposite() {
-		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new org.alice.stageide.icons.TorusIcon( new java.awt.Dimension( 24, 24 ) ) );
-		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
-		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
-	}
-
-	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
-		return this.tabState;
-	}
-
-	@Override
-	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
-		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
+public class ImportTabView extends GalleryTabView {
+	public ImportTabView( org.alice.stageide.gallerybrowser.ImportTab composite ) {
+		super( composite );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[shrink]4[grow]4[shrink]16[shrink]" );
+		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
+		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
+		panel.addComponent( composite.getBrowseOperation().createButton() );
+		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
+		this.addPageStartComponent( panel );
+		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}
 }

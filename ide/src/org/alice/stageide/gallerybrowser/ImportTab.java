@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
-	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
-	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
-	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
-	private final ShapesTab shapesTab = new ShapesTab();
-	private final SearchTab searchTab = new SearchTab();
-	private final ImportTab importTab = new ImportTab();
-	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab );
+public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ImportTabView> {
+	private final org.lgna.croquet.StringState directoryState = this.createStringState( this.createKey( "directoryState" ) );
+	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			return null;
+		}
+	} );
+	private final org.lgna.croquet.Operation restoreToDefaultOperation = this.createActionOperation( this.createKey( "restoreToDefaultOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			restoreToDefault();
+			return null;
+		}
+	} );
 
-	public GalleryComposite() {
-		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
+	public ImportTab() {
+		super( java.util.UUID.fromString( "89ae8138-80a3-40e8-a8e6-e2f9b47ac452" ) );
+		this.restoreToDefault();
+		this.browseOperation.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
+	}
+
+	private void restoreToDefault() {
+		this.directoryState.setValueTransactionlessly( org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath() );
+	}
+
+	public org.lgna.croquet.StringState getDirectoryState() {
+		return this.directoryState;
+	}
+
+	public org.lgna.croquet.Operation getBrowseOperation() {
+		return this.browseOperation;
+	}
+
+	public org.lgna.croquet.Operation getRestoreToDefaultOperation() {
+		return this.restoreToDefaultOperation;
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new org.alice.stageide.icons.TorusIcon( new java.awt.Dimension( 24, 24 ) ) );
-		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
-		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
-	}
-
-	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
-		return this.tabState;
-	}
-
-	@Override
-	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
-		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
+	protected org.alice.stageide.gallerybrowser.views.ImportTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.ImportTabView( this );
 	}
 }
