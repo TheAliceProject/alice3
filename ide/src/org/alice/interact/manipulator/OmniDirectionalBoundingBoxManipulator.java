@@ -176,6 +176,16 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.offsetFromOrigin = new Point3( 0, 0, 0 );
 			this.mousePlaneOffset = new Point( 0, 0 );
 			this.originalPosition = new Point3( 0, 0, 0 );
+
+			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
+			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
+			DragComponent dragSource = dragStep.getDragSource();
+			dragSource.hideDragProxy();
+			org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = null;
+			if( dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
+				galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)dragModel;
+			}
+
 			//We don't need special planes for the orthographic camera
 			if( !( this.getCamera() instanceof OrthographicCamera ) )
 			{
@@ -202,21 +212,14 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.orthographicPickPlane = Plane.createInstance( new Point3( 0, 0, 0 ), cameraFacingNormal );
 			addPlaneTransitionPointSphereToScene();
 
-			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
-			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
-			DragComponent dragSource = dragStep.getDragSource();
-			dragSource.hideDragProxy();
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box;
-			if( dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
-				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)dragModel;
+			boolean placeOnGround = false;
+			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
+			if( galleryDragModel != null ) {
 				box = galleryDragModel.getBoundingBox();
-			} else {
-				box = null;
+				placeOnGround = galleryDragModel.placeOnGround();
 			}
 
-			if( box != null ) {
-				//pass
-			} else {
+			if( box == null ) {
 				box = new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
 			}
 
@@ -232,7 +235,9 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			}
 			else
 			{
-				//				offsetTransform.translation.y += -box.getMinimum().y;
+				if( placeOnGround ) {
+					offsetTransform.translation.y += -box.getMinimum().y;
+				}
 				this.sgBoundingBoxDecorator.setBox( box );
 				this.sgAxes = new ModestAxes( box.getWidth() * .5 );
 			}
