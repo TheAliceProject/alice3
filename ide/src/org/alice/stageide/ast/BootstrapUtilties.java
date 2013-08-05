@@ -43,7 +43,6 @@
 
 package org.alice.stageide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -109,8 +108,6 @@ public class BootstrapUtilties {
 	private static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
 		return org.lgna.project.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
-
-	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
 
 	//todo
 	public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
@@ -267,20 +264,8 @@ public class BootstrapUtilties {
 				)
 				);
 
-		org.lgna.project.ast.UserMethod getSceneMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, sceneType, GET_MY_SCENE_METHOD_NAME );
-		getSceneMethod.body.getValue().statements.add(
-				new org.lgna.project.ast.ReturnStatement(
-						sceneType,
-						new org.lgna.project.ast.FieldAccess(
-								new org.lgna.project.ast.ThisExpression(),
-								sceneField
-						)
-				)
-				);
-
 		org.lgna.project.ast.NamedUserType rv = createType( "Program", org.lgna.story.SProgram.class );
 		rv.fields.add( sceneField );
-		rv.methods.add( getSceneMethod );
 
 		org.lgna.project.ast.UserParameter argsParameter = new org.lgna.project.ast.UserParameter( "args", String[].class );
 		org.lgna.project.ast.UserMethod mainMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "main" );
@@ -306,7 +291,7 @@ public class BootstrapUtilties {
 						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
 						new org.lgna.project.ast.MethodInvocation(
 								new org.lgna.project.ast.LocalAccess( storyLocal ),
-								getSceneMethod
+								sceneField.getGetter()
 						)
 				)
 				);

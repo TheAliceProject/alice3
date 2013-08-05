@@ -117,6 +117,22 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
 	public abstract AbstractType<?, ?, ?> getComponentType();
 
+	@Override
+	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+		super.addModifiers( modifiers );
+		if( this.isFinal() ) {
+			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+		} else if( this.isAbstract() ) {
+			modifiers.add( javax.lang.model.element.Modifier.ABSTRACT );
+		}
+		if( this.isStatic() ) {
+			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+		}
+		if( this.isStrictFloatingPoint() ) {
+			modifiers.add( javax.lang.model.element.Modifier.STRICTFP );
+		}
+	}
+
 	public C getDeclaredConstructor( AbstractType<?, ?, ?>... parameterTypes ) {
 		C rv = null;
 		for( C constructor : getDeclaredConstructors() ) {

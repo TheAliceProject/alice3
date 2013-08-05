@@ -5167,6 +5167,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"org.lgna.project.migration.notsupportedinplugin.EventAstMigration",
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.70.0.0" )
+			),
+			new RemoveGetMySceneMethodFromProgramTypeAstMigration(
+					new org.lgna.project.Version( "3.1.70.0.0" ),
+					new org.lgna.project.Version( "3.1.72.0.0" )
 			)
 	};
 
