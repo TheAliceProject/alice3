@@ -8,6 +8,7 @@ import org.lgna.common.ComponentThread;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
@@ -17,9 +18,9 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	protected Integer count = 0;
 	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newConcurrentHashMap();
 	protected Map<Object, Map<Object, Boolean>> isFiringMap = Collections.newConcurrentHashMap();
-	protected EventRecorder recorder = EventRecorder.getSingleton();
 	private CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
 	private Object NULL_OBJECT = new Object();
+	protected SceneImp scene;
 
 	protected void fireEvent( final L listener, final E event, final Object object ) {
 		final Object o = object == null ? NULL_OBJECT : object;
@@ -69,7 +70,6 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	private void fire( L listener, E event ) {
-		recorder.recordEvent( event );
 		nameOfFireCall( listener, event );
 	}
 
@@ -103,6 +103,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected void fireEvent( L listener, E event ) {
 		fireEvent( listener, event, listener ); //used if policy is not constrained by anything else, such as selected model for mouse click events
+	}
+
+	public void setScene( SceneImp scene ) {
+		this.scene = scene;
 	}
 
 }

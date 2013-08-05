@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="John DeRiggi" name="RedRover">
     <BoundingBox>
-        <Min x="-0.8562644124031067" y="0.0" z="-0.843026340007782"/>
-        <Max x="0.8562644124031067" y="1.8615507166832685" z="0.843026340007782"/>
+        <Min x="-0.8562644124031067" y="-0.009466437622904778" z="-0.8162348866462708"/>
+        <Max x="0.8562644124031067" y="1.8520842790603638" z="0.8698177933692932"/>
     </BoundingBox>
     <Tags>
         <Tag>robot</Tag>
@@ -10,7 +10,7 @@
         <Tag>rover</Tag>
     </Tags>
     <GroupTags>
-        <GroupTag>vehicles</GroupTag>
+        <GroupTag>props</GroupTag>
     </GroupTags>
     <ThemeTags>
         <ThemeTag>outer space</ThemeTag>

@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_QUADS;
+import static javax.media.opengl.GL2.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove
@@ -143,7 +143,7 @@ public class BoxAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Box> 
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glBox( rc, true, false );
 	}
 

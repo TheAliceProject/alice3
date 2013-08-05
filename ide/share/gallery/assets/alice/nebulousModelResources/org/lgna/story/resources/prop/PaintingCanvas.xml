@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PaintingCanvas">
+    <BoundingBox>
+        <Min x="-0.3369672894477844" y="0.0" z="-0.11558657139539719"/>
+        <Max x="0.3369672894477844" y="1.0739842653274536" z="0.11558657139539719"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>painting</Tag>
+        <Tag>art</Tag>
+        <Tag>paint</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PaintingCanvas" resourceName="CLOWNS" textureName="CLOWNS"/>
+    <Resource modelName="PaintingCanvas" resourceName="DESERT_SUNSET" textureName="DESERT_SUNSET"/>
+    <Resource modelName="PaintingCanvas" resourceName="SIMPLE_PERSON" textureName="SIMPLE_PERSON"/>
+    <Resource modelName="PaintingCanvas" resourceName="LLAMA" textureName="LLAMA"/>
+    <Resource modelName="PaintingCanvas" resourceName="MOON" textureName="MOON"/>
+    <Resource modelName="PaintingCanvas" resourceName="LINES" textureName="LINES"/>
+    <Resource modelName="PaintingCanvas" resourceName="RED_FOREST" textureName="RED_FOREST"/>
+    <Resource modelName="PaintingCanvas" resourceName="RIVER" textureName="RIVER"/>
+    <Resource modelName="PaintingCanvas" resourceName="TIGER" textureName="TIGER"/>
+    <Resource modelName="PaintingCanvas" resourceName="FLOWER" textureName="FLOWER"/>
+    <Resource modelName="PaintingCanvas" resourceName="PORTRAIT" textureName="PORTRAIT"/>
+    <Resource modelName="PaintingCanvas" resourceName="BLANK" textureName="BLANK"/>
+</AliceModel>

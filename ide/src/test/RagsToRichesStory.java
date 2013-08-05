@@ -94,7 +94,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends SProp {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM );
+		super( org.lgna.story.resources.prop.ArmoireResource.LOFT_DARK_WOOD_BLACK_TRIM );
 	}
 
 	public org.lgna.story.SJoint getLeftDoor() {
@@ -250,7 +250,7 @@ class SnowScene extends SScene {
 		this.addDefaultModelManipulation();
 		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
-			public void mouseClicked() {
+			public void mouseClicked( org.lgna.story.event.MouseClickOnScreenEvent event ) {
 				susan.walkTo( ogre );
 				ogre.touch( redCone );
 			}

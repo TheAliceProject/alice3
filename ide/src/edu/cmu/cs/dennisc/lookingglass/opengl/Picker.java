@@ -48,14 +48,12 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	private static class ActualPicker {
-
 		private static final int SELECTION_CAPACITY = 256;
 		private final PickContext pickContext = new PickContext();
 		private final java.nio.IntBuffer selectionAsIntBuffer;
 
 		private final javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
 		private final javax.media.opengl.GLCapabilities glRequestedCapabilities;
-		//		private final com.sun.opengl.impl.GLDrawableFactoryImpl glFactory;
 		private final javax.media.opengl.GLContext glShareContext;
 
 		private PickParameters pickParameters;
@@ -66,10 +64,10 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
 			this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 
-			this.glRequestedCapabilities = new javax.media.opengl.GLCapabilities();
+			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			this.glRequestedCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
 			this.glRequestedCapabilities.setDoubleBuffered( false );
 			this.glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-			//			this.glFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
 			this.glShareContext = null;
 		}
 
@@ -96,7 +94,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				//pass
 			} else {
 				this.glOffscreenDrawable = OffscreenDrawable.createInstance( new OffscreenDrawable.DisplayCallback() {
-					public void display( javax.media.opengl.GL gl ) {
+					public void display( javax.media.opengl.GL2 gl ) {
 						sharedActualPicker.performPick( gl );
 					}
 				}, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
@@ -104,7 +102,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			return this.glOffscreenDrawable;
 		}
 
-		private void performPick( javax.media.opengl.GL gl ) {
+		private void performPick( javax.media.opengl.GL2 gl ) {
 			this.pickContext.gl = gl;
 			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( GlDrawableUtilities.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
 
@@ -122,7 +120,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				this.selectionAsIntBuffer.rewind();
 				this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
 
-				this.pickContext.gl.glRenderMode( javax.media.opengl.GL.GL_SELECT );
+				this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 				this.pickContext.gl.glInitNames();
 
 				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = pickParameters.getLookingGlass();
@@ -132,8 +130,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				this.pickContext.gl.glFlush();
 
 				this.selectionAsIntBuffer.rewind();
-				int length = this.pickContext.gl.glRenderMode( javax.media.opengl.GL.GL_RENDER );
-
+				int length = this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_RENDER );
 				//todo: invesigate negative length
 				//assert length >= 0;
 

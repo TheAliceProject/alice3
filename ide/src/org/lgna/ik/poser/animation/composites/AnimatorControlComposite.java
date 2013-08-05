@@ -42,8 +42,10 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
@@ -58,6 +60,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
+import org.lgna.ik.poser.AnimatorInputDialogComposite;
 import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
@@ -72,7 +75,10 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
+import org.lgna.story.Duration;
+import org.lgna.story.SBiped;
 import org.lgna.story.SetPose;
 
 /**
@@ -86,6 +92,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private TimeLineComposite tlComposite = new TimeLineComposite();
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
 	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite );
+	private BlockStatement blockStatement = new BlockStatement();
 
 	private final TimeLineListener timeLineListener = new TimeLineListener() {
 
@@ -120,7 +127,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
-		parent.getScene().getDragAdapter().addListener( sphereDragListener );
+		parent.getScene().addDragListener( sphereDragListener );
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 
 		tlComposite.getTimeLine().addListener( timeLineListener );
@@ -146,25 +153,36 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException { //
-			//			posesList.setSelectedIndex( -1 );
-			//
-			//			//			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-			//			final org.lgna.story.SBiped ogre = parent.getBiped();
-			//			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
-			//
-			//			//			ComponentThread thread = new ComponentThread( new Runnable() {
-			//			//				public void run() {
-			//			//					for( PoseAnimation pAnimation : posesList ) {
-			//			//						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
-			//			//					}
-			//			//				}
-			//			//			}, "noDescription" );
-			//			//			thread.start();
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			final SBiped biped = parent.getBiped();
+			//			ComponentThread thread = new ComponentThread( new Runnable() {
+			//				public void run() {
+			//					for( PoseAnimation pAnimation : posesList ) {
+			//						ogre.setPose( pAnimation.getPose(), timeLine.getParametersForPose( pAnimation.getPose() ) );
+			//					}
+			//				}
+			//			}, "noDescription" );
+			//			thread.start();
+			final TimeLine timeLine = tlComposite.getTimeLine();
+			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
+			ComponentThread thread = new ComponentThread( new Runnable() {
+
+				public void run() {
+					if( keyFrames.size() > 0 ) {
+						biped.straightenOutJoints();
+					}
+					for( KeyFrameData data : keyFrames ) {
+						double duration = timeLine.getDurationForKeyFrame( data );
+						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
+						biped.setPose( data.getPose(), new Duration( duration ), styleForKeyFramePose );
+					}
+				}
+			}, "runAnimation" );
+			thread.start();
 			return null;
 		}
 	} );
-
+	
 	public BlockStatement createMethodBody() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
@@ -199,7 +217,8 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			}
 			++i;
 		}
-		return new BlockStatement( miArr );
+		blockStatement = new BlockStatement( miArr );
+		return blockStatement;
 	}
 
 	public ActionOperation getRunAnimationOperation() {
@@ -231,11 +250,22 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		return this.nameState;
 	}
 
-	public void revertPose( KeyFrameData selectedPose ) {
-	}
-
 	public Pose getCurrentPose() {
 		return parent.getPose();
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		UserMethod method = ( (AnimatorInputDialogComposite)parent ).getMethod();
+		if( method == null ) {
+			tlComposite.getTimeLine().refresh();
+			parent.getBiped().straightenOutJoints( new Duration( 0 ) );
+		} else {
+			parseMethod( method );
+			nameState.setValueTransactionlessly( method.getName() );
+			nameState.setEnabled( false );
+		}
 	}
 
 	public View getSouthViewForDialog() {
@@ -243,5 +273,12 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		borderPanel.addCenterComponent( tlComposite.getView() );
 		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );
 		return borderPanel;
+	}
+
+	public void parseMethod( UserMethod method ) {
+		ArrayList<KeyFrameData> frames = AnimationParser.initializeAndParse( method );
+		for( KeyFrameData frame : frames ) {
+			tlComposite.getTimeLine().addKeyFrameData( frame );
+		}
 	}
 }

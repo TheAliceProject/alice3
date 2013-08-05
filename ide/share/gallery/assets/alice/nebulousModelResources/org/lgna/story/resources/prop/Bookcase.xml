@@ -18,26 +18,26 @@
     </ThemeTags>
     <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD" textureName="DARK_WOOD">
         <BoundingBox>
-            <Min x="-0.37399938702583313" y="0.0" z="-0.26151224970817566"/>
-            <Max x="0.37399938702583313" y="2.026090383529663" z="0.26151224970817566"/>
+            <Min x="-0.37399938702583313" y="0.0" z="-0.1575484573841095"/>
+            <Max x="0.37399938702583313" y="2.020616054534912" z="0.1575484573841095"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_LIGHT_WOOD" textureName="LIGHT_WOOD">
         <BoundingBox>
-            <Min x="-0.37399938702583313" y="0.0" z="-0.26151224970817566"/>
-            <Max x="0.37399938702583313" y="2.026090383529663" z="0.26151224970817566"/>
+            <Min x="-0.37399938702583313" y="0.0" z="-0.1575484573841095"/>
+            <Max x="0.37399938702583313" y="2.020616054534912" z="0.1575484573841095"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_WOOD" textureName="WOOD">
         <BoundingBox>
-            <Min x="-0.37399938702583313" y="0.0" z="-0.26151224970817566"/>
-            <Max x="0.37399938702583313" y="2.026090383529663" z="0.26151224970817566"/>
+            <Min x="-0.37399938702583313" y="0.0" z="-0.1575484573841095"/>
+            <Max x="0.37399938702583313" y="2.020616054534912" z="0.1575484573841095"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_METAL" textureName="METAL">
         <BoundingBox>
-            <Min x="-0.37399938702583313" y="0.0" z="-0.26151224970817566"/>
-            <Max x="0.37399938702583313" y="2.026090383529663" z="0.26151224970817566"/>
+            <Min x="-0.37399938702583313" y="0.0" z="-0.1575484573841095"/>
+            <Max x="0.37399938702583313" y="2.020616054534912" z="0.1575484573841095"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="ArtNouveau" resourceName="ART_NOUVEAU" textureName="ART_NOUVEAU">

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="AncientTempleTreeStump">
+    <BoundingBox>
+        <Min x="-4.915777206420898" y="0.02592729963362217" z="-4.241016387939453"/>
+        <Max x="-0.6237936019897461" y="4.021605968475342" z="1.2346495389938354"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>ruin</Tag>
+        <Tag>temple</Tag>
+        <Tag>tree</Tag>
+        <Tag>roots</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:ancient temple</GroupTag>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:ancient temple</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AncientTempleTreeStump" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

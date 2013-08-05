@@ -60,8 +60,11 @@ public class TreeUtilities {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
 			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getElderInstance(), emptyList ) );
 				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getAdultInstance(), emptyList ) );
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getTeenInstance(), emptyList ) );
 				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getChildInstance(), emptyList ) );
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getToddlerInstance(), emptyList ) );
 			}
 		}
 		for( org.lgna.story.resourceutilities.ModelResourceTreeNode childSource : source.childrenList() ) {
@@ -226,7 +229,7 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<ResourceNode> createGroupTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup ) {
-		return createTagNodeList( mapGroup, false );
+		return createTagNodeList( mapGroup, false, "household" );
 	}
 
 	private static java.util.List<ResourceNode> createThemeTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme ) {

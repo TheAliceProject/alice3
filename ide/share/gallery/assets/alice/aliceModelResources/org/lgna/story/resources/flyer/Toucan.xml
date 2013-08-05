@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="Toucan">
     <BoundingBox>
-        <Min x="-0.08939135074615479" y="0.0" z="-0.3301158994436264"/>
-        <Max x="0.08939135074615479" y="0.5781156495213509" z="0.3301158994436264"/>
+        <Min x="-0.08670356869697571" y="-0.09565827995538712" z="-0.3466952443122864"/>
+        <Max x="0.09207913279533386" y="0.48245736956596375" z="0.31353655457496643"/>
     </BoundingBox>
     <Tags>
         <Tag>bird</Tag>

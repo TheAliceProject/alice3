@@ -103,20 +103,24 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 				java.util.List<DeclarationComposite> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( data.toArray() );
 				prevItems.add( declarationComposite );
 
+				java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				for( DeclarationComposite<?, ?> item : prevItems ) {
 					if( item != null ) {
 						org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)item.getType();
-						assert namedUserType != null : item;
-						TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, TypeListPair>() {
-							public TypeListPair initialize( org.lgna.project.ast.NamedUserType key ) {
-								return new TypeListPair( key );
+						if( namedUserType != null ) {
+							TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, TypeListPair>() {
+								public TypeListPair initialize( org.lgna.project.ast.NamedUserType key ) {
+									return new TypeListPair( key );
+								}
+							} );
+							typeListPair.addDeclarationComposite( item );
+							if( typeListPairs.contains( typeListPair ) ) {
+								//pass
+							} else {
+								typeListPairs.add( typeListPair );
 							}
-						} );
-						typeListPair.addDeclarationComposite( item );
-						if( typeListPairs.contains( typeListPair ) ) {
-							//pass
 						} else {
-							typeListPairs.add( typeListPair );
+							orphans.add( item );
 						}
 					}
 				}
@@ -129,6 +133,11 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 					}
 					typeListPair.update( nextItems, isTypeRequired );
 					isSeparatorDesired = true;
+				}
+
+				if( orphans.size() > 0 ) {
+					nextItems.add( null );
+					nextItems.addAll( orphans );
 				}
 				data.internalSetAllItems( nextItems );
 			}
@@ -223,6 +232,28 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 					codeEditor.handleAstChangeThatCouldBeOfInterest();
 				}
 			}
+		}
+	}
+
+	public void removeAllOrphans() {
+		java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( DeclarationComposite<?, ?> composite : this ) {
+			if( composite != null ) {
+				org.lgna.project.ast.AbstractDeclaration declaration = composite.getDeclaration();
+				if( declaration instanceof org.lgna.project.ast.UserCode ) {
+					org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)declaration;
+					org.lgna.project.ast.UserType<?> declaringType = code.getDeclaringType();
+					if( declaringType != null ) {
+						//pass
+					} else {
+						orphans.add( composite );
+					}
+				}
+			}
+		}
+
+		for( DeclarationComposite<?, ?> orphan : orphans ) {
+			this.removeItem( orphan );
 		}
 	}
 }

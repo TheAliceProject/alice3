@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="MagicSpoon">
     <BoundingBox>
-        <Min x="-0.9331925511360168" y="0.0" z="-0.1264737844467163"/>
-        <Max x="0.9331925511360168" y="0.2064780369400978" z="0.1264737844467163"/>
+        <Min x="-0.9331925511360168" y="-0.10323907434940338" z="-0.12647384405136108"/>
+        <Max x="0.9331925511360168" y="0.10323896259069443" z="0.12647372484207153"/>
     </BoundingBox>
     <Tags>
         <Tag>magic</Tag>

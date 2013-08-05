@@ -50,13 +50,22 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 	private static class SingletonHolder {
 		private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.ADULT );
 		private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.CHILD );
+		private static DeclareFieldFromPersonResourceIteratingOperation toddlerInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.TODDLER );
+		private static DeclareFieldFromPersonResourceIteratingOperation teenInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.TEEN );
+		private static DeclareFieldFromPersonResourceIteratingOperation elderInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.ELDER );
 	}
 
 	public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+			return SingletonHolder.elderInstance;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			return SingletonHolder.adultInstance;
-		} else {
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return SingletonHolder.teenInstance;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
 			return SingletonHolder.childInstance;
+		} else {
+			return SingletonHolder.toddlerInstance;
 		}
 	}
 

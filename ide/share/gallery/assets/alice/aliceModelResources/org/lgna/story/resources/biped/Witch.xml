@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Gillmeister" name="Witch">
     <BoundingBox>
-        <Min x="-0.6865870356559753" y="0.0" z="-0.6241956502199173"/>
-        <Max x="0.6865870356559753" y="1.4934817482717335" z="0.6241956502199173"/>
+        <Min x="-0.36067384481430054" y="0.004964001011103392" z="-0.786404013633728"/>
+        <Max x="0.37606939673423767" y="1.498445749282837" z="0.46198728680610657"/>
     </BoundingBox>
     <Tags>
         <Tag>magic</Tag>

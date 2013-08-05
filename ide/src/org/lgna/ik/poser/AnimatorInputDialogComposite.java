@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser;
 
+import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.components.BorderPanel;
@@ -49,17 +50,29 @@ import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SBiped;
+import org.lgna.story.SetPose;
 
 /**
  * @author Matt May
  */
 public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
+	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
+	private UserMethod method;
+
+	public AnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod ) {
+		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+		this.method = editedMethod;
+	}
 
 	public AnimatorInputDialogComposite( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+		this( valueType, null );
 	}
 
 	@Override
@@ -70,7 +83,12 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		AnimatorControlComposite controlComposite = this.getControlComposite();
-		return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, controlComposite.createMethodBody() );
+		BlockStatement body = controlComposite.createMethodBody();
+		if( method != null ) {
+			return new ChangeMethodBodyEdit( completionStep, method, body );
+		} else {
+			return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, body );
+		}
 	}
 
 	@Override
@@ -98,5 +116,19 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 		panel.addCenterComponent( splitPane );
 		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );
 		return panel;
+	}
+
+	public static boolean isStrictlyAnimation( UserMethod candidate ) {
+		if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
+			return false;
+		}
+		if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
+			return false;
+		}
+		return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
+	}
+
+	public UserMethod getMethod() {
+		return this.method;
 	}
 }

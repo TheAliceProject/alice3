@@ -43,6 +43,12 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,5 +77,12 @@ public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();
+	}
+
+	//todo: ???
+	public PickResult createFauxPickResult( Component sgSource ) {
+		Visual sgVisual = this.getSgVisuals()[ 0 ];
+		Geometry sgGeometry = sgVisual.getGeometry();
+		return new PickResult( sgSource, sgVisual, true, sgGeometry, -1, Point3.createNaN() );
 	}
 }

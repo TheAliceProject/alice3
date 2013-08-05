@@ -66,11 +66,19 @@ public class EmployeesOnly {
 		return rv;
 	}
 
-	public static <T> T checkArgumentNotNull( T value, int index ) {
-		if( value != null ) {
-			return value;
-		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
-		}
+	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+		return color != null ? Color.createInstance( color ) : null;
+	}
+
+	public static Color createColor( java.awt.Color awtColor ) {
+		return createColor( awtColor != null ? new edu.cmu.cs.dennisc.color.Color4f( awtColor ) : null );
+	}
+
+	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
+		return color != null ? color.getInternal() : null;
+	}
+
+	public static java.awt.Color getAwtColor( Color color ) {
+		return color != null ? getColor4f( color ).getAsAWTColor() : null;
 	}
 }

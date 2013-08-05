@@ -115,6 +115,14 @@ public class SFlyer extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYE );
 	}
 
+	public SJoint getLeftEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYELID );
+	}
+
+	public SJoint getRightEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYELID );
+	}
+
 	public SJoint getLeftWingShoulder() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER );
 	}

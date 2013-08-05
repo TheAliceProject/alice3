@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.CustomTexture> {
-	private com.sun.opengl.util.j2d.TextureRenderer m_textureRenderer = null;
+	private com.jogamp.opengl.util.awt.TextureRenderer m_textureRenderer = null;
 
 	@Override
 	protected boolean isDirty() {
@@ -82,7 +82,7 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 	}
 
 	@Override
-	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
 		if( currentTextureData != null ) {
 			if( m_textureRenderer != null ) {
@@ -98,7 +98,7 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 			if( m_textureRenderer != null ) {
 				m_textureRenderer.dispose();
 			}
-			m_textureRenderer = new com.sun.opengl.util.j2d.TextureRenderer( m_element.getWidth(), m_element.getHeight(), m_element.isPotentiallyAlphaBlended() );
+			m_textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( m_element.getWidth(), m_element.getHeight(), m_element.isPotentiallyAlphaBlended() );
 		}
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
 		m_element.paint( g, m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );

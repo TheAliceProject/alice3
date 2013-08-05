@@ -100,11 +100,11 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 
 	private boolean isRecording;
 
-	protected boolean isRecording() {
+	public boolean isRecording() {
 		return this.isRecording;
 	}
 
-	protected void setRecording( boolean isRecording ) {
+	public void setRecording( boolean isRecording ) {
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
 				programContext.getProgramImp().stopAnimator();
@@ -126,7 +126,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 				image = null;
 				imageCount = 0;
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( frameRate );
-				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
+				programContext.initializeInContainer( videoExportPanel.getLookingGlassContainer() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();
 			}

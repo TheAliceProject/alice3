@@ -2,6 +2,10 @@ package org.lgna.story.resourceutilities;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.Icon;
 
@@ -19,7 +23,6 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 /*
@@ -431,6 +434,24 @@ public class GalleryWebpageGenerator {
 		return null;
 	}
 	
+	private static List<String> getClassList(ResourceNode node) {
+		ArrayList<String> classList = new ArrayList<String>();
+		if (node.getResourceKey() instanceof ThemeTagKey)
+		{
+			classList.add("THEME: "+node.getResourceKey().getDisplayText());
+		}
+		if (node.getResourceKey() instanceof ClassResourceKey)
+		{
+			classList.add(getClassName(node));
+		}
+		for (ResourceNode childNode : node.getNodeChildren()) {
+			if (!isLeaf(childNode)) {
+				classList.addAll(getClassList(childNode));
+			}
+		}
+		return classList;
+	}
+	
 	private static String createClassWebpageBodyHTML(ResourceNode node) {
 		StringBuilder html = new StringBuilder();
 		
@@ -546,7 +567,47 @@ public class GalleryWebpageGenerator {
 		
 		System.out.println("\nDONE");
 		System.out.println("DONE");
-		System.out.println("DONE!!!");
+		System.out.println("DONE!!!\n\n");
+		
+		List<String> themeNames = getClassList(themeBasedNode);
+		List<String> classNames = getClassList(classBasedNode);
+		List<String> missingNames = new ArrayList<String>();
+		for (String name : classNames)
+		{
+			if (!themeNames.contains(name))
+			{
+				missingNames.add(name);
+			}
+		}
+		for (String name : themeNames)
+		{
+			System.out.println(name);
+		}
+		System.out.println("THEME: themeless");
+		for (String name : missingNames)
+		{
+			System.out.println(name);
+		}
+		
+		HashMap<String, Integer> countMap = new HashMap<String, Integer>();
+		for (String name : themeNames)
+		{
+			int count = 1;
+			if (countMap.containsKey(name))
+			{
+				count += countMap.get(name);
+			}
+			countMap.put(name, count);
+		}
+		System.out.println("\n\nDuplicates:");
+		for (Entry<String, Integer> entry : countMap.entrySet())
+		{
+			if (entry.getValue() > 1)
+			{
+				System.out.println(entry.getKey()+" : "+entry.getValue());
+			}
+		}
+		
 		usedOnlyForSideEffect = null;
 		System.gc();
 		
@@ -554,7 +615,7 @@ public class GalleryWebpageGenerator {
 	
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		String webpageDir = "C:/batchOutput/webpageTest";
+		String webpageDir = "C:/batchOutput/webpage";
 		FileUtilities.delete(webpageDir);
 		GalleryWebpageGenerator.buildGalleryWebpage(webpageDir);
 		

@@ -43,15 +43,15 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_DOUBLE;
 import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_MAX_ELEMENTS_INDICES;
-import static javax.media.opengl.GL.GL_MAX_ELEMENTS_VERTICES;
-import static javax.media.opengl.GL.GL_NORMAL_ARRAY;
-import static javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.GL.GL_TRIANGLES;
 import static javax.media.opengl.GL.GL_UNSIGNED_INT;
-import static javax.media.opengl.GL.GL_VERTEX_ARRAY;
+import static javax.media.opengl.GL2GL3.GL_DOUBLE;
+import static javax.media.opengl.GL2GL3.GL_MAX_ELEMENTS_INDICES;
+import static javax.media.opengl.GL2GL3.GL_MAX_ELEMENTS_VERTICES;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -205,7 +205,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc )
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType )
 	{
 		renderMesh( rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer );
 	}

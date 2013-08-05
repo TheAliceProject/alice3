@@ -42,5 +42,5 @@
  */
 package org.lgna.story.resources.sims2;
 
-public interface Outfit extends Ingredient {
+public interface Outfit {
 }

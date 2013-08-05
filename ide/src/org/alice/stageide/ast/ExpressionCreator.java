@@ -234,6 +234,38 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
+	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
+		if( outfit != null ) {
+			if( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
+				org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> topAndBottomOutfit = (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)outfit;
+				org.lgna.story.resources.sims2.TopPiece topPiece = topAndBottomOutfit.getTopPiece();
+				org.lgna.story.resources.sims2.BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
+
+				org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( outfit.getClass() );
+				org.lgna.project.ast.JavaConstructor constructor = type.getDeclaredConstructors().get( 0 );
+				java.util.List<org.lgna.project.ast.JavaConstructorParameter> parameters = constructor.getRequiredParameters();
+				if( parameters.size() == 2 ) {
+					if( parameters.get( 0 ).getValueType().isAssignableFrom( topPiece.getClass() ) ) {
+						if( parameters.get( 1 ).getValueType().isAssignableFrom( bottomPiece.getClass() ) ) {
+							org.lgna.project.ast.Expression topExpression = this.createExpression( topPiece );
+							org.lgna.project.ast.Expression bottomExpression = this.createExpression( bottomPiece );
+							return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, topExpression, bottomExpression );
+						}
+					}
+				}
+				throw new CannotCreateExpressionException( outfit );
+			} else {
+				if( outfit.getClass().isEnum() ) {
+					return this.createEnumExpression( (Enum<? extends org.lgna.story.resources.sims2.Outfit>)outfit );
+				} else {
+					throw new CannotCreateExpressionException( outfit );
+				}
+			}
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
+	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
 		if( value instanceof org.lgna.story.Position ) {
@@ -250,6 +282,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createFontExpression( (org.lgna.story.Font)value );
 		} else if( value instanceof org.lgna.ik.poser.Pose ) {
 			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
+		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
+			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
 		} else {
 			throw new CannotCreateExpressionException( value );
 		}

@@ -1,17 +1,17 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_AMBIENT;
-import static javax.media.opengl.GL.GL_AMBIENT_AND_DIFFUSE;
-import static javax.media.opengl.GL.GL_DIFFUSE;
-import static javax.media.opengl.GL.GL_EMISSION;
-import static javax.media.opengl.GL.GL_FILL;
 import static javax.media.opengl.GL.GL_LEQUAL;
 import static javax.media.opengl.GL.GL_LESS;
-import static javax.media.opengl.GL.GL_LINE;
-import static javax.media.opengl.GL.GL_POINT;
-import static javax.media.opengl.GL.GL_SHININESS;
-import static javax.media.opengl.GL.GL_SPECULAR;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
+import static javax.media.opengl.GL2GL3.GL_FILL;
+import static javax.media.opengl.GL2GL3.GL_LINE;
+import static javax.media.opengl.GL2GL3.GL_POINT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT_AND_DIFFUSE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 
 public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends AppearanceAdapter<E> {
 	private boolean m_isShaded;
@@ -37,6 +37,11 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 		return m_isMaterialAlphaBlended;
 	}
 
+	@Override
+	public boolean isAllAlphaBlended() {
+		return m_isMaterialAlphaBlended;
+	}
+	
 	@Override
 	public boolean isEthereal() {
 		return m_isEthereal;

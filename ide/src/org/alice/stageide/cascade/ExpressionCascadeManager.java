@@ -86,6 +86,8 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.SkinTone.class ) ) {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class );
+		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Face.class ) ) {
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseFace.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
@@ -116,5 +118,12 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	@Override
 	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) && expressionType.isAssignableTo( org.lgna.story.SJointedModel.class );
+	}
+	
+	@Override
+	protected void appendOtherTypes( java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> otherTypes ) {
+		super.appendOtherTypes( otherTypes );
+		otherTypes.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
+		
 	}
 }

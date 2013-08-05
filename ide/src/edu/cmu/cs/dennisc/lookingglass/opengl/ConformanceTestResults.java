@@ -48,14 +48,14 @@ import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
 import static javax.media.opengl.GL.GL_EXTENSIONS;
 import static javax.media.opengl.GL.GL_LEQUAL;
-import static javax.media.opengl.GL.GL_MODELVIEW;
-import static javax.media.opengl.GL.GL_PROJECTION;
-import static javax.media.opengl.GL.GL_QUAD_STRIP;
-import static javax.media.opengl.GL.GL_RENDER;
 import static javax.media.opengl.GL.GL_RENDERER;
-import static javax.media.opengl.GL.GL_SELECT;
 import static javax.media.opengl.GL.GL_VENDOR;
 import static javax.media.opengl.GL.GL_VERSION;
+import static javax.media.opengl.GL2.GL_QUAD_STRIP;
+import static javax.media.opengl.GL2.GL_RENDER;
+import static javax.media.opengl.GL2.GL_SELECT;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove
@@ -118,7 +118,7 @@ public enum ConformanceTestResults {
 		private final boolean isPickActuallyHardwareAccelerated;
 		private final boolean isPickFunctioningCorrectly;
 
-		private PickDetails( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL gl ) {
+		private PickDetails( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
 			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
 			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
 
@@ -249,7 +249,7 @@ public enum ConformanceTestResults {
 		this.updateSharedDetailsfNecessary( gl );
 	}
 
-	public void updatePickInformationIfNecessary( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL gl ) {
+	public void updatePickInformationIfNecessary( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
 		this.updateSharedDetailsfNecessary( gl );
 		if( this.pickDetails != null ) {
 			//pass

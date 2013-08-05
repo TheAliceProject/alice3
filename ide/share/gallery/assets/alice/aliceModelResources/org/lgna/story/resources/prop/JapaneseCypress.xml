@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="JapaneseCypress">
     <BoundingBox>
-        <Min x="-2.3380805253982544" y="0.0" z="-1.010534405708313"/>
-        <Max x="2.3380805253982544" y="4.103546351194382" z="1.010534405708313"/>
+        <Min x="-2.382000207901001" y="-0.0160200297832489" z="-0.75384521484375"/>
+        <Max x="2.294160842895508" y="4.087526321411133" z="1.267223596572876"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>

@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_DOUBLE;
 import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_NORMAL_ARRAY;
-import static javax.media.opengl.GL.GL_QUADS;
 import static javax.media.opengl.GL.GL_SHORT;
-import static javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.GL.GL_TRIANGLES;
-import static javax.media.opengl.GL.GL_VERTEX_ARRAY;
+import static javax.media.opengl.GL2.GL_QUADS;
+import static javax.media.opengl.GL2GL3.GL_DOUBLE;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
+import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 /**
  * @author Dennis Cosgrove
@@ -77,7 +77,7 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 		return false;
 	}
 
-	private void glDraw( javax.media.opengl.GL gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
+	private void glDraw( javax.media.opengl.GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
 		final int N = xyzIndices != null ? xyzIndices.length : 0;
 		if( N > 0 ) {
 			gl.glBegin( mode );
@@ -96,7 +96,7 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 		}
 	}
 
-	private void glDrawElements( javax.media.opengl.GL gl, int mode, boolean b ) {
+	private void glDrawElements( javax.media.opengl.GL2 gl, int mode, boolean b ) {
 		if( b ) {
 			short[] xyzIndices;
 			if( mode == GL_TRIANGLES ) {
@@ -141,7 +141,7 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 		}
 	}
 
-	private void glGeometry( javax.media.opengl.GL gl, boolean isArrayRenderingDesired ) {
+	private void glGeometry( javax.media.opengl.GL2 gl, boolean isArrayRenderingDesired ) {
 		if( ( isArrayRenderingDesired == false ) || ( this.ijkTriangleIndices != null ) || ( this.uvTriangleIndices != null ) || ( this.ijkQuadrangleIndices != null ) || ( this.uvQuadrangleIndices != null ) ) {
 			glDraw( gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
 			glDraw( gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
@@ -184,7 +184,7 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		//		if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
 		//		}

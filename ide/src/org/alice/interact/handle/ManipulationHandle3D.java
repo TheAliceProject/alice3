@@ -421,7 +421,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public boolean isMemberOf( HandleSet set )
 	{
-		return this.handleSet.intersects( set );
+		if( set == null ) {
+			return false;
+		}
+		else {
+			return set.intersects( this.handleSet ) || this.handleSet.intersects( set );
+		}
 	}
 
 	public boolean isMemberOf( HandleSet.HandleGroup group )

@@ -60,7 +60,6 @@ public class TimeLine {
 	//I used datas here, get over it
 	private List<KeyFrameData> datas = Collections.newArrayList();
 	private List<TimeLineListener> listeners = Collections.newArrayList();
-	private int index;
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
@@ -129,16 +128,19 @@ public class TimeLine {
 	}
 
 	public void setEndTime( double endTime ) {
-		if( ( endTime > 0 ) && ( endTime > datas.get( datas.size() - 1 ).getEventTime() ) ) {
-			this.endTime = endTime;
-			fireEndTimeChanged( endTime );
-			if( this.endTime < currentTime ) {
-				setCurrentTime( this.endTime );
+		if( endTime > 0 ) {
+			if( ( datas.size() == 0 ) || ( endTime > datas.get( datas.size() - 1 ).getEventTime() ) ) {
+				this.endTime = endTime;
+				fireEndTimeChanged( endTime );
+				if( this.endTime < currentTime ) {
+					setCurrentTime( this.endTime );
+				}
 			}
 		}
 	}
 
 	private void fireKeyFrameAdded( KeyFrameData item ) {
+		System.out.println( "ADDING ITEM: " + item );
 		for( TimeLineListener listener : listeners ) {
 			listener.keyFrameAdded( item );
 		}
@@ -151,6 +153,7 @@ public class TimeLine {
 	}
 
 	private void fireKeyFrameDeleted( KeyFrameData item ) {
+		System.out.println( "REMOVING ITEM: " + item );
 		for( TimeLineListener listener : listeners ) {
 			listener.keyFrameDeleted( item );
 		}
@@ -177,7 +180,7 @@ public class TimeLine {
 
 	public double getDurationForKeyFrame( KeyFrameData data ) {
 		for( int i = 0; i != datas.size(); ++i ) {
-			if( datas.get( index ).equals( data ) ) {
+			if( datas.get( i ) == data ) {
 				if( i == 0 ) {
 					return data.getEventTime();
 				} else {
@@ -190,13 +193,15 @@ public class TimeLine {
 	}
 
 	public AnimationStyle getStyleForKeyFramePose( KeyFrameData data ) {
+		KeyFrameData prev = null;
 		for( int i = 0; i != datas.size(); ++i ) {
-			KeyFrameData prev = null;
-			if( i != 0 ) {
-				prev = datas.get( i - 1 );
+			if( datas.get( i ) == data ) {
+				if( i != 0 ) {
+					prev = datas.get( i - 1 );
+				}
+				KeyFrameData itr = datas.get( i );
+				return KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles( prev != null ? prev.getEventStyle() : KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY, itr.getEventStyle() );
 			}
-			KeyFrameData itr = datas.get( i );
-			KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles( prev.getEventStyle(), itr.getEventStyle() );
 		}
 		throw new RuntimeException( "Pose Not Found:" + data );
 	}
@@ -251,5 +256,13 @@ public class TimeLine {
 		} else {
 			return KeyFrameData.interpolatePoses( before, after, desiredTime );
 		}
+	}
+
+	public void refresh() {
+		while( !datas.isEmpty() ) {
+			removeKeyFrameData( datas.get( 0 ) );
+		}
+		setCurrentTime( 0 );
+		setEndTime( 10 );
 	}
 }

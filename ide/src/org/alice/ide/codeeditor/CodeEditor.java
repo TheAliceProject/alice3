@@ -50,6 +50,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
  */
 public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
 	private final org.lgna.project.ast.AbstractCode code;
+	private final AbstractCodeHeaderPane header;
 	private final StatementListPropertyView rootStatementListPropertyPane;
 
 	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
@@ -62,7 +63,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 
-		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, 32 );
+		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance();
+		this.rootStatementListPropertyPane = new StatementListPropertyView( factory, body.statements, 32 );
 
 		org.lgna.croquet.components.JComponent<?> statementListComponent = null;
 		if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
@@ -90,18 +92,16 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		scrollPane.getAwtComponent().getViewport().setOpaque( false );
 		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
-		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode );
-		AbstractCodeHeaderPane header;
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
-			header = new MethodHeaderPane( userMethod, parametersPane, false );
+			this.header = new MethodHeaderPane( factory, userMethod, false );
 		} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
 			org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
-			header = new ConstructorHeaderPane( userConstructor, parametersPane, false );
+			this.header = new ConstructorHeaderPane( userConstructor, false );
 		} else {
 			throw new RuntimeException();
 		}
-		this.addPageStartComponent( header );
+		this.addPageStartComponent( this.header );
 
 		if( this.code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
@@ -255,6 +255,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 
 		public void changed( org.lgna.croquet.State<org.alice.ide.formatter.Formatter> state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
+			CodeEditor.this.header.refreshLater();
 			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
 		}
 	};

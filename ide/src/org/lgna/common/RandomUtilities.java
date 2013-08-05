@@ -59,16 +59,24 @@ public class RandomUtilities {
 	}
 
 	public static Integer nextIntegerFrom0ToNExclusive( Integer n ) {
+		if( n <= 0 ) {
+			throw new LgnaIllegalArgumentException( "Argument must be positive.  " + n + " is not greater than 0.", 0, n );
+		}
 		return s_random.nextInt( n );
 	}
 
 	public static Integer nextIntegerFromAToBExclusive( Integer a, Integer b ) {
-		assert a < b;
+		if( a >= b ) {
+			throw new LgnaIllegalArgumentException( "First argument must be less than the second argument." + a + " is not less than " + b + ".", 0, a );
+		}
 		int n = b - a;
 		return a + nextIntegerFrom0ToNExclusive( n );
 	}
 
 	public static Integer nextIntegerFromAToBInclusive( Integer a, Integer b ) {
+		if( a > b ) {
+			throw new LgnaIllegalArgumentException( "First argument must be less than or equal to the second argument.  " + a + " is not less than or equal to " + b + ".", 0, a );
+		}
 		return nextIntegerFromAToBExclusive( a, b + 1 );
 	}
 
@@ -85,21 +93,27 @@ public class RandomUtilities {
 	}
 
 	public static <E extends Object> E getRandomValueFrom( E[] array ) {
-		assert array != null;
-		assert array.length > 0;
-		return array[ getRandomIndex( array.length ) ];
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentNotNull( array, 0 );
+		if( array.length > 0 ) {
+			return array[ getRandomIndex( array.length ) ];
+		} else {
+			//todo: throw Exception?
+			return null;
+		}
 	}
 
 	public static <E extends Object> E getRandomValueFrom( java.util.List<E> list ) {
-		assert list != null;
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentNotNull( list, 0 );
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );
 		} else {
+			//todo: throw Exception?
 			return null;
 		}
 	}
 
 	public static <E extends Enum<?>> E getRandomEnumConstant( Class<E> cls ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentNotNull( cls, 0 );
 		E[] enumConstants = cls.getEnumConstants();
 		assert enumConstants.length > 0 : cls;
 		int index = s_random.nextInt( enumConstants.length );

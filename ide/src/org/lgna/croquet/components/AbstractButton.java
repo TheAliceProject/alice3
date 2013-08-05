@@ -89,16 +89,21 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		javax.swing.AbstractButton jButton = this.getAwtComponent();
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
 			if( this.uiDefaultsName != null ) {
-				int right;
-				String text = jButton.getText();
-				final int PAD = 4;
-				if( ( text != null ) && ( text.length() > 0 ) ) {
-					right = PAD + 4;
+				if( margin != null ) {
+					//pass
 				} else {
-					right = PAD;
+					int right;
+					String text = jButton.getText();
+					final int PAD = 4;
+					if( ( text != null ) && ( text.length() > 0 ) ) {
+						right = PAD + 4;
+					} else {
+						right = PAD;
+					}
+					margin = new java.awt.Insets( PAD, PAD, PAD, right );
 				}
 				javax.swing.UIDefaults uiDefaults = new javax.swing.UIDefaults();
-				uiDefaults.put( this.uiDefaultsName + ".contentMargins", new java.awt.Insets( PAD + margin.top, PAD + margin.left, PAD + margin.bottom, right + margin.right ) );
+				uiDefaults.put( this.uiDefaultsName + ".contentMargins", margin );
 				this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
 			} else {
 				java.util.Enumeration<Object> enm = javax.swing.UIManager.getDefaults().keys();
@@ -113,12 +118,12 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "uiDefaultsName is null:", this );
 			}
 		} else {
-			this.setMargin( margin );
+			this.setMargin( margin != null ? margin : ZERO_MARGIN );
 		}
 	}
 
 	public void tightenUpMargin() {
-		this.tightenUpMargin( ZERO_MARGIN );
+		this.tightenUpMargin( null );
 	}
 
 	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {

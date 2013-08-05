@@ -124,7 +124,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, 1.2 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, 1.3 );
-			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( String.class ), 1.4 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.STRING_TYPE, 1.4 );
 
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ), 10.1 );
 
@@ -200,7 +200,17 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return type.isAssignableTo( org.lgna.story.SThing.class ) && ( type.isAssignableTo( org.lgna.story.SMarker.class ) == false );
+		if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
+			if( type.isAssignableTo( org.lgna.story.SMarker.class ) ) {
+				return false;
+			} else {
+				return true;
+			}
+		} else if( type.isAssignableTo( org.lgna.story.SProgram.class ) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -421,5 +431,11 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		}
 		return rv;
+	}
+
+	@Override
+	public boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type ) {
+		return false;
+		//return type.isAssignableTo( org.lgna.story.SScene.class ) == false;
 	}
 }

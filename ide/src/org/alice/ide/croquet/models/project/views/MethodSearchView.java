@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.project.views;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import org.alice.ide.croquet.models.project.MethodSearchComposite;
 import org.alice.ide.croquet.models.project.MethodSearchComposite.SearchDialogManager;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeNode;
@@ -62,6 +65,26 @@ public class MethodSearchView extends BorderPanel {
 
 		SearchDialogManager manager = composite.getManager();
 		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		tree.addMouseListener( new MouseListener() {
+
+			public void mouseReleased( MouseEvent e ) {
+			}
+
+			public void mousePressed( MouseEvent e ) {
+			}
+
+			public void mouseExited( MouseEvent e ) {
+			}
+
+			public void mouseEntered( MouseEvent e ) {
+			}
+
+			public void mouseClicked( MouseEvent e ) {
+				if( e.getButton() == MouseEvent.BUTTON2 ) {
+					System.out.println( "right click" );
+				}
+			}
+		} );
 		manager.setOwner( tree );
 		manager.changed( composite.getStringState(), "", "", true );
 

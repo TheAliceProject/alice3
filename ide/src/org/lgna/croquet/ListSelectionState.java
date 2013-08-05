@@ -220,7 +220,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo: 
 		return java.util.Collections.emptyList();
 	}
@@ -315,6 +315,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void handleItemRemoved( T item ) {
 	}
 
+	protected final void internalAddItem( int index, T item ) {
+		this.dataIndexPair.data.internalAddItem( index, item );
+	}
+
 	protected final void internalAddItem( T item ) {
 		this.dataIndexPair.data.internalAddItem( item );
 	}
@@ -325,6 +329,17 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	protected final void internalSetItems( java.util.Collection<T> items ) {
 		this.dataIndexPair.data.internalSetAllItems( items );
+	}
+
+	public final void addItem( int index, T item ) {
+		this.pushIsInTheMidstOfAtomicChange();
+		try {
+			this.internalAddItem( index, item );
+			this.fireIntervalAdded( index, index );
+			this.handleItemAdded( item );
+		} finally {
+			this.popIsInTheMidstOfAtomicChange();
+		}
 	}
 
 	public final void addItem( T item ) {

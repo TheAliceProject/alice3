@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BiotechStation">
+    <BoundingBox>
+        <Min x="-1.2513420581817627" y="0.0" z="-0.859035849571228"/>
+        <Max x="1.2513420581817627" y="2.4635565280914307" z="0.8590359091758728"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>biotech</Tag>
+        <Tag>science</Tag>
+        <Tag>lab</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BiotechStation" resourceName="BIOTECH_STATION" textureName="BIOTECH_STATION"/>
+    <Resource modelName="Walnut" resourceName="WALNUT_DOOR_WALNUT_WALNUT" textureName="DOOR_WALNUT_WALNUT">
+        <BoundingBox>
+            <Min x="-0.4506857395172119" y="0.0" z="-0.08109549432992935"/>
+            <Max x="0.4506857395172119" y="2.162686824798584" z="0.08109549432992935"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Walnut" resourceName="WALNUT_DOOR_WALNUT_LIGHT_WOOD" textureName="DOOR_WALNUT_LIGHT_WOOD">
+        <BoundingBox>
+            <Min x="-0.4506857395172119" y="0.0" z="-0.08109549432992935"/>
+            <Max x="0.4506857395172119" y="2.162686824798584" z="0.08109549432992935"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Walnut" resourceName="WALNUT_DOOR_WALNUT_ORANGE" textureName="DOOR_WALNUT_ORANGE">
+        <BoundingBox>
+            <Min x="-0.4506857395172119" y="0.0" z="-0.08109549432992935"/>
+            <Max x="0.4506857395172119" y="2.162686824798584" z="0.08109549432992935"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Walnut" resourceName="WALNUT_DOOR_WALNUT_BLUE" textureName="DOOR_WALNUT_BLUE">
+        <BoundingBox>
+            <Min x="-0.4506857395172119" y="0.0" z="-0.08109549432992935"/>
+            <Max x="0.4506857395172119" y="2.162686824798584" z="0.08109549432992935"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Walnut" resourceName="WALNUT_DOOR_WALNUT_PINK" textureName="DOOR_WALNUT_PINK">
+        <BoundingBox>
+            <Min x="-0.4506857395172119" y="0.0" z="-0.08109549432992935"/>
+            <Max x="0.4506857395172119" y="2.162686824798584" z="0.08109549432992935"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC" textureName="BASIC">
+        <BoundingBox>
+            <Min x="-0.8573033213615417" y="0.0" z="-0.4848752021789551"/>
+            <Max x="0.857303261756897" y="1.023549199104309" z="0.48487529158592224"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY" textureName="FANCY">
+        <BoundingBox>
+            <Min x="-0.8731794357299805" y="0.0" z="-0.5869900584220886"/>
+            <Max x="0.8731792569160461" y="1.0204401016235352" z="0.5869899392127991"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

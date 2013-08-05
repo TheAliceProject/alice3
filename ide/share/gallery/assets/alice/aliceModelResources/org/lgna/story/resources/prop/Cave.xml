@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="Cave">
     <BoundingBox>
-        <Min x="-2.480738043785095" y="0.0" z="-2.0981876850128174"/>
-        <Max x="2.480738043785095" y="2.823337059468031" z="2.0981876850128174"/>
+        <Min x="-2.626460552215576" y="-0.0185994915664196" z="-1.9900074005126953"/>
+        <Max x="2.626460552215576" y="2.8047375679016113" z="2.2063679695129395"/>
     </BoundingBox>
     <Tags>
         <Tag>underwater</Tag>
@@ -15,5 +15,40 @@
     <ThemeTags>
         <ThemeTag>*ocean</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Cave" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Default" resourceName="DEFAULT_UNDERWATER" textureName="UNDERWATER">
+        <BoundingBox>
+            <Min x="-2.3350155353546143" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.626460552215576" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_ROCKY" textureName="ROCKY">
+        <BoundingBox>
+            <Min x="-2.3350155353546143" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.626460552215576" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_MOSSY" textureName="MOSSY">
+        <BoundingBox>
+            <Min x="-2.3350155353546143" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.626460552215576" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_UNDERWATER" textureName="UNDERWATER">
+        <BoundingBox>
+            <Min x="-2.626460552215576" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.3350155353546143" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_ROCKY" textureName="ROCKY">
+        <BoundingBox>
+            <Min x="-2.626460552215576" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.3350155353546143" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_MOSSY" textureName="MOSSY">
+        <BoundingBox>
+            <Min x="-2.626460552215576" y="-0.0185994915664196" z="-1.9900074005126953"/>
+            <Max x="2.3350155353546143" y="2.8047375679016113" z="2.2063679695129395"/>
+        </BoundingBox>
+    </Resource>
 </AliceModel>

@@ -46,11 +46,51 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public enum BaseSkinTone implements SkinTone {
-	LIGHTER,
-	LIGHT,
-	DARK,
-	DARKER;
+	LIGHTER( new java.awt.Color( 206, 148, 115 ) ),
+	LIGHT( new java.awt.Color( 189, 129, 90 ) ),
+	DARK( new java.awt.Color( 158, 102, 58 ) ),
+	DARKER( new java.awt.Color( 102, 54, 13 ) );
+	private final java.awt.Color color;
+
+	private BaseSkinTone( java.awt.Color color ) {
+		this.color = color;
+	}
+
 	public static BaseSkinTone getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );
+	}
+
+	//todo: package-private
+	public java.awt.Color getColor() {
+		return this.color;
+	}
+
+	//todo: package-private
+	public static BaseSkinTone getClosestToColor( java.awt.Color other ) {
+		if( other != null ) {
+			float[] hsbOther = new float[ 3 ];
+			float[] hsb = new float[ 3 ];
+
+			java.awt.Color.RGBtoHSB( other.getRed(), other.getGreen(), other.getBlue(), hsbOther );
+
+			BaseSkinTone minBaseSkinTone = null;
+			float minDistanceSquared = Float.MAX_VALUE;
+			for( BaseSkinTone baseSkinTone : values() ) {
+				java.awt.Color color = baseSkinTone.getColor();
+				java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
+
+				//note: ignore hue for now
+				float sDelta = hsbOther[ 1 ] - hsb[ 1 ];
+				float bDelta = hsbOther[ 2 ] - hsb[ 2 ];
+				float distanceSquared = ( sDelta * sDelta ) + ( bDelta * bDelta );
+				if( distanceSquared < minDistanceSquared ) {
+					minBaseSkinTone = baseSkinTone;
+					minDistanceSquared = distanceSquared;
+				}
+			}
+			return minBaseSkinTone;
+		} else {
+			return null;
+		}
 	}
 }

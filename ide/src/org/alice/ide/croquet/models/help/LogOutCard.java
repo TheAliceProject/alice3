@@ -42,48 +42,39 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.awt.Color;
-
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.CancelException;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-	private ActionOperation logoutOperation = createActionOperation( createKey( "logoutOperation" ), new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			BugLoginComposite.getInstance().logout();
-			return null;
-		}
-	} );
-
-	public void updateWelcomeString() {
-		usernameLabel.setForegroundColor( Color.WHITE );
-		if( BugLoginComposite.getInstance().getRemoteUser() != null ) {
-			usernameLabel.setText( welcome.getText() + BugLoginComposite.getInstance().getRemoteUser().getFullname() );
-		}
+	public void updateWelcomeString( String str ) {
+		usernameLabel.setText( welcome.getText() + str );
 	}
 
 	private StringValue welcome = createStringValue( createKey( "welcome" ) );
 	private Label usernameLabel = new Label();
+	private ActionOperation logoutOperation;
 
-	public LogOutCard() {
+	public LogOutCard( ActionOperation logOutOperation ) {
 		super( java.util.UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
+		this.logoutOperation = logOutOperation;
 	}
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
-		updateWelcomeString();
+		updateWelcomeString( "" );
 		return new org.lgna.croquet.components.FlowPanel(
 				this,
 				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
 				this.usernameLabel,
 				this.logoutOperation.createButton() );
+	}
+
+	public Label getUsernameLabel() {
+		return this.usernameLabel;
 	}
 }

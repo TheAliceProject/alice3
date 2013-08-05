@@ -83,6 +83,18 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.body );
 	}
 
+	@Override
+	protected void preCopy() {
+		super.preCopy();
+		org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( this.body );
+	}
+
+	@Override
+	protected void postCopy( org.lgna.croquet.edits.Edit<?> result ) {
+		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.body );
+		super.postCopy( result );
+	}
+
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
@@ -120,12 +132,13 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 		int index = this.declaringType.methods.indexOf( this.method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
+			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 			if( this.prevDeclarationComposite != null ) {
-				org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
 					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );
 				}
 			}
+			declarationTabState.removeAllOrphans();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

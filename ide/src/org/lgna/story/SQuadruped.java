@@ -99,6 +99,10 @@ public class SQuadruped extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.LEFT_EYE );
 	}
 
+	public SJoint getLeftEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.LEFT_EYELID );
+	}
+
 	public SJoint getLeftEar() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.LEFT_EAR );
 	}
@@ -116,6 +120,10 @@ public class SQuadruped extends SJointedModel implements Articulable {
 
 	public SJoint getRightEye() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EYE );
+	}
+
+	public SJoint getRightEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EYELID );
 	}
 
 	public SJoint getFrontLeftClavicle() {

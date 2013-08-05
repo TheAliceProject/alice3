@@ -78,6 +78,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 
 	private SceneComposite sceneComposite;
 
+	private boolean isInitialized = false;
+
 	//note: this relies on very specific ordering at the moment
 	protected abstract T createControlComposite();
 
@@ -98,10 +100,6 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 		sceneComposite.getView().initializeInAwtContainer( poser );
 		initializeTest();
 	}
-
-	//	public InternalMenuItemPrepModel getMenuItemPrepModel() {
-	//		return composite.getBooleanState().getMenuItemPrepModel();
-	//	}
 
 	private SBiped deriveBipedFromUserType( NamedUserType type ) {
 
@@ -135,11 +133,14 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 	}
 
 	public void initializeTest() {
-		this.poser.setActiveScene( this.scene );
-		//		this.camera.turn( TurnDirection.RIGHT, .5 );
-		this.camera.move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
-		this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
-		this.biped.turnToFace( camera, new Duration( 0 ) );
+		if( !isInitialized ) {
+			this.poser.setActiveScene( this.scene );
+			this.camera.move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
+			this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
+			this.biped.turnToFace( camera, new Duration( 0 ) );
+			isInitialized = true;
+			scene.initDragAdapter();
+		}
 	}
 
 	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {

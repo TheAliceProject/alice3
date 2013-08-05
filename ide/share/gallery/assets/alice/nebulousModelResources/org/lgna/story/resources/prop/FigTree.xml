@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="FigTree">
+    <BoundingBox>
+        <Min x="-0.5213523507118225" y="0.0" z="-0.5012876391410828"/>
+        <Max x="0.5213523507118225" y="1.5570374727249146" z="0.5012876391410828"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="FigTree" resourceName="FIG_TREE" textureName="FIG_TREE"/>
+</AliceModel>

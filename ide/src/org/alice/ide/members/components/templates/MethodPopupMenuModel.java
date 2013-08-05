@@ -42,6 +42,7 @@
  */
 package org.alice.ide.members.components.templates;
 
+
 /**
  * @author Dennis Cosgrove
  */

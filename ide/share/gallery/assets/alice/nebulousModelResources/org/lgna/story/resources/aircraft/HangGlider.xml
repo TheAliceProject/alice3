@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="HangGlider">
+    <BoundingBox>
+        <Min x="-4.097255229949951" y="0.0" z="-1.8907623291015625"/>
+        <Max x="4.097255229949951" y="1.556745171546936" z="1.8907623291015625"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>fly</Tag>
+        <Tag>glider</Tag>
+        <Tag>sail</Tag>
+        <Tag>plane</Tag>
+        <Tag>air</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="HangGlider" resourceName="HANG_GLIDER" textureName="HANG_GLIDER"/>
+</AliceModel>

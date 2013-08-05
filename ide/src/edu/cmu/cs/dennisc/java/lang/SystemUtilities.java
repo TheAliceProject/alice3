@@ -163,49 +163,73 @@ public class SystemUtilities {
 		}
 	}
 
-	public static boolean isPlatformSpecificLibraryLoadingDesired() {
-		//return isWindows();
-		return false;
+	public static boolean is64Bit() {
+		Integer bitCount = getBitCount();
+		return ( bitCount != null ) && ( bitCount == 64 );
 	}
 
-	public static String getPlatformSpecificLibraryNameIfAppropriate( String libraryName ) {
-		if( isPlatformSpecificLibraryLoadingDesired() ) {
-			StringBuilder sb = new StringBuilder();
-			if( isMac() ) {
-				sb.append( "macosx-universal/" );
-			} else {
+	public static boolean is32Bit() {
+		Integer bitCount = getBitCount();
+		return ( bitCount != null ) && ( bitCount == 32 );
+	}
+
+	public static boolean isPlatformSpecificLibraryLoadingDesired() {
+		return true;
+	}
+
+	public static void loadPlatformSpecific( String libraryName ) {
+		String postfix;
+		StringBuilder sb = new StringBuilder();
+		if( isMac() ) {
+			sb.append( "macosx-universal/lib" );
+			postfix = ".jnilib";
+		} else {
+			Integer bitCount = getBitCount();
+			if( bitCount != null ) {
+				String bitCountText;
+				switch( bitCount ) {
+				case 32:
+					bitCountText = "i586/";
+					break;
+				case 64:
+					bitCountText = "amd64/";
+					break;
+				default:
+					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+				}
+
 				if( isWindows() ) {
 					sb.append( "windows-" );
+					sb.append( bitCountText );
+					postfix = ".dll";
 				} else if( isLinux() ) {
 					sb.append( "linux-" );
+					sb.append( bitCountText );
+					sb.append( "lib" );
+					postfix = ".so";
 				} else {
 					throw new RuntimeException( System.getProperty( "os.name" ) );
 				}
-				Integer bitCount = getBitCount();
-				if( bitCount != null ) {
-					switch( bitCount ) {
-					case 32:
-						sb.append( "i586/" );
-						break;
-					case 64:
-						sb.append( "amd64/" );
-						break;
-					default:
-						throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-					}
-				} else {
-					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-				}
+			} else {
+				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
 			}
-			sb.append( libraryName );
-			return sb.toString();
-		} else {
-			return libraryName;
 		}
+		sb.append( libraryName );
+		sb.append( postfix );
+		String subpath = sb.toString();
+		String[] libraryDirectoryPaths = getLibraryPath();
+		for( String libraryDirectoryPath : libraryDirectoryPaths ) {
+			java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
+			java.io.File file = new java.io.File( libraryDirectory, subpath );
+			if( file.exists() ) {
+				System.load( file.getAbsolutePath() );
+				return;
+			}
+		}
+		System.loadLibrary( libraryName );
 	}
 
 	public static boolean areIconsDisplayedInMenus() {
-		//return isWindows();
 		return true;
 	}
 

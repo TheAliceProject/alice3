@@ -54,16 +54,25 @@ public class SGround extends SThing implements MutableRider, Visual {
 	public static enum SurfaceAppearance implements ImagePaint {
 		GRASS( "grass" ),
 		DARK_GRASS( "dark_grass" ),
+		DRY_GRASS( "dry_grass" ),
 		DIRT( "dirt" ),
 		SAND( "sand" ),
 		MARS( "mars" ),
 		DESERT( "desert" ),
 		SANDY_DESERT( "sandy_desert" ),
 		SNOW( "snow" ),
+		ICE( "ice" ),
 		SWAMP( "swamp" ),
+		SWAMP_WATER( "swamp_water" ),
+		POISON_SWAMP( "swamp_poison" ),
+		JUNGLE( "jungle" ),
+		OCEAN( "ocean" ),
+		OCEAN_NIGHT( "ocean_night" ),
 		WATER( "water" ),
 		OCEAN_FLOOR( "underwater" ),
-		MOON( "moon" );
+		MOON( "moon" ),
+		BROWN_SAVANA_GRASS( "brown_savana_grass" ),
+		GREEN_SAVANA_GRASS( "green_savana_grass" );
 		private String resourceName;
 
 		SurfaceAppearance( String resourceName ) {

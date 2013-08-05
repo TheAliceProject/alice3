@@ -47,11 +47,122 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public class GlDrawableUtilities {
 	private static final java.util.Map<javax.media.opengl.GLPbuffer, java.awt.Dimension> mapPixelBufferToDimension;
+
+	private static boolean areEquivalentIgnoringMultisample( javax.media.opengl.GLCapabilitiesImmutable a, javax.media.opengl.GLCapabilitiesImmutable b ) {
+		if( a.getAccumAlphaBits() != b.getAccumAlphaBits() ) {
+			return false;
+		}
+		if( a.getAccumBlueBits() != b.getAccumBlueBits() ) {
+			return false;
+		}
+		if( a.getAccumGreenBits() != b.getAccumGreenBits() ) {
+			return false;
+		}
+		if( a.getAccumRedBits() != b.getAccumRedBits() ) {
+			return false;
+		}
+		if( a.getDepthBits() != b.getDepthBits() ) {
+			return false;
+		}
+		if( a.getDoubleBuffered() != b.getDoubleBuffered() ) {
+			return false;
+		}
+		if( a.getHardwareAccelerated() != b.getHardwareAccelerated() ) {
+			return false;
+		}
+		//		if( a.getPbufferFloatingPointBuffers() != b.getPbufferFloatingPointBuffers() ) {
+		//			return false;
+		//		}
+		//		if( a.getPbufferRenderToTexture() != b.getPbufferRenderToTexture() ) {
+		//			return false;
+		//		}
+		//		if( a.getPbufferRenderToTextureRectangle() != b.getPbufferRenderToTextureRectangle() ) {
+		//			return false;
+		//		}
+		if( a.getStencilBits() != b.getStencilBits() ) {
+			return false;
+		}
+		if( a.getStereo() != b.getStereo() ) {
+			return false;
+		}
+		if( a.isPBuffer() != b.isPBuffer() ) {
+			return false;
+		}
+		if( a.isFBO() != b.isFBO() ) {
+			return false;
+		}
+		return true;
+	}
+
+	private static class GlMultisampledCapabilitiesChooser extends javax.media.opengl.DefaultGLCapabilitiesChooser {
+		private final int maximumMultisampleCount;
+
+		public GlMultisampledCapabilitiesChooser( int maximumMultisampleCount ) {
+			this.maximumMultisampleCount = maximumMultisampleCount;
+		}
+
+		@Override
+		public int chooseCapabilities( javax.media.nativewindow.CapabilitiesImmutable desired, java.util.List<? extends javax.media.nativewindow.CapabilitiesImmutable> available, int windowSystemRecommendedChoice ) {
+			int original = super.chooseCapabilities( desired, available, windowSystemRecommendedChoice );
+			int rv = original;
+			if( ( 0 <= rv ) && ( rv < available.size() ) ) {
+				javax.media.nativewindow.CapabilitiesImmutable selected = available.get( rv );
+				if( selected instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+					javax.media.opengl.GLCapabilitiesImmutable glSelected = (javax.media.opengl.GLCapabilitiesImmutable)selected;
+					int i = 0;
+					int indexOfMax = -1;
+					int max = -1;
+					for( javax.media.nativewindow.CapabilitiesImmutable c : available ) {
+						if( c instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+							javax.media.opengl.GLCapabilitiesImmutable glCandidate = (javax.media.opengl.GLCapabilitiesImmutable)c;
+							//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "consider", i, glCandidate );
+							if( glCandidate.getSampleBuffers() ) {
+								if( areEquivalentIgnoringMultisample( glSelected, glCandidate ) ) {
+									int numSamples = glCandidate.getNumSamples();
+									if( numSamples <= this.maximumMultisampleCount ) {
+										if( numSamples == this.maximumMultisampleCount ) {
+											indexOfMax = i;
+											break;
+										} else {
+											if( numSamples > max ) {
+												indexOfMax = i;
+												max = numSamples;
+											}
+										}
+									}
+								}
+							}
+						}
+						i++;
+					}
+					if( indexOfMax != -1 ) {
+						rv = indexOfMax;
+					}
+				}
+				//				if( rv != original ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "original", original, available.get( original ) );
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "replacement", rv, available.get( rv ) );
+				//				}
+			}
+			return rv;
+		}
+	}
+
+	private static final javax.media.opengl.GLCapabilitiesChooser glDefaultCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+	private static final javax.media.opengl.GLCapabilitiesChooser glMultisampleCapabilitiesChooser;
+
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			mapPixelBufferToDimension = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		} else {
 			mapPixelBufferToDimension = null;
+		}
+
+		final int MAXIMUM_MULTISAMPLE_COUNT = 0;//4;
+		if( MAXIMUM_MULTISAMPLE_COUNT > 1 ) {
+			glMultisampleCapabilitiesChooser = new GlMultisampledCapabilitiesChooser( MAXIMUM_MULTISAMPLE_COUNT );
+		} else {
+			glMultisampleCapabilitiesChooser = null;
 		}
 	}
 
@@ -59,70 +170,87 @@ public class GlDrawableUtilities {
 		throw new AssertionError();
 	}
 
-	private static javax.media.opengl.GLCapabilities createGLCapabilities( int desiredSampleCount ) {
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
-		boolean isMultisamplingDesired = desiredSampleCount >= 2;
-		rv.setSampleBuffers( isMultisamplingDesired );
-		if( isMultisamplingDesired ) {
-			rv.setNumSamples( desiredSampleCount );
-		}
+	//private GLCapabilities glCapabilities;
+	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilities() {
+		//jogl1
+		//		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
+		//		boolean isMultisamplingDesired = desiredSampleCount >= 2;
+		//		rv.setSampleBuffers( isMultisamplingDesired );
+		//		if( isMultisamplingDesired ) {
+		//			rv.setNumSamples( desiredSampleCount );
+		//		}
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+
+		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
+		//rv.setSampleBuffers( true );
+		//rv.setNumSamples( 8 );
+
+		//		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
+		//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
+		//			rv.setHardwareAccelerated( false );
+		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
+		//			rv.setDepthBits( 32 );
+		//		}
 		return rv;
 	}
 
-	private static int getDesiredOnscreenSampleCount() {
-		return 1;
-	}
-
-	/* package-private */static javax.media.opengl.GLCapabilities createPerhapsMultisampledGlCapabilities() {
-		return createGLCapabilities( getDesiredOnscreenSampleCount() );
-	}
-
-	/* package-private */static javax.media.opengl.GLCapabilities createDisabledMultisamplingGlCapabilities() {
-		return createGLCapabilities( 1 );
-	}
-
-	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
-
-	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getGLCapabilitiesChooser() {
-		if( glCapabilitiesChooser != null ) {
-			//pass
+	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
+		if( glMultisampleCapabilitiesChooser != null ) {
+			return glMultisampleCapabilitiesChooser;
 		} else {
-			//todo?
-			glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+			return glDefaultCapabilitiesChooser;
 		}
-		return glCapabilitiesChooser;
 	}
 
-	/* package-private */static javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null, null );
+	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
+		return glDefaultCapabilitiesChooser;
 	}
 
-	/* package-private */static javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null );
+	/* package-private */static javax.media.opengl.awt.GLCanvas createGLCanvas() {
+		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null, null );
 	}
 
-	//	/*package-private*/ boolean canCreateExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		return glDrawableFactory.canCreateExternalGLDrawable();
-	//	}
-	//	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
-	//			return glDrawableFactory.createExternalGLDrawable();
-	//		} else {
-	//			return null;
-	//		}
-	//	}
+	/* package-private */static javax.media.opengl.awt.GLJPanel createGLJPanel() {
+		return new javax.media.opengl.awt.GLJPanel( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
+	}
+
+	/* package-private */static boolean canCreateExternalGLDrawable() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
+	}
+
+	/* package-private */static javax.media.opengl.GLDrawable createExternalGLDrawable() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+			return glDrawableFactory.createExternalGLDrawable();
+		} else {
+			return null;
+		}
+	}
+
+	/* package-private */javax.media.opengl.GLContext createExternalGLContext() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+			return glDrawableFactory.createExternalGLContext();
+		} else {
+			return null;
+		}
+	}
 
 	/* package-private */static boolean canCreateGlPixelBuffer() {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		return glDrawableFactory.canCreateGLPbuffer();
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile );
 	}
 
 	/* package-private */static javax.media.opengl.GLPbuffer createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( glDrawableFactory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glCapabilities, glCapabilitiesChooser, width, height, share );
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height, share );
 
 			// This is a work around for Linux users.
 			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
@@ -133,13 +261,15 @@ public class GlDrawableUtilities {
 
 			return buffer;
 		} else {
+			//			throw new RuntimeException("cannot create pbuffer");
 			return null;
 		}
 	}
 
-	/* package-private */static com.sun.opengl.impl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser ) {
-		com.sun.opengl.impl.GLDrawableFactoryImpl glDrawableFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
-		return (com.sun.opengl.impl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
+	/* package-private */static jogamp.opengl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height ) {
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		return (jogamp.opengl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, width, height );
 	}
 
 	/* package-private */static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {

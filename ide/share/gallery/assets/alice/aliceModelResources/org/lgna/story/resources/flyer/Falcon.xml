@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Ethan Gagorik" name="Falcon">
     <BoundingBox>
-        <Min x="-0.173751562833786" y="0.0" z="-0.30626292526721954"/>
-        <Max x="0.173751562833786" y="0.46018551010638475" z="0.30626292526721954"/>
+        <Min x="-0.18088588118553162" y="-0.0038761617615818977" z="-0.22061192989349365"/>
+        <Max x="0.1666172444820404" y="0.45630934834480286" z="0.39191392064094543"/>
     </BoundingBox>
     <Tags>
         <Tag>bird</Tag>

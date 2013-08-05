@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="ZumaRock">
+    <BoundingBox>
+        <Min x="-2.1531822681427" y="-0.06474649161100388" z="-3.924635887145996"/>
+        <Max x="2.153182029724121" y="2.998225450515747" z="3.924635887145996"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>rock</Tag>
+        <Tag>mountain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ZumaRock" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

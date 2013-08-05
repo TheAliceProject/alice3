@@ -55,7 +55,6 @@ public abstract class TimeLineEdit extends Edit {
 
 	protected TimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine ) {
 		super( completionStep );
-		System.out.println( "createEdit: " + this.getClass() );
 		this.timeLine = timeLine;
 	}
 

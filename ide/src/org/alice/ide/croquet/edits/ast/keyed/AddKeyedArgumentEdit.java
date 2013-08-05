@@ -60,6 +60,18 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.
 	}
 
 	@Override
+	protected void preCopy() {
+		super.preCopy();
+		org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( this.keyedArgument );
+	}
+
+	@Override
+	protected void postCopy( org.lgna.croquet.edits.Edit<?> result ) {
+		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
+		super.postCopy( result );
+	}
+
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );

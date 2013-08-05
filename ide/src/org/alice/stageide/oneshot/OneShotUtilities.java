@@ -71,8 +71,6 @@ public class OneShotUtilities {
 			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
 				models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
 				models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
-				//				models.add( new PoserProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
-				//				models.add( new AnimatorProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
 			}
 			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}
