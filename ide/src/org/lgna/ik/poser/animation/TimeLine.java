@@ -157,8 +157,9 @@ public class TimeLine {
 	}
 
 	private void fireCurrentTimeChanged( double time ) {
+		Pose pose = calculatePoseForTime( time );
 		for( TimeLineListener listener : listeners ) {
-			listener.currentTimeChanged( time );
+			listener.currentTimeChanged( time, pose );
 		}
 	}
 
@@ -226,5 +227,29 @@ public class TimeLine {
 	public void setSelectedKeyFrame( KeyFrameData keyFrameData ) {
 		this.setCurrentTime( keyFrameData.getEventTime() );
 		fireSelectedKeyFrameChanged( keyFrameData );
+	}
+
+	private Pose calculatePoseForTime( double desiredTime ) {
+		KeyFrameData before = null;
+		KeyFrameData after = null;
+
+		for( KeyFrameData data : datas ) {
+			if( desiredTime >= data.getEventTime() ) {
+				before = data;
+			} else {
+				after = data;
+				break;
+			}
+		}
+
+		if( ( before == null ) && ( after == null ) ) {
+			return null;
+		} else if( before == null ) {
+			return after.getPose();
+		} else if( after == null ) {
+			return before.getPose();
+		} else {
+			return KeyFrameData.interpolatePoses( before, after, desiredTime );
+		}
 	}
 }

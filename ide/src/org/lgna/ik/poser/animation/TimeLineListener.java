@@ -42,12 +42,14 @@
  */
 package org.lgna.ik.poser.animation;
 
+import org.lgna.ik.poser.Pose;
+
 /**
  * @author Matt May
  */
 public interface TimeLineListener {
 
-	public void currentTimeChanged( double currentTime );
+	public void currentTimeChanged( double currentTime, Pose pose );
 
 	public void keyFrameAdded( KeyFrameData event );
 

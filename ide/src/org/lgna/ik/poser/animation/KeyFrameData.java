@@ -44,6 +44,8 @@ package org.lgna.ik.poser.animation;
 
 import org.lgna.ik.poser.Pose;
 
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+
 /**
  * @author Matt May
  */
@@ -57,6 +59,40 @@ public class KeyFrameData {
 	public KeyFrameData( double time, Pose pose ) {
 		this.eventTime = time;
 		this.pose = pose;
+	}
+
+	public static Pose interpolatePoses( KeyFrameData key1, KeyFrameData key2, double targetTime ) {
+
+		//TODO "Easing is not implemented, yet.";
+
+		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
+		Pose pose1 = key1.getPose();
+		Pose pose2 = key2.getPose();
+		double k = ( targetTime - key1.getEventTime() ) / ( key2.getEventTime() - key1.getEventTime() );
+
+		UnitQuaternion leftClavicleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftClavicle().getUnitQuaternion(), pose2.getLeftClavicle().getUnitQuaternion(), k );
+		UnitQuaternion leftShoulderUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftShoulder().getUnitQuaternion(), pose2.getLeftShoulder().getUnitQuaternion(), k );
+		UnitQuaternion leftElbowUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftElbow().getUnitQuaternion(), pose2.getLeftElbow().getUnitQuaternion(), k );
+		UnitQuaternion leftWristUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftWrist().getUnitQuaternion(), pose2.getLeftWrist().getUnitQuaternion(), k );
+		UnitQuaternion rightClavicleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightClavicle().getUnitQuaternion(), pose2.getRightClavicle().getUnitQuaternion(), k );
+		UnitQuaternion rightShoulderUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightShoulder().getUnitQuaternion(), pose2.getRightShoulder().getUnitQuaternion(), k );
+		UnitQuaternion rightElbowUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightElbow().getUnitQuaternion(), pose2.getRightElbow().getUnitQuaternion(), k );
+		UnitQuaternion rightWristUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightWrist().getUnitQuaternion(), pose2.getRightWrist().getUnitQuaternion(), k );
+		UnitQuaternion pelvisUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getPelvis().getUnitQuaternion(), pose2.getPelvis().getUnitQuaternion(), k );
+		UnitQuaternion leftHipUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftHip().getUnitQuaternion(), pose2.getLeftHip().getUnitQuaternion(), k );
+		UnitQuaternion leftKneeUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftKnee().getUnitQuaternion(), pose2.getLeftKnee().getUnitQuaternion(), k );
+		UnitQuaternion leftAnkleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftAnkle().getUnitQuaternion(), pose2.getLeftAnkle().getUnitQuaternion(), k );
+		UnitQuaternion rightHipUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightHip().getUnitQuaternion(), pose2.getRightHip().getUnitQuaternion(), k );
+		UnitQuaternion rightKneeUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightKnee().getUnitQuaternion(), pose2.getRightKnee().getUnitQuaternion(), k );
+		UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightAnkle().getUnitQuaternion(), pose2.getRightAnkle().getUnitQuaternion(), k );
+		Pose out = new Pose.BuilderWithQuaternions()
+				.leftArm( leftClavicleUnitQuaternion, leftShoulderUnitQuaternion, leftElbowUnitQuaternion, leftWristUnitQuaternion )
+				.rightArm( rightClavicleUnitQuaternion, rightShoulderUnitQuaternion, rightElbowUnitQuaternion, rightWristUnitQuaternion )
+				.leftLeg( pelvisUnitQuaternion, leftHipUnitQuaternion, leftKneeUnitQuaternion, leftAnkleUnitQuaternion )
+				.rightLeg( pelvisUnitQuaternion, rightHipUnitQuaternion, rightKneeUnitQuaternion, rightAnkleUnitQuaternion )
+				.build();
+		return out;
+
 	}
 
 	public void setStyle( KeyFrameStyles style ) {

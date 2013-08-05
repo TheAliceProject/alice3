@@ -57,6 +57,7 @@ import org.lgna.story.Duration;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
+import org.lgna.story.StraightenOutJoints;
 
 import test.ik.croquet.SceneComposite;
 
@@ -151,6 +152,14 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 
 	public Pose getPose() {
 		return Pose.createPoseFromBiped( biped );
+	}
+
+	public void setPose( Pose pose ) {
+		if( pose != null ) {
+			pose.applyToBiped( biped );
+		} else {
+			biped.straightenOutJoints( StraightenOutJoints.duration( 0 ) );
+		}
 	}
 
 	public UserType<?> getDeclaringType() {

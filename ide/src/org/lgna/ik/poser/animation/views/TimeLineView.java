@@ -54,6 +54,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 
 import org.lgna.croquet.components.Panel;
+import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
@@ -112,7 +113,7 @@ public class TimeLineView extends Panel {
 			revalidateAndRepaint();
 		}
 
-		public void currentTimeChanged( double currentTime ) {
+		public void currentTimeChanged( double currentTime, Pose pose ) {
 			revalidateAndRepaint();
 		}
 	};

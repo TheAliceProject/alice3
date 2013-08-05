@@ -63,6 +63,7 @@ import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
+import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.edits.AddKeyFrameToTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyPoseOnExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.view.AnimatorControlView;
@@ -86,6 +87,28 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
 	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite );
 
+	private final TimeLineListener timeLineListener = new TimeLineListener() {
+
+		public void selectedKeyFrameChanged( KeyFrameData event ) {
+		}
+
+		public void keyFrameModified( KeyFrameData event ) {
+		}
+
+		public void keyFrameDeleted( KeyFrameData event ) {
+		}
+
+		public void keyFrameAdded( KeyFrameData event ) {
+		}
+
+		public void endTimeChanged( double endTime ) {
+		}
+
+		public void currentTimeChanged( double currentTime, Pose pose ) {
+			parent.setPose( pose );
+		}
+	};
+
 	public AnimatorControlComposite( AbstractPoserInputDialogComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		currentTime.addValueListener( new ValueListener<Double>() {
@@ -99,6 +122,8 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		} );
 		parent.getScene().getDragAdapter().addListener( sphereDragListener );
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
+
+		tlComposite.getTimeLine().addListener( timeLineListener );
 	}
 
 	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
@@ -121,8 +146,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			//
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException { //
 			//			posesList.setSelectedIndex( -1 );
 			//
 			//			//			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );

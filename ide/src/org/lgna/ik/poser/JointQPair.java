@@ -54,6 +54,8 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Matt May
@@ -61,17 +63,19 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 public class JointQPair {
 
 	private final JointId joint;
-	private final AffineMatrix4x4 affineMatrix;
+	private final UnitQuaternion unitQuaternion;
+	private final Point3 translation;
 	private final JointQPair child;
 	private static final ExpressionCreator blah = new ExpressionCreator();
 
-	public JointQPair( JointId joint, AffineMatrix4x4 matrix ) {
-		this( joint, matrix, null );
+	public JointQPair( JointId joint, UnitQuaternion unitQuaternion ) {
+		this( joint, unitQuaternion, null );
 	}
 
 	public JointQPair( SJoint sJoint, JointQPair child ) {
 		this.joint = ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getJointId();
-		this.affineMatrix = ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
+		this.unitQuaternion = new UnitQuaternion( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().orientation );
+		this.translation = new Point3( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().translation );
 		this.child = child;
 	}
 
@@ -79,9 +83,10 @@ public class JointQPair {
 		this( sJoint, null );
 	}
 
-	public JointQPair( JointId joint, AffineMatrix4x4 matrix, JointQPair child ) {
+	public JointQPair( JointId joint, UnitQuaternion unitQuaternion, JointQPair child ) {
 		this.joint = joint;
-		this.affineMatrix = matrix;
+		this.unitQuaternion = unitQuaternion;
+		this.translation = Point3.createZero();
 		this.child = child;
 	}
 
@@ -90,7 +95,7 @@ public class JointQPair {
 	}
 
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternion() {
-		return this.affineMatrix.orientation.createUnitQuaternion();
+		return this.unitQuaternion;
 	}
 
 	public JointQPair getChild() {
@@ -99,7 +104,10 @@ public class JointQPair {
 
 	@Override
 	public String toString() {
-		return "[ " + joint + " " + affineMatrix + " ]";
+		return "[ " + joint + " " + unitQuaternion + " ]"; //affineMatrix does not have a nice toString() method.
+		//		// the below is enough for now to differentiate between poses
+		//		String thePoint = String.format( "(%.03f, %.03f, %.03f)", affineMatrix.translation.x, affineMatrix.translation.y, affineMatrix.translation.z );
+		//		return "[ " + joint + " " + thePoint + " ]";
 	}
 
 	public boolean equals( JointQPair other ) {
@@ -118,7 +126,7 @@ public class JointQPair {
 		Expression jointExpression = null;
 		Expression matrixExpression = null;
 		try {
-			matrixExpression = blah.createExpression( jqPair.affineMatrix );
+			matrixExpression = blah.createExpression( jqPair.unitQuaternion );
 		} catch( CannotCreateExpressionException e ) {
 			System.out.println( "blablah" );
 			e.printStackTrace();

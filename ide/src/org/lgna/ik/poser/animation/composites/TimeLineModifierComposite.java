@@ -53,6 +53,7 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
@@ -80,7 +81,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 	private TimeLineListener listener = new TimeLineListener() {
 
-		public void currentTimeChanged( double currentTime ) {
+		public void currentTimeChanged( double currentTime, Pose pose ) {
 			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
 		}
 

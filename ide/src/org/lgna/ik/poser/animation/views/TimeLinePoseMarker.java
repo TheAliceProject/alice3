@@ -113,7 +113,7 @@ class JTimeLinePoseMarker extends JToggleButton {
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 
 				double newTime = keyFrameData.getEventTime();
-				if( Math.abs( newTime - prevEventTime ) > 1 ) {
+				if( Math.abs( newTime - prevEventTime ) > 0 ) {
 					step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, parent.getComposite().getTimeLine(), keyFrameData, newTime, prevEventTime ) );
 					JTimeLinePoseMarker.this.setSelected( true );
 				} else {
@@ -129,6 +129,8 @@ class JTimeLinePoseMarker extends JToggleButton {
 				prevEventTime = keyFrameData.getEventTime();
 				isSliding = true;
 			}
+
+			System.out.println( keyFrameData.getPose().getFakeLeftHandPosition() + " \t " + keyFrameData.getPose().getFakeRightHandPosition() );
 		}
 
 		public void mouseExited( MouseEvent e ) {

@@ -49,6 +49,9 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Matt May
@@ -62,37 +65,116 @@ public class Pose {
 		return ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
 	}
 
+	private static UnitQuaternion getUnitQuaternion( SJoint sJoint ) {
+		return new UnitQuaternion( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().orientation );
+	}
+
+	private static void setOrientationOnly( SJoint sJoint, OrthogonalMatrix3x3 matrix ) {
+		( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).setLocalOrientation( matrix );
+	}
+
+	private static void setOrientationOnly( SJoint sJoint, UnitQuaternion unitQuaternion ) {
+		( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).setLocalOrientation( new OrthogonalMatrix3x3( unitQuaternion ) );
+	}
+
 	/* package-private */static Pose createPoseFromBiped( SBiped biped ) {
-		JointQPair rightArmBase = new JointQPair( getIDFor( biped.getRightClavicle() ), getOrientation( biped.getRightClavicle() ),
-				new JointQPair( getIDFor( biped.getRightShoulder() ), getOrientation( biped.getRightShoulder() ),
-						new JointQPair( getIDFor( biped.getRightElbow() ), getOrientation( biped.getRightElbow() ),
-								new JointQPair( getIDFor( biped.getRightWrist() ), getOrientation( biped.getRightWrist() ) ) ) ) );
+		JointQPair rightArmBase = new JointQPair( getIDFor( biped.getRightClavicle() ), getUnitQuaternion( biped.getRightClavicle() ),
+				new JointQPair( getIDFor( biped.getRightShoulder() ), getUnitQuaternion( biped.getRightShoulder() ),
+						new JointQPair( getIDFor( biped.getRightElbow() ), getUnitQuaternion( biped.getRightElbow() ),
+								new JointQPair( getIDFor( biped.getRightWrist() ), getUnitQuaternion( biped.getRightWrist() ) ) ) ) );
 
-		JointQPair leftArmBase = new JointQPair( getIDFor( biped.getLeftClavicle() ), getOrientation( biped.getLeftClavicle() ),
-				new JointQPair( getIDFor( biped.getLeftShoulder() ), getOrientation( biped.getLeftShoulder() ),
-						new JointQPair( getIDFor( biped.getLeftElbow() ), getOrientation( biped.getLeftElbow() ),
-								new JointQPair( getIDFor( biped.getLeftWrist() ), getOrientation( biped.getLeftWrist() ) ) ) ) );
+		JointQPair leftArmBase = new JointQPair( getIDFor( biped.getLeftClavicle() ), getUnitQuaternion( biped.getLeftClavicle() ),
+				new JointQPair( getIDFor( biped.getLeftShoulder() ), getUnitQuaternion( biped.getLeftShoulder() ),
+						new JointQPair( getIDFor( biped.getLeftElbow() ), getUnitQuaternion( biped.getLeftElbow() ),
+								new JointQPair( getIDFor( biped.getLeftWrist() ), getUnitQuaternion( biped.getLeftWrist() ) ) ) ) );
 
-		JointQPair rightLegBase = new JointQPair( getIDFor( biped.getPelvis() ), getOrientation( biped.getPelvis() ),
-				new JointQPair( getIDFor( biped.getRightHip() ), getOrientation( biped.getRightHip() ),
-						new JointQPair( getIDFor( biped.getRightKnee() ), getOrientation( biped.getRightKnee() ),
-								new JointQPair( getIDFor( biped.getRightAnkle() ), getOrientation( biped.getRightAnkle() ) ) ) ) );
+		JointQPair rightLegBase = new JointQPair( getIDFor( biped.getPelvis() ), getUnitQuaternion( biped.getPelvis() ),
+				new JointQPair( getIDFor( biped.getRightHip() ), getUnitQuaternion( biped.getRightHip() ),
+						new JointQPair( getIDFor( biped.getRightKnee() ), getUnitQuaternion( biped.getRightKnee() ),
+								new JointQPair( getIDFor( biped.getRightAnkle() ), getUnitQuaternion( biped.getRightAnkle() ) ) ) ) );
 
-		JointQPair leftLegBase = new JointQPair( getIDFor( biped.getPelvis() ), getOrientation( biped.getPelvis() ),
-				new JointQPair( getIDFor( biped.getLeftHip() ), getOrientation( biped.getLeftHip() ),
-						new JointQPair( getIDFor( biped.getLeftKnee() ), getOrientation( biped.getLeftKnee() ),
-								new JointQPair( getIDFor( biped.getLeftAnkle() ), getOrientation( biped.getLeftAnkle() ) ) ) ) );
+		JointQPair leftLegBase = new JointQPair( getIDFor( biped.getPelvis() ), getUnitQuaternion( biped.getPelvis() ),
+				new JointQPair( getIDFor( biped.getLeftHip() ), getUnitQuaternion( biped.getLeftHip() ),
+						new JointQPair( getIDFor( biped.getLeftKnee() ), getUnitQuaternion( biped.getLeftKnee() ),
+								new JointQPair( getIDFor( biped.getLeftAnkle() ), getUnitQuaternion( biped.getLeftAnkle() ) ) ) ) );
 
 		return new Pose( rightArmBase, rightLegBase, leftArmBase, leftLegBase );
 	}
 
-	private static AffineMatrix4x4 TODO_DELETE_AND_USE_QUATERNION( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
-		return new AffineMatrix4x4( q, new edu.cmu.cs.dennisc.math.Point3() );
-	}
+	//	private static AffineMatrix4x4 TODO_DELETE_AND_USE_QUATERNION( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
+	//		return new AffineMatrix4x4( q, new edu.cmu.cs.dennisc.math.Point3() );
+	//	}
 
 	private static edu.cmu.cs.dennisc.math.UnitQuaternion getQuaternion( org.lgna.story.Orientation orientation ) {
 		//todo: org.lgna.story.Orientation should store the UnitQuaternion?
 		return ImplementationAccessor.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
+	}
+
+	public static class BuilderWithQuaternions {
+		private JointQPair rightArmBase;
+		private JointQPair leftArmBase;
+		private JointQPair rightLegBase;
+		private JointQPair leftLegBase;
+
+		public BuilderWithQuaternions rightArm( UnitQuaternion rightClavicleUnitQuaternion, UnitQuaternion rightShoulderUnitQuaternion, UnitQuaternion rightElbowUnitQuaternion, UnitQuaternion rightWristUnitQuaternion ) {
+			assert this.rightArmBase == null : this;
+			assert rightClavicleUnitQuaternion != null : this;
+			assert rightShoulderUnitQuaternion != null : this;
+			assert rightElbowUnitQuaternion != null : this;
+			assert rightWristUnitQuaternion != null : this;
+			this.rightArmBase =
+					new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE, rightClavicleUnitQuaternion,
+							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_SHOULDER, rightShoulderUnitQuaternion,
+									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, rightElbowUnitQuaternion,
+											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_WRIST, rightWristUnitQuaternion ) ) ) );
+			return this;
+		}
+
+		public BuilderWithQuaternions leftArm( UnitQuaternion leftClavicleUnitQuaternion, UnitQuaternion leftShoulderUnitQuaternion, UnitQuaternion leftElbowUnitQuaternion, UnitQuaternion leftWristUnitQuaternion ) {
+			assert this.leftArmBase == null : this;
+			assert leftClavicleUnitQuaternion != null : this;
+			assert leftShoulderUnitQuaternion != null : this;
+			assert leftElbowUnitQuaternion != null : this;
+			assert leftWristUnitQuaternion != null : this;
+			this.leftArmBase =
+					new JointQPair( org.lgna.story.resources.BipedResource.LEFT_CLAVICLE, leftClavicleUnitQuaternion,
+							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_SHOULDER, leftShoulderUnitQuaternion,
+									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ELBOW, leftElbowUnitQuaternion,
+											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_WRIST, leftWristUnitQuaternion ) ) ) );
+			return this;
+		}
+
+		public BuilderWithQuaternions rightLeg( UnitQuaternion pelvisUnitQuaternion, UnitQuaternion rightHipUnitQuaternion, UnitQuaternion rightKneeUnitQuaternion, UnitQuaternion rightAnkleUnitQuaternion ) {
+			assert this.rightLegBase == null : this;
+			assert pelvisUnitQuaternion != null : this;
+			assert rightHipUnitQuaternion != null : this;
+			assert rightKneeUnitQuaternion != null : this;
+			assert rightAnkleUnitQuaternion != null : this;
+			this.rightLegBase =
+					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, pelvisUnitQuaternion,
+							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_HIP, rightHipUnitQuaternion,
+									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_KNEE, rightKneeUnitQuaternion,
+											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ANKLE, rightAnkleUnitQuaternion ) ) ) );
+			return this;
+		}
+
+		public BuilderWithQuaternions leftLeg( UnitQuaternion pelvisUnitQuaternion, UnitQuaternion leftHipUnitQuaternion, UnitQuaternion leftKneeUnitQuaternion, UnitQuaternion leftAnkleUnitQuaternion ) {
+			assert this.leftLegBase == null : this;
+			assert pelvisUnitQuaternion != null : this;
+			assert leftHipUnitQuaternion != null : this;
+			assert leftKneeUnitQuaternion != null : this;
+			assert leftAnkleUnitQuaternion != null : this;
+			this.leftLegBase =
+					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, pelvisUnitQuaternion,
+							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_HIP, leftHipUnitQuaternion,
+									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_KNEE, leftKneeUnitQuaternion,
+											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ANKLE, leftAnkleUnitQuaternion ) ) ) );
+			return this;
+		}
+
+		public Pose build() {
+			return new Pose( this.rightArmBase, this.rightLegBase, this.leftArmBase, this.leftLegBase );
+		}
 	}
 
 	public static class Builder {
@@ -108,10 +190,10 @@ public class Pose {
 			assert rightElbowOrientation != null : this;
 			assert rightWristOrientation != null : this;
 			this.rightArmBase =
-					new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightClavicleOrientation ) ),
-							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_SHOULDER, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightShoulderOrientation ) ),
-									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightElbowOrientation ) ),
-											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_WRIST, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightWristOrientation ) ) ) ) ) );
+					new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE, getQuaternion( rightClavicleOrientation ),
+							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_SHOULDER, getQuaternion( rightShoulderOrientation ),
+									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, getQuaternion( rightElbowOrientation ),
+											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_WRIST, getQuaternion( rightWristOrientation ) ) ) ) );
 			return this;
 		}
 
@@ -122,10 +204,10 @@ public class Pose {
 			assert leftElbowOrientation != null : this;
 			assert leftWristOrientation != null : this;
 			this.leftArmBase =
-					new JointQPair( org.lgna.story.resources.BipedResource.LEFT_CLAVICLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftClavicleOrientation ) ),
-							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_SHOULDER, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftShoulderOrientation ) ),
-									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ELBOW, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftElbowOrientation ) ),
-											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_WRIST, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftWristOrientation ) ) ) ) ) );
+					new JointQPair( org.lgna.story.resources.BipedResource.LEFT_CLAVICLE, getQuaternion( leftClavicleOrientation ),
+							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_SHOULDER, getQuaternion( leftShoulderOrientation ),
+									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ELBOW, getQuaternion( leftElbowOrientation ),
+											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_WRIST, getQuaternion( leftWristOrientation ) ) ) ) );
 			return this;
 		}
 
@@ -136,10 +218,10 @@ public class Pose {
 			assert rightKneeOrientation != null : this;
 			assert rightAnkleOrientation != null : this;
 			this.rightLegBase =
-					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( pelvisOrientation ) ),
-							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_HIP, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightHipOrientation ) ),
-									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_KNEE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightKneeOrientation ) ),
-											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ANKLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( rightAnkleOrientation ) ) ) ) ) );
+					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, getQuaternion( pelvisOrientation ),
+							new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_HIP, getQuaternion( rightHipOrientation ),
+									new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_KNEE, getQuaternion( rightKneeOrientation ),
+											new JointQPair( org.lgna.story.resources.BipedResource.RIGHT_ANKLE, getQuaternion( rightAnkleOrientation ) ) ) ) );
 			return this;
 		}
 
@@ -150,10 +232,10 @@ public class Pose {
 			assert leftKneeOrientation != null : this;
 			assert leftAnkleOrientation != null : this;
 			this.leftLegBase =
-					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( pelvisOrientation ) ),
-							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_HIP, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftHipOrientation ) ),
-									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_KNEE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftKneeOrientation ) ),
-											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ANKLE, TODO_DELETE_AND_USE_QUATERNION( getQuaternion( leftAnkleOrientation ) ) ) ) ) );
+					new JointQPair( org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY, getQuaternion( pelvisOrientation ),
+							new JointQPair( org.lgna.story.resources.BipedResource.LEFT_HIP, getQuaternion( leftHipOrientation ),
+									new JointQPair( org.lgna.story.resources.BipedResource.LEFT_KNEE, getQuaternion( leftKneeOrientation ),
+											new JointQPair( org.lgna.story.resources.BipedResource.LEFT_ANKLE, getQuaternion( leftAnkleOrientation ) ) ) ) );
 			return this;
 		}
 
@@ -172,6 +254,24 @@ public class Pose {
 		this.rightLegBase = rlBase;
 		this.leftArmBase = laBase;
 		this.leftLegBase = llBase;
+	}
+
+	public void applyToBiped( SBiped biped ) {
+		setOrientationOnly( biped.getRightClavicle(), getRightClavicle().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightShoulder(), getRightShoulder().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightElbow(), getRightElbow().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightWrist(), getRightWrist().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftClavicle(), getLeftClavicle().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftShoulder(), getLeftShoulder().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftElbow(), getLeftElbow().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftWrist(), getLeftWrist().getUnitQuaternion() );
+		setOrientationOnly( biped.getPelvis(), getPelvis().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightHip(), getRightHip().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightKnee(), getRightKnee().getUnitQuaternion() );
+		setOrientationOnly( biped.getRightAnkle(), getRightAnkle().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftHip(), getLeftHip().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftKnee(), getLeftKnee().getUnitQuaternion() );
+		setOrientationOnly( biped.getLeftAnkle(), getLeftAnkle().getUnitQuaternion() );
 	}
 
 	private static org.lgna.story.Orientation createOrientation( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
@@ -238,8 +338,86 @@ public class Pose {
 		return createOrientation( this.leftLegBase.getChild().getChild().getChild().getUnitQuaternion() );
 	}
 
+	public JointQPair getRightClavicle() {
+		return this.rightArmBase;
+	}
+
+	public JointQPair getRightShoulder() {
+		return this.rightArmBase.getChild();
+	}
+
+	public JointQPair getRightElbow() {
+		return this.rightArmBase.getChild().getChild();
+	}
+
+	public JointQPair getRightWrist() {
+		return this.rightArmBase.getChild().getChild().getChild();
+	}
+
+	public JointQPair getLeftClavicle() {
+		return this.leftArmBase;
+	}
+
+	public JointQPair getLeftShoulder() {
+		return this.leftArmBase.getChild();
+	}
+
+	public JointQPair getLeftElbow() {
+		return this.leftArmBase.getChild().getChild();
+	}
+
+	public JointQPair getLeftWrist() {
+		return this.leftArmBase.getChild().getChild().getChild();
+	}
+
+	public JointQPair getPelvis() {
+		return this.rightLegBase;
+	}
+
+	public JointQPair getRightHip() {
+		return this.rightLegBase.getChild();
+	}
+
+	public JointQPair getRightKnee() {
+		return this.rightLegBase.getChild().getChild();
+	}
+
+	public JointQPair getRightAnkle() {
+		return this.rightLegBase.getChild().getChild().getChild();
+	}
+
+	public JointQPair getLeftHip() {
+		return this.leftLegBase.getChild();
+	}
+
+	public JointQPair getLeftKnee() {
+		return this.leftLegBase.getChild().getChild();
+	}
+
+	public JointQPair getLeftAnkle() {
+		return this.leftLegBase.getChild().getChild().getChild();
+	}
+
 	/* package-private */JointQPair[] getChains() {
 		return new JointQPair[] { this.rightArmBase, this.leftArmBase, this.rightLegBase, this.leftLegBase };
+	}
+
+	public Point3 getFakeLeftHandPosition() {
+		return getFakeEffectorPosition( leftArmBase );
+	}
+
+	public Point3 getFakeRightHandPosition() {
+		return getFakeEffectorPosition( rightArmBase );
+	}
+
+	private Point3 getFakeEffectorPosition( JointQPair startingJointQPair ) {
+		AffineMatrix4x4 currentMatrix = AffineMatrix4x4.createIdentity();
+		currentMatrix.translation.set( 1, 1, 1 );
+		for( JointQPair jointQPair = startingJointQPair; jointQPair != null; jointQPair = jointQPair.getChild() ) {
+			AffineMatrix4x4 mat = new AffineMatrix4x4( jointQPair.getUnitQuaternion(), new Point3( 1.0, 1.0, 1.0 ) );
+			currentMatrix.multiply( mat );
+		}
+		return currentMatrix.translation;
 	}
 
 	@Override
