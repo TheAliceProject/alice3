@@ -66,8 +66,6 @@ import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author Matt May
@@ -86,26 +84,25 @@ public class PoserScene extends SScene {
 	private PoserPicturePlaneInteraction dragAdapter = null;
 	private List<PoserSphereManipulatorListener> dragListeners = Collections.newArrayList();
 
-	//	private JointSelectionAdapter selector = new JointSelectionAdapter( this );
-
 	public PoserScene( SCamera camera, SBiped ogre ) {
 		this.camera = camera;
 		this.camera.setVehicle( this );
 		this.ogre = ogre;
-		JointSelectionSphere pelvis = createJSS( ogre.getPelvis(), null );
-		JointSelectionSphere a = createJSS( ogre.getRightHip(), pelvis );
+		//		ogre.getPelvis()
+		//		JointSelectionSphere pelvis = createJSS( ogre.getPelvis(), null );
+		JointSelectionSphere a = createJSS( ogre.getRightHip(), null );
 		JointSelectionSphere b = createJSS( ogre.getRightKnee(), a );
 		JointSelectionSphere c = createJSS( ogre.getRightAnkle(), b );
-		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( pelvis, a, b, c ) );
+		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
 		JointSelectionSphere d = createJSS( ogre.getRightClavicle(), null );
 		JointSelectionSphere e = createJSS( ogre.getRightShoulder(), d );
 		JointSelectionSphere f = createJSS( ogre.getRightElbow(), e );
 		JointSelectionSphere g = createJSS( ogre.getRightWrist(), f );
 		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f, g ) );
-		JointSelectionSphere h = createJSS( ogre.getLeftHip(), pelvis );
+		JointSelectionSphere h = createJSS( ogre.getLeftHip(), null );
 		JointSelectionSphere i = createJSS( ogre.getLeftKnee(), h );
 		JointSelectionSphere j = createJSS( ogre.getLeftAnkle(), i );
-		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( pelvis, h, i, j ) );
+		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( h, i, j ) );
 		JointSelectionSphere k = createJSS( ogre.getLeftClavicle(), null );
 		JointSelectionSphere l = createJSS( ogre.getLeftShoulder(), k );
 		JointSelectionSphere m = createJSS( ogre.getLeftElbow(), l );
@@ -115,6 +112,7 @@ public class PoserScene extends SScene {
 		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
 			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
 				jointToLimbMap.put( sphere.getJoint(), limb );
+				sphere.setOpacity( 0 );
 			}
 		}
 
@@ -165,9 +163,9 @@ public class PoserScene extends SScene {
 	}
 
 	public void addCustomDragAdapter() {
-		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
-		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
-		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
+		//		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
+		//		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
+		//		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 		//		this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
 		//		this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
 		//		this.dragAdapter.makeCameraActive( camera );
@@ -254,7 +252,10 @@ public class PoserScene extends SScene {
 	}
 
 	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
-		return limbToJointMap.get( key ).get( 1 );
+		if( ( key == Limb.LEFT_ARM ) || ( key == Limb.RIGHT_ARM ) ) {
+			return limbToJointMap.get( key ).get( 1 );
+		}
+		return limbToJointMap.get( key ).get( 0 );
 	}
 
 	public PoserPicturePlaneInteraction getDragAdapter() {

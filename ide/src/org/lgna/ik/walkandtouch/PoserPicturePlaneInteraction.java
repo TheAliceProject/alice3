@@ -108,9 +108,6 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	public void addListener( PoserSphereManipulatorListener sphereDragListener ) {
-		for( int i = 0; i != 100; ++i ) {
-			System.out.println( "ADD LISTENER (mmay)" );
-		}
 		this.listeners.add( sphereDragListener );
 	}
 
