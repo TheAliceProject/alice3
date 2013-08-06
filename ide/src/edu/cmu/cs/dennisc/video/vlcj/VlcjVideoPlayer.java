@@ -85,6 +85,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void timeChanged( MediaPlayer mediaPlayer, long newTime ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "time changed", newTime );
 		}
 
 		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
@@ -104,6 +105,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void lengthChanged( MediaPlayer mediaPlayer, long newLength ) {
+			fireLengthChanged( newLength );
 		}
 
 		public void videoOutput( MediaPlayer mediaPlayer, int newCount ) {
@@ -133,6 +135,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void newMedia( MediaPlayer mediaPlayer ) {
+			fireNewMedia();
 		}
 
 		public void subItemPlayed( MediaPlayer mediaPlayer, int subItemIndex ) {
@@ -187,6 +190,12 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
 	}
 
+	private void fireNewMedia() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.newMedia( this );
+		}
+	}
+
 	private void fireVideoOutput( int count ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.videoOutput( this, count );
@@ -196,6 +205,12 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private void firePositionChanged( float position ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.positionChanged( this, position );
+		}
+	}
+
+	private void fireLengthChanged( long length ) {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.lengthChanged( this, length );
 		}
 	}
 
@@ -354,7 +369,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.mute( isMuted );
 	}
-	
+
 	public boolean writeSnapshot( java.io.File file ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
