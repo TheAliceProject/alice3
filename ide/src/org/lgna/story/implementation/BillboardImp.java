@@ -145,28 +145,58 @@ public class BillboardImp extends VisualScaleModelImp {
 	}
 
 	@Override
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		this.setScale( getScaleForSize( size ) );
+	}
+
+	@Override
 	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XY_PLANE };
+		return new Resizer[] { Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS };
 	}
 
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
-		//todo
-		assert resizer == Resizer.XY_PLANE : resizer;
-		return this.getScale().x;
+		if( resizer == Resizer.XY_PLANE ) {
+			return this.getScale().x;
+		} else if( resizer == Resizer.X_AXIS ) {
+			return this.getScale().x;
+		} else if( resizer == Resizer.Y_AXIS ) {
+			return this.getScale().y;
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
 	}
 
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
-		//todo
-		assert resizer == Resizer.XY_PLANE : resizer;
-		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
+		if( value > 0.0 ) {
+			double zScale = this.getScale().z;
+			if( resizer == Resizer.XY_PLANE ) {
+				double scaleChange = value / this.getScale().x;
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y * scaleChange, zScale ) );
+			} else if( resizer == Resizer.X_AXIS ) {
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y, zScale ) );
+			} else if( resizer == Resizer.Y_AXIS ) {
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( this.getScale().x, value, zScale ) );
+			} else {
+				assert false : resizer;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
+		}
 	}
 
-	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
-		this.setScale( getScaleForSize( size ) );
-	}
+	//	@Override
+	//	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	//		double x = size.x * 0.5;
+	//		double z = size.z * 0.5;
+	//		this.sgBox.xMinimum.setValue( -x );
+	//		this.sgBox.xMaximum.setValue( +x );
+	//		this.sgBox.yMaximum.setValue( size.y );
+	//		this.sgBox.zMinimum.setValue( -z );
+	//		this.sgBox.zMaximum.setValue( +z );
+	//	}
 
 	private void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
