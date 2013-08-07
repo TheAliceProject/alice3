@@ -47,42 +47,30 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public enum AccessLevel {
-	//1.6
-	//	PUBLIC( int.PUBLIC ),
-	//	PROTECTED( javax.lang.model.element.Modifier.PROTECTED ),
-	//	PRIVATE( javax.lang.model.element.Modifier.PRIVATE ),
-	//	PACKAGE();
-	//	private javax.lang.model.element.Modifier[] m_modifiers;
-	//	Access( javax.lang.model.element.Modifier... modifiers ) {
-	//		m_modifiers = modifiers;
-	//	}
-	//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
-	//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
-	//			rv.add( modifier );
-	//		}
-	//		return rv;
-	//	}
-	PUBLIC( "public ", java.lang.reflect.Modifier.PUBLIC ),
-	PROTECTED( "protected ", java.lang.reflect.Modifier.PROTECTED ),
-	PRIVATE( "private ", java.lang.reflect.Modifier.PRIVATE ),
-	PACKAGE( "/*package-private*/ " );
-	private final String text;
-	private final int[] modifiers;
+	PUBLIC( javax.lang.model.element.Modifier.PUBLIC, "public " ),
+	PROTECTED( javax.lang.model.element.Modifier.PROTECTED, "protected " ),
+	PRIVATE( javax.lang.model.element.Modifier.PRIVATE, "private  " ),
+	PACKAGE( null, "/*package-private*/ " );
 
-	AccessLevel( String text, int... modifiers ) {
-		this.text = text;
-		this.modifiers = modifiers;
+	private final javax.lang.model.element.Modifier modifier;
+	private final String javaCodeText;
+
+	AccessLevel( javax.lang.model.element.Modifier modifier, String javaCodeText ) {
+		this.modifier = modifier;
+		this.javaCodeText = javaCodeText;
 	}
 
-	public java.util.Collection<Integer> updateModifiers( java.util.Collection<Integer> rv ) {
-		for( int modifier : this.modifiers ) {
-			rv.add( modifier );
+	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+		if( this.modifier != null ) {
+			modifiers.add( modifier );
 		}
-		return rv;
 	}
 
-	//todo: rename
-	public static AccessLevel get( int modifiers ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( this.javaCodeText );
+	}
+
+	public static AccessLevel getValueFromModifiers( int modifiers ) {
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
 			return AccessLevel.PUBLIC;
 		} else if( java.lang.reflect.Modifier.isProtected( modifiers ) ) {
@@ -93,9 +81,4 @@ public enum AccessLevel {
 			return AccessLevel.PACKAGE;
 		}
 	}
-
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( this.text );
-	}
-
 }

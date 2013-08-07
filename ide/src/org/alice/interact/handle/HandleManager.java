@@ -173,7 +173,10 @@ public class HandleManager implements ManipulationListener {
 			handle = ( (ManipulationHandleIndirection)handle ).getCurrentHandle();
 		}
 		PickHint objectPickHint = PickUtilities.getPickType( selectedObject );
-		if( handle instanceof LinearTranslateHandle ) {
+		if( handle instanceof SelectionIndicator ) {
+			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
+		}
+		else if( handle instanceof LinearTranslateHandle ) {
 			return ( objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) );
 		}
 		else if( handle instanceof RotationRingHandle ) {
@@ -249,10 +252,10 @@ public class HandleManager implements ManipulationListener {
 
 	public void setHandlesShowing( boolean showing )
 	{
-		//		PrintUtilities.println("Setting handle showing to: "+showing);
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "Setting handle showing to: " + showing );
 		for( ManipulationHandle handle : this.handles )
 		{
-			//			PrintUtilities.println("Setting handle "+handle+", which is visible? "+handle.isHandleVisible());
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "   Setting handle " + handle + ", which is visible? " + handle.isHandleVisible() );
 			handle.setVisualsShowing( showing );
 		}
 	}

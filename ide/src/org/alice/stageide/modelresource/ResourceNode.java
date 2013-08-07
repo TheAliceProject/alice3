@@ -183,6 +183,11 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( this.resourceKey );
 	}
 
+	@Override
+	public boolean placeOnGround() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( this.resourceKey );
+	}
+
 	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
 		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
 	}

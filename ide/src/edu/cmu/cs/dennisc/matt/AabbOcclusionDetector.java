@@ -4,8 +4,10 @@ import java.awt.Point;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SThing;
+import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.math.Point3;
 
@@ -14,13 +16,14 @@ public class AabbOcclusionDetector {
 	public static boolean doesTheseOcclude( CameraImp camera, SThing object1, SThing object2 ) {
 		EntityImp implementation = ImplementationAccessor.getImplementation( object1 );
 		EntityImp implementation2 = ImplementationAccessor.getImplementation( object2 );
-		Point3[] object1Points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
-		Point3[] object2Points = implementation2.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
+		SceneImp scene = implementation.getScene();
+		Point3[] object1Points = implementation.getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE ).getHexahedron().getPoints();
+		Point3[] object2Points = implementation2.getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE ).getHexahedron().getPoints();
 		Point[] object1AWTPoints = new Point[ 8 ];
 		Point[] object2AWTPoints = new Point[ 8 ];
 		for( int i = 0; i != object1Points.length; ++i ) {
-			object1AWTPoints[ i ] = implementation.transformToAwt( object1Points[ i ], camera );
-			object2AWTPoints[ i ] = implementation2.transformToAwt( object2Points[ i ], camera );
+			object1AWTPoints[ i ] = scene.transformToAwt( object1Points[ i ], camera );
+			object2AWTPoints[ i ] = scene.transformToAwt( object2Points[ i ], camera );
 		}
 		Point[] boundingBox1 = getBoundingBox( object1AWTPoints );//bounding box is pretty crude
 		Point[] boundingBox2 = getBoundingBox( object2AWTPoints );

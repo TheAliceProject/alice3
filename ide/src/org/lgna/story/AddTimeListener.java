@@ -6,10 +6,6 @@ public class AddTimeListener {
 	public interface Detail {
 	}
 
-	public static Detail timerFrequency( double d ) {
-		return new TimerFrequency( d );
-	}
-
 	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
 		return multipleEventPolicy;
 	}

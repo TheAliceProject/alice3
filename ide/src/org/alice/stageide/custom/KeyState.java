@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.custom;
 
+import org.lgna.croquet.PrepModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,7 +93,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

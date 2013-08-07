@@ -157,7 +157,7 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 
 	public boolean isMemberOf( HandleSet set )
 	{
-		return this.handleSet.intersects( set );
+		return this.handleSet.intersects( set ) || set.intersects( this.handleSet );
 	}
 
 	public boolean isPickable()

@@ -46,6 +46,14 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public class LgnaIllegalArgumentException extends LgnaRuntimeException {
+	public static <T> T checkArgumentNotNull( T value, int index ) {
+		if( value != null ) {
+			return value;
+		} else {
+			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
+		}
+	}
+
 	private final int index;
 	private final Object value;
 

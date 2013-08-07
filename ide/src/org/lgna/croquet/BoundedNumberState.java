@@ -115,7 +115,7 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	}
 
 	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

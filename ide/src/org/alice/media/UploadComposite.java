@@ -44,10 +44,6 @@ package org.alice.media;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -132,9 +128,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 		this.owner = owner;
-		UploadComposite.initializeCategories();
 		uploader.addYouTubeListener( this.getUploadOperation() );
-		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
+		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
 		this.registerSubComposite( this.videoComposite );
 		this.registerSubComposite( logInOutComposite );
 		videoCategoryState.setEnabled( categoriesEnabled );
@@ -257,77 +252,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			videoCategoryState.setEnabled( isEnabled && categoriesEnabled );
 			isPrivateState.setEnabled( isEnabled );
 		}
-	}
-
-	/**
-	 * borrowed from dave:
-	 * YouTubeMeddiaGroupEditorPanel
-	 */
-	private static final String CATEGORY_URL = "http://gdata.youtube.com/schemas/2007/categories.cat";
-	private static final String TERM_STRING = "term='";
-	private static final String DEPRECATED_STRING = "deprecated";
-	private static final String LABEL_STRING = "label='";
-	//	private static final String TERM_PATTERN = "term='[^']*'";
-	//	private static final String LABEL_PATTERN = "label='[^']*'";
-	//	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
-	//	private static final String DEFAULT_CATEGORY = "tech";
-	private static List<String> categoryStrings;
-	private static List<String> termStrings;
-
-	private static boolean initializeCategories() {
-		try {
-			URL categoryURL = new URL( CATEGORY_URL );
-			InputStream is = categoryURL.openStream();
-			StringBuilder sb = new StringBuilder();
-			int readValue;
-			while( ( readValue = is.read() ) != -1 ) {
-				char charVal = (char)readValue;
-				sb.append( charVal );
-			}
-			String categoryData = sb.toString();
-			List<String> labels = new LinkedList<String>();
-			List<String> terms = new LinkedList<String>();
-			int TERM_LENGTH = TERM_STRING.length();
-			int LABEL_LENGTH = LABEL_STRING.length();
-			int DEPRECATED_LENGTH = DEPRECATED_STRING.length();
-			int categoryLength = categoryData.length();
-			String searchTerm = TERM_STRING;
-			int searchLength = TERM_LENGTH;
-			for( int i = 0; i < ( categoryLength - DEPRECATED_LENGTH ); ) {
-				if( categoryData.subSequence( i, i + searchLength ).equals( searchTerm ) ) {
-					int endIndex = categoryData.indexOf( "'", i + searchLength );
-					String foundString = categoryData.substring( i + searchLength, endIndex );
-					foundString = foundString.replace( "&amp;", "&" );
-					if( searchTerm == TERM_STRING ) {
-						searchTerm = LABEL_STRING;
-						searchLength = LABEL_LENGTH;
-						terms.add( foundString );
-					} else {
-						searchTerm = TERM_STRING;
-						searchLength = TERM_LENGTH;
-						labels.add( foundString );
-					}
-					i = endIndex;
-				} else if( categoryData.subSequence( i, i + DEPRECATED_LENGTH ).equals( DEPRECATED_STRING ) ) {
-					if( terms.size() == labels.size() ) {
-						terms.remove( terms.size() - 1 );
-						labels.remove( labels.size() - 1 );
-					} else {
-						System.err.println( "CRAZY!" );
-					}
-					i += DEPRECATED_LENGTH;
-				} else {
-					i++;
-				}
-			}
-			categoryStrings = labels;
-			termStrings = terms;
-			return true;
-		} catch( IOException e ) {
-			categoryStrings = null;
-			termStrings = null;
-		}
-		return false;
 	}
 
 	public void setLoggedIn( boolean isLoggedIn ) {

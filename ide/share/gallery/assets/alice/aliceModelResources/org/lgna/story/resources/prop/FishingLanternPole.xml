@@ -12,10 +12,10 @@
         <Tag>post</Tag>
     </Tags>
     <GroupTags>
-        <GroupTag>vehicles:fishing boat</GroupTag>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
     </GroupTags>
     <ThemeTags>
-        <ThemeTag>far east:fishing boat</ThemeTag>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
     </ThemeTags>
     <Resource modelName="FishingLanternPole" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

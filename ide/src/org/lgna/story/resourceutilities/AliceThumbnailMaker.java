@@ -97,6 +97,18 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		}
 	}
 
+	private AffineMatrix4x4 getGalleryThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		Vector3 cameraDir = new Vector3( -1.0, -.5, 3.0 );
+		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+			return getThumbnailCameraOrientation( new AxisAlignedBox( -.4, 0, -.4, .4, 1.6, .5 ), cameraDir );
+		}
+		else {
+			return getThumbnailCameraOrientation( new AxisAlignedBox( -.2, 0, -.2, .2, 1.6, .2 ), cameraDir );
+		}
+	}
+
 	private AffineMatrix4x4 getThumbnailCameraOrientationForPerson( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return getThumbnailCameraOrientationForLifeStage( personResource.getLifeStage() );
 	}
@@ -206,10 +218,37 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
+	public synchronized java.awt.image.BufferedImage createGalleryThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+		visualData.setSGParent( this.getModelTransformable() );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+			sgVisual.setParent( this.getModelTransformable() );
+		}
+		java.awt.image.BufferedImage returnImage = takePicture( getGalleryThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		visualData.setSGParent( null );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
+		}
+		return returnImage;
+	}
+
+	public java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
+		return createThumbnailFromPersonResource( resource, true );
+	}
+
+	public java.awt.image.BufferedImage createGalleryThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
 		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
 		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createThumbnailFromPersonVisualData( visualData, true );
+		java.awt.image.BufferedImage thumbnail = createGalleryThumbnailFromPersonVisualData( visualData, false, null );
+		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+		this.clear();
+		return thumbnail;
+	}
+
+	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
+		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
+		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
+		java.awt.image.BufferedImage thumbnail = createThumbnailFromPersonVisualData( visualData, trim );
 		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;

@@ -55,7 +55,7 @@ public interface CompletionModel extends Model {
 
 	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger );
 
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels();
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit );
 
 	public static interface AddGeneratedTransactionObserver {
 		public void prePopGeneratedContexts() throws org.lgna.croquet.UnsupportedGenerationException;
