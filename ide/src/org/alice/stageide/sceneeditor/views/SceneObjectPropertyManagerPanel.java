@@ -248,6 +248,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					{
 						return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ( (GroundImp)entityImp ).paint, state );
 					}
+					else if( entityImp instanceof BillboardImp )
+					{
+						return new BillboardFrontPaintPropertyAdapter( (BillboardImp)entityImp, state );
+					}
 					else if( entityImp instanceof ModelImp )
 					{
 						return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ( (ModelImp)entityImp ).paint, state );
