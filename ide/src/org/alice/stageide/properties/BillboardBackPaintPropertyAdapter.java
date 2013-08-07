@@ -44,6 +44,8 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.croquet.State;
+import org.lgna.project.ast.Expression;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.BillboardImp;
 
@@ -56,6 +58,23 @@ public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<P
 	public BillboardBackPaintPropertyAdapter( BillboardImp instance, StandardExpressionState expressionState )
 	{
 		super( "Back Paint", instance, expressionState );
+		this.expressionState.addValueListener( new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+			@Override
+			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+			}
+
+			@Override
+			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+				if( BillboardBackPaintPropertyAdapter.this.instance != null )
+				{
+					//Update the aspect ratio is we're setting to a image resource and not a color (image resources are set as InstanceCreations)
+					if( nextValue instanceof org.lgna.project.ast.InstanceCreation ) {
+						BillboardBackPaintPropertyAdapter.this.instance.updateAspectRatio();
+					}
+				}
+			}
+
+		} );
 	}
 
 	@Override

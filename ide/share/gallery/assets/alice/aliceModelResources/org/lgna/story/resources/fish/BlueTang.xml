@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2011" creator="Laura Paoletti" name="BlueTang">
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="BlueTang" placeOnGround="TRUE">
     <BoundingBox>
-        <Min x="-0.23162025213241577" y="0.015048415400087833" z="-0.31384435296058655"/>
-        <Max x="0.231608048081398" y="0.5309098958969116" z="0.9493091106414795"/>
+        <Min x="-0.23162025213241577" y="-0.26142990589141846" z="-0.44036728143692017"/>
+        <Max x="0.231608048081398" y="0.25443151593208313" z="0.8227862119674683"/>
     </BoundingBox>
     <Tags>
         <Tag>fish</Tag>
