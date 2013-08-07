@@ -5149,7 +5149,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			}
 		} catch( ClassNotFoundException cnfe ) {
 			// perhaps in netbeans plugin
-			return null;
+			return new NotSupportedAstMigrationStandIn( minimumVersion, maximumVersion );
 		}
 	}
 
