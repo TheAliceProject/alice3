@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Arapaima">
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Arapaima" placeOnGround="TRUE">
     <BoundingBox>
-        <Min x="-0.40829816460609436" y="-0.7580909729003906" z="-1.9592214822769165"/>
-        <Max x="0.40829798579216003" y="0.6814704537391663" z="1.9892878532409668"/>
+        <Min x="-0.40829816460609436" y="-0.48309779167175293" z="-0.9262269139289856"/>
+        <Max x="0.40829798579216003" y="0.9564635753631592" z="3.022282361984253"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>
