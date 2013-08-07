@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,50 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.video;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPerspective extends AbstractElement implements Perspective {
-	private final class SetPerspectiveOperation extends ActionOperation {
-		public SetPerspectiveOperation() {
-			super( Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "6906f6c6-fa04-4527-b37c-20adc4793733" ) );
+public class VideoUtilities {
+	public static VideoPlayer createVideoPlayer() {
+		VideoPlayer rv = null;
+		try {
+			rv = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
+		} catch( Throwable t ) {
+			rv = null;
 		}
-
-		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			PerspectiveApplication.getActiveInstance().setPerspective( AbstractPerspective.this );
-			step.finish();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new edu.cmu.cs.dennisc.video.nil.NilVideoPlayer();
 		}
-	}
-
-	private final SetPerspectiveOperation setPerspectiveOperation = new SetPerspectiveOperation();
-	private String name;
-
-	public AbstractPerspective( java.util.UUID id ) {
-		super( id );
-	}
-
-	@Override
-	protected void localize() {
-		this.name = this.findDefaultLocalizedText();
-	}
-
-	public String getName() {
-		this.initializeIfNecessary();
-		return this.name;
-	}
-
-	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getName() );
-	}
-
-	public SetPerspectiveOperation getSetPerspectiveOperation() {
-		return this.setPerspectiveOperation;
+		return rv;
 	}
 }

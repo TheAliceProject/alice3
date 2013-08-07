@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,50 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPerspective extends AbstractElement implements Perspective {
-	private final class SetPerspectiveOperation extends ActionOperation {
-		public SetPerspectiveOperation() {
-			super( Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "6906f6c6-fa04-4527-b37c-20adc4793733" ) );
-		}
-
-		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			PerspectiveApplication.getActiveInstance().setPerspective( AbstractPerspective.this );
-			step.finish();
-		}
-	}
-
-	private final SetPerspectiveOperation setPerspectiveOperation = new SetPerspectiveOperation();
-	private String name;
-
-	public AbstractPerspective( java.util.UUID id ) {
-		super( id );
+public class NotSupportedAstMigrationStandIn extends AstMigration {
+	public NotSupportedAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		super( minimumVersion, resultVersion );
 	}
 
 	@Override
-	protected void localize() {
-		this.name = this.findDefaultLocalizedText();
-	}
-
-	public String getName() {
-		this.initializeIfNecessary();
-		return this.name;
-	}
-
-	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getName() );
-	}
-
-	public SetPerspectiveOperation getSetPerspectiveOperation() {
-		return this.setPerspectiveOperation;
+	public void migrate( org.lgna.project.ast.Node node ) {
 	}
 }
