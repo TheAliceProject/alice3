@@ -42,15 +42,8 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-
 /**
  * @author alice
  */
 public class TexturedVisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual> extends VisualAdapter<E> {
-
-	@Override
-	protected void actuallyRender( RenderContext rc, RenderType renderType ) {
-		System.out.println( "render" );
-		super.actuallyRender( rc, renderType );
-	}
 }

@@ -198,7 +198,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	//		this.sgBox.zMaximum.setValue( +z );
 	//	}
 
-	public void updateAspectRatio() {
+	private void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
 
