@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Manatee">
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Manatee" placeOnGround="TRUE">
     <BoundingBox>
-        <Min x="-0.4042009711265564" y="0.08305229991674423" z="-1.2311067581176758"/>
-        <Max x="0.4042009711265564" y="1.2367653846740723" z="1.4852524995803833"/>
+        <Min x="-0.4042009711265564" y="-0.8547041416168213" z="-0.959225058555603"/>
+        <Max x="0.4042009711265564" y="0.2990090250968933" z="1.757134199142456"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>
