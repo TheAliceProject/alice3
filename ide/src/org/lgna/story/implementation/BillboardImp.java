@@ -190,17 +190,6 @@ public class BillboardImp extends VisualScaleModelImp {
 		}
 	}
 
-	//	@Override
-	//	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
-	//		double x = size.x * 0.5;
-	//		double z = size.z * 0.5;
-	//		this.sgBox.xMinimum.setValue( -x );
-	//		this.sgBox.xMaximum.setValue( +x );
-	//		this.sgBox.yMaximum.setValue( size.y );
-	//		this.sgBox.zMinimum.setValue( -z );
-	//		this.sgBox.zMaximum.setValue( +z );
-	//	}
-
 	public void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
