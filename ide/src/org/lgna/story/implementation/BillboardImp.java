@@ -105,6 +105,9 @@ public class BillboardImp extends VisualScaleModelImp {
 			v3.position.x = +x;
 			v3.position.y = 1;
 			v3.position.z = 0;
+
+			//Set the vertices property to trigger the property change
+			this.sgGeometry.vertices.setValue( this.sgVertices );
 		}
 
 		private int getIndex( int i ) {
@@ -198,7 +201,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	//		this.sgBox.zMaximum.setValue( +z );
 	//	}
 
-	private void updateAspectRatio() {
+	public void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
 

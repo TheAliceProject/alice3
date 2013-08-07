@@ -67,7 +67,10 @@ public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<P
 			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
 				if( BillboardBackPaintPropertyAdapter.this.instance != null )
 				{
-					BillboardBackPaintPropertyAdapter.this.instance.updateAspectRatio();
+					//Update the aspect ratio is we're setting to a image resource and not a color (image resources are set as InstanceCreations)
+					if( nextValue instanceof org.lgna.project.ast.InstanceCreation ) {
+						BillboardBackPaintPropertyAdapter.this.instance.updateAspectRatio();
+					}
 				}
 			}
 
