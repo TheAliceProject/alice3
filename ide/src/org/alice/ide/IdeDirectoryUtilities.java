@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.importers;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.AudioResource> {
-	private static class SingletonHolder {
-		private static AudioResourceImporter instance = new AudioResourceImporter();
+public class IdeDirectoryUtilities {
+	private static final String SOUND_GALLERY_NAME = "soundGallery";
+
+	private IdeDirectoryUtilities() {
+		throw new AssertionError();
 	}
 
-	public static AudioResourceImporter getInstance() {
-		return SingletonHolder.instance;
+	private static java.io.File getDirectoryFromProperty( String propertyName ) {
+		String path = System.getProperty( propertyName );
+		if( path != null ) {
+			java.io.File file = new java.io.File( path );
+			if( file.isDirectory() ) {
+				return file;
+			}
+		}
+		return null;
 	}
 
-	private AudioResourceImporter() {
-		super(
-				java.util.UUID.randomUUID(),
-				org.alice.ide.IdeDirectoryUtilities.getSoundGalleryDirectory(),
-				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
-				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
-				"mp3", "wav", "au" );
+	public static java.io.File getInstallDirectory() {
+		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.IDE.install.dir" );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = getDirectoryFromProperty( "user.dir" );
+		}
+		return rv;
 	}
 
-	@Override
-	protected org.lgna.common.resources.AudioResource createFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
+	private static java.io.File getFallbackDirectory() {
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+	}
+
+	public static java.io.File getSoundGalleryDirectory() {
+		try {
+			java.io.File installDirectory = getInstallDirectory();
+			if( installDirectory != null ) {
+				java.io.File soundGalleryDirectory = new java.io.File( installDirectory, SOUND_GALLERY_NAME );
+				if( soundGalleryDirectory.isDirectory() ) {
+					return soundGalleryDirectory;
+				} else {
+					throw new RuntimeException(); //fallback
+				}
+			} else {
+				throw new NullPointerException(); //fallback
+			}
+		} catch( Throwable t ) {
+			return getFallbackDirectory();
+		}
 	}
 }
