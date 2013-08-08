@@ -47,29 +47,6 @@ package org.alice.ide.ast.importers;
  * @author Dennis Cosgrove
  */
 public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.AudioResource> {
-
-	private static final String SOUND_GALLERY_NAME = "soundGallery";
-
-	private static java.io.File getFallbackDirectory() {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-	}
-
-	private static java.io.File getDefaultDirectory() {
-		try {
-			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
-			java.io.File installDirectory = new java.io.File( installPath );
-			java.io.File soundGalleryDirectory = new java.io.File( installDirectory, SOUND_GALLERY_NAME );
-			if( soundGalleryDirectory.isDirectory() ) {
-				return soundGalleryDirectory;
-			} else {
-				//todo: throw to catch below?
-				return getFallbackDirectory();
-			}
-		} catch( Throwable t ) {
-			return getFallbackDirectory();
-		}
-	}
-
 	private static class SingletonHolder {
 		private static AudioResourceImporter instance = new AudioResourceImporter();
 	}
@@ -81,7 +58,7 @@ public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<or
 	private AudioResourceImporter() {
 		super(
 				java.util.UUID.randomUUID(),
-				getDefaultDirectory(),
+				org.alice.ide.IdeDirectoryUtilities.getSoundGalleryDirectory(),
 				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
 				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
 				"mp3", "wav", "au" );

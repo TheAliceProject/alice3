@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.type.data;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast.UserMethod> {
-	public MethodData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserMethod.class, type, type.methods );
+public class IdeDirectoryUtilities {
+	private static final String SOUND_GALLERY_NAME = "soundGallery";
+
+	private IdeDirectoryUtilities() {
+		throw new AssertionError();
 	}
 
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		if( ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) || org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods.getInstance().getValue() ) {
-			org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-			if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
-			} else {
-				return true;
+	private static java.io.File getDirectoryFromProperty( String propertyName ) {
+		String path = System.getProperty( propertyName );
+		if( path != null ) {
+			java.io.File file = new java.io.File( path );
+			if( file.isDirectory() ) {
+				return file;
 			}
+		}
+		return null;
+	}
+
+	public static java.io.File getInstallDirectory() {
+		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.IDE.install.dir" );
+		if( rv != null ) {
+			//pass
 		} else {
-			return false;
+			rv = getDirectoryFromProperty( "user.dir" );
+		}
+		return rv;
+	}
+
+	private static java.io.File getFallbackDirectory() {
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+	}
+
+	public static java.io.File getSoundGalleryDirectory() {
+		try {
+			java.io.File installDirectory = getInstallDirectory();
+			if( installDirectory != null ) {
+				java.io.File soundGalleryDirectory = new java.io.File( installDirectory, SOUND_GALLERY_NAME );
+				if( soundGalleryDirectory.isDirectory() ) {
+					return soundGalleryDirectory;
+				} else {
+					throw new RuntimeException(); //fallback
+				}
+			} else {
+				throw new NullPointerException(); //fallback
+			}
+		} catch( Throwable t ) {
+			return getFallbackDirectory();
 		}
 	}
 }
