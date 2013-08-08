@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import examples.math.pictureplane.PicturePlaneInteraction;
 
 /**
- * @author user
+ * @author Matt May
  */
 public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 

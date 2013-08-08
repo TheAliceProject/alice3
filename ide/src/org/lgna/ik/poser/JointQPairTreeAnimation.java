@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.ik.poser.pose.JointQPair;
+
 import edu.cmu.cs.dennisc.animation.Style;
 
 /**

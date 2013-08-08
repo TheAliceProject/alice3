@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.ik.poser.pose.JointQPair;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SJoint;
