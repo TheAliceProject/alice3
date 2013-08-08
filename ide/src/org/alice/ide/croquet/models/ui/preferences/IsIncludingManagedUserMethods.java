@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.type.data;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast.UserMethod> {
-	public MethodData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserMethod.class, type, type.methods );
+public class IsIncludingManagedUserMethods extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsIncludingManagedUserMethods instance = new IsIncludingManagedUserMethods();
+	}
+
+	public static IsIncludingManagedUserMethods getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private IsIncludingManagedUserMethods() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "4a09a9bf-2a1d-4a2a-9b96-e287bd66ca0f" ), false );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		if( ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) || org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods.getInstance().getValue() ) {
-			org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-			if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
+	protected void localize() {
+		super.localize();
+		this.setTextForBothTrueAndFalse( "Is Including Managed User Methods" );
 	}
 }
