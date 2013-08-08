@@ -43,6 +43,10 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.ik.poser.pose.JointKey;
+import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -234,6 +238,27 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
+	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.pose.Pose pose ) {
+		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
+			PoseBuilder builder = pose.getBuilder();
+			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
+			org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( builder.getClass(), "addCustom",
+					org.lgna.story.Orientation.class, JointId.class );
+			org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( builder.getClass(), "build" );
+			org.lgna.project.ast.Expression prevExpression = null;
+			for( JointKey key : pose.getJointKeys() ) {
+				edu.cmu.cs.dennisc.math.Orientation orientation = key.getOrientation();
+				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression0, ADD_CUSTOM
+						, this.createOrientationExpression( key.getLGNAOrientation() ) );
+				builder.addCustom( orientation, key.getJointId() );
+			}
+			assert prevExpression != null;
+			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
+	}
+
 	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
 		if( outfit != null ) {
 			if( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
@@ -282,6 +307,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createFontExpression( (org.lgna.story.Font)value );
 		} else if( value instanceof org.lgna.ik.poser.Pose ) {
 			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
+		} else if( value instanceof org.lgna.ik.poser.pose.Pose<?> ) {
+			return this.createPoseExpression( (org.lgna.ik.poser.pose.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
 		} else {
