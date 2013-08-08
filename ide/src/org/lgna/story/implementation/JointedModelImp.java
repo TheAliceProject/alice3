@@ -564,9 +564,56 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 	}
 
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, boolean ignoreJointOrientations ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
+		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
+		this.updateCumulativeBound( cumulativeBound, trans );
+		return cumulativeBound.getBoundingBox();
+	}
+
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( boolean ignoreJointOrientations ) {
+		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF, ignoreJointOrientations );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		return getAxisAlignedMinimumBoundingBox( asSeenBy, true );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF, true );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+		return getAxisAlignedMinimumBoundingBox().getSize();
+	}
+
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize( boolean ignoreJointOrientations ) {
+		return getAxisAlignedMinimumBoundingBox( ignoreJointOrientations ).getSize();
+	}
+
 	@Override
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		setScale( getScaleForSize( size ) );
+	}
+
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean ignoreJointOrientations ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			if( sgVisual instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual ) {
+				rv.addSkeletonVisual( (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)sgVisual, trans, ignoreJointOrientations );
+			}
+			else {
+				rv.add( sgVisual, trans );
+			}
+		}
+		return rv;
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		return updateCumulativeBound( rv, trans, true );
 	}
 
 	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
@@ -813,22 +860,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		bubble.text.setValue( text );
 		initializeBubble( bubble, font, textColor, fillColor, outlineColor );
 		this.displayBubble( bubble, duration );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-		//		if( this.sgScalable != null ) {
-		//			edu.cmu.cs.dennisc.math.Dimension3 scale = this.sgScalable.scale.getValue();
-		//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 s = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-		//			s.orientation.right.x = scale.x;
-		//			s.orientation.up.y = scale.y;
-		//			s.orientation.backward.z = scale.z;
-		//			m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication( trans, s );
-		//		} else {
-		//			m = trans;
-		//		}
-		return super.updateCumulativeBound( rv, trans );
 	}
 
 }
