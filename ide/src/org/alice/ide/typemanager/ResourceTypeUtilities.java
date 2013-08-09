@@ -51,7 +51,19 @@ public class ResourceTypeUtilities {
 	}
 
 	public static org.lgna.project.ast.JavaType getResourceType( org.lgna.project.ast.NamedUserType type ) {
-		final org.lgna.project.ast.AbstractType<?, ?, ?> resourceType;
+		org.lgna.project.ast.Declaration declaration = getResourceFieldOrType( type );
+		if( declaration instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)declaration;
+			return resourceType;
+		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField resourceField = (org.lgna.project.ast.JavaField)declaration;
+			return resourceField.getDeclaringType();
+		} else {
+			return null;
+		}
+	}
+
+	public static org.lgna.project.ast.Declaration getResourceFieldOrType( org.lgna.project.ast.NamedUserType type ) {
 		java.util.ArrayList<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
 		switch( CONSTRUCTOR_COUNT ) {
@@ -65,37 +77,25 @@ public class ResourceTypeUtilities {
 				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
 				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
 				case 0:
-					resourceType = null;
-					break;
+					return null;
 				case 1:
 					org.lgna.project.ast.Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
 					if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-						resourceType = fieldAccess.field.getValue().getDeclaringType();
+						return fieldAccess.field.getValue();
 					} else {
-						resourceType = null;
+						return null;
 					}
-					break;
 				default:
-					resourceType = null;
+					return null;
 				}
-				break;
 			case 1:
 				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
-				resourceType = parameter0.getValueType();
-				break;
+				return parameter0.getValueType();
 			default:
-				resourceType = null;
+				return null;
 			}
-			break;
 		default:
-			resourceType = null;
-		}
-
-		if( resourceType instanceof org.lgna.project.ast.JavaType ) {
-			org.lgna.project.ast.JavaType resourceJavaType = (org.lgna.project.ast.JavaType)resourceType;
-			return resourceJavaType;
-		} else {
 			return null;
 		}
 	}

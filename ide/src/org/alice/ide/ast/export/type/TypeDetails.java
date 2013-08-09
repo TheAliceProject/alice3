@@ -51,44 +51,48 @@ public final class TypeDetails {
 
 	private final double version;
 	private final String typeName;
-	private final String resourceClassName;
+	private final ResourceInfo resourceInfo;
 	private final java.util.List<String> procedureNames;
-	private final java.util.List<String> functionNames;
-	private final java.util.List<String> fieldNames;
+	private final java.util.List<FunctionInfo> functionInfos;
+	private final java.util.List<FieldInfo> fieldInfos;
 
 	public TypeDetails( org.lgna.project.ast.NamedUserType type ) {
 		this.version = CURRENT_VERSION;
 		this.typeName = type.getName();
 
-		org.lgna.project.ast.JavaType resourceType = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceType( type );
-		if( resourceType != null ) {
-			this.resourceClassName = resourceType.getClassReflectionProxy().getName();
+		org.lgna.project.ast.Declaration declaration = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceFieldOrType( type );
+		if( declaration instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)declaration;
+			this.resourceInfo = new ResourceInfo( resourceType.getName(), null );
+		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField resourceField = (org.lgna.project.ast.JavaField)declaration;
+			this.resourceInfo = new ResourceInfo( resourceField.getDeclaringType().getName(), resourceField.getName() );
 		} else {
-			this.resourceClassName = null;
+			this.resourceInfo = null;
 		}
 
 		this.procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.functionNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.functionInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : type.methods ) {
 			if( method.isProcedure() ) {
 				this.procedureNames.add( method.getName() );
 			} else {
-				this.functionNames.add( method.getName() );
+				this.functionInfos.add( new FunctionInfo( method.getReturnType().getName(), method.getName() ) );
 			}
 		}
-		this.fieldNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserField field : type.fields ) {
-			this.fieldNames.add( field.getName() );
+			this.fieldInfos.add( new FieldInfo( field.getValueType().getName(), field.getName() ) );
 		}
 	}
 
-	public TypeDetails( double version, String typeName, String resourceClassName, java.util.List<String> procedureNames, java.util.List<String> functionNames, java.util.List<String> fieldNames ) {
+	public TypeDetails( double version, String typeName, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
 		this.version = version;
 		this.typeName = typeName;
-		this.resourceClassName = resourceClassName;
+		this.resourceInfo = resourceInfo;
 		this.procedureNames = procedureNames;
-		this.functionNames = functionNames;
-		this.fieldNames = fieldNames;
+		this.functionInfos = functionInfos;
+		this.fieldInfos = fieldInfos;
 	}
 
 	public double getVersion() {
@@ -99,19 +103,19 @@ public final class TypeDetails {
 		return this.typeName;
 	}
 
-	public String getResourceClassName() {
-		return this.resourceClassName;
+	public ResourceInfo getResourceInfo() {
+		return this.resourceInfo;
 	}
 
 	public java.util.List<String> getProcedureNames() {
 		return this.procedureNames;
 	}
 
-	public java.util.List<String> getFunctionNames() {
-		return this.functionNames;
+	public java.util.List<FunctionInfo> getFunctionInfos() {
+		return this.functionInfos;
 	}
 
-	public java.util.List<String> getFieldNames() {
-		return this.fieldNames;
+	public java.util.List<FieldInfo> getFieldInfos() {
+		return this.fieldInfos;
 	}
 }
