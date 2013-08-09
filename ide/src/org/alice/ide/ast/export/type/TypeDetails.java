@@ -40,38 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package org.alice.ide.ast.export.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialogOperation {
-	private final org.lgna.project.ast.NamedUserType type;
+public final class TypeDetails {
+	public static final double CURRENT_VERSION = 3.1;
+	public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
-	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
-		this.type = type;
+	private final double version;
+	private final String typeName;
+	private final String resourceClassName;
+	private final java.util.List<String> procedureNames;
+	private final java.util.List<String> functionNames;
+	private final java.util.List<String> fieldNames;
+
+	public TypeDetails( org.lgna.project.ast.NamedUserType type ) {
+		this.version = CURRENT_VERSION;
+		this.typeName = type.getName();
+
+		org.lgna.project.ast.JavaType resourceType = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceType( type );
+		if( resourceType != null ) {
+			this.resourceClassName = resourceType.getClassReflectionProxy().getName();
+		} else {
+			this.resourceClassName = null;
+		}
+
+		this.procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.functionNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( org.lgna.project.ast.UserMethod method : type.methods ) {
+			if( method.isProcedure() ) {
+				this.procedureNames.add( method.getName() );
+			} else {
+				this.functionNames.add( method.getName() );
+			}
+		}
+		this.fieldNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( org.lgna.project.ast.UserField field : type.fields ) {
+			this.fieldNames.add( field.getName() );
+		}
 	}
 
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	public TypeDetails( double version, String typeName, String resourceClassName, java.util.List<String> procedureNames, java.util.List<String> functionNames, java.util.List<String> fieldNames ) {
+		this.version = version;
+		this.typeName = typeName;
+		this.resourceClassName = resourceClassName;
+		this.procedureNames = procedureNames;
+		this.functionNames = functionNames;
+		this.fieldNames = fieldNames;
 	}
 
-	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+	public double getVersion() {
+		return this.version;
 	}
 
-	private String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
+	public String getTypeName() {
+		return this.typeName;
 	}
 
-	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+	public String getResourceClassName() {
+		return this.resourceClassName;
 	}
 
-	@Override
-	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeDetailsDataSource( new org.alice.ide.ast.export.type.TypeDetails( this.type ) ) );
+	public java.util.List<String> getProcedureNames() {
+		return this.procedureNames;
+	}
+
+	public java.util.List<String> getFunctionNames() {
+		return this.functionNames;
+	}
+
+	public java.util.List<String> getFieldNames() {
+		return this.fieldNames;
 	}
 }

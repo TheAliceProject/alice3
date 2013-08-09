@@ -40,38 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package org.alice.ide.ast.export.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialogOperation {
-	private final org.lgna.project.ast.NamedUserType type;
+public class TypeDetailsDataSource implements edu.cmu.cs.dennisc.java.util.zip.DataSource {
+	private final TypeDetails typeDetails;
 
-	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
-		this.type = type;
+	public TypeDetailsDataSource( TypeDetails typeDetails ) {
+		this.typeDetails = typeDetails;
 	}
 
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	public String getName() {
+		return "typeDetails.xml";
 	}
 
-	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-
-	private String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-
-	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-	}
-
-	@Override
-	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeDetailsDataSource( new org.alice.ide.ast.export.type.TypeDetails( this.type ) ) );
+	public void write( java.io.OutputStream os ) throws java.io.IOException {
+		org.w3c.dom.Document xmlDocument = TypeXmlUtitlities.encode( this.typeDetails );
+		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
 	}
 }

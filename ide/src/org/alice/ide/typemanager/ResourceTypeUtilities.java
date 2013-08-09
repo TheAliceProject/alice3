@@ -40,38 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package org.alice.ide.typemanager;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialogOperation {
-	private final org.lgna.project.ast.NamedUserType type;
-
-	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
-		this.type = type;
+public class ResourceTypeUtilities {
+	private ResourceTypeUtilities() {
+		throw new AssertionError();
 	}
 
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
+	public static org.lgna.project.ast.JavaType getResourceType( org.lgna.project.ast.NamedUserType type ) {
+		final org.lgna.project.ast.AbstractType<?, ?, ?> resourceType;
+		java.util.ArrayList<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
+		final int CONSTRUCTOR_COUNT = constructors.size();
+		switch( CONSTRUCTOR_COUNT ) {
+		case 1:
+			org.lgna.project.ast.NamedUserConstructor constructor0 = constructors.get( 0 );
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
+			switch( REQUIRED_PARAMETER_COUNT ) {
+			case 0:
+				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
+				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
+				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
+				case 0:
+					resourceType = null;
+					break;
+				case 1:
+					org.lgna.project.ast.Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
+					if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+						resourceType = fieldAccess.field.getValue().getDeclaringType();
+					} else {
+						resourceType = null;
+					}
+					break;
+				default:
+					resourceType = null;
+				}
+				break;
+			case 1:
+				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
+				resourceType = parameter0.getValueType();
+				break;
+			default:
+				resourceType = null;
+			}
+			break;
+		default:
+			resourceType = null;
+		}
 
-	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-
-	private String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-
-	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-	}
-
-	@Override
-	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeDetailsDataSource( new org.alice.ide.ast.export.type.TypeDetails( this.type ) ) );
+		if( resourceType instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType resourceJavaType = (org.lgna.project.ast.JavaType)resourceType;
+			return resourceJavaType;
+		} else {
+			return null;
+		}
 	}
 }
