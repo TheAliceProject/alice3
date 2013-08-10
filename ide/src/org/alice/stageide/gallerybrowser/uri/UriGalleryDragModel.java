@@ -59,7 +59,7 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	private final java.net.URI uri;
 	private String text;
 	private java.util.Map<String, byte[]> mapFilenameToExtractedData;
-	private org.alice.ide.ast.export.type.TypeDetails typeDetails;
+	private org.alice.ide.ast.export.type.TypeSummary typeSummary;
 	private org.alice.stageide.modelresource.ResourceKey resourceKey;
 
 	private UriGalleryDragModel( java.net.URI uri ) {
@@ -80,20 +80,22 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 		return this.mapFilenameToExtractedData;
 	}
 
-	private org.alice.ide.ast.export.type.TypeDetails getTypeDetails() {
-		if( this.typeDetails != null ) {
+	private org.alice.ide.ast.export.type.TypeSummary getTypeSummary() {
+		if( this.typeSummary != null ) {
 			//pass
 		} else {
 			java.util.Map<String, byte[]> mapFilenameToExtractedData = this.getFilenameToExtractedData();
-			byte[] data = mapFilenameToExtractedData.get( org.alice.ide.ast.export.type.TypeDetailsDataSource.FILENAME );
-			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( new java.io.ByteArrayInputStream( data ) );
-			try {
-				this.typeDetails = org.alice.ide.ast.export.type.TypeXmlUtitlities.decode( xmlDocument );
-			} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-				throw new RuntimeException( vnse );
+			byte[] data = mapFilenameToExtractedData.get( org.alice.ide.ast.export.type.TypeSummaryDataSource.FILENAME );
+			if( data != null ) {
+				org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( new java.io.ByteArrayInputStream( data ) );
+				try {
+					this.typeSummary = org.alice.ide.ast.export.type.TypeXmlUtitlities.decode( xmlDocument );
+				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+					throw new RuntimeException( vnse );
+				}
 			}
 		}
-		return this.typeDetails;
+		return this.typeSummary;
 	}
 
 	private org.alice.stageide.modelresource.ResourceKey getResourceKey() {
@@ -101,8 +103,8 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 			//pass
 		} else {
 			try {
-				org.alice.ide.ast.export.type.TypeDetails typeDetails = this.getTypeDetails();
-				org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeDetails.getResourceInfo();
+				org.alice.ide.ast.export.type.TypeSummary typeSummary = this.getTypeSummary();
+				org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeSummary.getResourceInfo();
 				if( resourceInfo != null ) {
 					String resourceClassName = resourceInfo.getClassName();
 					String resourceFieldName = resourceInfo.getFieldName();
@@ -125,8 +127,8 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	@Override
 	protected void localize() {
 		super.localize();
-		org.alice.ide.ast.export.type.TypeDetails typeDetails = getTypeDetails();
-		String typeName = typeDetails != null ? typeDetails.getTypeName() : "???";
+		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
+		String typeName = typeSummary != null ? typeSummary.getTypeName() : "???";
 		this.text = "new " + typeName + "()";
 	}
 

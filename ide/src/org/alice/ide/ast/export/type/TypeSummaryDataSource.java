@@ -45,12 +45,12 @@ package org.alice.ide.ast.export.type;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDetailsDataSource implements edu.cmu.cs.dennisc.java.util.zip.DataSource {
-	public static final String FILENAME = "typeDetails.xml";
-	private final TypeDetails typeDetails;
+public class TypeSummaryDataSource implements edu.cmu.cs.dennisc.java.util.zip.DataSource {
+	public static final String FILENAME = "typeSummary.xml";
+	private final TypeSummary typeSummary;
 
-	public TypeDetailsDataSource( TypeDetails typeDetails ) {
-		this.typeDetails = typeDetails;
+	public TypeSummaryDataSource( TypeSummary typeSummary ) {
+		this.typeSummary = typeSummary;
 	}
 
 	public String getName() {
@@ -58,7 +58,7 @@ public class TypeDetailsDataSource implements edu.cmu.cs.dennisc.java.util.zip.D
 	}
 
 	public void write( java.io.OutputStream os ) throws java.io.IOException {
-		org.w3c.dom.Document xmlDocument = TypeXmlUtitlities.encode( this.typeDetails );
+		org.w3c.dom.Document xmlDocument = TypeXmlUtitlities.encode( this.typeSummary );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
 	}
 }

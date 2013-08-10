@@ -46,7 +46,7 @@ package org.alice.ide.ast.export.type;
  * @author Dennis Cosgrove
  */
 public class TypeXmlUtitlities {
-	private static final String ROOT_TAG = "TypeDetails";
+	private static final String ROOT_TAG = "typeSummary";
 	private static final String TYPE_ELEMENT_TAG = "type";
 	private static final String RESOURCE_ELEMENT_TAG = "resource";
 	private static final String PROCEDURE_ELEMENT_TAG = "procedure";
@@ -60,10 +60,10 @@ public class TypeXmlUtitlities {
 	private static final String RETURN_CLASS_NAME_ATTRIBUTE = "returnClassName";
 	private static final String VALUE_CLASS_NAME_ATTRIBUTE = "valueClassName";
 
-	public static final TypeDetails decode( org.w3c.dom.Document xmlDocument ) throws org.lgna.project.VersionNotSupportedException {
+	public static final TypeSummary decode( org.w3c.dom.Document xmlDocument ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
-		double typeDetailsVersion = Double.parseDouble( xmlElement.getAttribute( VERSION_ATTRIBUTE ) );
-		if( typeDetailsVersion >= TypeDetails.MINIMUM_ACCEPTABLE_VERSION ) {
+		double typeSummaryVersion = Double.parseDouble( xmlElement.getAttribute( VERSION_ATTRIBUTE ) );
+		if( typeSummaryVersion >= TypeSummary.MINIMUM_ACCEPTABLE_VERSION ) {
 			org.w3c.dom.NodeList typeElementList = xmlElement.getElementsByTagName( TYPE_ELEMENT_TAG );
 			org.w3c.dom.Element typeElement = (org.w3c.dom.Element)typeElementList.item( 0 );
 			String typeName = typeElement.getAttribute( NAME_ATTRIBUTE );
@@ -101,22 +101,22 @@ public class TypeXmlUtitlities {
 				org.w3c.dom.Element fieldElement = (org.w3c.dom.Element)fieldElementList.item( i );
 				fieldInfos.add( new FieldInfo( fieldElement.getAttribute( VALUE_CLASS_NAME_ATTRIBUTE ), fieldElement.getAttribute( NAME_ATTRIBUTE ) ) );
 			}
-			return new TypeDetails( typeDetailsVersion, typeName, resourceInfo, procedureNames, functionInfos, fieldInfos );
+			return new TypeSummary( typeSummaryVersion, typeName, resourceInfo, procedureNames, functionInfos, fieldInfos );
 		} else {
-			throw new org.lgna.project.VersionNotSupportedException( TypeDetails.MINIMUM_ACCEPTABLE_VERSION, typeDetailsVersion );
+			throw new org.lgna.project.VersionNotSupportedException( TypeSummary.MINIMUM_ACCEPTABLE_VERSION, typeSummaryVersion );
 		}
 	}
 
-	public static final org.w3c.dom.Document encode( TypeDetails typeDetails ) {
+	public static final org.w3c.dom.Document encode( TypeSummary typeSummary ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
-		org.w3c.dom.Element xmlTypeDetails = rv.createElement( ROOT_TAG );
-		xmlTypeDetails.setAttribute( VERSION_ATTRIBUTE, Double.toString( typeDetails.getVersion() ) );
+		org.w3c.dom.Element xmlTypeSummary = rv.createElement( ROOT_TAG );
+		xmlTypeSummary.setAttribute( VERSION_ATTRIBUTE, Double.toString( typeSummary.getVersion() ) );
 
 		org.w3c.dom.Element xmlType = rv.createElement( TYPE_ELEMENT_TAG );
-		xmlType.setAttribute( NAME_ATTRIBUTE, typeDetails.getTypeName() );
-		xmlTypeDetails.appendChild( xmlType );
+		xmlType.setAttribute( NAME_ATTRIBUTE, typeSummary.getTypeName() );
+		xmlTypeSummary.appendChild( xmlType );
 
-		ResourceInfo resourceInfo = typeDetails.getResourceInfo();
+		ResourceInfo resourceInfo = typeSummary.getResourceInfo();
 		if( resourceInfo != null ) {
 			org.w3c.dom.Element xmlResource = rv.createElement( RESOURCE_ELEMENT_TAG );
 			xmlResource.setAttribute( CLASS_NAME_ATTRIBUTE, resourceInfo.getClassName() );
@@ -124,51 +124,51 @@ public class TypeXmlUtitlities {
 			if( fieldName != null ) {
 				xmlResource.setAttribute( RESOURCE_FIELD_NAME_ATTRIBUTE, resourceInfo.getFieldName() );
 			}
-			xmlTypeDetails.appendChild( xmlResource );
+			xmlTypeSummary.appendChild( xmlResource );
 		}
 
-		for( String procedureName : typeDetails.getProcedureNames() ) {
+		for( String procedureName : typeSummary.getProcedureNames() ) {
 			org.w3c.dom.Element xmlProcedure = rv.createElement( PROCEDURE_ELEMENT_TAG );
 			xmlProcedure.setAttribute( NAME_ATTRIBUTE, procedureName );
-			xmlTypeDetails.appendChild( xmlProcedure );
+			xmlTypeSummary.appendChild( xmlProcedure );
 		}
 
-		for( FunctionInfo functionInfo : typeDetails.getFunctionInfos() ) {
+		for( FunctionInfo functionInfo : typeSummary.getFunctionInfos() ) {
 			org.w3c.dom.Element xmlFunction = rv.createElement( FUNCTION_ELEMENT_TAG );
 			xmlFunction.setAttribute( RETURN_CLASS_NAME_ATTRIBUTE, functionInfo.getReturnClassName() );
 			xmlFunction.setAttribute( NAME_ATTRIBUTE, functionInfo.getName() );
-			xmlTypeDetails.appendChild( xmlFunction );
+			xmlTypeSummary.appendChild( xmlFunction );
 		}
 
-		for( FieldInfo fieldInfo : typeDetails.getFieldInfos() ) {
+		for( FieldInfo fieldInfo : typeSummary.getFieldInfos() ) {
 			org.w3c.dom.Element xmlField = rv.createElement( FIELD_ELEMENT_TAG );
 			xmlField.setAttribute( VALUE_CLASS_NAME_ATTRIBUTE, fieldInfo.getValueClassName() );
 			xmlField.setAttribute( NAME_ATTRIBUTE, fieldInfo.getName() );
-			xmlTypeDetails.appendChild( xmlField );
+			xmlTypeSummary.appendChild( xmlField );
 		}
 
-		rv.appendChild( xmlTypeDetails );
-		xmlTypeDetails.normalize();
+		rv.appendChild( xmlTypeSummary );
+		xmlTypeSummary.normalize();
 		return rv;
 	}
 
 	public static void main( String[] args ) throws Exception {
-		TypeDetails typeDetails = new TypeDetails(
-				TypeDetails.CURRENT_VERSION,
+		TypeSummary typeSummary = new TypeSummary(
+				TypeSummary.CURRENT_VERSION,
 				"Bunny",
 				new ResourceInfo( "org.lgna.story.resources.biped.BunnyResource", "DEFAULT" ),
 				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "hop", "skip", "jump" ),
 				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new FunctionInfo( "java.lang.Boolean", "isHappy" ), new FunctionInfo( "Hurdle", "getClosestHurdle" ) ),
 				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new FieldInfo( "java.lang.Integer", "coinCount" ) )
 				);
-		org.w3c.dom.Document xmlDocument = encode( typeDetails );
+		org.w3c.dom.Document xmlDocument = encode( typeSummary );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, System.out );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 
-		TypeDetails decodedTypeDetails = decode( xmlDocument );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( decodedTypeDetails );
+		TypeSummary decodedTypeSummary = decode( xmlDocument );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( decodedTypeSummary );
 
-		org.w3c.dom.Document decodedXmlDocument = encode( decodedTypeDetails );
+		org.w3c.dom.Document decodedXmlDocument = encode( decodedTypeSummary );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( decodedXmlDocument, System.out );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 	}

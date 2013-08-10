@@ -72,6 +72,6 @@ public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialog
 
 	@Override
 	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeDetailsDataSource( new org.alice.ide.ast.export.type.TypeDetails( this.type ) ) );
+		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeSummaryDataSource( new org.alice.ide.ast.export.type.TypeSummary( this.type ) ) );
 	}
 }

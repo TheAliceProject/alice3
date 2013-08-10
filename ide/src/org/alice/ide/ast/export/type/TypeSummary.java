@@ -45,7 +45,7 @@ package org.alice.ide.ast.export.type;
 /**
  * @author Dennis Cosgrove
  */
-public final class TypeDetails {
+public final class TypeSummary {
 	public static final double CURRENT_VERSION = 3.1;
 	public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
@@ -56,7 +56,7 @@ public final class TypeDetails {
 	private final java.util.List<FunctionInfo> functionInfos;
 	private final java.util.List<FieldInfo> fieldInfos;
 
-	public TypeDetails( org.lgna.project.ast.NamedUserType type ) {
+	public TypeSummary( org.lgna.project.ast.NamedUserType type ) {
 		this.version = CURRENT_VERSION;
 		this.typeName = type.getName();
 
@@ -86,7 +86,7 @@ public final class TypeDetails {
 		}
 	}
 
-	public TypeDetails( double version, String typeName, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
+	public TypeSummary( double version, String typeName, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
 		this.version = version;
 		this.typeName = typeName;
 		this.resourceInfo = resourceInfo;
