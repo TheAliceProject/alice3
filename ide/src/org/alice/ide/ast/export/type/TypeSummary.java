@@ -63,10 +63,10 @@ public final class TypeSummary {
 		org.lgna.project.ast.Declaration declaration = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceFieldOrType( type );
 		if( declaration instanceof org.lgna.project.ast.JavaType ) {
 			org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)declaration;
-			this.resourceInfo = new ResourceInfo( resourceType.getName(), null );
+			this.resourceInfo = new ResourceInfo( resourceType.getClassReflectionProxy().getName(), null );
 		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
 			org.lgna.project.ast.JavaField resourceField = (org.lgna.project.ast.JavaField)declaration;
-			this.resourceInfo = new ResourceInfo( resourceField.getDeclaringType().getName(), resourceField.getName() );
+			this.resourceInfo = new ResourceInfo( resourceField.getDeclaringType().getClassReflectionProxy().getName(), resourceField.getName() );
 		} else {
 			this.resourceInfo = null;
 		}

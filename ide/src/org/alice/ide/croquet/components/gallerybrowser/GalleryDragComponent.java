@@ -131,6 +131,12 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 					}
 				}
 			}
+		} else if( model instanceof org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel ) {
+			org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel uriGalleryDragModel = (org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel)model;
+			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "?", 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
+			label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.BOTTOM );
+			this.internalAddComponent( label, java.awt.BorderLayout.LINE_END );
 		}
 
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
