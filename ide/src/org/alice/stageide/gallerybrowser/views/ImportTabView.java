@@ -89,14 +89,14 @@ public class ImportTabView extends GalleryTabView {
 			handleDirectoryChanged();
 		}
 	};
-	private final org.lgna.croquet.components.AbstractLabel notDirectoryLabel;
-	private final org.lgna.croquet.components.AbstractLabel noFilesLabel;
+	private final org.lgna.croquet.components.AbstractLabel notDirectoryLabel = new org.lgna.croquet.components.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	private final org.lgna.croquet.components.AbstractLabel noFilesLabel = new org.lgna.croquet.components.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 	private final DragComponentsView dragComponentsView = new DragComponentsView();
 
 	public ImportTabView( org.alice.stageide.gallerybrowser.ImportTab composite ) {
 		super( composite );
-		this.notDirectoryLabel = composite.getNotDirectoryText().createLabel();
-		this.noFilesLabel = composite.getNoFilesText().createLabel();
+		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
@@ -117,6 +117,10 @@ public class ImportTabView extends GalleryTabView {
 		this.dragComponentsView.refreshLater();
 		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
 		importTab.getRestoreToDefaultOperation().setEnabled( importTab.isDirectoryStateSetToDefault() == false );
+
+		String path = importTab.getDirectoryState().getValue();
+		this.notDirectoryLabel.setText( importTab.getNotDirectoryText().getText().replace( "</directory/>", path ) );
+		this.noFilesLabel.setText( importTab.getNoFilesText().getText().replace( "</directory/>", path ) );
 	}
 
 	private java.io.File getDirectory() {

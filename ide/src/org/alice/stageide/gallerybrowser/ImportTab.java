@@ -58,17 +58,6 @@ public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowse
 				fileChooser.setCurrentDirectory( directory );
 			}
 			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
-			//			fileChooser.setFileFilter( new javax.swing.filechooser.FileFilter() {
-			//				@Override
-			//				public boolean accept( java.io.File f ) {
-			//					return f.isDirectory() || f.getName().endsWith( "." + org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
-			//				}
-			//
-			//				@Override
-			//				public String getDescription() {
-			//					return "Alice Class Directory";
-			//				}
-			//			} );
 			int option = fileChooser.showOpenDialog( null );
 			switch( option ) {
 			case javax.swing.JFileChooser.APPROVE_OPTION:

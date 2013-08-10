@@ -944,11 +944,15 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	protected String modifyLocalizedText( Element element, String localizedText ) {
+		return localizedText;
+	}
+
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
+			stringValue.setText( this.modifyLocalizedText( stringValue, this.findLocalizedText( key.getLocalizationKey() ) ) );
 		}
 		this.localizeSidekicks(
 				this.mapKeyToActionOperation,
