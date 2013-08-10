@@ -46,14 +46,78 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class ImportTabView extends GalleryTabView {
+	private class DragComponentsView extends org.lgna.croquet.components.LineAxisPanel {
+		@Override
+		protected void internalRefresh() {
+			super.internalRefresh();
+			this.removeAllComponents();
+			java.io.File directory = getDirectory();
+			if( directory != null ) {
+				java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
+				if( ( files != null ) && ( files.length > 0 ) ) {
+					for( java.io.File file : files ) {
+						this.addComponent( new org.lgna.croquet.components.Label( file.getName() ) );
+					}
+				} else {
+					this.addComponent( noFilesLabel );
+				}
+			} else {
+				this.addComponent( notDirectoryLabel );
+			}
+		}
+	}
+
+	private final org.lgna.croquet.State.ValueListener<String> directoryListener = new org.lgna.croquet.State.ValueListener<String>() {
+		public void changing( org.lgna.croquet.State<java.lang.String> state, java.lang.String prevValue, java.lang.String nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			dragComponentsView.refreshLater();
+		}
+	};
+	private final org.lgna.croquet.components.AbstractLabel notDirectoryLabel;
+	private final org.lgna.croquet.components.AbstractLabel noFilesLabel;
+	private final DragComponentsView dragComponentsView = new DragComponentsView();
+
 	public ImportTabView( org.alice.stageide.gallerybrowser.ImportTab composite ) {
 		super( composite );
+		this.notDirectoryLabel = composite.getNotDirectoryText().createLabel();
+		this.noFilesLabel = composite.getNoFilesText().createLabel();
+
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
 		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
 		panel.addComponent( composite.getBrowseOperation().createButton() );
 		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.dragComponentsView );
+		panel.addComponent( scrollPane, "span 4, wrap" );
 		this.addPageStartComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}
+
+	private java.io.File getDirectory() {
+		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		String path = importTab.getDirectoryState().getValue();
+		java.io.File file = new java.io.File( path );
+		if( file.isDirectory() ) {
+			return file;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
+		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		importTab.getDirectoryState().addAndInvokeValueListener( this.directoryListener );
+	}
+
+	@Override
+	public void handleCompositePostDeactivation() {
+		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		importTab.getDirectoryState().removeValueListener( this.directoryListener );
+		super.handleCompositePostDeactivation();
+	}
+
 }

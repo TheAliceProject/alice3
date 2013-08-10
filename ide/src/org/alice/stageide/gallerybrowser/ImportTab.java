@@ -46,6 +46,8 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ImportTabView> {
+	private final org.lgna.croquet.PlainStringValue notDirectoryText = this.createStringValue( this.createKey( "notDirectoryText" ) );
+	private final org.lgna.croquet.PlainStringValue noFilesText = this.createStringValue( this.createKey( "noFilesText" ) );
 	private final org.lgna.croquet.StringState directoryState = this.createStringState( this.createKey( "directoryState" ) );
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
@@ -67,6 +69,14 @@ public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowse
 
 	private void restoreToDefault() {
 		this.directoryState.setValueTransactionlessly( org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath() );
+	}
+
+	public org.lgna.croquet.PlainStringValue getNotDirectoryText() {
+		return this.notDirectoryText;
+	}
+
+	public org.lgna.croquet.PlainStringValue getNoFilesText() {
+		return this.noFilesText;
 	}
 
 	public org.lgna.croquet.StringState getDirectoryState() {
