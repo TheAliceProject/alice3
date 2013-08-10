@@ -197,12 +197,22 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey != null ) {
+			return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( resourceKey );
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean placeOnGround() {
-		return false;
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey != null ) {
+			return org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( resourceKey );
+		} else {
+			return false;
+		}
 	}
 
 	@Override
