@@ -58,8 +58,8 @@ public class ZipUtilities {
 		return baos.toByteArray();
 	}
 
-	public static java.util.HashMap<String, byte[]> extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
-		java.util.HashMap<String, byte[]> filenameToBytesMap = new java.util.HashMap<String, byte[]>();
+	public static java.util.Map<String, byte[]> extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+		java.util.Map<String, byte[]> filenameToBytesMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		java.util.zip.ZipEntry zipEntry;
 		while( ( zipEntry = zis.getNextEntry() ) != null ) {
 			String name = zipEntry.getName();
@@ -72,7 +72,7 @@ public class ZipUtilities {
 		return filenameToBytesMap;
 	}
 
-	public static java.util.HashMap<String, byte[]> extract( java.io.InputStream is ) throws java.io.IOException {
+	public static java.util.Map<String, byte[]> extract( java.io.InputStream is ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis;
 		if( is instanceof java.util.zip.ZipInputStream ) {
 			zis = (java.util.zip.ZipInputStream)is;
@@ -82,11 +82,11 @@ public class ZipUtilities {
 		return extract( zis );
 	}
 
-	public static java.util.HashMap<String, byte[]> extract( java.io.File file ) throws java.io.IOException {
+	public static java.util.Map<String, byte[]> extract( java.io.File file ) throws java.io.IOException {
 		return extract( new java.io.FileInputStream( file ) );
 	}
 
-	public static java.util.HashMap<String, byte[]> extract( String path ) throws java.io.IOException {
+	public static java.util.Map<String, byte[]> extract( String path ) throws java.io.IOException {
 		return extract( new java.io.File( path ) );
 	}
 

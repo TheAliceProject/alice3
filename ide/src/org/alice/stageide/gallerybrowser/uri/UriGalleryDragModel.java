@@ -46,8 +46,6 @@ package org.alice.stageide.gallerybrowser.uri;
  * @author Dennis Cosgrove
  */
 public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
-	private final java.net.URI uri;
-
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
@@ -58,20 +56,83 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 		} );
 	}
 
+	private final java.net.URI uri;
+	private String text;
+	private java.util.Map<String, byte[]> mapFilenameToExtractedData;
+	private org.alice.ide.ast.export.type.TypeDetails typeDetails;
+	private org.alice.stageide.modelresource.ResourceKey resourceKey;
+
 	private UriGalleryDragModel( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "9b784c07-6857-4f3f-83c4-ef6f2334c62a" ) );
 		this.uri = uri;
 	}
 
+	private java.util.Map<String, byte[]> getFilenameToExtractedData() {
+		if( this.mapFilenameToExtractedData != null ) {
+			//pass
+		} else {
+			try {
+				this.mapFilenameToExtractedData = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( new java.io.File( this.uri ) );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( ioe );
+			}
+		}
+		return this.mapFilenameToExtractedData;
+	}
+
+	private org.alice.ide.ast.export.type.TypeDetails getTypeDetails() {
+		if( this.typeDetails != null ) {
+			//pass
+		} else {
+			java.util.Map<String, byte[]> mapFilenameToExtractedData = this.getFilenameToExtractedData();
+			byte[] data = mapFilenameToExtractedData.get( org.alice.ide.ast.export.type.TypeDetailsDataSource.FILENAME );
+			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( new java.io.ByteArrayInputStream( data ) );
+			try {
+				this.typeDetails = org.alice.ide.ast.export.type.TypeXmlUtitlities.decode( xmlDocument );
+			} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+				throw new RuntimeException( vnse );
+			}
+		}
+		return this.typeDetails;
+	}
+
+	private org.alice.stageide.modelresource.ResourceKey getResourceKey() {
+		if( this.resourceKey != null ) {
+			//pass
+		} else {
+			try {
+				org.alice.ide.ast.export.type.TypeDetails typeDetails = this.getTypeDetails();
+				org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeDetails.getResourceInfo();
+				if( resourceInfo != null ) {
+					String resourceClassName = resourceInfo.getClassName();
+					String resourceFieldName = resourceInfo.getFieldName();
+					Class<? extends org.lgna.story.resources.ModelResource> resourceCls = (Class<? extends org.lgna.story.resources.ModelResource>)Class.forName( resourceClassName );
+					if( resourceFieldName != null ) {
+						java.lang.reflect.Field fld = resourceCls.getField( resourceFieldName );
+						Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
+						this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
+					} else {
+						this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+					}
+				}
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, this );
+			}
+		}
+		return this.resourceKey;
+	}
+
 	@Override
 	protected void localize() {
 		super.localize();
-		//this.text = "new " + this.findDefaultLocalizedText() + "()";
+		org.alice.ide.ast.export.type.TypeDetails typeDetails = getTypeDetails();
+		String typeName = typeDetails != null ? typeDetails.getTypeName() : "???";
+		this.text = "new " + typeName + "()";
 	}
 
 	@Override
 	public final String getText() {
-		return this.uri.toString();
+		return this.text;
 	}
 
 	@Override
@@ -101,6 +162,11 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.TorusIconFactory.getInstance();
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey != null ) {
+			return resourceKey.getIconFactory();
+		} else {
+			return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+		}
 	}
 }

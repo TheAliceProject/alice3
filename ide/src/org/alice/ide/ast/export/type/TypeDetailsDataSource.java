@@ -46,6 +46,7 @@ package org.alice.ide.ast.export.type;
  * @author Dennis Cosgrove
  */
 public class TypeDetailsDataSource implements edu.cmu.cs.dennisc.java.util.zip.DataSource {
+	public static final String FILENAME = "typeDetails.xml";
 	private final TypeDetails typeDetails;
 
 	public TypeDetailsDataSource( TypeDetails typeDetails ) {
@@ -53,7 +54,7 @@ public class TypeDetailsDataSource implements edu.cmu.cs.dennisc.java.util.zip.D
 	}
 
 	public String getName() {
-		return "typeDetails.xml";
+		return FILENAME;
 	}
 
 	public void write( java.io.OutputStream os ) throws java.io.IOException {
