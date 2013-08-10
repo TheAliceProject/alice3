@@ -51,6 +51,33 @@ public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowse
 	private final org.lgna.croquet.StringState directoryState = this.createStringState( this.createKey( "directoryState" ) );
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+
+			java.io.File directory = new java.io.File( directoryState.getValue() );
+			if( directory.isDirectory() ) {
+				fileChooser.setCurrentDirectory( directory );
+			}
+			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
+			//			fileChooser.setFileFilter( new javax.swing.filechooser.FileFilter() {
+			//				@Override
+			//				public boolean accept( java.io.File f ) {
+			//					return f.isDirectory() || f.getName().endsWith( "." + org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
+			//				}
+			//
+			//				@Override
+			//				public String getDescription() {
+			//					return "Alice Class Directory";
+			//				}
+			//			} );
+			int option = fileChooser.showOpenDialog( null );
+			switch( option ) {
+			case javax.swing.JFileChooser.APPROVE_OPTION:
+				java.io.File file = fileChooser.getSelectedFile();
+				directoryState.setValueTransactionlessly( file.getAbsolutePath() );
+				break;
+			default:
+				throw new org.lgna.croquet.CancelException();
+			}
 			return null;
 		}
 	} );
@@ -65,6 +92,10 @@ public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowse
 		super( java.util.UUID.fromString( "89ae8138-80a3-40e8-a8e6-e2f9b47ac452" ) );
 		this.restoreToDefault();
 		this.browseOperation.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
+	}
+
+	public boolean isDirectoryStateSetToDefault() {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath().contentEquals( this.directoryState.getValue() );
 	}
 
 	private void restoreToDefault() {

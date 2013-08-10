@@ -46,6 +46,20 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class ImportTabView extends GalleryTabView {
+	private final java.util.Map<java.net.URI, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> mapUriToDragComponent = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( java.net.URI uri ) {
+		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = this.mapUriToDragComponent.get( uri );
+		if( rv != null ) {
+			//pass
+		} else {
+			org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel dragModel = org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel.getInstance( uri );
+			rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( dragModel );
+			this.mapUriToDragComponent.put( uri, rv );
+		}
+		return rv;
+	}
+
 	private class DragComponentsView extends org.lgna.croquet.components.LineAxisPanel {
 		@Override
 		protected void internalRefresh() {
@@ -56,7 +70,7 @@ public class ImportTabView extends GalleryTabView {
 				java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
 				if( ( files != null ) && ( files.length > 0 ) ) {
 					for( java.io.File file : files ) {
-						this.addComponent( new org.lgna.croquet.components.Label( file.getName() ) );
+						this.addComponent( getGalleryDragComponent( file.toURI() ) );
 					}
 				} else {
 					this.addComponent( noFilesLabel );
@@ -72,7 +86,7 @@ public class ImportTabView extends GalleryTabView {
 		}
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			dragComponentsView.refreshLater();
+			handleDirectoryChanged();
 		}
 	};
 	private final org.lgna.croquet.components.AbstractLabel notDirectoryLabel;
@@ -93,6 +107,16 @@ public class ImportTabView extends GalleryTabView {
 		panel.addComponent( scrollPane, "span 4, wrap" );
 		this.addPageStartComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		this.dragComponentsView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		this.notDirectoryLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		this.noFilesLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+	}
+
+	private void handleDirectoryChanged() {
+		this.dragComponentsView.refreshLater();
+		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		importTab.getRestoreToDefaultOperation().setEnabled( importTab.isDirectoryStateSetToDefault() == false );
 	}
 
 	private java.io.File getDirectory() {
