@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.gallerybrowser.enumconstant.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
-	private final java.io.File directory;
-
-	public DirectoryUriListData( java.io.File directory ) {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
-		this.directory = directory;
-	}
-
-	@Override
-	protected java.util.List<java.net.URI> createValues() {
-		if( directory != null ) {
-			java.net.URI[] uris;
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
-			final int N = files.length;
-			uris = new java.net.URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					uris[ i ] = files[ i ].toURI();
-				} else {
-					uris[ i ] = null;
-				}
-			}
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
-		} else {
-			return java.util.Collections.emptyList();
-		}
-	}
-
-	public java.io.File getDirectory() {
-		return this.directory;
+public class EnumConstantResourceKeySelectionView extends org.lgna.croquet.components.BorderPanel {
+	public EnumConstantResourceKeySelectionView( org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite ) {
+		super( composite );
+		org.lgna.croquet.components.List<org.alice.stageide.modelresource.EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
+		list.setCellRenderer( new org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer() );
+		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		list.setVisibleRowCount( -1 );
+		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( list ) );
 	}
 }

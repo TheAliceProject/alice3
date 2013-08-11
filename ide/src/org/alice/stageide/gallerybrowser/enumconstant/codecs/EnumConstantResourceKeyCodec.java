@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.gallerybrowser.enumconstant.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
-	private final java.io.File directory;
-
-	public DirectoryUriListData( java.io.File directory ) {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
-		this.directory = directory;
+public enum EnumConstantResourceKeyCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.modelresource.EnumConstantResourceKey> {
+	SINGLETON;
+	public Class<org.alice.stageide.modelresource.EnumConstantResourceKey> getValueClass() {
+		return org.alice.stageide.modelresource.EnumConstantResourceKey.class;
 	}
 
-	@Override
-	protected java.util.List<java.net.URI> createValues() {
-		if( directory != null ) {
-			java.net.URI[] uris;
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
-			final int N = files.length;
-			uris = new java.net.URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					uris[ i ] = files[ i ].toURI();
-				} else {
-					uris[ i ] = null;
-				}
-			}
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+	public org.alice.stageide.modelresource.EnumConstantResourceKey decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
 
-	public java.io.File getDirectory() {
-		return this.directory;
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
+		sb.append( value );
 	}
 }

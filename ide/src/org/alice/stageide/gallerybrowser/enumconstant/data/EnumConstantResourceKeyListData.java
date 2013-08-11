@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.gallerybrowser.enumconstant.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
-	private final java.io.File directory;
+public final class EnumConstantResourceKeyListData extends org.lgna.croquet.data.RefreshableListData<org.alice.stageide.modelresource.EnumConstantResourceKey> {
+	private org.alice.stageide.modelresource.ClassResourceKey classResourceKey;
 
-	public DirectoryUriListData( java.io.File directory ) {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
-		this.directory = directory;
+	public EnumConstantResourceKeyListData() {
+		super( org.alice.stageide.gallerybrowser.enumconstant.codecs.EnumConstantResourceKeyCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<java.net.URI> createValues() {
-		if( directory != null ) {
-			java.net.URI[] uris;
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
-			final int N = files.length;
-			uris = new java.net.URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					uris[ i ] = files[ i ].toURI();
-				} else {
-					uris[ i ] = null;
+	protected java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> createValues() {
+		if( this.classResourceKey != null ) {
+			Class<? extends org.lgna.story.resources.ModelResource> cls = this.classResourceKey.getModelResourceCls();
+			if( cls.isEnum() ) {
+				java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				for( org.lgna.story.resources.ModelResource e : cls.getEnumConstants() ) {
+					rv.add( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)e ) );
 				}
+				return rv;
+			} else {
+				//todo
+				return java.util.Collections.emptyList();
 			}
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
 		} else {
 			return java.util.Collections.emptyList();
 		}
 	}
 
-	public java.io.File getDirectory() {
-		return this.directory;
+	public void setClassResourceKey( org.alice.stageide.modelresource.ClassResourceKey classResourceKey ) {
+		this.classResourceKey = classResourceKey;
+		this.refresh();
 	}
 }

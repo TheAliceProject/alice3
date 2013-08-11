@@ -226,12 +226,37 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation();
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
+			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite.getInstance();
+			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey );
+			return composite.getOperation();
+		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite = org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite.getInstance();
+			composite.setClassResourceKey( (org.alice.stageide.modelresource.ClassResourceKey)resourceKey );
+			return composite.getValueCreator();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return this.getLeftButtonClickModel();
+		if( ( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) ) {
+			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite.getInstance();
+			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey );
+			return composite.getOperation();
+		} else if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;
+			if( classResourceKey.isLeaf() ) {
+				return null;
+			} else {
+				//return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	@Override

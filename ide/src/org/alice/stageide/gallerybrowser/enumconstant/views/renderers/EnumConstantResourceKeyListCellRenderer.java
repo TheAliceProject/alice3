@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.gallerybrowser.enumconstant.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
-	private final java.io.File directory;
-
-	public DirectoryUriListData( java.io.File directory ) {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
-		this.directory = directory;
-	}
-
+public class EnumConstantResourceKeyListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.stageide.modelresource.EnumConstantResourceKey> {
 	@Override
-	protected java.util.List<java.net.URI> createValues() {
-		if( directory != null ) {
-			java.net.URI[] uris;
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
-			final int N = files.length;
-			uris = new java.net.URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					uris[ i ] = files[ i ].toURI();
-				} else {
-					uris[ i ] = null;
-				}
-			}
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
-		} else {
-			return java.util.Collections.emptyList();
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.stageide.modelresource.EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus ) {
+		if( value != null ) {
+			rv.setText( value.getDisplayText() );
+			org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
+			rv.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+			rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		}
-	}
-
-	public java.io.File getDirectory() {
-		return this.directory;
+		return rv;
 	}
 }
