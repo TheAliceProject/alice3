@@ -128,14 +128,14 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
 		if( typeSummary != null ) {
 			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
 			java.util.List<String> procedureNames = typeSummary.getProcedureNames();
 			if( procedureNames.size() > 0 ) {
+				sb.append( "<html>" );
 				sb.append( "<em>procedures:</em><ul>" );
 				for( String procedureName : procedureNames ) {
 					sb.append( "<li><strong>" );
 					sb.append( procedureName );
-					sb.append( "</strong><br>" );
+					sb.append( "</strong>" );
 				}
 				sb.append( "</ul>" );
 			}
@@ -143,7 +143,9 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 			java.util.List<org.alice.ide.ast.export.type.FunctionInfo> functionInfos = typeSummary.getFunctionInfos();
 			if( functionInfos.size() > 0 ) {
 				if( sb.length() > 0 ) {
-					sb.append( "<br>" );
+					//sb.append( "<br>" );
+				} else {
+					sb.append( "<html>" );
 				}
 				sb.append( "<em>functions:</em><ul>" );
 				for( org.alice.ide.ast.export.type.FunctionInfo functionInfo : functionInfos ) {
@@ -151,14 +153,16 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 					sb.append( functionInfo.getReturnClassName() );
 					sb.append( " <strong>" );
 					sb.append( functionInfo.getName() );
-					sb.append( "</strong><br>" );
+					sb.append( "</strong>" );
 				}
 				sb.append( "</ul>" );
 			}
 			java.util.List<org.alice.ide.ast.export.type.FieldInfo> fieldInfos = typeSummary.getFieldInfos();
 			if( fieldInfos.size() > 0 ) {
 				if( sb.length() > 0 ) {
-					sb.append( "<br>" );
+					//sb.append( "<br>" );
+				} else {
+					sb.append( "<html>" );
 				}
 				sb.append( "<em>properties:</em><ul>" );
 				for( org.alice.ide.ast.export.type.FieldInfo fieldInfo : fieldInfos ) {
@@ -166,9 +170,14 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 					sb.append( fieldInfo.getValueClassName() );
 					sb.append( " <strong>" );
 					sb.append( fieldInfo.getName() );
-					sb.append( "</strong><br>" );
+					sb.append( "</strong>" );
 				}
 				sb.append( "</ul>" );
+			}
+			if( sb.length() > 0 ) {
+				//pass
+			} else {
+				sb.append( "<html>nothing of note" );
 			}
 			sb.append( "</html>" );
 			return sb.toString();
