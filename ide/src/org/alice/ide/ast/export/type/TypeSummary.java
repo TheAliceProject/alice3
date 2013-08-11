@@ -74,10 +74,13 @@ public final class TypeSummary {
 		this.procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.functionInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : type.methods ) {
-			if( method.isProcedure() ) {
-				this.procedureNames.add( method.getName() );
-			} else {
-				this.functionInfos.add( new FunctionInfo( method.getReturnType().getName(), method.getName() ) );
+			org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
+			if( ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) ) {
+				if( method.isProcedure() ) {
+					this.procedureNames.add( method.getName() );
+				} else {
+					this.functionInfos.add( new FunctionInfo( method.getReturnType().getName(), method.getName() ) );
+				}
 			}
 		}
 		this.fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
