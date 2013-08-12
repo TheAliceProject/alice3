@@ -46,16 +46,16 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class ResourceBlank extends org.lgna.croquet.CascadeBlank<ResourceNode> {
-	private final ResourceNode resourceNode;
+	private final ResourceGalleryDragModel dragModel;
 
-	public ResourceBlank( ResourceNode resourceNode ) {
+	public ResourceBlank( ResourceGalleryDragModel dragModel ) {
 		super( java.util.UUID.fromString( "332c3632-32e1-4512-ba91-2008be1d5f7a" ) );
-		this.resourceNode = resourceNode;
+		this.dragModel = dragModel;
 	}
 
 	@Override
 	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
-		for( ResourceNode child : resourceNode.getNodeChildren() ) {
+		for( ResourceNode child : dragModel.getNodeChildren() ) {
 			children.add( child.getAddFieldBlankChild() );
 		}
 	}

@@ -40,22 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.gallerybrowser.uri;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddFieldCascade extends org.lgna.croquet.ImmutableCascade<ResourceNode> {
-	private final org.lgna.croquet.DropSite dropSite;
-
-	public AddFieldCascade( ResourceGalleryDragModel dragModel, org.lgna.croquet.DropSite dropSite ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "41c8f508-9d7a-44d2-ba52-2943029caf6f" ), ResourceNode.class, new ResourceBlank( dragModel ) );
-		this.dropSite = dropSite;
+public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
+	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey ) {
+		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> completionStep, org.alice.stageide.modelresource.ResourceNode[] values ) {
-		values[ 0 ].getDropModel( null, this.dropSite ).fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
 		return null;
 	}
 }

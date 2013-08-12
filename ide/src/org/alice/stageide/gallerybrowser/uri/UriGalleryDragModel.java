@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri;
 /**
  * @author Dennis Cosgrove
  */
-public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
+public class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
@@ -225,6 +225,22 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	}
 
 	@Override
+	public java.util.List<org.alice.stageide.modelresource.ResourceNode> getNodeChildren() {
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+			Class<? extends org.lgna.story.resources.ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
+			java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
+				rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ) ) );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
@@ -242,17 +258,17 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		if( ( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) ) {
+		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, false );
+			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey, false );
 			return composite.getOperation();
-		} else if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;
+		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
 				return null;
 			} else {
-				//return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
-				return null;
+				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}
 		} else {
 			return null;

@@ -45,17 +45,10 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class AddFieldCascade extends org.lgna.croquet.ImmutableCascade<ResourceNode> {
-	private final org.lgna.croquet.DropSite dropSite;
-
-	public AddFieldCascade( ResourceGalleryDragModel dragModel, org.lgna.croquet.DropSite dropSite ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "41c8f508-9d7a-44d2-ba52-2943029caf6f" ), ResourceNode.class, new ResourceBlank( dragModel ) );
-		this.dropSite = dropSite;
+public abstract class ResourceGalleryDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
+	public ResourceGalleryDragModel( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	@Override
-	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> completionStep, org.alice.stageide.modelresource.ResourceNode[] values ) {
-		values[ 0 ].getDropModel( null, this.dropSite ).fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-		return null;
-	}
+	public abstract java.util.List<ResourceNode> getNodeChildren();
 }
