@@ -45,8 +45,8 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public class NotSupportedAstMigrationStandIn extends AstMigration {
-	public NotSupportedAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+public class NoOpAstMigrationStandIn extends AstMigration {
+	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
