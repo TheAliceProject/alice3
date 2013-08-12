@@ -46,7 +46,9 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public class MergeTypeView extends org.lgna.croquet.components.BorderPanel {
+
 	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite composite ) {
 		super( composite );
+		this.addPageStartComponent( new org.lgna.croquet.components.Label( composite.getType().getName() ) );
 	}
 }

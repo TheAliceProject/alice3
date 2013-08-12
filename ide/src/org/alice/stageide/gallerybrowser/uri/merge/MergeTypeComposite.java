@@ -47,15 +47,42 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  */
 public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
 	private final java.net.URI uri;
+	private final org.lgna.project.ast.NamedUserType type;
+	private final java.util.Set<org.lgna.common.Resource> resources;
 
 	public MergeTypeComposite( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
 		this.uri = uri;
+		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple;
+		try {
+			tuple = org.lgna.project.io.IoUtilities.readType( new java.io.File( this.uri ) );
+		} catch( java.io.IOException ioe ) {
+			tuple = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe, this.uri );
+		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+			tuple = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( vnse, this.uri );
+		}
+		if( tuple != null ) {
+			this.type = tuple.getA();
+			this.resources = tuple.getB();
+		} else {
+			this.type = null;
+			this.resources = null;
+		}
 	}
 
 	@Override
 	protected org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView createView() {
 		return new org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView( this );
+	}
+
+	public org.lgna.project.ast.NamedUserType getType() {
+		return this.type;
+	}
+
+	public java.util.Set<org.lgna.common.Resource> getResources() {
+		return this.resources;
 	}
 
 	@Override
