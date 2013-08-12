@@ -46,8 +46,11 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
-	public MergeTypeComposite() {
+	private final java.net.URI uri;
+
+	public MergeTypeComposite( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
+		this.uri = uri;
 	}
 
 	@Override

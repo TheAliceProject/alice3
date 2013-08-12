@@ -232,7 +232,7 @@ public class UriGalleryDragModel extends org.alice.stageide.modelresource.Resour
 			Class<? extends org.lgna.story.resources.ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
 			java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
-				rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ) ) );
+				rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ), this.uri ) );
 			}
 			return rv;
 		} else {
@@ -243,8 +243,8 @@ public class UriGalleryDragModel extends org.alice.stageide.modelresource.Resour
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
-		ResourceKeyIteratingOperation operation = ResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKey( resourceKey );
+		UriResourceKeyIteratingOperation operation = UriResourceKeyIteratingOperation.getInstance();
+		operation.setResourceKeyAndUri( resourceKey, this.uri );
 		return operation;
 	}
 

@@ -46,8 +46,11 @@ package org.alice.stageide.gallerybrowser.uri;
  * @author Dennis Cosgrove
  */
 public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
-	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey ) {
+	private final java.net.URI uri;
+
+	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey, java.net.URI uri ) {
 		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
+		this.uri = uri;
 	}
 
 	@Override
@@ -57,8 +60,8 @@ public final class UriBasedResourceNode extends org.alice.stageide.modelresource
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		ResourceKeyIteratingOperation operation = ResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKey( this.getResourceKey() );
+		UriResourceKeyIteratingOperation operation = UriResourceKeyIteratingOperation.getInstance();
+		operation.setResourceKeyAndUri( this.getResourceKey(), this.uri );
 		return operation;
 	}
 }
