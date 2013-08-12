@@ -229,7 +229,7 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey );
+			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey, false );
 			return composite.getOperation();
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			ClassResourceKeyIteratingOperation operation = ClassResourceKeyIteratingOperation.getInstance();
@@ -244,7 +244,7 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( ( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) ) {
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey );
+			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, false );
 			return composite.getOperation();
 		} else if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;

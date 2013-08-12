@@ -89,7 +89,7 @@ public final class ClassResourceKeyIteratingOperation extends org.lgna.croquet.S
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey = (org.alice.stageide.modelresource.EnumConstantResourceKey)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-				addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey );
+				addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey, false );
 				return addResourceKeyManagedFieldComposite.getOperation();
 			} else {
 				return null;
