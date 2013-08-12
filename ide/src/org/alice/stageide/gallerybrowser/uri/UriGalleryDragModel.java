@@ -228,13 +228,13 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
-			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite.getInstance();
+			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
 			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey );
 			return composite.getOperation();
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite = org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite.getInstance();
-			composite.setClassResourceKey( (org.alice.stageide.modelresource.ClassResourceKey)resourceKey );
-			return composite.getValueCreator();
+			ClassResourceKeyIteratingOperation operation = ClassResourceKeyIteratingOperation.getInstance();
+			operation.setClassResourceKey( (org.alice.stageide.modelresource.ClassResourceKey)resourceKey );
+			return operation;
 		} else {
 			return null;
 		}
@@ -243,7 +243,7 @@ public class UriGalleryDragModel extends org.alice.ide.croquet.models.gallerybro
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( ( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) ) {
-			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldFromUriComposite.getInstance();
+			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
 			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey );
 			return composite.getOperation();
 		} else if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {

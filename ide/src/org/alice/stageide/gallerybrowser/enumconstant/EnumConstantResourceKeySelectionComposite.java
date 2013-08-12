@@ -74,7 +74,7 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 
 	@Override
 	protected org.alice.stageide.modelresource.EnumConstantResourceKey createValue() {
-		return null;
+		return this.enumConstantResourceKeyState.getValue();
 	}
 
 	@Override
