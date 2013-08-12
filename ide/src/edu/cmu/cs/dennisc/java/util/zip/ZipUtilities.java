@@ -58,7 +58,7 @@ public class ZipUtilities {
 		return baos.toByteArray();
 	}
 
-	public static java.util.Map<String, byte[]> extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+	public static java.util.Map<String, byte[]> extractZipInputStream( java.util.zip.ZipInputStream zis, java.util.Collection<String> entryNameFilter ) throws java.io.IOException {
 		java.util.Map<String, byte[]> filenameToBytesMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		java.util.zip.ZipEntry zipEntry;
 		while( ( zipEntry = zis.getNextEntry() ) != null ) {
@@ -66,28 +66,46 @@ public class ZipUtilities {
 			if( zipEntry.isDirectory() ) {
 				// pass
 			} else {
-				filenameToBytesMap.put( name, extractBytes( zis, zipEntry ) );
+				if( ( entryNameFilter == null ) || entryNameFilter.contains( zipEntry.getName() ) ) {
+					filenameToBytesMap.put( name, extractBytes( zis, zipEntry ) );
+				}
 			}
 		}
 		return filenameToBytesMap;
 	}
 
-	public static java.util.Map<String, byte[]> extract( java.io.InputStream is ) throws java.io.IOException {
+	public static java.util.Map<String, byte[]> extractZipInputStream( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+		return extractZipInputStream( zis, null );
+	}
+
+	public static java.util.Map<String, byte[]> extract( java.io.InputStream is, java.util.Collection<String> entryNameFilter ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis;
 		if( is instanceof java.util.zip.ZipInputStream ) {
 			zis = (java.util.zip.ZipInputStream)is;
 		} else {
 			zis = new java.util.zip.ZipInputStream( is );
 		}
-		return extract( zis );
+		return extractZipInputStream( zis, entryNameFilter );
+	}
+
+	public static java.util.Map<String, byte[]> extract( java.io.InputStream is ) throws java.io.IOException {
+		return extract( is, null );
+	}
+
+	public static java.util.Map<String, byte[]> extract( java.io.File file, java.util.Collection<String> entryNameFilter ) throws java.io.IOException {
+		return extract( new java.io.FileInputStream( file ), entryNameFilter );
 	}
 
 	public static java.util.Map<String, byte[]> extract( java.io.File file ) throws java.io.IOException {
-		return extract( new java.io.FileInputStream( file ) );
+		return extract( file, null );
+	}
+
+	public static java.util.Map<String, byte[]> extract( String path, java.util.Collection<String> entryNameFilter ) throws java.io.IOException {
+		return extract( new java.io.File( path ), entryNameFilter );
 	}
 
 	public static java.util.Map<String, byte[]> extract( String path ) throws java.io.IOException {
-		return extract( new java.io.File( path ) );
+		return extract( path, null );
 	}
 
 	public static void write( java.util.zip.ZipOutputStream zos, DataSource dataSource ) throws java.io.IOException {
