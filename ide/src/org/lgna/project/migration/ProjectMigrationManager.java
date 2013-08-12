@@ -5149,11 +5149,15 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			}
 		} catch( ClassNotFoundException cnfe ) {
 			// perhaps in netbeans plugin
-			return new NotSupportedAstMigrationStandIn( minimumVersion, maximumVersion );
+			return new NoOpAstMigrationStandIn( minimumVersion, maximumVersion );
 		}
 	}
 
 	private final AstMigration[] astMigrations = {
+			new NoOpAstMigrationStandIn(
+					new org.lgna.project.Version( "3.1.0.0.0" ),
+					new org.lgna.project.Version( "3.1.38.0.0" )
+			),
 			createNotSupportedInPlugInMigration(
 					"org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration",
 					new org.lgna.project.Version( "3.1.38.0.0" ),
