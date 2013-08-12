@@ -40,25 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri;
+package org.alice.stageide.gallerybrowser.uri.merge.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
-	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey ) {
-		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
-	}
-
-	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
-		return null;
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		ResourceKeyIteratingOperation operation = ResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKey( this.getResourceKey() );
-		return operation;
+public class MergeTypeView extends org.lgna.croquet.components.BorderPanel {
+	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite composite ) {
+		super( composite );
 	}
 }

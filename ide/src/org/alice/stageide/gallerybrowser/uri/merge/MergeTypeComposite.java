@@ -40,25 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
-	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey ) {
-		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
+public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
+	public MergeTypeComposite() {
+		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
+	protected org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView createView() {
+		return new org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView( this );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		ResourceKeyIteratingOperation operation = ResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKey( this.getResourceKey() );
-		return operation;
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 }

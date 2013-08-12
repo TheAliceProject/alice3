@@ -243,26 +243,16 @@ public class UriGalleryDragModel extends org.alice.stageide.modelresource.Resour
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
-		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
-			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey, false );
-			return composite.getOperation();
-		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			ClassResourceKeyIteratingOperation operation = ClassResourceKeyIteratingOperation.getInstance();
-			operation.setClassResourceKey( (org.alice.stageide.modelresource.ClassResourceKey)resourceKey );
-			return operation;
-		} else {
-			return null;
-		}
+		ResourceKeyIteratingOperation operation = ResourceKeyIteratingOperation.getInstance();
+		operation.setResourceKey( resourceKey );
+		return operation;
 	}
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
-			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite composite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			composite.setResourceKeyToBeUsedByGetInitializerInitialValue( resourceKey, false );
-			return composite.getOperation();
+			return this.getLeftButtonClickModel();
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
