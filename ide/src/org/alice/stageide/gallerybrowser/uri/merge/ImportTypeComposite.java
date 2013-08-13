@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
-	private final java.net.URI uri;
+	private final java.net.URI uriForDescriptionPurposesOnly;
 
 	private final org.lgna.project.ast.NamedUserType importedType;
 	private final java.util.Set<org.lgna.common.Resource> importedResources;
@@ -68,99 +68,74 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final org.lgna.croquet.PlainStringValue functionsHeader = this.createStringValue( this.createKey( "functionsHeader" ) );
 	private final org.lgna.croquet.PlainStringValue fieldsHeader = this.createStringValue( this.createKey( "fieldsHeader" ) );
 
-	public ImportTypeComposite( java.net.URI uri ) {
+	public ImportTypeComposite( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedType, java.util.Set<org.lgna.common.Resource> importedResources ) {
 		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
-		this.uri = uri;
-		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple;
-		try {
-			tuple = org.lgna.project.io.IoUtilities.readType( new java.io.File( this.uri ) );
-		} catch( java.io.IOException ioe ) {
-			tuple = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe, this.uri );
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-			tuple = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( vnse, this.uri );
-		}
-		if( tuple != null ) {
-			this.importedType = tuple.getA();
-			this.importedResources = tuple.getB();
-			this.existingType = MergeUtilities.findMatchingTypeInExistingTypes( this.importedType );
+		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
+		this.importedType = importedType;
+		this.importedResources = importedResources;
+		this.existingType = MergeUtilities.findMatchingTypeInExistingTypes( this.importedType );
 
-			if( this.existingType != null ) {
-				this.isProcedureImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.isFunctionImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.methodsToWarnAboutOverload = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.methodsToMerge = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.methodsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				for( org.lgna.project.ast.UserMethod importedMethod : this.importedType.methods ) {
-					org.lgna.project.ast.UserMethod existingMethod = MergeUtilities.findMethodWithMatchingName( importedMethod, existingType );
-					java.util.List<org.lgna.project.ast.UserMethod> list;
-					if( existingMethod != null ) {
-						if( MergeUtilities.isEquivalent( importedMethod, existingMethod ) ) {
-							list = this.methodsToIgnore;
-						} else {
-							if( MergeUtilities.isHeaderEquivalent( importedMethod, existingMethod ) ) {
-								list = this.methodsToMerge;
-							} else {
-								list = this.methodsToWarnAboutOverload;
-							}
-						}
+		if( this.existingType != null ) {
+			this.isProcedureImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.isFunctionImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.methodsToWarnAboutOverload = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.methodsToMerge = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.methodsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.UserMethod importedMethod : this.importedType.methods ) {
+				org.lgna.project.ast.UserMethod existingMethod = MergeUtilities.findMethodWithMatchingName( importedMethod, existingType );
+				java.util.List<org.lgna.project.ast.UserMethod> list;
+				if( existingMethod != null ) {
+					if( MergeUtilities.isEquivalent( importedMethod, existingMethod ) ) {
+						list = this.methodsToIgnore;
 					} else {
-						list = null;
-						IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( importedMethod );
-						if( importedMethod.isProcedure() ) {
-							this.isProcedureImportDesiredStates.add( state );
+						if( MergeUtilities.isHeaderEquivalent( importedMethod, existingMethod ) ) {
+							list = this.methodsToMerge;
 						} else {
-							this.isFunctionImportDesiredStates.add( state );
+							list = this.methodsToWarnAboutOverload;
 						}
 					}
-					if( list != null ) {
-						list.add( importedMethod );
+				} else {
+					list = null;
+					IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( importedMethod );
+					if( importedMethod.isProcedure() ) {
+						this.isProcedureImportDesiredStates.add( state );
+					} else {
+						this.isFunctionImportDesiredStates.add( state );
 					}
 				}
-
-				this.isFieldImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.fieldsToWarnAboutValueTypeDifference = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.fieldsToChooseInitializer = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.fieldsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-				for( org.lgna.project.ast.UserField importedField : this.importedType.fields ) {
-					org.lgna.project.ast.UserField existingField = existingType.getDeclaredField( importedField.getName() );
-					java.util.List<org.lgna.project.ast.UserField> list;
-					if( existingField != null ) {
-						if( MergeUtilities.isEquivalent( importedField, existingField ) ) {
-							list = this.fieldsToIgnore;
-						} else {
-							if( MergeUtilities.isValueTypeEquivalent( importedField, existingField ) ) {
-								list = this.fieldsToChooseInitializer;
-							} else {
-								list = this.fieldsToWarnAboutValueTypeDifference;
-							}
-						}
-					} else {
-						this.isFieldImportDesiredStates.add( new IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>( importedField ) );
-						list = null;
-					}
-					if( list != null ) {
-						list.add( importedField );
-					}
+				if( list != null ) {
+					list.add( importedMethod );
 				}
-
-			} else {
-				this.isProcedureImportDesiredStates = null;
-				this.isFunctionImportDesiredStates = null;
-				this.methodsToWarnAboutOverload = null;
-				this.methodsToMerge = null;
-				this.methodsToIgnore = null;
-				this.isFieldImportDesiredStates = null;
-				this.fieldsToWarnAboutValueTypeDifference = null;
-				this.fieldsToChooseInitializer = null;
-				this.fieldsToIgnore = null;
 			}
+
+			this.isFieldImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.fieldsToWarnAboutValueTypeDifference = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.fieldsToChooseInitializer = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.fieldsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+			for( org.lgna.project.ast.UserField importedField : this.importedType.fields ) {
+				org.lgna.project.ast.UserField existingField = existingType.getDeclaredField( importedField.getName() );
+				java.util.List<org.lgna.project.ast.UserField> list;
+				if( existingField != null ) {
+					if( MergeUtilities.isEquivalent( importedField, existingField ) ) {
+						list = this.fieldsToIgnore;
+					} else {
+						if( MergeUtilities.isValueTypeEquivalent( importedField, existingField ) ) {
+							list = this.fieldsToChooseInitializer;
+						} else {
+							list = this.fieldsToWarnAboutValueTypeDifference;
+						}
+					}
+				} else {
+					this.isFieldImportDesiredStates.add( new IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>( importedField ) );
+					list = null;
+				}
+				if( list != null ) {
+					list.add( importedField );
+				}
+			}
+
 		} else {
-			this.importedType = null;
-			this.importedResources = null;
-			this.existingType = null;
 			this.isProcedureImportDesiredStates = null;
 			this.isFunctionImportDesiredStates = null;
 			this.methodsToWarnAboutOverload = null;
@@ -220,7 +195,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 					fields.add( org.lgna.project.ast.AstUtilities.createCopy( fieldState.getDeclaration(), this.importedType ) );
 				}
 			}
-			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uri, this.existingType, methods, fields );
+			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.existingType, methods, fields );
 		} else {
 			return null;
 		}

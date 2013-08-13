@@ -46,14 +46,14 @@ package org.alice.stageide.gallerybrowser.uri.merge.edits;
  * @author Dennis Cosgrove
  */
 public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
-	private final java.net.URI uri;
+	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final org.lgna.project.ast.NamedUserType existingType;
 	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate;
 	private final java.util.List<org.lgna.project.ast.UserField> fieldsToCreate;
 
-	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uri, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate, java.util.List<org.lgna.project.ast.UserField> fieldsToCreate ) {
+	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate, java.util.List<org.lgna.project.ast.UserField> fieldsToCreate ) {
 		super( completionStep );
-		this.uri = uri;
+		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.existingType = existingType;
 		this.methodsToCreate = methodsToCreate;
 		this.fieldsToCreate = fieldsToCreate;
@@ -62,7 +62,7 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 	public ImportTypeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "decode", this );
-		this.uri = null;
+		this.uriForDescriptionPurposesOnly = null;
 		this.existingType = null;
 		this.methodsToCreate = null;
 		this.fieldsToCreate = null;
@@ -97,6 +97,6 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "import " );
-		rv.append( this.uri );
+		rv.append( this.uriForDescriptionPurposesOnly );
 	}
 }
