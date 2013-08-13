@@ -53,7 +53,6 @@ import org.alice.media.YouTubeEvent.EventType;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
@@ -82,7 +81,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	private final StringState titleState = this.createStringState( this.createKey( "titleState" ), "Alice Video" );
 	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivateState" ), false );
-	private final ListSelectionState<String> videoCategoryState;
+	//	private final ListSelectionState<String> videoCategoryState;
 	private final StringState descriptionState = this.createStringState( this.createKey( "descriptionState" ), "" );
 	private final StringState tagsState = this.createStringState( this.createKey( "tagsState" ), "Alice3" );
 
@@ -115,6 +114,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final UploadProgressDialogComposite uploadProgressDialogComposite = new UploadProgressDialogComposite( this );
 
 	private final Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
+	private final Status errorCannotConnect = createErrorStatus( this.createKey( "errorCannotConnect" ) );
 	private final Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
 	private final Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
 	private final Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
@@ -129,10 +129,10 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 		this.owner = owner;
 		uploader.addYouTubeListener( this.getUploadOperation() );
-		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
+		//		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
 		this.registerSubComposite( this.videoComposite );
 		this.registerSubComposite( logInOutComposite );
-		videoCategoryState.setEnabled( categoriesEnabled );
+		//		videoCategoryState.setEnabled( categoriesEnabled );
 	}
 
 	public org.alice.ide.video.preview.VideoComposite getVideoComposite() {
@@ -163,9 +163,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.isPrivateState;
 	}
 
-	public ListSelectionState<String> getVideoCategoryState() {
-		return this.videoCategoryState;
-	}
+	//	public ListSelectionState<String> getVideoCategoryState() {
+	//		return this.videoCategoryState;
+	//	}
 
 	public StringState getDescriptionState() {
 		return this.descriptionState;
@@ -215,7 +215,11 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		Status rv = IS_GOOD_TO_GO_STATUS;
 		if( !isLoggedIn ) {
 			setEnabled( false );
-			return errorNotLoggedIn;
+			if( logInOutComposite.getCanConnect() ) {
+				return errorNotLoggedIn;
+			} else {
+				return errorCannotConnect;
+			}
 		} else {
 			setEnabled( true );
 			if( titleState.getValue().length() == 0 ) {
@@ -249,7 +253,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			titleState.setEnabled( isEnabled );
 			descriptionState.setEnabled( isEnabled );
 			tagsState.setEnabled( isEnabled );
-			videoCategoryState.setEnabled( isEnabled && categoriesEnabled );
+			//			videoCategoryState.setEnabled( isEnabled && categoriesEnabled );
 			isPrivateState.setEnabled( isEnabled );
 		}
 	}
@@ -301,7 +305,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		}
 		mediaGroup.setKeywords( keywords );//tags
 
-		String category = videoCategoryState.getValue().toString().split( "\\s" )[ 0 ].trim();
+		String category = "Education";
 		mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 		mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
 		try {

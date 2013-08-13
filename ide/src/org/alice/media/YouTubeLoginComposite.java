@@ -45,6 +45,7 @@ package org.alice.media;
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.views.LoginView;
 
+import com.google.gdata.client.GoogleService.InvalidCredentialsException;
 import com.google.gdata.util.AuthenticationException;
 
 /**
@@ -63,12 +64,17 @@ public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 	protected boolean tryToLogin() {
 		try {
 			this.uploadComposite.getUploader().logIn( this.getUserNameState().getValue(), this.getPasswordState().getValue() );
+			setConnectionFailed( false );
 			this.uploadComposite.setLoggedIn( true );
 			return true;
 		} catch( AuthenticationException e ) {
-			e.printStackTrace();
+			if( e instanceof InvalidCredentialsException ) {
+				return false;
+			} else {
+				setConnectionFailed( true );
+				return false;
+			}
 		}
-		return false;
 	}
 
 	@Override

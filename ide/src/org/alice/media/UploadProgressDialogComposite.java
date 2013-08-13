@@ -50,13 +50,11 @@ import org.lgna.croquet.PlainDialogOperationComposite;
 import org.lgna.croquet.PlainStringValue;
 
 import com.google.gdata.data.media.MediaFileSource;
-import com.google.gdata.data.media.mediarss.MediaCategory;
 import com.google.gdata.data.media.mediarss.MediaDescription;
 import com.google.gdata.data.media.mediarss.MediaKeywords;
 import com.google.gdata.data.media.mediarss.MediaTitle;
 import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
-import com.google.gdata.data.youtube.YouTubeNamespace;
 
 /**
  * @author Matt May
@@ -132,8 +130,8 @@ public class UploadProgressDialogComposite extends PlainDialogOperationComposite
 		}
 		mediaGroup.setKeywords( keywords );//tags
 
-		String category = parentComposite.getVideoCategoryState().getValue().toString().split( "\\s" )[ 0 ].trim();
-		mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
+		//		String category = parentComposite.getVideoCategoryState().getValue().toString().split( "\\s" )[ 0 ].trim();
+		//		mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 		mediaGroup.setPrivate( parentComposite.getIsPrivateState().getValue() );//isPrivate
 		try {
 			parentComposite.getUploader().uploadVideo( entry );

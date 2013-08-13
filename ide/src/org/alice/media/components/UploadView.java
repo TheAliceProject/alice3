@@ -69,8 +69,8 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 		//tags.getAwtComponent().setLineWrap( true );
 		org.lgna.croquet.components.ScrollPane tagsScrollPane = new org.lgna.croquet.components.ScrollPane( tagsTextArea );
 
-		org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
-		org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
+		//		org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
+		//		org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
 
 		org.lgna.croquet.components.CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
 
@@ -83,8 +83,8 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 			migPanel.addComponent( descriptionScrollPane, "wrap, grow" );
 			migPanel.addComponent( tagsSidekickLabel, "wrap" );
 			migPanel.addComponent( tagsScrollPane, "wrap, grow" );
-			migPanel.addComponent( categoryLabel, "wrap" );
-			migPanel.addComponent( categoryComboBox, "wrap, growx" );
+			//			migPanel.addComponent( categoryLabel, "wrap" );
+			//			migPanel.addComponent( categoryComboBox, "wrap, growx" );
 			migPanel.addComponent( isPrivateCheckBox, "wrap" );
 			this.youtubeDetailsPanel = migPanel;
 		} else {
@@ -124,10 +124,10 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 			gbc.weighty = 0.0;
 
 			gbc.insets.top = TOP_INSET;
-			gridBagPanel.addComponent( categoryLabel, gbc );
-			gbc.insets.top = 0;
-
-			gridBagPanel.addComponent( categoryComboBox, gbc );
+			//			gridBagPanel.addComponent( categoryLabel, gbc );
+			//			gbc.insets.top = 0;
+			//
+			//			gridBagPanel.addComponent( categoryComboBox, gbc );
 
 			gbc.insets.top = TOP_INSET;
 			gridBagPanel.addComponent( isPrivateCheckBox, gbc );

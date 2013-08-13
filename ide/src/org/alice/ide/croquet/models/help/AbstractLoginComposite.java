@@ -67,6 +67,8 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
 	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
+	protected Status connectionFailedStatus = createWarningStatus( createKey( "warningConnectionFailed" ) );
+	private final BooleanState connectionFailed = this.createBooleanState( createKey( "doNotLocalize" ), false );
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
@@ -116,8 +118,10 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 			if( loginSuccess ) {
 				isLoggedIn.setValueTransactionlessly( true );
 				status = IS_GOOD_TO_GO_STATUS;
-			} else {
+			} else if( !connectionFailed.getValue() ) {
 				status = loginFailedStatus;
+			} else {
+				status = connectionFailedStatus;
 			}
 			refreshStatus();
 			return loginSuccess;
@@ -147,4 +151,13 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	public String updateUserNameForWelcomeString() {
 		return "";
 	}
+
+	protected void setConnectionFailed( boolean isFailed ) {
+		this.connectionFailed.setValueTransactionlessly( isFailed );
+	}
+
+	public boolean getCanLogIn() {
+		return !connectionFailed.getValue();
+	}
+
 }
