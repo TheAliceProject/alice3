@@ -96,7 +96,7 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 	}
 
 	private org.lgna.croquet.Operation getMergeTypeOperation() {
-		org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite( this.uri );
+		org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite( this.uri );
 		return mergeTypeComposite.getOperation();
 	}
 

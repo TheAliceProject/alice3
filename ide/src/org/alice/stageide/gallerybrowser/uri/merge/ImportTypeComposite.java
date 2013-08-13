@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
+public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
 	private final java.net.URI uri;
 
 	private final org.lgna.project.ast.NamedUserType importedType;
@@ -64,7 +64,11 @@ public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCor
 	private final java.util.List<org.lgna.project.ast.UserField> fieldsToChooseInitializer;
 	private final java.util.List<org.lgna.project.ast.UserField> fieldsToIgnore;
 
-	public MergeTypeComposite( java.net.URI uri ) {
+	private final org.lgna.croquet.PlainStringValue proceduresHeader = this.createStringValue( this.createKey( "proceduresHeader" ) );
+	private final org.lgna.croquet.PlainStringValue functionsHeader = this.createStringValue( this.createKey( "functionsHeader" ) );
+	private final org.lgna.croquet.PlainStringValue fieldsHeader = this.createStringValue( this.createKey( "fieldsHeader" ) );
+
+	public ImportTypeComposite( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
 		this.uri = uri;
 		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple;
@@ -103,7 +107,7 @@ public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCor
 						}
 					} else {
 						list = null;
-						IsDeclarationImportDesiredState state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( importedMethod );
+						IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( importedMethod );
 						if( importedMethod.isProcedure() ) {
 							this.isProcedureImportDesiredStates.add( state );
 						} else {
@@ -225,5 +229,17 @@ public class MergeTypeComposite extends org.lgna.croquet.OperationInputDialogCor
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	public org.lgna.croquet.PlainStringValue getProceduresHeader() {
+		return this.proceduresHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getFunctionsHeader() {
+		return this.functionsHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getFieldsHeader() {
+		return this.fieldsHeader;
 	}
 }

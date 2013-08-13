@@ -46,28 +46,32 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
-	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite composite ) {
+	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD };
+	private static final String HEADER_CONSTRAINT = "gap 16, wrap";
+	private static final String DECLARATION_CHECK_BOX_CONSTRAINT = "gap 32, wrap";
+
+	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( composite.getImportedType().getName() ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getExistingType() ) ), "wrap" );
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isProcedureImportDesiredStates = composite.getIsProcedureImportDesiredStates();
 		if( isProcedureImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "procedures" ), "wrap" );
+			this.addComponent( composite.getProceduresHeader().createLabel( HEADER_TEXT_ATTRIBUTES ), HEADER_CONSTRAINT );
 			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isProcedureImportDesiredState : isProcedureImportDesiredStates ) {
-				this.addComponent( isProcedureImportDesiredState.createCheckBox(), "wrap" );
+				this.addComponent( isProcedureImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
 			}
 		}
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isFunctionImportDesiredStates = composite.getIsFunctionImportDesiredStates();
 		if( isFunctionImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "functions" ), "wrap" );
+			this.addComponent( composite.getFunctionsHeader().createLabel( HEADER_TEXT_ATTRIBUTES ), HEADER_CONSTRAINT );
 			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isFunctionImportDesiredState : isFunctionImportDesiredStates ) {
-				this.addComponent( isFunctionImportDesiredState.createCheckBox(), "wrap" );
+				this.addComponent( isFunctionImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
 			}
 		}
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>> isFieldImportDesiredStates = composite.getIsFieldImportDesiredStates();
 		if( isFunctionImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "properties" ), "wrap" );
+			this.addComponent( composite.getFieldsHeader().createLabel( HEADER_TEXT_ATTRIBUTES ), HEADER_CONSTRAINT );
 			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField> isFieldImportDesiredState : isFieldImportDesiredStates ) {
-				this.addComponent( isFieldImportDesiredState.createCheckBox(), "wrap" );
+				this.addComponent( isFieldImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
 			}
 		}
 	}
