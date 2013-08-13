@@ -71,7 +71,26 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 					edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( file );
 					org.lgna.project.ast.NamedUserType importedType = tuple.getA();
 					java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
-					return new ImportTypeComposite( file.toURI(), importedType, importedResources, importedType, this.dstType ).getOperation();
+					org.lgna.project.ast.NamedUserType srcType;
+					if( importedType.getName().contentEquals( this.dstType.getName() ) ) {
+						srcType = importedType;
+					} else {
+						srcType = null;
+						edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+						importedType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
+						for( org.lgna.project.ast.NamedUserType type : crawler.getList() ) {
+							if( type.getName().contentEquals( this.dstType.getName() ) ) {
+								srcType = type;
+								break;
+							}
+						}
+					}
+					if( srcType != null ) {
+						return new ImportTypeComposite( file.toURI(), importedType, importedResources, srcType, this.dstType ).getOperation();
+					} else {
+						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Cannot find class " + this.dstType.getName() + " in " + file );
+						return null;
+					}
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
