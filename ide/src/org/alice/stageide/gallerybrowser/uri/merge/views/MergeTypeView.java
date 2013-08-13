@@ -74,5 +74,7 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 				this.addComponent( isFieldImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
 			}
 		}
+
+		this.addComponent( new org.lgna.croquet.components.Label( composite.getLabelText() ) );
 	}
 }

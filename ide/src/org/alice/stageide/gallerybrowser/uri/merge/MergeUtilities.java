@@ -50,10 +50,10 @@ public class MergeUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
+	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType srcType, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
 		for( org.lgna.project.ast.NamedUserType dstType : dstTypes ) {
 			//todo
-			if( dstType.getName().contentEquals( type.getName() ) ) {
+			if( dstType.getName().contentEquals( srcType.getName() ) ) {
 				return dstType;
 			}
 		}
@@ -71,8 +71,8 @@ public class MergeUtilities {
 
 	public static org.lgna.project.ast.UserMethod findMethodWithMatchingName( org.lgna.project.ast.UserMethod srcMethod, org.lgna.project.ast.NamedUserType dstType ) {
 		for( org.lgna.project.ast.UserMethod dstMethod : dstType.methods ) {
-			if( srcMethod.getName().contentEquals( srcMethod.getName() ) ) {
-				return srcMethod;
+			if( dstMethod.getName().contentEquals( srcMethod.getName() ) ) {
+				return dstMethod;
 			}
 		}
 		return null;
@@ -85,7 +85,9 @@ public class MergeUtilities {
 
 	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
 		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
+		String aText = a.generateJavaCode( isLambdaSupported );
+		String bText = b.generateJavaCode( isLambdaSupported );
+		return aText.contentEquals( bText );
 	}
 
 	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {

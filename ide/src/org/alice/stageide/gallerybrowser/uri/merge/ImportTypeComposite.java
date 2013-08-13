@@ -84,29 +84,32 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			this.methodsToMerge = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.methodsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.lgna.project.ast.UserMethod srcMethod : this.srcType.methods ) {
-				org.lgna.project.ast.UserMethod dstMethod = MergeUtilities.findMethodWithMatchingName( srcMethod, dstType );
-				java.util.List<org.lgna.project.ast.UserMethod> list;
-				if( dstMethod != null ) {
-					if( MergeUtilities.isEquivalent( srcMethod, dstMethod ) ) {
-						list = this.methodsToIgnore;
-					} else {
-						if( MergeUtilities.isHeaderEquivalent( srcMethod, dstMethod ) ) {
-							list = this.methodsToMerge;
+				org.lgna.project.ast.ManagementLevel managementLevel = srcMethod.getManagementLevel();
+				if( ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) ) {
+					org.lgna.project.ast.UserMethod dstMethod = MergeUtilities.findMethodWithMatchingName( srcMethod, dstType );
+					java.util.List<org.lgna.project.ast.UserMethod> list;
+					if( dstMethod != null ) {
+						if( MergeUtilities.isEquivalent( srcMethod, dstMethod ) ) {
+							list = this.methodsToIgnore;
 						} else {
-							list = this.methodsToWarnAboutOverload;
+							if( MergeUtilities.isHeaderEquivalent( srcMethod, dstMethod ) ) {
+								list = this.methodsToMerge;
+							} else {
+								list = this.methodsToWarnAboutOverload;
+							}
+						}
+					} else {
+						list = null;
+						IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( srcMethod );
+						if( srcMethod.isProcedure() ) {
+							this.isProcedureImportDesiredStates.add( state );
+						} else {
+							this.isFunctionImportDesiredStates.add( state );
 						}
 					}
-				} else {
-					list = null;
-					IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( srcMethod );
-					if( srcMethod.isProcedure() ) {
-						this.isProcedureImportDesiredStates.add( state );
-					} else {
-						this.isFunctionImportDesiredStates.add( state );
+					if( list != null ) {
+						list.add( srcMethod );
 					}
-				}
-				if( list != null ) {
-					list.add( srcMethod );
 				}
 			}
 
@@ -177,6 +180,51 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	public java.util.List<IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>> getIsFieldImportDesiredStates() {
 		return this.isFieldImportDesiredStates;
+	}
+
+	private static void appendDeclarations( StringBuilder sb, java.util.List<? extends org.lgna.project.ast.Declaration> declarations ) {
+		for( org.lgna.project.ast.Declaration declaration : declarations ) {
+			sb.append( "<li>" );
+			sb.append( declaration.getName() );
+		}
+	}
+
+	@Deprecated
+	public String getLabelText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html><em>" );
+		if( this.methodsToWarnAboutOverload.size() > 0 ) {
+			sb.append( "TODO: not yet adding procedures/functions that would overload:<ul>" );
+			appendDeclarations( sb, this.methodsToWarnAboutOverload );
+			sb.append( "</ul>" );
+		}
+		if( this.methodsToMerge.size() > 0 ) {
+			sb.append( "TODO: not yet merging procedures/functions (different implementations):<ul>" );
+			appendDeclarations( sb, this.methodsToMerge );
+			sb.append( "</ul>" );
+		}
+		if( this.methodsToIgnore.size() > 0 ) {
+			sb.append( "NOTE: not adding the following procedures/functions (identical):<ul>" );
+			appendDeclarations( sb, this.methodsToIgnore );
+			sb.append( "</ul>" );
+		}
+		if( this.fieldsToWarnAboutValueTypeDifference.size() > 0 ) {
+			sb.append( "TODO: not yet adding properties that would result in multiple properties with same name:<ul>" );
+			appendDeclarations( sb, this.fieldsToWarnAboutValueTypeDifference );
+			sb.append( "</ul>" );
+		}
+		if( this.fieldsToChooseInitializer.size() > 0 ) {
+			sb.append( "TODO: not yet choosing property initializers (different):<ul>" );
+			appendDeclarations( sb, this.fieldsToChooseInitializer );
+			sb.append( "</ul>" );
+		}
+		if( this.fieldsToIgnore.size() > 0 ) {
+			sb.append( "NOTE: not adding the following properties (identical):<ul>" );
+			appendDeclarations( sb, this.fieldsToIgnore );
+			sb.append( "</ul>" );
+		}
+		sb.append( "</em></html>" );
+		return sb.toString();
 	}
 
 	@Override
