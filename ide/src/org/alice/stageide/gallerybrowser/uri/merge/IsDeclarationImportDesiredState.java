@@ -40,35 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.views;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
-	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.MergeTypeComposite composite ) {
-		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( composite.getImportedType().getName() ), "wrap" );
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isProcedureImportDesiredStates = composite.getIsProcedureImportDesiredStates();
-		if( isProcedureImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "procedures" ), "wrap" );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isProcedureImportDesiredState : isProcedureImportDesiredStates ) {
-				this.addComponent( isProcedureImportDesiredState.createCheckBox(), "wrap" );
-			}
-		}
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isFunctionImportDesiredStates = composite.getIsFunctionImportDesiredStates();
-		if( isFunctionImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "functions" ), "wrap" );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isFunctionImportDesiredState : isFunctionImportDesiredStates ) {
-				this.addComponent( isFunctionImportDesiredState.createCheckBox(), "wrap" );
-			}
-		}
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>> isFieldImportDesiredStates = composite.getIsFieldImportDesiredStates();
-		if( isFunctionImportDesiredStates.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "properties" ), "wrap" );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField> isFieldImportDesiredState : isFieldImportDesiredStates ) {
-				this.addComponent( isFieldImportDesiredState.createCheckBox(), "wrap" );
-			}
-		}
+public final class IsDeclarationImportDesiredState<T extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.BooleanState {
+	private T declaration;
+
+	public IsDeclarationImportDesiredState( T declaration ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), true );
+		this.declaration = declaration;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setTextForBothTrueAndFalse( this.declaration.getName() );
+	}
+
+	public T getDeclaration() {
+		return this.declaration;
 	}
 }
