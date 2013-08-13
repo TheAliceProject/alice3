@@ -52,7 +52,7 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 
 	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getExistingType() ) ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) ), "wrap" );
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isProcedureImportDesiredStates = composite.getIsProcedureImportDesiredStates();
 		if( isProcedureImportDesiredStates.size() > 0 ) {
 			this.addComponent( composite.getProceduresHeader().createLabel( HEADER_TEXT_ATTRIBUTES ), HEADER_CONSTRAINT );

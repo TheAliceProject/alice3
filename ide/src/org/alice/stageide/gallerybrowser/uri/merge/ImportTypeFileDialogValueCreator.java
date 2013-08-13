@@ -45,55 +45,38 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class MergeUtilities {
-	private MergeUtilities() {
-		throw new AssertionError();
+public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.FileDialogValueCreator<java.io.File> {
+	private static class SingletonHolder {
+		private static ImportTypeFileDialogValueCreator instance = new ImportTypeFileDialogValueCreator();
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
-		for( org.lgna.project.ast.NamedUserType dstType : dstTypes ) {
-			//todo
-			if( dstType.getName().contentEquals( type.getName() ) ) {
-				return dstType;
-			}
-		}
-		return null;
+	public static ImportTypeFileDialogValueCreator getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		if( project != null ) {
-			java.util.Set<org.lgna.project.ast.NamedUserType> dstTypes = project.getNamedUserTypes();
-			return findMatchingTypeInExistingTypes( type, dstTypes );
-		}
-		return null;
+	private ImportTypeFileDialogValueCreator() {
+		super( java.util.UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
 	}
 
-	public static org.lgna.project.ast.UserMethod findMethodWithMatchingName( org.lgna.project.ast.UserMethod srcMethod, org.lgna.project.ast.NamedUserType dstType ) {
-		for( org.lgna.project.ast.UserMethod dstMethod : dstType.methods ) {
-			if( srcMethod.getName().contentEquals( srcMethod.getName() ) ) {
-				return srcMethod;
-			}
-		}
-		return null;
+	private java.io.File getDefaultDirectory() {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
-	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateHeaderJavaCode( isLambdaSupported ).contentEquals( b.generateHeaderJavaCode( isLambdaSupported ) );
+	private String getExtension() {
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
 
-	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
+	private String getInitialFilename() {
+		return "*." + this.getExtension();
 	}
 
-	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
+	@Override
+	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
 	}
 
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
+	@Override
+	protected java.io.File createValueFromFile( java.io.File file ) {
+		return file;
 	}
 }

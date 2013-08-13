@@ -40,60 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MergeUtilities {
-	private MergeUtilities() {
-		throw new AssertionError();
+public abstract class FileDialogValueCreator<T> extends ValueCreator<T> {
+	public FileDialogValueCreator( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
-		for( org.lgna.project.ast.NamedUserType dstType : dstTypes ) {
-			//todo
-			if( dstType.getName().contentEquals( type.getName() ) ) {
-				return dstType;
+	protected abstract java.io.File showFileDialog( java.awt.Component awtComponent );
+
+	protected abstract T createValueFromFile( java.io.File file );
+
+	@Override
+	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		java.awt.Component awtComponent = null; //todo
+		java.io.File file = this.showFileDialog( awtComponent );
+		if( file != null ) {
+			try {
+				step.finish();
+				return this.createValueFromFile( file );
+			} catch( CancelException ce ) {
+				step.cancel();
 			}
+		} else {
+			step.cancel();
 		}
 		return null;
-	}
-
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		if( project != null ) {
-			java.util.Set<org.lgna.project.ast.NamedUserType> dstTypes = project.getNamedUserTypes();
-			return findMatchingTypeInExistingTypes( type, dstTypes );
-		}
-		return null;
-	}
-
-	public static org.lgna.project.ast.UserMethod findMethodWithMatchingName( org.lgna.project.ast.UserMethod srcMethod, org.lgna.project.ast.NamedUserType dstType ) {
-		for( org.lgna.project.ast.UserMethod dstMethod : dstType.methods ) {
-			if( srcMethod.getName().contentEquals( srcMethod.getName() ) ) {
-				return srcMethod;
-			}
-		}
-		return null;
-	}
-
-	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateHeaderJavaCode( isLambdaSupported ).contentEquals( b.generateHeaderJavaCode( isLambdaSupported ) );
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
-	}
-
-	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
 	}
 }

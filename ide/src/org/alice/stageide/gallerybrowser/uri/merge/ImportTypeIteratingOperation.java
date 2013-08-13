@@ -45,55 +45,49 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class MergeUtilities {
-	private MergeUtilities() {
-		throw new AssertionError();
+public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
+	private final org.lgna.project.ast.NamedUserType dstType;
+
+	public ImportTypeIteratingOperation( org.lgna.project.ast.NamedUserType dstType ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
+		this.dstType = dstType;
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
-		for( org.lgna.project.ast.NamedUserType dstType : dstTypes ) {
-			//todo
-			if( dstType.getName().contentEquals( type.getName() ) ) {
-				return dstType;
+	@Override
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		return subSteps.size() < 2;
+	}
+
+	@Override
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		switch( subSteps.size() ) {
+		case 0:
+			return ImportTypeFileDialogValueCreator.getInstance();
+		case 1:
+			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
+				java.io.File file = (java.io.File)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
+				try {
+					edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( file );
+					org.lgna.project.ast.NamedUserType importedType = tuple.getA();
+					java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+					return new ImportTypeComposite( file.toURI(), importedType, importedResources, importedType, this.dstType ).getOperation();
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( ioe );
+				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "version not supported " + vnse.getVersion() );
+				}
+				return null;
+			} else {
+				return null;
 			}
+		default:
+			return null;
 		}
-		return null;
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		if( project != null ) {
-			java.util.Set<org.lgna.project.ast.NamedUserType> dstTypes = project.getNamedUserTypes();
-			return findMatchingTypeInExistingTypes( type, dstTypes );
-		}
-		return null;
-	}
-
-	public static org.lgna.project.ast.UserMethod findMethodWithMatchingName( org.lgna.project.ast.UserMethod srcMethod, org.lgna.project.ast.NamedUserType dstType ) {
-		for( org.lgna.project.ast.UserMethod dstMethod : dstType.methods ) {
-			if( srcMethod.getName().contentEquals( srcMethod.getName() ) ) {
-				return srcMethod;
-			}
-		}
-		return null;
-	}
-
-	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateHeaderJavaCode( isLambdaSupported ).contentEquals( b.generateHeaderJavaCode( isLambdaSupported ) );
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
-	}
-
-	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		step.finish();
 	}
 }

@@ -48,10 +48,11 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
 	private final java.net.URI uriForDescriptionPurposesOnly;
 
-	private final org.lgna.project.ast.NamedUserType importedType;
+	private final org.lgna.project.ast.NamedUserType importedRootType;
 	private final java.util.Set<org.lgna.common.Resource> importedResources;
 
-	private final org.lgna.project.ast.NamedUserType existingType;
+	private final org.lgna.project.ast.NamedUserType srcType;
+	private final org.lgna.project.ast.NamedUserType dstType;
 
 	private final java.util.List<IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isProcedureImportDesiredStates;
 	private final java.util.List<IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isFunctionImportDesiredStates;
@@ -68,27 +69,28 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final org.lgna.croquet.PlainStringValue functionsHeader = this.createStringValue( this.createKey( "functionsHeader" ) );
 	private final org.lgna.croquet.PlainStringValue fieldsHeader = this.createStringValue( this.createKey( "fieldsHeader" ) );
 
-	public ImportTypeComposite( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedType, java.util.Set<org.lgna.common.Resource> importedResources ) {
+	public ImportTypeComposite( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
 		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
-		this.importedType = importedType;
+		this.importedRootType = importedRootType;
 		this.importedResources = importedResources;
-		this.existingType = MergeUtilities.findMatchingTypeInExistingTypes( this.importedType );
+		this.srcType = srcType;
+		this.dstType = dstType;
 
-		if( this.existingType != null ) {
+		if( this.dstType != null ) {
 			this.isProcedureImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.isFunctionImportDesiredStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.methodsToWarnAboutOverload = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.methodsToMerge = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.methodsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.lgna.project.ast.UserMethod importedMethod : this.importedType.methods ) {
-				org.lgna.project.ast.UserMethod existingMethod = MergeUtilities.findMethodWithMatchingName( importedMethod, existingType );
+			for( org.lgna.project.ast.UserMethod srcMethod : this.srcType.methods ) {
+				org.lgna.project.ast.UserMethod dstMethod = MergeUtilities.findMethodWithMatchingName( srcMethod, dstType );
 				java.util.List<org.lgna.project.ast.UserMethod> list;
-				if( existingMethod != null ) {
-					if( MergeUtilities.isEquivalent( importedMethod, existingMethod ) ) {
+				if( dstMethod != null ) {
+					if( MergeUtilities.isEquivalent( srcMethod, dstMethod ) ) {
 						list = this.methodsToIgnore;
 					} else {
-						if( MergeUtilities.isHeaderEquivalent( importedMethod, existingMethod ) ) {
+						if( MergeUtilities.isHeaderEquivalent( srcMethod, dstMethod ) ) {
 							list = this.methodsToMerge;
 						} else {
 							list = this.methodsToWarnAboutOverload;
@@ -96,15 +98,15 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 					}
 				} else {
 					list = null;
-					IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( importedMethod );
-					if( importedMethod.isProcedure() ) {
+					IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( srcMethod );
+					if( srcMethod.isProcedure() ) {
 						this.isProcedureImportDesiredStates.add( state );
 					} else {
 						this.isFunctionImportDesiredStates.add( state );
 					}
 				}
 				if( list != null ) {
-					list.add( importedMethod );
+					list.add( srcMethod );
 				}
 			}
 
@@ -113,25 +115,25 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			this.fieldsToChooseInitializer = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.fieldsToIgnore = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-			for( org.lgna.project.ast.UserField importedField : this.importedType.fields ) {
-				org.lgna.project.ast.UserField existingField = existingType.getDeclaredField( importedField.getName() );
+			for( org.lgna.project.ast.UserField srcField : this.srcType.fields ) {
+				org.lgna.project.ast.UserField dstField = dstType.getDeclaredField( srcField.getName() );
 				java.util.List<org.lgna.project.ast.UserField> list;
-				if( existingField != null ) {
-					if( MergeUtilities.isEquivalent( importedField, existingField ) ) {
+				if( dstField != null ) {
+					if( MergeUtilities.isEquivalent( srcField, dstField ) ) {
 						list = this.fieldsToIgnore;
 					} else {
-						if( MergeUtilities.isValueTypeEquivalent( importedField, existingField ) ) {
+						if( MergeUtilities.isValueTypeEquivalent( srcField, dstField ) ) {
 							list = this.fieldsToChooseInitializer;
 						} else {
 							list = this.fieldsToWarnAboutValueTypeDifference;
 						}
 					}
 				} else {
-					this.isFieldImportDesiredStates.add( new IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>( importedField ) );
+					this.isFieldImportDesiredStates.add( new IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>( srcField ) );
 					list = null;
 				}
 				if( list != null ) {
-					list.add( importedField );
+					list.add( srcField );
 				}
 			}
 
@@ -154,15 +156,15 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	}
 
 	public org.lgna.project.ast.NamedUserType getImportedType() {
-		return this.importedType;
-	}
-
-	public org.lgna.project.ast.NamedUserType getExistingType() {
-		return this.existingType;
+		return this.importedRootType;
 	}
 
 	public java.util.Set<org.lgna.common.Resource> getImportedResources() {
 		return this.importedResources;
+	}
+
+	public org.lgna.project.ast.NamedUserType getDstType() {
+		return this.dstType;
 	}
 
 	public java.util.List<IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> getIsProcedureImportDesiredStates() {
@@ -179,23 +181,23 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		if( this.existingType != null ) {
+		if( this.dstType != null ) {
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 			for( java.util.List<IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> list : new java.util.List[] { this.isProcedureImportDesiredStates, this.isFunctionImportDesiredStates } ) {
 				for( IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> methodState : list ) {
 					if( methodState.getValue() ) {
-						methods.add( org.lgna.project.ast.AstUtilities.createCopy( methodState.getDeclaration(), this.importedType ) );
+						methods.add( org.lgna.project.ast.AstUtilities.createCopy( methodState.getDeclaration(), this.importedRootType ) );
 					}
 				}
 			}
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( IsDeclarationImportDesiredState<org.lgna.project.ast.UserField> fieldState : this.isFieldImportDesiredStates ) {
 				if( fieldState.getValue() ) {
-					fields.add( org.lgna.project.ast.AstUtilities.createCopy( fieldState.getDeclaration(), this.importedType ) );
+					fields.add( org.lgna.project.ast.AstUtilities.createCopy( fieldState.getDeclaration(), this.importedRootType ) );
 				}
 			}
-			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.existingType, methods, fields );
+			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields );
 		} else {
 			return null;
 		}

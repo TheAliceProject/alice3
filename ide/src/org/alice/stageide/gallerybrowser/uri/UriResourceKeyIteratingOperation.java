@@ -107,7 +107,11 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( vnse, this.uri );
 		}
 		if( tuple != null ) {
-			org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite( this.uri, tuple.getA(), tuple.getB() );
+			org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
+			java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+			org.lgna.project.ast.NamedUserType srcType = importedRootType;
+			org.lgna.project.ast.NamedUserType dstType = org.alice.stageide.gallerybrowser.uri.merge.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+			org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite( this.uri, importedRootType, importedResources, srcType, dstType );
 			return mergeTypeComposite.getOperation();
 		} else {
 			return null;
