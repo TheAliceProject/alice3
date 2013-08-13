@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,61 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.stageide.gallerybrowser.uri.merge.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda {
-	public UserLambda() {
+public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
+	private final java.net.URI uri;
+	private final org.lgna.project.ast.NamedUserType existingType;
+	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate;
+	private final java.util.List<org.lgna.project.ast.UserField> fieldsToCreate;
+
+	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uri, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate, java.util.List<org.lgna.project.ast.UserField> fieldsToCreate ) {
+		super( completionStep );
+		this.uri = uri;
+		this.existingType = existingType;
+		this.methodsToCreate = methodsToCreate;
+		this.fieldsToCreate = fieldsToCreate;
 	}
 
-	public UserLambda( AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
-
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-
-	@Override
-	public boolean isAbstract() {
-		return false;
+	public ImportTypeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "decode", this );
+		this.uri = null;
+		this.existingType = null;
+		this.methodsToCreate = null;
+		this.fieldsToCreate = null;
 	}
 
 	@Override
-	public boolean isFinal() {
-		return false;
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "encode", this );
 	}
 
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		AbstractType<?, ?, ?> type = generator.peekTypeForLambda();
-		AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod( type );
-		if( generator.isLambdaSupported() ) {
-			generator.appendParameters( this );
-			generator.appendString( "->" );
-		} else {
-			generator.appendString( "new " );
-			generator.appendTypeName( type );
-			generator.appendString( "(){" );
-			generator.appendMethodHeader( singleAbstractMethod );
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		for( org.lgna.project.ast.UserMethod method : this.methodsToCreate ) {
+			this.existingType.methods.add( method );
 		}
-		this.body.getValue().appendJava( generator );
-		if( generator.isLambdaSupported() ) {
-			//pass
-		} else {
-			generator.appendString( "}" );
+		for( org.lgna.project.ast.UserField field : this.fieldsToCreate ) {
+			this.existingType.fields.add( field );
 		}
+	}
+
+	@Override
+	protected final void undoInternal() {
+		for( org.lgna.project.ast.UserMethod method : this.methodsToCreate ) {
+			this.existingType.methods.remove( this.existingType.methods.indexOf( method ) );
+		}
+		for( org.lgna.project.ast.UserField field : this.fieldsToCreate ) {
+			this.existingType.fields.remove( this.existingType.methods.indexOf( field ) );
+		}
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		rv.append( "import " );
+		rv.append( this.uri );
 	}
 }
