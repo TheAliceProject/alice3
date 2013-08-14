@@ -858,14 +858,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 
 			org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-			org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
-
 			org.lgna.story.SProgram program = getProgramInstanceInJava();
 			org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
+
 			SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
 			ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
 			try {
-				program.setActiveScene( sceneJavaInstance );
+				program.setActiveScene( scene );
 			} finally {
 				ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
 			}
@@ -892,6 +891,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
 
 				SceneImp sceneImp = this.getActiveSceneImplementation();
+				//sceneImp.mendSceneGraphIfNecessary();
 				//Add and set up the snap grid (this needs to happen before setting the camera)
 				sceneImp.getSgComposite().addComponent( this.snapGrid );
 				this.snapGrid.setTranslationOnly( 0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );

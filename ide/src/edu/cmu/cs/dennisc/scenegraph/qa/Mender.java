@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.scenegraph.qa;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Element> extends AbstractElementAdapter<E> {
-	@Override
-	public void initialize( E element ) {
-		super.initialize( element );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : m_element.getProperties() ) {
-			edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
-			propertyChanged( instanceProperty );
-		}
-	}
-
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
-	}
-
-	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
-		ElementAdapter elementAdapter = (ElementAdapter)AdapterFactory.getAdapterForElement( sgElement );
-		elementAdapter.propertyChanged( instanceProperty );
-	}
-
-	@Override
-	public String toString() {
-		if( m_element != null ) {
-			return getClass().getName() + " " + m_element.toString();
-		} else {
-			return super.toString();
-		}
-	}
+public interface Mender {
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getMendTransformationFor( edu.cmu.cs.dennisc.scenegraph.Joint sgJoint );
 }

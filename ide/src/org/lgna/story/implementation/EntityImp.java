@@ -669,11 +669,17 @@ public abstract class EntityImp implements ReferenceFrame {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
 
-	//	public static void main( String[] args ) {
-	//		org.lgna.story.Entity entity = new org.lgna.story.Cone();
-	//		System.err.println( entity.getStringFromUser( "who are you?" ) );
-	//		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
-	//		System.err.println( entity.getDoubleFromUser( "how much?" ) );
-	//		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
-	//	}
+	public void mendSceneGraphIfNecessary() {
+		edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspectAndMendIfNecessary( this.getSgComposite(), new edu.cmu.cs.dennisc.scenegraph.qa.Mender() {
+			public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getMendTransformationFor( edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
+				EntityImp imp = EntityImp.getInstance( sgJoint );
+				if( imp instanceof JointImp ) {
+					JointImp jointImp = (JointImp)imp;
+					return jointImp.getOriginalTransformation();
+				} else {
+					return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+				}
+			}
+		} );
+	}
 }

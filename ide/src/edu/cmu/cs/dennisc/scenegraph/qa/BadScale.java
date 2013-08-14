@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.scenegraph.qa;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Element> extends AbstractElementAdapter<E> {
-	@Override
-	public void initialize( E element ) {
-		super.initialize( element );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : m_element.getProperties() ) {
-			edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
-			propertyChanged( instanceProperty );
-		}
+public class BadScale implements Problem {
+	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+
+	public BadScale( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+		this.sgVisual = sgVisual;
 	}
 
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
-	}
-
-	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
-		ElementAdapter elementAdapter = (ElementAdapter)AdapterFactory.getAdapterForElement( sgElement );
-		elementAdapter.propertyChanged( instanceProperty );
+	public void mend( edu.cmu.cs.dennisc.scenegraph.qa.Mender mender ) {
+		sgVisual.scale.setValue( edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
 	}
 
 	@Override
 	public String toString() {
-		if( m_element != null ) {
-			return getClass().getName() + " " + m_element.toString();
-		} else {
-			return super.toString();
-		}
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.sgVisual );
+		sb.append( ";" );
+		sb.append( edu.cmu.cs.dennisc.print.PrintUtilities.append( sb, this.sgVisual.scale.getValue() ) );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }
