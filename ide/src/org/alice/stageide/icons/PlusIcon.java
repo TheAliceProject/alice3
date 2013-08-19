@@ -43,7 +43,7 @@
 package org.alice.stageide.icons;
 
 /**
- * @author user
+ * @author Dennis Cosgrove
  */
 public class PlusIcon extends ShapeIcon {
 	public PlusIcon( java.awt.Dimension size ) {
