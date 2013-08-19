@@ -130,7 +130,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			}
 		} else if( model instanceof org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel ) {
 			org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel uriGalleryDragModel = (org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel)model;
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "?", 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
 			label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.BOTTOM );
 			this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
@@ -169,9 +169,9 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				this.baseComponent = comp;
 			}
 			if( name.startsWith( TOP_LEFT_CONSTRAINT ) ) {
-				topLeftComponents.add( comp );
+				this.topLeftComponents.add( comp );
 			} else {
-				topRightComponents.add( comp );
+				this.topRightComponents.add( comp );
 			}
 		}
 
