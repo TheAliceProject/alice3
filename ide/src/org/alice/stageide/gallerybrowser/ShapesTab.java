@@ -70,4 +70,19 @@ public class ShapesTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	public java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> getDragModels() {
 		return this.dragModels;
 	}
+
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+		String simpleName = cls.getSimpleName();
+		if( simpleName.length() > 1 ) {
+			if( ( simpleName.charAt( 0 ) == 'S' ) && Character.isUpperCase( simpleName.charAt( 1 ) ) ) {
+				String desiredSimpleName = simpleName.substring( 1 ) + "DragModel";
+				for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : this.dragModels ) {
+					if( desiredSimpleName.contentEquals( dragModel.getClass().getSimpleName() ) ) {
+						return dragModel;
+					}
+				}
+			}
+		}
+		return null;
+	}
 }

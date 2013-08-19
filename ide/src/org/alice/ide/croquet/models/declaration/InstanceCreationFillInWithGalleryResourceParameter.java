@@ -70,9 +70,4 @@ public final class InstanceCreationFillInWithGalleryResourceParameter extends or
 	private InstanceCreationFillInWithGalleryResourceParameter( org.lgna.project.ast.AbstractConstructor constructor, GalleryResourceBlank... blanks ) {
 		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ), constructor, blanks );
 	}
-
-	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> node ) {
-		return "fred";
-	}
 }

@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceNode extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel implements Comparable<ResourceNode> {
+public abstract class ResourceNode extends ResourceGalleryDragModel implements Comparable<ResourceNode> {
 	private ResourceNode parent;
 	private final ResourceKey resourceKey;
 	private final java.util.List<ResourceNode> children;
@@ -78,6 +78,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 		return this.resourceKey;
 	}
 
+	@Override
 	public java.util.List<ResourceNode> getNodeChildren() {
 		return this.children;
 	}
@@ -112,7 +113,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey );
+			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, true );
 			return addResourceKeyManagedFieldComposite.getOperation();
 		} else if( this.resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;

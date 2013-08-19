@@ -4,8 +4,10 @@ import java.awt.Point;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SThing;
+import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.math.Point3;
 
@@ -14,17 +16,19 @@ public class AabbOcclusionDetector {
 	public static boolean doesTheseOcclude( CameraImp camera, SThing object1, SThing object2 ) {
 		EntityImp implementation = ImplementationAccessor.getImplementation( object1 );
 		EntityImp implementation2 = ImplementationAccessor.getImplementation( object2 );
-		Point3[] object1Points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
-		Point3[] object2Points = implementation2.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
+		SceneImp scene = implementation.getScene();
+		Point3[] object1Points = implementation.getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE ).getHexahedron().getPoints();
+		Point3[] object2Points = implementation2.getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE ).getHexahedron().getPoints();
 		Point[] object1AWTPoints = new Point[ 8 ];
 		Point[] object2AWTPoints = new Point[ 8 ];
 		for( int i = 0; i != object1Points.length; ++i ) {
-			object1AWTPoints[ i ] = implementation.transformToAwt( object1Points[ i ], camera );
-			object2AWTPoints[ i ] = implementation2.transformToAwt( object2Points[ i ], camera );
+			object1AWTPoints[ i ] = scene.transformToAwt( object1Points[ i ], camera );
+			object2AWTPoints[ i ] = scene.transformToAwt( object2Points[ i ], camera );
 		}
 		Point[] boundingBox1 = getBoundingBox( object1AWTPoints );//bounding box is pretty crude
 		Point[] boundingBox2 = getBoundingBox( object2AWTPoints );
-		return checkBoundingBox( boundingBox1, boundingBox2 );
+		boolean checkBoundingBox = checkBoundingBox( boundingBox1, boundingBox2 );
+		return checkBoundingBox;
 	}
 
 	private static boolean checkBoundingBox( Point[] box1, Point[] box2 ) {
@@ -32,12 +36,46 @@ public class AabbOcclusionDetector {
 		Point minOne = box1[ 1 ];
 		Point maxTwo = box2[ 0 ];
 		Point minTwo = box2[ 1 ];
-		if( ( ( ( maxOne.x > minTwo.x ) && ( maxOne.x < maxTwo.x ) ) && ( ( ( maxOne.y > minTwo.y ) && ( maxOne.y < maxTwo.y ) ) || ( ( minOne.y > minTwo.y ) && ( minOne.y < maxTwo.y ) ) || ( ( maxOne.y > maxTwo.y ) && ( minOne.y < minTwo.y ) ) ) )
-				|| ( ( ( minOne.x > minTwo.x ) && ( minOne.x < maxTwo.x ) ) && ( ( ( minOne.y > minTwo.y ) && ( minOne.y < maxTwo.y ) ) || ( ( maxOne.y > minTwo.y ) && ( maxOne.y < maxTwo.y ) ) || ( ( maxOne.y > maxTwo.y ) && ( minOne.y < minTwo.y ) ) ) ) ) {
+		if( checkPointInBox( maxTwo, maxOne, minOne ) ) {//tr
 			return true;
-		} else {
-			return false;
+		} else if( checkPointInBox( minTwo, maxOne, minOne ) ) {//bl
+			return true;
+		} else if( checkPointInBox( new Point( maxTwo.x, minTwo.y ), maxOne, minOne ) ) {//br
+			return true;
+		} else if( checkPointInBox( new Point( minTwo.x, maxTwo.y ), maxOne, minOne ) ) {//tl
+			return true;
+		} else if( checkPointInBox( maxOne, maxTwo, minTwo ) ) {//tr
+			return true;
+		} else if( checkPointInBox( minOne, maxTwo, minTwo ) ) {//bl
+			return true;
+		} else if( checkPointInBox( new Point( maxOne.x, minOne.y ), maxTwo, minTwo ) ) {//br
+			return true;
+		} else if( checkPointInBox( new Point( minOne.x, maxOne.y ), maxTwo, minTwo ) ) {//tl
+			return true;
+		} else if( checkAdv( maxOne, minOne, maxTwo, minTwo ) ) {
+			return true;
+		} else if( checkAdv( maxTwo, minTwo, maxOne, minTwo ) ) {
+			return true;
 		}
+		return false;
+	}
+
+	private static boolean checkPointInBox( Point pointToTest, Point boxMax, Point boxMin ) {
+		if( ( pointToTest.x < boxMax.x ) && ( pointToTest.x > boxMin.x ) && ( ( pointToTest.y < boxMax.y ) && ( pointToTest.y > boxMin.y ) ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean checkAdv( Point maxOne, Point minOne, Point maxTwo, Point minTwo ) {
+		if( ( maxOne.y > maxTwo.y ) && ( minOne.y < minTwo.y ) ) {
+			if( ( maxOne.x < maxTwo.x ) && ( maxOne.x > minTwo.x ) ) {
+				return true;
+			} else if( ( minOne.x < maxTwo.x ) && ( minOne.x > minTwo.x ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static Point[] getBoundingBox( Point[] points ) {

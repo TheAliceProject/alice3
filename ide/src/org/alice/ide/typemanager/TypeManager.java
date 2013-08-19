@@ -297,6 +297,7 @@ public class TypeManager {
 				if( isSetResourceMethodDesired ) {
 					String simpleClsName = cls.getSimpleName();
 					org.lgna.project.ast.UserMethod setResourceMethod = new org.lgna.project.ast.UserMethod();
+					setResourceMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 					setResourceMethod.name.setValue( "set" + simpleClsName );
 					setResourceMethod.returnType.setValue( org.lgna.project.ast.JavaType.VOID_TYPE );
 					org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();

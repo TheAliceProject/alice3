@@ -781,7 +781,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedObject = this.getManipulatedObject();
-		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject );
+		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject, false );
 		if( boundingBox == null )
 		{
 			boundingBox = new AxisAlignedBox( new Point3( -1, 0, -1 ), new Point3( 1, 1, 1 ) );

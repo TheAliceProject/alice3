@@ -73,6 +73,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	};
 
 	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+	private boolean isChangeResourceAllowed;
 
 	private AddResourceKeyManagedFieldComposite() {
 		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
@@ -83,8 +84,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
 		this.initialInstanceCreation = resourceKey != null ? resourceKey.createInstanceCreation() : null;
+		this.isChangeResourceAllowed = isChangeResourceAllowed;
 	}
 
 	@Override
@@ -151,7 +153,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 				blankChildren.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
 				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+			if( isChangeResourceAllowed ) {
+				blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+			}
 		}
 	}
 

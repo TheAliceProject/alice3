@@ -131,6 +131,33 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, boolean ignoreJointOrientations ) {
+		if( !ignoreJointOrientations && ( this.tracker != null ) ) {
+			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
+		}
+		else {
+			if( this.weightedMeshes.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+			if( this.geometries.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+		}
+		if( !rv.isNaN() )
+		{
+			rv.scale( this.scale.getValue() );
+		}
+		return rv;
+	}
+
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
 		if( this.tracker != null ) {

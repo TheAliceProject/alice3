@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.ui.debug;
 
 /**
- * @author user
+ * @author Dennis Cosgrove
  */
 public class ThrowBogusGlExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {

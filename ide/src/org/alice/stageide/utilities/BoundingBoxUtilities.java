@@ -52,13 +52,17 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 public class BoundingBoxUtilities {
 
-	private static AxisAlignedBox getSGTransformableBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable )
+	private static AxisAlignedBox getSGTransformableBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, boolean ignoreJointOrientations )
 	{
 		AxisAlignedBox boundingBox = null;
 		if( sgTransformable != null )
 		{
 			EntityImp entityImp = EntityImp.getInstance( sgTransformable );
-			if( entityImp instanceof ModelImp )
+			if( entityImp instanceof org.lgna.story.implementation.JointedModelImp<?, ?> )
+			{
+				boundingBox = ( (org.lgna.story.implementation.JointedModelImp<?, ?>)entityImp ).getAxisAlignedMinimumBoundingBox( ignoreJointOrientations );
+			}
+			else if( entityImp instanceof ModelImp )
 			{
 				boundingBox = ( (ModelImp)entityImp ).getAxisAlignedMinimumBoundingBox();
 			}
@@ -69,21 +73,21 @@ public class BoundingBoxUtilities {
 		return boundingBox;
 	}
 
-	public static AxisAlignedBox getSGTransformableScaledBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable )
+	public static AxisAlignedBox getSGTransformableScaledBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, boolean ignoreJointOrientations )
 	{
-		return getSGTransformableBBox( sgTransformable );
+		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
 	}
 
-	public static AxisAlignedBox getTransformableScaledBBox( org.lgna.story.STurnable transformable )
+	public static AxisAlignedBox getTransformableScaledBBox( org.lgna.story.STurnable transformable, boolean ignoreJointOrientations )
 	{
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)ImplementationAccessor.getImplementation( transformable ).getSgComposite();
-		return getSGTransformableBBox( sgTransformable );
+		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
 	}
 
-	public static AxisAlignedBox getTransformableScaledBBox( org.lgna.story.implementation.ModelImp modelImp )
+	public static AxisAlignedBox getTransformableScaledBBox( org.lgna.story.implementation.ModelImp modelImp, boolean ignoreJointOrientations )
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = modelImp.getSgComposite();
-		return getSGTransformableBBox( sgTransformable );
+		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
 	}
 
 }

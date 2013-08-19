@@ -196,6 +196,15 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
+	private org.lgna.project.ast.Expression createJointIdExpression( org.lgna.story.resources.JointId jointId ) throws CannotCreateExpressionException {
+		java.lang.reflect.Field fld = jointId.getPublicStaticFinalFld();
+		if( fld != null ) {
+			return this.createPublicStaticFieldAccess( fld );
+		} else {
+			throw new CannotCreateExpressionException( jointId );
+		}
+	}
+
 	private static final Class<org.lgna.ik.poser.Pose.Builder> POSE_BUILDER_CLS = org.lgna.ik.poser.Pose.Builder.class;
 	private static final org.lgna.project.ast.JavaMethod RIGHT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
 	private static final org.lgna.project.ast.JavaMethod LEFT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
@@ -320,6 +329,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createPoseExpression( (org.lgna.ik.poser.pose.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
+		} else if( value instanceof org.lgna.story.resources.JointId ) {
+			return this.createJointIdExpression( (org.lgna.story.resources.JointId)value );
 		} else {
 			throw new CannotCreateExpressionException( value );
 		}

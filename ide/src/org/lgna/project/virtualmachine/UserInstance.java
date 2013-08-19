@@ -60,7 +60,19 @@ import org.lgna.project.ast.UserType;
 public class UserInstance {
 	public static Object getJavaInstanceIfNecessary( Object instance ) {
 		if( instance instanceof UserInstance ) {
-			return ( (UserInstance)instance ).getJavaInstance();
+			UserInstance userInstance = (UserInstance)instance;
+			return userInstance.getJavaInstance();
+		} else if( instance instanceof UserArrayInstance ) {
+			UserArrayInstance userArrayInstance = (UserArrayInstance)instance;
+			int length = userArrayInstance.getLength();
+			org.lgna.project.ast.UserArrayType type = userArrayInstance.getType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> componentType = type.getComponentType();
+			Class<?> componentCls = componentType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+			Object[] rv = (Object[])java.lang.reflect.Array.newInstance( componentCls, length );
+			for( int i = 0; i < length; i++ ) {
+				rv[ i ] = getJavaInstanceIfNecessary( userArrayInstance.get( i ) );
+			}
+			return rv;
 		} else {
 			return instance;
 		}
