@@ -47,6 +47,7 @@ import org.alice.stageide.ast.ExpressionCreator;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.StringState;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
+import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.poser.view.PoserControlView;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;

@@ -50,6 +50,7 @@ import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.View;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
+import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
@@ -151,13 +152,13 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 		scene.setAdapter( adapter );
 	}
 
-	public Pose getPose() {
-		return Pose.createPoseFromBiped( biped );
+	public org.lgna.ik.poser.pose.Pose getPose() {
+		return org.lgna.ik.poser.pose.Pose.createPoseFromT( biped );
 	}
 
 	public void setPose( Pose pose ) {
 		if( pose != null ) {
-			pose.applyToBiped( biped );
+			pose.applyToJointedModel( biped );
 		} else {
 			biped.straightenOutJoints( StraightenOutJoints.duration( 0 ) );
 		}

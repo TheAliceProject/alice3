@@ -130,7 +130,7 @@ class JTimeLinePoseMarker extends JToggleButton {
 				isSliding = true;
 			}
 
-			System.out.println( keyFrameData.getPose().getFakeLeftHandPosition() + " \t " + keyFrameData.getPose().getFakeRightHandPosition() );
+			//			System.out.println( keyFrameData.getPose().getFakeLeftHandPosition() + " \t " + keyFrameData.getPose().getFakeRightHandPosition() );
 		}
 
 		public void mouseExited( MouseEvent e ) {

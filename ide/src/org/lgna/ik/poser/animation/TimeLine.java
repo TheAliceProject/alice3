@@ -45,7 +45,7 @@ package org.lgna.ik.poser.animation;
 import java.util.Comparator;
 import java.util.List;
 
-import org.lgna.ik.poser.Pose;
+import org.lgna.ik.poser.pose.Pose;
 import org.lgna.story.AnimationStyle;
 
 import edu.cmu.cs.dennisc.java.util.Collections;

@@ -61,7 +61,6 @@ import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
 import org.lgna.ik.poser.AnimatorInputDialogComposite;
-import org.lgna.ik.poser.Pose;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.animation.KeyFrameData;
@@ -69,6 +68,8 @@ import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.edits.AddKeyFrameToTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyPoseOnExistingKeyFrameInTimeLineEdit;
+import org.lgna.ik.poser.pose.BipedPose;
+import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.poser.view.AnimatorControlView;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
@@ -86,7 +87,7 @@ import org.lgna.story.SetPose;
  */
 public class AnimatorControlComposite extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
+	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", BipedPose.class, SetPose.Detail[].class );
 	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 	private StringState nameState = createStringState( createKey( "nameState" ) );
 	private TimeLineComposite tlComposite = new TimeLineComposite();
@@ -174,7 +175,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 					for( KeyFrameData data : keyFrames ) {
 						double duration = timeLine.getDurationForKeyFrame( data );
 						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
-						biped.setPose( data.getPose(), new Duration( duration ), styleForKeyFramePose );
+						biped.setPose( (BipedPose)data.getPose(), new Duration( duration ), styleForKeyFramePose );
 					}
 				}
 			}, "runAnimation" );
@@ -182,7 +183,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 			return null;
 		}
 	} );
-	
+
 	public BlockStatement createMethodBody() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();

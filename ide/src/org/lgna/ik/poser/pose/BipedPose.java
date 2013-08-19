@@ -43,10 +43,13 @@
 package org.lgna.ik.poser.pose;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lgna.ik.poser.pose.builder.BipedPoseBuilder;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
+import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
@@ -82,5 +85,22 @@ public class BipedPose extends Pose<SBiped> {
 			rv.addAll( tunnel( child ) );
 		}
 		return rv;
+	}
+
+	public static BipedPose createPoseFromBiped( SBiped model, JointId[] arr ) {
+		List<JointKey> list = Collections.newArrayList();
+		for( JointId id : arr ) {
+			JointImp implementation = ImplementationAccessor.getImplementation( model.getJoint( id ) );
+			list.add( new JointKey( implementation.getLocalOrientation(), id ) );
+		}
+		BipedPoseBuilder builder = new BipedPoseBuilder();
+		for( JointKey key : list ) {
+			builder.addCustom( key.getOrientation(), key.getJointId() );
+		}
+		return builder.build();
+	}
+
+	public static BipedPose createPoseFromBiped( SBiped model ) {
+		return createPoseFromBiped( model, new BipedPose().getDefaultJoints() );
 	}
 }

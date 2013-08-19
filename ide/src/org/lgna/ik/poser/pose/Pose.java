@@ -44,6 +44,7 @@ package org.lgna.ik.poser.pose;
 
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.implementation.JointImp;
@@ -98,4 +99,24 @@ public abstract class Pose<S extends SJointedModel> {
 	}
 
 	public abstract PoseBuilder<Pose<S>> getBuilder();
+
+	public void applyToJointedModel( S model ) {
+		for( JointKey key : jointQPairs ) {
+			setOrientationOnly( model.getJoint( key.getJointId() ), new UnitQuaternion( key.getOrientation().createOrthogonalMatrix3x3() ) );
+		}
+	}
+
+	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model ) {
+		if( model instanceof SBiped ) {
+			return (Pose<T>)BipedPose.createPoseFromBiped( (SBiped)model );
+		}
+		return null;
+	}
+
+	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model, JointId[] arr ) {
+		if( model instanceof SBiped ) {
+			return (Pose<T>)BipedPose.createPoseFromBiped( (SBiped)model, arr );
+		}
+		return null;
+	}
 }
