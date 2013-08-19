@@ -49,6 +49,7 @@ public class TypeXmlUtitlities {
 	private static final String ROOT_TAG = "typeSummary";
 	private static final String TYPE_ELEMENT_TAG = "type";
 	private static final String RESOURCE_ELEMENT_TAG = "resource";
+	private static final String HIERARCHY_ELEMENT_TAG = "hierarchy";
 	private static final String PROCEDURE_ELEMENT_TAG = "procedure";
 	private static final String FUNCTION_ELEMENT_TAG = "function";
 	private static final String FIELD_ELEMENT_TAG = "field";
@@ -83,6 +84,13 @@ public class TypeXmlUtitlities {
 			} else {
 				resourceInfo = null;
 			}
+			java.util.List<String> hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			org.w3c.dom.NodeList hierarchyElementList = xmlElement.getElementsByTagName( HIERARCHY_ELEMENT_TAG );
+			for( int i = 0; i < hierarchyElementList.getLength(); i++ ) {
+				org.w3c.dom.Element procedureElement = (org.w3c.dom.Element)hierarchyElementList.item( i );
+				hierarchyClassNames.add( procedureElement.getAttribute( NAME_ATTRIBUTE ) );
+			}
+
 			java.util.List<String> procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			org.w3c.dom.NodeList procedureElementList = xmlElement.getElementsByTagName( PROCEDURE_ELEMENT_TAG );
 			for( int i = 0; i < procedureElementList.getLength(); i++ ) {
@@ -101,7 +109,7 @@ public class TypeXmlUtitlities {
 				org.w3c.dom.Element fieldElement = (org.w3c.dom.Element)fieldElementList.item( i );
 				fieldInfos.add( new FieldInfo( fieldElement.getAttribute( VALUE_CLASS_NAME_ATTRIBUTE ), fieldElement.getAttribute( NAME_ATTRIBUTE ) ) );
 			}
-			return new TypeSummary( typeSummaryVersion, typeName, resourceInfo, procedureNames, functionInfos, fieldInfos );
+			return new TypeSummary( typeSummaryVersion, typeName, hierarchyClassNames, resourceInfo, procedureNames, functionInfos, fieldInfos );
 		} else {
 			throw new org.lgna.project.VersionNotSupportedException( TypeSummary.MINIMUM_ACCEPTABLE_VERSION, typeSummaryVersion );
 		}
@@ -115,6 +123,12 @@ public class TypeXmlUtitlities {
 		org.w3c.dom.Element xmlType = rv.createElement( TYPE_ELEMENT_TAG );
 		xmlType.setAttribute( NAME_ATTRIBUTE, typeSummary.getTypeName() );
 		xmlTypeSummary.appendChild( xmlType );
+
+		for( String hierarchyClassName : typeSummary.getHierarchyClassNames() ) {
+			org.w3c.dom.Element xmlHeirarchy = rv.createElement( HIERARCHY_ELEMENT_TAG );
+			xmlHeirarchy.setAttribute( NAME_ATTRIBUTE, hierarchyClassName );
+			xmlTypeSummary.appendChild( xmlHeirarchy );
+		}
 
 		ResourceInfo resourceInfo = typeSummary.getResourceInfo();
 		if( resourceInfo != null ) {
@@ -156,6 +170,7 @@ public class TypeXmlUtitlities {
 		TypeSummary typeSummary = new TypeSummary(
 				TypeSummary.CURRENT_VERSION,
 				"Bunny",
+				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "Biped", "org.lgna.story.SBiped" ),
 				new ResourceInfo( "org.lgna.story.resources.biped.BunnyResource", "DEFAULT" ),
 				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "hop", "skip", "jump" ),
 				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new FunctionInfo( "java.lang.Boolean", "isHappy" ), new FunctionInfo( "Hurdle", "getClosestHurdle" ) ),

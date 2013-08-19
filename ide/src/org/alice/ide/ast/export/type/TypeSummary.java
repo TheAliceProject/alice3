@@ -49,8 +49,23 @@ public final class TypeSummary {
 	public static final double CURRENT_VERSION = 3.1;
 	public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
+	private static void addHierarchyClassNames( java.util.List<String> hierarchyClassNames, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		if( type != null ) {
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				hierarchyClassNames.add( javaType.getClassReflectionProxy().getReification().getName() );
+			} else {
+				hierarchyClassNames.add( type.getName() );
+				addHierarchyClassNames( hierarchyClassNames, type.getSuperType() );
+			}
+		} else {
+			//pass
+		}
+	}
+
 	private final double version;
 	private final String typeName;
+	private final java.util.List<String> hierarchyClassNames;
 	private final ResourceInfo resourceInfo;
 	private final java.util.List<String> procedureNames;
 	private final java.util.List<FunctionInfo> functionInfos;
@@ -59,6 +74,9 @@ public final class TypeSummary {
 	public TypeSummary( org.lgna.project.ast.NamedUserType type ) {
 		this.version = CURRENT_VERSION;
 		this.typeName = type.getName();
+
+		this.hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		addHierarchyClassNames( this.hierarchyClassNames, type.getSuperType() );
 
 		org.lgna.project.ast.Declaration declaration = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceFieldOrType( type );
 		if( declaration instanceof org.lgna.project.ast.JavaType ) {
@@ -89,10 +107,11 @@ public final class TypeSummary {
 		}
 	}
 
-	public TypeSummary( double version, String typeName, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
+	public TypeSummary( double version, String typeName, java.util.List<String> hierarchyClassNames, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
 		this.version = version;
 		this.typeName = typeName;
 		this.resourceInfo = resourceInfo;
+		this.hierarchyClassNames = hierarchyClassNames;
 		this.procedureNames = procedureNames;
 		this.functionInfos = functionInfos;
 		this.fieldInfos = fieldInfos;
@@ -104,6 +123,10 @@ public final class TypeSummary {
 
 	public String getTypeName() {
 		return this.typeName;
+	}
+
+	public java.util.List<String> getHierarchyClassNames() {
+		return this.hierarchyClassNames;
 	}
 
 	public ResourceInfo getResourceInfo() {
