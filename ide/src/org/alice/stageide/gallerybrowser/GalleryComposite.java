@@ -52,7 +52,8 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
-	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab );
+	private final ImportTab importTab = new ImportTab();
+	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab );
 
 	public GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
@@ -66,6 +67,7 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
+		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
 	}
 
 	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
@@ -75,5 +77,9 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	@Override
 	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
 		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
+	}
+
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+		return this.shapesTab.getDragModelForCls( cls );
 	}
 }

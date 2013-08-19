@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2011" creator="Laura Paoletti" name="ClownFish">
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="ClownFish" placeOnGround="TRUE">
     <BoundingBox>
-        <Min x="-0.1473308950662613" y="-0.020078133791685104" z="-0.12271638959646225"/>
-        <Max x="0.1473308950662613" y="0.2664870321750641" z="0.445412278175354"/>
+        <Min x="-0.1473308950662613" y="-0.130503848195076" z="-0.27490925788879395"/>
+        <Max x="0.1473308950662613" y="0.1560613065958023" z="0.2932194173336029"/>
     </BoundingBox>
     <Tags>
         <Tag>underwater</Tag>

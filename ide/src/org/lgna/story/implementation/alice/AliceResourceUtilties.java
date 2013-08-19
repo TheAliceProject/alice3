@@ -538,6 +538,13 @@ public class AliceResourceUtilties {
 		else
 		{
 			edu.cmu.cs.dennisc.scenegraph.SkeletonVisual visual = decodeVisual( resourceURL );
+			java.util.List<edu.cmu.cs.dennisc.scenegraph.qa.Problem> problems = edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspect( visual );
+			if( problems.size() > 0 ) {
+				Logger.errln( resourceURL );
+				for( edu.cmu.cs.dennisc.scenegraph.qa.Problem problem : problems ) {
+					Logger.errln( problem );
+				}
+			}
 			urlToVisualMap.put( resourceURL, visual );
 			return visual;
 		}

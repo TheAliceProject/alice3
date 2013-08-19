@@ -49,7 +49,7 @@ package org.alice.ide.projecturi;
 public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
 	private final java.io.File directory;
 
-	public DirectoryUriListData( final java.io.File directory ) {
+	public DirectoryUriListData( java.io.File directory ) {
 		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
 		this.directory = directory;
 	}

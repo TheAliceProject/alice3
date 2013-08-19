@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2011" creator="Laura Paoletti" name="PajamaFish">
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="PajamaFish" placeOnGround="TRUE">
     <BoundingBox>
         <Min x="-0.1140856221318245" y="-0.10589643567800522" z="-0.20159369707107544"/>
         <Max x="0.11412384361028671" y="0.5014652013778687" z="0.5067500472068787"/>

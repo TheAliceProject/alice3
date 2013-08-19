@@ -139,6 +139,7 @@ public class ModelResourceExporter {
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
+	private boolean placeOnGround = false;
 
 	private String attributionName;
 	private String attributionYear;
@@ -198,6 +199,10 @@ public class ModelResourceExporter {
 
 	public void setIsDeprecated( boolean isDeprecated ) {
 		this.isDeprecated = isDeprecated;
+	}
+
+	public void setPlaceOnGround( boolean placeOnGround ) {
+		this.placeOnGround = placeOnGround;
 	}
 
 	public void setShouldRecenter( boolean shouldRecenter ) {
@@ -676,6 +681,10 @@ public class ModelResourceExporter {
 			if( this.isDeprecated )
 			{
 				modelRoot.setAttribute( "deprecated", "TRUE" );
+			}
+			if( this.placeOnGround )
+			{
+				modelRoot.setAttribute( "placeOnGround", "TRUE" );
 			}
 			doc.appendChild( modelRoot );
 			if( this.boundingBoxes.get( this.className ) == null ) {

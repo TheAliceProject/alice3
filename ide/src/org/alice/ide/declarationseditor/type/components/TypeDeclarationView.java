@@ -104,6 +104,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel(
 					typeHeader,
 					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					composite.getImportOperation().createButton(),
 					composite.getExportOperation().createButton()
 					);
 			this.addComponent( header, Constraint.PAGE_START );

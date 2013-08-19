@@ -363,7 +363,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		if( this.videoPlayer != null ) {
 			//pass
 		} else {
-			this.videoPlayer = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
+			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilities.createVideoPlayer();
 			this.videoPlayer.setPainter( this.painter );
 			this.videoPlayer.addMediaListener( this.mediaListener );
 			if( this.uri != null ) {

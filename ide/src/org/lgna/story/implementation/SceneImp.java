@@ -224,14 +224,18 @@ public class SceneImp extends EntityImp {
 			//pass
 		} else {
 			org.lgna.story.EmployeesOnly.invokeHandleActiveChanged( this.getAbstraction(), isActive, activationCount );
-			this.fireSceneActivationListeners();
 		}
+		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		if( isActive ) {
 			this.addCamerasTo( programImp );
+			if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
+				//pass
+			} else {
+				this.fireSceneActivationListeners();
+			}
 		} else {
 			this.removeCamerasFrom( programImp );
 		}
-		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 	}
 
 	private int activeCount;
