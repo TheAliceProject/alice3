@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
-	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
+public class UriGalleryIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+	private final java.net.URI uri;
+	private final org.lgna.croquet.icon.IconFactory base;
+	private final java.awt.Dimension baseIconSize;
+	private final java.awt.Dimension defaultSize;
 
-	protected static java.awt.Dimension getDefaultLargeIconSize() {
-		return DEFAULT_LARGE_ICON_SIZE;
-	}
-
-	public GalleryDragModel( java.util.UUID migrationId ) {
-		super( migrationId );
-	}
-
-	public final boolean isClickAndClackAppropriate() {
-		//todo
-		return false;
-	}
-
-	public abstract String getText();
-
-	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
-
-	public java.awt.Dimension getIconSize() {
-		return DEFAULT_LARGE_ICON_SIZE;
-	}
-
-	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
-
-	@Override
-	public java.util.List<? extends org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors() {
-		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-		if( ide != null ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( sceneEditor.getDropReceptor() );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+	public UriGalleryIconFactory( java.net.URI uri, org.lgna.croquet.icon.IconFactory base, java.awt.Dimension baseIconSize, java.awt.Dimension defaultSize ) {
+		super( IsCachingDesired.TRUE );
+		this.uri = uri;
+		this.base = base;
+		this.baseIconSize = baseIconSize;
+		this.defaultSize = defaultSize;
 	}
 
 	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new UriGalleryIcon( size, this.base.getIcon( this.baseIconSize ) );
 	}
 
-	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return this.defaultSize;
 	}
-
-	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-	}
-
-	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-	}
-
-	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
-
-	public abstract boolean placeOnGround();
-
-	public abstract boolean isInstanceCreator();
 }

@@ -47,8 +47,6 @@ package org.alice.ide.croquet.components.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
-	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
-
 	private final java.awt.Color baseColor;
 	private final java.awt.Color highlightColor;
 	private final java.awt.Color shadowColor;
@@ -104,7 +102,6 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 171 );
 			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 255 );
 			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 181 );
-
 		}
 
 		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
@@ -125,7 +122,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 								javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
 								SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
 								superclsLabel.getAwtComponent().setIcon( icon );
-								this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
+								this.internalAddComponent( superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT );
 							}
 						}
 					}
@@ -136,17 +133,17 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "?", 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
 			label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.BOTTOM );
-			this.internalAddComponent( label, java.awt.BorderLayout.LINE_END );
+			this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
 		}
 
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
 		org.lgna.croquet.icon.IconFactory iconFactory = model.getIconFactory();
-		label.setIcon( iconFactory != null ? iconFactory.getIcon( DEFAULT_LARGE_ICON_SIZE ) : null );
+		label.setIcon( iconFactory != null ? iconFactory.getIcon( model.getIconSize() ) : null );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 
-		this.internalAddComponent( label );
+		this.internalAddComponent( label, GalleryDragLayoutManager.BASE_CONSTRAINT );
 		this.setBackgroundColor( this.baseColor );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
@@ -158,39 +155,64 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		return model.isClickAndClackAppropriate();
 	}
 
+	private static class GalleryDragLayoutManager implements java.awt.LayoutManager {
+		private static String BASE_CONSTRAINT = "TOP_LEFT_CONSTRAINT_BASE";
+		private static String TOP_LEFT_CONSTRAINT = "TOP_LEFT_CONSTRAINT";
+		private static String TOP_RIGHT_CONSTRAINT = "TOP_RIGHT_CONSTRAINT";
+
+		private final java.util.List<java.awt.Component> topLeftComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<java.awt.Component> topRightComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private java.awt.Component baseComponent;
+
+		public void addLayoutComponent( String name, java.awt.Component comp ) {
+			if( name.contentEquals( BASE_CONSTRAINT ) ) {
+				this.baseComponent = comp;
+			}
+			if( name.startsWith( TOP_LEFT_CONSTRAINT ) ) {
+				topLeftComponents.add( comp );
+			} else {
+				topRightComponents.add( comp );
+			}
+		}
+
+		public void removeLayoutComponent( java.awt.Component comp ) {
+		}
+
+		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			return new java.awt.Dimension();
+		}
+
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			//note: ridiculous 
+			java.awt.Dimension rv = this.baseComponent.getPreferredSize();
+			java.awt.Insets insets = parent.getInsets();
+			rv.width += insets.left + insets.right;
+			rv.height += insets.top + insets.bottom;
+			return rv;
+		}
+
+		public void layoutContainer( java.awt.Container parent ) {
+			//note: ridiculous 
+			java.awt.Insets insets = parent.getInsets();
+			java.awt.Dimension parentSize = parent.getSize();
+			final int N = parent.getComponentCount();
+			for( int i = 0; i < N; i++ ) {
+				java.awt.Component awtComponent = parent.getComponent( N - i - 1 );
+				awtComponent.setSize( awtComponent.getPreferredSize() );
+				awtComponent.setLocation( insets.left, insets.top );
+			}
+			for( java.awt.Component awtComponent : this.topLeftComponents ) {
+				awtComponent.setLocation( insets.left, insets.top );
+			}
+			for( java.awt.Component awtComponent : this.topRightComponents ) {
+				awtComponent.setLocation( parentSize.width - awtComponent.getWidth() - insets.right, insets.top );
+			}
+		}
+	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new java.awt.LayoutManager() {
-			public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
-			}
-
-			public void removeLayoutComponent( java.awt.Component comp ) {
-			}
-
-			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-				return new java.awt.Dimension();
-			}
-
-			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
-				//note: ridiculous 
-				java.awt.Dimension rv = parent.getComponent( parent.getComponentCount() - 1 ).getPreferredSize();
-				java.awt.Insets insets = parent.getInsets();
-				rv.width += insets.left + insets.right;
-				rv.height += insets.top + insets.bottom;
-				return rv;
-			}
-
-			public void layoutContainer( java.awt.Container parent ) {
-				//note: ridiculous 
-				java.awt.Insets insets = parent.getInsets();
-				final int N = parent.getComponentCount();
-				for( int i = 0; i < N; i++ ) {
-					java.awt.Component awtComponemt = parent.getComponent( N - i - 1 );
-					awtComponemt.setSize( awtComponemt.getPreferredSize() );
-					awtComponemt.setLocation( insets.left, insets.top );
-				}
-			}
-		};
+		return new GalleryDragLayoutManager();
 	}
 
 	@Override

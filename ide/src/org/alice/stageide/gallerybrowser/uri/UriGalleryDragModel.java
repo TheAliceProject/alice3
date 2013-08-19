@@ -45,7 +45,9 @@ package org.alice.stageide.gallerybrowser.uri;
 /**
  * @author Dennis Cosgrove
  */
-public class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
+public final class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
+	public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
+
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
@@ -62,6 +64,7 @@ public class UriGalleryDragModel extends org.alice.stageide.modelresource.Resour
 	private org.alice.ide.ast.export.type.TypeSummary typeSummary;
 	private org.alice.stageide.modelresource.ResourceKey resourceKey;
 	private Class<?> thingCls;
+	private org.alice.stageide.icons.UriGalleryIconFactory iconFactory;
 
 	private UriGalleryDragModel( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "9b784c07-6857-4f3f-83c4-ef6f2334c62a" ) );
@@ -293,16 +296,28 @@ public class UriGalleryDragModel extends org.alice.stageide.modelresource.Resour
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
-		if( resourceKey != null ) {
-			return resourceKey.getIconFactory();
+		if( this.iconFactory != null ) {
+			//pass
 		} else {
-			Class<?> thingCls = this.getThingCls();
-			if( thingCls != null ) {
-				return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( org.lgna.project.ast.JavaType.getInstance( thingCls ) );
+			org.lgna.croquet.icon.IconFactory base;
+			org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+			if( resourceKey != null ) {
+				base = resourceKey.getIconFactory();
 			} else {
-				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				Class<?> thingCls = this.getThingCls();
+				if( thingCls != null ) {
+					base = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( org.lgna.project.ast.JavaType.getInstance( thingCls ) );
+				} else {
+					base = org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				}
 			}
+			this.iconFactory = new org.alice.stageide.icons.UriGalleryIconFactory( this.uri, base, getDefaultLargeIconSize(), this.getIconSize() );
 		}
+		return this.iconFactory;
+	}
+
+	@Override
+	public java.awt.Dimension getIconSize() {
+		return URI_LARGE_ICON_SIZE;
 	}
 }
