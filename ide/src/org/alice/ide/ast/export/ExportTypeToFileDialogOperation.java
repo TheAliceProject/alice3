@@ -51,6 +51,7 @@ public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialog
 	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
 		this.type = type;
+		this.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
 	}
 
 	private java.io.File getDefaultDirectory() {

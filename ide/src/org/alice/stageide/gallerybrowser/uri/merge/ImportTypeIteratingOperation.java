@@ -42,6 +42,29 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
+class PlusFileIcon implements javax.swing.Icon {
+	private final javax.swing.Icon plusIcon;
+	private final javax.swing.Icon fileIcon;
+
+	public PlusFileIcon() {
+		this.fileIcon = org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+		this.plusIcon = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( this.fileIcon.getIconWidth(), this.fileIcon.getIconHeight() ) );
+	}
+
+	public int getIconWidth() {
+		return this.plusIcon.getIconWidth() + this.fileIcon.getIconWidth();
+	}
+
+	public int getIconHeight() {
+		return Math.max( this.plusIcon.getIconHeight(), this.fileIcon.getIconHeight() );
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		this.fileIcon.paintIcon( c, g, x, y );
+		this.plusIcon.paintIcon( c, g, x + this.fileIcon.getIconWidth(), y );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,6 +74,7 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	public ImportTypeIteratingOperation( org.lgna.project.ast.NamedUserType dstType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
 		this.dstType = dstType;
+		this.setButtonIcon( new PlusFileIcon() );
 	}
 
 	@Override
