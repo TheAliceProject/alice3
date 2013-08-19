@@ -78,4 +78,8 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
 		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
 	}
+
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+		return this.shapesTab.getDragModelForCls( cls );
+	}
 }

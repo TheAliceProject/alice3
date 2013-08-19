@@ -55,6 +55,7 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 	}
 
 	private org.alice.stageide.modelresource.ResourceKey resourceKey;
+	private Class<?> thingCls;
 	private java.net.URI uri;
 
 	private UriResourceKeyIteratingOperation() {
@@ -65,22 +66,35 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 		return this.resourceKey;
 	}
 
+	public Class<?> getThingCls() {
+		return this.thingCls;
+	}
+
 	public java.net.URI getUri() {
 		return this.uri;
 	}
 
-	public void setResourceKeyAndUri( org.alice.stageide.modelresource.ResourceKey resourceKey, java.net.URI uri ) {
+	public void setResourceKeyThingClsAndUri( org.alice.stageide.modelresource.ResourceKey resourceKey, Class<?> thingCls, java.net.URI uri ) {
 		this.resourceKey = resourceKey;
+		this.thingCls = thingCls;
 		this.uri = uri;
 	}
 
 	private int getStepCount() {
-		if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			return 3;
-		} else if( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
-			return 2;
+		if( this.resourceKey != null ) {
+			if( this.resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+				return 3;
+			} else if( this.resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
+				return 2;
+			} else {
+				return 0;
+			}
 		} else {
-			return 0;
+			if( this.thingCls != null ) {
+				return 2;
+			} else {
+				return 0;
+			}
 		}
 	}
 
@@ -152,7 +166,24 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 					return null;
 				}
 			} else {
-				return null;
+				if( this.thingCls != null ) {
+					switch( subSteps.size() ) {
+					case 0:
+						org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite composite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
+						org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );
+						if( dragModel != null ) {
+							return dragModel.getLeftButtonClickModel();
+						} else {
+							return null;
+						}
+					case 1:
+						return this.getMergeTypeOperation();
+					default:
+						return null;
+					}
+				} else {
+					return null;
+				}
 			}
 		} else {
 			//todo?
