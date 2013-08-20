@@ -381,6 +381,19 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 		{
 			return true;
 		}
+		//Check the base adapter to see if it's set to be alpha (through a sub 1 opacity setting)
+		//If it's alpha, return false
+		if( m_frontFacingAppearanceAdapter != null ) {
+			if( m_frontFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return false;
+			}
+		}
+		if( m_backFacingAppearanceAdapter != null ) {
+			if( m_backFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return false;
+			}
+		}
+		//Check to see if there are non-alpha textures or none "all" alpha values
 		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
 		{
 			if( m_frontFacingAppearanceAdapter != null ) {
@@ -398,6 +411,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 				TexturedAppearanceAdapter ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
 				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() )
 				{
+					ta.isAlphaBlended();
 					return true;
 				}
 			}

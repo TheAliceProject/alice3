@@ -529,7 +529,7 @@ public abstract class VirtualMachine {
 		try {
 			return mthd.invoke( instance, arguments );
 		} catch( IllegalArgumentException illegalArgumentException ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( illegalArgumentException, arguments );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( illegalArgumentException, instance, mthd, java.util.Arrays.toString( arguments ) );
 			throw illegalArgumentException;
 		} catch( IllegalAccessException illegalAccessException ) {
 			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), illegalAccessException );
