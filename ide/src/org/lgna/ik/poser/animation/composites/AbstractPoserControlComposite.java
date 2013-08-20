@@ -163,6 +163,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	}
 
 	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
+		System.out.println( "update Sphere: " + sphere.getJoint() );
 		switch( limb ) {
 		case LEFT_ARM:
 			leftArmAnchor.setValueTransactionlessly( sphere );

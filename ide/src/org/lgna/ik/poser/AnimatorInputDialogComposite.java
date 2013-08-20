@@ -50,6 +50,7 @@ import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
+import org.lgna.ik.poser.pose.BipedPose;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
@@ -62,7 +63,7 @@ import org.lgna.story.SetPose;
  */
 public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
 
-	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
+	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", BipedPose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
 

@@ -43,11 +43,13 @@
 package org.lgna.ik.poser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.alice.ide.IDE;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.components.SplitPane;
 import org.lgna.croquet.components.View;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.pose.Pose;
@@ -59,8 +61,12 @@ import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.StraightenOutJoints;
+import org.lgna.story.event.PointOfViewChangeListener;
+import org.lgna.story.event.PointOfViewEvent;
+import org.lgna.story.resources.JointId;
 
 import test.ik.croquet.SceneComposite;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -74,6 +80,7 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 	private final PoserScene scene;
 	private UserType<?> userType;
 	private T controlComposite;
+	private List<JointId> usedJoints = Collections.newArrayList();
 
 	private final SplitComposite splitComposite;
 
@@ -92,8 +99,24 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 		this.poser = new IkPoser();
 		controlComposite = this.createControlComposite();
 		sceneComposite = new SceneComposite();
+		sceneComposite.getView().setMinimumPreferredHeight( 400 );
+		sceneComposite.getView().setMinimumPreferredWidth( ( 400 * 16 ) / 9 );
 		this.splitComposite = createHorizontalSplitComposite( controlComposite, sceneComposite, 0.25 );
+		scene.addPointOfViewChangeListener( transformationListener, scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 	}
+
+	private PointOfViewChangeListener transformationListener = new PointOfViewChangeListener() {
+
+		@Override
+		public void pointOfViewChanged( PointOfViewEvent e ) {
+			if( isInitialized ) {
+				JointId jointId = ( (JointSelectionSphere)e.getEntity() ).getJoint().getJointId();
+				if( !usedJoints.contains( jointId ) ) {
+					usedJoints.add( jointId );
+				}
+			}
+		}
+	};
 
 	@Override
 	public void handlePreActivation() {
@@ -139,8 +162,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 			this.camera.move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
 			this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
 			this.biped.turnToFace( camera, new Duration( 0 ) );
-			isInitialized = true;
 			scene.initDragAdapter();
+			isInitialized = true;
 		}
 	}
 
@@ -152,8 +175,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 		scene.setAdapter( adapter );
 	}
 
-	public org.lgna.ik.poser.pose.Pose getPose() {
-		return org.lgna.ik.poser.pose.Pose.createPoseFromT( biped );
+	public Pose getPose() {
+		return org.lgna.ik.poser.pose.Pose.createPoseFromT( biped, usedJoints.toArray( new JointId[ 0 ] ) );
 	}
 
 	public void setPose( Pose pose ) {
@@ -174,7 +197,8 @@ public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserC
 
 	@Override
 	protected View createView() {
-		return splitComposite.getView();
+		SplitPane view = splitComposite.getView();
+		return view;
 	}
 
 	protected T getControlComposite() {

@@ -110,7 +110,6 @@ public abstract class ExpressionCreator {
 	protected abstract org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
 
 	public org.lgna.project.ast.Expression createExpression( Object value ) throws CannotCreateExpressionException {
-		System.out.println( "createExpression: " + value.getClass() );
 		if( value != null ) {
 			if( value instanceof Double ) {
 				return this.createDoubleExpression( (Double)value );

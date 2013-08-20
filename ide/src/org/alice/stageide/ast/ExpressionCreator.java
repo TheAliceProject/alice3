@@ -45,7 +45,6 @@ package org.alice.stageide.ast;
 
 import org.lgna.ik.poser.pose.JointKey;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
-import org.lgna.project.ast.Expression;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.Orientation;
@@ -205,13 +204,13 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	private static final Class<org.lgna.ik.poser.Pose.Builder> POSE_BUILDER_CLS = org.lgna.ik.poser.Pose.Builder.class;
-	private static final org.lgna.project.ast.JavaMethod RIGHT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	private static final org.lgna.project.ast.JavaMethod LEFT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	private static final org.lgna.project.ast.JavaMethod RIGHT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	private static final org.lgna.project.ast.JavaMethod LEFT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	private static final org.lgna.project.ast.JavaMethod BUILD_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "build" );
-
+	//	private static final Class<org.lgna.ik.poser.Pose.Builder> POSE_BUILDER_CLS = org.lgna.ik.poser.Pose.Builder.class;
+	//	private static final org.lgna.project.ast.JavaMethod RIGHT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
+	//	private static final org.lgna.project.ast.JavaMethod LEFT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
+	//	private static final org.lgna.project.ast.JavaMethod RIGHT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
+	//	private static final org.lgna.project.ast.JavaMethod LEFT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
+	//	private static final org.lgna.project.ast.JavaMethod BUILD_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "build" );
+	//
 	//	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.Pose pose ) {
 	//		if( pose != null ) {
 	//			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( POSE_BUILDER_CLS );
@@ -252,27 +251,21 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "addCustom", Orientation.class, JointId.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
-	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.pose.Pose pose ) {
+	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.pose.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
 			PoseBuilder builder = pose.getBuilder();
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
 			org.lgna.project.ast.Expression prevExpression = null;
 			for( JointKey key : pose.getJointKeys() ) {
-				edu.cmu.cs.dennisc.math.Orientation orientation = key.getOrientation();
-				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression0, ADD_CUSTOM
-						, this.createOrientationExpression( key.getLGNAOrientation() ), this.createJointIdExpression( key.getJointId() ) );
+				org.lgna.story.Orientation orientation = key.getLGNAOrientation();
+				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression == null ? builderExpression0 : prevExpression, ADD_CUSTOM
+						, this.createOrientationExpression( orientation ), this.createJointIdExpression( key.getJointId() ) );
 			}
 			assert prevExpression != null;
-			System.out.println( "HELLO" );
 			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );
 		} else {
-			System.out.println( "NULL" );
 			return new org.lgna.project.ast.NullLiteral();
 		}
-	}
-
-	private Expression createJointIdExpression( JointId jointId ) {
-		return null;
 	}
 
 	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
@@ -325,7 +318,6 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			//		} else if( value instanceof org.lgna.ik.poser.Pose ) {
 			//			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
 		} else if( value instanceof org.lgna.ik.poser.pose.Pose<?> ) {
-			System.out.println( "YOYOYO" );
 			return this.createPoseExpression( (org.lgna.ik.poser.pose.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
