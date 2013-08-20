@@ -497,6 +497,28 @@ public abstract class VirtualMachine {
 		}
 	}
 
+	private static void checkArguments( Class<?>[] parameterTypes, Object[] arguments, IllegalArgumentException iae, String text ) {
+		if( parameterTypes.length != arguments.length ) {
+			throw new RuntimeException( "wrong number of arguments.  exprected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
+		}
+		int i = 0;
+		for( Class<?> parameterType : parameterTypes ) {
+			Object argument = arguments[ i ];
+			if( argument != null ) {
+				if( parameterType.isPrimitive() ) {
+					//todo
+				} else {
+					if( parameterType.isAssignableFrom( argument.getClass() ) ) {
+						//pass
+					} else {
+						throw new RuntimeException( "parameterType[" + i + "] " + parameterType.getName() + " is not assignable from argument[" + i + "]: " + argument + ". " + text, iae );
+					}
+				}
+			}
+			i++;
+		}
+	}
+
 	protected Object invokeMethodDeclaredInJava( Object instance, org.lgna.project.ast.JavaMethod method, Object... arguments ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
@@ -529,7 +551,7 @@ public abstract class VirtualMachine {
 		try {
 			return mthd.invoke( instance, arguments );
 		} catch( IllegalArgumentException illegalArgumentException ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( illegalArgumentException, instance, mthd, java.util.Arrays.toString( arguments ) );
+			checkArguments( mthd.getParameterTypes(), arguments, illegalArgumentException, edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ) );
 			throw illegalArgumentException;
 		} catch( IllegalAccessException illegalAccessException ) {
 			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), illegalAccessException );
