@@ -40,26 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge;
+package org.alice.stageide.gallerybrowser.uri.merge.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class IsDeclarationImportDesiredState<T extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.BooleanState {
-	private T declaration;
+public final class ImportOnlyMethod {
+	private final org.lgna.project.ast.UserMethod importMethod;
+	private final IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> state;
 
-	public IsDeclarationImportDesiredState( T declaration ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), true );
-		this.declaration = declaration;
+	public ImportOnlyMethod( org.lgna.project.ast.UserMethod importMethod ) {
+		this.importMethod = importMethod;
+		this.state = new IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>( this.importMethod );
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalse( this.declaration.getName() );
+	public org.lgna.project.ast.UserMethod getImportMethod() {
+		return this.importMethod;
 	}
 
-	public T getDeclaration() {
-		return this.declaration;
+	public IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> getState() {
+		return this.state;
 	}
 }

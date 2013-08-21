@@ -47,42 +47,60 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  */
 public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD };
+	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 	private static final String HEADER_CONSTRAINT = "gap 16, wrap";
 	private static final String DECLARATION_CHECK_BOX_CONSTRAINT = "gap 32, wrap";
+	private static final String DECLARATION_LABEL_CONSTRAINT = "gap 32, wrap";
 
-	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() );
+	private static java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
+	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createHeaderLabel( org.lgna.croquet.PlainStringValue stringValue ) {
-		org.lgna.croquet.components.AbstractLabel headerLabel = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
-		headerLabel.setIcon( PLUS_ICON );
-		return headerLabel;
+		org.lgna.croquet.components.AbstractLabel rv = stringValue.createLabel( 1.2f, HEADER_TEXT_ATTRIBUTES );
+		return rv;
+	}
+
+	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.UserMethod method, String bonusText ) {
+		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( method.name.getValue() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
+		rv.setIcon( EMPTY_ICON );
+		return rv;
 	}
 
 	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) ), "wrap" );
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isProcedureImportDesiredStates = composite.getIsProcedureImportDesiredStates();
-		if( isProcedureImportDesiredStates.size() > 0 ) {
-			this.addComponent( createHeaderLabel( composite.getProceduresHeader() ), HEADER_CONSTRAINT );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isProcedureImportDesiredState : isProcedureImportDesiredStates ) {
-				this.addComponent( isProcedureImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
-			}
-		}
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod>> isFunctionImportDesiredStates = composite.getIsFunctionImportDesiredStates();
-		if( isFunctionImportDesiredStates.size() > 0 ) {
-			this.addComponent( createHeaderLabel( composite.getFunctionsHeader() ), HEADER_CONSTRAINT );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserMethod> isFunctionImportDesiredState : isFunctionImportDesiredStates ) {
-				this.addComponent( isFunctionImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
-			}
-		}
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>> isFieldImportDesiredStates = composite.getIsFieldImportDesiredStates();
-		if( isFunctionImportDesiredStates.size() > 0 ) {
+		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ), 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+		this.addComponent( classLabel, "wrap" );
+		this.addTypeMethodCategorization( composite.getProcedureCategorization(), composite.getProceduresHeader() );
+		this.addTypeMethodCategorization( composite.getFunctionCategorization(), composite.getFunctionsHeader() );
+
+		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField>> isFieldImportDesiredStates = composite.getIsFieldImportDesiredStates();
+		if( isFieldImportDesiredStates.size() > 0 ) {
 			this.addComponent( createHeaderLabel( composite.getFieldsHeader() ), HEADER_CONSTRAINT );
-			for( org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField> isFieldImportDesiredState : isFieldImportDesiredStates ) {
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.IsDeclarationImportDesiredState<org.lgna.project.ast.UserField> isFieldImportDesiredState : isFieldImportDesiredStates ) {
 				this.addComponent( isFieldImportDesiredState.createCheckBox(), DECLARATION_CHECK_BOX_CONSTRAINT );
 			}
 		}
 
-		this.addComponent( new org.lgna.croquet.components.Label( composite.getLabelText() ) );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
+	}
+
+	private void addTypeMethodCategorization( org.alice.stageide.gallerybrowser.uri.merge.data.TypeMethodCategorization categorization, org.lgna.croquet.PlainStringValue header ) {
+		if( categorization.getTotalCount() > 0 ) {
+			this.addComponent( createHeaderLabel( header ), HEADER_CONSTRAINT );
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMethod importOnlyMethod : categorization.getImportOnlyMethods() ) {
+				org.lgna.croquet.components.CheckBox checkBox = importOnlyMethod.getState().createCheckBox();
+				checkBox.getAwtComponent().setIcon( PLUS_ICON );
+				this.addComponent( checkBox, DECLARATION_CHECK_BOX_CONSTRAINT );
+			}
+
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalMethods identicalMethods : categorization.getIdenticalMethods() ) {
+				this.addComponent( createNoOpLabel( identicalMethods.getProjectMethod(), " (identical)" ), DECLARATION_LABEL_CONSTRAINT );
+			}
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMethod projectOnlyMethod : categorization.getProjectOnlyMethods() ) {
+				this.addComponent( createNoOpLabel( projectOnlyMethod.getProjectMethod(), "" ), DECLARATION_LABEL_CONSTRAINT );
+			}
+		}
 	}
 }

@@ -40,67 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.gallerybrowser.uri.merge.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlusIcon extends ShapeIcon {
-	public PlusIcon( java.awt.Dimension size ) {
-		super( size );
+public final class DifferentImplementationMethods {
+	private final org.lgna.project.ast.UserMethod projectMethod;
+	private final org.lgna.project.ast.UserMethod importMethod;
+
+	public DifferentImplementationMethods( org.lgna.project.ast.UserMethod projectMethod, org.lgna.project.ast.UserMethod importMethod ) {
+		this.projectMethod = projectMethod;
+		this.importMethod = importMethod;
 	}
 
-	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
-		float diameter = Math.min( width, height ) * portion;
-		float x = ( width - diameter ) / 2;
-		float y = ( height - diameter ) / 2;
-		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
+	public org.lgna.project.ast.UserMethod getImportMethod() {
+		return this.importMethod;
 	}
 
-	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		boolean isSelectionApplicableAndUnselected;
-		boolean isArmed;
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			isArmed = buttonModel.isArmed();
-			if( button instanceof javax.swing.JToggleButton ) {
-				isSelectionApplicableAndUnselected = buttonModel.isSelected() == false;
-			} else {
-				isSelectionApplicableAndUnselected = false;
-			}
-		} else {
-			isArmed = false;
-			isSelectionApplicableAndUnselected = false;
-		}
-		if( isSelectionApplicableAndUnselected ) {
-			g2.setPaint( java.awt.Color.LIGHT_GRAY );
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.DARK_GRAY );
-		}
-		g2.fill( createEllipse( 1.0f, width, height ) );
-
-		if( isSelectionApplicableAndUnselected ) {
-			//pass
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.GRAY : java.awt.Color.LIGHT_GRAY );
-			g2.fill( createEllipse( 0.9f, width, height ) );
-		}
-
-		float halfStrokeSize = 0.075f;
-		float shortPosition = 0.5f - halfStrokeSize;
-		float shortLength = halfStrokeSize * 2.0f;
-
-		float longPosition = 0.2f;
-		float longLength = 1.0f - ( longPosition * 2.0f );
-
-		if( isSelectionApplicableAndUnselected ) {
-			g2.setPaint( java.awt.Color.GRAY );
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.BLACK );
-		}
-		g2.fill( new java.awt.geom.Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
-		g2.fill( new java.awt.geom.Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
+	public org.lgna.project.ast.UserMethod getProjectMethod() {
+		return this.projectMethod;
 	}
 }
