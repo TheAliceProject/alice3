@@ -146,13 +146,29 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		return this.thingCls;
 	}
 
+	private void appendStartIfNecessary( StringBuilder sb ) {
+		if( sb.length() > 0 ) {
+			//pass
+		} else {
+			sb.append( "<html>" );
+			java.io.File file = new java.io.File( this.uri );
+			if( file.exists() ) {
+				sb.append( "add from file: <strong>" );
+				sb.append( file.getName() );
+				sb.append( "</strong><p><p>" );
+			} else {
+				//todo
+			}
+		}
+	}
+
 	public String getTypeSummaryToolTipText() {
 		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
 		if( typeSummary != null ) {
 			StringBuilder sb = new StringBuilder();
 			java.util.List<String> procedureNames = typeSummary.getProcedureNames();
 			if( procedureNames.size() > 0 ) {
-				sb.append( "<html>" );
+				this.appendStartIfNecessary( sb );
 				sb.append( "<em>procedures:</em><ul>" );
 				for( String procedureName : procedureNames ) {
 					sb.append( "<li><strong>" );
@@ -164,11 +180,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 			java.util.List<org.alice.ide.ast.export.type.FunctionInfo> functionInfos = typeSummary.getFunctionInfos();
 			if( functionInfos.size() > 0 ) {
-				if( sb.length() > 0 ) {
-					//sb.append( "<br>" );
-				} else {
-					sb.append( "<html>" );
-				}
+				this.appendStartIfNecessary( sb );
 				sb.append( "<em>functions:</em><ul>" );
 				for( org.alice.ide.ast.export.type.FunctionInfo functionInfo : functionInfos ) {
 					sb.append( "<li>" );
@@ -181,11 +193,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			}
 			java.util.List<org.alice.ide.ast.export.type.FieldInfo> fieldInfos = typeSummary.getFieldInfos();
 			if( fieldInfos.size() > 0 ) {
-				if( sb.length() > 0 ) {
-					//sb.append( "<br>" );
-				} else {
-					sb.append( "<html>" );
-				}
+				this.appendStartIfNecessary( sb );
 				sb.append( "<em>properties:</em><ul>" );
 				for( org.alice.ide.ast.export.type.FieldInfo fieldInfo : fieldInfos ) {
 					sb.append( "<li>" );
