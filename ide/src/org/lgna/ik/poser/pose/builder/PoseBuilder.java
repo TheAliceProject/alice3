@@ -46,10 +46,12 @@ import java.util.List;
 
 import org.lgna.ik.poser.pose.JointKey;
 import org.lgna.ik.poser.pose.Pose;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.math.Orientation;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 
 /**
  * @author Matt May
@@ -59,7 +61,8 @@ public abstract class PoseBuilder<P extends Pose<?>> {
 	private final List<JointKey> keys = Collections.newArrayList();
 
 	public PoseBuilder<P> addCustom( Orientation orientation, JointId jointid ) {
-		this.keys.add( new JointKey( orientation, jointid ) );
+		edu.cmu.cs.dennisc.math.Orientation mathOrientation = new OrthogonalMatrix3x3( ImplementationAccessor.getOrthogonalMatrix3x3( orientation ) );
+		this.keys.add( new JointKey( mathOrientation, jointid ) );
 		return this;
 	}
 

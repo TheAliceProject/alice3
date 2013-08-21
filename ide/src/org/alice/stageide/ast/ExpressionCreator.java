@@ -45,9 +45,8 @@ package org.alice.stageide.ast;
 
 import org.lgna.ik.poser.pose.JointKey;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.math.Orientation;
 
 /**
  * @author Dennis Cosgrove
@@ -257,7 +256,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
 			org.lgna.project.ast.Expression prevExpression = null;
 			for( JointKey key : pose.getJointKeys() ) {
-				org.lgna.story.Orientation orientation = key.getLGNAOrientation();
+				Orientation orientation = key.getLGNAOrientation();
 				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression == null ? builderExpression0 : prevExpression, ADD_CUSTOM
 						, this.createOrientationExpression( orientation ), this.createJointIdExpression( key.getJointId() ) );
 			}

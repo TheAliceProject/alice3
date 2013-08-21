@@ -135,7 +135,7 @@ public class KeyFrameData {
 		}
 		PoseBuilder builder = pose1.getBuilder();
 		for( JointKey key : builderList ) {
-			builder.addCustom( key.getOrientation(), key.getJointId() );
+			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
 		}
 		return builder.build();
 

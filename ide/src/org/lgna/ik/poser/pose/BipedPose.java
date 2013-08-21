@@ -95,7 +95,7 @@ public class BipedPose extends Pose<SBiped> {
 		}
 		BipedPoseBuilder builder = new BipedPoseBuilder();
 		for( JointKey key : list ) {
-			builder.addCustom( key.getOrientation(), key.getJointId() );
+			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
 		}
 		return builder.build();
 	}
