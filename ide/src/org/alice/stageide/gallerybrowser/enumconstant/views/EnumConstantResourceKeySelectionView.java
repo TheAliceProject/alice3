@@ -48,10 +48,13 @@ package org.alice.stageide.gallerybrowser.enumconstant.views;
 public class EnumConstantResourceKeySelectionView extends org.lgna.croquet.components.BorderPanel {
 	public EnumConstantResourceKeySelectionView( org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite ) {
 		super( composite );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
 		org.lgna.croquet.components.List<org.alice.stageide.modelresource.EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
 		list.setCellRenderer( new org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer() );
 		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
+		list.setBackgroundColor( this.getBackgroundColor() );
+		list.enableClickingDefaultButtonOnDoubleClick();
 		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( list ) );
 	}
 }
