@@ -58,7 +58,11 @@ public class BufferedImageTexture extends Texture {
 		super( binaryDecoder );
 		byte[] buffer = binaryDecoder.decodeByteArray();
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( buffer );
-		setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
+		try {
+			setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( binaryDecoder.toString(), ioe );
+		}
 	}
 
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
