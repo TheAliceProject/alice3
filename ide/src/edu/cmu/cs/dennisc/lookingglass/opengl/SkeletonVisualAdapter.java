@@ -411,7 +411,6 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 				TexturedAppearanceAdapter ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
 				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() )
 				{
-					ta.isAlphaBlended();
 					return true;
 				}
 			}
