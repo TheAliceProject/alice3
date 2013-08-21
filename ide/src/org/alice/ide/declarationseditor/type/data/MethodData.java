@@ -53,7 +53,7 @@ public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast
 
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		if( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
+		if( ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) || org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods.getInstance().getValue() ) {
 			org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
 			if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
 				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();

@@ -119,17 +119,17 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 						}
 					}
 					boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
-					wereOccluded.get( changedEntity ).put( m, doTheseOcclude );
-					wereOccluded.get( m ).put( (SModel)changedEntity, doTheseOcclude );
+					wereOccluded.get( changedEntity ).put( m, AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m ) );
+					wereOccluded.get( m ).put( (SModel)changedEntity, AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity ) );
 				}
 			}
 		}
 
 		private boolean check( Object occList, SModel changedEntity, SModel m ) {
 			if( occList instanceof OcclusionStartListener ) {
-				return !wereOccluded.get( m ).get( changedEntity ) && AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
+				return !wereOccluded.get( changedEntity ).get( m ) && AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
 			} else if( occList instanceof OcclusionEndListener ) {
-				return wereOccluded.get( m ).get( changedEntity ) && !AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
+				return wereOccluded.get( changedEntity ).get( m ) && !AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
 			}
 			Logger.errln( "UNHANDLED OcclusionListener TYPE", occList.getClass() );
 			return false;

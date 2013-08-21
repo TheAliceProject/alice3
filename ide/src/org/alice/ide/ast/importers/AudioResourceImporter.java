@@ -43,18 +43,13 @@
 
 package org.alice.ide.ast.importers;
 
-import java.io.File;
-
 /**
  * @author Dennis Cosgrove
  */
 public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.AudioResource> {
-
 	private static class SingletonHolder {
 		private static AudioResourceImporter instance = new AudioResourceImporter();
 	}
-
-	private static final String SOUND_GALLERY_NAME = "soundGallery";
 
 	public static AudioResourceImporter getInstance() {
 		return SingletonHolder.instance;
@@ -63,22 +58,10 @@ public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<or
 	private AudioResourceImporter() {
 		super(
 				java.util.UUID.randomUUID(),
-				getDefaultDirectory(),
+				org.alice.ide.IdeDirectoryUtilities.getSoundGalleryDirectory(),
 				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
 				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
 				"mp3", "wav", "au" );
-	}
-
-	private static File getDefaultDirectory() {
-		String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
-		File rv = new File( installPath );
-		File[] list = rv.listFiles();
-		for( File str : list ) {
-			if( str.getName().equals( SOUND_GALLERY_NAME ) && str.isDirectory() ) {
-				return str;
-			}
-		}
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
 	}
 
 	@Override

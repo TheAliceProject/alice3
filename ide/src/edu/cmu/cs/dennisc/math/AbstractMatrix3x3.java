@@ -166,6 +166,10 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		return right.isNaN() || up.isNaN() || backward.isNaN();
 	}
 
+	public boolean isZero() {
+		return right.isZero() && up.isZero() && backward.isZero();
+	}
+
 	public static AbstractMatrix3x3 setReturnValueToIdentity( AbstractMatrix3x3 rv ) {
 		rv.right.set( 1, 0, 0 );
 		rv.up.set( 0, 1, 0 );

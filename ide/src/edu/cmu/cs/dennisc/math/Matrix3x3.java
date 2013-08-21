@@ -103,10 +103,6 @@ public final class Matrix3x3 extends AbstractMatrix3x3 {
 		setReturnValueToZero( this );
 	}
 
-	public boolean isZero() {
-		return right.isZero() && up.isZero() && backward.isZero();
-	}
-
 	//	public void setToOrientationComponentOf( Matrix4x4 m ) {
 	//		this.right.x = m.right.x;
 	//		this.up.x = m.up.x;

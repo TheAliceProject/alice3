@@ -105,6 +105,9 @@ public class BillboardImp extends VisualScaleModelImp {
 			v3.position.x = +x;
 			v3.position.y = 1;
 			v3.position.z = 0;
+
+			//Set the vertices property to trigger the property change
+			this.sgGeometry.vertices.setValue( this.sgVertices );
 		}
 
 		private int getIndex( int i ) {
@@ -145,30 +148,49 @@ public class BillboardImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XY_PLANE };
-	}
-
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		//todo
-		assert resizer == Resizer.XY_PLANE : resizer;
-		return this.getScale().x;
-	}
-
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		//todo
-		assert resizer == Resizer.XY_PLANE : resizer;
-		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
-	}
-
-	@Override
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		this.setScale( getScaleForSize( size ) );
 	}
 
-	private void updateAspectRatio() {
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS };
+	}
+
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XY_PLANE ) {
+			return this.getScale().x;
+		} else if( resizer == Resizer.X_AXIS ) {
+			return this.getScale().x;
+		} else if( resizer == Resizer.Y_AXIS ) {
+			return this.getScale().y;
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( value > 0.0 ) {
+			double zScale = this.getScale().z;
+			if( resizer == Resizer.XY_PLANE ) {
+				double scaleChange = value / this.getScale().x;
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y * scaleChange, zScale ) );
+			} else if( resizer == Resizer.X_AXIS ) {
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y, zScale ) );
+			} else if( resizer == Resizer.Y_AXIS ) {
+				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( this.getScale().x, value, zScale ) );
+			} else {
+				assert false : resizer;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
+		}
+	}
+
+	public void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
 
