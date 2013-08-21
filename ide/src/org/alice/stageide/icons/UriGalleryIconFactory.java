@@ -45,6 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class UriGalleryIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final java.net.URI uri;
 	private final org.lgna.croquet.icon.IconFactory base;

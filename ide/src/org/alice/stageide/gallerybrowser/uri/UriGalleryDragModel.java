@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser.uri;
  * @author Dennis Cosgrove
  */
 public final class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
-	public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
+	//public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
 
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
@@ -62,9 +62,9 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	private String text;
 	private java.util.Map<String, byte[]> mapFilenameToExtractedData;
 	private org.alice.ide.ast.export.type.TypeSummary typeSummary;
-	private org.alice.stageide.modelresource.ResourceKey resourceKey;
+	private org.alice.stageide.modelresource.InstanceCreatorKey resourceKey;
 	private Class<?> thingCls;
-	private org.alice.stageide.icons.UriGalleryIconFactory iconFactory;
+	private org.lgna.croquet.icon.IconFactory iconFactory;
 
 	private UriGalleryDragModel( java.net.URI uri ) {
 		super( java.util.UUID.fromString( "9b784c07-6857-4f3f-83c4-ef6f2334c62a" ) );
@@ -102,7 +102,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		return this.typeSummary;
 	}
 
-	private org.alice.stageide.modelresource.ResourceKey getResourceKey() {
+	public org.alice.stageide.modelresource.InstanceCreatorKey getResourceKey() {
 		if( this.resourceKey != null ) {
 			//pass
 		} else {
@@ -213,7 +213,18 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		super.localize();
 		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
 		String typeName = typeSummary != null ? typeSummary.getTypeName() : "???";
-		this.text = "new " + typeName + "()";
+
+		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
+		if( resourceKey != null ) {
+			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
+			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
+				this.text = typeName;
+			} else {
+				this.text = resourceKey.getDisplayText();
+			}
+		} else {
+			this.text = "new " + typeName + "()";
+		}
 	}
 
 	@Override
@@ -223,7 +234,17 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 	@Override
 	public boolean isInstanceCreator() {
-		return true;
+		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
+		if( resourceKey != null ) {
+			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
+			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -253,11 +274,19 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			Class<? extends org.lgna.story.resources.ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
 			Class<?> thingCls = this.getThingCls();
-			java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
-				rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ), thingCls, this.uri ) );
+			if( modelResourceClass != null ) {
+				if( modelResourceClass.isEnum() ) {
+					java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
+						rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ), thingCls, this.uri ) );
+					}
+					return rv;
+				} else {
+					return java.util.Collections.emptyList();
+				}
+			} else {
+				return java.util.Collections.emptyList();
 			}
-			return rv;
 		} else {
 			return java.util.Collections.emptyList();
 		}
@@ -311,13 +340,14 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 					base = org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				}
 			}
-			this.iconFactory = new org.alice.stageide.icons.UriGalleryIconFactory( this.uri, base, getDefaultLargeIconSize(), this.getIconSize() );
+			//this.iconFactory = new org.alice.stageide.icons.UriGalleryIconFactory( this.uri, base, getDefaultLargeIconSize(), this.getIconSize() );
+			this.iconFactory = base;
 		}
 		return this.iconFactory;
 	}
 
-	@Override
-	public java.awt.Dimension getIconSize() {
-		return URI_LARGE_ICON_SIZE;
-	}
+	//	@Override
+	//	public java.awt.Dimension getIconSize() {
+	//		return URI_LARGE_ICON_SIZE;
+	//	}
 }
