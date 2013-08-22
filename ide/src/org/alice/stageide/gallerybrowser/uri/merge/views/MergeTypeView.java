@@ -52,8 +52,8 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 	private static final String DECLARATION_CHECK_BOX_CONSTRAINT = "gap 32, wrap";
 	private static final String DECLARATION_LABEL_CONSTRAINT = "gap 32, wrap";
 
-	private static java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
-	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 32, 22 );
+	private static javax.swing.Icon PLUS_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE );
 	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createHeaderLabel( org.lgna.croquet.PlainStringValue stringValue ) {

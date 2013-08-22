@@ -57,34 +57,32 @@ public class PlusIcon extends ShapeIcon {
 		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
 	}
 
-	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		boolean isSelectionApplicableAndUnselected;
-		boolean isArmed;
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			isArmed = buttonModel.isArmed();
-			if( button instanceof javax.swing.JToggleButton ) {
-				isSelectionApplicableAndUnselected = buttonModel.isSelected() == false;
-			} else {
-				isSelectionApplicableAndUnselected = false;
-			}
-		} else {
-			isArmed = false;
-			isSelectionApplicableAndUnselected = false;
-		}
-		if( isSelectionApplicableAndUnselected ) {
-			g2.setPaint( java.awt.Color.LIGHT_GRAY );
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.DARK_GRAY );
-		}
-		g2.fill( createEllipse( 1.0f, width, height ) );
+	protected java.awt.Paint getOuterRingPaint( javax.swing.ButtonModel buttonModel ) {
+		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+		return isArmed ? java.awt.Color.WHITE : java.awt.Color.DARK_GRAY;
+	}
 
-		if( isSelectionApplicableAndUnselected ) {
-			//pass
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.GRAY : java.awt.Color.LIGHT_GRAY );
+	protected java.awt.Paint getInnerCirclePaint( javax.swing.ButtonModel buttonModel ) {
+		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+		return isArmed ? java.awt.Color.GRAY : java.awt.Color.LIGHT_GRAY;
+	}
+
+	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
+		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+		return isArmed ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+	}
+
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint, javax.swing.ButtonModel buttonModel ) {
+		java.awt.Paint paint;
+		paint = this.getOuterRingPaint( buttonModel );
+		if( paint != null ) {
+			g2.setPaint( paint );
+			g2.fill( createEllipse( 1.0f, width, height ) );
+		}
+
+		paint = this.getInnerCirclePaint( buttonModel );
+		if( paint != null ) {
+			g2.setPaint( paint );
 			g2.fill( createEllipse( 0.9f, width, height ) );
 		}
 
@@ -95,12 +93,23 @@ public class PlusIcon extends ShapeIcon {
 		float longPosition = 0.2f;
 		float longLength = 1.0f - ( longPosition * 2.0f );
 
-		if( isSelectionApplicableAndUnselected ) {
-			g2.setPaint( java.awt.Color.GRAY );
-		} else {
-			g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.BLACK );
+		paint = this.getPlusPaint( buttonModel );
+		if( paint != null ) {
+			g2.setPaint( paint );
+			g2.fill( new java.awt.geom.Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
+			g2.fill( new java.awt.geom.Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
 		}
-		g2.fill( new java.awt.geom.Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
-		g2.fill( new java.awt.geom.Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
+	}
+
+	@Override
+	protected final void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		javax.swing.ButtonModel buttonModel;
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			buttonModel = button.getModel();
+		} else {
+			buttonModel = null;
+		}
+		this.paintIcon( c, g2, width, height, fillPaint, drawPaint, buttonModel );
 	}
 }
