@@ -68,6 +68,10 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final org.lgna.croquet.PlainStringValue functionsHeader = this.createStringValue( this.createKey( "functionsHeader" ) );
 	private final org.lgna.croquet.PlainStringValue fieldsHeader = this.createStringValue( this.createKey( "fieldsHeader" ) );
 
+	private final AddProceduresComposite addProceduresComposite = this.registerSubComposite( new AddProceduresComposite() );
+	private final AddFunctionsComposite addFunctionsComposite = this.registerSubComposite( new AddFunctionsComposite() );
+	private final AddFieldsComposite addFieldsComposite = this.registerSubComposite( new AddFieldsComposite() );
+
 	private boolean isManagementLevelAppropriate( org.lgna.project.ast.UserMethod method ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
 		return ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE );
@@ -152,6 +156,18 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			this.fieldsToChooseInitializer = null;
 			this.fieldsToIgnore = null;
 		}
+	}
+
+	public AddProceduresComposite getAddProceduresComposite() {
+		return this.addProceduresComposite;
+	}
+
+	public AddFunctionsComposite getAddFunctionsComposite() {
+		return this.addFunctionsComposite;
+	}
+
+	public AddFieldsComposite getAddFieldsComposite() {
+		return this.addFieldsComposite;
 	}
 
 	public org.alice.stageide.gallerybrowser.uri.merge.data.TypeMethodCategorization getProcedureCategorization() {

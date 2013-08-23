@@ -67,11 +67,24 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 		return rv;
 	}
 
+	private void addToolPaletteView( org.lgna.croquet.ToolPaletteCoreComposite composite ) {
+		org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
+		toolPaletteView.getTitle().setInert( true );
+		toolPaletteView.getTitle().setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
+		toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		this.addComponent( composite.getOuterComposite().getRootComponent(), "grow, shrink, gap 16, wrap" );
+	}
+
 	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
-		super( composite );
+		super( composite, "fillx" );
 		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ), 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "wrap" );
+
+		this.addToolPaletteView( composite.getAddProceduresComposite() );
+		this.addToolPaletteView( composite.getAddFunctionsComposite() );
+		this.addToolPaletteView( composite.getAddFieldsComposite() );
+
 		this.addTypeMethodCategorization( composite.getProcedureCategorization(), composite.getProceduresHeader() );
 		this.addTypeMethodCategorization( composite.getFunctionCategorization(), composite.getFunctionsHeader() );
 
