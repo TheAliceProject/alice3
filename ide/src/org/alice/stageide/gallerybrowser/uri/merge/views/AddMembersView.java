@@ -46,10 +46,35 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView extends org.lgna.croquet.components.MigPanel {
-	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?> composite, java.awt.Color backgroundColor ) {
+	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
+	private static final String DECLARATION_CONSTRAINT = "gap 8, wrap";
+
+	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 32, 22 );
+	private static javax.swing.Icon PLUS_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE );
+	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+
+	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Declaration declaration, String bonusText ) {
+		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( declaration.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
+		rv.setIcon( EMPTY_ICON );
+		return rv;
+	}
+
+	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite, java.awt.Color backgroundColor ) {
 		super( composite );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration<?> importOnlyDeclaration : composite.getImportOnlyDeclarations() ) {
+			org.lgna.croquet.components.CheckBox checkBox = importOnlyDeclaration.getState().createCheckBox();
+			checkBox.getAwtComponent().setIcon( PLUS_ICON );
+			this.addComponent( checkBox, DECLARATION_CONSTRAINT );
+		}
+
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations identicalDeclarations : composite.getIdenticalDeclarations() ) {
+			this.addComponent( createNoOpLabel( identicalDeclarations.getProjectDeclaration(), " (identical)" ), DECLARATION_CONSTRAINT );
+		}
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration projectOnlyDeclaration : composite.getProjectOnlyDeclarations() ) {
+			this.addComponent( createNoOpLabel( projectOnlyDeclaration.getProjectDeclaration(), "" ), DECLARATION_CONSTRAINT );
+		}
 	}
 }

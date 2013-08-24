@@ -45,8 +45,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodsComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMethodsView> extends AddMembersComposite<V> {
-	public AddMethodsComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+public abstract class AddMethodsComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMethodsView> extends AddMembersComposite<V, org.lgna.project.ast.UserMethod> {
+	public AddMethodsComposite( java.util.UUID migrationId, java.util.List<org.lgna.project.ast.UserMethod> projectMethods ) {
+		super( migrationId, projectMethods );
 	}
 }

@@ -46,8 +46,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class AddFunctionsComposite extends AddMethodsComposite<org.alice.stageide.gallerybrowser.uri.merge.views.AddFunctionsView> {
-	public AddFunctionsComposite() {
-		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ) );
+	public AddFunctionsComposite( java.util.List<org.lgna.project.ast.UserMethod> projectFunctions ) {
+		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), projectFunctions );
 	}
 
 	@Override

@@ -42,16 +42,85 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementationDeclartions;
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureDeclarations;
+import org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	public AddMembersComposite( java.util.UUID migrationId ) {
+public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, D extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+	private final java.util.List<D> unusedProjectDeclarations;
+	private final java.util.List<ImportOnlyDeclaration<D>> importOnlyDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentSignatureDeclarations<D>> differentSignatureDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentImplementationDeclartions<D>> differentImplementationDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<IdenticalDeclarations<D>> identicalDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ProjectOnlyDeclaration<D>> projectOnlyDeclarations;
+
+	public AddMembersComposite( java.util.UUID migrationId, java.util.List<D> projectDeclarations ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
+		this.unusedProjectDeclarations = projectDeclarations;
 	}
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return new org.lgna.croquet.components.ScrollPane();
+	}
+
+	public void addImportOnlyDeclaration( D method ) {
+		this.importOnlyDeclarations.add( new ImportOnlyDeclaration( method ) );
+	}
+
+	public void addDifferentSignatureDeclarations( D projectDeclaration, D importDeclaration ) {
+		this.differentSignatureDeclarations.add( new DifferentSignatureDeclarations( projectDeclaration, importDeclaration ) );
+		this.unusedProjectDeclarations.remove( projectDeclaration );
+	}
+
+	public void addDifferentImplementationDeclarations( D projectDeclaration, D importDeclaration ) {
+		this.differentImplementationDeclarations.add( new DifferentImplementationDeclartions( projectDeclaration, importDeclaration ) );
+		this.unusedProjectDeclarations.remove( projectDeclaration );
+	}
+
+	public void addIdenticalDeclarations( D projectDeclaration, D importDeclaration ) {
+		this.identicalDeclarations.add( new IdenticalDeclarations( projectDeclaration, importDeclaration ) );
+		this.unusedProjectDeclarations.remove( projectDeclaration );
+	}
+
+	public void reifyProjectOnlyDeclarations() {
+		this.projectOnlyDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( D method : this.unusedProjectDeclarations ) {
+			this.projectOnlyDeclarations.add( new ProjectOnlyDeclaration( method ) );
+		}
+	}
+
+	public java.util.List<ImportOnlyDeclaration<D>> getImportOnlyDeclarations() {
+		return this.importOnlyDeclarations;
+	}
+
+	public java.util.List<DifferentSignatureDeclarations<D>> getDifferentSignatureDeclarations() {
+		return this.differentSignatureDeclarations;
+	}
+
+	public java.util.List<DifferentImplementationDeclartions<D>> getDifferentImplementationDeclarations() {
+		return this.differentImplementationDeclarations;
+	}
+
+	public java.util.List<IdenticalDeclarations<D>> getIdenticalDeclarations() {
+		return this.identicalDeclarations;
+	}
+
+	public java.util.List<ProjectOnlyDeclaration<D>> getProjectOnlyDeclarations() {
+		return this.projectOnlyDeclarations;
+	}
+
+	public int getTotalCount() {
+		assert this.importOnlyDeclarations != null : this;
+		assert this.differentSignatureDeclarations != null : this;
+		assert this.differentImplementationDeclarations != null : this;
+		assert this.identicalDeclarations != null : this;
+		assert this.projectOnlyDeclarations != null : this;
+		return this.importOnlyDeclarations.size() + this.differentSignatureDeclarations.size() + this.differentImplementationDeclarations.size() + this.identicalDeclarations.size() + this.projectOnlyDeclarations.size();
 	}
 }

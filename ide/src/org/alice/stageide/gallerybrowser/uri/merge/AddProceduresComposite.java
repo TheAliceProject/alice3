@@ -46,8 +46,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class AddProceduresComposite extends AddMethodsComposite<org.alice.stageide.gallerybrowser.uri.merge.views.AddProceduresView> {
-	public AddProceduresComposite() {
-		super( java.util.UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ) );
+	public AddProceduresComposite( java.util.List<org.lgna.project.ast.UserMethod> projectProcedures ) {
+		super( java.util.UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), projectProcedures );
 	}
 
 	@Override

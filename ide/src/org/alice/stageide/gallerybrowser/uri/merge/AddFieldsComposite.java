@@ -45,9 +45,9 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class AddFieldsComposite extends AddMembersComposite<org.alice.stageide.gallerybrowser.uri.merge.views.AddFieldsView> {
-	public AddFieldsComposite() {
-		super( java.util.UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ) );
+public final class AddFieldsComposite extends AddMembersComposite<org.alice.stageide.gallerybrowser.uri.merge.views.AddFieldsView, org.lgna.project.ast.UserField> {
+	public AddFieldsComposite( java.util.List<org.lgna.project.ast.UserField> projectFields ) {
+		super( java.util.UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), projectFields );
 	}
 
 	@Override

@@ -45,20 +45,20 @@ package org.alice.stageide.gallerybrowser.uri.merge.data;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementationMethods {
-	private final org.lgna.project.ast.UserMethod projectMethod;
-	private final org.lgna.project.ast.UserMethod importMethod;
+public final class IdenticalDeclarations<D extends org.lgna.project.ast.Declaration> {
+	private final D projectDeclaration;
+	private final D importDeclaration;
 
-	public DifferentImplementationMethods( org.lgna.project.ast.UserMethod projectMethod, org.lgna.project.ast.UserMethod importMethod ) {
-		this.projectMethod = projectMethod;
-		this.importMethod = importMethod;
+	public IdenticalDeclarations( D projectDeclaration, D importDeclaration ) {
+		this.projectDeclaration = projectDeclaration;
+		this.importDeclaration = importDeclaration;
 	}
 
-	public org.lgna.project.ast.UserMethod getImportMethod() {
-		return this.importMethod;
+	public D getImportDeclaration() {
+		return this.importDeclaration;
 	}
 
-	public org.lgna.project.ast.UserMethod getProjectMethod() {
-		return this.projectMethod;
+	public D getProjectDeclaration() {
+		return this.projectDeclaration;
 	}
 }
