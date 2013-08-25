@@ -61,4 +61,12 @@ public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Memb
 	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
 		return this.importNameState;
 	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+			sb.append( "must not have same name: \"" );
+			sb.append( this.projectNameState.getMember().getName() );
+			sb.append( "\"." );
+		}
+	}
 }

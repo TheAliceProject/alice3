@@ -58,6 +58,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final AddFunctionsComposite addFunctionsComposite;
 	private final AddFieldsComposite addFieldsComposite;
 
+	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( this.createKey( "actionItemsRemainingError" ) );
+
 	private boolean isManagementLevelAppropriate( org.lgna.project.ast.UserMethod method ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
 		return ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE );
@@ -191,7 +193,16 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+		StringBuffer sb = new StringBuffer();
+		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
+			addMembersComposite.appendStatusPreRejectorCheck( sb, step );
+		}
+		if( sb.length() > 0 ) {
+			this.actionItemsRemainingError.setText( sb.toString() );
+			return this.actionItemsRemainingError;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
 	}
 
 	public static void main( String[] args ) throws Exception {

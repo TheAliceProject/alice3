@@ -61,4 +61,8 @@ public final class DifferentImplementationMembers<M extends org.lgna.project.ast
 	public M getProjectMember() {
 		return this.projectMember;
 	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		sb.append( this.projectMember.getName() );
+	}
 }

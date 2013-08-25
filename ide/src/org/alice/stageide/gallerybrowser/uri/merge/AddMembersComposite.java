@@ -164,4 +164,13 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		assert this.projectOnlyMembers != null : this;
 		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size() + this.identicalMembers.size() + this.projectOnlyMembers.size();
 	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		for( DifferentSignatureMembers<M> differentSignatureMember : this.differentSignatureMembers ) {
+			differentSignatureMember.appendStatusPreRejectorCheck( sb, step );
+		}
+		for( DifferentImplementationMembers<M> differentImplementationMember : this.differentImplementationMembers ) {
+			differentImplementationMember.appendStatusPreRejectorCheck( sb, step );
+		}
+	}
 }
