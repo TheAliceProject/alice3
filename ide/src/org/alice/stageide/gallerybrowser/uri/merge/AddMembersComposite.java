@@ -63,6 +63,8 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	private final java.util.List<IdenticalDeclarations<D>> identicalDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private java.util.List<ProjectOnlyDeclaration<D>> projectOnlyDeclarations;
 
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<D, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
 	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<D> projectDeclarations ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
@@ -77,6 +79,14 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 			rv = rv.replaceAll( "</filename/>", file.getName() );
 		}
 		return rv;
+	}
+
+	public MemberPopupCoreComposite getPopupDeclarationFor( D member ) {
+		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<D, MemberPopupCoreComposite>() {
+			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( D key ) {
+				return new MemberPopupCoreComposite( key );
+			}
+		} );
 	}
 
 	@Override
