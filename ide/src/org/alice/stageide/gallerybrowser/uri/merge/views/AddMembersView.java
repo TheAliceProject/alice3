@@ -122,11 +122,11 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 				rightBracket.setToolTipText( tooltipText );
 				this.addComponent( leftBracket, "grow, spany 2" );
 				this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.PLUS_ICON ), "split 3" );
-				this.addComponent( createTextField( differentSignatureMember.getImportNameState() ) );
+				this.addComponent( createTextField( differentSignatureMember.getImportNameState() ), "grow" );
 				this.addComponent( createPopupView( composite, differentSignatureMember.getImportNameState().getMember() ) );
 				this.addComponent( rightBracket, "grow, spany 2, skip, wrap" );
 
-				this.addComponent( createTextField( differentSignatureMember.getProjectNameState() ), "skip 2, split 2" );
+				this.addComponent( createTextField( differentSignatureMember.getProjectNameState() ), "skip 2, split 2, grow" );
 				this.addComponent( createPopupView( composite, differentSignatureMember.getProjectNameState().getMember() ), "wrap" );
 			}
 		}
