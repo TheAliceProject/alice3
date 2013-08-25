@@ -40,21 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportOnlyDeclaration<D extends org.lgna.project.ast.Declaration> {
-	private final IsDeclarationImportDesiredState<D> state;
+public final class IsAddMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
+	private M member;
 
-	public ImportOnlyDeclaration( D importDeclaration ) {
-		this.state = new IsDeclarationImportDesiredState<D>( importDeclaration );
+	public IsAddMemberDesiredState( M member ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), true );
+		this.member = member;
 	}
 
-	public IsDeclarationImportDesiredState<D> getState() {
-		return this.state;
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setTextForBothTrueAndFalse( this.member.getName() );
+	}
+
+	public M getMember() {
+		return this.member;
 	}
 }

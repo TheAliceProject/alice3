@@ -42,33 +42,33 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementationDeclartions;
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureDeclarations;
-import org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration;
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementationMembers;
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers;
+import org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalMembers;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMember;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, D extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
 	private final org.lgna.croquet.PlainStringValue addLabel = this.createStringValue( this.createKey( "addLabel" ) );
 	private final org.lgna.croquet.PlainStringValue keepLabel = this.createStringValue( this.createKey( "keepLabel" ) );
 
 	private final java.net.URI uriForDescriptionPurposesOnly;
-	private final java.util.List<D> unusedProjectDeclarations;
-	private final java.util.List<ImportOnlyDeclaration<D>> importOnlyDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentSignatureDeclarations<D>> differentSignatureDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentImplementationDeclartions<D>> differentImplementationDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<IdenticalDeclarations<D>> identicalDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private java.util.List<ProjectOnlyDeclaration<D>> projectOnlyDeclarations;
+	private final java.util.List<M> unusedProjectMembers;
+	private final java.util.List<ImportOnlyMember<M>> importOnlyMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentSignatureMembers<M>> differentSignatureMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentImplementationMembers<M>> differentImplementationMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<IdenticalMembers<M>> identicalMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ProjectOnlyMember<M>> projectOnlyMembers;
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<D, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<M, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<D> projectDeclarations ) {
+	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
-		this.unusedProjectDeclarations = projectDeclarations;
+		this.unusedProjectMembers = projectMembers;
 	}
 
 	@Override
@@ -81,9 +81,9 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return rv;
 	}
 
-	public MemberPopupCoreComposite getPopupDeclarationFor( D member ) {
-		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<D, MemberPopupCoreComposite>() {
-			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( D key ) {
+	public MemberPopupCoreComposite getPopupMemberFor( M member ) {
+		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<M, MemberPopupCoreComposite>() {
+			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( M key ) {
 				return new MemberPopupCoreComposite( key );
 			}
 		} );
@@ -94,50 +94,50 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return new org.lgna.croquet.components.ScrollPane();
 	}
 
-	public void addImportOnlyDeclaration( D method ) {
-		this.importOnlyDeclarations.add( new ImportOnlyDeclaration<D>( method ) );
+	public void addImportOnlyMember( M method ) {
+		this.importOnlyMembers.add( new ImportOnlyMember<M>( method ) );
 	}
 
-	public void addDifferentSignatureDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.differentSignatureDeclarations.add( new DifferentSignatureDeclarations<D>( projectDeclaration, importDeclaration ) );
-		this.unusedProjectDeclarations.remove( projectDeclaration );
+	public void addDifferentSignatureMembers( M projectMember, M importMember ) {
+		this.differentSignatureMembers.add( new DifferentSignatureMembers<M>( projectMember, importMember ) );
+		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void addDifferentImplementationDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.differentImplementationDeclarations.add( new DifferentImplementationDeclartions<D>( projectDeclaration, importDeclaration ) );
-		this.unusedProjectDeclarations.remove( projectDeclaration );
+	public void addDifferentImplementationMembers( M projectMember, M importMember ) {
+		this.differentImplementationMembers.add( new DifferentImplementationMembers<M>( projectMember, importMember ) );
+		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void addIdenticalDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.identicalDeclarations.add( new IdenticalDeclarations<D>( projectDeclaration, importDeclaration ) );
-		this.unusedProjectDeclarations.remove( projectDeclaration );
+	public void addIdenticalMembers( M projectMember, M importMember ) {
+		this.identicalMembers.add( new IdenticalMembers<M>( projectMember, importMember ) );
+		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void reifyProjectOnlyDeclarations() {
-		this.projectOnlyDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( D method : this.unusedProjectDeclarations ) {
-			this.projectOnlyDeclarations.add( new ProjectOnlyDeclaration( method ) );
+	public void reifyProjectOnlyMembers() {
+		this.projectOnlyMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( M method : this.unusedProjectMembers ) {
+			this.projectOnlyMembers.add( new ProjectOnlyMember( method ) );
 		}
 	}
 
-	public java.util.List<ImportOnlyDeclaration<D>> getImportOnlyDeclarations() {
-		return this.importOnlyDeclarations;
+	public java.util.List<ImportOnlyMember<M>> getImportOnlyMembers() {
+		return this.importOnlyMembers;
 	}
 
-	public java.util.List<DifferentSignatureDeclarations<D>> getDifferentSignatureDeclarations() {
-		return this.differentSignatureDeclarations;
+	public java.util.List<DifferentSignatureMembers<M>> getDifferentSignatureMembers() {
+		return this.differentSignatureMembers;
 	}
 
-	public java.util.List<DifferentImplementationDeclartions<D>> getDifferentImplementationDeclarations() {
-		return this.differentImplementationDeclarations;
+	public java.util.List<DifferentImplementationMembers<M>> getDifferentImplementationMembers() {
+		return this.differentImplementationMembers;
 	}
 
-	public java.util.List<IdenticalDeclarations<D>> getIdenticalDeclarations() {
-		return this.identicalDeclarations;
+	public java.util.List<IdenticalMembers<M>> getIdenticalMembers() {
+		return this.identicalMembers;
 	}
 
-	public java.util.List<ProjectOnlyDeclaration<D>> getProjectOnlyDeclarations() {
-		return this.projectOnlyDeclarations;
+	public java.util.List<ProjectOnlyMember<M>> getProjectOnlyMembers() {
+		return this.projectOnlyMembers;
 	}
 
 	public org.lgna.croquet.PlainStringValue getAddLabel() {
@@ -149,15 +149,15 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	}
 
 	public int getAddCount() {
-		return this.importOnlyDeclarations.size() + this.differentSignatureDeclarations.size() + this.differentImplementationDeclarations.size();
+		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size();
 	}
 
 	public int getKeepCount() {
-		return this.differentImplementationDeclarations.size() + this.differentImplementationDeclarations.size() + this.identicalDeclarations.size() + this.projectOnlyDeclarations.size();
+		return this.differentImplementationMembers.size() + this.differentImplementationMembers.size() + this.identicalMembers.size() + this.projectOnlyMembers.size();
 	}
 
 	public int getTotalCount() {
-		assert this.projectOnlyDeclarations != null : this;
-		return this.importOnlyDeclarations.size() + this.differentSignatureDeclarations.size() + this.differentImplementationDeclarations.size() + this.identicalDeclarations.size() + this.projectOnlyDeclarations.size();
+		assert this.projectOnlyMembers != null : this;
+		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size() + this.identicalMembers.size() + this.projectOnlyMembers.size();
 	}
 }

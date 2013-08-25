@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMembersView<D extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.components.MigPanel {
+public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
 	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 
 	//private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 36, 22 );
@@ -56,8 +56,8 @@ public abstract class AddMembersView<D extends org.lgna.project.ast.Declaration>
 	//public static javax.swing.Icon CHECK_ONLY_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE, false );
 	public static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 
-	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Declaration declaration, String bonusText ) {
-		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( declaration.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
+	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Member member, String bonusText ) {
+		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( member.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
 		//rv.setIcon( CHECK_ONLY_ICON );
 		return rv;
 	}
@@ -80,11 +80,11 @@ public abstract class AddMembersView<D extends org.lgna.project.ast.Declaration>
 		return rv;
 	}
 
-	private static <D extends org.lgna.project.ast.Declaration> org.lgna.croquet.components.PopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, D> composite, D member ) {
-		return composite.getPopupDeclarationFor( member ).getElement().createPopupView();
+	private static <D extends org.lgna.project.ast.Member> org.lgna.croquet.components.PopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, D> composite, D member ) {
+		return composite.getPopupMemberFor( member ).getElement().createPopupView();
 	}
 
-	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, D> composite, java.awt.Color backgroundColor ) {
+	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
 		super( composite, "fill", "[]32[]32" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
@@ -101,33 +101,33 @@ public abstract class AddMembersView<D extends org.lgna.project.ast.Declaration>
 				this.addComponent( createSeparator(), "grow, shrink, wrap" );
 			}
 		}
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration<D> importOnlyDeclaration : composite.getImportOnlyDeclarations() ) {
-			org.lgna.croquet.components.CheckBox checkBox = importOnlyDeclaration.getState().createCheckBox();
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M> importOnlyMember : composite.getImportOnlyMembers() ) {
+			org.lgna.croquet.components.CheckBox checkBox = importOnlyMember.getState().createCheckBox();
 			checkBox.getAwtComponent().setIcon( PLUS_ICON );
 			this.addComponent( checkBox, "split 2" );
-			this.addComponent( createPopupView( composite, importOnlyDeclaration.getState().getDeclaration() ), "wrap" );
+			this.addComponent( createPopupView( composite, importOnlyMember.getState().getMember() ), "wrap" );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureDeclarations<D> differentSignatureDeclaration : composite.getDifferentSignatureDeclarations() ) {
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M> differentSignatureMember : composite.getDifferentSignatureMembers() ) {
 			this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.PLUS_ICON ), "split 3" );
-			this.addComponent( createTextField( differentSignatureDeclaration.getImportNameState() ) );
-			this.addComponent( createPopupView( composite, differentSignatureDeclaration.getImportNameState().getMember() ), "wrap" );
+			this.addComponent( createTextField( differentSignatureMember.getImportNameState() ) );
+			this.addComponent( createPopupView( composite, differentSignatureMember.getImportNameState().getMember() ), "wrap" );
 			//this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.CHECK_ONLY_ICON ), "skip 1, split 2" );
-			this.addComponent( createTextField( differentSignatureDeclaration.getProjectNameState() ), "skip 1, split 2" );
-			this.addComponent( createPopupView( composite, differentSignatureDeclaration.getProjectNameState().getMember() ), "wrap" );
+			this.addComponent( createTextField( differentSignatureMember.getProjectNameState() ), "skip 1, split 2" );
+			this.addComponent( createPopupView( composite, differentSignatureMember.getProjectNameState().getMember() ), "wrap" );
 		}
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations<D> identicalDeclarations : composite.getIdenticalDeclarations() ) {
-			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identicalDeclarations.getImportDeclaration(), " (identical)" );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalMembers<M> identicalMembers : composite.getIdenticalMembers() ) {
+			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identicalMembers.getImportMember(), " (identical)" );
 			importLabel.setIcon( EMPTY_ICON );
 			importLabel.setForegroundColor( java.awt.Color.GRAY );
 			this.addComponent( importLabel, "split 2" );
-			this.addComponent( createPopupView( composite, identicalDeclarations.getImportDeclaration() ) );
-			this.addComponent( createNoOpLabel( identicalDeclarations.getProjectDeclaration(), "" ), "split 2" );
-			this.addComponent( createPopupView( composite, identicalDeclarations.getProjectDeclaration() ), "wrap" );
+			this.addComponent( createPopupView( composite, identicalMembers.getImportMember() ) );
+			this.addComponent( createNoOpLabel( identicalMembers.getProjectMember(), "" ), "split 2" );
+			this.addComponent( createPopupView( composite, identicalMembers.getProjectMember() ), "wrap" );
 		}
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration<D> projectOnlyDeclaration : composite.getProjectOnlyDeclarations() ) {
-			this.addComponent( createNoOpLabel( projectOnlyDeclaration.getProjectDeclaration(), "" ), "skip 1, split 2" );
-			this.addComponent( createPopupView( composite, projectOnlyDeclaration.getProjectDeclaration() ), "wrap" );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMember<M> projectOnlyMember : composite.getProjectOnlyMembers() ) {
+			this.addComponent( createNoOpLabel( projectOnlyMember.getProjectMember(), "" ), "skip 1, split 2" );
+			this.addComponent( createPopupView( composite, projectOnlyMember.getProjectMember() ), "wrap" );
 		}
 	}
 }

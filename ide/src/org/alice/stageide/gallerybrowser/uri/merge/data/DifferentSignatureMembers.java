@@ -45,20 +45,20 @@ package org.alice.stageide.gallerybrowser.uri.merge.data;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentSignatureDeclarations<D extends org.lgna.project.ast.Declaration> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> projectNameState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> importNameState;
+public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Member> {
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
 
-	public DifferentSignatureDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D>( projectDeclaration );
-		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D>( importDeclaration );
+	public DifferentSignatureMembers( M projectMember, M importMember ) {
+		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
+		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> getProjectNameState() {
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
 		return this.projectNameState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> getImportNameState() {
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
 		return this.importNameState;
 	}
 }
