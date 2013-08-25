@@ -46,17 +46,20 @@ package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
  * @author Dennis Cosgrove
  */
 public class CheckPlusIcon extends org.alice.stageide.icons.PlusIcon {
+	private final boolean isPlusPainted;
 	private final java.awt.Shape checkShape;
 	private final java.awt.Stroke innerStroke;
 	private final java.awt.Stroke outerStroke;
 
-	public CheckPlusIcon( java.awt.Dimension size ) {
+	public CheckPlusIcon( java.awt.Dimension size, boolean isPlusPainted ) {
 		super( size );
+
+		this.isPlusPainted = isPlusPainted;
 
 		int unit = size.height;
 		double ratio = size.width / (double)size.height;
 
-		double xA = 0.05;
+		double xA = 0.15;
 		double xC = ratio - 1.05;
 		double xB = xA + ( ( xC - xA ) * 0.3 );
 
@@ -76,13 +79,15 @@ public class CheckPlusIcon extends org.alice.stageide.icons.PlusIcon {
 
 	@Override
 	protected java.awt.Paint getOuterRingPaint( javax.swing.ButtonModel buttonModel ) {
-		if( buttonModel.isRollover() ) {
-			//pass
-		} else {
-			if( buttonModel.isSelected() ) {
+		if( buttonModel != null ) {
+			if( buttonModel.isRollover() ) {
 				//pass
 			} else {
-				return null;
+				if( buttonModel.isSelected() ) {
+					//pass
+				} else {
+					return null;
+				}
 			}
 		}
 		return super.getOuterRingPaint( buttonModel );
@@ -90,37 +95,46 @@ public class CheckPlusIcon extends org.alice.stageide.icons.PlusIcon {
 
 	@Override
 	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
-		if( buttonModel.isRollover() ) {
-			return java.awt.Color.DARK_GRAY;
-		} else {
-			if( buttonModel.isSelected() ) {
-				return java.awt.Color.BLACK;
+		if( buttonModel != null ) {
+			if( buttonModel.isRollover() ) {
+				return java.awt.Color.DARK_GRAY;
 			} else {
-				return java.awt.Color.GRAY;
+				if( buttonModel.isSelected() ) {
+					return java.awt.Color.BLACK;
+				} else {
+					return java.awt.Color.GRAY;
+				}
 			}
 		}
+		return super.getPlusPaint( buttonModel );
 	}
 
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint, javax.swing.ButtonModel buttonModel ) {
-		int x = width - height;
+		//int x = width - height;
 		width = height;
-		g2.translate( x, 0 );
-		super.paintIcon( c, g2, width, height, fillPaint, drawPaint, buttonModel );
-		g2.translate( -x, 0 );
-		if( buttonModel.isSelected() ) {
+		if( this.isPlusPainted ) {
+			//g2.translate( x, 0 );
+			super.paintIcon( c, g2, width, height, fillPaint, drawPaint, buttonModel );
+			//g2.translate( -x, 0 );
+		}
+		boolean isSelected = buttonModel != null ? buttonModel.isSelected() : true;
+		if( isSelected ) {
+			g2.translate( height, 0 );
 			java.awt.Stroke prevStroke = g2.getStroke();
 			g2.setStroke( this.outerStroke );
 			g2.setPaint( java.awt.Color.BLACK );
 			g2.draw( this.checkShape );
 			g2.setStroke( this.innerStroke );
-			if( buttonModel.isRollover() ) {
+			boolean isRollover = buttonModel != null ? buttonModel.isRollover() : false;
+			if( isRollover ) {
 				g2.setPaint( java.awt.Color.GREEN.brighter() );
 			} else {
 				g2.setPaint( java.awt.Color.GREEN.darker() );
 			}
 			g2.draw( this.checkShape );
 			g2.setStroke( prevStroke );
+			g2.translate( -height, 0 );
 		}
 	}
 }

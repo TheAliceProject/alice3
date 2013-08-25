@@ -83,9 +83,9 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 					}
 				}
 			}
-			this.addProceduresComposite = this.registerSubComposite( new AddProceduresComposite( projectProcedures ) );
-			this.addFunctionsComposite = this.registerSubComposite( new AddFunctionsComposite( projectFunctions ) );
-			this.addFieldsComposite = this.registerSubComposite( new AddFieldsComposite( this.dstType.getDeclaredFields() ) );
+			this.addProceduresComposite = this.registerSubComposite( new AddProceduresComposite( this.uriForDescriptionPurposesOnly, projectProcedures ) );
+			this.addFunctionsComposite = this.registerSubComposite( new AddFunctionsComposite( this.uriForDescriptionPurposesOnly, projectFunctions ) );
+			this.addFieldsComposite = this.registerSubComposite( new AddFieldsComposite( this.uriForDescriptionPurposesOnly, this.dstType.getDeclaredFields() ) );
 
 			for( org.lgna.project.ast.UserMethod importMethod : this.srcType.methods ) {
 				if( isManagementLevelAppropriate( importMethod ) ) {
@@ -173,14 +173,14 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration<org.lgna.project.ast.UserMethod> importOnlyMethod : addMethodsComposite.getImportOnlyDeclarations() ) {
 					if( importOnlyMethod.getState().getValue() ) {
-						methods.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyMethod.getImportDeclaration(), this.importedRootType ) );
+						methods.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyMethod.getState().getDeclaration(), this.importedRootType ) );
 					}
 				}
 			}
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration<org.lgna.project.ast.UserField> importOnlyField : this.addFieldsComposite.getImportOnlyDeclarations() ) {
 				if( importOnlyField.getState().getValue() ) {
-					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getImportDeclaration(), this.importedRootType ) );
+					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getState().getDeclaration(), this.importedRootType ) );
 				}
 			}
 			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields );
@@ -216,5 +216,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		org.lgna.project.ast.NamedUserType dstType = org.alice.stageide.gallerybrowser.uri.merge.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
 		org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
 		mergeTypeComposite.getOperation().fire();
+		System.exit( 0 );
 	}
 }

@@ -45,8 +45,15 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodsComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMethodsView> extends AddMembersComposite<V, org.lgna.project.ast.UserMethod> {
-	public AddMethodsComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectMethods ) {
-		super( migrationId, uriForDescriptionPurposesOnly, projectMethods );
+public final class MemberNameState<D extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.StringState {
+	private final D member;
+
+	public MemberNameState( D member ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8cb507c3-e498-4d35-9da3-111176a5b5c8" ), member.getName() );
+		this.member = member;
+	}
+
+	public D getMember() {
+		return this.member;
 	}
 }

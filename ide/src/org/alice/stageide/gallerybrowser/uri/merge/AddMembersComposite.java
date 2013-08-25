@@ -52,6 +52,10 @@ import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, D extends org.lgna.project.ast.Declaration> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+	private final org.lgna.croquet.PlainStringValue addLabel = this.createStringValue( this.createKey( "addLabel" ) );
+	private final org.lgna.croquet.PlainStringValue keepLabel = this.createStringValue( this.createKey( "keepLabel" ) );
+
+	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final java.util.List<D> unusedProjectDeclarations;
 	private final java.util.List<ImportOnlyDeclaration<D>> importOnlyDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final java.util.List<DifferentSignatureDeclarations<D>> differentSignatureDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -59,9 +63,20 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	private final java.util.List<IdenticalDeclarations<D>> identicalDeclarations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private java.util.List<ProjectOnlyDeclaration<D>> projectOnlyDeclarations;
 
-	public AddMembersComposite( java.util.UUID migrationId, java.util.List<D> projectDeclarations ) {
+	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<D> projectDeclarations ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
+		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.unusedProjectDeclarations = projectDeclarations;
+	}
+
+	@Override
+	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+		String rv = super.modifyLocalizedText( element, localizedText );
+		if( element == this.addLabel ) {
+			java.io.File file = new java.io.File( this.uriForDescriptionPurposesOnly );
+			rv = rv.replaceAll( "</filename/>", file.getName() );
+		}
+		return rv;
 	}
 
 	@Override
@@ -70,21 +85,21 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	}
 
 	public void addImportOnlyDeclaration( D method ) {
-		this.importOnlyDeclarations.add( new ImportOnlyDeclaration( method ) );
+		this.importOnlyDeclarations.add( new ImportOnlyDeclaration<D>( method ) );
 	}
 
 	public void addDifferentSignatureDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.differentSignatureDeclarations.add( new DifferentSignatureDeclarations( projectDeclaration, importDeclaration ) );
+		this.differentSignatureDeclarations.add( new DifferentSignatureDeclarations<D>( projectDeclaration, importDeclaration ) );
 		this.unusedProjectDeclarations.remove( projectDeclaration );
 	}
 
 	public void addDifferentImplementationDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.differentImplementationDeclarations.add( new DifferentImplementationDeclartions( projectDeclaration, importDeclaration ) );
+		this.differentImplementationDeclarations.add( new DifferentImplementationDeclartions<D>( projectDeclaration, importDeclaration ) );
 		this.unusedProjectDeclarations.remove( projectDeclaration );
 	}
 
 	public void addIdenticalDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.identicalDeclarations.add( new IdenticalDeclarations( projectDeclaration, importDeclaration ) );
+		this.identicalDeclarations.add( new IdenticalDeclarations<D>( projectDeclaration, importDeclaration ) );
 		this.unusedProjectDeclarations.remove( projectDeclaration );
 	}
 
@@ -115,11 +130,23 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return this.projectOnlyDeclarations;
 	}
 
+	public org.lgna.croquet.PlainStringValue getAddLabel() {
+		return this.addLabel;
+	}
+
+	public org.lgna.croquet.PlainStringValue getKeepLabel() {
+		return this.keepLabel;
+	}
+
+	public int getAddCount() {
+		return this.importOnlyDeclarations.size() + this.differentSignatureDeclarations.size() + this.differentImplementationDeclarations.size();
+	}
+
+	public int getKeepCount() {
+		return this.differentImplementationDeclarations.size() + this.differentImplementationDeclarations.size() + this.identicalDeclarations.size() + this.projectOnlyDeclarations.size();
+	}
+
 	public int getTotalCount() {
-		assert this.importOnlyDeclarations != null : this;
-		assert this.differentSignatureDeclarations != null : this;
-		assert this.differentImplementationDeclarations != null : this;
-		assert this.identicalDeclarations != null : this;
 		assert this.projectOnlyDeclarations != null : this;
 		return this.importOnlyDeclarations.size() + this.differentSignatureDeclarations.size() + this.differentImplementationDeclarations.size() + this.identicalDeclarations.size() + this.projectOnlyDeclarations.size();
 	}

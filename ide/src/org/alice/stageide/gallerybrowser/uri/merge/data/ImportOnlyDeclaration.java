@@ -42,20 +42,16 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
+import org.alice.stageide.gallerybrowser.uri.merge.IsDeclarationImportDesiredState;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ImportOnlyDeclaration<D extends org.lgna.project.ast.Declaration> {
-	private final D importDeclaration;
 	private final IsDeclarationImportDesiredState<D> state;
 
 	public ImportOnlyDeclaration( D importDeclaration ) {
-		this.importDeclaration = importDeclaration;
-		this.state = new IsDeclarationImportDesiredState<D>( this.importDeclaration );
-	}
-
-	public D getImportDeclaration() {
-		return this.importDeclaration;
+		this.state = new IsDeclarationImportDesiredState<D>( importDeclaration );
 	}
 
 	public IsDeclarationImportDesiredState<D> getState() {

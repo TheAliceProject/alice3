@@ -46,19 +46,19 @@ package org.alice.stageide.gallerybrowser.uri.merge.data;
  * @author Dennis Cosgrove
  */
 public final class DifferentSignatureDeclarations<D extends org.lgna.project.ast.Declaration> {
-	private final D projectDeclaration;
-	private final D importDeclaration;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> projectNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> importNameState;
 
 	public DifferentSignatureDeclarations( D projectDeclaration, D importDeclaration ) {
-		this.projectDeclaration = projectDeclaration;
-		this.importDeclaration = importDeclaration;
+		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D>( projectDeclaration );
+		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D>( importDeclaration );
 	}
 
-	public D getImportDeclaration() {
-		return this.importDeclaration;
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> getProjectNameState() {
+		return this.projectNameState;
 	}
 
-	public D getProjectDeclaration() {
-		return this.projectDeclaration;
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<D> getImportNameState() {
+		return this.importNameState;
 	}
 }

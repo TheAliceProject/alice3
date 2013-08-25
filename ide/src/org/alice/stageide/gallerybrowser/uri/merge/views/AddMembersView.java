@@ -46,35 +46,78 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView extends org.lgna.croquet.components.MigPanel {
-	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
-	private static final String DECLARATION_CONSTRAINT = "gap 8, wrap";
+	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 
-	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 32, 22 );
-	private static javax.swing.Icon PLUS_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE );
-	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	//private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 36, 22 );
+	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 22, 22 );
+	public static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
+
+	//public static javax.swing.Icon PLUS_AND_CHECK_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE, true );
+	//public static javax.swing.Icon CHECK_ONLY_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE, false );
+	public static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Declaration declaration, String bonusText ) {
 		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( declaration.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
-		rv.setIcon( EMPTY_ICON );
+		//rv.setIcon( CHECK_ONLY_ICON );
+		return rv;
+	}
+
+	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
+		org.lgna.croquet.components.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
+		//header.setForegroundColor( java.awt.Color.GRAY );
+		return header;
+	}
+
+	private static org.lgna.croquet.components.TextField createTextField( org.lgna.croquet.StringState state ) {
+		org.lgna.croquet.components.TextField textField = state.createTextField();
+		textField.enableSelectAllWhenFocusGained();
+		return textField;
+	}
+
+	private static org.lgna.croquet.components.HorizontalSeparator createSeparator() {
+		org.lgna.croquet.components.HorizontalSeparator rv = new org.lgna.croquet.components.HorizontalSeparator();
 		return rv;
 	}
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite, java.awt.Color backgroundColor ) {
-		super( composite );
+		super( composite, "fill", "[]32[]32" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
+
+		if( composite.getKeepCount() > 0 ) {
+			this.addComponent( createHeader( composite.getAddLabel() ) );
+			this.addComponent( createHeader( composite.getKeepLabel() ), "wrap" );
+			this.addComponent( createSeparator(), "grow, shrink" );
+			this.addComponent( createSeparator(), "grow, shrink, wrap" );
+		} else {
+			if( composite.getAddCount() > 0 ) {
+				this.addComponent( createHeader( composite.getAddLabel() ), "wrap" );
+				this.addComponent( createSeparator(), "grow, shrink, wrap" );
+			}
+		}
 		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyDeclaration<?> importOnlyDeclaration : composite.getImportOnlyDeclarations() ) {
 			org.lgna.croquet.components.CheckBox checkBox = importOnlyDeclaration.getState().createCheckBox();
 			checkBox.getAwtComponent().setIcon( PLUS_ICON );
-			this.addComponent( checkBox, DECLARATION_CONSTRAINT );
+			this.addComponent( checkBox, "wrap" );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations identicalDeclarations : composite.getIdenticalDeclarations() ) {
-			this.addComponent( createNoOpLabel( identicalDeclarations.getProjectDeclaration(), " (identical)" ), DECLARATION_CONSTRAINT );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureDeclarations<?> differentSignatureDeclaration : composite.getDifferentSignatureDeclarations() ) {
+			this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.PLUS_ICON ), "split 2" );
+			this.addComponent( createTextField( differentSignatureDeclaration.getImportNameState() ), "wrap" );
+			//this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.CHECK_ONLY_ICON ), "skip 1, split 2" );
+			this.addComponent( createTextField( differentSignatureDeclaration.getProjectNameState() ), "skip 1, wrap" );
 		}
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration projectOnlyDeclaration : composite.getProjectOnlyDeclarations() ) {
-			this.addComponent( createNoOpLabel( projectOnlyDeclaration.getProjectDeclaration(), "" ), DECLARATION_CONSTRAINT );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalDeclarations<?> identicalDeclarations : composite.getIdenticalDeclarations() ) {
+			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identicalDeclarations.getImportDeclaration(), " (identical)" );
+			importLabel.setIcon( EMPTY_ICON );
+			importLabel.setForegroundColor( java.awt.Color.GRAY );
+			this.addComponent( importLabel );
+			this.addComponent( createNoOpLabel( identicalDeclarations.getProjectDeclaration(), " (identical)" ), "wrap" );
+		}
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyDeclaration<?> projectOnlyDeclaration : composite.getProjectOnlyDeclarations() ) {
+			this.addComponent( createNoOpLabel( projectOnlyDeclaration.getProjectDeclaration(), "" ), "skip 1, wrap" );
 		}
 	}
 }
