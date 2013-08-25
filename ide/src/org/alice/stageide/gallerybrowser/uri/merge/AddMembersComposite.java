@@ -148,6 +148,10 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return this.keepLabel;
 	}
 
+	public int getActionItemCount() {
+		return this.differentSignatureMembers.size() + this.differentImplementationMembers.size();
+	}
+
 	public int getAddCount() {
 		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size();
 	}

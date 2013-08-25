@@ -40,59 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.stageide.gallerybrowser.uri.merge.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupView extends JComponent<javax.swing.JLabel> {
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			showWindow();
+public class ActionRequiredView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+	public static javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getWarningIcon(), 0.4f );
+
+	private class JActionRequiredView extends javax.swing.JComponent {
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			super.paintComponent( g );
+
+			int w = this.getWidth();
+			int h = this.getHeight();
+
+			int x0 = w / 2;
+			int x1;
+			int y0 = 0;
+			int y1 = h - 1;
+
+			if( isLeading ) {
+				x1 = w - 1;
+			} else {
+				x1 = 0;
+			}
+
+			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+			path.moveTo( x1, y0 );
+			path.lineTo( x0, y0 );
+			path.lineTo( x0, y1 );
+			path.lineTo( x1, y1 );
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.draw( path );
+
+			//if( isLeading ) {
+			ICON.paintIcon( this, g2, 0, ( h - ICON.getIconHeight() ) / 2 );
+			//}
 		}
-
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-			hideWindow();
-		}
-
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-		}
-
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-		}
-
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-		}
-	};
-
-	private final javax.swing.JWindow window;
-	private final org.lgna.croquet.PopupElement element;
-
-	public PopupView( org.lgna.croquet.PopupElement element ) {
-		this.element = element;
-		this.window = new javax.swing.JWindow();
-		this.window.setAlwaysOnTop( true );
-		this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
-		this.addMouseListener( this.mouseListener );
 	}
 
-	private void showWindow() {
-		java.awt.Point p = this.getLocationOnScreen();
-		this.window.setLocation( p.x + this.getWidth() + 16, p.y );
-		this.window.pack();
-		this.window.setVisible( true );
-	}
+	private final boolean isLeading;
 
-	private void hideWindow() {
-		this.window.setVisible( false );
+	public ActionRequiredView( boolean isLeading ) {
+		this.isLeading = isLeading;
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel();
-		rv.setText( "[preview]" );
-		rv.setForeground( java.awt.Color.BLUE );
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( rv, 2.0f );
-		return rv;
+	protected javax.swing.JComponent createAwtComponent() {
+		return new JActionRequiredView();
 	}
 }
