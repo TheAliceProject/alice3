@@ -52,8 +52,8 @@ import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMember;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue addLabel = this.createStringValue( this.createKey( "addLabel" ) );
-	private final org.lgna.croquet.PlainStringValue keepLabel = this.createStringValue( this.createKey( "keepLabel" ) );
+	private final org.lgna.croquet.PlainStringValue addHeader = this.createStringValue( this.createKey( "addHeader" ) );
+	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
 
 	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final java.util.List<M> unusedProjectMembers;
@@ -74,9 +74,11 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	@Override
 	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
 		String rv = super.modifyLocalizedText( element, localizedText );
-		if( element == this.addLabel ) {
-			java.io.File file = new java.io.File( this.uriForDescriptionPurposesOnly );
-			rv = rv.replaceAll( "</filename/>", file.getName() );
+		if( rv != null ) {
+			if( element == this.addHeader ) {
+				java.io.File file = new java.io.File( this.uriForDescriptionPurposesOnly );
+				rv = rv.replaceAll( "</filename/>", file.getName() );
+			}
 		}
 		return rv;
 	}
@@ -140,12 +142,12 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return this.projectOnlyMembers;
 	}
 
-	public org.lgna.croquet.PlainStringValue getAddLabel() {
-		return this.addLabel;
+	public org.lgna.croquet.PlainStringValue getAddHeader() {
+		return this.addHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getKeepLabel() {
-		return this.keepLabel;
+	public org.lgna.croquet.PlainStringValue getResultHeader() {
+		return this.resultHeader;
 	}
 
 	public int getActionItemCount() {

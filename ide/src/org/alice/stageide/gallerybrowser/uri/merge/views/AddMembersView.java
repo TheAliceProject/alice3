@@ -95,17 +95,10 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
 
-		if( composite.getKeepCount() > 0 ) {
-			this.addComponent( createHeader( composite.getAddLabel() ), "skip 1" );
-			this.addComponent( createHeader( composite.getKeepLabel() ), "wrap" );
-			this.addComponent( createSeparator(), "grow, shrink, skip 1" );
-			this.addComponent( createSeparator(), "grow, shrink, wrap" );
-		} else {
-			if( composite.getAddCount() > 0 ) {
-				this.addComponent( createHeader( composite.getAddLabel() ), "skip 1, wrap" );
-				this.addComponent( createSeparator(), "grow, shrink, skip 1, wrap" );
-			}
-		}
+		this.addComponent( createHeader( composite.getAddHeader() ), "skip 1" );
+		this.addComponent( createHeader( composite.getResultHeader() ), "wrap" );
+		this.addComponent( createSeparator(), "grow, shrink, skip 1" );
+		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M>> importOnlyMembers = composite.getImportOnlyMembers();
 		if( importOnlyMembers.size() > 0 ) {
