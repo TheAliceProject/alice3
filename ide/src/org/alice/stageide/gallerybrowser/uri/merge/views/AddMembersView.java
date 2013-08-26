@@ -90,20 +90,20 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill", "0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]0[grow,shrink,50%]32[grow,shrink,50%]0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]" );
+		super( composite, "fill", "0[grow,shrink,50%]32[grow,shrink,50%]0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]0" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
 
-		this.addComponent( createHeader( composite.getAddHeader() ), "skip 1" );
+		this.addComponent( createHeader( composite.getAddHeader() ), "" );
 		this.addComponent( createHeader( composite.getResultHeader() ), "wrap" );
-		this.addComponent( createSeparator(), "grow, shrink, skip 1" );
+		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M>> importOnlys = composite.getImportOnlys();
 		if( importOnlys.size() > 0 ) {
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : importOnlys ) {
-				this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "skip 1" );
+				this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
 				this.addComponent( createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) ), "split 2" );
 				this.addComponent( createPopupView( composite, importOnly.getIsAddDesiredState().getMember() ), "wrap" );
 			}
@@ -117,12 +117,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 						return differentSignature.isActionRequired();
 					}
 				};
-				ActionRequiredView leftBracket = new ActionRequiredView( isActionRequiredCriterion, true );
+				//ActionRequiredView leftBracket = new ActionRequiredView( isActionRequiredCriterion, true );
 				ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
 				String tooltipText = "Cannot have multiple " + composite.getOuterComposite().getIsExpandedState().getTrueText() + " named \"" + differentSignature.getImportNameState().getMember().getName() + "\".";
-				leftBracket.setToolTipText( tooltipText );
+				//leftBracket.setToolTipText( tooltipText );
 				rightBracket.setToolTipText( tooltipText );
-				this.addComponent( leftBracket, "grow, spany 2" );
+				//this.addComponent( leftBracket, "grow, spany 2" );
 				this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
 
 				this.addComponent( createPlusIconLabel( differentSignature.getIsAddDesiredState() ), "split 3" );
@@ -130,7 +130,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 				this.addComponent( createPopupView( composite, differentSignature.getImportNameState().getMember() ) );
 				this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-				this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 2, split 3" );
+				this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 1, split 3" );
 				this.addComponent( createTextField( differentSignature.getProjectNameState() ), "grow" );
 				this.addComponent( createPopupView( composite, differentSignature.getProjectNameState().getMember() ), "wrap" );
 			}
@@ -139,13 +139,13 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		for( org.alice.stageide.gallerybrowser.uri.merge.data.Identical<M> identical : composite.getIdenticals() ) {
 			org.lgna.croquet.components.CheckBox checkBox = identical.getIsAddDesiredState().createCheckBox();
 			checkBox.setToolTipText( "identical" );
-			this.addComponent( checkBox, "skip 1" );
+			this.addComponent( checkBox, "" );
 			this.addComponent( createNoOpLabel( identical.getProjectMember(), "", EMPTY_ICON ), "split 2" );
 			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
-			this.addComponent( createNoOpLabel( projectOnly.getProjectMember(), "", EMPTY_ICON ), "skip 2, split 2" );
+			this.addComponent( createNoOpLabel( projectOnly.getProjectMember(), "", EMPTY_ICON ), "skip 1, split 2" );
 			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ), "wrap" );
 		}
 	}

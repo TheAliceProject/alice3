@@ -54,7 +54,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 
 	public DifferentSignature( M projectMember, M importMember ) {
 		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true );
+		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true, "" );
 		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
 	}
 

@@ -54,7 +54,7 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 
 	public Identical( M projectMember, M importMember ) {
 		this.projectMember = projectMember;
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false );
+		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false, " (identical)" );
 		this.isAddDesiredState.setEnabled( false );
 	}
 
