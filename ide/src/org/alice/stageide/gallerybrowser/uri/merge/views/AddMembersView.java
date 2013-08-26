@@ -86,6 +86,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return rv;
 	}
 
+	private int row = 0;
+	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
 		super( composite, "", "0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]0[grow,shrink]32[grow,shrink]8[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]" );
 		//todo
@@ -152,5 +155,86 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createNoOpLabel( projectOnlyMember.getProjectMember(), "" ), "skip 2, split 2" );
 			this.addComponent( createPopupView( composite, projectOnlyMember.getProjectMember() ), "wrap" );
 		}
+	}
+
+	private void addToRow( org.lgna.croquet.components.Component<?> component ) {
+		while( this.rows.size() <= this.row ) {
+			this.rows.add( new java.util.LinkedList<java.awt.Component>() );
+		}
+		this.rows.get( this.row ).add( component.getAwtComponent() );
+	}
+
+	@Override
+	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
+		super.addComponent( component );
+		this.addToRow( component );
+	}
+
+	@Override
+	public void addComponent( org.lgna.croquet.components.Component<?> component, String constraint ) {
+		super.addComponent( component, constraint );
+		if( constraint.contains( "spany" ) ) {
+			//pass
+		} else {
+			this.addToRow( component );
+		}
+		if( constraint.contains( "wrap" ) ) {
+			this.row++;
+		}
+	}
+
+	private static java.awt.Rectangle getRowBounds( java.util.List<java.awt.Component> row ) {
+		if( row.size() > 0 ) {
+			java.awt.Rectangle rv = null;
+			for( java.awt.Component awtComponent : row ) {
+				java.awt.Rectangle bounds = awtComponent.getBounds();
+				if( rv != null ) {
+					rv = rv.union( bounds );
+				} else {
+					rv = bounds;
+				}
+			}
+			return rv;
+		} else {
+			return new java.awt.Rectangle( 0, 0, 0, 0 );
+		}
+	}
+
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		class JMembersPanel extends DefaultJPanel {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+				java.awt.Color brighterColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 1.0, 1.1 );
+				final int SKIP_ROW_COUNT = 2;
+				int rowIndex = 0;
+				int minX = Integer.MAX_VALUE;
+				int maxX = Integer.MIN_VALUE;
+				for( java.util.List<java.awt.Component> row : rows ) {
+					if( rowIndex >= SKIP_ROW_COUNT ) {
+						for( java.awt.Component awtComponent : row ) {
+							java.awt.Rectangle bounds = awtComponent.getBounds();
+							minX = Math.min( minX, bounds.x );
+							maxX = Math.max( maxX, bounds.x + bounds.width );
+						}
+					}
+					rowIndex++;
+				}
+				int width = maxX - minX;
+				rowIndex = 0;
+				for( java.util.List<java.awt.Component> row : rows ) {
+					if( rowIndex >= SKIP_ROW_COUNT ) {
+						if( ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 1 ) {
+							java.awt.Rectangle bounds = getRowBounds( row );
+							g.setColor( brighterColor );
+							g.fillRect( minX, bounds.y, width, bounds.height );
+						}
+					}
+					rowIndex++;
+				}
+			}
+		}
+		return new JMembersPanel();
 	}
 }
