@@ -45,11 +45,11 @@ package org.alice.stageide.gallerybrowser.uri.merge.data;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementationMembers<M extends org.lgna.project.ast.Member> {
+public final class DifferentImplementation<M extends org.lgna.project.ast.Member> {
 	private final M projectMember;
 	private final M importMember;
 
-	public DifferentImplementationMembers( M projectMember, M importMember ) {
+	public DifferentImplementation( M projectMember, M importMember ) {
 		this.projectMember = projectMember;
 		this.importMember = importMember;
 	}

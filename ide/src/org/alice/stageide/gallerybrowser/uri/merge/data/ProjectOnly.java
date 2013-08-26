@@ -42,57 +42,17 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
-
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddMemberDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
+public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
+	private final M projectMember;
 
-	public DifferentSignatureMembers( M projectMember, M importMember ) {
-		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
-		this.isAddMemberDesiredState = new IsAddMemberDesiredState<M>( importMember, false );
-		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
-	}
-
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
-		return this.projectNameState;
-	}
-
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
-		return this.importNameState;
-	}
-
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
-		return this.isAddMemberDesiredState;
-	}
-
-	public M getImportMember() {
-		return this.importNameState.getMember();
+	public ProjectOnly( M projectMember ) {
+		this.projectMember = projectMember;
 	}
 
 	public M getProjectMember() {
-		return this.importNameState.getMember();
-	}
-
-	public boolean isActionRequired() {
-		if( this.isAddMemberDesiredState.getValue() ) {
-			//todo
-			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isActionRequired() ) {
-			sb.append( "must not have same name: \"" );
-			sb.append( this.projectNameState.getMember().getName() );
-			sb.append( "\"." );
-		}
+		return this.projectMember;
 	}
 }

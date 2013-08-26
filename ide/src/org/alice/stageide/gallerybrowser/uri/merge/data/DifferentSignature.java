@@ -47,18 +47,52 @@ import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportOnlyMember<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
+public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddMemberDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
 
-	public ImportOnlyMember( M importMember ) {
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true );
+	public DifferentSignature( M projectMember, M importMember ) {
+		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
+		this.isAddMemberDesiredState = new IsAddMemberDesiredState<M>( importMember, false );
+		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
 	}
 
-	public IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
-		return this.isAddDesiredState;
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
+		return this.projectNameState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
+		return this.importNameState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
+		return this.isAddMemberDesiredState;
 	}
 
 	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
+		return this.importNameState.getMember();
+	}
+
+	public M getProjectMember() {
+		return this.importNameState.getMember();
+	}
+
+	public boolean isActionRequired() {
+		if( this.isAddMemberDesiredState.getValue() ) {
+			//todo
+			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isActionRequired() ) {
+			sb.append( "must not have same name: \"" );
+			sb.append( this.projectNameState.getMember().getName() );
+			sb.append( "\"." );
+		}
 	}
 }

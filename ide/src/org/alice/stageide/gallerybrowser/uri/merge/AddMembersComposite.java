@@ -42,28 +42,28 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementationMembers;
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers;
-import org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalMembers;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMember;
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation;
+import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature;
+import org.alice.stageide.gallerybrowser.uri.merge.data.Identical;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly;
+import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnly;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue addHeader = this.createStringValue( this.createKey( "addHeader" ) );
-	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
-
 	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final java.util.List<M> unusedProjectMembers;
-	private final java.util.List<ImportOnlyMember<M>> importOnlyMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentSignatureMembers<M>> differentSignatureMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentImplementationMembers<M>> differentImplementationMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<IdenticalMembers<M>> identicalMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private java.util.List<ProjectOnlyMember<M>> projectOnlyMembers;
+	private final java.util.List<ImportOnly<M>> importOnlys = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentSignature<M>> differentSignatures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<DifferentImplementation<M>> differentImplementations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ProjectOnly<M>> projectOnlys;
 
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<M, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	private final org.lgna.croquet.PlainStringValue addHeader = this.createStringValue( this.createKey( "addHeader" ) );
+	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
 
 	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
@@ -97,49 +97,49 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	}
 
 	public void addImportOnlyMember( M method ) {
-		this.importOnlyMembers.add( new ImportOnlyMember<M>( method ) );
+		this.importOnlys.add( new ImportOnly<M>( method ) );
 	}
 
 	public void addDifferentSignatureMembers( M projectMember, M importMember ) {
-		this.differentSignatureMembers.add( new DifferentSignatureMembers<M>( projectMember, importMember ) );
+		this.differentSignatures.add( new DifferentSignature<M>( projectMember, importMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
 	public void addDifferentImplementationMembers( M projectMember, M importMember ) {
-		this.differentImplementationMembers.add( new DifferentImplementationMembers<M>( projectMember, importMember ) );
+		this.differentImplementations.add( new DifferentImplementation<M>( projectMember, importMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
 	public void addIdenticalMembers( M projectMember, M importMember ) {
-		this.identicalMembers.add( new IdenticalMembers<M>( projectMember, importMember ) );
+		this.identicals.add( new Identical<M>( projectMember, importMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void reifyProjectOnlyMembers() {
-		this.projectOnlyMembers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public void reifyProjectOnly() {
+		this.projectOnlys = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( M method : this.unusedProjectMembers ) {
-			this.projectOnlyMembers.add( new ProjectOnlyMember( method ) );
+			this.projectOnlys.add( new ProjectOnly<M>( method ) );
 		}
 	}
 
-	public java.util.List<ImportOnlyMember<M>> getImportOnlyMembers() {
-		return this.importOnlyMembers;
+	public java.util.List<ImportOnly<M>> getImportOnlys() {
+		return this.importOnlys;
 	}
 
-	public java.util.List<DifferentSignatureMembers<M>> getDifferentSignatureMembers() {
-		return this.differentSignatureMembers;
+	public java.util.List<DifferentSignature<M>> getDifferentSignatures() {
+		return this.differentSignatures;
 	}
 
-	public java.util.List<DifferentImplementationMembers<M>> getDifferentImplementationMembers() {
-		return this.differentImplementationMembers;
+	public java.util.List<DifferentImplementation<M>> getDifferentImplementations() {
+		return this.differentImplementations;
 	}
 
-	public java.util.List<IdenticalMembers<M>> getIdenticalMembers() {
-		return this.identicalMembers;
+	public java.util.List<Identical<M>> getIdenticals() {
+		return this.identicals;
 	}
 
-	public java.util.List<ProjectOnlyMember<M>> getProjectOnlyMembers() {
-		return this.projectOnlyMembers;
+	public java.util.List<ProjectOnly<M>> getProjectOnlys() {
+		return this.projectOnlys;
 	}
 
 	public org.lgna.croquet.PlainStringValue getAddHeader() {
@@ -150,28 +150,28 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return this.resultHeader;
 	}
 
-	public int getActionItemCount() {
-		return this.differentSignatureMembers.size() + this.differentImplementationMembers.size();
-	}
-
-	public int getAddCount() {
-		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size();
-	}
-
-	public int getKeepCount() {
-		return this.differentImplementationMembers.size() + this.differentImplementationMembers.size() + this.identicalMembers.size() + this.projectOnlyMembers.size();
-	}
+	//	public int getActionItemCount() {
+	//		return this.differentSignatures.size() + this.differentImplementations.size();
+	//	}
+	//
+	//	public int getAddCount() {
+	//		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size();
+	//	}
+	//
+	//	public int getKeepCount() {
+	//		return this.differentImplementations.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
+	//	}
 
 	public int getTotalCount() {
-		assert this.projectOnlyMembers != null : this;
-		return this.importOnlyMembers.size() + this.differentSignatureMembers.size() + this.differentImplementationMembers.size() + this.identicalMembers.size() + this.projectOnlyMembers.size();
+		assert this.projectOnlys != null : this;
+		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
 	}
 
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		for( DifferentSignatureMembers<M> differentSignatureMember : this.differentSignatureMembers ) {
+		for( DifferentSignature<M> differentSignatureMember : this.differentSignatures ) {
 			differentSignatureMember.appendStatusPreRejectorCheck( sb, step );
 		}
-		for( DifferentImplementationMembers<M> differentImplementationMember : this.differentImplementationMembers ) {
+		for( DifferentImplementation<M> differentImplementationMember : this.differentImplementations ) {
 			differentImplementationMember.appendStatusPreRejectorCheck( sb, step );
 		}
 	}

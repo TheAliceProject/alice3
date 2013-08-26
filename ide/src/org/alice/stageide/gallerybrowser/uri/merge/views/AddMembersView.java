@@ -100,53 +100,53 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		this.addComponent( createSeparator(), "grow, shrink, skip 1" );
 		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M>> importOnlyMembers = composite.getImportOnlyMembers();
-		if( importOnlyMembers.size() > 0 ) {
-			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M> importOnlyMember : composite.getImportOnlyMembers() ) {
-				this.addComponent( createPlusIconLabel( importOnlyMember.getIsAddMemberDesiredState() ), "skip 1, split 3" );
-				this.addComponent( importOnlyMember.getIsAddMemberDesiredState().createCheckBox() );
-				this.addComponent( createPopupView( composite, importOnlyMember.getIsAddMemberDesiredState().getMember() ), "wrap" );
+		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M>> importOnlys = composite.getImportOnlys();
+		if( importOnlys.size() > 0 ) {
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : importOnlys ) {
+				this.addComponent( createPlusIconLabel( importOnly.getIsAddMemberDesiredState() ), "skip 1, split 3" );
+				this.addComponent( importOnly.getIsAddMemberDesiredState().createCheckBox() );
+				this.addComponent( createPopupView( composite, importOnly.getIsAddMemberDesiredState().getMember() ), "wrap" );
 			}
 		}
 
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M>> differentSignatureMembers = composite.getDifferentSignatureMembers();
-		if( differentSignatureMembers.size() > 0 ) {
-			for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M> differentSignatureMember : differentSignatureMembers ) {
+		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M>> differentSignatures = composite.getDifferentSignatures();
+		if( differentSignatures.size() > 0 ) {
+			for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M> differentSignature : differentSignatures ) {
 				edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
 					public boolean accept( java.lang.Void e ) {
-						return differentSignatureMember.isActionRequired();
+						return differentSignature.isActionRequired();
 					}
 				};
 				ActionRequiredView leftBracket = new ActionRequiredView( isActionRequiredCriterion, true );
 				ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
-				String tooltipText = "Cannot have multiple " + composite.getOuterComposite().getIsExpandedState().getTrueText() + " named \"" + differentSignatureMember.getImportNameState().getMember().getName() + "\".";
+				String tooltipText = "Cannot have multiple " + composite.getOuterComposite().getIsExpandedState().getTrueText() + " named \"" + differentSignature.getImportNameState().getMember().getName() + "\".";
 				leftBracket.setToolTipText( tooltipText );
 				rightBracket.setToolTipText( tooltipText );
 				this.addComponent( leftBracket, "grow, spany 2" );
-				this.addComponent( createPlusIconLabel( differentSignatureMember.getIsAddMemberDesiredState() ), "split 4" );
-				this.addComponent( differentSignatureMember.getIsAddMemberDesiredState().createCheckBox() );
-				this.addComponent( createTextField( differentSignatureMember.getImportNameState() ), "grow" );
-				this.addComponent( createPopupView( composite, differentSignatureMember.getImportNameState().getMember() ) );
+				this.addComponent( createPlusIconLabel( differentSignature.getIsAddMemberDesiredState() ), "split 4" );
+				this.addComponent( differentSignature.getIsAddMemberDesiredState().createCheckBox() );
+				this.addComponent( createTextField( differentSignature.getImportNameState() ), "grow" );
+				this.addComponent( createPopupView( composite, differentSignature.getImportNameState().getMember() ) );
 				this.addComponent( rightBracket, "grow, spany 2, skip, wrap" );
 
-				this.addComponent( createTextField( differentSignatureMember.getProjectNameState() ), "skip 2, split 2, grow" );
-				this.addComponent( createPopupView( composite, differentSignatureMember.getProjectNameState().getMember() ), "wrap" );
+				this.addComponent( createTextField( differentSignature.getProjectNameState() ), "skip 2, split 2, grow" );
+				this.addComponent( createPopupView( composite, differentSignature.getProjectNameState().getMember() ), "wrap" );
 			}
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.IdenticalMembers<M> identicalMembers : composite.getIdenticalMembers() ) {
-			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identicalMembers.getImportMember(), " (identical)" );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.Identical<M> identical : composite.getIdenticals() ) {
+			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identical.getImportMember(), " (identical)" );
 			importLabel.setIcon( EMPTY_ICON );
 			importLabel.setForegroundColor( java.awt.Color.GRAY );
 			this.addComponent( importLabel, "gap 28, skip 1, split 2" );
-			this.addComponent( createPopupView( composite, identicalMembers.getImportMember() ) );
-			this.addComponent( createNoOpLabel( identicalMembers.getProjectMember(), "" ), "split 2" );
-			this.addComponent( createPopupView( composite, identicalMembers.getProjectMember() ), "wrap" );
+			this.addComponent( createPopupView( composite, identical.getImportMember() ) );
+			this.addComponent( createNoOpLabel( identical.getProjectMember(), "" ), "split 2" );
+			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnlyMember<M> projectOnlyMember : composite.getProjectOnlyMembers() ) {
-			this.addComponent( createNoOpLabel( projectOnlyMember.getProjectMember(), "" ), "skip 2, split 2" );
-			this.addComponent( createPopupView( composite, projectOnlyMember.getProjectMember() ), "wrap" );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
+			this.addComponent( createNoOpLabel( projectOnly.getProjectMember(), "" ), "skip 2, split 2" );
+			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ), "wrap" );
 		}
 	}
 

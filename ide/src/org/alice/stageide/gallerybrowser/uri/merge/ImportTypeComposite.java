@@ -109,8 +109,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 				}
 			}
 
-			this.addProceduresComposite.reifyProjectOnlyMembers();
-			this.addFunctionsComposite.reifyProjectOnlyMembers();
+			this.addProceduresComposite.reifyProjectOnly();
+			this.addFunctionsComposite.reifyProjectOnly();
 
 			for( org.lgna.project.ast.UserField importField : this.srcType.fields ) {
 				org.lgna.project.ast.UserField projectField = dstType.getDeclaredField( importField.getName() );
@@ -129,7 +129,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 				}
 			}
 
-			this.addFieldsComposite.reifyProjectOnlyMembers();
+			this.addFieldsComposite.reifyProjectOnly();
 
 		} else {
 			this.addProceduresComposite = null;
@@ -184,14 +184,14 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
-				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlyMembers() ) {
+				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlys() ) {
 					if( importOnly.getIsAddMemberDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( importOnly.getImportMember(), this.importedRootType );
 						methods.add( method );
 					}
 				}
 
-				for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatureMembers() ) {
+				for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatures() ) {
 					if( differentSignature.getIsAddMemberDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( differentSignature.getImportMember(), this.importedRootType );
 						methods.add( method );
@@ -202,9 +202,9 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			}
 
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserField> importOnlyField : this.addFieldsComposite.getImportOnlyMembers() ) {
-				if( importOnlyField.getIsAddMemberDesiredState().getValue() ) {
-					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
+			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserField> importOnly : this.addFieldsComposite.getImportOnlys() ) {
+				if( importOnly.getIsAddMemberDesiredState().getValue() ) {
+					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnly.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
 				}
 			}
 			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, renames );
