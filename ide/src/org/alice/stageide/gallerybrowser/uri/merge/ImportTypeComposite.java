@@ -185,7 +185,9 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
 				}
 			}
-			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields );
+			java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String>> methodsToRename = java.util.Collections.emptyList();
+			java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String>> fieldsToRename = java.util.Collections.emptyList();
+			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, methodsToRename, fieldsToRename );
 		} else {
 			return null;
 		}
