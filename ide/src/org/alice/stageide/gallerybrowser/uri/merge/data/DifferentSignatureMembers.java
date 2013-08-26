@@ -70,13 +70,21 @@ public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Memb
 		return this.isAddDesiredState;
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public boolean isActionRequired() {
 		if( this.isAddDesiredState.getValue() ) {
+			//todo
 			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
-				sb.append( "must not have same name: \"" );
-				sb.append( this.projectNameState.getMember().getName() );
-				sb.append( "\"." );
+				return true;
 			}
+		}
+		return false;
+	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isActionRequired() ) {
+			sb.append( "must not have same name: \"" );
+			sb.append( this.projectNameState.getMember().getName() );
+			sb.append( "\"." );
 		}
 	}
 }

@@ -77,15 +77,17 @@ public class ActionRequiredView extends org.lgna.croquet.components.JComponent<j
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			g2.draw( path );
 
-			//if( isLeading ) {
-			ICON.paintIcon( this, g2, 0, ( h - ICON.getIconHeight() ) / 2 );
-			//}
+			if( isActionRequiredCriterion.accept( null ) ) {
+				ICON.paintIcon( this, g2, 0, ( h - ICON.getIconHeight() ) / 2 );
+			}
 		}
 	}
 
+	private final edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion;
 	private final boolean isLeading;
 
-	public ActionRequiredView( boolean isLeading ) {
+	public ActionRequiredView( edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion, boolean isLeading ) {
+		this.isActionRequiredCriterion = isActionRequiredCriterion;
 		this.isLeading = isLeading;
 	}
 

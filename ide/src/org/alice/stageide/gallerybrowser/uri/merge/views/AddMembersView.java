@@ -115,9 +115,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M>> differentSignatureMembers = composite.getDifferentSignatureMembers();
 		if( differentSignatureMembers.size() > 0 ) {
-			for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M> differentSignatureMember : differentSignatureMembers ) {
-				ActionRequiredView leftBracket = new ActionRequiredView( true );
-				ActionRequiredView rightBracket = new ActionRequiredView( false );
+			for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<M> differentSignatureMember : differentSignatureMembers ) {
+				edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
+					public boolean accept( java.lang.Void e ) {
+						return differentSignatureMember.isActionRequired();
+					}
+				};
+				ActionRequiredView leftBracket = new ActionRequiredView( isActionRequiredCriterion, true );
+				ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
 				String tooltipText = "Cannot have multiple " + composite.getOuterComposite().getIsExpandedState().getTrueText() + " named \"" + differentSignatureMember.getImportNameState().getMember().getName() + "\".";
 				leftBracket.setToolTipText( tooltipText );
 				rightBracket.setToolTipText( tooltipText );
