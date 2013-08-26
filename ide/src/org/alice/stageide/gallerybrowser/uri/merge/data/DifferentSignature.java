@@ -48,13 +48,13 @@ import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
  * @author Dennis Cosgrove
  */
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddMemberDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
 	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
 	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
 
 	public DifferentSignature( M projectMember, M importMember ) {
 		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
-		this.isAddMemberDesiredState = new IsAddMemberDesiredState<M>( importMember, false );
+		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true );
 		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
 	}
 
@@ -66,8 +66,8 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 		return this.importNameState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
-		return this.isAddMemberDesiredState;
+	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
+		return this.isAddDesiredState;
 	}
 
 	public M getImportMember() {
@@ -79,7 +79,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 	}
 
 	public boolean isActionRequired() {
-		if( this.isAddMemberDesiredState.getValue() ) {
+		if( this.isAddDesiredState.getValue() ) {
 			//todo
 			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
 				return true;

@@ -54,7 +54,7 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true );
 	}
 
-	public IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
+	public IsAddMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
 	}
 

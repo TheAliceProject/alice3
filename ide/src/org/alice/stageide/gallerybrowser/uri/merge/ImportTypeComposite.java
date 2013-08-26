@@ -185,14 +185,14 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlys() ) {
-					if( importOnly.getIsAddMemberDesiredState().getValue() ) {
+					if( importOnly.getIsAddDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( importOnly.getImportMember(), this.importedRootType );
 						methods.add( method );
 					}
 				}
 
 				for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatures() ) {
-					if( differentSignature.getIsAddMemberDesiredState().getValue() ) {
+					if( differentSignature.getIsAddDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( differentSignature.getImportMember(), this.importedRootType );
 						methods.add( method );
 						addRenameIfNecessary( renames, differentSignature.getImportNameState() );
@@ -203,8 +203,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserField> importOnly : this.addFieldsComposite.getImportOnlys() ) {
-				if( importOnly.getIsAddMemberDesiredState().getValue() ) {
-					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnly.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
+				if( importOnly.getIsAddDesiredState().getValue() ) {
+					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnly.getIsAddDesiredState().getMember(), this.importedRootType ) );
 				}
 			}
 			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, renames );
