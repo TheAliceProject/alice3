@@ -127,8 +127,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 				leftBracket.setToolTipText( tooltipText );
 				rightBracket.setToolTipText( tooltipText );
 				this.addComponent( leftBracket, "grow, spany 2" );
-				this.addComponent( createPlusIconLabel( differentSignatureMember.getIsAddDesiredState() ), "split 4" );
-				this.addComponent( differentSignatureMember.getIsAddDesiredState().createCheckBox() );
+				this.addComponent( createPlusIconLabel( differentSignatureMember.getIsAddMemberDesiredState() ), "split 4" );
+				this.addComponent( differentSignatureMember.getIsAddMemberDesiredState().createCheckBox() );
 				this.addComponent( createTextField( differentSignatureMember.getImportNameState() ), "grow" );
 				this.addComponent( createPopupView( composite, differentSignatureMember.getImportNameState().getMember() ) );
 				this.addComponent( rightBracket, "grow, spany 2, skip, wrap" );

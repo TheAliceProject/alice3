@@ -167,27 +167,47 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		return this.dstType;
 	}
 
+	private void addRenameIfNecessary( java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, MemberNameState<? extends org.lgna.project.ast.Member> nameState ) {
+		org.lgna.project.ast.Member member = nameState.getMember();
+		String nextName = nameState.getValue();
+		if( nextName.contentEquals( member.getName() ) ) {
+			//pass
+		} else {
+			renames.add( new org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData( member, nextName ) );
+		}
+	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.dstType != null ) {
-			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
+			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
-				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserMethod> importOnlyMethod : addMethodsComposite.getImportOnlyMembers() ) {
-					if( importOnlyMethod.getIsAddMemberDesiredState().getValue() ) {
-						methods.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyMethod.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
+				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlyMembers() ) {
+					if( importOnly.getIsAddMemberDesiredState().getValue() ) {
+						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( importOnly.getImportMember(), this.importedRootType );
+						methods.add( method );
 					}
 				}
+
+				for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignatureMembers<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatureMembers() ) {
+					if( differentSignature.getIsAddMemberDesiredState().getValue() ) {
+						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( differentSignature.getImportMember(), this.importedRootType );
+						methods.add( method );
+						addRenameIfNecessary( renames, differentSignature.getImportNameState() );
+					}
+					addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
+				}
 			}
+
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserField> importOnlyField : this.addFieldsComposite.getImportOnlyMembers() ) {
 				if( importOnlyField.getIsAddMemberDesiredState().getValue() ) {
 					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
 				}
 			}
-			java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String>> methodsToRename = java.util.Collections.emptyList();
-			java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String>> fieldsToRename = java.util.Collections.emptyList();
-			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, methodsToRename, fieldsToRename );
+			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, renames );
 		} else {
 			return null;
 		}
@@ -195,7 +215,10 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//todo: remove; icons and components rely on repaint being called
 		this.getView().repaint();
+		//
+
 		StringBuffer sb = new StringBuffer();
 		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
 			addMembersComposite.appendStatusPreRejectorCheck( sb, step );

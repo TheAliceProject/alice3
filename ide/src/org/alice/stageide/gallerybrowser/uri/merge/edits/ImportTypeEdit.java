@@ -50,17 +50,15 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.NamedUserType existingType;
 	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate;
 	private final java.util.List<org.lgna.project.ast.UserField> fieldsToCreate;
-	private final java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String>> methodsToRename;
-	private final java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String>> fieldsToRename;
+	private final java.util.List<RenameMemberData> renames;
 
-	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate, java.util.List<org.lgna.project.ast.UserField> fieldsToCreate, java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String>> methodsToRename, java.util.List<edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String>> fieldsToRename ) {
+	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToCreate, java.util.List<org.lgna.project.ast.UserField> fieldsToCreate, java.util.List<RenameMemberData> renames ) {
 		super( completionStep );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.existingType = existingType;
 		this.methodsToCreate = methodsToCreate;
 		this.fieldsToCreate = fieldsToCreate;
-		this.methodsToRename = methodsToRename;
-		this.fieldsToRename = fieldsToRename;
+		this.renames = renames;
 	}
 
 	public ImportTypeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
@@ -70,8 +68,7 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 		this.existingType = null;
 		this.methodsToCreate = null;
 		this.fieldsToCreate = null;
-		this.methodsToRename = null;
-		this.fieldsToRename = null;
+		this.renames = null;
 	}
 
 	@Override
@@ -88,15 +85,9 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 		for( org.lgna.project.ast.UserField field : this.fieldsToCreate ) {
 			this.existingType.fields.add( field );
 		}
-
-		for( edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String> tuple : this.methodsToRename ) {
-			tuple.setC( tuple.getA().getName() );
-			tuple.getA().setName( tuple.getB() );
-		}
-
-		for( edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String> tuple : this.fieldsToRename ) {
-			tuple.setC( tuple.getA().getName() );
-			tuple.getA().setName( tuple.getB() );
+		for( RenameMemberData renameData : this.renames ) {
+			renameData.setPrevName( renameData.getMember().getName() );
+			renameData.getMember().setName( renameData.getNextName() );
 		}
 	}
 
@@ -108,12 +99,8 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 		for( org.lgna.project.ast.UserField field : this.fieldsToCreate ) {
 			this.existingType.fields.remove( this.existingType.methods.indexOf( field ) );
 		}
-		for( edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserMethod, String, String> tuple : this.methodsToRename ) {
-			tuple.getA().setName( tuple.getC() );
-		}
-
-		for( edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, String, String> tuple : this.fieldsToRename ) {
-			tuple.getA().setName( tuple.getC() );
+		for( RenameMemberData renameData : this.renames ) {
+			renameData.getMember().setName( renameData.getPrevName() );
 		}
 	}
 

@@ -40,25 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportOnlyMember<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
+public class RenameMemberData {
+	private final org.lgna.project.ast.Member member;
+	private final String nextName;
+	private String prevName;
 
-	public ImportOnlyMember( M importMember ) {
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true );
+	public RenameMemberData( org.lgna.project.ast.Member member, String nextName ) {
+		this.member = member;
+		this.nextName = nextName;
 	}
 
-	public IsAddMemberDesiredState<M> getIsAddMemberDesiredState() {
-		return this.isAddDesiredState;
+	public org.lgna.project.ast.Member getMember() {
+		return this.member;
 	}
 
-	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
+	public String getNextName() {
+		return this.nextName;
+	}
+
+	public void setPrevName( String prevName ) {
+		this.prevName = prevName;
+	}
+
+	public String getPrevName() {
+		return this.prevName;
 	}
 }

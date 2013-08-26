@@ -47,4 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface Declaration extends Node, edu.cmu.cs.dennisc.pattern.Nameable {
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 }
