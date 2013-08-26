@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,70 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
 
 /**
  * @author Dennis Cosgrove
- * 
  */
-public class IconUtilities {
-	private IconUtilities() {
-		throw new AssertionError();
+public class SelectPlusIcon extends org.alice.stageide.icons.PlusIcon {
+	private final javax.swing.ButtonModel actualButtonModel;
+
+	public SelectPlusIcon( java.awt.Dimension size, javax.swing.ButtonModel buttonModel ) {
+		super( size );
+		this.actualButtonModel = buttonModel;
 	}
 
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
+	@Override
+	protected java.awt.Paint getOuterRingPaint( javax.swing.ButtonModel buttonModel ) {
+		if( this.actualButtonModel.isSelected() ) {
+			return super.getOuterRingPaint( buttonModel );
+		} else {
+			return java.awt.Color.GRAY;
+		}
+	}
+
+	@Override
+	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
+		if( this.actualButtonModel.isSelected() ) {
+			return super.getPlusPaint( buttonModel );
 		} else {
 			return null;
 		}
-	}
-
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
-		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
-		} else {
-			return null;
-		}
-	}
-
-	public static javax.swing.ImageIcon[] createImageIcons( java.net.URL... urls ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ urls.length ];
-		int i = 0;
-		for( java.net.URL url : urls ) {
-			rv[ i ] = createImageIcon( url );
-			i++;
-		}
-		return rv;
-	}
-
-	public static javax.swing.ImageIcon[] createImageIcons( java.awt.Image... images ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ images.length ];
-		int i = 0;
-		for( java.awt.Image image : images ) {
-			rv[ i ] = createImageIcon( image );
-			i++;
-		}
-		return rv;
-	}
-
-	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
-		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
-		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
-		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
-		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
-		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
-	}
-
-	public static javax.swing.Icon getInformationIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.informationIcon" );
-	}
-
-	public static javax.swing.Icon getWarningIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
-	}
-
-	public static javax.swing.Icon getErrorIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
 	}
 }

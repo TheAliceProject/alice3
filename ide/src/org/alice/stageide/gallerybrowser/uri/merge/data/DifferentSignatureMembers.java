@@ -42,15 +42,19 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
+import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
 	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
 
 	public DifferentSignatureMembers( M projectMember, M importMember ) {
 		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
+		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false );
 		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
 	}
 
@@ -62,11 +66,17 @@ public final class DifferentSignatureMembers<M extends org.lgna.project.ast.Memb
 		return this.importNameState;
 	}
 
+	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
+		return this.isAddDesiredState;
+	}
+
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
-			sb.append( "must not have same name: \"" );
-			sb.append( this.projectNameState.getMember().getName() );
-			sb.append( "\"." );
+		if( this.isAddDesiredState.getValue() ) {
+			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+				sb.append( "must not have same name: \"" );
+				sb.append( this.projectNameState.getMember().getName() );
+				sb.append( "\"." );
+			}
 		}
 	}
 }

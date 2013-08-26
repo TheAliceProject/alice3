@@ -48,12 +48,8 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
 	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 
-	//private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 36, 22 );
 	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 22, 22 );
-	public static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
-
-	//public static javax.swing.Icon PLUS_AND_CHECK_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE, true );
-	//public static javax.swing.Icon CHECK_ONLY_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckPlusIcon( ICON_SIZE, false );
+	//public static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
 	public static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Member member, String bonusText ) {
@@ -84,6 +80,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return composite.getPopupMemberFor( member ).getElement().createPopupView();
 	}
 
+	private static org.lgna.croquet.components.AbstractLabel createPlusIconLabel( org.lgna.croquet.BooleanState booleanState ) {
+		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
+		rv.setIcon( new org.alice.stageide.gallerybrowser.uri.merge.views.icons.SelectPlusIcon( ICON_SIZE, booleanState.getSwingModel().getButtonModel() ) );
+		return rv;
+	}
+
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
 		super( composite, "", "0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]0[grow,shrink]32[grow,shrink]8[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]" );
 		//todo
@@ -105,10 +107,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M>> importOnlyMembers = composite.getImportOnlyMembers();
 		if( importOnlyMembers.size() > 0 ) {
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<M> importOnlyMember : composite.getImportOnlyMembers() ) {
-				org.lgna.croquet.components.CheckBox checkBox = importOnlyMember.getState().createCheckBox();
-				checkBox.getAwtComponent().setIcon( PLUS_ICON );
-				this.addComponent( checkBox, "skip 1, split 2" );
-				this.addComponent( createPopupView( composite, importOnlyMember.getState().getMember() ), "wrap" );
+				this.addComponent( createPlusIconLabel( importOnlyMember.getIsAddMemberDesiredState() ), "skip 1, split 3" );
+				this.addComponent( importOnlyMember.getIsAddMemberDesiredState().createCheckBox() );
+				this.addComponent( createPopupView( composite, importOnlyMember.getIsAddMemberDesiredState().getMember() ), "wrap" );
 			}
 		}
 
@@ -121,7 +122,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 				leftBracket.setToolTipText( tooltipText );
 				rightBracket.setToolTipText( tooltipText );
 				this.addComponent( leftBracket, "grow, spany 2" );
-				this.addComponent( new org.lgna.croquet.components.Label( AddMembersView.PLUS_ICON ), "split 3" );
+				this.addComponent( createPlusIconLabel( differentSignatureMember.getIsAddDesiredState() ), "split 4" );
+				this.addComponent( differentSignatureMember.getIsAddDesiredState().createCheckBox() );
 				this.addComponent( createTextField( differentSignatureMember.getImportNameState() ), "grow" );
 				this.addComponent( createPopupView( composite, differentSignatureMember.getImportNameState().getMember() ) );
 				this.addComponent( rightBracket, "grow, spany 2, skip, wrap" );
@@ -135,7 +137,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			org.lgna.croquet.components.AbstractLabel importLabel = createNoOpLabel( identicalMembers.getImportMember(), " (identical)" );
 			importLabel.setIcon( EMPTY_ICON );
 			importLabel.setForegroundColor( java.awt.Color.GRAY );
-			this.addComponent( importLabel, "skip 1, split 2" );
+			this.addComponent( importLabel, "gap 28, skip 1, split 2" );
 			this.addComponent( createPopupView( composite, identicalMembers.getImportMember() ) );
 			this.addComponent( createNoOpLabel( identicalMembers.getProjectMember(), "" ), "split 2" );
 			this.addComponent( createPopupView( composite, identicalMembers.getProjectMember() ), "wrap" );

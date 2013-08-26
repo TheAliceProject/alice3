@@ -174,15 +174,15 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserMethod> importOnlyMethod : addMethodsComposite.getImportOnlyMembers() ) {
-					if( importOnlyMethod.getState().getValue() ) {
-						methods.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyMethod.getState().getMember(), this.importedRootType ) );
+					if( importOnlyMethod.getIsAddMemberDesiredState().getValue() ) {
+						methods.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyMethod.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
 					}
 				}
 			}
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnlyMember<org.lgna.project.ast.UserField> importOnlyField : this.addFieldsComposite.getImportOnlyMembers() ) {
-				if( importOnlyField.getState().getValue() ) {
-					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getState().getMember(), this.importedRootType ) );
+				if( importOnlyField.getIsAddMemberDesiredState().getValue() ) {
+					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnlyField.getIsAddMemberDesiredState().getMember(), this.importedRootType ) );
 				}
 			}
 			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields );
@@ -193,6 +193,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.getView().repaint();
 		StringBuffer sb = new StringBuffer();
 		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
 			addMembersComposite.appendStatusPreRejectorCheck( sb, step );
