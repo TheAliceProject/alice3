@@ -47,17 +47,24 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  */
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 	private final IsMemberDesiredState<M> isAddDesiredState;
+	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
 
 	public DifferentSignature( M projectMember, M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", " <em>(requires rename)</em>" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " <em>(requires rename)</em>" );
+		this.isKeepDesiredState.setEnabled( false );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
+	}
+
+	public IsMemberDesiredState<M> getIsKeepDesiredState() {
+		return this.isKeepDesiredState;
 	}
 
 	public MemberNameState<M> getProjectNameState() {

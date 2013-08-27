@@ -107,6 +107,18 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectNameState.getMember();
 	}
 
+	public boolean isActionRequired() {
+		if( this.isAddDesiredState.getValue() ) {
+			if( this.isKeepDesiredState.getValue() ) {
+				//todo
+				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
 		sb.append( this.getProjectMember().getName() );
 	}
