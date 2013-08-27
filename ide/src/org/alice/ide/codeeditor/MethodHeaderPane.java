@@ -117,9 +117,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 					)
 					);
 		}
-		if( this.isPreview() ) {
-			//pass
-		} else {
+		if( ( this.isPreview() == false ) || ( this.userMethod.requiredParameters.size() > 0 ) ) {
 			this.addComponent( new ParametersPane( this.factory, this.userMethod ) );
 		}
 		//		if( declaringType != null ) {
