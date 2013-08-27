@@ -72,12 +72,12 @@ public class PopupView extends JComponent<javax.swing.JLabel> {
 		this.element = element;
 		this.window = new javax.swing.JWindow();
 		this.window.setAlwaysOnTop( true );
-		this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
 		this.addMouseListener( this.mouseListener );
 	}
 
 	private void showWindow() {
 		java.awt.Point p = this.getLocationOnScreen();
+		this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
 		this.window.setLocation( p.x + this.getWidth() + 16, p.y );
 		this.window.pack();
 		this.window.setVisible( true );
@@ -85,6 +85,7 @@ public class PopupView extends JComponent<javax.swing.JLabel> {
 
 	private void hideWindow() {
 		this.window.setVisible( false );
+		this.window.getContentPane().removeAll();
 	}
 
 	@Override
