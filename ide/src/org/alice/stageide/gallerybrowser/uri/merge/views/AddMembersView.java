@@ -50,10 +50,11 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] NO_OP_LABEL_TEXT_ATTRIBUTES = {};
 
 	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 22, 22 );
-	public static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Member member, String bonusText, javax.swing.Icon icon ) {
-		org.lgna.croquet.components.AbstractLabel rv = new org.lgna.croquet.components.Label( member.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
+		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( member.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
 		rv.setIcon( icon );
 		return rv;
 	}
@@ -78,12 +79,16 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return composite.getPopupMemberFor( member ).getElement().createPopupView();
 	}
 
-	private static javax.swing.Icon createPlusIcon( org.lgna.croquet.BooleanState booleanState ) {
-		return new org.alice.stageide.gallerybrowser.uri.merge.views.icons.SelectPlusIcon( ICON_SIZE, booleanState.getSwingModel().getButtonModel() );
+	public static org.lgna.croquet.components.Label createPlusIconLabel() {
+		return new org.lgna.croquet.components.Label( PLUS_ICON );
 	}
 
-	private static org.lgna.croquet.components.Label createPlusIconLabel( org.lgna.croquet.BooleanState booleanState ) {
-		return new org.lgna.croquet.components.Label( createPlusIcon( booleanState ) );
+	public static org.lgna.croquet.components.AbstractLabel createAddResultLabel( org.lgna.project.ast.Member member ) {
+		return createNoOpLabel( member, "", PLUS_ICON );
+	}
+
+	public static org.lgna.croquet.components.AbstractLabel createKeepResultLabel( org.lgna.project.ast.Member member ) {
+		return createNoOpLabel( member, "", EMPTY_ICON );
 	}
 
 	private int row = 0;
@@ -135,7 +140,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		for( org.alice.stageide.gallerybrowser.uri.merge.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
 			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
 
-			org.lgna.croquet.components.AbstractLabel label = createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) );
+			org.lgna.croquet.components.AbstractLabel label = createAddResultLabel( importOnly.getImportMember() );
 			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, importOnly.getImportMember() );
 			this.addComponent( label, "skip 1, split 2" );
 			this.addComponent( popupView, "wrap" );
@@ -154,7 +159,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
 			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
 
-			org.lgna.croquet.components.Label plusLabel = createPlusIconLabel( differentSignature.getIsAddDesiredState() );
+			org.lgna.croquet.components.Label plusLabel = createPlusIconLabel();
 			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
 			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, differentSignature.getImportMember() );
 			this.addComponent( plusLabel, "skip 1, split 3" );
@@ -236,14 +241,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			keepCheckBox.setToolTipText( toolTipText );
 			this.addComponent( addCheckBox );
 			this.addComponent( keepCheckBox );
-			this.addComponent( createNoOpLabel( identical.getProjectMember(), "", EMPTY_ICON ), "split 2" );
+			this.addComponent( createKeepResultLabel( identical.getProjectMember() ), "split 2" );
 			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
 			org.lgna.croquet.components.CheckBox keepCheckBox = projectOnly.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
-			this.addComponent( createNoOpLabel( projectOnly.getProjectMember(), "", EMPTY_ICON ), "split 2" );
+			this.addComponent( createKeepResultLabel( projectOnly.getProjectMember() ), "split 2" );
 			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ), "wrap" );
 		}
 	}
