@@ -317,6 +317,13 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 					}
 					rowIndex++;
 				}
+
+				if( this.getComponentCount() > 2 ) {
+					int x = getComponent( 2 ).getX();
+					g.setColor( java.awt.Color.DARK_GRAY );
+					g.fillRect( x - 10, 0, 4, this.getHeight() );
+				}
+
 			}
 		}
 		return new JMembersPanel();

@@ -42,27 +42,27 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class Identical<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isKeepDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isAddDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
 
 	public Identical( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
 		this.isAddDesiredState.setEnabled( false );
-		this.isKeepDesiredState = new IsAddMemberDesiredState<M>( projectMember, true, "keep ", " (identical)" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " (identical)" );
 		this.isKeepDesiredState.setEnabled( false );
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
+	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsKeepDesiredState() {
+	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
 		return this.isKeepDesiredState;
 	}
 

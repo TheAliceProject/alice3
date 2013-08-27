@@ -42,19 +42,19 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ImportOnly<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isAddDesiredState;
 
 	public ImportOnly( M importMember ) {
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true, "add ", "" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", "" );
 	}
 
-	public IsAddMemberDesiredState<M> getIsAddDesiredState() {
+	public IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
 	}
 
