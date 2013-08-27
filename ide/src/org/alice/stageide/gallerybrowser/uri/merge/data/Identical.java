@@ -48,18 +48,22 @@ import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
  * @author Dennis Cosgrove
  */
 public final class Identical<M extends org.lgna.project.ast.Member> {
-	private final M projectMember;
-
 	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isKeepDesiredState;
 
 	public Identical( M projectMember, M importMember ) {
-		this.projectMember = projectMember;
 		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
 		this.isAddDesiredState.setEnabled( false );
+		this.isKeepDesiredState = new IsAddMemberDesiredState<M>( projectMember, true, "keep ", " (identical)" );
+		this.isKeepDesiredState.setEnabled( false );
 	}
 
 	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsKeepDesiredState() {
+		return this.isKeepDesiredState;
 	}
 
 	public M getImportMember() {
@@ -67,6 +71,6 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 	}
 
 	public M getProjectMember() {
-		return this.projectMember;
+		return this.isKeepDesiredState.getMember();
 	}
 }

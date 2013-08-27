@@ -63,6 +63,7 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<M, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private final org.lgna.croquet.PlainStringValue addHeader = this.createStringValue( this.createKey( "addHeader" ) );
+	private final org.lgna.croquet.PlainStringValue existingHeader = this.createStringValue( this.createKey( "existingHeader" ) );
 	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
 
 	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
@@ -144,6 +145,10 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 
 	public org.lgna.croquet.PlainStringValue getAddHeader() {
 		return this.addHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getExistingHeader() {
+		return this.existingHeader;
 	}
 
 	public org.lgna.croquet.PlainStringValue getResultHeader() {

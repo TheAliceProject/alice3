@@ -42,17 +42,24 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
+import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
-	private final M projectMember;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isKeepDesiredState;
 
 	public ProjectOnly( M projectMember ) {
-		this.projectMember = projectMember;
+		this.isKeepDesiredState = new IsAddMemberDesiredState<M>( projectMember, true, "keep ", "" );
+		this.isKeepDesiredState.setEnabled( false );
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsKeepDesiredState() {
+		return this.isKeepDesiredState;
 	}
 
 	public M getProjectMember() {
-		return this.projectMember;
+		return this.isKeepDesiredState.getMember();
 	}
 }
