@@ -93,7 +93,7 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		}
 
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			updateCard();
+			updateCardAndUpdateIsImportDesiredStateWhileAtIt();
 		}
 	};
 
@@ -122,23 +122,28 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		this.differentImplementation.getIsKeepDesiredState().addAndInvokeValueListener( this.valueListener );
 	}
 
-	private void updateCard() {
+	private void updateCardAndUpdateIsImportDesiredStateWhileAtIt() {
 		boolean isAddDesired = this.differentImplementation.getIsAddDesiredState().getValue();
 		boolean isKeepDesired = this.differentImplementation.getIsKeepDesiredState().getValue();
+		String trueAndFalsePrefix;
 		org.lgna.croquet.Composite<?> card;
-		if( isAddDesired ) {
-			if( isKeepDesired ) {
+		if( isKeepDesired ) {
+			trueAndFalsePrefix = "add ";
+			if( isAddDesired ) {
 				card = this.renameCard;
 			} else {
-				card = this.replaceCard;
+				card = this.keepCard;
 			}
 		} else {
-			if( isKeepDesired ) {
-				card = this.keepCard;
+			if( isAddDesired ) {
+				card = this.replaceCard;
+				trueAndFalsePrefix = "replace ";
 			} else {
 				card = this.neitherCard;
+				trueAndFalsePrefix = "add/replace ";
 			}
 		}
 		this.showCard( card );
+		this.differentImplementation.getIsAddDesiredState().setTextForBothTrueAndFalse( trueAndFalsePrefix + this.differentImplementation.getImportMember().getName() );
 	}
 }
