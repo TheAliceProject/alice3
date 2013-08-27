@@ -99,7 +99,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.isActionRequired() ) {
 			sb.append( "must not have same name: \"" );
-			sb.append( this.projectNameState.getMember().getName() );
+			sb.append( this.getImportMember().getName() );
 			sb.append( "\"." );
 		}
 	}

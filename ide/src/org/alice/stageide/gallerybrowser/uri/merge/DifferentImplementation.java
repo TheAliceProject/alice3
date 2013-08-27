@@ -120,6 +120,27 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	}
 
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		sb.append( this.getProjectMember().getName() );
+		if( this.isAddDesiredState.getValue() ) {
+			if( this.isKeepDesiredState.getValue() ) {
+				//todo
+				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+					sb.append( "must not have same name: \"" );
+					sb.append( this.getImportMember().getName() );
+					sb.append( "\"." );
+				} else {
+					//pass
+				}
+			} else {
+				//pass
+			}
+		} else {
+			if( this.isKeepDesiredState.getValue() ) {
+				//pass
+			} else {
+				sb.append( "must take action on \"" );
+				sb.append( this.getImportMember().getName() );
+				sb.append( "\"." );
+			}
+		}
 	}
 }
