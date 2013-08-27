@@ -82,15 +82,45 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return new org.alice.stageide.gallerybrowser.uri.merge.views.icons.SelectPlusIcon( ICON_SIZE, booleanState.getSwingModel().getButtonModel() );
 	}
 
-	private static org.lgna.croquet.components.AbstractLabel createPlusIconLabel( org.lgna.croquet.BooleanState booleanState ) {
+	private static org.lgna.croquet.components.Label createPlusIconLabel( org.lgna.croquet.BooleanState booleanState ) {
 		return new org.lgna.croquet.components.Label( createPlusIcon( booleanState ) );
 	}
 
 	private int row = 0;
 	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
+	private String getTitleText( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite ) {
+		return composite.getOuterComposite().getIsExpandedState().getTrueText();
+	}
+
+	private String createDifferentSignatureToolText( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>\"" );
+		sb.append( member.getName() );
+		sb.append( "\" " );
+		sb.append( getTitleText( composite ) );
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			sb.append( " have different signatures." );
+		} else {
+			sb.append( " have different value classes." );
+		}
+		sb.append( "<p><strong>You must change at least one of their names.</strong></html>" );
+		return sb.toString();
+	}
+
+	private String createIdenticalToolText( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>\"" );
+		sb.append( member.getName() );
+		sb.append( "\" " );
+		sb.append( getTitleText( composite ) );
+		sb.append( " " );
+		sb.append( " are identical.<p>No action is required.</html>" );
+		return sb.toString();
+	}
+
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill", "0[grow,shrink,50%]32[grow,shrink,50%]0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]0" );
+		super( composite, "fill, insets 0", "[grow,shrink,50%]32[grow,shrink,50%]0[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
@@ -104,8 +134,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		if( importOnlys.size() > 0 ) {
 			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : importOnlys ) {
 				this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
-				this.addComponent( createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) ), "split 2" );
-				this.addComponent( createPopupView( composite, importOnly.getIsAddDesiredState().getMember() ), "wrap" );
+
+				org.lgna.croquet.components.AbstractLabel label = createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) );
+				org.lgna.croquet.components.PopupView popupView = createPopupView( composite, importOnly.getImportMember() );
+				this.addComponent( label, "split 2" );
+				this.addComponent( popupView, "wrap" );
+
+				//todo: removeValueListener somewhere
+				importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label, popupView ) );
 			}
 		}
 
@@ -117,18 +153,20 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 						return differentSignature.isActionRequired();
 					}
 				};
-				//ActionRequiredView leftBracket = new ActionRequiredView( isActionRequiredCriterion, true );
 				ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
-				String tooltipText = "Cannot have multiple " + composite.getOuterComposite().getIsExpandedState().getTrueText() + " named \"" + differentSignature.getImportNameState().getMember().getName() + "\".";
-				//leftBracket.setToolTipText( tooltipText );
-				rightBracket.setToolTipText( tooltipText );
-				//this.addComponent( leftBracket, "grow, spany 2" );
+				rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
 				this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
 
-				this.addComponent( createPlusIconLabel( differentSignature.getIsAddDesiredState() ), "split 3" );
-				this.addComponent( createTextField( differentSignature.getImportNameState() ), "grow" );
-				this.addComponent( createPopupView( composite, differentSignature.getImportNameState().getMember() ) );
+				org.lgna.croquet.components.Label plusLabel = createPlusIconLabel( differentSignature.getIsAddDesiredState() );
+				org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
+				org.lgna.croquet.components.PopupView popupView = createPopupView( composite, differentSignature.getImportMember() );
+				this.addComponent( plusLabel, "split 3" );
+				this.addComponent( textField, "growx" );
+				this.addComponent( popupView );
 				this.addComponent( rightBracket, "grow, spany 2, wrap" );
+
+				//todo: removeValueListener somewhere
+				differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField, popupView ) );
 
 				this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 1, split 3" );
 				this.addComponent( createTextField( differentSignature.getProjectNameState() ), "grow" );
@@ -138,7 +176,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.data.Identical<M> identical : composite.getIdenticals() ) {
 			org.lgna.croquet.components.CheckBox checkBox = identical.getIsAddDesiredState().createCheckBox();
-			checkBox.setToolTipText( "identical" );
+			checkBox.setToolTipText( createIdenticalToolText( composite, identical.getImportMember() ) );
 			this.addComponent( checkBox, "" );
 			this.addComponent( createNoOpLabel( identical.getProjectMember(), "", EMPTY_ICON ), "split 2" );
 			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
