@@ -45,15 +45,30 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberNameState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.StringState {
-	private final M member;
+public abstract class RenameImplementationsCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final DifferentImplementation<?> differentImplementation;
 
-	public MemberNameState( M member ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8cb507c3-e498-4d35-9da3-111176a5b5c8" ), member.getName() );
-		this.member = member;
+	public RenameImplementationsCard( java.util.UUID migrationId, DifferentImplementation<?> differentImplementation ) {
+		super( migrationId );
+		this.differentImplementation = differentImplementation;
 	}
 
-	public M getMember() {
-		return this.member;
+	public DifferentImplementation<?> getDifferentImplementation() {
+		return this.differentImplementation;
+	}
+
+	protected abstract org.lgna.croquet.components.AbstractLabel createLabel();
+
+	protected abstract MemberNameState<?> getMemberNameState();
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0" );
+		rv.addComponent( this.createLabel() );
+
+		MemberNameState<?> nameState = this.getMemberNameState();
+		rv.addComponent( nameState.createTextField() );
+		rv.addComponent( new MemberPopupCoreComposite( nameState.getMember() ).getElement().createPopupView() );
+		return rv;
 	}
 }

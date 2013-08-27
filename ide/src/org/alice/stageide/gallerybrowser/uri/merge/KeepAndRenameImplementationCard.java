@@ -45,15 +45,18 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberNameState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.StringState {
-	private final M member;
-
-	public MemberNameState( M member ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8cb507c3-e498-4d35-9da3-111176a5b5c8" ), member.getName() );
-		this.member = member;
+public final class KeepAndRenameImplementationCard extends RenameImplementationsCard {
+	public KeepAndRenameImplementationCard( DifferentImplementation<?> differentImplementation ) {
+		super( java.util.UUID.fromString( "6e06669b-8546-4b9b-b4b6-025790bf6032" ), differentImplementation );
 	}
 
-	public M getMember() {
-		return this.member;
+	@Override
+	protected org.lgna.croquet.components.AbstractLabel createLabel() {
+		return org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView.createEmptyIconLabel();
+	}
+
+	@Override
+	protected MemberNameState<?> getMemberNameState() {
+		return this.getDifferentImplementation().getProjectNameState();
 	}
 }

@@ -56,8 +56,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	private final ReplaceImplementationCard replaceImplementationCard = new ReplaceImplementationCard( this );
 	private final KeepImplementationCard keepImplementationCard = new KeepImplementationCard( this );
-	private final AddAndKeepWithRenameImplementationsCard addWithRenameImplementationsCard = new AddAndKeepWithRenameImplementationsCard( this );
-	private final AddAndKeepWithRenameImplementationsCard keepWithRenameImplementationsCard = new AddAndKeepWithRenameImplementationsCard( this );
+	private final AddAndRenameImplementationCard addAndRenameImplementationsCard = new AddAndRenameImplementationCard( this );
+	private final KeepAndRenameImplementationCard keepAndRenameImplementationsCard = new KeepAndRenameImplementationCard( this );
 
 	public DifferentImplementation( M projectMember, M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", "" );
@@ -67,11 +67,11 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.replace( this.replaceImplementationCard )
-				.rename( this.addWithRenameImplementationsCard )
+				.rename( this.addAndRenameImplementationsCard )
 				.build();
 		this.projectCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.keep( this.keepImplementationCard )
-				.rename( this.keepWithRenameImplementationsCard )
+				.rename( this.keepAndRenameImplementationsCard )
 				.build();
 	}
 

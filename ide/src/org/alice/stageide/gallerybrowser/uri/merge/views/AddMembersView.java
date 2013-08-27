@@ -52,6 +52,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 22, 22 );
 	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
 	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static javax.swing.Icon CHECK_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckIcon( ICON_SIZE );
 
 	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Member member, String bonusText, javax.swing.Icon icon ) {
 		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( member.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
@@ -83,8 +84,16 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return new org.lgna.croquet.components.Label( PLUS_ICON );
 	}
 
+	public static org.lgna.croquet.components.Label createEmptyIconLabel() {
+		return new org.lgna.croquet.components.Label( EMPTY_ICON );
+	}
+
 	public static org.lgna.croquet.components.AbstractLabel createAddResultLabel( org.lgna.project.ast.Member member ) {
 		return createNoOpLabel( member, "", PLUS_ICON );
+	}
+
+	public static org.lgna.croquet.components.AbstractLabel createReplaceResultLabel( org.lgna.project.ast.Member member ) {
+		return createNoOpLabel( member, "", CHECK_ICON );
 	}
 
 	public static org.lgna.croquet.components.AbstractLabel createKeepResultLabel( org.lgna.project.ast.Member member ) {
@@ -167,7 +176,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( popupView );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 2, split 3" );
+			this.addComponent( createEmptyIconLabel(), "skip 2, split 3" );
 			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "grow" );
 			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ), "wrap" );
 
