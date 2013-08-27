@@ -122,8 +122,8 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		this.differentImplementation.getIsKeepDesiredState().addAndInvokeValueListener( this.valueListener );
 	}
 
-	private static final String REQUIRES_RENAME = " <em>(requires rename)</em>";
-	private static final String WOULD_REQUIRE_RENAME = " <em>(would require rename)</em>";
+	//private static final String REQUIRES_RENAME = " <em>(requires rename)</em>";
+	//private static final String WOULD_REQUIRE_RENAME = " <em>(would require rename)</em>";
 
 	private void updateCardAndUpdateIsMemberDesiredStatesWhileAtIt() {
 		boolean isAddDesired = this.differentImplementation.getIsAddDesiredState().getValue();
@@ -147,29 +147,29 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 			}
 		}
 
-		String addPostfix;
-		if( isKeepDesired ) {
-			if( isAddDesired ) {
-				addPostfix = REQUIRES_RENAME;
-			} else {
-				addPostfix = WOULD_REQUIRE_RENAME;
-			}
-		} else {
-			addPostfix = "";
-		}
-		String keepPostfix;
-		if( isAddDesired ) {
-			if( isKeepDesired ) {
-				keepPostfix = REQUIRES_RENAME;
-			} else {
-				keepPostfix = WOULD_REQUIRE_RENAME;
-			}
-		} else {
-			keepPostfix = "";
-		}
+		//String addPostfix;
+		//		if( isKeepDesired ) {
+		//			if( isAddDesired ) {
+		//				addPostfix = REQUIRES_RENAME;
+		//			} else {
+		//				addPostfix = WOULD_REQUIRE_RENAME;
+		//			}
+		//		} else {
+		//			addPostfix = "";
+		//		}
+		//		String keepPostfix;
+		//		if( isAddDesired ) {
+		//			if( isKeepDesired ) {
+		//				keepPostfix = REQUIRES_RENAME;
+		//			} else {
+		//				keepPostfix = WOULD_REQUIRE_RENAME;
+		//			}
+		//		} else {
+		//			keepPostfix = "";
+		//		}
 
 		this.showCard( card );
-		this.differentImplementation.getIsAddDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( prefix, addPostfix );
-		this.differentImplementation.getIsKeepDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( "keep ", keepPostfix );
+		this.differentImplementation.getIsAddDesiredState().setPrependText( prefix );
+		//		this.differentImplementation.getIsKeepDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( "keep ", keepPostfix );
 	}
 }

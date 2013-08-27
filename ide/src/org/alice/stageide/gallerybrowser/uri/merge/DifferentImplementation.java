@@ -60,8 +60,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final KeepAndRenameImplementationCard keepAndRenameImplementationsCard = new KeepAndRenameImplementationCard( this );
 
 	public DifferentImplementation( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", "" );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", "" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", " <em>(different implementation)</em>" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", " <em>(different implementation)</em>" );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
 

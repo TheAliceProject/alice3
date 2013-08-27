@@ -52,8 +52,8 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 	private final MemberNameState<M> projectNameState;
 
 	public DifferentSignature( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", " <em>(requires rename)</em>" );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " <em>(requires rename)</em>" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", " <em>(different signature)</em>" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " <em>(different signature)</em>" );
 		this.isKeepDesiredState.setEnabled( false );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );

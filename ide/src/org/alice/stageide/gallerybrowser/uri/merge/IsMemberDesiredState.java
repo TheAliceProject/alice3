@@ -60,12 +60,20 @@ public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> e
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setTextForBothTrueAndFalseBasedOnMemberName( this.prependText, this.appendText );
+		this.setTextForBothTrueAndFalseBasedOnMemberName();
 	}
 
-	public void setTextForBothTrueAndFalseBasedOnMemberName( String prependText, String appendText ) {
+	public void setPrependText( String prependText ) {
 		this.prependText = prependText;
+		this.setTextForBothTrueAndFalseBasedOnMemberName();
+	}
+
+	public void setAppendText( String appendText ) {
 		this.appendText = appendText;
+		this.setTextForBothTrueAndFalseBasedOnMemberName();
+	}
+
+	private void setTextForBothTrueAndFalseBasedOnMemberName() {
 		this.setTextForBothTrueAndFalse( "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>" );
 	}
 
