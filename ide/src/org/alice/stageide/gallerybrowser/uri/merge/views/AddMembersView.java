@@ -162,15 +162,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
-			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
+			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "split 2" );
+			this.addComponent( createPopupView( composite, importOnly.getImportMember() ) );
 
 			org.lgna.croquet.components.AbstractLabel label = createAddResultLabel( importOnly.getImportMember() );
-			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, importOnly.getImportMember() );
-			this.addComponent( label, "skip 1, split 2" );
-			this.addComponent( popupView, "wrap" );
+			this.addComponent( label, "skip 1, wrap" );
 
 			//todo: removeValueListener somewhere
-			importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label, popupView ) );
+			importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label ) );
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
@@ -181,25 +180,24 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			};
 			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
 			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
-			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
+			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox(), "split 2" );
+			this.addComponent( createPopupView( composite, differentSignature.getImportMember() ) );
 
 			org.lgna.croquet.components.Label plusLabel = createPlusIconLabel();
 			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
-			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, differentSignature.getImportMember() );
-			this.addComponent( plusLabel, "skip 1, split 3" );
+			this.addComponent( plusLabel, "skip 1, split 2" );
 			this.addComponent( textField, "gap 0, growx" );
-			this.addComponent( popupView );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getIsKeepDesiredState().createCheckBox();
-			this.addComponent( keepCheckBox, "skip 1" );
+			this.addComponent( keepCheckBox, "skip 1, split 2" );
+			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ) );
 
-			this.addComponent( createEmptyIconLabel(), "split 3" );
-			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "gap 0, grow" );
-			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ), "wrap" );
+			this.addComponent( createEmptyIconLabel(), "split 2" );
+			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "gap 0, grow, wrap" );
 
 			//todo: removeValueListener somewhere
-			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField, popupView ) );
+			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField ) );
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
@@ -213,11 +211,13 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 			org.lgna.croquet.components.CheckBox addCheckBox = differentImplementation.getIsAddDesiredState().createCheckBox();
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
-			this.addComponent( addCheckBox );
+			this.addComponent( addCheckBox, "split 2" );
+			this.addComponent( createPopupView( composite, differentImplementation.getImportMember() ) );
 			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "skip 1, grow, shrink" );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			this.addComponent( keepCheckBox, "skip 1" );
+			this.addComponent( keepCheckBox, "skip 1, split 2" );
+			this.addComponent( createPopupView( composite, differentImplementation.getProjectMember() ) );
 			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
 		}
 
@@ -227,17 +227,18 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			addCheckBox.setToolTipText( toolTipText );
 			org.lgna.croquet.components.CheckBox keepCheckBox = identical.getIsKeepDesiredState().createCheckBox();
 			keepCheckBox.setToolTipText( toolTipText );
-			this.addComponent( addCheckBox );
-			this.addComponent( keepCheckBox );
-			this.addComponent( createKeepResultLabel( identical.getProjectMember() ), "split 2" );
-			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
+			this.addComponent( addCheckBox, "split 2" );
+			this.addComponent( createPopupView( composite, identical.getImportMember() ) );
+			this.addComponent( keepCheckBox, "split 2" );
+			this.addComponent( createPopupView( composite, identical.getProjectMember() ) );
+			this.addComponent( createKeepResultLabel( identical.getProjectMember() ), "wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
 			org.lgna.croquet.components.CheckBox keepCheckBox = projectOnly.getIsKeepDesiredState().createCheckBox();
-			this.addComponent( keepCheckBox, "skip 1" );
-			this.addComponent( createKeepResultLabel( projectOnly.getProjectMember() ), "split 2" );
-			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ), "wrap" );
+			this.addComponent( keepCheckBox, "skip 1, split 2" );
+			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ) );
+			this.addComponent( createKeepResultLabel( projectOnly.getProjectMember() ), "wrap" );
 		}
 	}
 

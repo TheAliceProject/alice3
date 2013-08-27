@@ -46,14 +46,17 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
+	private static final String METHOD_POST_FIX = " <em>(different signature)</em>";
+	private static final String FIELD_POST_FIX = " <em>(different value class)</em>";
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
 
 	public DifferentSignature( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", " <em>(different signature)</em>" );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " <em>(different signature)</em>" );
+		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", postfix );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", postfix );
 		this.isKeepDesiredState.setEnabled( false );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
