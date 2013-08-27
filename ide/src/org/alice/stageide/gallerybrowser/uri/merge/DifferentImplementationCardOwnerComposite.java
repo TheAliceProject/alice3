@@ -47,13 +47,13 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  */
 public final class DifferentImplementationCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 	public static class Builder {
-		private final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<?> differentImplementation;
+		private final DifferentImplementation<?> differentImplementation;
 		private org.lgna.croquet.Composite<?> neitherComposite;
 		private org.lgna.croquet.Composite<?> addComposite;
 		private org.lgna.croquet.Composite<?> keepComposite;
 		private org.lgna.croquet.Composite<?> renameComposite;
 
-		public Builder( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<?> differentImplementation ) {
+		public Builder( DifferentImplementation<?> differentImplementation ) {
 			this.differentImplementation = differentImplementation;
 		}
 
@@ -82,13 +82,13 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		}
 	}
 
-	private final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<?> differentImplementation;
+	private final DifferentImplementation<?> differentImplementation;
 	private final org.lgna.croquet.Composite<?> neitherComposite;
 	private final org.lgna.croquet.Composite<?> addComposite;
 	private final org.lgna.croquet.Composite<?> keepComposite;
 	private final org.lgna.croquet.Composite<?> renameComposite;
 
-	private DifferentImplementationCardOwnerComposite( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherComposite, org.lgna.croquet.Composite<?> addComposite, org.lgna.croquet.Composite<?> keepComposite, org.lgna.croquet.Composite<?> renameComposite ) {
+	private DifferentImplementationCardOwnerComposite( DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherComposite, org.lgna.croquet.Composite<?> addComposite, org.lgna.croquet.Composite<?> keepComposite, org.lgna.croquet.Composite<?> renameComposite ) {
 		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
 		this.differentImplementation = differentImplementation;
 		this.neitherComposite = neitherComposite;

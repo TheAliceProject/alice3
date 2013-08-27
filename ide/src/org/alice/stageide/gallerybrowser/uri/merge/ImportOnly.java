@@ -40,26 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
+public final class ImportOnly<M extends org.lgna.project.ast.Member> {
+	private final IsMemberDesiredState<M> isAddDesiredState;
 
-	public ProjectOnly( M projectMember ) {
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", "" );
-		this.isKeepDesiredState.setEnabled( false );
+	public ImportOnly( M importMember ) {
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", "" );
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+	public IsMemberDesiredState<M> getIsAddDesiredState() {
+		return this.isAddDesiredState;
 	}
 
-	public M getProjectMember() {
-		return this.isKeepDesiredState.getMember();
+	public M getImportMember() {
+		return this.isAddDesiredState.getMember();
 	}
 }

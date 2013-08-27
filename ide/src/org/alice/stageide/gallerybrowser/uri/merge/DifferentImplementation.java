@@ -40,55 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isAddDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
+	private final IsMemberDesiredState<M> isAddDesiredState;
+	private final IsMemberDesiredState<M> isKeepDesiredState;
+	private final MemberNameState<M> importNameState;
+	private final MemberNameState<M> projectNameState;
 
-	private final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite importCardOwnerComposite;
-	private final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
+	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
+	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
 	public DifferentImplementation( M projectMember, M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "add ", "" );
 		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", "" );
-		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
-		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
+		this.projectNameState = new MemberNameState<M>( projectMember );
+		this.importNameState = new MemberNameState<M>( importMember );
 
-		this.importCardOwnerComposite = new org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite.Builder( this )
+		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.build();
-		this.projectCardOwnerComposite = new org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite.Builder( this )
+		this.projectCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.build();
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsAddDesiredState() {
+	public IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
+	public IsMemberDesiredState<M> getIsKeepDesiredState() {
 		return this.isKeepDesiredState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
+	public MemberNameState<M> getImportNameState() {
 		return this.importNameState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
+	public MemberNameState<M> getProjectNameState() {
 		return this.projectNameState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite getImportCardOwnerComposite() {
+	public DifferentImplementationCardOwnerComposite getImportCardOwnerComposite() {
 		return this.importCardOwnerComposite;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite getProjectCardOwnerComposite() {
+	public DifferentImplementationCardOwnerComposite getProjectCardOwnerComposite() {
 		return this.projectCardOwnerComposite;
 	}
 

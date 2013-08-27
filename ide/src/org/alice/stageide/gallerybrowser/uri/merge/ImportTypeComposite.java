@@ -184,14 +184,14 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
-				for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlys() ) {
+				for( ImportOnly<org.lgna.project.ast.UserMethod> importOnly : addMethodsComposite.getImportOnlys() ) {
 					if( importOnly.getIsAddDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( importOnly.getImportMember(), this.importedRootType );
 						methods.add( method );
 					}
 				}
 
-				for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatures() ) {
+				for( DifferentSignature<org.lgna.project.ast.UserMethod> differentSignature : addMethodsComposite.getDifferentSignatures() ) {
 					if( differentSignature.getIsAddDesiredState().getValue() ) {
 						org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createCopy( differentSignature.getImportMember(), this.importedRootType );
 						methods.add( method );
@@ -202,7 +202,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			}
 
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<org.lgna.project.ast.UserField> importOnly : this.addFieldsComposite.getImportOnlys() ) {
+			for( ImportOnly<org.lgna.project.ast.UserField> importOnly : this.addFieldsComposite.getImportOnlys() ) {
 				if( importOnly.getIsAddDesiredState().getValue() ) {
 					fields.add( org.lgna.project.ast.AstUtilities.createCopy( importOnly.getIsAddDesiredState().getMember(), this.importedRootType ) );
 				}
@@ -250,8 +250,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
 		java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
 		org.lgna.project.ast.NamedUserType srcType = importedRootType;
-		org.lgna.project.ast.NamedUserType dstType = org.alice.stageide.gallerybrowser.uri.merge.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-		org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite mergeTypeComposite = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
+		org.lgna.project.ast.NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+		ImportTypeComposite mergeTypeComposite = new ImportTypeComposite( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
 		mergeTypeComposite.getOperation().fire();
 		System.exit( 0 );
 	}

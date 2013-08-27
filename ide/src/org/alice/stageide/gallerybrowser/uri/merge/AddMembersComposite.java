@@ -42,11 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation;
-import org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature;
-import org.alice.stageide.gallerybrowser.uri.merge.data.Identical;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly;
-import org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnly;
 
 /**
  * @author Dennis Cosgrove

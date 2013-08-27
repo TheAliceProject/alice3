@@ -40,37 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class Identical<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isAddDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
+public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
+	private final IsMemberDesiredState<M> isAddDesiredState;
+	private final MemberNameState<M> importNameState;
+	private final MemberNameState<M> projectNameState;
 
-	public Identical( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
-		this.isAddDesiredState.setEnabled( false );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " (identical)" );
-		this.isKeepDesiredState.setEnabled( false );
+	public DifferentSignature( M projectMember, M importMember ) {
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", "" );
+		this.projectNameState = new MemberNameState<M>( projectMember );
+		this.importNameState = new MemberNameState<M>( importMember );
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsAddDesiredState() {
+	public IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.isAddDesiredState;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+	public MemberNameState<M> getProjectNameState() {
+		return this.projectNameState;
+	}
+
+	public MemberNameState<M> getImportNameState() {
+		return this.importNameState;
 	}
 
 	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
+		return this.importNameState.getMember();
 	}
 
 	public M getProjectMember() {
-		return this.isKeepDesiredState.getMember();
+		return this.projectNameState.getMember();
+	}
+
+	public boolean isActionRequired() {
+		if( this.isAddDesiredState.getValue() ) {
+			//todo
+			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isActionRequired() ) {
+			sb.append( "must not have same name: \"" );
+			sb.append( this.projectNameState.getMember().getName() );
+			sb.append( "\"." );
+		}
 	}
 }

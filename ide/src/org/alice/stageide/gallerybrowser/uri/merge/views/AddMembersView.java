@@ -132,7 +132,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
+		for( org.alice.stageide.gallerybrowser.uri.merge.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
 			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
 
 			org.lgna.croquet.components.AbstractLabel label = createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) );
@@ -144,7 +144,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label, popupView ) );
 		}
 
-		for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
+		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
 			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
 				public boolean accept( java.lang.Void e ) {
 					return differentSignature.isActionRequired();
@@ -170,7 +170,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField, popupView ) );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
+		for( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
 			org.lgna.croquet.components.CheckBox addCheckBox = differentImplementation.getIsAddDesiredState().createCheckBox();
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
@@ -228,7 +228,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			//					) );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.Identical<M> identical : composite.getIdenticals() ) {
+		for( org.alice.stageide.gallerybrowser.uri.merge.Identical<M> identical : composite.getIdenticals() ) {
 			String toolTipText = createIdenticalToolText( composite, identical.getImportMember() );
 			org.lgna.croquet.components.CheckBox addCheckBox = identical.getIsAddDesiredState().createCheckBox();
 			addCheckBox.setToolTipText( toolTipText );
@@ -240,7 +240,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, identical.getProjectMember() ), "wrap" );
 		}
 
-		for( org.alice.stageide.gallerybrowser.uri.merge.data.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
+		for( org.alice.stageide.gallerybrowser.uri.merge.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
 			org.lgna.croquet.components.CheckBox keepCheckBox = projectOnly.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( createNoOpLabel( projectOnly.getProjectMember(), "", EMPTY_ICON ), "split 2" );
