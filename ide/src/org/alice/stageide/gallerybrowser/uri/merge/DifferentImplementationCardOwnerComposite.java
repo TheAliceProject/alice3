@@ -122,13 +122,16 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		this.differentImplementation.getIsKeepDesiredState().addAndInvokeValueListener( this.valueListener );
 	}
 
+	private static final String REQUIRES_RENAME = " <em>(requires rename)</em>";
+	private static final String WOULD_REQUIRE_RENAME = " <em>(would require rename)</em>";
+
 	private void updateCardAndUpdateIsImportDesiredStateWhileAtIt() {
 		boolean isAddDesired = this.differentImplementation.getIsAddDesiredState().getValue();
 		boolean isKeepDesired = this.differentImplementation.getIsKeepDesiredState().getValue();
-		String trueAndFalsePrefix;
+		String prefix;
 		org.lgna.croquet.Composite<?> card;
 		if( isKeepDesired ) {
-			trueAndFalsePrefix = "add ";
+			prefix = "add ";
 			if( isAddDesired ) {
 				card = this.renameCard;
 			} else {
@@ -137,13 +140,36 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		} else {
 			if( isAddDesired ) {
 				card = this.replaceCard;
-				trueAndFalsePrefix = "replace ";
+				prefix = "replace ";
 			} else {
 				card = this.neitherCard;
-				trueAndFalsePrefix = "add/replace ";
+				prefix = "add/replace ";
 			}
 		}
+
+		String addPostfix;
+		if( isKeepDesired ) {
+			if( isAddDesired ) {
+				addPostfix = REQUIRES_RENAME;
+			} else {
+				addPostfix = WOULD_REQUIRE_RENAME;
+			}
+		} else {
+			addPostfix = "";
+		}
+		String keepPostfix;
+		if( isAddDesired ) {
+			if( isKeepDesired ) {
+				keepPostfix = REQUIRES_RENAME;
+			} else {
+				keepPostfix = WOULD_REQUIRE_RENAME;
+			}
+		} else {
+			keepPostfix = "";
+		}
+
 		this.showCard( card );
-		this.differentImplementation.getIsAddDesiredState().setTextForBothTrueAndFalse( trueAndFalsePrefix + this.differentImplementation.getImportMember().getName() );
+		this.differentImplementation.getIsAddDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( prefix, addPostfix );
+		this.differentImplementation.getIsKeepDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( "keep ", keepPostfix );
 	}
 }

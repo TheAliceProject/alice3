@@ -47,8 +47,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  */
 public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
 	private final M member;
-	private final String prependText;
-	private final String appendText;
+	private String prependText;
+	private String appendText;
 
 	public IsMemberDesiredState( M member, boolean initialValue, String prependText, String appendText ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
@@ -60,7 +60,13 @@ public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> e
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setTextForBothTrueAndFalse( "<html>" + this.prependText + "<strong>" + this.member.getName() + "</strong>" + this.appendText + "</html>" );
+		this.setTextForBothTrueAndFalseBasedOnMemberName( this.prependText, this.appendText );
+	}
+
+	public void setTextForBothTrueAndFalseBasedOnMemberName( String prependText, String appendText ) {
+		this.prependText = prependText;
+		this.appendText = appendText;
+		this.setTextForBothTrueAndFalse( "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>" );
 	}
 
 	public M getMember() {
