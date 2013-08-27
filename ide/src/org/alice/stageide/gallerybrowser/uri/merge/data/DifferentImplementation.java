@@ -42,27 +42,42 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
+import org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> {
-	private final M projectMember;
-	private final M importMember;
+	private final org.lgna.croquet.ListSelectionState<DifferentImplementationCourseOfAction> courseOfActionState = new edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<DifferentImplementationCourseOfAction>( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "73b0859e-5a70-4f7a-ad45-ed85fed96857" ), -1, DifferentImplementationCourseOfAction.class );
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
 
 	public DifferentImplementation( M projectMember, M importMember ) {
-		this.projectMember = projectMember;
-		this.importMember = importMember;
+		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
+		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
+	}
+
+	public org.lgna.croquet.ListSelectionState<DifferentImplementationCourseOfAction> getCourseOfActionState() {
+		return this.courseOfActionState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
+		return this.importNameState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
+		return this.projectNameState;
 	}
 
 	public M getImportMember() {
-		return this.importMember;
+		return this.importNameState.getMember();
 	}
 
 	public M getProjectMember() {
-		return this.projectMember;
+		return this.projectNameState.getMember();
 	}
 
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		sb.append( this.projectMember.getName() );
+		sb.append( this.getProjectMember().getName() );
 	}
 }

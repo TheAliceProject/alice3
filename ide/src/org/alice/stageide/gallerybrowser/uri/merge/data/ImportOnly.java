@@ -51,7 +51,7 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
 
 	public ImportOnly( M importMember ) {
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true, "" );
+		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, true, "add ", "" );
 	}
 
 	public IsAddMemberDesiredState<M> getIsAddDesiredState() {

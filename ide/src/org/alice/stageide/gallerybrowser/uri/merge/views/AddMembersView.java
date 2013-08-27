@@ -130,48 +130,93 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "grow, shrink, wrap" );
 
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M>> importOnlys = composite.getImportOnlys();
-		if( importOnlys.size() > 0 ) {
-			for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : importOnlys ) {
-				this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
+			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "" );
 
-				org.lgna.croquet.components.AbstractLabel label = createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) );
-				org.lgna.croquet.components.PopupView popupView = createPopupView( composite, importOnly.getImportMember() );
-				this.addComponent( label, "split 2" );
-				this.addComponent( popupView, "wrap" );
+			org.lgna.croquet.components.AbstractLabel label = createNoOpLabel( importOnly.getImportMember(), "", createPlusIcon( importOnly.getIsAddDesiredState() ) );
+			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, importOnly.getImportMember() );
+			this.addComponent( label, "split 2" );
+			this.addComponent( popupView, "wrap" );
 
-				//todo: removeValueListener somewhere
-				importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label, popupView ) );
-			}
+			//todo: removeValueListener somewhere
+			importOnly.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( label, popupView ) );
 		}
 
-		java.util.List<org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M>> differentSignatures = composite.getDifferentSignatures();
-		if( differentSignatures.size() > 0 ) {
-			for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M> differentSignature : differentSignatures ) {
-				edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
-					public boolean accept( java.lang.Void e ) {
-						return differentSignature.isActionRequired();
-					}
-				};
-				ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
-				rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
-				this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
+		for( final org.alice.stageide.gallerybrowser.uri.merge.data.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
+			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
+				public boolean accept( java.lang.Void e ) {
+					return differentSignature.isActionRequired();
+				}
+			};
+			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
+			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
+			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
 
-				org.lgna.croquet.components.Label plusLabel = createPlusIconLabel( differentSignature.getIsAddDesiredState() );
-				org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
-				org.lgna.croquet.components.PopupView popupView = createPopupView( composite, differentSignature.getImportMember() );
-				this.addComponent( plusLabel, "split 3" );
-				this.addComponent( textField, "growx" );
-				this.addComponent( popupView );
-				this.addComponent( rightBracket, "grow, spany 2, wrap" );
+			org.lgna.croquet.components.Label plusLabel = createPlusIconLabel( differentSignature.getIsAddDesiredState() );
+			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
+			org.lgna.croquet.components.PopupView popupView = createPopupView( composite, differentSignature.getImportMember() );
+			this.addComponent( plusLabel, "split 3" );
+			this.addComponent( textField, "growx" );
+			this.addComponent( popupView );
+			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-				//todo: removeValueListener somewhere
-				differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField, popupView ) );
+			this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 1, split 3" );
+			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "grow" );
+			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ), "wrap" );
 
-				this.addComponent( new org.lgna.croquet.components.Label( EMPTY_ICON ), "skip 1, split 3" );
-				this.addComponent( createTextField( differentSignature.getProjectNameState() ), "grow" );
-				this.addComponent( createPopupView( composite, differentSignature.getProjectNameState().getMember() ), "wrap" );
-			}
+			//todo: removeValueListener somewhere
+			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField, popupView ) );
+		}
+
+		for( org.alice.stageide.gallerybrowser.uri.merge.data.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
+			org.lgna.croquet.ListSelectionState<org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction> courseOfActionState = differentImplementation.getCourseOfActionState();
+
+			org.lgna.croquet.BooleanState replaceState = courseOfActionState.getItemSelectedState( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.REPLACE );
+			org.lgna.croquet.components.RadioButton replaceRadioButton = replaceState.createRadioButton();
+			this.addComponent( replaceRadioButton );
+			org.lgna.croquet.components.AbstractLabel replaceLabel = createNoOpLabel( differentImplementation.getImportMember(), "", createPlusIcon( replaceState ) );
+			org.lgna.croquet.components.PopupView replacePopupView = createPopupView( composite, differentImplementation.getImportMember() );
+			this.addComponent( replaceLabel, "split 2" );
+			this.addComponent( replacePopupView, "wrap" );
+
+			org.lgna.croquet.BooleanState keepState = courseOfActionState.getItemSelectedState( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.KEEP );
+			org.lgna.croquet.components.RadioButton keepRadioButton = keepState.createRadioButton();
+			this.addComponent( keepRadioButton );
+
+			org.lgna.croquet.components.AbstractLabel keepLabel = createNoOpLabel( differentImplementation.getProjectMember(), "", EMPTY_ICON );
+			org.lgna.croquet.components.PopupView keepPopupView = createPopupView( composite, differentImplementation.getProjectMember() );
+			this.addComponent( keepLabel, "split 2" );
+			this.addComponent( keepPopupView, "wrap" );
+
+			org.lgna.croquet.BooleanState renameState = courseOfActionState.getItemSelectedState( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.ADD_AND_KEEP_WITH_RENAME );
+			org.lgna.croquet.components.RadioButton renameRadioButton = renameState.createRadioButton();
+			this.addComponent( renameRadioButton );
+
+			org.lgna.croquet.components.Label renameAddPlusLabel = createPlusIconLabel( renameState );
+			org.lgna.croquet.components.TextField renameAddTextField = createTextField( differentImplementation.getImportNameState() );
+			org.lgna.croquet.components.PopupView renameAddPopupView = createPopupView( composite, differentImplementation.getImportMember() );
+			this.addComponent( renameAddPlusLabel, "split 3" );
+			this.addComponent( renameAddTextField, "growx" );
+			this.addComponent( renameAddPopupView, "wrap" );
+
+			org.lgna.croquet.components.Label renameKeepPlusLabel = new org.lgna.croquet.components.Label( EMPTY_ICON );
+			org.lgna.croquet.components.TextField renameKeepTextField = createTextField( differentImplementation.getProjectNameState() );
+			org.lgna.croquet.components.PopupView renameKeepPopupView = createPopupView( composite, differentImplementation.getProjectMember() );
+			this.addComponent( renameKeepPlusLabel, "skip 1, split 3" );
+			this.addComponent( renameKeepTextField, "grow" );
+			this.addComponent( renameKeepPopupView, "wrap" );
+
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			buttonGroup.add( replaceRadioButton.getAwtComponent() );
+			buttonGroup.add( keepRadioButton.getAwtComponent() );
+			buttonGroup.add( renameRadioButton.getAwtComponent() );
+
+			//todo: removeValueListener somewhere
+			courseOfActionState.addAndInvokeValueListener( new DifferentImplementationCourseOfActionListener(
+					new org.lgna.croquet.components.Component[] { replaceLabel, replacePopupView },
+					new org.lgna.croquet.components.Component[] { keepLabel, keepPopupView },
+					new org.lgna.croquet.components.Component[] { renameAddPlusLabel, renameAddTextField, renameAddPopupView, renameKeepPlusLabel, renameKeepTextField, renameKeepPopupView }
+					) );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.data.Identical<M> identical : composite.getIdenticals() ) {

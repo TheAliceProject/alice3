@@ -40,33 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class Identical<M extends org.lgna.project.ast.Member> {
-	private final M projectMember;
-
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
-
-	public Identical( M projectMember, M importMember ) {
-		this.projectMember = projectMember;
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
-		this.isAddDesiredState.setEnabled( false );
-	}
-
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
-	}
-
-	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
-	}
-
-	public M getProjectMember() {
-		return this.projectMember;
-	}
+public enum DifferentImplementationCourseOfAction {
+	REPLACE,
+	KEEP,
+	ADD_AND_KEEP_WITH_RENAME
 }

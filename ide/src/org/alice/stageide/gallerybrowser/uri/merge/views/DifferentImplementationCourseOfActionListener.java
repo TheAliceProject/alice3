@@ -40,33 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.data;
-
-import org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState;
+package org.alice.stageide.gallerybrowser.uri.merge.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class Identical<M extends org.lgna.project.ast.Member> {
-	private final M projectMember;
+public class DifferentImplementationCourseOfActionListener implements org.lgna.croquet.State.ValueListener<org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction> {
+	private final org.lgna.croquet.components.Component<?>[] replaceComponents;
+	private final org.lgna.croquet.components.Component<?>[] keepComponents;
+	private final org.lgna.croquet.components.Component<?>[] renameComponents;
 
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> isAddDesiredState;
-
-	public Identical( M projectMember, M importMember ) {
-		this.projectMember = projectMember;
-		this.isAddDesiredState = new IsAddMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
-		this.isAddDesiredState.setEnabled( false );
+	public DifferentImplementationCourseOfActionListener( org.lgna.croquet.components.Component<?>[] replaceComponents, org.lgna.croquet.components.Component<?>[] keepComponents, org.lgna.croquet.components.Component<?>[] renameComponents ) {
+		this.replaceComponents = replaceComponents;
+		this.keepComponents = keepComponents;
+		this.renameComponents = renameComponents;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsAddMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
+	public void changing( org.lgna.croquet.State<org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction> state, org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction prevValue, org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction nextValue, boolean isAdjusting ) {
 	}
 
-	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
-	}
-
-	public M getProjectMember() {
-		return this.projectMember;
+	public void changed( org.lgna.croquet.State<org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction> state, org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction prevValue, org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction nextValue, boolean isAdjusting ) {
+		for( org.lgna.croquet.components.Component<?> component : this.replaceComponents ) {
+			synchronized( component.getTreeLock() ) {
+				component.setVisible( nextValue == org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.REPLACE );
+			}
+		}
+		for( org.lgna.croquet.components.Component<?> component : this.keepComponents ) {
+			synchronized( component.getTreeLock() ) {
+				component.setVisible( nextValue == org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.KEEP );
+			}
+		}
+		for( org.lgna.croquet.components.Component<?> component : this.renameComponents ) {
+			synchronized( component.getTreeLock() ) {
+				component.setVisible( nextValue == org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction.ADD_AND_KEEP_WITH_RENAME );
+			}
+		}
 	}
 }
