@@ -48,11 +48,28 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
 	public MemberPopupCoreView( org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite composite ) {
 		super( composite );
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		java.awt.Color color;
 		org.lgna.project.ast.Declaration member = composite.getMember();
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
-			this.addPageStartComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ) );
+			this.addPageStartComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ) );
+			this.addCenterComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ) );
+			if( method.isProcedure() ) {
+				color = theme.getProcedureColor();
+			} else {
+				color = theme.getFunctionColor();
+			}
+		} else if( member instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField field = (org.lgna.project.ast.UserField)member;
+			this.addPageStartComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ) );
+			color = theme.getFieldColor();
+		} else {
+			//todo
+			color = theme.getConstructorColor();
 		}
+		this.setBackgroundColor( color );
+		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 2, 2, 2, 2, java.awt.Color.GRAY ) );
 		this.setMinimumPreferredWidth( 200 );
 	}
 }
