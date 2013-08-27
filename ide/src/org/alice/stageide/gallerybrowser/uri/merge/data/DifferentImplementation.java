@@ -42,23 +42,38 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.data;
 
-import org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCourseOfAction;
+import org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> {
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationCourseOfAction> courseOfActionState = new edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<DifferentImplementationCourseOfAction>( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "73b0859e-5a70-4f7a-ad45-ed85fed96857" ), -1, DifferentImplementationCourseOfAction.class );
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isAddDesiredState;
+	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
 	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> importNameState;
 	private final org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> projectNameState;
 
+	private final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite importCardOwnerComposite;
+	private final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
+
 	public DifferentImplementation( M projectMember, M importMember ) {
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "add ", "" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", "" );
 		this.projectNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( projectMember );
 		this.importNameState = new org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M>( importMember );
+
+		this.importCardOwnerComposite = new org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite.Builder( this )
+				.build();
+		this.projectCardOwnerComposite = new org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite.Builder( this )
+				.build();
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationCourseOfAction> getCourseOfActionState() {
-		return this.courseOfActionState;
+	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsAddDesiredState() {
+		return this.isAddDesiredState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
+		return this.isKeepDesiredState;
 	}
 
 	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getImportNameState() {
@@ -67,6 +82,14 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public org.alice.stageide.gallerybrowser.uri.merge.MemberNameState<M> getProjectNameState() {
 		return this.projectNameState;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite getImportCardOwnerComposite() {
+		return this.importCardOwnerComposite;
+	}
+
+	public org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationCardOwnerComposite getProjectCardOwnerComposite() {
+		return this.projectCardOwnerComposite;
 	}
 
 	public M getImportMember() {
