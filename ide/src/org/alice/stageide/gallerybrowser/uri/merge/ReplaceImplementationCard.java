@@ -57,7 +57,7 @@ public class ReplaceImplementationCard extends org.lgna.croquet.SimpleComposite<
 	protected org.lgna.croquet.components.Panel createView() {
 		org.lgna.project.ast.Member member = this.differentImplementation.getImportMember();
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0" );
-		rv.addComponent( new org.lgna.croquet.components.Label( member.getName() + " (replace with version from class file)" ) );
+		rv.addComponent( new org.lgna.croquet.components.Label( "<html>" + member.getName() + " <em>(replace with version from class file)</em></html>" ) );
 		return rv;
 	}
 }

@@ -72,9 +72,6 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 	static {
 		int w = SIZE.width - PAD - PAD;
 		int h = SIZE.height - PAD - PAD;
-		java.awt.Rectangle horizontal = new java.awt.Rectangle( 0, ( h / 2 ) - 2, w, 4 );
-		java.awt.Rectangle vertical = new java.awt.Rectangle( ( w / 2 ) - 2, 0, 4, h );
-		ADD_SHAPE = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( horizontal, vertical );
 
 		int unit = h;
 
@@ -109,6 +106,12 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		ERROR_SHAPE.closePath();
 		CHECK_INNER_STROKE = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 		CHECK_OUTER_STROKE = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+
+		int x = 2;
+		int y = 2;
+		java.awt.Rectangle horizontal = new java.awt.Rectangle( x, ( h / 2 ) - 2, w - x - x, 4 );
+		java.awt.Rectangle vertical = new java.awt.Rectangle( ( w / 2 ) - 2, y, 4, h - y - y );
+		ADD_SHAPE = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( horizontal, vertical );
 
 	}
 

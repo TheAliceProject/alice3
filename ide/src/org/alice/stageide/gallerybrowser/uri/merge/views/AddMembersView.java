@@ -59,12 +59,6 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return header;
 	}
 
-	private static org.lgna.croquet.components.TextField createTextField( org.lgna.croquet.StringState state ) {
-		org.lgna.croquet.components.TextField textField = state.createTextField();
-		textField.enableSelectAllWhenFocusGained();
-		return textField;
-	}
-
 	private static org.lgna.croquet.components.HorizontalSeparator createSeparator() {
 		return new org.lgna.croquet.components.HorizontalSeparator();
 	}
@@ -75,6 +69,13 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 	private static org.lgna.croquet.components.Label createKeepResultLabel( org.lgna.project.ast.Member member ) {
 		return new org.lgna.croquet.components.Label( member.getName(), KEEP_ICON );
+	}
+
+	public static org.lgna.croquet.components.TextField createTextField( org.lgna.croquet.StringState state, org.alice.stageide.gallerybrowser.uri.merge.PotentialNameChanger potentialNameChanger ) {
+		org.lgna.croquet.components.TextField rv = state.createTextField();
+		rv.enableSelectAllWhenFocusGained();
+		rv.getAwtComponent().setForegroundCustomizer( potentialNameChanger.getForegroundCustomizer() );
+		return rv;
 	}
 
 	private int row = 0;
@@ -167,9 +168,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentSignature.getImportMember() ) );
 
 			org.lgna.croquet.components.Label plusLabel = new org.lgna.croquet.components.Label( differentSignature.getImportIcon() );
-			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
+			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState(), differentSignature );
 			this.addComponent( plusLabel, "skip 1, split 2" );
-			this.addComponent( textField, "gap 0, growx" );
+			this.addComponent( textField, "growx" );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getIsKeepDesiredState().createCheckBox();
@@ -177,7 +178,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ) );
 
 			this.addComponent( new org.lgna.croquet.components.Label( differentSignature.getProjectIcon() ), "split 2" );
-			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "gap 0, grow, wrap" );
+			this.addComponent( createTextField( differentSignature.getProjectNameState(), differentSignature ), "grow, wrap" );
 
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField ) );
@@ -197,13 +198,13 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( addCheckBox, "split 2" );
 			this.addComponent( createPopupView( composite, differentImplementation.getImportMember() ) );
 			this.addComponent( new org.lgna.croquet.components.Label( differentImplementation.getImportIcon() ), "skip 1, split 2" );
-			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "gap 0, grow, shrink" );
+			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "grow, shrink" );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1, split 2" );
 			this.addComponent( createPopupView( composite, differentImplementation.getProjectMember() ) );
 			this.addComponent( new org.lgna.croquet.components.Label( differentImplementation.getProjectIcon() ), "split 2" );
-			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "gap 0, grow, shrink, wrap" );
+			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.Identical<M> identical : composite.getIdenticals() ) {

@@ -40,34 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
+package org.alice.stageide.gallerybrowser.uri.merge;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectPlusIcon extends org.alice.stageide.icons.PlusIcon {
-	private final javax.swing.ButtonModel actualButtonModel;
-
-	public SelectPlusIcon( java.awt.Dimension size, javax.swing.ButtonModel buttonModel ) {
-		super( size );
-		this.actualButtonModel = buttonModel;
-	}
-
-	@Override
-	protected java.awt.Paint getOuterRingPaint( javax.swing.ButtonModel buttonModel ) {
-		if( this.actualButtonModel.isSelected() ) {
-			return super.getOuterRingPaint( buttonModel );
-		} else {
-			return java.awt.Color.GRAY;
+public abstract class PotentialNameChanger {
+	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
+			return isActionRequired() ? java.awt.Color.RED.darker() : defaultColor;
 		}
-	}
+	};
 
-	@Override
-	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
-		if( this.actualButtonModel.isSelected() ) {
-			return super.getPlusPaint( buttonModel );
-		} else {
-			return null;
-		}
+	public abstract boolean isActionRequired();
+
+	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+		return this.foregroundCustomizer;
 	}
 }

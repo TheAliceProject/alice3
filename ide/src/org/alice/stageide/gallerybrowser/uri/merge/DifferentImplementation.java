@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementation<M extends org.lgna.project.ast.Member> {
+public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
@@ -152,6 +152,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectIcon;
 	}
 
+	@Override
 	public boolean isActionRequired() {
 		if( this.isAddDesiredState.getValue() ) {
 			if( this.isKeepDesiredState.getValue() ) {

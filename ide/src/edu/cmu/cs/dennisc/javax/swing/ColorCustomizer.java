@@ -40,54 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CheckIcon extends org.alice.stageide.icons.PlusIcon {
-	private final java.awt.Shape checkShape;
-	private final java.awt.Stroke innerStroke;
-	private final java.awt.Stroke outerStroke;
-
-	public CheckIcon( java.awt.Dimension size ) {
-		super( size );
-
-		int unit = size.height - PAD - PAD;
-
-		double xA = 0.3;
-		double xC = 0.7;
-		double xB = xA + ( ( xC - xA ) * 0.3 );
-
-		double yA = 0.45;
-		double yB = xC;
-		double yC = xA;
-
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( xA * unit, yA * unit );
-		path.lineTo( xB * unit, yB * unit );
-		path.lineTo( xC * unit, yC * unit );
-		this.checkShape = path;
-
-		this.innerStroke = new java.awt.BasicStroke( unit * 0.1f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-		this.outerStroke = new java.awt.BasicStroke( unit * 0.15f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-	}
-
-	@Override
-	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
-		return null;
-	}
-
-	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint, javax.swing.ButtonModel buttonModel ) {
-		super.paintIcon( c, g2, width, height, fillPaint, drawPaint, buttonModel );
-		java.awt.Stroke prevStroke = g2.getStroke();
-		g2.setStroke( this.outerStroke );
-		g2.setPaint( java.awt.Color.BLACK );
-		g2.draw( this.checkShape );
-		g2.setStroke( this.innerStroke );
-		g2.setPaint( java.awt.Color.DARK_GRAY );
-		g2.draw( this.checkShape );
-		g2.setStroke( prevStroke );
-	}
+public interface ColorCustomizer {
+	public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor );
 }
