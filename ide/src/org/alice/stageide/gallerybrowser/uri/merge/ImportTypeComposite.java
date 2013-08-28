@@ -172,11 +172,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	}
 
 	private void addRenameIfNecessary( java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, MemberNameState<? extends org.lgna.project.ast.Member> nameState, org.lgna.project.ast.Member member ) {
-		if( member != null ) {
-			//pass
-		} else {
-			member = nameState.getMember();
-		}
 		String nextName = nameState.getValue();
 		if( nextName.contentEquals( member.getName() ) ) {
 			//pass
@@ -185,29 +180,37 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		}
 	}
 
+	private void addRenameIfNecessary( java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, MemberNameState<? extends org.lgna.project.ast.Member> nameState ) {
+		addRenameIfNecessary( renames, nameState, nameState.getMember() );
+	}
+
+	private <M extends org.lgna.project.ast.Member> M createImportCopy( M original ) {
+		return org.lgna.project.ast.AstUtilities.createCopy( original, this.importedRootType );
+	}
+
 	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> members, java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, AddMembersComposite<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 			if( importOnly.getIsAddDesiredState().getValue() ) {
-				members.add( (M)org.lgna.project.ast.AstUtilities.createCopy( (org.lgna.project.ast.AbstractNode)importOnly.getImportMember(), this.importedRootType ) );
+				members.add( this.createImportCopy( importOnly.getImportMember() ) );
 			}
 		}
 
 		for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
 			if( differentSignature.getIsAddDesiredState().getValue() ) {
-				M member = (M)org.lgna.project.ast.AstUtilities.createCopy( (org.lgna.project.ast.AbstractNode)differentSignature.getImportMember(), this.importedRootType );
+				M member = this.createImportCopy( differentSignature.getImportMember() );
 				members.add( member );
 				addRenameIfNecessary( renames, differentSignature.getImportNameState(), member );
 			}
-			addRenameIfNecessary( renames, differentSignature.getProjectNameState(), null );
+			addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
 		}
 
 		for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
 			if( differentImplementation.getIsAddDesiredState().getValue() ) {
-				M member = (M)org.lgna.project.ast.AstUtilities.createCopy( (org.lgna.project.ast.AbstractNode)differentImplementation.getImportMember(), this.importedRootType );
+				M member = this.createImportCopy( differentImplementation.getImportMember() );
 				members.add( member );
 				if( differentImplementation.getIsKeepDesiredState().getValue() ) {
 					addRenameIfNecessary( renames, differentImplementation.getImportNameState(), member );
-					addRenameIfNecessary( renames, differentImplementation.getProjectNameState(), null );
+					addRenameIfNecessary( renames, differentImplementation.getProjectNameState() );
 				} else {
 					//todo
 				}
