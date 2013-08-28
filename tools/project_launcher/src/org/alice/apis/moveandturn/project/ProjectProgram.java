@@ -1,49 +1,44 @@
 package org.alice.apis.moveandturn.project;
 
-public class ProjectProgram extends org.alice.apis.moveandturn.Program {
-	private edu.cmu.cs.dennisc.alice.Project project;
-	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> typeScene;
-	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceScene;
+public class ProjectProgram extends org.lgna.story.SProgram {
+	private final org.lgna.project.Project project;
+	private final org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	private final org.lgna.project.ast.NamedUserType typeScene;
+	private final org.lgna.project.virtualmachine.UserInstance instanceScene;
 	
-	public ProjectProgram( String path ) {
-		java.io.File file = new java.io.File( path );
-		assert file.exists();
-		this.project = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject(file);
-		assert this.project != null;
-	}
-	@Override
-	protected void initialize() {
-		this.typeScene = this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-		this.instanceScene = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( typeScene );
-		this.setScene( this.instanceScene.getInstanceInJava( org.alice.apis.moveandturn.Scene.class ) );
-	}
-	@Override
-	protected void run() {
-		this.vm.invokeEntryPoint(this.typeScene.getDeclaredMethod("run"), this.instanceScene);
+	public ProjectProgram( org.lgna.project.Project project ) {
+		this.vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
+		this.project = project;
+		this.typeScene = (org.lgna.project.ast.NamedUserType)this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
+		this.instanceScene = (org.lgna.project.virtualmachine.UserInstance)this.vm.ENTRY_POINT_createInstance( typeScene );
 	}
 	
-	protected edu.cmu.cs.dennisc.alice.Project getProject() {
+	protected org.lgna.project.Project getProject() {
 		return this.project;
 	}
-	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
+	protected org.lgna.project.virtualmachine.VirtualMachine getVM() {
 		return this.vm;
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTypeScene() {
+	protected org.lgna.project.ast.AbstractType<?,?,?> getTypeScene() {
 		return this.typeScene;
 	}
-	protected edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice getInstanceScene() {
+	protected org.lgna.project.virtualmachine.UserInstance getInstanceScene() {
 		return this.instanceScene;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		String path;
 		if( args.length > 0 ) {
 			path = args[ 0 ];
 		} else {
-			path = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory().getAbsolutePath() + "/a.a3p";
+			path = org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath() + "/a.a3p";
 		}
-		ProjectProgram projectProgram = new ProjectProgram( path );
-		projectProgram.showInJFrame(args, true);
+		java.io.File file = new java.io.File( path );
+		assert file.exists() : path;
+
+		ProjectProgram projectProgram = new ProjectProgram( org.lgna.project.io.IoUtilities.readProject(file) );
+		projectProgram.initializeInFrame(args );
+		projectProgram.setActiveScene( projectProgram.instanceScene.getJavaInstance( org.lgna.story.SScene.class ) );
 	}
 }
