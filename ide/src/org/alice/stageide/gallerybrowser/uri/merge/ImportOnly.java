@@ -47,9 +47,19 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  */
 public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	private final IsMemberDesiredState<M> isAddDesiredState;
+	private final javax.swing.Icon icon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			return ActionStatus.ADD;
+		}
+	};
 
 	public ImportOnly( M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", "" );
+	}
+
+	public javax.swing.Icon getIcon() {
+		return this.icon;
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
@@ -59,4 +69,5 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	public M getImportMember() {
 		return this.isAddDesiredState.getMember();
 	}
+
 }

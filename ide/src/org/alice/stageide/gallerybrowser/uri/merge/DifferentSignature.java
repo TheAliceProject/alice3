@@ -52,6 +52,30 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
+	private final javax.swing.Icon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			if( isActionRequired() ) {
+				return ActionStatus.ERROR;
+			} else {
+				if( isAddDesiredState.getValue() ) {
+					return ActionStatus.ADD;
+				} else {
+					return ActionStatus.NO_ACTION;
+				}
+			}
+		}
+	};
+	private final javax.swing.Icon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			if( isActionRequired() ) {
+				return ActionStatus.ERROR;
+			} else {
+				return ActionStatus.KEEP;
+			}
+		}
+	};
 
 	public DifferentSignature( M projectMember, M importMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
@@ -84,6 +108,14 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
 
 	public M getProjectMember() {
 		return this.projectNameState.getMember();
+	}
+
+	public javax.swing.Icon getImportIcon() {
+		return this.importIcon;
+	}
+
+	public javax.swing.Icon getProjectIcon() {
+		return this.projectIcon;
 	}
 
 	public boolean isActionRequired() {

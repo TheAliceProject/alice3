@@ -46,19 +46,12 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
-	//private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] NO_OP_LABEL_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
-	private static final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] NO_OP_LABEL_TEXT_ATTRIBUTES = {};
-
-	private static java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 22, 22 );
-	private static javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static javax.swing.Icon PLUS_ICON = org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static javax.swing.Icon CHECK_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.CheckIcon( ICON_SIZE );
-
-	private static org.lgna.croquet.components.AbstractLabel createNoOpLabel( org.lgna.project.ast.Member member, String bonusText, javax.swing.Icon icon ) {
-		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( member.getName() + bonusText, NO_OP_LABEL_TEXT_ATTRIBUTES );
-		rv.setIcon( icon );
-		return rv;
-	}
+	private static javax.swing.Icon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			return ActionStatus.KEEP;
+		}
+	};
 
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
@@ -80,24 +73,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
 	}
 
-	public static org.lgna.croquet.components.Label createPlusIconLabel() {
-		return new org.lgna.croquet.components.Label( PLUS_ICON );
-	}
-
-	public static org.lgna.croquet.components.Label createEmptyIconLabel() {
-		return new org.lgna.croquet.components.Label( EMPTY_ICON );
-	}
-
-	public static org.lgna.croquet.components.AbstractLabel createAddResultLabel( org.lgna.project.ast.Member member ) {
-		return createNoOpLabel( member, "", PLUS_ICON );
-	}
-
-	public static org.lgna.croquet.components.AbstractLabel createReplaceResultLabel( org.lgna.project.ast.Member member ) {
-		return createNoOpLabel( member, "", CHECK_ICON );
-	}
-
-	public static org.lgna.croquet.components.AbstractLabel createKeepResultLabel( org.lgna.project.ast.Member member ) {
-		return createNoOpLabel( member, "", EMPTY_ICON );
+	private static org.lgna.croquet.components.Label createKeepResultLabel( org.lgna.project.ast.Member member ) {
+		return new org.lgna.croquet.components.Label( member.getName(), KEEP_ICON );
 	}
 
 	private int row = 0;
@@ -170,7 +147,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "split 2" );
 			this.addComponent( createPopupView( composite, importOnly.getImportMember() ) );
 
-			org.lgna.croquet.components.AbstractLabel label = createAddResultLabel( importOnly.getImportMember() );
+			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( importOnly.getImportMember().getName(), importOnly.getIcon() );
+			//org.lgna.croquet.components.AbstractLabel label = createAddResultLabel( importOnly.getImportMember() );
 			this.addComponent( label, "skip 1, wrap" );
 
 			//todo: removeValueListener somewhere
@@ -180,7 +158,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
 			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
 				public boolean accept( Void e ) {
-					return differentSignature.isActionRequired();
+					return false;//differentSignature.isActionRequired();
 				}
 			};
 			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
@@ -188,7 +166,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox(), "split 2" );
 			this.addComponent( createPopupView( composite, differentSignature.getImportMember() ) );
 
-			org.lgna.croquet.components.Label plusLabel = createPlusIconLabel();
+			org.lgna.croquet.components.Label plusLabel = new org.lgna.croquet.components.Label( differentSignature.getImportIcon() );
 			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState() );
 			this.addComponent( plusLabel, "skip 1, split 2" );
 			this.addComponent( textField, "gap 0, growx" );
@@ -198,7 +176,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( keepCheckBox, "skip 1, split 2" );
 			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ) );
 
-			this.addComponent( createEmptyIconLabel(), "split 2" );
+			this.addComponent( new org.lgna.croquet.components.Label( differentSignature.getProjectIcon() ), "split 2" );
 			this.addComponent( createTextField( differentSignature.getProjectNameState() ), "gap 0, grow, wrap" );
 
 			//todo: removeValueListener somewhere
@@ -208,7 +186,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
 			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
 				public boolean accept( Void e ) {
-					return differentImplementation.isActionRequired();
+					return false;//differentImplementation.isActionRequired();
 				}
 			};
 			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
@@ -218,12 +196,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( addCheckBox, "split 2" );
 			this.addComponent( createPopupView( composite, differentImplementation.getImportMember() ) );
-			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "skip 1, grow, shrink" );
+			this.addComponent( new org.lgna.croquet.components.Label( differentImplementation.getImportIcon() ), "skip 1, split 2" );
+			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "gap 0, grow, shrink" );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1, split 2" );
 			this.addComponent( createPopupView( composite, differentImplementation.getProjectMember() ) );
-			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
+			this.addComponent( new org.lgna.croquet.components.Label( differentImplementation.getProjectIcon() ), "split 2" );
+			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "gap 0, grow, shrink, wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.Identical<M> identical : composite.getIdenticals() ) {

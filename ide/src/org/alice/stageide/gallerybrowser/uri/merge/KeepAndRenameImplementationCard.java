@@ -51,11 +51,6 @@ public final class KeepAndRenameImplementationCard extends RenameImplementations
 	}
 
 	@Override
-	protected org.lgna.croquet.components.AbstractLabel createLabel() {
-		return org.alice.stageide.gallerybrowser.uri.merge.views.AddMembersView.createEmptyIconLabel();
-	}
-
-	@Override
 	protected MemberNameState<?> getMemberNameState() {
 		return this.getDifferentImplementation().getProjectNameState();
 	}

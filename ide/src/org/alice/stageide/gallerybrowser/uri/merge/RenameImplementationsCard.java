@@ -57,16 +57,13 @@ public abstract class RenameImplementationsCard extends org.lgna.croquet.SimpleC
 		return this.differentImplementation;
 	}
 
-	protected abstract org.lgna.croquet.components.AbstractLabel createLabel();
-
 	protected abstract MemberNameState<?> getMemberNameState();
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
 		MemberNameState<?> nameState = this.getMemberNameState();
 
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[]0[grow,shrink]" );
-		rv.addComponent( this.createLabel() );
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
 		rv.addComponent( nameState.createTextField(), "grow, shrink" );
 		return rv;
 	}

@@ -61,6 +61,39 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	private static final String POST_FIX = "<br><em>(different implementation)</em>";
 
+	private final javax.swing.Icon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			if( isActionRequired() ) {
+				return ActionStatus.ERROR;
+			} else {
+				if( isAddDesiredState.getValue() ) {
+					if( isKeepDesiredState.getValue() ) {
+						return ActionStatus.ADD;
+					} else {
+						return ActionStatus.REPLACE;
+					}
+				} else {
+					return ActionStatus.NO_ACTION;
+				}
+			}
+		}
+	};
+	private final javax.swing.Icon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			if( isActionRequired() ) {
+				return ActionStatus.ERROR;
+			} else {
+				if( isKeepDesiredState.getValue() ) {
+					return ActionStatus.KEEP;
+				} else {
+					return ActionStatus.NO_ACTION;
+				}
+			}
+		}
+	};
+
 	public DifferentImplementation( M projectMember, M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", POST_FIX );
 		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", POST_FIX );
@@ -68,10 +101,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.importNameState = new MemberNameState<M>( importMember );
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
+				.neither( new ActionMustBeTakenCard( this ) )
 				.replace( this.replaceImplementationCard )
 				.rename( this.addAndRenameImplementationsCard )
 				.build();
 		this.projectCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
+				.neither( new ActionMustBeTakenCard( this ) )
 				.keep( this.keepImplementationCard )
 				.rename( this.keepAndRenameImplementationsCard )
 				.build();
@@ -107,6 +142,14 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public M getProjectMember() {
 		return this.projectNameState.getMember();
+	}
+
+	public javax.swing.Icon getImportIcon() {
+		return this.importIcon;
+	}
+
+	public javax.swing.Icon getProjectIcon() {
+		return this.projectIcon;
 	}
 
 	public boolean isActionRequired() {

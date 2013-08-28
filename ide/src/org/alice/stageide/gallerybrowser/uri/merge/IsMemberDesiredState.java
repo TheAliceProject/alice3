@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
-	public static boolean IS_TERSE = false;
+	public static boolean IS_TERSE = true;
 	private final M member;
 	private String prependText;
 	private String appendText;
