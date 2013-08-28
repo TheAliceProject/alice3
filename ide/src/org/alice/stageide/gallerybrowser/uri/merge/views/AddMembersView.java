@@ -76,8 +76,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return new org.lgna.croquet.components.HorizontalSeparator();
 	}
 
-	private static <D extends org.lgna.project.ast.Member> org.lgna.croquet.components.PopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, D> composite, D member ) {
-		return composite.getPopupMemberFor( member ).getElement().createPopupView();
+	private static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member ) {
+		return composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
 	}
 
 	public static org.lgna.croquet.components.Label createPlusIconLabel() {

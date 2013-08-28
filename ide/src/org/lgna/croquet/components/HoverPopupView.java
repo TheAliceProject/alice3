@@ -45,14 +45,22 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupView extends JComponent<javax.swing.JLabel> {
+public class HoverPopupView extends JComponent<javax.swing.JLabel> {
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			//	public void run() {
 			showWindow();
+			//	}
+			//} );
 		}
 
 		public void mouseExited( java.awt.event.MouseEvent e ) {
+			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			//	public void run() {
 			hideWindow();
+			//	}
+			//} );
 		}
 
 		public void mousePressed( java.awt.event.MouseEvent e ) {
@@ -66,26 +74,50 @@ public class PopupView extends JComponent<javax.swing.JLabel> {
 	};
 
 	private final javax.swing.JWindow window;
-	private final org.lgna.croquet.PopupElement element;
+	private final org.lgna.croquet.HoverPopupElement element;
 
-	public PopupView( org.lgna.croquet.PopupElement element ) {
+	public HoverPopupView( org.lgna.croquet.HoverPopupElement element ) {
 		this.element = element;
 		this.window = new javax.swing.JWindow();
 		this.window.setAlwaysOnTop( true );
-		this.addMouseListener( this.mouseListener );
 	}
 
 	private void showWindow() {
-		java.awt.Point p = this.getLocationOnScreen();
-		this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
-		this.window.setLocation( p.x + this.getWidth() + 16, p.y );
-		this.window.pack();
-		this.window.setVisible( true );
+		synchronized( this.window.getTreeLock() ) {
+			assert this.window.isVisible() == false;
+			java.awt.Point p = this.getLocationOnScreen();
+			this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
+			this.window.setLocation( p.x + this.getWidth() + 16, p.y );
+			this.window.pack();
+			this.window.setVisible( true );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show", this );
+		}
 	}
 
 	private void hideWindow() {
-		this.window.setVisible( false );
-		this.window.getContentPane().removeAll();
+		synchronized( this.window.getTreeLock() ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "hide", this );
+			this.window.setVisible( false );
+			this.window.getContentPane().removeAll();
+			final boolean EPIC_HACK_isAccountingForHideNotAlwaysWorking = true;
+			if( EPIC_HACK_isAccountingForHideNotAlwaysWorking ) {
+				this.window.pack();
+			} else {
+				this.window.setSize( 1000, 1000 );
+			}
+		}
+	}
+
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+		this.addMouseListener( this.mouseListener );
+		super.handleAddedTo( parent );
+	}
+
+	@Override
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+		super.handleRemovedFrom( parent );
+		this.removeMouseListener( this.mouseListener );
 	}
 
 	@Override

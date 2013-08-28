@@ -46,14 +46,14 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PopupCoreComposite<V extends org.lgna.croquet.components.View> extends AbstractComposite<V> {
-	private final PopupElement element = new PopupElement( this );
+	private final HoverPopupElement hoverPopupElement = new HoverPopupElement( this );
 
 	public PopupCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public PopupElement getElement() {
-		return this.element;
+	public HoverPopupElement getHoverPopupElement() {
+		return this.hoverPopupElement;
 	}
 
 	@Override

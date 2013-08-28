@@ -45,10 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupElement extends AbstractElement { //todo
+public class HoverPopupElement extends AbstractElement { //todo
 	private final PopupCoreComposite<?> composite;
 
-	public PopupElement( PopupCoreComposite<?> composite ) {
+	public HoverPopupElement( PopupCoreComposite<?> composite ) {
 		super( java.util.UUID.fromString( "ff26c0ef-5570-4b59-bba5-0a7030290ec5" ) );
 		this.composite = composite;
 	}
@@ -61,7 +61,7 @@ public class PopupElement extends AbstractElement { //todo
 	protected void localize() {
 	}
 
-	public org.lgna.croquet.components.PopupView createPopupView() {
-		return new org.lgna.croquet.components.PopupView( this );
+	public org.lgna.croquet.components.HoverPopupView createHoverPopupView() {
+		return new org.lgna.croquet.components.HoverPopupView( this );
 	}
 }
