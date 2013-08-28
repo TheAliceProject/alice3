@@ -193,7 +193,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			} else {
 				sb.append( "must take action on \"" );
 				sb.append( this.getImportMember().getName() );
-				sb.append( "\"." );
+				sb.append( "\" (replace, keep, or add-and-keep-with-rename)." );
 			}
 		}
 	}
