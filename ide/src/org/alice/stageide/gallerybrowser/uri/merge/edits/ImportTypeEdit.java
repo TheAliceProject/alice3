@@ -97,7 +97,7 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 			this.existingType.methods.remove( this.existingType.methods.indexOf( method ) );
 		}
 		for( org.lgna.project.ast.UserField field : this.fieldsToCreate ) {
-			this.existingType.fields.remove( this.existingType.methods.indexOf( field ) );
+			this.existingType.fields.remove( this.existingType.fields.indexOf( field ) );
 		}
 		for( RenameMemberData renameData : this.renames ) {
 			renameData.getMember().setName( renameData.getPrevName() );
