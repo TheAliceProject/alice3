@@ -46,6 +46,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
+	public static boolean IS_TERSE = false;
 	private final M member;
 	private String prependText;
 	private String appendText;
@@ -74,7 +75,8 @@ public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> e
 	}
 
 	private void setTextForBothTrueAndFalseBasedOnMemberName() {
-		this.setTextForBothTrueAndFalse( "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>" );
+		String text = IS_TERSE ? "" : "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>";
+		this.setTextForBothTrueAndFalse( text );
 	}
 
 	public M getMember() {

@@ -46,8 +46,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> {
-	private static final String METHOD_POST_FIX = " <em>(different signature)</em>";
-	private static final String FIELD_POST_FIX = " <em>(different value class)</em>";
+	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
+	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;

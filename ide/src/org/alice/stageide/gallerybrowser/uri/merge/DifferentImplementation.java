@@ -59,9 +59,11 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final AddAndRenameImplementationCard addAndRenameImplementationsCard = new AddAndRenameImplementationCard( this );
 	private final KeepAndRenameImplementationCard keepAndRenameImplementationsCard = new KeepAndRenameImplementationCard( this );
 
+	private static final String POST_FIX = "<br><em>(different implementation)</em>";
+
 	public DifferentImplementation( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", " <em>(different implementation)</em>" );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", " <em>(different implementation)</em>" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", POST_FIX );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", POST_FIX );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
 

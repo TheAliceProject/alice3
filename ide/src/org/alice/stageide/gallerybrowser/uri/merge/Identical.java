@@ -46,13 +46,14 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class Identical<M extends org.lgna.project.ast.Member> {
+	private static final String POST_FIX = "<br><em>(identical)</em>";
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 
 	public Identical( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", " (identical)" );
+		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", POST_FIX );
 		this.isAddDesiredState.setEnabled( false );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", " (identical)" );
+		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", POST_FIX );
 		this.isKeepDesiredState.setEnabled( false );
 	}
 
