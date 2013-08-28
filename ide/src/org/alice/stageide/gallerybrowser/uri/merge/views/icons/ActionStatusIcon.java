@@ -54,29 +54,29 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		ERROR
 	}
 
-	private static final int PAD = 2;
-	private static java.awt.Dimension SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
-	private static java.awt.Paint ADD_REPLACE_FILL_PAINT = new java.awt.Color( 0, 127, 0 );
-	private static java.awt.Paint ADD_REPLACE_DRAW_PAINT = java.awt.Color.DARK_GRAY;
-	private static java.awt.Shape ADD_SHAPE = createAddShape();
+	private static final int PAD = 1;
+	private static final java.awt.Dimension SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
+	private static final java.awt.Paint ADD_REPLACE_FILL_PAINT = new java.awt.Color( 0, 127, 0 );
+	private static final java.awt.Paint ADD_REPLACE_DRAW_PAINT = java.awt.Color.DARK_GRAY;
+	private static final java.awt.Shape ADD_SHAPE;
 
-	private static java.awt.Font ERROR_FONT = new java.awt.Font( "Serif", java.awt.Font.BOLD, 20 );
+	private static final java.awt.Paint ERROR_PAINT = new java.awt.Color( 170, 0, 0 );
+	private static final java.awt.Font ERROR_FONT = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( new java.awt.Font( "Serif", 0, SIZE.height - 2 ), edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRABOLD );
 
-	private static java.awt.Shape createAddShape() {
+	private static final java.awt.Shape CHECK_SHAPE;
+	private static final java.awt.Stroke CHECK_INNER_STROKE;
+	private static final java.awt.Stroke CHECK_OUTER_STROKE;
+
+	private static final java.awt.geom.GeneralPath ERROR_SHAPE;
+
+	static {
 		int w = SIZE.width - PAD - PAD;
 		int h = SIZE.height - PAD - PAD;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( SIZE, w, h );
 		java.awt.Rectangle horizontal = new java.awt.Rectangle( 0, ( h / 2 ) - 2, w, 4 );
 		java.awt.Rectangle vertical = new java.awt.Rectangle( ( w / 2 ) - 2, 0, 4, h );
-		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( horizontal, vertical );
-	}
+		ADD_SHAPE = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( horizontal, vertical );
 
-	private static final java.awt.Shape checkShape;
-	private static final java.awt.Stroke innerStroke;
-	private static final java.awt.Stroke outerStroke;
-
-	static {//java.awt.Shape createCheckShape() {
-		int unit = SIZE.height - PAD - PAD;
+		int unit = h;
 
 		double xA = 0.2;
 		double xC = 0.8;
@@ -90,10 +90,25 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		path.moveTo( xA * unit, yA * unit );
 		path.lineTo( xB * unit, yB * unit );
 		path.lineTo( xC * unit, yC * unit );
-		checkShape = path;
+		CHECK_SHAPE = path;
 
-		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		double v0 = 0.0;
+		double v1 = 0.3 * unit;
+		double v2 = 0.7 * unit;
+		double v3 = unit;
+
+		ERROR_SHAPE = new java.awt.geom.GeneralPath();
+		ERROR_SHAPE.moveTo( v1, v0 );
+		ERROR_SHAPE.lineTo( v2, v0 );
+		ERROR_SHAPE.lineTo( v3, v1 );
+		ERROR_SHAPE.lineTo( v3, v2 );
+		ERROR_SHAPE.lineTo( v2, v3 );
+		ERROR_SHAPE.lineTo( v1, v3 );
+		ERROR_SHAPE.lineTo( v0, v2 );
+		ERROR_SHAPE.lineTo( v0, v1 );
+		ERROR_SHAPE.closePath();
+		CHECK_INNER_STROKE = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		CHECK_OUTER_STROKE = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 
 	}
 
@@ -110,12 +125,12 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 
 	private void paintCheck( java.awt.Component c, java.awt.Graphics2D g2, java.awt.Paint fillPaint ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
-		g2.setStroke( outerStroke );
+		g2.setStroke( CHECK_OUTER_STROKE );
 		g2.setPaint( java.awt.Color.BLACK );
-		g2.draw( checkShape );
-		g2.setStroke( innerStroke );
+		g2.draw( CHECK_SHAPE );
+		g2.setStroke( CHECK_INNER_STROKE );
 		g2.setPaint( fillPaint );
-		g2.draw( checkShape );
+		g2.draw( CHECK_SHAPE );
 		g2.setStroke( prevStroke );
 	}
 
@@ -129,12 +144,13 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 	}
 
 	private void paintError( java.awt.Component c, java.awt.Graphics2D g2, int width, int height ) {
-		g2.setPaint( java.awt.Color.RED.darker() );
-		g2.fillRect( 0, 0, width, height );
+		g2.setPaint( ERROR_PAINT );
+		g2.fill( ERROR_SHAPE );
 		java.awt.Font prevFont = g2.getFont();
 		g2.setPaint( java.awt.Color.WHITE );
 		g2.setFont( ERROR_FONT );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "!", 0, 0, width, height );
+		final int EPIC_HACK_nudgeLeft = -1;
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "!", EPIC_HACK_nudgeLeft, 0, width, height );
 		g2.setFont( prevFont );
 	}
 
