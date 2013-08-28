@@ -188,17 +188,17 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		return org.lgna.project.ast.AstUtilities.createCopy( original, this.importedRootType );
 	}
 
-	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> members, java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, AddMembersComposite<?, M> addMembersComposite ) {
+	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, AddMembersComposite<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 			if( importOnly.getIsAddDesiredState().getValue() ) {
-				members.add( this.createImportCopy( importOnly.getImportMember() ) );
+				membersToAdd.add( this.createImportCopy( importOnly.getImportMember() ) );
 			}
 		}
 
 		for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
 			if( differentSignature.getIsAddDesiredState().getValue() ) {
 				M member = this.createImportCopy( differentSignature.getImportMember() );
-				members.add( member );
+				membersToAdd.add( member );
 				addRenameIfNecessary( renames, differentSignature.getImportNameState(), member );
 			}
 			addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
@@ -207,12 +207,12 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
 			if( differentImplementation.getIsAddDesiredState().getValue() ) {
 				M member = this.createImportCopy( differentImplementation.getImportMember() );
-				members.add( member );
+				membersToAdd.add( member );
 				if( differentImplementation.getIsKeepDesiredState().getValue() ) {
 					addRenameIfNecessary( renames, differentImplementation.getImportNameState(), member );
 					addRenameIfNecessary( renames, differentImplementation.getProjectNameState() );
 				} else {
-					//todo
+					membersToRemove.add( differentImplementation.getProjectMember() );
 				}
 			} else {
 				if( differentImplementation.getIsKeepDesiredState().getValue() ) {
@@ -229,14 +229,16 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		if( this.dstType != null ) {
 			java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
-				addMembersAndRenames( methods, renames, addMethodsComposite );
+				addMembersAndRenames( methodsToAdd, methodsToRemove, renames, addMethodsComposite );
 			}
 
-			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			addMembersAndRenames( fields, renames, this.addFieldsComposite );
-			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methods, fields, renames );
+			java.util.List<org.lgna.project.ast.UserField> fieldsToAdd = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> fieldsToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			addMembersAndRenames( fieldsToAdd, fieldsToRemove, renames, this.addFieldsComposite );
+			return new org.alice.stageide.gallerybrowser.uri.merge.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
 		} else {
 			return null;
 		}
