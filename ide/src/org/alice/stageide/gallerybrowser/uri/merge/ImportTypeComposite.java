@@ -87,7 +87,11 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			}
 			this.addProceduresComposite = this.registerSubComposite( new AddProceduresComposite( this.uriForDescriptionPurposesOnly, projectProcedures ) );
 			this.addFunctionsComposite = this.registerSubComposite( new AddFunctionsComposite( this.uriForDescriptionPurposesOnly, projectFunctions ) );
-			this.addFieldsComposite = this.registerSubComposite( new AddFieldsComposite( this.uriForDescriptionPurposesOnly, this.dstType.getDeclaredFields() ) );
+
+			java.util.List<org.lgna.project.ast.UserField> dstFields = this.dstType.getDeclaredFields();
+			java.util.List<org.lgna.project.ast.UserField> projectFields = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( dstFields.size() );
+			projectFields.addAll( dstFields );
+			this.addFieldsComposite = this.registerSubComposite( new AddFieldsComposite( this.uriForDescriptionPurposesOnly, projectFields ) );
 
 			for( org.lgna.project.ast.UserMethod importMethod : this.srcType.methods ) {
 				if( isManagementLevelAppropriate( importMethod ) ) {
