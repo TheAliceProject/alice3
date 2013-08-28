@@ -116,6 +116,14 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
 					return true;
 				}
+			} else {
+				//pass
+			}
+		} else {
+			if( this.isKeepDesiredState.getValue() ) {
+				//pass
+			} else {
+				return true;
 			}
 		}
 		return false;

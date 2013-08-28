@@ -46,7 +46,11 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public class ActionRequiredView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
-	public static javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getWarningIcon(), 0.4f );
+	public static javax.swing.Icon ICON =
+			new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(
+					edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon(),
+					0.5f
+			);
 
 	private class JActionRequiredView extends javax.swing.JComponent {
 		@Override
