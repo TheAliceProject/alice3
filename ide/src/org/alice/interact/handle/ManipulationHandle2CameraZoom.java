@@ -47,8 +47,6 @@ import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-
 public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D
 {
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
@@ -74,6 +72,10 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 	private boolean zoomingIn = false;
 	private boolean zoomingOut = false;
 
+	public ManipulationHandle2CameraZoom() {
+		super( "images/zoomMask.png" );
+	}
+
 	@Override
 	protected ImageState getStateForManipulationStatus() {
 		if( this.zoomingIn )
@@ -93,11 +95,6 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 		{
 			return ControlState.Inactive;
 		}
-	}
-
-	@Override
-	protected void setImageMask() {
-		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/zoomMask.png" ) );
 	}
 
 	@Override

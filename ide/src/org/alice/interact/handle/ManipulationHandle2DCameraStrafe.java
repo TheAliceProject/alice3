@@ -47,8 +47,6 @@ import javax.swing.ImageIcon;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.event.ManipulationEvent;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-
 /**
  * @author David Culyba
  */
@@ -96,17 +94,16 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 	private boolean movingUp = false;
 	private boolean movingDown = false;
 
+	public ManipulationHandle2DCameraStrafe() {
+		super( "images/slideMask.png" );
+	}
+
 	public void remapDirections( MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right )
 	{
 		this.handleUp = up;
 		this.handleDown = down;
 		this.handleLeft = left;
 		this.handleRight = right;
-	}
-
-	@Override
-	protected void setImageMask() {
-		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/slideMask.png" ) );
 	}
 
 	@Override
