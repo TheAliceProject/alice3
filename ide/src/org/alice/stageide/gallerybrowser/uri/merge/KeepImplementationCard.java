@@ -57,7 +57,7 @@ public class KeepImplementationCard extends org.lgna.croquet.SimpleComposite<org
 	protected org.lgna.croquet.components.Panel createView() {
 		org.lgna.project.ast.Member member = this.differentImplementation.getProjectMember();
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0, fill" );
-		rv.addComponent( new org.lgna.croquet.components.Label( "<html>" + member.getName() + " <em>(keep version already in project)</em></html>" ) );
+		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createKeepInsteadOfReplaceMemberLabel( member ) );
 		return rv;
 	}
 }

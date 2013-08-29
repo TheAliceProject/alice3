@@ -47,10 +47,11 @@ package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
  */
 public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 	protected static enum ActionStatus {
-		NO_ACTION,
+		IGNORE,
 		ADD,
 		REPLACE,
 		KEEP,
+		DELETE,
 		ERROR
 	}
 
@@ -60,7 +61,7 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 	private static final java.awt.Paint ADD_REPLACE_DRAW_PAINT = java.awt.Color.DARK_GRAY;
 	private static final java.awt.Shape ADD_SHAPE;
 
-	private static final java.awt.Paint ERROR_PAINT = new java.awt.Color( 170, 0, 0 );
+	private static final java.awt.Paint ERROR_PAINT = org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR;
 	private static final java.awt.Font ERROR_FONT = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( new java.awt.Font( "Serif", 0, SIZE.height - 2 ), edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRABOLD );
 
 	private static final java.awt.Shape CHECK_SHAPE;
@@ -162,7 +163,7 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		ActionStatus actionStatus = this.getActionStatus();
-		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.NO_ACTION ) ) {
+		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.IGNORE ) && ( actionStatus != ActionStatus.DELETE ) ) {
 			int xOffset = PAD;
 			int yOffset = PAD;
 			int width = this.getIconWidth() - PAD - PAD;

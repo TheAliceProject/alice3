@@ -48,7 +48,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 public abstract class PotentialNameChanger {
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isActionRequired() ? java.awt.Color.RED.darker() : defaultColor;
+			return isActionRequired() ? org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
 		}
 	};
 

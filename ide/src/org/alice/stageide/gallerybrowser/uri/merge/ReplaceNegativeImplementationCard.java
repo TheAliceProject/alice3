@@ -45,11 +45,11 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class ReplaceNegativeImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
-	public ReplaceImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "889b8aad-d368-46c9-a299-c4d31c4703fd" ) );
+	public ReplaceNegativeImplementationCard( DifferentImplementation<?> differentImplementation ) {
+		super( java.util.UUID.fromString( "a3580257-285a-40b0-b471-8629bda9e96e" ) );
 		this.differentImplementation = differentImplementation;
 	}
 
@@ -57,7 +57,7 @@ public class ReplaceImplementationCard extends org.lgna.croquet.SimpleComposite<
 	protected org.lgna.croquet.components.Panel createView() {
 		org.lgna.project.ast.Member member = this.differentImplementation.getImportMember();
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0" );
-		rv.addComponent( new org.lgna.croquet.components.Label( "<html>" + member.getName() + " <em>(replace with version from class file)</em></html>" ) );
+		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createDeleteMemberLabel( member ) );
 		return rv;
 	}
 }

@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementationComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class AcceptRejectAllDifferentImplementationsComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
 	private final org.lgna.croquet.Operation acceptAllOperation = this.createActionOperation( this.createKey( "acceptAllOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			acceptAll();
@@ -60,10 +60,11 @@ public final class DifferentImplementationComposite extends org.lgna.croquet.Sim
 	} );
 
 	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.PlainStringValue subHeader = this.createStringValue( this.createKey( "subHeader" ) );
 
 	private final ImportTypeComposite importTypeComposite;
 
-	public DifferentImplementationComposite( ImportTypeComposite importTypeComposite ) {
+	public AcceptRejectAllDifferentImplementationsComposite( ImportTypeComposite importTypeComposite ) {
 		super( java.util.UUID.fromString( "20bc7249-e5b9-4e27-b4d1-d9cee4faa699" ) );
 		this.importTypeComposite = importTypeComposite;
 	}
@@ -93,6 +94,7 @@ public final class DifferentImplementationComposite extends org.lgna.croquet.Sim
 	protected org.lgna.croquet.components.Panel createView() {
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 16 16 4 4" );
 		rv.addComponent( this.header.createLabel(), "span 2, wrap" );
+		rv.addComponent( this.subHeader.createLabel(), "span 2, wrap" );
 		rv.addComponent( this.acceptAllOperation.createButton() );
 		rv.addComponent( this.rejectAllOperation.createButton() );
 		return rv;

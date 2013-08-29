@@ -50,7 +50,11 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	private final javax.swing.Icon icon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 		@Override
 		protected ActionStatus getActionStatus() {
-			return ActionStatus.ADD;
+			if( isAddDesiredState.getValue() ) {
+				return ActionStatus.ADD;
+			} else {
+				return ActionStatus.IGNORE;
+			}
 		}
 	};
 

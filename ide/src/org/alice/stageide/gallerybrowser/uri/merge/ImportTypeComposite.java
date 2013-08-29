@@ -58,7 +58,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final AddFunctionsComposite addFunctionsComposite;
 	private final AddFieldsComposite addFieldsComposite;
 
-	private final DifferentImplementationComposite differentImplementationComposite;
+	private final AcceptRejectAllDifferentImplementationsComposite differentImplementationComposite;
 
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( this.createKey( "actionItemsRemainingError" ) );
 
@@ -148,7 +148,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		}
 
 		if( isDifferentImplementationCompositeDesired ) {
-			this.differentImplementationComposite = this.registerSubComposite( new DifferentImplementationComposite( this ) );
+			this.differentImplementationComposite = this.registerSubComposite( new AcceptRejectAllDifferentImplementationsComposite( this ) );
 		} else {
 			this.differentImplementationComposite = null;
 		}
@@ -166,7 +166,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		return this.addFieldsComposite;
 	}
 
-	public DifferentImplementationComposite getDifferentImplementationComposite() {
+	public AcceptRejectAllDifferentImplementationsComposite getDifferentImplementationComposite() {
 		return this.differentImplementationComposite;
 	}
 

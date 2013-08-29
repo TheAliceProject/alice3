@@ -46,13 +46,6 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
-	private static javax.swing.Icon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			return ActionStatus.KEEP;
-		}
-	};
-
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 		org.lgna.croquet.components.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
@@ -65,17 +58,6 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 	private static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member ) {
 		return composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
-	}
-
-	private static org.lgna.croquet.components.Label createKeepResultLabel( org.lgna.project.ast.Member member ) {
-		return new org.lgna.croquet.components.Label( member.getName(), KEEP_ICON );
-	}
-
-	public static org.lgna.croquet.components.TextField createTextField( org.lgna.croquet.StringState state, org.alice.stageide.gallerybrowser.uri.merge.PotentialNameChanger potentialNameChanger ) {
-		org.lgna.croquet.components.TextField rv = state.createTextField();
-		rv.enableSelectAllWhenFocusGained();
-		rv.getAwtComponent().setForegroundCustomizer( potentialNameChanger.getForegroundCustomizer() );
-		return rv;
 	}
 
 	private int row = 0;
@@ -150,8 +132,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "split 2" );
 			this.addComponent( createPopupView( composite, importOnly.getImportMember() ) );
 
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( importOnly.getImportMember().getName(), importOnly.getIcon() );
-			//org.lgna.croquet.components.AbstractLabel label = createAddResultLabel( importOnly.getImportMember() );
+			org.lgna.croquet.components.AbstractLabel label = MemberViewUtilities.createAddMemberLabel( importOnly.getImportMember(), importOnly.getIcon() );
 			this.addComponent( label, "skip 1, wrap" );
 
 			//todo: removeValueListener somewhere
@@ -165,7 +146,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentSignature.getImportMember() ) );
 
 			org.lgna.croquet.components.Label plusLabel = new org.lgna.croquet.components.Label( differentSignature.getImportIcon() );
-			org.lgna.croquet.components.TextField textField = createTextField( differentSignature.getImportNameState(), differentSignature );
+			org.lgna.croquet.components.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportNameState(), differentSignature.getForegroundCustomizer() );
 			this.addComponent( plusLabel, "skip 1, split 2" );
 			this.addComponent( textField, "growx" );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
@@ -175,7 +156,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ) );
 
 			this.addComponent( new org.lgna.croquet.components.Label( differentSignature.getProjectIcon() ), "split 2" );
-			this.addComponent( createTextField( differentSignature.getProjectNameState(), differentSignature ), "grow, wrap" );
+			this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "grow, wrap" );
 
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField ) );
@@ -209,14 +190,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, identical.getImportMember() ) );
 			this.addComponent( keepCheckBox, "split 2" );
 			this.addComponent( createPopupView( composite, identical.getProjectMember() ) );
-			this.addComponent( createKeepResultLabel( identical.getProjectMember() ), "wrap" );
+			this.addComponent( MemberViewUtilities.createKeepIdenticalMemberLabel( identical.getProjectMember() ), "wrap" );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
 			org.lgna.croquet.components.CheckBox keepCheckBox = projectOnly.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1, split 2" );
 			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ) );
-			this.addComponent( createKeepResultLabel( projectOnly.getProjectMember() ), "wrap" );
+			this.addComponent( MemberViewUtilities.createKeepUniqueMemberLabel( projectOnly.getProjectMember() ), "wrap" );
 		}
 
 		//this.setMinimumPreferredHeight( 160 );

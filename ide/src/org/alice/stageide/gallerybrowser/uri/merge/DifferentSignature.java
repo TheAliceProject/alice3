@@ -61,7 +61,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 				if( isAddDesiredState.getValue() ) {
 					return ActionStatus.ADD;
 				} else {
-					return ActionStatus.NO_ACTION;
+					return ActionStatus.IGNORE;
 				}
 			}
 		}

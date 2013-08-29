@@ -54,11 +54,6 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
 	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
-	private final ReplaceImplementationCard replaceImplementationCard = new ReplaceImplementationCard( this );
-	private final KeepImplementationCard keepImplementationCard = new KeepImplementationCard( this );
-	private final AddAndRenameImplementationCard addAndRenameImplementationsCard = new AddAndRenameImplementationCard( this );
-	private final KeepAndRenameImplementationCard keepAndRenameImplementationsCard = new KeepAndRenameImplementationCard( this );
-
 	private static final String POST_FIX = "<br><em>(different implementation)</em>";
 
 	private final javax.swing.Icon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
@@ -74,7 +69,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 						return ActionStatus.REPLACE;
 					}
 				} else {
-					return ActionStatus.NO_ACTION;
+					return ActionStatus.IGNORE;
 				}
 			}
 		}
@@ -88,7 +83,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				if( isKeepDesiredState.getValue() ) {
 					return ActionStatus.KEEP;
 				} else {
-					return ActionStatus.NO_ACTION;
+					return ActionStatus.IGNORE;
 				}
 			}
 		}
@@ -102,13 +97,14 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
-				.replace( this.replaceImplementationCard )
-				.rename( this.addAndRenameImplementationsCard )
+				.replace( new ReplacePositiveImplementationCard( this ) )
+				.rename( new AddAndRenameImplementationCard( this ) )
 				.build();
 		this.projectCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
-				.keep( this.keepImplementationCard )
-				.rename( this.keepAndRenameImplementationsCard )
+				.keep( new KeepImplementationCard( this ) )
+				.replace( new ReplaceNegativeImplementationCard( this ) )
+				.rename( new KeepAndRenameImplementationCard( this ) )
 				.build();
 	}
 
