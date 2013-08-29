@@ -123,9 +123,9 @@ public class HoverPopupView extends JComponent<javax.swing.JLabel> {
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		javax.swing.JLabel rv = new javax.swing.JLabel();
-		rv.setText( "[view]" );
-		rv.setForeground( java.awt.Color.BLUE );
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( rv, 2.0f );
+		//rv.setText( "[view]" );
+		//rv.setForeground( java.awt.Color.BLUE );
+		//edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( rv, 2.0f );
 		return rv;
 	}
 }

@@ -46,6 +46,18 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 32;
+	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 32;
+	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 32;
+	//	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 32;
+
+	private static final int SPACE = 24;
+	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0,center]" : "[grow,shrink,33%]";
+	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
+	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow,shrink]" : "[grow,shrink,34%]";
+
+	private static final int BRACKET_WIDTH = 16;
+
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
 		org.lgna.croquet.components.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
@@ -108,13 +120,6 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return sb.toString();
 	}
 
-	private static final int SPACE = 24;
-	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0]" : "[grow,shrink,33%]";
-	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
-	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow,shrink]" : "[grow,shrink,34%]";
-
-	private static final int BRACKET_WIDTH = 16; //ActionRequiredView.ICON.getIconWidth()
-
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
 		super( composite, "fill, insets 8 12 4 4", COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
 		//todo
@@ -140,6 +145,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
+			//this.addComponent( new org.lgna.croquet.components.Label(), "height 32px, wrap" );
+
 			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
 			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox(), "split 2" );
@@ -163,6 +170,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
+			//this.addComponent( new org.lgna.croquet.components.Label(), "height 32px, wrap" );
 			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentImplementationToolText( composite, differentImplementation.getImportMember() ) );
 
@@ -270,10 +278,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 				final boolean IS_STRETCH_ACROSS_DESIRED = true;
 				int width;
-				int x = minX;
+				int x;
 				if( IS_STRETCH_ACROSS_DESIRED ) {
-					width = this.getWidth() - minX - BRACKET_WIDTH;
+					x = 16;
+					width = this.getWidth() - x - 4 - ( BRACKET_WIDTH / 2 );
 				} else {
+					x = minX;
 					width = maxX - minX;
 				}
 				rowIndex = 0;
