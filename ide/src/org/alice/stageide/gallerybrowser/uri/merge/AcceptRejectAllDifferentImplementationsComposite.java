@@ -74,10 +74,6 @@ public final class AcceptRejectAllDifferentImplementationsComposite extends org.
 			for( DifferentImplementation<?> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
 				differentImplementation.getIsAddDesiredState().setValueTransactionlessly( isAccept );
 				differentImplementation.getIsKeepDesiredState().setValueTransactionlessly( isAccept == false );
-
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "remove getSwingModel().getButtonModel().setSelected" );
-				differentImplementation.getIsAddDesiredState().getSwingModel().getButtonModel().setSelected( isAccept );
-				differentImplementation.getIsKeepDesiredState().getSwingModel().getButtonModel().setSelected( isAccept == false );
 			}
 		}
 	}
