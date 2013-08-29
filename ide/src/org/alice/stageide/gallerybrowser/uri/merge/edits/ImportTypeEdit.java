@@ -109,6 +109,11 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 			renameData.setPrevName( renameData.getMember().getName() );
 			renameData.getMember().setName( renameData.getNextName() );
 		}
+
+		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
+		if( programType != null ) {
+			org.alice.stageide.gallerybrowser.uri.merge.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+		}
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
@@ -133,6 +138,12 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 		for( RenameMemberData renameData : this.renames ) {
 			renameData.getMember().setName( renameData.getPrevName() );
 		}
+
+		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
+		if( programType != null ) {
+			org.alice.stageide.gallerybrowser.uri.merge.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+		}
+
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
