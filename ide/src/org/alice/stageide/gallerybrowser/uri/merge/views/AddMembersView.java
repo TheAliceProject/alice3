@@ -159,12 +159,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
-			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
-				public boolean accept( Void e ) {
-					return false;//differentSignature.isActionRequired();
-				}
-			};
-			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
+			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
 			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox(), "split 2" );
 			this.addComponent( createPopupView( composite, differentSignature.getImportMember() ) );
@@ -187,12 +182,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
-			edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion = new edu.cmu.cs.dennisc.pattern.Criterion<Void>() {
-				public boolean accept( Void e ) {
-					return false;//differentImplementation.isActionRequired();
-				}
-			};
-			ActionRequiredView rightBracket = new ActionRequiredView( isActionRequiredCriterion, false );
+			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentImplementationToolText( composite, differentImplementation.getImportMember() ) );
 
 			org.lgna.croquet.components.CheckBox addCheckBox = differentImplementation.getIsAddDesiredState().createCheckBox();

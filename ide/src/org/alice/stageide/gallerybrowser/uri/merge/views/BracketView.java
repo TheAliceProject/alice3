@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,74 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.stageide.gallerybrowser.uri.merge.views;
 
 /**
  * @author Dennis Cosgrove
- * 
  */
-public class IconUtilities {
-	private IconUtilities() {
-		throw new AssertionError();
-	}
+public class BracketView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+	private class JBracketView extends javax.swing.JComponent {
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			super.paintComponent( g );
 
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
+			int w = this.getWidth();
+			int h = this.getHeight();
+
+			int x0 = w / 2;
+			int x1;
+			int y0 = 0;
+			int y1 = h - 1;
+
+			if( isLeading ) {
+				x1 = w - 1;
+			} else {
+				x1 = 0;
+			}
+
+			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+			path.moveTo( x1, y0 );
+			path.lineTo( x0, y0 );
+			path.lineTo( x0, y1 );
+			path.lineTo( x1, y1 );
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.draw( path );
 		}
 	}
 
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
-		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
-		} else {
-			return null;
-		}
+	private final boolean isLeading;
+
+	public BracketView( boolean isLeading ) {
+		this.isLeading = isLeading;
 	}
 
-	public static javax.swing.ImageIcon[] createImageIcons( java.net.URL... urls ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ urls.length ];
-		int i = 0;
-		for( java.net.URL url : urls ) {
-			rv[ i ] = createImageIcon( url );
-			i++;
-		}
-		return rv;
-	}
-
-	public static javax.swing.ImageIcon[] createImageIcons( java.awt.Image... images ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ images.length ];
-		int i = 0;
-		for( java.awt.Image image : images ) {
-			rv[ i ] = createImageIcon( image );
-			i++;
-		}
-		return rv;
-	}
-
-	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
-		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
-		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
-		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
-		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
-		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
-	}
-
-	public static javax.swing.Icon getInformationIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.informationIcon" );
-	}
-
-	public static javax.swing.Icon getQuestionIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.questionIcon" );
-	}
-
-	public static javax.swing.Icon getWarningIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
-	}
-
-	public static javax.swing.Icon getErrorIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
+	@Override
+	protected javax.swing.JComponent createAwtComponent() {
+		return new JBracketView();
 	}
 }
