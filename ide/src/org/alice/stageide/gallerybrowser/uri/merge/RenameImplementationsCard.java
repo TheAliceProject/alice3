@@ -64,7 +64,7 @@ public abstract class RenameImplementationsCard extends org.lgna.croquet.SimpleC
 		MemberNameState<?> nameState = this.getMemberNameState();
 
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
-		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createTextField( nameState, this.differentImplementation.getForegroundCustomizer() ), "grow, shrink" );
+		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createTextField( nameState, this.differentImplementation.getForegroundCustomizer() ) );
 		return rv;
 	}
 }

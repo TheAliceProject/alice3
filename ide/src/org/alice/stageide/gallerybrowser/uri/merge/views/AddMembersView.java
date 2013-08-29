@@ -155,7 +155,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			org.lgna.croquet.components.Label plusLabel = new org.lgna.croquet.components.Label( differentSignature.getImportIcon() );
 			org.lgna.croquet.components.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportNameState(), differentSignature.getForegroundCustomizer() );
 			this.addComponent( plusLabel, "skip 1, split 2" );
-			this.addComponent( textField, "growx" );
+			this.addComponent( textField );
 			this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getIsKeepDesiredState().createCheckBox();
@@ -163,7 +163,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentSignature.getProjectMember() ) );
 
 			this.addComponent( new org.lgna.croquet.components.Label( differentSignature.getProjectIcon() ), "split 2" );
-			this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "grow, wrap" );
+			this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "wrap" );
 
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField ) );

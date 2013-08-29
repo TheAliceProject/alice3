@@ -103,6 +103,7 @@ public class MemberViewUtilities {
 		org.lgna.croquet.components.TextField rv = state.createTextField();
 		rv.enableSelectAllWhenFocusGained();
 		rv.getAwtComponent().setForegroundCustomizer( foregroundCustomizer );
+		rv.getAwtComponent().setColumns( 32 );
 		return rv;
 	}
 }
