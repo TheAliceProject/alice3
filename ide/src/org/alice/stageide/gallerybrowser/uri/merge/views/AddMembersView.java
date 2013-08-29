@@ -46,10 +46,10 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
-	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 32;
-	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 32;
-	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 32;
-	//	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 32;
+	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
+	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
+	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
+	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 0;
 
 	private static final int GAP_Y = 8;
 	private static final int SPACE = 24;
@@ -122,7 +122,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	}
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
+		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
@@ -147,6 +147,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
 			//this.addComponent( new org.lgna.croquet.components.Label(), "height 32px, wrap" );
+			this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_PRE_GAP );
 
 			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentSignatureToolText( composite, differentSignature.getImportMember() ) );
@@ -168,10 +169,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( plusLabel, textField ) );
+
+			this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_POST_GAP );
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
-			//this.addComponent( new org.lgna.croquet.components.Label(), "height 32px, wrap" );
+			this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_PRE_GAP );
 			BracketView rightBracket = new BracketView( false );
 			rightBracket.setToolTipText( createDifferentImplementationToolText( composite, differentImplementation.getImportMember() ) );
 
@@ -187,6 +190,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, differentImplementation.getProjectMember() ) );
 			this.addComponent( new org.lgna.croquet.components.Label( differentImplementation.getProjectIcon() ), "split 2" );
 			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
+			this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.Identical<M> identical : composite.getIdenticals() ) {
@@ -210,6 +214,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		//this.setMinimumPreferredHeight( 160 );
+	}
+
+	private void addSpacerNotTrackedAsRow( int height ) {
+		if( height > 0 ) {
+			this.getAwtComponent().add( new javax.swing.JLabel(), "wrap, height " + height + "px" );
+		}
 	}
 
 	private void addToRow( org.lgna.croquet.components.Component<?> component ) {
