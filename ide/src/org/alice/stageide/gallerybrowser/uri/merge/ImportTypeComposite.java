@@ -58,6 +58,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final AddFunctionsComposite addFunctionsComposite;
 	private final AddFieldsComposite addFieldsComposite;
 
+	private final DifferentImplementationComposite differentImplementationComposite;
+
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( this.createKey( "actionItemsRemainingError" ) );
 
 	private boolean isManagementLevelAppropriate( org.lgna.project.ast.UserMethod method ) {
@@ -72,6 +74,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		this.importedResources = importedResources;
 		this.srcType = srcType;
 		this.dstType = dstType;
+
+		boolean isDifferentImplementationCompositeDesired = false;
 
 		if( this.dstType != null ) {
 			java.util.List<org.lgna.project.ast.UserMethod> projectProcedures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -102,6 +106,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 							addMethodsComposite.addIdenticalMembers( projectMethod, importMethod );
 						} else {
 							if( MergeUtilities.isHeaderEquivalent( importMethod, projectMethod ) ) {
+								isDifferentImplementationCompositeDesired = true;
 								addMethodsComposite.addDifferentImplementationMembers( projectMethod, importMethod );
 							} else {
 								addMethodsComposite.addDifferentSignatureMembers( projectMethod, importMethod );
@@ -123,6 +128,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 						this.addFieldsComposite.addIdenticalMembers( projectField, importField );
 					} else {
 						if( MergeUtilities.isValueTypeEquivalent( projectField, importField ) ) {
+							isDifferentImplementationCompositeDesired = true;
 							this.addFieldsComposite.addDifferentImplementationMembers( projectField, importField );
 						} else {
 							this.addFieldsComposite.addDifferentSignatureMembers( projectField, importField );
@@ -140,6 +146,12 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			this.addFunctionsComposite = null;
 			this.addFieldsComposite = null;
 		}
+
+		if( isDifferentImplementationCompositeDesired ) {
+			this.differentImplementationComposite = this.registerSubComposite( new DifferentImplementationComposite( this ) );
+		} else {
+			this.differentImplementationComposite = null;
+		}
 	}
 
 	public AddProceduresComposite getAddProceduresComposite() {
@@ -152,6 +164,10 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	public AddFieldsComposite getAddFieldsComposite() {
 		return this.addFieldsComposite;
+	}
+
+	public DifferentImplementationComposite getDifferentImplementationComposite() {
+		return this.differentImplementationComposite;
 	}
 
 	@Override

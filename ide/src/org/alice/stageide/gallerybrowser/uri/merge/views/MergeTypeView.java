@@ -67,6 +67,11 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite() );
 		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite() );
 
+		org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationComposite differentImplementationComposite = composite.getDifferentImplementationComposite();
+		if( differentImplementationComposite != null ) {
+			this.addComponent( differentImplementationComposite.getRootComponent() );
+		}
+
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
 		this.setMinimumPreferredWidth( 800 );
 	}
