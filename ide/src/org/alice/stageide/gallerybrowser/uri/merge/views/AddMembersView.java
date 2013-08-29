@@ -51,6 +51,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 32;
 	//	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 32;
 
+	private static final int GAP_Y = 8;
 	private static final int SPACE = 24;
 	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0,center]" : "[grow,shrink,33%]";
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
@@ -121,7 +122,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	}
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill, insets 8 12 4 4", COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
+		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
@@ -292,7 +293,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 						if( ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 0 ) {
 							java.awt.Rectangle bounds = getRowBounds( row );
 							g.setColor( brighterColor );
-							g.fillRect( x, bounds.y, width, bounds.height );
+							g.fillRect( x, bounds.y - ( GAP_Y / 2 ), width, bounds.height + GAP_Y );
 						}
 					}
 					rowIndex++;
