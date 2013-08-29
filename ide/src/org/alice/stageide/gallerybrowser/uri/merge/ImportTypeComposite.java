@@ -282,6 +282,12 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
 		org.lgna.project.ast.NamedUserType srcType = importedRootType;
 		org.lgna.project.ast.NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+		if( dstType != null ) {
+			//pass
+		} else {
+			dstType = new org.lgna.project.ast.NamedUserType();
+			dstType.name.setValue( importedRootType.getName() );
+		}
 		ImportTypeComposite mergeTypeComposite = new ImportTypeComposite( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
 		mergeTypeComposite.getOperation().fire();
 		System.exit( 0 );

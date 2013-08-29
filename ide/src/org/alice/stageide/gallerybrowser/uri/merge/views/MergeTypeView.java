@@ -52,6 +52,7 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 			toolPaletteView.getTitle().setInert( true );
 			toolPaletteView.getTitle().setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
 			//toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			toolPaletteView.getTitle().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 			this.addComponent( composite.getOuterComposite().getRootComponent(), "grow, shrink, gap 16, wrap" );
 		}
 	}
@@ -67,5 +68,6 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite() );
 
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
+		this.setMinimumPreferredWidth( 800 );
 	}
 }

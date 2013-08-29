@@ -126,23 +126,25 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return sb.toString();
 	}
 
-	private static final int SPACE = 12;
+	private static final int SPACE = 24;
 	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0]" : "[grow,shrink,33%]";
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
 	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow,shrink]" : "[grow,shrink,34%]";
 
+	private static final int BRACKET_WIDTH = 16; //ActionRequiredView.ICON.getIconWidth()
+
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill, insets 0", COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + ActionRequiredView.ICON.getIconWidth() + "px,grow 0,shrink 0]" );
+		super( composite, "fill, insets 8 12 4 4", COLUMN_0_CONSTRAINT + SPACE + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
 
 		this.addComponent( createHeader( composite.getAddHeader() ) );
 		this.addComponent( createHeader( composite.getExistingHeader() ) );
-		this.addComponent( createHeader( composite.getResultHeader() ), "wrap" );
+		this.addComponent( createHeader( composite.getResultHeader() ), "span 2, wrap" );
 		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "grow, shrink" );
-		this.addComponent( createSeparator(), "grow, shrink, wrap" );
+		this.addComponent( createSeparator(), "span 2, grow, shrink, wrap" );
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
 			this.addComponent( importOnly.getIsAddDesiredState().createCheckBox(), "split 2" );
@@ -226,6 +228,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( createPopupView( composite, projectOnly.getProjectMember() ) );
 			this.addComponent( createKeepResultLabel( projectOnly.getProjectMember() ), "wrap" );
 		}
+
+		//this.setMinimumPreferredHeight( 160 );
 	}
 
 	private void addToRow( org.lgna.croquet.components.Component<?> component ) {
@@ -292,23 +296,31 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 					}
 					rowIndex++;
 				}
-				int width = maxX - minX;
+
+				final boolean IS_STRETCH_ACROSS_DESIRED = true;
+				int width;
+				int x = minX;
+				if( IS_STRETCH_ACROSS_DESIRED ) {
+					width = this.getWidth() - minX - BRACKET_WIDTH;
+				} else {
+					width = maxX - minX;
+				}
 				rowIndex = 0;
 				for( java.util.List<java.awt.Component> row : rows ) {
 					if( rowIndex >= SKIP_ROW_COUNT ) {
-						if( ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 1 ) {
+						if( ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 0 ) {
 							java.awt.Rectangle bounds = getRowBounds( row );
 							g.setColor( brighterColor );
-							g.fillRect( minX, bounds.y, width, bounds.height );
+							g.fillRect( x, bounds.y, width, bounds.height );
 						}
 					}
 					rowIndex++;
 				}
 
 				if( this.getComponentCount() > 2 ) {
-					int x = getComponent( 2 ).getX();
+					int xSeparator = getComponent( 2 ).getX();
 					g.setColor( java.awt.Color.DARK_GRAY );
-					g.fillRect( x - 10, 0, 4, this.getHeight() );
+					g.fillRect( xSeparator - ( SPACE / 2 ) - 2, 0, 4, this.getHeight() );
 				}
 
 			}
