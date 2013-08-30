@@ -190,6 +190,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
 			encoder.stopVideoEncoding();
 		} else {
+			this.encoder.startVideoEncoding();
 			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 			programContext.getProgramImp().getAnimator().setFramesPerSecond( this.frameRateState.getValue() );
 			programContext.getProgramImp().startAnimator();
@@ -288,9 +289,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		encoder.setFrameRate( frameRateState.getValue() );
 		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 		this.encoder.initializeAudioRecording();
-
-		// TODO: Call later when recording the video
-		this.encoder.startVideoEncoding();
 	}
 
 	public ActionOperation getRestartOperation() {

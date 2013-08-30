@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package edu.wustl.cse.lookingglass.media.views;
+
+import java.awt.Dimension;
+
+import org.lgna.croquet.components.BorderPanel;
+
+import edu.wustl.cse.lookingglass.media.composites.FFmpegProcessExceptionDialog;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				//				org.alice.media.ExportToYouTubeWizardDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new edu.wustl.cse.lookingglass.media.composites.UploadOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance(),
-				CaptureMenuModel.getInstance()
-				);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
-	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
-	}
-
-	public static FileMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+public class FFmpegProcessExceptionView extends BorderPanel {
+	public FFmpegProcessExceptionView( FFmpegProcessExceptionDialog composite ) {
+		super( composite );
+		this.getAwtComponent().setMinimumSize( new Dimension( 150, 100 ) );
+		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
+		//		this.getAwtComponent().add( composite.troubleShootAction.createButton().getAwtComponent(), BorderLayout.PAGE_END );
+		this.addPageEndComponent( composite.getBrowserOperation().createHyperlink() );
 	}
 }

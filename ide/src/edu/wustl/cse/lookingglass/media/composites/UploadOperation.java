@@ -40,90 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package edu.wustl.cse.lookingglass.media.composites;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
-import org.alice.media.audio.ScheduledAudioStream;
+import org.alice.ide.IDE;
+import org.alice.media.ExportToYouTubeWizardDialogComposite;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
 
-import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
+import edu.wustl.cse.lookingglass.media.FFmpegProcess;
+import edu.wustl.cse.lookingglass.media.FFmpegProcessException;
 import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
 
 /**
  * @author Matt May
  */
-public class WebmRecordingAdapter implements MediaPlayerObserver {
+public class UploadOperation extends ActionOperation {
 
-	private Integer frameRate;
-	private Dimension dimension;
-
-	private org.alice.media.audio.AudioMuxer audioMuxer;
-	private ImagesToWebmEncoder encoder;
-
-	public WebmRecordingAdapter() {
+	public UploadOperation() {
+		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
 	}
 
-	public void setFrameRate( Integer value ) {
-		frameRate = value;
-	}
-
-	public void setDimension( Dimension dimension ) {
-		this.dimension = dimension;
-	}
-
-	public File getEncodedVideo() {
-		return this.encoder != null ? this.encoder.getEncodedVideo() : null;
-	}
-
-	public boolean isVideoEncoding() {
-		if( this.encoder == null ) {
-			return false;
-		} else {
-			return this.encoder.isRunning();
+	@Override
+	protected void perform( Transaction transaction, Trigger trigger ) {
+		File encodedVideo = null;
+		FFmpegProcess process = null;
+		try {
+			encodedVideo = java.io.File.createTempFile( "project", "." + ImagesToWebmEncoder.WEBM_EXTENSION );
+		} catch( IOException e ) {
+			e.printStackTrace();
+			return;
 		}
-	}
-
-	public void initializeAudioRecording() {
-		this.audioMuxer = new org.alice.media.audio.AudioMuxer();
-	}
-
-	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
-		assert this.audioMuxer != null;
-		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
-		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
-			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
-			this.audioMuxer.addAudioStream( audioStream );
+		process = new FFmpegProcess( "-y", "-r", String.format( "%d", 1 ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", encodedVideo.getAbsolutePath() );
+		Process start = null;
+		try {
+			start = process.start();
+		} catch( FFmpegProcessException e ) {
+			FFmpegProcessExceptionDialog dialog = new FFmpegProcessExceptionDialog( e );
+			dialog.getOperation().fire();
+			if( dialog.getIsFixed() ) {
+				//pass
+			} else {
+				System.out.println( "RETURNING" );
+				return;
+			}
 		}
-	}
-
-	public void startVideoEncoding() {
-		assert this.isVideoEncoding() == false;
-		assert frameRate != null;
-		assert dimension != null;
-
-		this.encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		this.encoder.start( this.audioMuxer );
-	}
-
-	public void stopVideoEncoding() {
-		if( this.isVideoEncoding() ) {
-			this.encoder.stop();
-
-			// Reset the audio compiler, just in case. We want to make sure someone restarts it.
-			this.audioMuxer = null;
+		if( start != null ) {
+			process.stop();
 		}
-	}
-
-	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		if( this.isVideoEncoding() ) {
-			this.encoder.addBufferedImage( image, isUpsideDown );
-		} else {
-			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
-		}
+		ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 	}
 }
