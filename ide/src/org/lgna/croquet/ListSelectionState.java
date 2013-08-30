@@ -471,7 +471,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		final int N = this.getItemCount();
 		int i;
 		if( N > 0 ) {
-			i = org.lgna.common.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+			java.util.Random random = new java.util.Random();
+			i = random.nextInt( N );
 		} else {
 			i = -1;
 		}
