@@ -87,7 +87,7 @@ public class HoverPopupView extends JComponent<javax.swing.JLabel> {
 			assert this.window.isVisible() == false;
 			java.awt.Point p = this.getLocationOnScreen();
 			this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
-			this.window.setLocation( p.x + this.getWidth() + 16, p.y );
+			this.window.setLocation( p.x + this.getWidth() + 16, ( p.y + this.getHeight() ) - 4 );
 			this.window.pack();
 			this.window.setVisible( true );
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show", this );

@@ -48,13 +48,6 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 public class MemberViewUtilities {
 	public static java.awt.Color ACTION_MUST_BE_TAKEN_COLOR = new java.awt.Color( 170, 0, 0 );
 
-	private static javax.swing.Icon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			return ActionStatus.KEEP;
-		}
-	};
-
 	//
 	//	private static javax.swing.Icon DELETE_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 	//		@Override
@@ -67,8 +60,8 @@ public class MemberViewUtilities {
 		return new org.lgna.croquet.components.Label( "<html>" + prefix + member.getName() + postfix + "</html>", icon );
 	}
 
-	public static org.lgna.croquet.components.AbstractLabel createAddMemberLabel( org.lgna.project.ast.Member member, javax.swing.Icon icon ) {
-		return createMemberLabel( member, "", "", icon );
+	public static org.lgna.croquet.components.AbstractLabel createAddMemberLabel( org.lgna.project.ast.Member member ) {
+		return createMemberLabel( member, "", "", null );
 	}
 
 	public static org.lgna.croquet.components.AbstractLabel createDeleteMemberLabel( org.lgna.project.ast.Member member ) {
@@ -86,11 +79,11 @@ public class MemberViewUtilities {
 	}
 
 	public static org.lgna.croquet.components.AbstractLabel createKeepIdenticalMemberLabel( org.lgna.project.ast.Member member ) {
-		return createMemberLabel( member, "", " <em>(identical)</em>", KEEP_ICON );
+		return createMemberLabel( member, "", " <em>(identical)</em>", null );
 	}
 
 	public static org.lgna.croquet.components.AbstractLabel createKeepUniqueMemberLabel( org.lgna.project.ast.Member member ) {
-		return createMemberLabel( member, "", "", KEEP_ICON );
+		return createMemberLabel( member, "", "", null );
 	}
 
 	public static org.lgna.croquet.components.AbstractLabel createActionMustBeTakeMemberLabel( org.lgna.project.ast.Member member ) {
@@ -104,6 +97,12 @@ public class MemberViewUtilities {
 		rv.enableSelectAllWhenFocusGained();
 		rv.getAwtComponent().setForegroundCustomizer( foregroundCustomizer );
 		rv.getAwtComponent().setColumns( 32 );
+		return rv;
+	}
+
+	public static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member, javax.swing.Icon icon ) {
+		org.lgna.croquet.components.HoverPopupView rv = composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
+		rv.getAwtComponent().setIcon( icon );
 		return rv;
 	}
 }
