@@ -40,43 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.story.implementation.overlay;
 
 /**
  * @author dculyba
  * 
  */
-public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver {
 
-	private org.lgna.story.implementation.EntityImp m_entityImp;
-	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
-	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+	private long startTime;
 
-	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
-		assert entityImp != null;
-		m_entityImp = entityImp;
-	}
-
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
-
-	@Override
-	protected void prologue() {
-		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
-		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
-		m_sgLayer = camera.getPostRenderLayer();
-		m_sgGraphic = this.getSGGraphic();
-		assert m_sgLayer != null;
-		assert m_sgGraphic != null;
-		m_sgGraphic.setParent( m_sgLayer );
+	/**
+	 * @param entity
+	 * @param openingDuration
+	 * @param updatingDuration
+	 * @param closingDuration
+	 * @param bubble
+	 */
+	public AudioLimitedBubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
+		super( entityImp, openingDuration, 100.0, closingDuration, bubble );
+		this.startTime = 0;
 	}
 
 	@Override
-	protected void preEpilogue() {
+	protected void prologue()
+	{
+		super.prologue();
+		this.startTime = System.currentTimeMillis();
 	}
 
 	@Override
-	protected void epilogue() {
-		m_sgGraphic.setParent( null );
+	protected void epilogue()
+	{
+		super.epilogue();
+		this.startTime = 0;
+	}
+
+	public void setDuration( double duration )
+	{
+		double elapsedTime = 0;
+		if( this.startTime != 0 )
+		{
+			long currentTime = System.currentTimeMillis();
+			elapsedTime = ( currentTime - this.startTime ) * 0.001;
+		}
+		if( elapsedTime > this.m_openingDuration )
+		{
+			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
+		}
+		else
+		{
+			this.m_updatingDuration = duration;
+		}
+	}
+
+	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource )
+	{
+		this.m_updatingDuration = resource.getDuration();
 	}
 
 }

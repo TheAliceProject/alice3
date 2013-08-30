@@ -40,63 +40,80 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.story.implementation.overlay;
+
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
 
 /**
  * @author dculyba
  * 
  */
-public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver {
+public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
 
-	private long startTime;
+	protected double m_openingDuration;
+	protected double m_updatingDuration;
+	protected double m_closingDuration;
 
-	/**
-	 * @param entity
-	 * @param openingDuration
-	 * @param updatingDuration
-	 * @param closingDuration
-	 * @param bubble
-	 */
-	public AudioLimitedBubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		super( entityImp, openingDuration, 100.0, closingDuration, bubble );
-		this.startTime = 0;
+	protected enum State {
+		OPENNING,
+		UPDATING,
+		CLOSING,
 	}
 
+	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
+		super( entityImp );
+		m_openingDuration = openingDuration;
+		m_updatingDuration = updatingDuration;
+		m_closingDuration = closingDuration;
+	}
+
+	protected double getOpeningDuration() {
+		return m_openingDuration;
+	}
+
+	protected double getUpdatingDuration() {
+		return m_updatingDuration;
+	}
+
+	protected double getClosingDuration() {
+		return m_closingDuration;
+	}
+
+	protected abstract void updateStateAndPortion( State state, double portion );
+
 	@Override
-	protected void prologue()
-	{
+	protected void prologue() {
+		this.updateStateAndPortion( State.OPENNING, 0.0 );
 		super.prologue();
-		this.startTime = System.currentTimeMillis();
 	}
 
 	@Override
-	protected void epilogue()
-	{
+	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		State state;
+		double portion;
+		if( ( m_openingDuration > 0.0 ) && ( deltaSincePrologue <= m_openingDuration ) ) {
+			state = State.OPENNING;
+			portion = deltaSincePrologue / m_openingDuration;
+		} else if( ( m_updatingDuration > 0.0 ) && ( deltaSincePrologue <= ( m_openingDuration + m_updatingDuration ) ) ) {
+			state = State.UPDATING;
+			portion = ( deltaSincePrologue - m_openingDuration ) / m_updatingDuration;
+		} else {
+			state = State.CLOSING;
+			if( m_closingDuration > 0.0 ) {
+				portion = Math.min( ( deltaSincePrologue - m_openingDuration - m_updatingDuration ) / m_closingDuration, 1.0 );
+			} else {
+				portion = 1.0;
+			}
+		}
+		this.updateStateAndPortion( state, portion );
+		double toReturn = ( m_openingDuration + m_updatingDuration + m_closingDuration ) - deltaSincePrologue;
+		return toReturn;
+	}
+
+	@Override
+	protected void epilogue() {
+		this.updateStateAndPortion( State.CLOSING, 1.0 );
 		super.epilogue();
-		this.startTime = 0;
-	}
-
-	public void setDuration( double duration )
-	{
-		double elapsedTime = 0;
-		if( this.startTime != 0 )
-		{
-			long currentTime = System.currentTimeMillis();
-			elapsedTime = ( currentTime - this.startTime ) * 0.001;
-		}
-		if( elapsedTime > this.m_openingDuration )
-		{
-			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
-		}
-		else
-		{
-			this.m_updatingDuration = duration;
-		}
-	}
-
-	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource )
-	{
-		this.m_updatingDuration = resource.getDuration();
 	}
 
 }

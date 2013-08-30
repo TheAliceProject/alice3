@@ -40,42 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.story.implementation.overlay;
+
+import edu.cmu.cs.dennisc.animation.AbstractAnimation;
 
 /**
  * @author dculyba
  * 
  */
-public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
-	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble m_bubble;
+public abstract class OverlayGraphicAnimation extends AbstractAnimation {
 
-	public BubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		super( entityImp, openingDuration, updatingDuration, closingDuration );
-		m_bubble = bubble;
+	private org.lgna.story.implementation.EntityImp m_entityImp;
+	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
+	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+
+	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
+		assert entityImp != null;
+		m_entityImp = entityImp;
+	}
+
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
+
+	@Override
+	protected void prologue() {
+		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
+		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+		m_sgLayer = camera.getPostRenderLayer();
+		m_sgGraphic = this.getSGGraphic();
+		assert m_sgLayer != null;
+		assert m_sgGraphic != null;
+		m_sgGraphic.setParent( m_sgLayer );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic() {
-		return m_bubble;
+	protected void preEpilogue() {
 	}
 
 	@Override
-	protected void updateStateAndPortion( State state, double portion ) {
-		if( state == State.OPENNING ) {
-			m_bubble.portion.setValue( portion );
-		} else if( state == State.UPDATING ) {
-			m_bubble.portion.setValue( 1.0 );
-		} else {
-			//state == State.CLOSING;
-			m_bubble.portion.setValue( 1.0 - portion );
-		}
-	}
-
-	@Override
-	protected void epilogue()
-	{
-		super.epilogue();
-		edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( this.m_bubble );
+	protected void epilogue() {
+		m_sgGraphic.setParent( null );
 	}
 
 }
