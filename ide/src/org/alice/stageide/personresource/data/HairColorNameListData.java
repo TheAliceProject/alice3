@@ -49,7 +49,7 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	private HairHatStyle hairHatStyle;
 
 	public HairColorNameListData() {
-		super( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( HairColorName.class ) );
+		super( org.lgna.croquet.codecs.EnumCodec.getInstance( HairColorName.class ) );
 	}
 
 	public HairHatStyle getHairHatStyle() {
