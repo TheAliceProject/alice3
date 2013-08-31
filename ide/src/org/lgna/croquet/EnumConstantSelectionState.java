@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.toolkit.croquet.models;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataListSelectionState<T> {
 	public EnumConstantSelectionState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
+		super( group, id, org.lgna.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
 	}
 }

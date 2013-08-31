@@ -58,11 +58,11 @@ public class ScaledImageIcon implements javax.swing.Icon {
 				return new ScaledImageIcon( sourceImage, width, height );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image size is", sourceWidth, ",", sourceHeight );
-				return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
+				return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
 			}
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image is null" );
-			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
 		}
 	}
 

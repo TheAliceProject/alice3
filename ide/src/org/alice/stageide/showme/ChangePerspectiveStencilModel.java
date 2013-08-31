@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.showme;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ChangePerspectiveStencilModel extends StencilModel {
+public abstract class ChangePerspectiveStencilModel extends org.lgna.croquet.StencilModel {
 	private final org.alice.ide.perspectives.ProjectPerspective perspective;
 
 	public ChangePerspectiveStencilModel( java.util.UUID migrationId, org.alice.ide.perspectives.ProjectPerspective perspective ) {

@@ -393,7 +393,7 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 
 	public void displayBubble( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration ) {
 		if( this.getScene() != null ) {
-			perform( new edu.cmu.cs.dennisc.animation.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
+			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
 		} else {
 			//todo
 			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );
@@ -403,7 +403,7 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 	public void sayText( String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
 		final boolean showSpeechBubble = bubble != null;
 		final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf( textToSay, voice.getVoiceString() );
-		final edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation bubbleAnimation = ( showSpeechBubble ) ? new edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation( this, .3, .3, bubble ) : null;
+		final org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation bubbleAnimation = ( showSpeechBubble ) ? new org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation( this, .3, .3, bubble ) : null;
 
 		Runnable textToSpeech = new Runnable() {
 			public void run() {
