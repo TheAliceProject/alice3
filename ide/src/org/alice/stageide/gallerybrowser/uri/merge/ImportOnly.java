@@ -61,10 +61,6 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 		};
 	}
 
-	public javax.swing.Icon getIcon() {
-		return this.importHub.getIcon();
-	}
-
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
 		return this.importHub.getIsDesiredState();
 	}
@@ -76,5 +72,4 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	public M getImportMember() {
 		return this.importHub.getMember();
 	}
-
 }

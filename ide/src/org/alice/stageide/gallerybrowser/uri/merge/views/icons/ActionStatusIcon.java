@@ -47,7 +47,7 @@ import org.alice.stageide.gallerybrowser.uri.merge.ActionStatus;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
+public class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 	private static final int PAD = 1;
 	private static final java.awt.Dimension SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
 	private static final java.awt.Paint ADD_REPLACE_FILL_PAINT = new java.awt.Color( 0, 127, 0 );
@@ -109,8 +109,11 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 
 	}
 
-	public ActionStatusIcon() {
+	private org.alice.stageide.gallerybrowser.uri.merge.MemberHub<?> memberHub;
+
+	public ActionStatusIcon( org.alice.stageide.gallerybrowser.uri.merge.MemberHub<?> memberHub ) {
 		super( SIZE );
+		this.memberHub = memberHub;
 	}
 
 	private void paintAdd( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel ) {
@@ -156,11 +159,9 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		g2.setFont( prevFont );
 	}
 
-	protected abstract ActionStatus getActionStatus();
-
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		ActionStatus actionStatus = this.getActionStatus();
+		ActionStatus actionStatus = this.memberHub.getActionStatus();
 		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.IGNORE ) && ( actionStatus != ActionStatus.DELETE ) ) {
 
 			javax.swing.ButtonModel buttonModel;

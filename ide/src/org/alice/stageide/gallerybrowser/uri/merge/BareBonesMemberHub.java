@@ -45,21 +45,18 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberHub<M extends org.lgna.project.ast.Member> extends BareBonesMemberHub<M> {
-	private final MemberPopupCoreComposite popup = new MemberPopupCoreComposite( this );
-	private final javax.swing.Icon icon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon( this );
+public class BareBonesMemberHub<M extends org.lgna.project.ast.Member> {
+	private final IsMemberDesiredState<M> isDesiredState;
 
-	public MemberHub( M member, boolean initialValue, String prependText, String appendText ) {
-		super( member, initialValue, prependText, appendText );
+	public BareBonesMemberHub( M member, boolean initialValue, String prependText, String appendText ) {
+		this.isDesiredState = new IsMemberDesiredState<M>( member, initialValue, prependText, appendText );
 	}
 
-	public javax.swing.Icon getIcon() {
-		return this.icon;
+	public M getMember() {
+		return this.isDesiredState.getMember();
 	}
 
-	public MemberPopupCoreComposite getPopup() {
-		return this.popup;
+	public IsMemberDesiredState<M> getIsDesiredState() {
+		return this.isDesiredState;
 	}
-
-	public abstract ActionStatus getActionStatus();
 }

@@ -58,10 +58,6 @@ public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
-	public javax.swing.Icon getIcon() {
-		return this.projectHub.getIcon();
-	}
-
 	public IsMemberDesiredState<M> getIsKeepDesiredState() {
 		return this.projectHub.getIsDesiredState();
 	}

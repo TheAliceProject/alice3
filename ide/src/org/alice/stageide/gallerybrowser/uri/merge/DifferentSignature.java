@@ -109,14 +109,6 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		return this.projectNameState.getMember();
 	}
 
-	public javax.swing.Icon getImportIcon() {
-		return this.importHub.getIcon();
-	}
-
-	public javax.swing.Icon getProjectIcon() {
-		return this.projectHub.getIcon();
-	}
-
 	public MemberPopupCoreComposite getImportPopup() {
 		return this.importHub.getPopup();
 	}
