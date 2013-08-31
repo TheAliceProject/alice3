@@ -58,9 +58,23 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private final AddFunctionsComposite addFunctionsComposite;
 	private final AddFieldsComposite addFieldsComposite;
 
-	private final AcceptRejectAllDifferentImplementationsComposite differentImplementationComposite;
-
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( this.createKey( "actionItemsRemainingError" ) );
+
+	private final org.lgna.croquet.Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( this.createKey( "acceptAllDifferentImplementationsOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			acceptAllDifferentImplementations();
+			return null;
+		}
+	} );
+	private final org.lgna.croquet.Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( this.createKey( "rejectAllDifferentImplementationsOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			rejectAllDifferentImplementations();
+			return null;
+		}
+	} );
+
+	private final org.lgna.croquet.PlainStringValue differentImplementationsHeader = this.createStringValue( this.createKey( "differentImplementationsHeader" ) );
+	private final org.lgna.croquet.PlainStringValue differentImplementationsSubHeader = this.createStringValue( this.createKey( "differentImplementationsSubHeader" ) );
 
 	private boolean isManagementLevelAppropriate( org.lgna.project.ast.UserMethod method ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
@@ -74,8 +88,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		this.importedResources = importedResources;
 		this.srcType = srcType;
 		this.dstType = dstType;
-
-		boolean isDifferentImplementationCompositeDesired = false;
 
 		if( this.dstType != null ) {
 			java.util.List<org.lgna.project.ast.UserMethod> projectProcedures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -106,7 +118,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 							addMethodsComposite.addIdenticalMembers( projectMethod, importMethod );
 						} else {
 							if( MergeUtilities.isHeaderEquivalent( importMethod, projectMethod ) ) {
-								isDifferentImplementationCompositeDesired = true;
 								addMethodsComposite.addDifferentImplementationMembers( projectMethod, importMethod );
 							} else {
 								addMethodsComposite.addDifferentSignatureMembers( projectMethod, importMethod );
@@ -128,7 +139,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 						this.addFieldsComposite.addIdenticalMembers( projectField, importField );
 					} else {
 						if( MergeUtilities.isValueTypeEquivalent( projectField, importField ) ) {
-							isDifferentImplementationCompositeDesired = true;
 							this.addFieldsComposite.addDifferentImplementationMembers( projectField, importField );
 						} else {
 							this.addFieldsComposite.addDifferentSignatureMembers( projectField, importField );
@@ -146,12 +156,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			this.addFunctionsComposite = null;
 			this.addFieldsComposite = null;
 		}
-
-		if( isDifferentImplementationCompositeDesired ) {
-			this.differentImplementationComposite = this.registerSubComposite( new AcceptRejectAllDifferentImplementationsComposite( this ) );
-		} else {
-			this.differentImplementationComposite = null;
-		}
 	}
 
 	public AddProceduresComposite getAddProceduresComposite() {
@@ -164,10 +168,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	public AddFieldsComposite getAddFieldsComposite() {
 		return this.addFieldsComposite;
-	}
-
-	public AcceptRejectAllDifferentImplementationsComposite getDifferentImplementationComposite() {
-		return this.differentImplementationComposite;
 	}
 
 	@Override
@@ -276,6 +276,48 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		} else {
 			return IS_GOOD_TO_GO_STATUS;
 		}
+	}
+
+	public org.lgna.croquet.PlainStringValue getDifferentImplementationsHeader() {
+		return this.differentImplementationsHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getDifferentImplementationsSubHeader() {
+		return this.differentImplementationsSubHeader;
+	}
+
+	public org.lgna.croquet.Operation getAcceptAllDifferentImplementationsOperation() {
+		return this.acceptAllDifferentImplementationsOperation;
+	}
+
+	public org.lgna.croquet.Operation getRejectAllDifferentImplementationsOperation() {
+		return this.rejectAllDifferentImplementationsOperation;
+	}
+
+	private void applyAllDifferentImplementations( boolean isAccept ) {
+		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
+			for( DifferentImplementation<?> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
+				differentImplementation.getIsAddDesiredState().setValueTransactionlessly( isAccept );
+				differentImplementation.getIsKeepDesiredState().setValueTransactionlessly( isAccept == false );
+			}
+		}
+	}
+
+	private void acceptAllDifferentImplementations() {
+		this.applyAllDifferentImplementations( true );
+	}
+
+	private void rejectAllDifferentImplementations() {
+		this.applyAllDifferentImplementations( false );
+	}
+
+	public boolean isContainingDifferentImplementations() {
+		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
+			if( addMembersComposite.getDifferentImplementations().size() > 0 ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void main( String[] args ) throws Exception {

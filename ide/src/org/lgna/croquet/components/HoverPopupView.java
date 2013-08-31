@@ -45,7 +45,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class HoverPopupView extends JComponent<javax.swing.JLabel> {
+public class HoverPopupView extends JComponent<javax.swing.AbstractButton> {
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -120,12 +120,25 @@ public class HoverPopupView extends JComponent<javax.swing.JLabel> {
 		this.removeMouseListener( this.mouseListener );
 	}
 
+	private class JHoverPopupView extends javax.swing.JButton {
+		public JHoverPopupView() {
+			this.setRolloverEnabled( true );
+			this.setOpaque( false );
+		}
+
+		@Override
+		public void updateUI() {
+			this.setUI( javax.swing.plaf.basic.BasicButtonUI.createUI( this ) );
+		}
+
+		@Override
+		public javax.swing.Icon getRolloverIcon() {
+			return super.getRolloverIcon();
+		}
+	}
+
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel();
-		//rv.setText( "[view]" );
-		//rv.setForeground( java.awt.Color.BLUE );
-		//edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( rv, 2.0f );
-		return rv;
+	protected javax.swing.AbstractButton createAwtComponent() {
+		return new JHoverPopupView();
 	}
 }

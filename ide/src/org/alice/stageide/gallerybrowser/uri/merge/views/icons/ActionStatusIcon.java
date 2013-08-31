@@ -120,17 +120,19 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		super( SIZE );
 	}
 
-	private void paintAdd( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	private void paintAdd( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel ) {
 		g2.setPaint( ADD_REPLACE_FILL_PAINT );
 		g2.fill( ADD_SHAPE );
-		g2.setPaint( ADD_REPLACE_DRAW_PAINT );
+		boolean isRollover = buttonModel != null ? buttonModel.isRollover() : false;
+		g2.setPaint( isRollover ? java.awt.Color.WHITE : ADD_REPLACE_DRAW_PAINT );
 		g2.draw( ADD_SHAPE );
 	}
 
-	private void paintCheck( java.awt.Component c, java.awt.Graphics2D g2, java.awt.Paint fillPaint ) {
+	private void paintCheck( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel, java.awt.Paint fillPaint ) {
+		boolean isRollover = buttonModel != null ? buttonModel.isRollover() : false;
 		java.awt.Stroke prevStroke = g2.getStroke();
 		g2.setStroke( CHECK_OUTER_STROKE );
-		g2.setPaint( java.awt.Color.BLACK );
+		g2.setPaint( isRollover ? java.awt.Color.WHITE : java.awt.Color.BLACK );
 		g2.draw( CHECK_SHAPE );
 		g2.setStroke( CHECK_INNER_STROKE );
 		g2.setPaint( fillPaint );
@@ -138,23 +140,26 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 		g2.setStroke( prevStroke );
 	}
 
-	private void paintReplace( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		paintCheck( c, g2, ADD_REPLACE_FILL_PAINT );
+	private void paintReplace( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel ) {
+		paintCheck( c, g2, buttonModel, ADD_REPLACE_FILL_PAINT );
 	}
 
-	private void paintKeep( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	private void paintKeep( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel ) {
 		g2.setPaint( java.awt.Color.LIGHT_GRAY );
-		paintCheck( c, g2, java.awt.Color.LIGHT_GRAY );
+		paintCheck( c, g2, buttonModel, java.awt.Color.LIGHT_GRAY );
 	}
 
-	private void paintError( java.awt.Component c, java.awt.Graphics2D g2, int width, int height ) {
+	private void paintError( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel, int width, int height ) {
+		boolean isRollover = buttonModel != null ? buttonModel.isRollover() : false;
 		g2.setPaint( ERROR_PAINT );
 		g2.fill( ERROR_SHAPE );
+		g2.setPaint( isRollover ? java.awt.Color.WHITE : java.awt.Color.GRAY );
+		g2.draw( ERROR_SHAPE );
+
 		java.awt.Font prevFont = g2.getFont();
 		g2.setPaint( java.awt.Color.WHITE );
 		g2.setFont( ERROR_FONT );
-		final int EPIC_HACK_nudgeLeft = -1;
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "!", EPIC_HACK_nudgeLeft, 0, width, height );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "!", 0, 0, width, height );
 		g2.setFont( prevFont );
 	}
 
@@ -164,6 +169,15 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		ActionStatus actionStatus = this.getActionStatus();
 		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.IGNORE ) && ( actionStatus != ActionStatus.DELETE ) ) {
+
+			javax.swing.ButtonModel buttonModel;
+			if( c instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+				buttonModel = button.getModel();
+			} else {
+				buttonModel = null;
+			}
+
 			int xOffset = PAD;
 			int yOffset = PAD;
 			int width = this.getIconWidth() - PAD - PAD;
@@ -175,13 +189,13 @@ public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIco
 			//			g2.setPaint( java.awt.Color.RED );
 			//			g2.fillRect( 0, 0, width, height );
 			if( actionStatus == ActionStatus.ADD ) {
-				paintAdd( c, g2 );
+				paintAdd( c, g2, buttonModel );
 			} else if( actionStatus == ActionStatus.REPLACE ) {
-				paintReplace( c, g2 );
+				paintReplace( c, g2, buttonModel );
 			} else if( actionStatus == ActionStatus.KEEP ) {
-				paintKeep( c, g2 );
+				paintKeep( c, g2, buttonModel );
 			} else {
-				paintError( c, g2, width, height );
+				paintError( c, g2, buttonModel, width, height );
 			}
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 			g2.translate( -xOffset, -yOffset );
