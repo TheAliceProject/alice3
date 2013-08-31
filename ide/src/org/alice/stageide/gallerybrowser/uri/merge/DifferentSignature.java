@@ -53,7 +53,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
 
-	public DifferentSignature( M projectMember, M importMember ) {
+	public DifferentSignature( M importMember, M projectMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
 		this.importHub = new MemberHub<M>( importMember, true, "add ", postfix ) {
 			@Override

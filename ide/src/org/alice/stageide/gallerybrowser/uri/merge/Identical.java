@@ -49,7 +49,7 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 	private final MemberHub<M> importHub;
 	private final MemberHub<M> projectHub;
 
-	public Identical( M projectMember, M importMember ) {
+	public Identical( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(identical)</em>";
 		this.importHub = new MemberHub<M>( importMember, false, "ignore ", POSTFIX ) {
 			@Override

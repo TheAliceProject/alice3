@@ -114,13 +114,13 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 					AddMethodsComposite<?> addMethodsComposite = importMethod.isProcedure() ? this.addProceduresComposite : this.addFunctionsComposite;
 					org.lgna.project.ast.UserMethod projectMethod = MergeUtilities.findMethodWithMatchingName( importMethod, dstType );
 					if( projectMethod != null ) {
-						if( MergeUtilities.isEquivalent( projectMethod, importMethod ) ) {
-							addMethodsComposite.addIdenticalMembers( projectMethod, importMethod );
+						if( MergeUtilities.isEquivalent( importMethod, projectMethod ) ) {
+							addMethodsComposite.addIdenticalMembers( importMethod, projectMethod );
 						} else {
 							if( MergeUtilities.isHeaderEquivalent( importMethod, projectMethod ) ) {
-								addMethodsComposite.addDifferentImplementationMembers( projectMethod, importMethod );
+								addMethodsComposite.addDifferentImplementationMembers( importMethod, projectMethod );
 							} else {
-								addMethodsComposite.addDifferentSignatureMembers( projectMethod, importMethod );
+								addMethodsComposite.addDifferentSignatureMembers( importMethod, projectMethod );
 							}
 						}
 					} else {
@@ -135,13 +135,13 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 			for( org.lgna.project.ast.UserField importField : this.srcType.fields ) {
 				org.lgna.project.ast.UserField projectField = dstType.getDeclaredField( importField.getName() );
 				if( projectField != null ) {
-					if( MergeUtilities.isEquivalent( projectField, importField ) ) {
-						this.addFieldsComposite.addIdenticalMembers( projectField, importField );
+					if( MergeUtilities.isEquivalent( importField, projectField ) ) {
+						this.addFieldsComposite.addIdenticalMembers( importField, projectField );
 					} else {
-						if( MergeUtilities.isValueTypeEquivalent( projectField, importField ) ) {
-							this.addFieldsComposite.addDifferentImplementationMembers( projectField, importField );
+						if( MergeUtilities.isValueTypeEquivalent( importField, projectField ) ) {
+							this.addFieldsComposite.addDifferentImplementationMembers( importField, projectField );
 						} else {
-							this.addFieldsComposite.addDifferentSignatureMembers( projectField, importField );
+							this.addFieldsComposite.addDifferentSignatureMembers( importField, projectField );
 						}
 					}
 				} else {

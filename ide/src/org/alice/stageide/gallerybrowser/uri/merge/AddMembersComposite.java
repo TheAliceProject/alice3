@@ -95,18 +95,18 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		this.importOnlys.add( new ImportOnly<M>( method ) );
 	}
 
-	public void addDifferentSignatureMembers( M projectMember, M importMember ) {
-		this.differentSignatures.add( new DifferentSignature<M>( projectMember, importMember ) );
+	public void addDifferentSignatureMembers( M importMember, M projectMember ) {
+		this.differentSignatures.add( new DifferentSignature<M>( importMember, projectMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void addDifferentImplementationMembers( M projectMember, M importMember ) {
-		this.differentImplementations.add( new DifferentImplementation<M>( projectMember, importMember ) );
+	public void addDifferentImplementationMembers( M importMember, M projectMember ) {
+		this.differentImplementations.add( new DifferentImplementation<M>( importMember, projectMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
-	public void addIdenticalMembers( M projectMember, M importMember ) {
-		this.identicals.add( new Identical<M>( projectMember, importMember ) );
+	public void addIdenticalMembers( M importMember, M projectMember ) {
+		this.identicals.add( new Identical<M>( importMember, projectMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 

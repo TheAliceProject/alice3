@@ -55,7 +55,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
 	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
-	public DifferentImplementation( M projectMember, M importMember ) {
+	public DifferentImplementation( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(different implementation)</em>";
 		this.importHub = new MemberHub<M>( importMember, false, "replace/add  ", POSTFIX ) {
 			@Override
