@@ -45,6 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class BracketView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
 	private class JBracketView extends javax.swing.JComponent {
 		@Override

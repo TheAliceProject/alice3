@@ -346,7 +346,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 						rowIndex++;
 					}
 
-					java.awt.Color separatorColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 0.9, 0.7 );
+					java.awt.Color separatorColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 0.8, 0.6 );
 					g.setColor( separatorColor );
 					g.fillRect( xSeparator, 0, 3, this.getHeight() );
 				}
