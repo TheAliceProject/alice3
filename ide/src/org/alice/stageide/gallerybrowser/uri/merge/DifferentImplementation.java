@@ -46,18 +46,15 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
-	private final MemberHub<M> importHub;
-	private final MemberHub<M> projectHub;
-
-	private final MemberNameState<M> importNameState;
-	private final MemberNameState<M> projectNameState;
+	private final MemberHubWithNameState<M> importHub;
+	private final MemberHubWithNameState<M> projectHub;
 
 	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
 	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
 	public DifferentImplementation( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(different implementation)</em>";
-		this.importHub = new MemberHub<M>( importMember, false, "replace/add  ", POSTFIX ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
@@ -76,7 +73,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		};
 
-		this.projectHub = new MemberHub<M>( projectMember, false, "keep ", POSTFIX ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, false, "keep ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
@@ -90,9 +87,6 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				}
 			}
 		};
-
-		this.projectNameState = new MemberNameState<M>( projectMember );
-		this.importNameState = new MemberNameState<M>( importMember );
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
@@ -115,14 +109,6 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectHub.getIsDesiredState();
 	}
 
-	public MemberNameState<M> getImportNameState() {
-		return this.importNameState;
-	}
-
-	public MemberNameState<M> getProjectNameState() {
-		return this.projectNameState;
-	}
-
 	public DifferentImplementationCardOwnerComposite getImportCardOwnerComposite() {
 		return this.importCardOwnerComposite;
 	}
@@ -131,12 +117,20 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectCardOwnerComposite;
 	}
 
+	public MemberNameState<M> getImportNameState() {
+		return this.importHub.getNameState();
+	}
+
+	public MemberNameState<M> getProjectNameState() {
+		return this.projectHub.getNameState();
+	}
+
 	public M getImportMember() {
-		return this.importNameState.getMember();
+		return this.importHub.getMember();
 	}
 
 	public M getProjectMember() {
-		return this.projectNameState.getMember();
+		return this.projectHub.getMember();
 	}
 
 	public MemberPopupCoreComposite getImportPopup() {
@@ -154,7 +148,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		if( isAddDesired ) {
 			if( isKeepDesired ) {
 				//todo
-				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+				if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
 					return true;
 				}
 			} else {
@@ -176,7 +170,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		if( isAddDesired ) {
 			if( isKeepDesired ) {
 				//todo
-				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+				if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
 					sb.append( "must not have same name: \"" );
 					sb.append( this.getImportMember().getName() );
 					sb.append( "\"." );

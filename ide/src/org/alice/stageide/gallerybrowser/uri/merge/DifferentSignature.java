@@ -48,14 +48,12 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
 	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
-	private final MemberHub<M> importHub;
-	private final MemberHub<M> projectHub;
-	private final MemberNameState<M> importNameState;
-	private final MemberNameState<M> projectNameState;
+	private final MemberHubWithNameState<M> importHub;
+	private final MemberHubWithNameState<M> projectHub;
 
 	public DifferentSignature( M importMember, M projectMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
-		this.importHub = new MemberHub<M>( importMember, true, "add ", postfix ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, true, "add ", postfix ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
@@ -70,7 +68,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			}
 		};
 
-		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", postfix ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, true, "keep ", postfix ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
@@ -81,8 +79,6 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			}
 		};
 		this.projectHub.getIsDesiredState().setEnabled( false );
-		this.projectNameState = new MemberNameState<M>( projectMember );
-		this.importNameState = new MemberNameState<M>( importMember );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
@@ -93,20 +89,20 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		return this.projectHub.getIsDesiredState();
 	}
 
-	public MemberNameState<M> getProjectNameState() {
-		return this.projectNameState;
+	public MemberNameState<M> getImportNameState() {
+		return this.importHub.getNameState();
 	}
 
-	public MemberNameState<M> getImportNameState() {
-		return this.importNameState;
+	public MemberNameState<M> getProjectNameState() {
+		return this.projectHub.getNameState();
 	}
 
 	public M getImportMember() {
-		return this.importNameState.getMember();
+		return this.importHub.getMember();
 	}
 
 	public M getProjectMember() {
-		return this.projectNameState.getMember();
+		return this.projectHub.getMember();
 	}
 
 	public MemberPopupCoreComposite getImportPopup() {
@@ -121,7 +117,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	public boolean isActionRequired() {
 		if( this.getIsAddDesiredState().getValue() ) {
 			//todo
-			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
+			if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
 				return true;
 			}
 		}
