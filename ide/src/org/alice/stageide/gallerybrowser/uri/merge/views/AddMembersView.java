@@ -46,18 +46,18 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
-	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
-	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
-	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
-	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 0;
+	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
+	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
+	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
+	//	private static final int DIFFERENT_IMPLEMENTATION_POST_GAP = 0;
 
 	private static final int GAP_Y = 8;
-	private static final int SPACE = 24;
+	private static final int SPACE = 32;
+	private static final int BRACKET_WIDTH = 8;
+
 	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0,center]" : "[grow,shrink,33%]";
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
 	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow,shrink]" : "[grow,shrink,34%]";
-
-	private static final int BRACKET_WIDTH = 16;
 
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
@@ -71,6 +71,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 	private int row = 0;
 	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	private static String getTitleText( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite ) {
 		return composite.getOuterComposite().getIsExpandedState().getTrueText();
@@ -125,7 +126,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	};
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + 0 + "[" + BRACKET_WIDTH + "px,grow 0,shrink 0]" );
+		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT );
+
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
@@ -150,17 +152,19 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
-			//this.addComponent( new org.lgna.croquet.components.Label(), "height 32px, wrap" );
-			this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_PRE_GAP );
+			this.markStartIndexOfRowPair();
 
-			BracketView rightBracket = new BracketView( false );
-			rightBracket.setToolTipText( createDifferentSignatureToolText( titleText, differentSignature.getImportMember() ) );
+			//this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_PRE_GAP );
+
+			//BracketView rightBracket = new BracketView( false );
+			//rightBracket.setToolTipText( createDifferentSignatureToolText( titleText, differentSignature.getImportMember() ) );
+
 			this.addComponent( differentSignature.getIsAddDesiredState().createCheckBox() );
 
 			this.addComponent( MemberViewUtilities.createPopupView( composite, differentSignature.getImportMember(), differentSignature.getImportIcon() ), "skip 1, split 2" );
 			org.lgna.croquet.components.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportNameState(), differentSignature.getForegroundCustomizer() );
-			this.addComponent( textField );
-			this.addComponent( rightBracket, "grow, spany 2, wrap" );
+			this.addComponent( textField, "wrap" );
+			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
@@ -171,25 +175,29 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( textField ) );
 
-			this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_POST_GAP );
+			//this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_POST_GAP );
 		}
 
 		for( final org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
-			this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_PRE_GAP );
-			BracketView rightBracket = new BracketView( false );
-			rightBracket.setToolTipText( createDifferentImplementationToolText( titleText, differentImplementation.getImportMember() ) );
+			this.markStartIndexOfRowPair();
+
+			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_PRE_GAP );
+
+			//BracketView rightBracket = new BracketView( false );
+			//rightBracket.setToolTipText( createDifferentImplementationToolText( titleText, differentImplementation.getImportMember() ) );
 
 			org.lgna.croquet.components.CheckBox addCheckBox = differentImplementation.getIsAddDesiredState().createCheckBox();
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
 			this.addComponent( MemberViewUtilities.createPopupView( composite, differentImplementation.getImportMember(), differentImplementation.getImportIcon() ), "skip 1, split 2" );
-			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "grow, shrink" );
-			this.addComponent( rightBracket, "grow, spany 2, wrap" );
+			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
+			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( composite, differentImplementation.getProjectMember(), differentImplementation.getProjectIcon() ), "split 2" );
 			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
-			this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
+
+			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
 		}
 
 		for( org.alice.stageide.gallerybrowser.uri.merge.Identical<M> identical : composite.getIdenticals() ) {
@@ -210,14 +218,16 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( MemberViewUtilities.createPopupView( composite, projectOnly.getProjectMember(), KEEP_ICON ), "split 2" );
 			this.addComponent( MemberViewUtilities.createKeepUniqueMemberLabel( projectOnly.getProjectMember() ), "wrap" );
 		}
-
-		//this.setMinimumPreferredHeight( 160 );
 	}
 
-	private void addSpacerNotTrackedAsRow( int height ) {
-		if( height > 0 ) {
-			this.getAwtComponent().add( new javax.swing.JLabel(), "wrap, height " + height + "px" );
-		}
+	//	private void addSpacerNotTrackedAsRow( int height ) {
+	//		if( height > 0 ) {
+	//			this.getAwtComponent().add( new javax.swing.JLabel(), "wrap, height " + height + "px" );
+	//		}
+	//	}
+
+	private void markStartIndexOfRowPair() {
+		this.startIndicesOfRowPairs.add( this.row );
 	}
 
 	private void addToRow( org.lgna.croquet.components.Component<?> component ) {
@@ -269,6 +279,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.Color brighterColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 1.0, 1.1 );
 				final int SKIP_ROW_COUNT = 2;
 				int rowIndex = 0;
@@ -295,22 +306,49 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 					x = minX;
 					width = maxX - minX;
 				}
-				rowIndex = 0;
-				for( java.util.List<java.awt.Component> row : rows ) {
-					if( rowIndex >= SKIP_ROW_COUNT ) {
-						if( ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 0 ) {
-							java.awt.Rectangle bounds = getRowBounds( row );
-							g.setColor( brighterColor );
-							g.fillRect( x, bounds.y - ( GAP_Y / 2 ), width, bounds.height + GAP_Y );
-						}
-					}
-					rowIndex++;
-				}
-
 				if( this.getComponentCount() > 2 ) {
-					int xSeparator = getComponent( 2 ).getX();
-					g.setColor( java.awt.Color.DARK_GRAY );
-					g.fillRect( xSeparator - ( SPACE / 2 ) - 2, 0, 4, this.getHeight() );
+					int xSeparator = getComponent( 2 ).getX() - ( SPACE / 2 ) - 2;
+					rowIndex = 0;
+					java.awt.Rectangle prevBounds = null;
+					for( java.util.List<java.awt.Component> row : rows ) {
+						if( rowIndex >= SKIP_ROW_COUNT ) {
+							boolean isEvenRow = ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 0;
+							boolean isStartIndexOfRowPair = startIndicesOfRowPairs.contains( rowIndex );
+							java.awt.Rectangle bounds;
+							if( isEvenRow || isStartIndexOfRowPair || ( prevBounds != null ) ) {
+								bounds = getRowBounds( row );
+							} else {
+								bounds = null;
+							}
+
+							if( isEvenRow ) {
+								g.setColor( brighterColor );
+								g.fillRect( x, bounds.y - ( GAP_Y / 2 ), width, bounds.height + GAP_Y );
+							}
+
+							if( prevBounds != null ) {
+								g.setColor( java.awt.Color.BLACK );
+								double y0 = prevBounds.getCenterY();
+								double y1 = bounds.getCenterY();
+
+								int x0 = xSeparator + 12;
+								int x1 = x0 + BRACKET_WIDTH;
+
+								java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+								path.moveTo( x1, y0 );
+								path.lineTo( x0, y0 );
+								path.lineTo( x0, y1 );
+								path.lineTo( x1, y1 );
+								g2.draw( path );
+							}
+							prevBounds = isStartIndexOfRowPair ? bounds : null;
+						}
+						rowIndex++;
+					}
+
+					java.awt.Color separatorColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 0.9, 0.7 );
+					g.setColor( separatorColor );
+					g.fillRect( xSeparator, 0, 3, this.getHeight() );
 				}
 
 			}
