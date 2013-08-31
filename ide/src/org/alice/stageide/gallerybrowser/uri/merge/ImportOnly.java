@@ -46,39 +46,35 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class ImportOnly<M extends org.lgna.project.ast.Member> {
-	private final IsMemberDesiredState<M> isAddDesiredState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon icon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			if( isAddDesiredState.getValue() ) {
-				return ActionStatus.ADD;
-			} else {
-				return ActionStatus.IGNORE;
-			}
-		}
-	};
-
-	private final MemberPopupCoreComposite popup;
+	private final MemberHub<M> importHub;
 
 	public ImportOnly( M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", "" );
-		this.popup = new MemberPopupCoreComposite( importMember, icon );
+		this.importHub = new MemberHub<M>( importMember, true, "add ", "" ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				if( getIsDesiredState().getValue() ) {
+					return ActionStatus.ADD;
+				} else {
+					return ActionStatus.IGNORE;
+				}
+			}
+		};
 	}
 
 	public javax.swing.Icon getIcon() {
-		return this.icon;
+		return this.importHub.getIcon();
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
+		return this.importHub.getIsDesiredState();
 	}
 
 	public MemberPopupCoreComposite getPopup() {
-		return this.popup;
+		return this.importHub.getPopup();
 	}
 
 	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
+		return this.importHub.getMember();
 	}
 
 }

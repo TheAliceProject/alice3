@@ -52,7 +52,7 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.MigPanel {
 		java.awt.Color color;
 		org.lgna.project.ast.Declaration member = composite.getMember();
 
-		this.addComponent( new org.lgna.croquet.components.Label( composite.getActionStatusIcon() ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( composite.getIcon() ), "wrap" );
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
 			this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );

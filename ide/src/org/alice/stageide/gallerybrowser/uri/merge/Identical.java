@@ -46,36 +46,45 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class Identical<M extends org.lgna.project.ast.Member> {
-	private static final String POST_FIX = "<br><em>(identical)</em>";
-	private final IsMemberDesiredState<M> isAddDesiredState;
-	private final IsMemberDesiredState<M> isKeepDesiredState;
-	private final MemberPopupCoreComposite popup;
+	private final MemberHub<M> importHub;
+	private final MemberHub<M> projectHub;
 
 	public Identical( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", POST_FIX );
-		this.isAddDesiredState.setEnabled( false );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", POST_FIX );
-		this.isKeepDesiredState.setEnabled( false );
-		this.popup = new MemberPopupCoreComposite( projectMember, org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.KEEP_ICON );
+		final String POSTFIX = "<br><em>(identical)</em>";
+		this.importHub = new MemberHub<M>( importMember, false, "ignore ", POSTFIX ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				return null;
+			}
+		};
+
+		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", POSTFIX ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				return ActionStatus.KEEP;
+			}
+		};
+		this.importHub.getIsDesiredState().setEnabled( false );
+		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
+		return this.importHub.getIsDesiredState();
 	}
 
 	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+		return this.projectHub.getIsDesiredState();
 	}
 
 	public M getImportMember() {
-		return this.isAddDesiredState.getMember();
+		return this.importHub.getMember();
 	}
 
 	public M getProjectMember() {
-		return this.isKeepDesiredState.getMember();
+		return this.projectHub.getMember();
 	}
 
 	public MemberPopupCoreComposite getPopup() {
-		return this.popup;
+		return this.projectHub.getPopup();
 	}
 }

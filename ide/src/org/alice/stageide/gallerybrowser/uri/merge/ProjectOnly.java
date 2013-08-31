@@ -46,24 +46,31 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
-	private final MemberPopupCoreComposite popup;
+	private final MemberHub<M> projectHub;
 
 	public ProjectOnly( M projectMember ) {
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", "" );
-		this.isKeepDesiredState.setEnabled( false );
-		this.popup = new MemberPopupCoreComposite( projectMember, org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.KEEP_ICON );
+		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", "" ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				return ActionStatus.KEEP;
+			}
+		};
+		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+	public javax.swing.Icon getIcon() {
+		return this.projectHub.getIcon();
 	}
 
-	public M getProjectMember() {
-		return this.isKeepDesiredState.getMember();
+	public IsMemberDesiredState<M> getIsKeepDesiredState() {
+		return this.projectHub.getIsDesiredState();
 	}
 
 	public MemberPopupCoreComposite getPopup() {
-		return this.popup;
+		return this.projectHub.getPopup();
+	}
+
+	public M getProjectMember() {
+		return this.projectHub.getMember();
 	}
 }

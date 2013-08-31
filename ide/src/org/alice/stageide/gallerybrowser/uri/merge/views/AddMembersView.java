@@ -55,9 +55,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	private static final int SPACE = 32;
 	private static final int BRACKET_WIDTH = 8;
 
-	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow 0,center]" : "[grow,shrink,33%]";
+	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_VERBOSE ? "[grow,shrink,33%]" : "[grow 0,center]";
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
-	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_TERSE ? "[grow,shrink]" : "[grow,shrink,34%]";
+	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_VERBOSE ? "[grow,shrink,34%]" : "[grow,shrink]";
 
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };

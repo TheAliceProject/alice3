@@ -48,54 +48,49 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
 	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
-	private final IsMemberDesiredState<M> isAddDesiredState;
-	private final IsMemberDesiredState<M> isKeepDesiredState;
+	private final MemberHub<M> importHub;
+	private final MemberHub<M> projectHub;
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			if( isActionRequired() ) {
-				return ActionStatus.ERROR;
-			} else {
-				if( isAddDesiredState.getValue() ) {
-					return ActionStatus.ADD;
-				} else {
-					return ActionStatus.IGNORE;
-				}
-			}
-		}
-	};
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			if( isActionRequired() ) {
-				return ActionStatus.ERROR;
-			} else {
-				return ActionStatus.KEEP;
-			}
-		}
-	};
-	private final MemberPopupCoreComposite importPopup;
-	private final MemberPopupCoreComposite projectPopup;
 
 	public DifferentSignature( M projectMember, M importMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, true, "add ", postfix );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", postfix );
-		this.isKeepDesiredState.setEnabled( false );
+		this.importHub = new MemberHub<M>( importMember, true, "add ", postfix ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				if( isActionRequired() ) {
+					return ActionStatus.ERROR;
+				} else {
+					if( getIsDesiredState().getValue() ) {
+						return ActionStatus.ADD;
+					} else {
+						return ActionStatus.IGNORE;
+					}
+				}
+			}
+		};
+
+		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", postfix ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				if( isActionRequired() ) {
+					return ActionStatus.ERROR;
+				} else {
+					return ActionStatus.KEEP;
+				}
+			}
+		};
+		this.projectHub.getIsDesiredState().setEnabled( false );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
-		this.importPopup = new MemberPopupCoreComposite( importMember, importIcon );
-		this.projectPopup = new MemberPopupCoreComposite( projectMember, projectIcon );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
+		return this.importHub.getIsDesiredState();
 	}
 
 	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+		return this.projectHub.getIsDesiredState();
 	}
 
 	public MemberNameState<M> getProjectNameState() {
@@ -115,24 +110,24 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	}
 
 	public javax.swing.Icon getImportIcon() {
-		return this.importIcon;
+		return this.importHub.getIcon();
 	}
 
 	public javax.swing.Icon getProjectIcon() {
-		return this.projectIcon;
+		return this.projectHub.getIcon();
 	}
 
 	public MemberPopupCoreComposite getImportPopup() {
-		return this.importPopup;
+		return this.importHub.getPopup();
 	}
 
 	public MemberPopupCoreComposite getProjectPopup() {
-		return this.projectPopup;
+		return this.projectHub.getPopup();
 	}
 
 	@Override
 	public boolean isActionRequired() {
-		if( this.isAddDesiredState.getValue() ) {
+		if( this.getIsAddDesiredState().getValue() ) {
 			//todo
 			if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
 				return true;

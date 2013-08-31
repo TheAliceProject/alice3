@@ -45,41 +45,37 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
-	public static boolean IS_VERBOSE = false;
-	private final M member;
-	private String prependText;
-	private String appendText;
+public abstract class MemberHub<M extends org.lgna.project.ast.Member> {
+	private final IsMemberDesiredState<M> isDesiredState;
+	private final MemberPopupCoreComposite popup;
 
-	public IsMemberDesiredState( M member, boolean initialValue, String prependText, String appendText ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
-		this.member = member;
-		this.prependText = prependText;
-		this.appendText = appendText;
-	}
+	private final javax.swing.Icon icon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			return MemberHub.this.getActionStatus();
+		}
+	};
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	public void setPrependText( String prependText ) {
-		this.prependText = prependText;
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	public void setAppendText( String appendText ) {
-		this.appendText = appendText;
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	private void setTextForBothTrueAndFalseBasedOnMemberName() {
-		String text = IS_VERBOSE ? "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>" : "";
-		this.setTextForBothTrueAndFalse( text );
+	public MemberHub( M member, boolean initialValue, String prependText, String appendText ) {
+		this.isDesiredState = new IsMemberDesiredState<M>( member, initialValue, prependText, appendText );
+		this.popup = new MemberPopupCoreComposite( this );
 	}
 
 	public M getMember() {
-		return this.member;
+		return this.isDesiredState.getMember();
 	}
+
+	public IsMemberDesiredState<M> getIsDesiredState() {
+		return this.isDesiredState;
+	}
+
+	public javax.swing.Icon getIcon() {
+		return this.icon;
+	}
+
+	public MemberPopupCoreComposite getPopup() {
+		return this.popup;
+	}
+
+	public abstract ActionStatus getActionStatus();
 }

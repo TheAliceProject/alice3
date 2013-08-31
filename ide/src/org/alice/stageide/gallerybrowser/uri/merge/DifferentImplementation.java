@@ -46,60 +46,53 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
-	private static final String POST_FIX = "<br><em>(different implementation)</em>";
+	private final MemberHub<M> importHub;
+	private final MemberHub<M> projectHub;
 
-	private final IsMemberDesiredState<M> isAddDesiredState;
-	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
 	private final MemberNameState<M> projectNameState;
 
 	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
 	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
-	private final MemberPopupCoreComposite importPopup;
-	private final MemberPopupCoreComposite projectPopup;
-
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			if( isActionRequired() ) {
-				return ActionStatus.ERROR;
-			} else {
-				if( isAddDesiredState.getValue() ) {
-					if( isKeepDesiredState.getValue() ) {
-						return ActionStatus.ADD;
-					} else {
-						return ActionStatus.REPLACE;
-					}
-				} else {
-					return ActionStatus.IGNORE;
-				}
-			}
-		}
-	};
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-		@Override
-		protected ActionStatus getActionStatus() {
-			if( isActionRequired() ) {
-				return ActionStatus.ERROR;
-			} else {
-				if( isKeepDesiredState.getValue() ) {
-					return ActionStatus.KEEP;
-				} else {
-					return ActionStatus.IGNORE;
-				}
-			}
-		}
-	};
-
 	public DifferentImplementation( M projectMember, M importMember ) {
-		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "replace/add ", POST_FIX );
-		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", POST_FIX );
+		final String POSTFIX = "<br><em>(different implementation)</em>";
+		this.importHub = new MemberHub<M>( importMember, false, "replace/add  ", POSTFIX ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				if( isActionRequired() ) {
+					return ActionStatus.ERROR;
+				} else {
+					if( getIsAddDesiredState().getValue() ) {
+						if( getIsKeepDesiredState().getValue() ) {
+							return ActionStatus.ADD;
+						} else {
+							return ActionStatus.REPLACE;
+						}
+					} else {
+						return ActionStatus.IGNORE;
+					}
+				}
+			}
+		};
+
+		this.projectHub = new MemberHub<M>( projectMember, false, "keep ", POSTFIX ) {
+			@Override
+			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
+				if( isActionRequired() ) {
+					return ActionStatus.ERROR;
+				} else {
+					if( getIsDesiredState().getValue() ) {
+						return ActionStatus.KEEP;
+					} else {
+						return ActionStatus.IGNORE;
+					}
+				}
+			}
+		};
+
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
-
-		this.importPopup = new MemberPopupCoreComposite( importMember, importIcon );
-		this.projectPopup = new MemberPopupCoreComposite( projectMember, projectIcon );
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
@@ -115,11 +108,11 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.isAddDesiredState;
+		return this.importHub.getIsDesiredState();
 	}
 
 	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.isKeepDesiredState;
+		return this.projectHub.getIsDesiredState();
 	}
 
 	public MemberNameState<M> getImportNameState() {
@@ -147,25 +140,27 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	}
 
 	public javax.swing.Icon getImportIcon() {
-		return this.importIcon;
+		return this.importHub.getIcon();
 	}
 
 	public javax.swing.Icon getProjectIcon() {
-		return this.projectIcon;
+		return this.projectHub.getIcon();
 	}
 
 	public MemberPopupCoreComposite getImportPopup() {
-		return this.importPopup;
+		return this.importHub.getPopup();
 	}
 
 	public MemberPopupCoreComposite getProjectPopup() {
-		return this.projectPopup;
+		return this.projectHub.getPopup();
 	}
 
 	@Override
 	public boolean isActionRequired() {
-		if( this.isAddDesiredState.getValue() ) {
-			if( this.isKeepDesiredState.getValue() ) {
+		boolean isAddDesired = this.getIsAddDesiredState().getValue();
+		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
+		if( isAddDesired ) {
+			if( isKeepDesired ) {
 				//todo
 				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
 					return true;
@@ -174,7 +169,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				//pass
 			}
 		} else {
-			if( this.isKeepDesiredState.getValue() ) {
+			if( isKeepDesired ) {
 				//pass
 			} else {
 				return true;
@@ -184,8 +179,10 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	}
 
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isAddDesiredState.getValue() ) {
-			if( this.isKeepDesiredState.getValue() ) {
+		boolean isAddDesired = this.getIsAddDesiredState().getValue();
+		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
+		if( isAddDesired ) {
+			if( isKeepDesired ) {
 				//todo
 				if( this.projectNameState.getValue().contentEquals( this.importNameState.getValue() ) ) {
 					sb.append( "must not have same name: \"" );
@@ -198,7 +195,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				//pass
 			}
 		} else {
-			if( this.isKeepDesiredState.getValue() ) {
+			if( isKeepDesired ) {
 				//pass
 			} else {
 				sb.append( "must take action on \"" );

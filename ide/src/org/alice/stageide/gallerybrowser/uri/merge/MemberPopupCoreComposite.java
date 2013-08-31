@@ -46,21 +46,19 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MemberPopupCoreView> {
-	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon actionStatusIcon;
-	private final org.lgna.project.ast.Member member;
+	private final MemberHub<?> memberHub;
 
-	public MemberPopupCoreComposite( org.lgna.project.ast.Member member, org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon actionStatusIcon ) {
+	public MemberPopupCoreComposite( MemberHub<?> memberHub ) {
 		super( java.util.UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
-		this.member = member;
-		this.actionStatusIcon = actionStatusIcon;
+		this.memberHub = memberHub;
 	}
 
 	public org.lgna.project.ast.Member getMember() {
-		return this.member;
+		return this.memberHub.getMember();
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon getActionStatusIcon() {
-		return this.actionStatusIcon;
+	public javax.swing.Icon getIcon() {
+		return this.memberHub.getIcon();
 	}
 
 	@Override

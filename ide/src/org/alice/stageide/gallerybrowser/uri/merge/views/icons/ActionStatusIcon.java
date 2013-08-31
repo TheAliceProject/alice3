@@ -42,19 +42,12 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge.views.icons;
 
+import org.alice.stageide.gallerybrowser.uri.merge.ActionStatus;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
-	protected static enum ActionStatus {
-		IGNORE,
-		ADD,
-		REPLACE,
-		KEEP,
-		DELETE,
-		ERROR
-	}
-
 	private static final int PAD = 1;
 	private static final java.awt.Dimension SIZE = org.lgna.croquet.icon.IconSize.SMALL.getSize();
 	private static final java.awt.Paint ADD_REPLACE_FILL_PAINT = new java.awt.Color( 0, 127, 0 );
