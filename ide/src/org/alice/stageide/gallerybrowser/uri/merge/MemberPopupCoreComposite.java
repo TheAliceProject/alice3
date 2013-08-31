@@ -48,6 +48,10 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MemberPopupCoreView> {
 	private final MemberHub<?> memberHub;
 
+	private final org.lgna.croquet.HtmlStringValue description = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "c6a7c06d-143a-4bd8-afca-c8e4b544473c" ) ) {
+
+	};
+
 	public MemberPopupCoreComposite( MemberHub<?> memberHub ) {
 		super( java.util.UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
 		this.memberHub = memberHub;
@@ -61,14 +65,14 @@ public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreCo
 		return this.memberHub.getIcon();
 	}
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
+	public org.lgna.croquet.HtmlStringValue getDescription() {
+		return this.description;
 	}
 
 	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.description.setText( this.memberHub.getActionStatus().name() );
 	}
 
 	@Override

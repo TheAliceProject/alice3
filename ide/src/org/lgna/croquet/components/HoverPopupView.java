@@ -83,6 +83,7 @@ public class HoverPopupView extends JComponent<javax.swing.AbstractButton> {
 	}
 
 	private void showWindow() {
+		this.element.getComposite().handlePreActivation();
 		synchronized( this.window.getTreeLock() ) {
 			assert this.window.isVisible() == false;
 			java.awt.Point p = this.getLocationOnScreen();
@@ -106,6 +107,7 @@ public class HoverPopupView extends JComponent<javax.swing.AbstractButton> {
 				this.window.setSize( 1000, 1000 );
 			}
 		}
+		this.element.getComposite().handlePostDeactivation();
 	}
 
 	@Override
