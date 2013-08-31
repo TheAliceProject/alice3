@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView> {
+public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.ImportTypeView> {
 	private final java.net.URI uriForDescriptionPurposesOnly;
 
 	private final org.lgna.project.ast.NamedUserType importedRootType;
@@ -171,8 +171,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView createView() {
-		return new org.alice.stageide.gallerybrowser.uri.merge.views.MergeTypeView( this );
+	protected org.alice.stageide.gallerybrowser.uri.merge.views.ImportTypeView createView() {
+		return new org.alice.stageide.gallerybrowser.uri.merge.views.ImportTypeView( this );
 	}
 
 	public org.lgna.project.ast.NamedUserType getImportedType() {

@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
+public class ImportTypeView extends org.lgna.croquet.components.MigPanel {
 	private void addToolPaletteViewIfAppropriate( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite ) {
 		if( composite.getTotalCount() > 0 ) {
 			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
@@ -57,7 +57,7 @@ public class MergeTypeView extends org.lgna.croquet.components.MigPanel {
 		}
 	}
 
-	public MergeTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
+	public ImportTypeView( org.alice.stageide.gallerybrowser.uri.merge.ImportTypeComposite composite ) {
 		super( composite, "fillx" );
 		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) );
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
