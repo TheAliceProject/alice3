@@ -124,7 +124,7 @@ public class ImplementationAccessor {
 			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
 			org.lgna.common.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
-				return edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( imageResource, true );
+				return org.lgna.story.implementation.TextureFactory.getTexture( imageResource, true );
 			} else {
 				return null;
 			}
