@@ -162,8 +162,7 @@ public class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		ActionStatus actionStatus = this.memberHub.getActionStatus();
-		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.IGNORE ) && ( actionStatus != ActionStatus.DELETE ) ) {
-
+		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.OMIT ) && ( actionStatus != ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL ) && ( actionStatus != ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT ) ) {
 			javax.swing.ButtonModel buttonModel;
 			if( c instanceof javax.swing.AbstractButton ) {
 				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
@@ -182,14 +181,16 @@ public class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			//			g2.setPaint( java.awt.Color.RED );
 			//			g2.fillRect( 0, 0, width, height );
-			if( actionStatus == ActionStatus.ADD ) {
+			if( ( actionStatus == ActionStatus.ADD_UNIQUE ) || ( actionStatus == ActionStatus.ADD_AND_RENAME ) ) {
 				paintAdd( c, g2, buttonModel );
-			} else if( actionStatus == ActionStatus.REPLACE ) {
+			} else if( actionStatus == ActionStatus.REPLACE_OVER_ORIGINAL ) {
 				paintReplace( c, g2, buttonModel );
-			} else if( actionStatus == ActionStatus.KEEP ) {
+			} else if( ( actionStatus == ActionStatus.KEEP_IDENTICAL ) || ( actionStatus == ActionStatus.KEEP_UNIQUE ) || ( actionStatus == ActionStatus.KEEP_OVER_REPLACEMENT ) || ( actionStatus == ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE ) || ( actionStatus == ActionStatus.KEEP_AND_RENAME ) ) {
 				paintKeep( c, g2, buttonModel );
-			} else {
+			} else if( ( actionStatus == ActionStatus.RENAME_REQUIRED ) || ( actionStatus == ActionStatus.SELECTION_REQUIRED ) ) {
 				paintError( c, g2, buttonModel, width, height );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( actionStatus );
 			}
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 			g2.translate( -xOffset, -yOffset );

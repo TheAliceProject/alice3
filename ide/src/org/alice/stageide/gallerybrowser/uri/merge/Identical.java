@@ -55,7 +55,7 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				return ActionStatus.KEEP;
+				return ActionStatus.KEEP_IDENTICAL;
 			}
 		};
 		this.importHub.getIsDesiredState().setEnabled( false );

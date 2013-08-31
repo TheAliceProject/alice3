@@ -46,10 +46,84 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public enum ActionStatus {
-	IGNORE,
-	ADD,
-	REPLACE,
-	KEEP,
-	DELETE,
-	ERROR
+	OMIT() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	ADD_UNIQUE() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	ADD_AND_RENAME() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	REPLACE_OVER_ORIGINAL() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	OMIT_IN_FAVOR_OF_ORIGINAL() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	DELETE_IN_FAVOR_OF_REPLACEMENT() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	KEEP_OVER_DIFFERENT_SIGNATURE() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	KEEP_OVER_REPLACEMENT() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	KEEP_AND_RENAME() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	KEEP_IDENTICAL() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	KEEP_UNIQUE() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	RENAME_REQUIRED() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	},
+	SELECTION_REQUIRED() {
+		@Override
+		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+			return name();
+		}
+	};
+
+	public abstract String getDescriptionText( org.lgna.project.ast.Member member );
 }

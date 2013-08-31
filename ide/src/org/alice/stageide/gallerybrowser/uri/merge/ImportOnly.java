@@ -53,9 +53,9 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( getIsDesiredState().getValue() ) {
-					return ActionStatus.ADD;
+					return ActionStatus.ADD_UNIQUE;
 				} else {
-					return ActionStatus.IGNORE;
+					return ActionStatus.OMIT;
 				}
 			}
 		};

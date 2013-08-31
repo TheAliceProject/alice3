@@ -62,4 +62,9 @@ public abstract class MemberHub<M extends org.lgna.project.ast.Member> extends B
 	}
 
 	public abstract ActionStatus getActionStatus();
+
+	public String getDescriptionText() {
+		ActionStatus actionStatus = this.getActionStatus();
+		return actionStatus.getDescriptionText( this.getMember() );
+	}
 }

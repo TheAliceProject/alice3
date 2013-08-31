@@ -57,12 +57,12 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
-					return ActionStatus.ERROR;
+					return ActionStatus.RENAME_REQUIRED;
 				} else {
 					if( getIsDesiredState().getValue() ) {
-						return ActionStatus.ADD;
+						return ActionStatus.ADD_AND_RENAME;
 					} else {
-						return ActionStatus.IGNORE;
+						return ActionStatus.OMIT;
 					}
 				}
 			}
@@ -72,9 +72,13 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
-					return ActionStatus.ERROR;
+					return ActionStatus.RENAME_REQUIRED;
 				} else {
-					return ActionStatus.KEEP;
+					if( getIsAddDesiredState().getValue() ) {
+						return ActionStatus.KEEP_AND_RENAME;
+					} else {
+						return ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE;
+					}
 				}
 			}
 		};
@@ -113,11 +117,15 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		return this.projectHub.getPopup();
 	}
 
+	private boolean isRenameRequired() {
+		//todo
+		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+	}
+
 	@Override
 	public boolean isActionRequired() {
 		if( this.getIsAddDesiredState().getValue() ) {
-			//todo
-			if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
+			if( this.isRenameRequired() ) {
 				return true;
 			}
 		}

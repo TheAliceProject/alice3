@@ -72,7 +72,7 @@ public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreCo
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.description.setText( this.memberHub.getActionStatus().name() );
+		this.description.setText( this.memberHub.getDescriptionText() );
 	}
 
 	@Override

@@ -58,16 +58,20 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
-					return ActionStatus.ERROR;
+					if( isRenameRequired() ) {
+						return ActionStatus.RENAME_REQUIRED;
+					} else {
+						return ActionStatus.SELECTION_REQUIRED;
+					}
 				} else {
 					if( getIsAddDesiredState().getValue() ) {
 						if( getIsKeepDesiredState().getValue() ) {
-							return ActionStatus.ADD;
+							return ActionStatus.ADD_AND_RENAME;
 						} else {
-							return ActionStatus.REPLACE;
+							return ActionStatus.REPLACE_OVER_ORIGINAL;
 						}
 					} else {
-						return ActionStatus.IGNORE;
+						return ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL;
 					}
 				}
 			}
@@ -77,12 +81,25 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
 				if( isActionRequired() ) {
-					return ActionStatus.ERROR;
-				} else {
-					if( getIsDesiredState().getValue() ) {
-						return ActionStatus.KEEP;
+					if( isRenameRequired() ) {
+						return ActionStatus.RENAME_REQUIRED;
 					} else {
-						return ActionStatus.IGNORE;
+						return ActionStatus.SELECTION_REQUIRED;
+					}
+				} else {
+					if( getIsAddDesiredState().getValue() ) {
+						if( getIsKeepDesiredState().getValue() ) {
+							return ActionStatus.KEEP_AND_RENAME;
+						} else {
+							return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
+						}
+					} else {
+						if( getIsKeepDesiredState().getValue() ) {
+							return ActionStatus.KEEP_OVER_REPLACEMENT;
+						} else {
+							//note: should not get here
+							return ActionStatus.SELECTION_REQUIRED;
+						}
 					}
 				}
 			}
@@ -141,14 +158,18 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectHub.getPopup();
 	}
 
+	private boolean isRenameRequired() {
+		//todo
+		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+	}
+
 	@Override
 	public boolean isActionRequired() {
 		boolean isAddDesired = this.getIsAddDesiredState().getValue();
 		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
 		if( isAddDesired ) {
 			if( isKeepDesired ) {
-				//todo
-				if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
+				if( this.isRenameRequired() ) {
 					return true;
 				}
 			} else {

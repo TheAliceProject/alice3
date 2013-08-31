@@ -52,7 +52,7 @@ public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", "" ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				return ActionStatus.KEEP;
+				return ActionStatus.KEEP_UNIQUE;
 			}
 		};
 		this.projectHub.getIsDesiredState().setEnabled( false );
