@@ -46,14 +46,14 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public class ImportTypeView extends org.lgna.croquet.components.MigPanel {
-	private void addToolPaletteViewIfAppropriate( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite ) {
+	private void addToolPaletteViewIfAppropriate( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, ?> composite, org.lgna.croquet.components.MigPanel panel ) {
 		if( composite.getTotalCount() > 0 ) {
 			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
 			toolPaletteView.getTitle().setInert( true );
 			toolPaletteView.getTitle().setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
 			//toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 			toolPaletteView.getTitle().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-			this.addComponent( composite.getOuterComposite().getRootComponent(), "grow, shrink, gap 16, wrap" );
+			panel.addComponent( toolPaletteView, "grow, shrink, gap 16, wrap" );
 		}
 	}
 
@@ -63,9 +63,13 @@ public class ImportTypeView extends org.lgna.croquet.components.MigPanel {
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "wrap" );
 
-		this.addToolPaletteViewIfAppropriate( composite.getAddProceduresComposite() );
-		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite() );
-		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite() );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fill, insets 0" );
+		this.addToolPaletteViewIfAppropriate( composite.getAddProceduresComposite(), panel );
+		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite(), panel );
+		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite(), panel );
+
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
+		this.addComponent( scrollPane, "grow, shrink, wrap" );
 
 		if( composite.isContainingDifferentImplementations() ) {
 			this.addComponent( composite.getDifferentImplementationsHeader().createLabel(), "gaptop 32, wrap" );
@@ -75,6 +79,8 @@ public class ImportTypeView extends org.lgna.croquet.components.MigPanel {
 		}
 
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
+		panel.setBackgroundColor( this.getBackgroundColor() );
+		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		this.setMinimumPreferredWidth( 800 );
 	}
 }

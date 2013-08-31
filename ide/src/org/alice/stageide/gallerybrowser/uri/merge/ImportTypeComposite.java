@@ -158,6 +158,16 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		}
 	}
 
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		return null;
+	}
+
 	public AddProceduresComposite getAddProceduresComposite() {
 		return this.addProceduresComposite;
 	}
