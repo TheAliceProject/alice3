@@ -40,33 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.perspectives.scenesetup;
+package org.alice.stageide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposite {
-	private static class SingletonHolder {
-		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
+public class ToolBarUtilities {
+	private ToolBarUtilities() {
+		throw new AssertionError();
 	}
 
-	public static SetupSceneToolBarComposite getInstance() {
-		return SingletonHolder.instance;
+	public static void appendDocumentSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
-
-	private SetupSceneToolBarComposite() {
-		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( list );
-		this.subElements = java.util.Collections.unmodifiableList( list );
+	public static void appendUndoRedoSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.history.UndoOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.history.RedoOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	@Override
-	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
-		return this.subElements;
+	public static void appendRunSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getOperation() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 }
