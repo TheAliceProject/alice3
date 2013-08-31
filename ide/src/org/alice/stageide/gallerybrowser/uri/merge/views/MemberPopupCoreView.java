@@ -45,16 +45,18 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
+public class MemberPopupCoreView extends org.lgna.croquet.components.MigPanel {
 	public MemberPopupCoreView( org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite composite ) {
 		super( composite );
 		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
 		java.awt.Color color;
 		org.lgna.project.ast.Declaration member = composite.getMember();
+
+		this.addComponent( new org.lgna.croquet.components.Label( composite.getActionStatusIcon() ), "wrap" );
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
-			this.addPageStartComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ) );
-			this.addCenterComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ) );
+			this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );
+			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
 			if( method.isProcedure() ) {
 				color = theme.getProcedureColor();
 			} else {
@@ -62,7 +64,7 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel
 			}
 		} else if( member instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField field = (org.lgna.project.ast.UserField)member;
-			this.addPageStartComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ) );
+			this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ), "wrap" );
 			color = theme.getFieldColor();
 		} else {
 			//todo

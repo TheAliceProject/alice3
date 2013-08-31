@@ -46,6 +46,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
+	private static final String POST_FIX = "<br><em>(different implementation)</em>";
+
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
 	private final MemberNameState<M> importNameState;
@@ -54,9 +56,10 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
 	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
 
-	private static final String POST_FIX = "<br><em>(different implementation)</em>";
+	private final MemberPopupCoreComposite importPopup;
+	private final MemberPopupCoreComposite projectPopup;
 
-	private final javax.swing.Icon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon importIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 		@Override
 		protected ActionStatus getActionStatus() {
 			if( isActionRequired() ) {
@@ -74,7 +77,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		}
 	};
-	private final javax.swing.Icon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+	private final org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon projectIcon = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 		@Override
 		protected ActionStatus getActionStatus() {
 			if( isActionRequired() ) {
@@ -94,6 +97,9 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, false, "keep ", POST_FIX );
 		this.projectNameState = new MemberNameState<M>( projectMember );
 		this.importNameState = new MemberNameState<M>( importMember );
+
+		this.importPopup = new MemberPopupCoreComposite( importMember, importIcon );
+		this.projectPopup = new MemberPopupCoreComposite( projectMember, projectIcon );
 
 		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
@@ -146,6 +152,14 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public javax.swing.Icon getProjectIcon() {
 		return this.projectIcon;
+	}
+
+	public MemberPopupCoreComposite getImportPopup() {
+		return this.importPopup;
+	}
+
+	public MemberPopupCoreComposite getProjectPopup() {
+		return this.projectPopup;
 	}
 
 	@Override

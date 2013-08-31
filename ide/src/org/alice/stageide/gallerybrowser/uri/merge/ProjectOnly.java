@@ -42,16 +42,17 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 	private final org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> isKeepDesiredState;
+	private final MemberPopupCoreComposite popup;
 
 	public ProjectOnly( M projectMember ) {
 		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", "" );
 		this.isKeepDesiredState.setEnabled( false );
+		this.popup = new MemberPopupCoreComposite( projectMember, org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.KEEP_ICON );
 	}
 
 	public org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState<M> getIsKeepDesiredState() {
@@ -60,5 +61,9 @@ public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 
 	public M getProjectMember() {
 		return this.isKeepDesiredState.getMember();
+	}
+
+	public MemberPopupCoreComposite getPopup() {
+		return this.popup;
 	}
 }

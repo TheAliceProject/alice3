@@ -49,12 +49,14 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 	private static final String POST_FIX = "<br><em>(identical)</em>";
 	private final IsMemberDesiredState<M> isAddDesiredState;
 	private final IsMemberDesiredState<M> isKeepDesiredState;
+	private final MemberPopupCoreComposite popup;
 
 	public Identical( M projectMember, M importMember ) {
 		this.isAddDesiredState = new IsMemberDesiredState<M>( importMember, false, "ignore ", POST_FIX );
 		this.isAddDesiredState.setEnabled( false );
 		this.isKeepDesiredState = new IsMemberDesiredState<M>( projectMember, true, "keep ", POST_FIX );
 		this.isKeepDesiredState.setEnabled( false );
+		this.popup = new MemberPopupCoreComposite( projectMember, org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.KEEP_ICON );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
@@ -71,5 +73,9 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 
 	public M getProjectMember() {
 		return this.isKeepDesiredState.getMember();
+	}
+
+	public MemberPopupCoreComposite getPopup() {
+		return this.popup;
 	}
 }

@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser.uri.merge;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -79,13 +78,13 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return rv;
 	}
 
-	public MemberPopupCoreComposite getPopupMemberFor( M member ) {
-		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<M, MemberPopupCoreComposite>() {
-			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( M key ) {
-				return new MemberPopupCoreComposite( key );
-			}
-		} );
-	}
+	//	public MemberPopupCoreComposite getPopupMemberFor( M member ) {
+	//		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<M, MemberPopupCoreComposite>() {
+	//			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( M key ) {
+	//				return new MemberPopupCoreComposite( key );
+	//			}
+	//		} );
+	//	}
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {

@@ -48,6 +48,13 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 public class MemberViewUtilities {
 	public static java.awt.Color ACTION_MUST_BE_TAKEN_COLOR = new java.awt.Color( 170, 0, 0 );
 
+	public static org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+		@Override
+		protected ActionStatus getActionStatus() {
+			return ActionStatus.KEEP;
+		}
+	};
+
 	//
 	//	private static javax.swing.Icon DELETE_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 	//		@Override
@@ -100,9 +107,14 @@ public class MemberViewUtilities {
 		return rv;
 	}
 
-	public static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member, javax.swing.Icon icon ) {
-		org.lgna.croquet.components.HoverPopupView rv = composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
-		rv.getAwtComponent().setIcon( icon );
+	//	public static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member, javax.swing.Icon icon ) {
+	//		org.lgna.croquet.components.HoverPopupView rv = composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
+	//		rv.getAwtComponent().setIcon( icon );
+	//		return rv;
+	//	}
+	public static org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite popup ) {
+		org.lgna.croquet.components.HoverPopupView rv = popup.getHoverPopupElement().createHoverPopupView();
+		rv.getAwtComponent().setIcon( popup.getActionStatusIcon() );
 		return rv;
 	}
 }
