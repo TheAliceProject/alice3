@@ -141,8 +141,40 @@ public class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 	}
 
 	private void paintKeep( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel ) {
-		g2.setPaint( java.awt.Color.LIGHT_GRAY );
 		paintCheck( c, g2, buttonModel, java.awt.Color.LIGHT_GRAY );
+	}
+
+	private void paintOmit( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel, int width, int height ) {
+		boolean isPaintDesired = buttonModel != null ? buttonModel.isRollover() : true;
+		if( isPaintDesired ) {
+			float size = Math.min( width, height ) * 0.9f;
+
+			float w = size;
+			float h = size * 0.25f;
+			float xC = -w * 0.5f;
+			float yC = -h * 0.5f;
+			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( xC, yC, w, h, h, h );
+
+			java.awt.geom.Area area0 = new java.awt.geom.Area( rr );
+			java.awt.geom.Area area1 = new java.awt.geom.Area( rr );
+
+			java.awt.geom.AffineTransform m0 = new java.awt.geom.AffineTransform();
+			m0.rotate( Math.PI * 0.25 );
+			area0.transform( m0 );
+
+			java.awt.geom.AffineTransform m1 = new java.awt.geom.AffineTransform();
+			m1.rotate( Math.PI * 0.75 );
+			area1.transform( m1 );
+
+			area0.add( area1 );
+
+			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
+			m.translate( ( width / 2 ), ( height / 2 ) );
+			area0.transform( m );
+
+			g2.setPaint( new java.awt.Color( 127, 63, 63 ) );
+			g2.fill( area0 );
+		}
 	}
 
 	private void paintError( java.awt.Component c, java.awt.Graphics2D g2, javax.swing.ButtonModel buttonModel, int width, int height ) {
@@ -162,38 +194,38 @@ public class ActionStatusIcon extends org.lgna.croquet.icon.AbstractIcon {
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		ActionStatus actionStatus = this.memberHub.getActionStatus();
-		if( ( actionStatus != null ) && ( actionStatus != ActionStatus.OMIT ) && ( actionStatus != ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL ) && ( actionStatus != ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT ) ) {
-			javax.swing.ButtonModel buttonModel;
-			if( c instanceof javax.swing.AbstractButton ) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-				buttonModel = button.getModel();
-			} else {
-				buttonModel = null;
-			}
-
-			int xOffset = PAD;
-			int yOffset = PAD;
-			int width = this.getIconWidth() - PAD - PAD;
-			int height = this.getIconHeight() - PAD - PAD;
-			g2.translate( xOffset, yOffset );
-
-			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			//			g2.setPaint( java.awt.Color.RED );
-			//			g2.fillRect( 0, 0, width, height );
-			if( ( actionStatus == ActionStatus.ADD_UNIQUE ) || ( actionStatus == ActionStatus.ADD_AND_RENAME ) ) {
-				paintAdd( c, g2, buttonModel );
-			} else if( actionStatus == ActionStatus.REPLACE_OVER_ORIGINAL ) {
-				paintReplace( c, g2, buttonModel );
-			} else if( ( actionStatus == ActionStatus.KEEP_IDENTICAL ) || ( actionStatus == ActionStatus.KEEP_UNIQUE ) || ( actionStatus == ActionStatus.KEEP_OVER_REPLACEMENT ) || ( actionStatus == ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE ) || ( actionStatus == ActionStatus.KEEP_AND_RENAME ) ) {
-				paintKeep( c, g2, buttonModel );
-			} else if( ( actionStatus == ActionStatus.RENAME_REQUIRED ) || ( actionStatus == ActionStatus.SELECTION_REQUIRED ) ) {
-				paintError( c, g2, buttonModel, width, height );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( actionStatus );
-			}
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-			g2.translate( -xOffset, -yOffset );
+		javax.swing.ButtonModel buttonModel;
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			buttonModel = button.getModel();
+		} else {
+			buttonModel = null;
 		}
+
+		int xOffset = PAD;
+		int yOffset = PAD;
+		int width = this.getIconWidth() - PAD - PAD;
+		int height = this.getIconHeight() - PAD - PAD;
+		g2.translate( xOffset, yOffset );
+
+		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		//			g2.setPaint( java.awt.Color.RED );
+		//			g2.fillRect( 0, 0, width, height );
+		if( ( actionStatus == ActionStatus.ADD_UNIQUE ) || ( actionStatus == ActionStatus.ADD_AND_RENAME ) ) {
+			paintAdd( c, g2, buttonModel );
+		} else if( actionStatus == ActionStatus.REPLACE_OVER_ORIGINAL ) {
+			paintReplace( c, g2, buttonModel );
+		} else if( ( actionStatus == ActionStatus.KEEP_IDENTICAL ) || ( actionStatus == ActionStatus.KEEP_UNIQUE ) || ( actionStatus == ActionStatus.KEEP_OVER_REPLACEMENT ) || ( actionStatus == ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE ) || ( actionStatus == ActionStatus.KEEP_AND_RENAME ) ) {
+			paintKeep( c, g2, buttonModel );
+		} else if( ( actionStatus == ActionStatus.RENAME_REQUIRED ) || ( actionStatus == ActionStatus.SELECTION_REQUIRED ) ) {
+			paintError( c, g2, buttonModel, width, height );
+		} else if( ( actionStatus == ActionStatus.OMIT ) || ( actionStatus == ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL ) || ( actionStatus == ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT ) ) {
+			paintOmit( c, g2, buttonModel, width, height );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( actionStatus );
+		}
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+		g2.translate( -xOffset, -yOffset );
 	}
 }
