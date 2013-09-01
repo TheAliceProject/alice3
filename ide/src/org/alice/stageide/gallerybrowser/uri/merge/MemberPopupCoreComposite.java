@@ -57,6 +57,10 @@ public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreCo
 		this.memberHub = memberHub;
 	}
 
+	public MemberHub<?> getMemberHub() {
+		return this.memberHub;
+	}
+
 	public org.lgna.project.ast.Member getMember() {
 		return this.memberHub.getMember();
 	}

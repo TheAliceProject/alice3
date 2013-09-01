@@ -46,13 +46,52 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
  * @author Dennis Cosgrove
  */
 public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
-	public MemberPopupCoreView( org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite composite ) {
+	private static java.awt.Paint createOmitOrReplacePaint() {
+		int size = 24;
+		int width = size;
+		int height = size;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( new java.awt.Color( 191, 191, 191, 150 ) );
+		g2.fillRect( 0, 0, width, height );
+		g2.setColor( new java.awt.Color( 63, 0, 0, 63 ) );
+		g2.drawLine( 0, height, width, 0 );
+		g2.drawLine( 0, 0, width, height );
+		g2.dispose();
+		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+	}
+
+	private static final java.awt.Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
+
+	public MemberPopupCoreView( final org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite composite ) {
 		super( composite );
 		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
 		java.awt.Color color;
 		org.lgna.project.ast.Declaration member = composite.getMember();
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel() {
+			@Override
+			protected javax.swing.JPanel createJPanel() {
+				return new DefaultJPanel() {
+					@Override
+					public void paint( java.awt.Graphics g ) {
+						super.paint( g );
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						if( composite.getMemberHub().getActionStatus() == org.alice.stageide.gallerybrowser.uri.merge.ActionStatus.SELECTION_REQUIRED ) {
+							//pass
+						} else {
+							if( composite.getMemberHub().getIsDesiredState().getValue() ) {
+								//pass
+							} else {
+								g2.setPaint( OMIT_OR_REPLACE_PAINT );
+								g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+							}
+						}
+					}
+				};
+			}
+		};
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
 			panel.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );
@@ -76,7 +115,7 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel
 		this.addPageStartComponent( label );
 		this.addCenterComponent( panel );
 
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 4, 0 ) );
+		label.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
 		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
 		this.setMinimumPreferredWidth( 200 );
 	}
