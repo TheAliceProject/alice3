@@ -226,8 +226,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 				M member = this.createImportCopy( differentSignature.getImportMember() );
 				membersToAdd.add( member );
 				addRenameIfNecessary( renames, differentSignature.getImportNameState(), member );
+				addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
 			}
-			addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
 		}
 
 		for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
