@@ -57,7 +57,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 	private static final String COLUMN_0_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_VERBOSE ? "[grow,shrink,33%]" : "[grow 0,center]";
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
-	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_VERBOSE ? "[grow,shrink,34%]" : "[grow,shrink]";
+	private static final String COLUMN_2_CONSTRAINT = org.alice.stageide.gallerybrowser.uri.merge.IsMemberDesiredState.IS_VERBOSE ? "[grow,shrink,34%]" : "[grow 0]";
 
 	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
@@ -119,7 +119,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	}
 
 	public AddMembersView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
-		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT );
+		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + "24[grow]" );
 
 		//todo
 		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
@@ -184,12 +184,14 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getImportPopup() ), "skip 1, split 2" );
-			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent(), "grow, shrink, wrap" );
+			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
+
+			this.addComponent( differentImplementation.getGuideComposite().getOperation().createHyperlink(), "spany 2, gapright 8, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getProjectPopup() ), "split 2" );
-			this.addComponent( differentImplementation.getProjectCardOwner().getRootComponent(), "grow, shrink, wrap" );
+			this.addComponent( differentImplementation.getProjectCardOwner().getRootComponent(), "wrap" );
 
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
 		}

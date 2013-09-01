@@ -52,6 +52,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final DifferentImplementationCardOwner importCardOwner;
 	private final DifferentImplementationCardOwner projectCardOwner;
 
+	private final DifferentImplementationGuideComposite guideComposite;
+
 	public DifferentImplementation( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(different implementation)</em>";
 		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
@@ -111,6 +113,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				.replace( new ReplaceNegativeImplementationCard( this ) )
 				.rename( new RenameCard( this.projectHub, this.getForegroundCustomizer() ) )
 				.build();
+
+		this.guideComposite = new DifferentImplementationGuideComposite( this );
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
@@ -151,6 +155,10 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public MemberPopupCoreComposite getProjectPopup() {
 		return this.projectHub.getPopup();
+	}
+
+	public DifferentImplementationGuideComposite getGuideComposite() {
+		return this.guideComposite;
 	}
 
 	@Override
