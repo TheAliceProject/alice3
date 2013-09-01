@@ -45,20 +45,18 @@ package org.alice.stageide.gallerybrowser.uri.merge.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberPopupCoreView extends org.lgna.croquet.components.MigPanel {
+public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
 	public MemberPopupCoreView( org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite composite ) {
 		super( composite );
 		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
 		java.awt.Color color;
 		org.lgna.project.ast.Declaration member = composite.getMember();
 
-		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
-		label.setIcon( composite.getIcon() );
-		this.addComponent( label, "wrap" );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
-			this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );
-			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
+			panel.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );
+			panel.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
 			if( method.isProcedure() ) {
 				color = theme.getProcedureColor();
 			} else {
@@ -66,14 +64,20 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.MigPanel {
 			}
 		} else if( member instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField field = (org.lgna.project.ast.UserField)member;
-			this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ), "wrap" );
+			panel.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ), "wrap" );
 			color = theme.getFieldColor();
 		} else {
 			//todo
 			color = theme.getConstructorColor();
 		}
-		this.setBackgroundColor( color );
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 2, 2, 2, 2, java.awt.Color.GRAY ) );
+		panel.setBackgroundColor( color );
+		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
+		label.setIcon( composite.getIcon() );
+		this.addPageStartComponent( label );
+		this.addCenterComponent( panel );
+
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 4, 0 ) );
+		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
 		this.setMinimumPreferredWidth( 200 );
 	}
 }

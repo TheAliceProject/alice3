@@ -57,21 +57,21 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( isActionRequired() ) {
-					if( isRenameRequired() ) {
-						return ActionStatus.RENAME_REQUIRED;
-					} else {
-						return ActionStatus.SELECTION_REQUIRED;
-					}
-				} else {
-					if( getIsAddDesiredState().getValue() ) {
-						if( getIsKeepDesiredState().getValue() ) {
-							return ActionStatus.ADD_AND_RENAME;
+				if( getIsAddDesiredState().getValue() ) {
+					if( getIsKeepDesiredState().getValue() ) {
+						if( isRenameRequired() ) {
+							return ActionStatus.RENAME_REQUIRED;
 						} else {
-							return ActionStatus.REPLACE_OVER_ORIGINAL;
+							return ActionStatus.ADD_AND_RENAME;
 						}
 					} else {
+						return ActionStatus.REPLACE_OVER_ORIGINAL;
+					}
+				} else {
+					if( getIsKeepDesiredState().getValue() ) {
 						return ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL;
+					} else {
+						return ActionStatus.SELECTION_REQUIRED;
 					}
 				}
 			}
@@ -80,26 +80,21 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.projectHub = new MemberHubWithNameState<M>( projectMember, false, "keep ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( isActionRequired() ) {
-					if( isRenameRequired() ) {
-						return ActionStatus.RENAME_REQUIRED;
+				if( getIsAddDesiredState().getValue() ) {
+					if( getIsKeepDesiredState().getValue() ) {
+						if( isRenameRequired() ) {
+							return ActionStatus.RENAME_REQUIRED;
+						} else {
+							return ActionStatus.KEEP_AND_RENAME;
+						}
 					} else {
-						return ActionStatus.SELECTION_REQUIRED;
+						return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
 					}
 				} else {
-					if( getIsAddDesiredState().getValue() ) {
-						if( getIsKeepDesiredState().getValue() ) {
-							return ActionStatus.KEEP_AND_RENAME;
-						} else {
-							return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
-						}
+					if( getIsKeepDesiredState().getValue() ) {
+						return ActionStatus.KEEP_AND_RENAME;
 					} else {
-						if( getIsKeepDesiredState().getValue() ) {
-							return ActionStatus.KEEP_OVER_REPLACEMENT;
-						} else {
-							//note: should not get here
-							return ActionStatus.SELECTION_REQUIRED;
-						}
+						return ActionStatus.SELECTION_REQUIRED;
 					}
 				}
 			}
@@ -158,28 +153,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectHub.getPopup();
 	}
 
-	private boolean isRenameRequired() {
-		//todo
-		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
-	}
-
 	@Override
-	public boolean isActionRequired() {
-		boolean isAddDesired = this.getIsAddDesiredState().getValue();
-		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
-		if( isAddDesired ) {
-			if( isKeepDesired ) {
-				if( this.isRenameRequired() ) {
-					return true;
-				}
-			} else {
-				//pass
-			}
-		} else {
-			if( isKeepDesired ) {
-				//pass
-			} else {
-				return true;
+	protected boolean isRenameRequired() {
+		if( this.getIsAddDesiredState().getValue() ) {
+			if( this.getIsKeepDesiredState().getValue() ) {
+				//todo
+				return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
 			}
 		}
 		return false;
@@ -190,8 +169,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
 		if( isAddDesired ) {
 			if( isKeepDesired ) {
-				//todo
-				if( this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() ) ) {
+				if( this.isRenameRequired() ) {
 					sb.append( "must not have same name: \"" );
 					sb.append( this.getImportMember().getName() );
 					sb.append( "\"." );
