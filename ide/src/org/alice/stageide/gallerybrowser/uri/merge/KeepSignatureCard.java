@@ -45,13 +45,19 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class AddAndRenameImplementationCard extends RenameImplementationsCard {
-	public AddAndRenameImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "0f37d61d-7905-45a5-9605-befe299e9a6c" ), differentImplementation );
+public final class KeepSignatureCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final DifferentSignature<?> differentSignature;
+
+	public KeepSignatureCard( DifferentSignature<?> differentSignature ) {
+		super( java.util.UUID.fromString( "a9a8f5b2-c84e-48c9-a7eb-84a2350e37f5" ) );
+		this.differentSignature = differentSignature;
 	}
 
 	@Override
-	protected MemberNameState<?> getMemberNameState() {
-		return this.getDifferentImplementation().getImportNameState();
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.project.ast.Member member = this.differentSignature.getProjectMember();
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0, fill" );
+		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createKeepUniqueMemberLabel( member ) );
+		return rv;
 	}
 }

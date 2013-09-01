@@ -50,6 +50,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
+	private final ProjectDifferentSignatureCardOwner projectCardOwner;
 
 	public DifferentSignature( M importMember, M projectMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
@@ -83,6 +84,15 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			}
 		};
 		this.projectHub.getIsDesiredState().setEnabled( false );
+		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
+	}
+
+	public MemberHubWithNameState<M> getImportHub() {
+		return this.importHub;
+	}
+
+	public MemberHubWithNameState<M> getProjectHub() {
+		return this.projectHub;
 	}
 
 	public IsMemberDesiredState<M> getIsAddDesiredState() {
@@ -115,6 +125,10 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 
 	public MemberPopupCoreComposite getProjectPopup() {
 		return this.projectHub.getPopup();
+	}
+
+	public ProjectDifferentSignatureCardOwner getProjectCardOwner() {
+		return this.projectCardOwner;
 	}
 
 	@Override

@@ -49,8 +49,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
 
-	private final DifferentImplementationCardOwnerComposite importCardOwnerComposite;
-	private final DifferentImplementationCardOwnerComposite projectCardOwnerComposite;
+	private final DifferentImplementationCardOwner importCardOwner;
+	private final DifferentImplementationCardOwner projectCardOwner;
 
 	public DifferentImplementation( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(different implementation)</em>";
@@ -100,16 +100,16 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		};
 
-		this.importCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
+		this.importCardOwner = new DifferentImplementationCardOwner.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
 				.replace( new ReplacePositiveImplementationCard( this ) )
-				.rename( new AddAndRenameImplementationCard( this ) )
+				.rename( new RenameCard( this.importHub, this.getForegroundCustomizer() ) )
 				.build();
-		this.projectCardOwnerComposite = new DifferentImplementationCardOwnerComposite.Builder( this )
+		this.projectCardOwner = new DifferentImplementationCardOwner.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
 				.keep( new KeepImplementationCard( this ) )
 				.replace( new ReplaceNegativeImplementationCard( this ) )
-				.rename( new KeepAndRenameImplementationCard( this ) )
+				.rename( new RenameCard( this.projectHub, this.getForegroundCustomizer() ) )
 				.build();
 	}
 
@@ -121,12 +121,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectHub.getIsDesiredState();
 	}
 
-	public DifferentImplementationCardOwnerComposite getImportCardOwnerComposite() {
-		return this.importCardOwnerComposite;
+	public DifferentImplementationCardOwner getImportCardOwner() {
+		return this.importCardOwner;
 	}
 
-	public DifferentImplementationCardOwnerComposite getProjectCardOwnerComposite() {
-		return this.projectCardOwnerComposite;
+	public DifferentImplementationCardOwner getProjectCardOwner() {
+		return this.projectCardOwner;
 	}
 
 	public MemberNameState<M> getImportNameState() {

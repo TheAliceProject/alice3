@@ -45,26 +45,37 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameImplementationsCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-	private final DifferentImplementation<?> differentImplementation;
+public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.CardOwnerComposite {
+	private final DifferentSignature<?> differentSignature;
+	private final org.lgna.croquet.Composite<?> keepCard;
+	private final org.lgna.croquet.Composite<?> renameCard;
 
-	public RenameImplementationsCard( java.util.UUID migrationId, DifferentImplementation<?> differentImplementation ) {
-		super( migrationId );
-		this.differentImplementation = differentImplementation;
+	private final org.lgna.croquet.State.ValueListener<Boolean> valueListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateCard();
+		}
+	};
+
+	public ProjectDifferentSignatureCardOwner( DifferentSignature<?> differentSignature ) {
+		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
+		this.differentSignature = differentSignature;
+		this.keepCard = new KeepSignatureCard( differentSignature );
+		this.renameCard = new RenameCard( differentSignature.getProjectHub(), differentSignature.getForegroundCustomizer() );
+
+		this.addCard( this.keepCard );
+		this.addCard( this.renameCard );
+		this.showCard( this.renameCard );
+		this.differentSignature.getIsAddDesiredState().addValueListener( this.valueListener );
 	}
 
-	public DifferentImplementation<?> getDifferentImplementation() {
-		return this.differentImplementation;
-	}
-
-	protected abstract MemberNameState<?> getMemberNameState();
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		MemberNameState<?> nameState = this.getMemberNameState();
-
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
-		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createTextField( nameState, this.differentImplementation.getForegroundCustomizer() ) );
-		return rv;
+	private void updateCard() {
+		if( this.differentSignature.getIsAddDesiredState().getValue() ) {
+			this.showCard( this.renameCard );
+		} else {
+			this.showCard( this.keepCard );
+		}
 	}
 }

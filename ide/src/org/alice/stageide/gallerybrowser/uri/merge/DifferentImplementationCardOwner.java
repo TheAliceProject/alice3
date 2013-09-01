@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementationCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
+public final class DifferentImplementationCardOwner extends org.lgna.croquet.CardOwnerComposite {
 	public static class Builder {
 		private final DifferentImplementation<?> differentImplementation;
 		private org.lgna.croquet.Composite<?> neitherCard;
@@ -77,8 +77,8 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 			return this;
 		}
 
-		public DifferentImplementationCardOwnerComposite build() {
-			return new DifferentImplementationCardOwnerComposite( this.differentImplementation, this.neitherCard, this.replaceCard, this.keepCard, this.renameCard );
+		public DifferentImplementationCardOwner build() {
+			return new DifferentImplementationCardOwner( this.differentImplementation, this.neitherCard, this.replaceCard, this.keepCard, this.renameCard );
 		}
 	}
 
@@ -97,7 +97,7 @@ public final class DifferentImplementationCardOwnerComposite extends org.lgna.cr
 		}
 	};
 
-	private DifferentImplementationCardOwnerComposite( DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherCard, org.lgna.croquet.Composite<?> replaceCard, org.lgna.croquet.Composite<?> keepCard, org.lgna.croquet.Composite<?> renameCard ) {
+	private DifferentImplementationCardOwner( DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherCard, org.lgna.croquet.Composite<?> replaceCard, org.lgna.croquet.Composite<?> keepCard, org.lgna.croquet.Composite<?> renameCard ) {
 		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
 		this.differentImplementation = differentImplementation;
 		this.neitherCard = neitherCard;

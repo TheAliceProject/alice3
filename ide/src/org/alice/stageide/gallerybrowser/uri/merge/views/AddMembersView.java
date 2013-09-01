@@ -163,7 +163,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( keepCheckBox, "skip 1" );
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getProjectPopup() ), "split 2" );
-			this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "wrap" );
+			this.addComponent( differentSignature.getProjectCardOwner().getRootComponent(), "grow, shrink, wrap" );
+			//this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "wrap" );
 
 			//todo: removeValueListener somewhere
 			differentSignature.getIsAddDesiredState().addValueListener( new IsAddDesiredListener( textField ) );
@@ -183,12 +184,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getIsKeepDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getImportPopup() ), "skip 1, split 2" );
-			this.addComponent( differentImplementation.getImportCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
+			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent(), "grow, shrink, wrap" );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getProjectPopup() ), "split 2" );
-			this.addComponent( differentImplementation.getProjectCardOwnerComposite().getRootComponent(), "grow, shrink, wrap" );
+			this.addComponent( differentImplementation.getProjectCardOwner().getRootComponent(), "grow, shrink, wrap" );
 
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
 		}

@@ -45,13 +45,22 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class KeepAndRenameImplementationCard extends RenameImplementationsCard {
-	public KeepAndRenameImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "6e06669b-8546-4b9b-b4b6-025790bf6032" ), differentImplementation );
+public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final MemberHubWithNameState<?> memberHubWithNameState;
+	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
+
+	public RenameCard( MemberHubWithNameState<?> memberHubWithNameState, edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
+		super( java.util.UUID.fromString( "6551b6a3-b2be-43dd-a7fc-78e397765344" ) );
+		this.memberHubWithNameState = memberHubWithNameState;
+		this.foregroundCustomizer = foregroundCustomizer;
 	}
 
 	@Override
-	protected MemberNameState<?> getMemberNameState() {
-		return this.getDifferentImplementation().getProjectNameState();
+	protected org.lgna.croquet.components.Panel createView() {
+		MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
+
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
+		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
+		return rv;
 	}
 }

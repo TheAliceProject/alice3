@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public class KeepImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class KeepImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
 	public KeepImplementationCard( DifferentImplementation<?> differentImplementation ) {
