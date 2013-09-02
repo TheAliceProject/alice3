@@ -52,7 +52,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 	private final DifferentImplementationCardOwner importCardOwner;
 	private final DifferentImplementationCardOwner projectCardOwner;
 
-	private final DifferentImplementationGuideComposite<M> guideComposite;
+	private final DifferentImplementationHelpComposite<M> guideComposite;
 
 	public DifferentImplementation( M importMember, M projectMember ) {
 		final String POSTFIX = "<br><em>(different implementation)</em>";
@@ -116,9 +116,9 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 		//todo
 		if( importMember instanceof org.lgna.project.ast.UserMethod ) {
-			this.guideComposite = (DifferentImplementationGuideComposite<M>)new DifferentMethodImplementationGuideComposite( (DifferentImplementation<org.lgna.project.ast.UserMethod>)this );
+			this.guideComposite = (DifferentImplementationHelpComposite<M>)new DifferentMethodImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserMethod>)this );
 		} else if( importMember instanceof org.lgna.project.ast.UserField ) {
-			this.guideComposite = (DifferentImplementationGuideComposite<M>)new DifferentFieldImplementationGuideComposite( (DifferentImplementation<org.lgna.project.ast.UserField>)this );
+			this.guideComposite = (DifferentImplementationHelpComposite<M>)new DifferentFieldImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserField>)this );
 		} else {
 			//todo
 			this.guideComposite = null;
@@ -141,7 +141,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectCardOwner;
 	}
 
-	public DifferentImplementationGuideComposite<M> getGuideComposite() {
+	public DifferentImplementationHelpComposite<M> getGuideComposite() {
 		return this.guideComposite;
 	}
 

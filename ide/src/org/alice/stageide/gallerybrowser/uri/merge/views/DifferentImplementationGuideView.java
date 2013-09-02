@@ -58,7 +58,7 @@ public class DifferentImplementationGuideView extends org.lgna.croquet.component
 	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 	private final org.lgna.croquet.components.MigPanel selectOnePanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 
-	public DifferentImplementationGuideView( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationGuideComposite<?> composite ) {
+	public DifferentImplementationGuideView( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
 		this.addComponent( composite.getHeader().createLabel(), "wrap" );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
@@ -84,7 +84,7 @@ public class DifferentImplementationGuideView extends org.lgna.croquet.component
 
 	@Override
 	public void handleCompositePreActivation() {
-		org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationGuideComposite<?> composite = (org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationGuideComposite<?>)this.getComposite();
+		org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationHelpComposite<?> composite = (org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationHelpComposite<?>)this.getComposite();
 		composite.getTopLevelChoiceState().addAndInvokeValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
@@ -92,7 +92,7 @@ public class DifferentImplementationGuideView extends org.lgna.croquet.component
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationGuideComposite<?> composite = (org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationGuideComposite<?>)this.getComposite();
+		org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationHelpComposite<?> composite = (org.alice.stageide.gallerybrowser.uri.merge.DifferentImplementationHelpComposite<?>)this.getComposite();
 		composite.getTopLevelChoiceState().removeValueListener( this.valueListener );
 	}
 
