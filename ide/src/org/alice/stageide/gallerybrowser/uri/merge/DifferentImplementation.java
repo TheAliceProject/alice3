@@ -116,9 +116,9 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 		//todo
 		if( importMember instanceof org.lgna.project.ast.UserMethod ) {
-			this.guideComposite = (DifferentImplementationHelpComposite<M>)new DifferentMethodImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserMethod>)this );
+			this.guideComposite = (DifferentImplementationHelpComposite<M>)new MethodDifferentImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserMethod>)this );
 		} else if( importMember instanceof org.lgna.project.ast.UserField ) {
-			this.guideComposite = (DifferentImplementationHelpComposite<M>)new DifferentFieldImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserField>)this );
+			this.guideComposite = (DifferentImplementationHelpComposite<M>)new FieldDifferentImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserField>)this );
 		} else {
 			//todo
 			this.guideComposite = null;

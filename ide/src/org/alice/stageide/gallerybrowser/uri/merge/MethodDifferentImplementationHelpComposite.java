@@ -45,8 +45,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentMethodImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserMethod> {
-	public DifferentMethodImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserMethod> differentImplementation ) {
+public final class MethodDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserMethod> {
+	public MethodDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserMethod> differentImplementation ) {
 		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation );
 	}
 }
