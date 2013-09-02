@@ -920,6 +920,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
+					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
 					StringValue sidekickLabel = model.peekSidekickLabel();

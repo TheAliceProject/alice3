@@ -51,6 +51,15 @@ public abstract class PotentialNameChanger {
 			return isRenameRequired() ? org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
 		}
 	};
+	private final java.net.URI uriForDescriptionPurposesOnly;
+
+	public PotentialNameChanger( java.net.URI uriForDescriptionPurposesOnly ) {
+		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
+	}
+
+	public java.net.URI getUriForDescriptionPurposesOnly() {
+		return this.uriForDescriptionPurposesOnly;
+	}
 
 	protected abstract boolean isRenameRequired();
 

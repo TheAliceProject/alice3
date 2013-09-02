@@ -54,7 +54,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	private final DifferentImplementationHelpComposite<M> helpComposite;
 
-	public DifferentImplementation( M importMember, M projectMember ) {
+	public DifferentImplementation( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
+		super( uriForDescriptionPurposesOnly );
 		final String POSTFIX = "<br><em>(different implementation)</em>";
 		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
 			@Override

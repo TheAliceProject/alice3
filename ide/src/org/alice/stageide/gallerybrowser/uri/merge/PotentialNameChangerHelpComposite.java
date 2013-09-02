@@ -57,6 +57,17 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		this.potentialNameChanger = potentialNameChanger;
 	}
 
+	@Override
+	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+		String rv = super.modifyLocalizedText( element, localizedText );
+		if( rv != null ) {
+			if( element == this.importNameState.getSidekickLabel() ) {
+				rv = ImportTypeComposite.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
+			}
+		}
+		return rv;
+	}
+
 	public N getPotentialNameChanger() {
 		return this.potentialNameChanger;
 	}

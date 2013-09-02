@@ -46,6 +46,11 @@ package org.alice.stageide.gallerybrowser.uri.merge;
  * @author Dennis Cosgrove
  */
 public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.gallerybrowser.uri.merge.views.ImportTypeView> {
+	/* package-private */static String modifyFilenameLocalizedText( String s, java.net.URI uri ) {
+		java.io.File file = new java.io.File( uri );
+		return s.replaceAll( "</filename/>", file.getName() );
+	}
+
 	private final java.net.URI uriForDescriptionPurposesOnly;
 
 	private final org.lgna.project.ast.NamedUserType importedRootType;

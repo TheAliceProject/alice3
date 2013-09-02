@@ -69,8 +69,7 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
 			if( element == this.fromImportHeader ) {
-				java.io.File file = new java.io.File( this.uriForDescriptionPurposesOnly );
-				rv = rv.replaceAll( "</filename/>", file.getName() );
+				rv = ImportTypeComposite.modifyFilenameLocalizedText( rv, this.uriForDescriptionPurposesOnly );
 			}
 		}
 		return rv;
@@ -86,12 +85,12 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	}
 
 	public void addDifferentSignatureMembers( M importMember, M projectMember ) {
-		this.differentSignatures.add( new DifferentSignature<M>( importMember, projectMember ) );
+		this.differentSignatures.add( new DifferentSignature<M>( this.uriForDescriptionPurposesOnly, importMember, projectMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
 	public void addDifferentImplementationMembers( M importMember, M projectMember ) {
-		this.differentImplementations.add( new DifferentImplementation<M>( importMember, projectMember ) );
+		this.differentImplementations.add( new DifferentImplementation<M>( this.uriForDescriptionPurposesOnly, importMember, projectMember ) );
 		this.unusedProjectMembers.remove( projectMember );
 	}
 
