@@ -42,11 +42,13 @@
  */
 package edu.wustl.cse.lookingglass.media.composites;
 
-import org.alice.ide.IDE;
+import java.io.File;
+
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.MessageDialogComposite;
+import org.lgna.croquet.MessageType;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -58,28 +60,35 @@ import edu.wustl.cse.lookingglass.media.views.FFmpegProcessExceptionView;
 /**
  * @author Matt May
  */
-public class FFmpegProcessExceptionDialog extends PlainDialogOperationComposite<FFmpegProcessExceptionView> {
+public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmpegProcessExceptionView> {
 
 	private final StringValue explanationStringState = createStringValue( createKey( "explanation" ) );
 	private final BooleanState fixedState = createBooleanState( createKey( "notToTranslate" ), false );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
+	private File ffmpegFile;
 
-	public FFmpegProcessExceptionDialog( Exception e ) {
-		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), IDE.EXPORT_GROUP );
+	public ExecutionPermissionFailedDialog( File f ) {
+		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
+		this.ffmpegFile = f;
 	}
 
 	public final ActionOperation troubleShootAction = createActionOperation( createKey( "troubleShoot" ), new Action() {
 
 		@Override
 		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
-			if( SystemUtilities.isMac() ) {
-				RuntimeUtilities.exec( "chmod a+x /Applications/Alice3/ext/ffmpeg/macosx/bin/ffmpeg" );
-				//			} else if( SystemUtilities.isWindows() ) {
-				//				RuntimeUtilities.exec( "chmod a+x /Applications/Alice3/ext/ffmpeg/macosx/bin/ffmpeg" );
+			if( SystemUtilities.isMac() || SystemUtilities.isLinux() ) {
+				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
+			} else if( SystemUtilities.isWindows() ) {
+				//file browse to location
 			}
 			return null;
 		}
 	} );
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
 
 	@Override
 	protected FFmpegProcessExceptionView createView() {
@@ -104,7 +113,7 @@ public class FFmpegProcessExceptionDialog extends PlainDialogOperationComposite<
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new FFmpegProcessExceptionDialog( null ).getOperation().fire();
+		new ExecutionPermissionFailedDialog( null ).getOperation().fire();
 		System.exit( 0 );
 	}
 }

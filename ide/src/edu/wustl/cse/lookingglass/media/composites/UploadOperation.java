@@ -42,9 +42,6 @@
  */
 package edu.wustl.cse.lookingglass.media.composites;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.alice.ide.IDE;
 import org.alice.media.ExportToYouTubeWizardDialogComposite;
 import org.lgna.croquet.ActionOperation;
@@ -52,8 +49,6 @@ import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 
 import edu.wustl.cse.lookingglass.media.FFmpegProcess;
-import edu.wustl.cse.lookingglass.media.FFmpegProcessException;
-import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
 
 /**
  * @author Matt May
@@ -66,31 +61,10 @@ public class UploadOperation extends ActionOperation {
 
 	@Override
 	protected void perform( Transaction transaction, Trigger trigger ) {
-		File encodedVideo = null;
-		FFmpegProcess process = null;
-		try {
-			encodedVideo = java.io.File.createTempFile( "project", "." + ImagesToWebmEncoder.WEBM_EXTENSION );
-		} catch( IOException e ) {
-			e.printStackTrace();
-			return;
+		if( FFmpegProcess.canExecute() ) {
+			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
+		} else {
+			new ExecutionPermissionFailedDialog( FFmpegProcess.getFile() );
 		}
-		process = new FFmpegProcess( "-y", "-r", String.format( "%d", 1 ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", encodedVideo.getAbsolutePath() );
-		Process start = null;
-		try {
-			start = process.start();
-		} catch( FFmpegProcessException e ) {
-			FFmpegProcessExceptionDialog dialog = new FFmpegProcessExceptionDialog( e );
-			dialog.getOperation().fire();
-			if( dialog.getIsFixed() ) {
-				//pass
-			} else {
-				System.out.println( "RETURNING" );
-				return;
-			}
-		}
-		if( start != null ) {
-			process.stop();
-		}
-		ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 	}
 }

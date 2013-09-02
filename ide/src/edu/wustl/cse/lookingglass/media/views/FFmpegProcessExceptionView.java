@@ -46,13 +46,13 @@ import java.awt.Dimension;
 
 import org.lgna.croquet.components.BorderPanel;
 
-import edu.wustl.cse.lookingglass.media.composites.FFmpegProcessExceptionDialog;
+import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDialog;
 
 /**
  * @author Matt May
  */
 public class FFmpegProcessExceptionView extends BorderPanel {
-	public FFmpegProcessExceptionView( FFmpegProcessExceptionDialog composite ) {
+	public FFmpegProcessExceptionView( ExecutionPermissionFailedDialog composite ) {
 		super( composite );
 		this.getAwtComponent().setMinimumSize( new Dimension( 150, 100 ) );
 		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
