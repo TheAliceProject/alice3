@@ -62,23 +62,11 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
-	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.importHub.getIsDesiredState();
+	public BareBonesMemberHub<M> getImportHub() {
+		return this.importHub;
 	}
 
-	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.projectHub.getIsDesiredState();
-	}
-
-	public M getImportMember() {
-		return this.importHub.getMember();
-	}
-
-	public M getProjectMember() {
-		return this.projectHub.getMember();
-	}
-
-	public MemberPopupCoreComposite getPopup() {
-		return this.projectHub.getPopup();
+	public MemberHub<M> getProjectHub() {
+		return this.projectHub;
 	}
 }

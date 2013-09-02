@@ -55,7 +55,7 @@ public final class ReplacePositiveImplementationCard extends org.lgna.croquet.Si
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
-		org.lgna.project.ast.Member member = this.differentImplementation.getImportMember();
+		org.lgna.project.ast.Member member = this.differentImplementation.getImportHub().getMember();
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0" );
 		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createReplaceMemberLabel( member ) );
 		return rv;

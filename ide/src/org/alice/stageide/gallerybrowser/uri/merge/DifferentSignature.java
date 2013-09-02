@@ -57,7 +57,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		this.importHub = new MemberHubWithNameState<M>( importMember, true, "add ", postfix ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( getIsDesiredState().getValue() ) {
+				if( importHub.getIsDesiredState().getValue() ) {
 					if( isRenameRequired() ) {
 						return ActionStatus.RENAME_REQUIRED;
 					} else {
@@ -72,7 +72,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		this.projectHub = new MemberHubWithNameState<M>( projectMember, true, "keep ", postfix ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( getIsAddDesiredState().getValue() ) {
+				if( importHub.getIsDesiredState().getValue() ) {
 					if( isRenameRequired() ) {
 						return ActionStatus.RENAME_REQUIRED;
 					} else {
@@ -95,47 +95,15 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		return this.projectHub;
 	}
 
-	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.importHub.getIsDesiredState();
-	}
-
-	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.projectHub.getIsDesiredState();
-	}
-
-	public MemberNameState<M> getImportNameState() {
-		return this.importHub.getNameState();
-	}
-
-	public MemberNameState<M> getProjectNameState() {
-		return this.projectHub.getNameState();
-	}
-
-	public M getImportMember() {
-		return this.importHub.getMember();
-	}
-
-	public M getProjectMember() {
-		return this.projectHub.getMember();
-	}
-
-	public MemberPopupCoreComposite getImportPopup() {
-		return this.importHub.getPopup();
-	}
-
-	public MemberPopupCoreComposite getProjectPopup() {
-		return this.projectHub.getPopup();
-	}
-
 	public ProjectDifferentSignatureCardOwner getProjectCardOwner() {
 		return this.projectCardOwner;
 	}
 
 	@Override
 	protected boolean isRenameRequired() {
-		if( this.getIsAddDesiredState().getValue() ) {
+		if( this.importHub.getIsDesiredState().getValue() ) {
 			//todo
-			return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+			return this.projectHub.getNameState().getValue().contentEquals( this.importHub.getNameState().getValue() );
 		}
 		return false;
 	}
@@ -143,7 +111,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.isRenameRequired() ) {
 			sb.append( "must not have same name: \"" );
-			sb.append( this.getImportMember().getName() );
+			sb.append( this.importHub.getMember().getName() );
 			sb.append( "\"." );
 		}
 	}

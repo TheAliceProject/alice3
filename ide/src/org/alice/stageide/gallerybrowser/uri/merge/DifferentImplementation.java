@@ -59,8 +59,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( getIsAddDesiredState().getValue() ) {
-					if( getIsKeepDesiredState().getValue() ) {
+				if( importHub.getIsDesiredState().getValue() ) {
+					if( projectHub.getIsDesiredState().getValue() ) {
 						if( isRenameRequired() ) {
 							return ActionStatus.RENAME_REQUIRED;
 						} else {
@@ -70,7 +70,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 						return ActionStatus.REPLACE_OVER_ORIGINAL;
 					}
 				} else {
-					if( getIsKeepDesiredState().getValue() ) {
+					if( projectHub.getIsDesiredState().getValue() ) {
 						return ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL;
 					} else {
 						return ActionStatus.SELECTION_REQUIRED;
@@ -82,8 +82,8 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		this.projectHub = new MemberHubWithNameState<M>( projectMember, false, "keep ", POSTFIX ) {
 			@Override
 			public org.alice.stageide.gallerybrowser.uri.merge.ActionStatus getActionStatus() {
-				if( getIsAddDesiredState().getValue() ) {
-					if( getIsKeepDesiredState().getValue() ) {
+				if( importHub.getIsDesiredState().getValue() ) {
+					if( projectHub.getIsDesiredState().getValue() ) {
 						if( isRenameRequired() ) {
 							return ActionStatus.RENAME_REQUIRED;
 						} else {
@@ -93,7 +93,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 						return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
 					}
 				} else {
-					if( getIsKeepDesiredState().getValue() ) {
+					if( projectHub.getIsDesiredState().getValue() ) {
 						return ActionStatus.KEEP_AND_RENAME;
 					} else {
 						return ActionStatus.SELECTION_REQUIRED;
@@ -125,12 +125,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		}
 	}
 
-	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.importHub.getIsDesiredState();
+	public MemberHubWithNameState<M> getImportHub() {
+		return this.importHub;
 	}
 
-	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.projectHub.getIsDesiredState();
+	public MemberHubWithNameState<M> getProjectHub() {
+		return this.projectHub;
 	}
 
 	public DifferentImplementationCardOwner getImportCardOwner() {
@@ -141,53 +141,29 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return this.projectCardOwner;
 	}
 
-	public MemberNameState<M> getImportNameState() {
-		return this.importHub.getNameState();
-	}
-
-	public MemberNameState<M> getProjectNameState() {
-		return this.projectHub.getNameState();
-	}
-
-	public M getImportMember() {
-		return this.importHub.getMember();
-	}
-
-	public M getProjectMember() {
-		return this.projectHub.getMember();
-	}
-
-	public MemberPopupCoreComposite getImportPopup() {
-		return this.importHub.getPopup();
-	}
-
-	public MemberPopupCoreComposite getProjectPopup() {
-		return this.projectHub.getPopup();
-	}
-
 	public DifferentImplementationGuideComposite<M> getGuideComposite() {
 		return this.guideComposite;
 	}
 
 	@Override
 	protected boolean isRenameRequired() {
-		if( this.getIsAddDesiredState().getValue() ) {
-			if( this.getIsKeepDesiredState().getValue() ) {
+		if( this.importHub.getIsDesiredState().getValue() ) {
+			if( this.projectHub.getIsDesiredState().getValue() ) {
 				//todo
-				return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+				return this.projectHub.getNameState().getValue().contentEquals( this.importHub.getNameState().getValue() );
 			}
 		}
 		return false;
 	}
 
 	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
-		boolean isAddDesired = this.getIsAddDesiredState().getValue();
-		boolean isKeepDesired = this.getIsKeepDesiredState().getValue();
+		boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
+		boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
 		if( isAddDesired ) {
 			if( isKeepDesired ) {
 				if( this.isRenameRequired() ) {
 					sb.append( "must not have same name: \"" );
-					sb.append( this.getImportMember().getName() );
+					sb.append( this.getImportHub().getMember().getName() );
 					sb.append( "\"." );
 				} else {
 					//pass
@@ -200,7 +176,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				//pass
 			} else {
 				sb.append( "must take action on \"" );
-				sb.append( this.getImportMember().getName() );
+				sb.append( this.getImportHub().getMember().getName() );
 				sb.append( "\" (replace, keep, or add-and-keep-with-rename)." );
 			}
 		}

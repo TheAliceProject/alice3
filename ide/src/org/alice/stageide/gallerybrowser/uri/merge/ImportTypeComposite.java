@@ -216,32 +216,32 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.stageide.gallerybrowser.uri.merge.edits.RenameMemberData> renames, AddMembersComposite<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
-			if( importOnly.getIsAddDesiredState().getValue() ) {
-				membersToAdd.add( this.createImportCopy( importOnly.getImportMember() ) );
+			if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
+				membersToAdd.add( this.createImportCopy( importOnly.getImportHub().getMember() ) );
 			}
 		}
 
 		for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
-			if( differentSignature.getIsAddDesiredState().getValue() ) {
-				M member = this.createImportCopy( differentSignature.getImportMember() );
+			if( differentSignature.getImportHub().getIsDesiredState().getValue() ) {
+				M member = this.createImportCopy( differentSignature.getImportHub().getMember() );
 				membersToAdd.add( member );
-				addRenameIfNecessary( renames, differentSignature.getImportNameState(), member );
-				addRenameIfNecessary( renames, differentSignature.getProjectNameState() );
+				addRenameIfNecessary( renames, differentSignature.getImportHub().getNameState(), member );
+				addRenameIfNecessary( renames, differentSignature.getProjectHub().getNameState() );
 			}
 		}
 
 		for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
-			if( differentImplementation.getIsAddDesiredState().getValue() ) {
-				M member = this.createImportCopy( differentImplementation.getImportMember() );
+			if( differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
+				M member = this.createImportCopy( differentImplementation.getImportHub().getMember() );
 				membersToAdd.add( member );
-				if( differentImplementation.getIsKeepDesiredState().getValue() ) {
-					addRenameIfNecessary( renames, differentImplementation.getImportNameState(), member );
-					addRenameIfNecessary( renames, differentImplementation.getProjectNameState() );
+				if( differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
+					addRenameIfNecessary( renames, differentImplementation.getImportHub().getNameState(), member );
+					addRenameIfNecessary( renames, differentImplementation.getProjectHub().getNameState() );
 				} else {
-					membersToRemove.add( differentImplementation.getProjectMember() );
+					membersToRemove.add( differentImplementation.getProjectHub().getMember() );
 				}
 			} else {
-				if( differentImplementation.getIsKeepDesiredState().getValue() ) {
+				if( differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
 					//pass
 				} else {
 					//should not happen
@@ -307,8 +307,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	private void applyAllDifferentImplementations( boolean isAccept ) {
 		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
 			for( DifferentImplementation<?> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
-				differentImplementation.getIsAddDesiredState().setValueTransactionlessly( isAccept );
-				differentImplementation.getIsKeepDesiredState().setValueTransactionlessly( isAccept == false );
+				differentImplementation.getImportHub().getIsDesiredState().setValueTransactionlessly( isAccept );
+				differentImplementation.getProjectHub().getIsDesiredState().setValueTransactionlessly( isAccept == false );
 			}
 		}
 	}

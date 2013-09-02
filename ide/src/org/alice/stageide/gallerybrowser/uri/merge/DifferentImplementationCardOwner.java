@@ -118,16 +118,16 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 			this.addCard( this.renameCard );
 		}
 
-		this.differentImplementation.getIsAddDesiredState().addValueListener( this.valueListener );
-		this.differentImplementation.getIsKeepDesiredState().addAndInvokeValueListener( this.valueListener );
+		this.differentImplementation.getImportHub().getIsDesiredState().addValueListener( this.valueListener );
+		this.differentImplementation.getProjectHub().getIsDesiredState().addAndInvokeValueListener( this.valueListener );
 	}
 
 	//private static final String REQUIRES_RENAME = " <em>(requires rename)</em>";
 	//private static final String WOULD_REQUIRE_RENAME = " <em>(would require rename)</em>";
 
 	private void updateCardAndUpdateIsMemberDesiredStatesWhileAtIt() {
-		boolean isAddDesired = this.differentImplementation.getIsAddDesiredState().getValue();
-		boolean isKeepDesired = this.differentImplementation.getIsKeepDesiredState().getValue();
+		boolean isAddDesired = this.differentImplementation.getImportHub().getIsDesiredState().getValue();
+		boolean isKeepDesired = this.differentImplementation.getProjectHub().getIsDesiredState().getValue();
 		String prefix;
 		org.lgna.croquet.Composite<?> card;
 		if( isKeepDesired ) {
@@ -169,7 +169,7 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 		//		}
 
 		this.showCard( card );
-		this.differentImplementation.getIsAddDesiredState().setPrependText( prefix );
+		this.differentImplementation.getImportHub().getIsDesiredState().setPrependText( prefix );
 		//		this.differentImplementation.getIsKeepDesiredState().setTextForBothTrueAndFalseBasedOnMemberName( "keep ", keepPostfix );
 	}
 }

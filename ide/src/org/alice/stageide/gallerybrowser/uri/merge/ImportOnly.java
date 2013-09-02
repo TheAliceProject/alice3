@@ -61,15 +61,7 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 		};
 	}
 
-	public IsMemberDesiredState<M> getIsAddDesiredState() {
-		return this.importHub.getIsDesiredState();
-	}
-
-	public MemberPopupCoreComposite getPopup() {
-		return this.importHub.getPopup();
-	}
-
-	public M getImportMember() {
-		return this.importHub.getMember();
+	public MemberHub<M> getImportHub() {
+		return this.importHub;
 	}
 }

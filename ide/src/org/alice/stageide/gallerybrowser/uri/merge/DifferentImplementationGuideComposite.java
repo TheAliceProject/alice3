@@ -108,8 +108,8 @@ public abstract class DifferentImplementationGuideComposite<M extends org.lgna.p
 
 	@Override
 	public void handlePreActivation() {
-		boolean isImport = this.differentImplementation.getIsAddDesiredState().getValue();
-		boolean isProject = this.differentImplementation.getIsKeepDesiredState().getValue();
+		boolean isImport = this.differentImplementation.getImportHub().getIsDesiredState().getValue();
+		boolean isProject = this.differentImplementation.getProjectHub().getIsDesiredState().getValue();
 		DifferentImplementationTopLevelChoice topLevelChoice;
 		DifferentImplementationSelectOne selectOne;
 		if( isImport ) {
@@ -129,8 +129,8 @@ public abstract class DifferentImplementationGuideComposite<M extends org.lgna.p
 				selectOne = null;
 			}
 		}
-		this.importNameState.setValueTransactionlessly( this.differentImplementation.getImportNameState().getValue() );
-		this.projectNameState.setValueTransactionlessly( this.differentImplementation.getProjectNameState().getValue() );
+		this.importNameState.setValueTransactionlessly( this.differentImplementation.getImportHub().getNameState().getValue() );
+		this.projectNameState.setValueTransactionlessly( this.differentImplementation.getProjectHub().getNameState().getValue() );
 		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
 		this.selectOneState.setValueTransactionlessly( selectOne );
 		super.handlePreActivation();
@@ -144,8 +144,8 @@ public abstract class DifferentImplementationGuideComposite<M extends org.lgna.p
 		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
 			isImport = true;
 			isKeep = true;
-			this.differentImplementation.getImportNameState().setValueTransactionlessly( this.importNameState.getValue() );
-			this.differentImplementation.getProjectNameState().setValueTransactionlessly( this.projectNameState.getValue() );
+			this.differentImplementation.getImportHub().getNameState().setValueTransactionlessly( this.importNameState.getValue() );
+			this.differentImplementation.getProjectHub().getNameState().setValueTransactionlessly( this.projectNameState.getValue() );
 		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
 			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
 			if( selectOne == DifferentImplementationSelectOne.FROM_IMPORT ) {
@@ -159,8 +159,8 @@ public abstract class DifferentImplementationGuideComposite<M extends org.lgna.p
 		} else {
 			throw new org.lgna.croquet.CancelException();
 		}
-		this.differentImplementation.getIsAddDesiredState().setValueTransactionlessly( isImport );
-		this.differentImplementation.getIsKeepDesiredState().setValueTransactionlessly( isKeep );
+		this.differentImplementation.getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
+		this.differentImplementation.getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
 		return null;
 	}
 

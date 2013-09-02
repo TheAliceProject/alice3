@@ -55,7 +55,7 @@ public final class KeepSignatureCard extends org.lgna.croquet.SimpleComposite<or
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
-		org.lgna.project.ast.Member member = this.differentSignature.getProjectMember();
+		org.lgna.project.ast.Member member = this.differentSignature.getProjectHub().getMember();
 		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0, fill" );
 		rv.addComponent( org.alice.stageide.gallerybrowser.uri.merge.views.MemberViewUtilities.createKeepUniqueMemberLabel( member ) );
 		return rv;

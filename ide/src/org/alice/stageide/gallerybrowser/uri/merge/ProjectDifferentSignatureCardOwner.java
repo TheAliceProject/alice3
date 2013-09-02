@@ -68,11 +68,11 @@ public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.C
 		this.addCard( this.keepCard );
 		this.addCard( this.renameCard );
 		this.showCard( this.renameCard );
-		this.differentSignature.getIsAddDesiredState().addValueListener( this.valueListener );
+		this.differentSignature.getImportHub().getIsDesiredState().addValueListener( this.valueListener );
 	}
 
 	private void updateCard() {
-		if( this.differentSignature.getIsAddDesiredState().getValue() ) {
+		if( this.differentSignature.getImportHub().getIsDesiredState().getValue() ) {
 			this.showCard( this.renameCard );
 		} else {
 			this.showCard( this.keepCard );

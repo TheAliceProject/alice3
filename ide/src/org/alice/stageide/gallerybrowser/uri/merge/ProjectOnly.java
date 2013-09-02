@@ -58,15 +58,7 @@ public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
-	public IsMemberDesiredState<M> getIsKeepDesiredState() {
-		return this.projectHub.getIsDesiredState();
-	}
-
-	public MemberPopupCoreComposite getPopup() {
-		return this.projectHub.getPopup();
-	}
-
-	public M getProjectMember() {
-		return this.projectHub.getMember();
+	public MemberHub<M> getProjectHub() {
+		return this.projectHub;
 	}
 }
