@@ -48,9 +48,17 @@ package edu.wustl.cse.lookingglass.media;
  */
 public class FFmpegImageExtractor {
 
-	public static void getFrameAt( String videoPath, double seconds, java.io.File snapshotFile ) {
-		String frameTime = ( new Double( seconds ) ).toString();
-		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", frameTime, "-i", videoPath, "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
+	public static void getFrameAt( final String videoPath, final double frameTimeSeconds, final java.io.File snapshotFile ) {
+		// https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
+		final Double GOP_SEEK = 10.0 * 2.0; // GOP is typically 10 seconds, so let's double it.
+		Double fastSeek = frameTimeSeconds - GOP_SEEK;
+		Double accurateSeek = GOP_SEEK;
+		if( fastSeek < 0.0 ) {
+			fastSeek = 0.0;
+			accurateSeek = frameTimeSeconds;
+		}
+
+		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
 		ffmpegProcess.start();
 		int status = ffmpegProcess.stop();
 		if( status != 0 ) {
@@ -59,7 +67,7 @@ public class FFmpegImageExtractor {
 		}
 	}
 
-	public static java.awt.Image getFrameAt( String mrl, double seconds ) {
+	public static java.awt.Image getFrameAt( final String mrl, final double seconds ) {
 		java.awt.Image snapshot = null;
 		try {
 			java.io.File snapshotFile = java.io.File.createTempFile( "snapshot", ".png" );
