@@ -210,12 +210,7 @@ public class FFmpegProcess {
 		}
 	}
 
-	public static boolean canExecute() {
-		File file = new File( getFFmpegPath() );
-		return file.canExecute();
-	}
-
-	public static File getFile() {
-		return new File( getFFmpegPath() );
+	public static File getFFmpegCommandFile() {
+		return new File( getFFmpegCommand() );
 	}
 }

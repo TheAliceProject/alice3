@@ -61,10 +61,10 @@ public class UploadOperation extends ActionOperation {
 
 	@Override
 	protected void perform( Transaction transaction, Trigger trigger ) {
-		if( FFmpegProcess.canExecute() ) {
+		if( FFmpegProcess.getFFmpegCommandFile().canExecute() ) {
 			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 		} else {
-			new ExecutionPermissionFailedDialog( FFmpegProcess.getFile() );
+			new ExecutionPermissionFailedDialog( FFmpegProcess.getFFmpegCommandFile() );
 		}
 	}
 }

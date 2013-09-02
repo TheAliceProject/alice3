@@ -53,8 +53,10 @@ import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 
+import edu.cmu.cs.dennisc.java.awt.DesktopUtilities;
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 import edu.wustl.cse.lookingglass.media.views.FFmpegProcessExceptionView;
 
 /**
@@ -79,7 +81,7 @@ public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmp
 			if( SystemUtilities.isMac() || SystemUtilities.isLinux() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
 			} else if( SystemUtilities.isWindows() ) {
-				//file browse to location
+				DesktopUtilities.open( ffmpegFile.getParentFile() );
 			}
 			return null;
 		}
@@ -113,7 +115,7 @@ public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmp
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new ExecutionPermissionFailedDialog( null ).getOperation().fire();
+		new ExecutionPermissionFailedDialog( FFmpegProcess.getFFmpegCommandFile() ).getOperation().fire();
 		System.exit( 0 );
 	}
 }
