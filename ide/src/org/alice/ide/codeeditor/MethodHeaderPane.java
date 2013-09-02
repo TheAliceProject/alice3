@@ -55,6 +55,11 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		this.userMethod = userMethod;
 	}
 
+	protected org.lgna.croquet.components.Label createNameLabel() {
+		return new org.alice.ide.ast.components.DeclarationNameLabel( this.userMethod );
+
+	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
@@ -78,8 +83,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 
-		//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( userMethod );
+		org.lgna.croquet.components.Label nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( NAME_SCALE );
 		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 

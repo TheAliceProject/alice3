@@ -94,7 +94,8 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel
 		};
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
-			panel.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), method, true ), "wrap" );
+			org.alice.stageide.gallerybrowser.uri.merge.MemberHub memberHub = composite.getMemberHub();
+			panel.addComponent( new MethodHubHeaderView( memberHub ), "wrap" );
 			panel.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
 			if( method.isProcedure() ) {
 				color = theme.getProcedureColor();
