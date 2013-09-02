@@ -51,6 +51,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
 	private final ProjectDifferentSignatureCardOwner projectCardOwner;
+	private final DifferentSignatureHelpComposite<M> helpComposite;
 
 	public DifferentSignature( M importMember, M projectMember ) {
 		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
@@ -85,6 +86,16 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		};
 		this.projectHub.getIsDesiredState().setEnabled( false );
 		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
+
+		//todo
+		if( importMember instanceof org.lgna.project.ast.UserMethod ) {
+			this.helpComposite = (DifferentSignatureHelpComposite<M>)new MethodDifferentSignatureHelpComposite( (DifferentSignature<org.lgna.project.ast.UserMethod>)this );
+		} else if( importMember instanceof org.lgna.project.ast.UserField ) {
+			this.helpComposite = (DifferentSignatureHelpComposite<M>)new FieldDifferentSignatureHelpComposite( (DifferentSignature<org.lgna.project.ast.UserField>)this );
+		} else {
+			//todo
+			this.helpComposite = null;
+		}
 	}
 
 	public MemberHubWithNameState<M> getImportHub() {
@@ -97,6 +108,10 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 
 	public ProjectDifferentSignatureCardOwner getProjectCardOwner() {
 		return this.projectCardOwner;
+	}
+
+	public DifferentSignatureHelpComposite<M> getHelpComposite() {
+		return this.helpComposite;
 	}
 
 	@Override

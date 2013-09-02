@@ -156,8 +156,12 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getImportHub().getPopup() ), "skip 1, split 2" );
 			org.lgna.croquet.components.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), differentSignature.getForegroundCustomizer() );
-			this.addComponent( textField, "wrap" );
+			this.addComponent( textField );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
+
+			org.lgna.croquet.components.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getOperation().createHyperlink();
+			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
+			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
 			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
@@ -187,7 +191,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getGuideComposite().getOperation().createHyperlink();
+			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getOperation().createHyperlink();
 			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 

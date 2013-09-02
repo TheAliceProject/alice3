@@ -45,7 +45,8 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public enum DifferentImplementationTopLevelChoice {
-	KEEP_BOTH_AND_RENAME,
-	SELECT_ONE
+public final class FieldDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<org.lgna.project.ast.UserField> {
+	public FieldDifferentSignatureHelpComposite( DifferentSignature<org.lgna.project.ast.UserField> differentSignature ) {
+		super( java.util.UUID.fromString( "2f0ed547-7cfc-4edc-bf39-1908b3ef6f89" ), differentSignature );
+	}
 }
