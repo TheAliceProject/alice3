@@ -49,7 +49,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 	private final MessageType messageType;
 	private String title;
 
-	private final Operation launchOperation;
+	private final OwnedByCompositeOperation launchOperation;
 
 	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
 		super( migrationId );
@@ -63,13 +63,37 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	public Operation getLaunchOperation() {
+	public String modifyNameIfNecessary( String text ) {
+		return text;
+	}
+
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
+	}
+
+	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+
+	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+
+	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+		return defaultValue;
+	}
+
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
+	}
+
+	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
 		return this.launchOperation;
 	}
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		java.awt.Component awtComponent = null; //todo
 		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent(), this.title, this.messageType.getInternal() );
+		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
 	}
 }
