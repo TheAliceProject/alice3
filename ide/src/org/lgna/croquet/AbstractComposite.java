@@ -920,6 +920,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
+					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
 					StringValue sidekickLabel = model.peekSidekickLabel();
@@ -944,11 +945,15 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	protected String modifyLocalizedText( Element element, String localizedText ) {
+		return localizedText;
+	}
+
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
+			stringValue.setText( this.modifyLocalizedText( stringValue, this.findLocalizedText( key.getLocalizationKey() ) ) );
 		}
 		this.localizeSidekicks(
 				this.mapKeyToActionOperation,

@@ -376,7 +376,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.CodePerspective.getInstance() );
+		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
+		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? org.alice.stageide.perspectives.SetupScenePerspective.getInstance() : org.alice.stageide.perspectives.CodePerspective.getInstance();
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
@@ -384,7 +386,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original ) {
+	public <N extends org.lgna.project.ast.Node> N createCopy( N original ) {
 		org.lgna.project.ast.NamedUserType root = this.getProgramType();
 		return org.lgna.project.ast.AstUtilities.createCopy( original, root );
 	}

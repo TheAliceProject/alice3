@@ -55,7 +55,7 @@ public class TypeCache {
 		this.seed();
 	}
 
-	private TypeKey createKeyForType( org.lgna.project.ast.NamedUserType type ) {
+	private static TypeKey createKeyForType( org.lgna.project.ast.NamedUserType type ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> superType = type.getSuperType();
 		java.util.ArrayList<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
@@ -95,7 +95,7 @@ public class TypeCache {
 
 	private void seed() {
 		for( org.lgna.project.ast.NamedUserType type : this.project.getNamedUserTypes() ) {
-			TypeKey key = this.createKeyForType( type );
+			TypeKey key = createKeyForType( type );
 			if( key != null ) {
 				this.map.put( key, type );
 			} else {
