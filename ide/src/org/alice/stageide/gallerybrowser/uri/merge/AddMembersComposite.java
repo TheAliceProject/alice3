@@ -54,10 +54,8 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private java.util.List<ProjectOnly<M>> projectOnlys;
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<M, MemberPopupCoreComposite> mapMemberToPopupComposite = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-
-	private final org.lgna.croquet.PlainStringValue addHeader = this.createStringValue( this.createKey( "addHeader" ) );
-	private final org.lgna.croquet.PlainStringValue existingHeader = this.createStringValue( this.createKey( "existingHeader" ) );
+	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( this.createKey( "fromImportHeader" ) );
+	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( this.createKey( "alreadyInProjectHeader" ) );
 	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
 
 	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
@@ -70,21 +68,13 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
-			if( element == this.addHeader ) {
+			if( element == this.fromImportHeader ) {
 				java.io.File file = new java.io.File( this.uriForDescriptionPurposesOnly );
 				rv = rv.replaceAll( "</filename/>", file.getName() );
 			}
 		}
 		return rv;
 	}
-
-	//	public MemberPopupCoreComposite getPopupMemberFor( M member ) {
-	//		return this.mapMemberToPopupComposite.getInitializingIfAbsent( member, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<M, MemberPopupCoreComposite>() {
-	//			public org.alice.stageide.gallerybrowser.uri.merge.MemberPopupCoreComposite initialize( M key ) {
-	//				return new MemberPopupCoreComposite( key );
-	//			}
-	//		} );
-	//	}
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
@@ -137,12 +127,12 @@ public abstract class AddMembersComposite<V extends org.alice.stageide.gallerybr
 		return this.projectOnlys;
 	}
 
-	public org.lgna.croquet.PlainStringValue getAddHeader() {
-		return this.addHeader;
+	public org.lgna.croquet.PlainStringValue getFromImportHeader() {
+		return this.fromImportHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getExistingHeader() {
-		return this.existingHeader;
+	public org.lgna.croquet.PlainStringValue getAlreadyInProjectHeader() {
+		return this.alreadyInProjectHeader;
 	}
 
 	public org.lgna.croquet.PlainStringValue getResultHeader() {

@@ -126,8 +126,8 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		this.setBackgroundColor( backgroundColor );
 
 		String titleText = getTitleText( composite );
-		this.addComponent( createHeader( composite.getAddHeader() ) );
-		this.addComponent( createHeader( composite.getExistingHeader() ) );
+		this.addComponent( createHeader( composite.getFromImportHeader() ) );
+		this.addComponent( createHeader( composite.getAlreadyInProjectHeader() ) );
 		this.addComponent( createHeader( composite.getResultHeader() ), "span 2, wrap" );
 		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "grow, shrink" );
