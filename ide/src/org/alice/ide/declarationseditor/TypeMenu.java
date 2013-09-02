@@ -42,6 +42,7 @@
  */
 package org.alice.ide.declarationseditor;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -187,6 +188,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			models.addAll( unmanagedFieldModels );
 		}
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );
+		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
 		org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver() {
 			public void update( org.lgna.croquet.components.MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, org.lgna.croquet.components.ViewController<?, ?> menuElement ) {

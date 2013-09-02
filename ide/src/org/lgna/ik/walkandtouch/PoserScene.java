@@ -150,6 +150,9 @@ public class PoserScene extends SScene {
 
 	private void performInitializeEvents() {
 		addCustomDragAdapter();
+		addDefaultModelManipulation();
+		//		NiceDragAdapter cameraAdapter = new NiceDragAdapter();
+		//		cameraAdapter.setOnscreenLookingGlass( ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getOnscreenLookingGlass() );
 	}
 
 	public void jointSelected( JointSelectionSphere sphere, MouseEvent e ) {
