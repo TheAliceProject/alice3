@@ -62,7 +62,7 @@ public class FFmpegProcessExceptionDialog extends PlainDialogOperationComposite<
 
 	private final StringValue explanationStringState = createStringValue( createKey( "explanation" ) );
 	private final BooleanState fixedState = createBooleanState( createKey( "notToTranslate" ), false );
-	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://www.alice.org/" );
+	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
 
 	public FFmpegProcessExceptionDialog( Exception e ) {
 		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), IDE.EXPORT_GROUP );
