@@ -187,7 +187,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			this.addComponent( differentImplementation.getGuideComposite().getOperation().createHyperlink(), "spany 2, gapright 8, wrap" );
+			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getGuideComposite().getOperation().createHyperlink();
+			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
+			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getProjectPopup() ), "split 2" );
@@ -336,6 +338,9 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 								path.lineTo( x0, y1 );
 								path.lineTo( x1, y1 );
 								g2.draw( path );
+
+								java.awt.Rectangle pairBounds = prevBounds.union( bounds );
+								g.drawRect( x, pairBounds.y - ( GAP_Y / 2 ), width, pairBounds.height + GAP_Y );
 							}
 							prevBounds = isStartIndexOfRowPair ? bounds : null;
 						}

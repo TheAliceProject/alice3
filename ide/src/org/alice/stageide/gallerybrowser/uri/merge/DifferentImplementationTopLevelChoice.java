@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.uri.merge;
 /**
  * @author Dennis Cosgrove
  */
-public enum DifferentImplementationChoice {
+public enum DifferentImplementationTopLevelChoice {
 	SELECT_ONE,
 	KEEP_BOTH_AND_RENAME
 }
