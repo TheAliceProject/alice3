@@ -90,7 +90,7 @@ public abstract class Importer<T> {
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
 				return null;
 			}
 		} else {

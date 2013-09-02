@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,80 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package org.lgna.story.implementation.overlay;
+
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ * 
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
+public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
+
+	protected double m_openingDuration;
+	protected double m_updatingDuration;
+	protected double m_closingDuration;
+
+	protected enum State {
+		OPENNING,
+		UPDATING,
+		CLOSING,
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
+		super( entityImp );
+		m_openingDuration = openingDuration;
+		m_updatingDuration = updatingDuration;
+		m_closingDuration = closingDuration;
 	}
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	protected double getOpeningDuration() {
+		return m_openingDuration;
+	}
+
+	protected double getUpdatingDuration() {
+		return m_updatingDuration;
+	}
+
+	protected double getClosingDuration() {
+		return m_closingDuration;
+	}
+
+	protected abstract void updateStateAndPortion( State state, double portion );
+
+	@Override
+	protected void prologue() {
+		this.updateStateAndPortion( State.OPENNING, 0.0 );
+		super.prologue();
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
-			}
+	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		State state;
+		double portion;
+		if( ( m_openingDuration > 0.0 ) && ( deltaSincePrologue <= m_openingDuration ) ) {
+			state = State.OPENNING;
+			portion = deltaSincePrologue / m_openingDuration;
+		} else if( ( m_updatingDuration > 0.0 ) && ( deltaSincePrologue <= ( m_openingDuration + m_updatingDuration ) ) ) {
+			state = State.UPDATING;
+			portion = ( deltaSincePrologue - m_openingDuration ) / m_updatingDuration;
 		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
+			state = State.CLOSING;
+			if( m_closingDuration > 0.0 ) {
+				portion = Math.min( ( deltaSincePrologue - m_openingDuration - m_updatingDuration ) / m_closingDuration, 1.0 );
+			} else {
+				portion = 1.0;
+			}
 		}
+		this.updateStateAndPortion( state, portion );
+		double toReturn = ( m_openingDuration + m_updatingDuration + m_closingDuration ) - deltaSincePrologue;
+		return toReturn;
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	@Override
+	protected void epilogue() {
+		this.updateStateAndPortion( State.CLOSING, 1.0 );
+		super.epilogue();
 	}
+
 }

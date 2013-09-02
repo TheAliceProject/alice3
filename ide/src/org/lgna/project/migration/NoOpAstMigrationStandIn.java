@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
-	}
-
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
-	}
-
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+public class NoOpAstMigrationStandIn extends AstMigration {
+	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		super( minimumVersion, resultVersion );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
-			}
-		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
-		}
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	public void migrate( org.lgna.project.ast.Node node ) {
 	}
 }

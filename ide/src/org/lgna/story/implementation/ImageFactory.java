@@ -40,72 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.texture;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class TextureFactory {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public final class ImageFactory {
+	private static java.util.Map<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage> resourceToBufferedImageMap = new java.util.HashMap<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage>();
+
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
 
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
-			org.lgna.common.Resource resource = e.getTypedSource();
-			if( resource instanceof org.lgna.common.resources.ImageResource ) {
-				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
-				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
-				if( bufferedImage != null ) {
-					Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
-					if( texture instanceof BufferedImageTexture ) {
-						BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
-						TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
-					} else {
-						//todo
-					}
-				} else {
-					//todo
-				}
-			} else {
-				//todo
-			}
+			ImageFactory.forget( (org.lgna.common.resources.ImageResource)e.getTypedSource() );
 		}
 	};
 
-	private TextureFactory() {
+	private ImageFactory() {
 	}
 
-	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, java.awt.image.BufferedImage bufferedImage ) {
-		bufferedImageTexture.setBufferedImage( bufferedImage );
-
-		//todo: handle java.awt.image.BufferedImage.BITMASK? 
-		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == java.awt.image.BufferedImage.TRANSLUCENT;
-		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
+	public static void forget( org.lgna.common.resources.ImageResource imageResource ) {
+		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
+		imageResource.removeContentListener( ImageFactory.resourceContentListener );
 	}
 
-	public static BufferedImageTexture getTexture( org.lgna.common.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
+	public static java.awt.image.BufferedImage getBufferedImage( org.lgna.common.resources.ImageResource imageResource ) {
 		assert imageResource != null;
-		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
+		java.awt.image.BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
 		if( rv != null ) {
 			//pass
 		} else {
-			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
-			if( bufferedImage != null ) {
-				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
-				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
-				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
-				rv = bufferedImageTexture;
+			try {
+				rv = javax.imageio.ImageIO.read( new java.io.ByteArrayInputStream( imageResource.getData() ) );
+				//				if( imageResource.getWidth() < 0 || imageResource.getHeight() < 0 ) {
+				imageResource.setWidth( rv.getWidth() );
+				imageResource.setHeight( rv.getHeight() );
+				//				}
 
-				//todo: address order dependency w/ ImageFactory 
-				imageResource.addContentListener( TextureFactory.resourceContentListener );
-
-				TextureFactory.resourceToTextureMap.put( imageResource, rv );
-			} else {
-				//todo: warning texture
-				rv = null;
+				imageResource.addContentListener( ImageFactory.resourceContentListener );
+				ImageFactory.resourceToBufferedImageMap.put( imageResource, rv );
+			} catch( java.io.IOException ioe ) {
+				//todo: return warning texture
 			}
 		}
 		return rv;
 	}
+
+	public static org.lgna.common.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
+		String contentType = org.lgna.common.resources.ImageResource.getContentType( file );
+		if( contentType != null ) {
+			org.lgna.common.resources.ImageResource rv = new org.lgna.common.resources.ImageResource( file, contentType );
+
+			//update width and height details
+			getBufferedImage( rv );
+
+			return rv;
+		} else {
+			throw new RuntimeException( "content type not found for " + file );
+		}
+	}
+
 }

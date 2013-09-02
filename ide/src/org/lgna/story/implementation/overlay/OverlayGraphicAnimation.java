@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package org.lgna.story.implementation.overlay;
+
+import edu.cmu.cs.dennisc.animation.AbstractAnimation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ * 
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
+public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+
+	private org.lgna.story.implementation.EntityImp m_entityImp;
+	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
+	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+
+	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
+		assert entityImp != null;
+		m_entityImp = entityImp;
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
-	}
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	@Override
+	protected void prologue() {
+		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
+		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+		m_sgLayer = camera.getPostRenderLayer();
+		m_sgGraphic = this.getSGGraphic();
+		assert m_sgLayer != null;
+		assert m_sgGraphic != null;
+		m_sgGraphic.setParent( m_sgLayer );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
-			}
-		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
-		}
+	protected void preEpilogue() {
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	@Override
+	protected void epilogue() {
+		m_sgGraphic.setParent( null );
 	}
+
 }

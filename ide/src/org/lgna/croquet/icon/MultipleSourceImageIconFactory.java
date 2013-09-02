@@ -68,7 +68,7 @@ public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageI
 				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
 			}
 		} else {
-			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
 		}
 	}
 }

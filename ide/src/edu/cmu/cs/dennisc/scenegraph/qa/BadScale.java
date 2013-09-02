@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.toolkit.croquet.models;
+package edu.cmu.cs.dennisc.scenegraph.qa;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataListSelectionState<T> {
-	public EnumConstantSelectionState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
+public class BadScale implements Problem {
+	private final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+
+	public BadScale( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+		this.sgVisual = sgVisual;
+	}
+
+	public void mend( edu.cmu.cs.dennisc.scenegraph.qa.Mender mender ) {
+		sgVisual.scale.setValue( edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.sgVisual );
+		sb.append( ";" );
+		sb.append( edu.cmu.cs.dennisc.print.PrintUtilities.append( sb, this.sgVisual.scale.getValue() ) );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

@@ -40,42 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.story.implementation.overlay;
 
 /**
  * @author dculyba
  * 
  */
-public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
-	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble m_bubble;
+public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver {
 
-	public BubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		super( entityImp, openingDuration, updatingDuration, closingDuration );
-		m_bubble = bubble;
+	private long startTime;
+
+	/**
+	 * @param entity
+	 * @param openingDuration
+	 * @param updatingDuration
+	 * @param closingDuration
+	 * @param bubble
+	 */
+	public AudioLimitedBubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
+		super( entityImp, openingDuration, 100.0, closingDuration, bubble );
+		this.startTime = 0;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic() {
-		return m_bubble;
-	}
-
-	@Override
-	protected void updateStateAndPortion( State state, double portion ) {
-		if( state == State.OPENNING ) {
-			m_bubble.portion.setValue( portion );
-		} else if( state == State.UPDATING ) {
-			m_bubble.portion.setValue( 1.0 );
-		} else {
-			//state == State.CLOSING;
-			m_bubble.portion.setValue( 1.0 - portion );
-		}
+	protected void prologue()
+	{
+		super.prologue();
+		this.startTime = System.currentTimeMillis();
 	}
 
 	@Override
 	protected void epilogue()
 	{
 		super.epilogue();
-		edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( this.m_bubble );
+		this.startTime = 0;
+	}
+
+	public void setDuration( double duration )
+	{
+		double elapsedTime = 0;
+		if( this.startTime != 0 )
+		{
+			long currentTime = System.currentTimeMillis();
+			elapsedTime = ( currentTime - this.startTime ) * 0.001;
+		}
+		if( elapsedTime > this.m_openingDuration )
+		{
+			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
+		}
+		else
+		{
+			this.m_updatingDuration = duration;
+		}
+	}
+
+	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource )
+	{
+		this.m_updatingDuration = resource.getDuration();
 	}
 
 }
