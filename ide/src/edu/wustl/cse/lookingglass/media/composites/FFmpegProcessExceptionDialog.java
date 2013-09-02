@@ -101,4 +101,10 @@ public class FFmpegProcessExceptionDialog extends PlainDialogOperationComposite<
 	public ActionOperation getTroubleShootAction() {
 		return this.troubleShootAction;
 	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		new FFmpegProcessExceptionDialog( null ).getOperation().fire();
+		System.exit( 0 );
+	}
 }
