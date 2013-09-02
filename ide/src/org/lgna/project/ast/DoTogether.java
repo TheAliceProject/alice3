@@ -67,7 +67,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 		String prefix = "";
 		for( Statement statement : this.body.getValue().statements ) {
 			generator.appendString( prefix );
-			if( generator.isLambaSupported() ) {
+			if( generator.isLambdaSupported() ) {
 				generator.appendString( "()-> {" );
 			} else {
 				generator.appendString( "new Runnable() { public void run() {" );
@@ -77,7 +77,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 				statement = doInOrder.body.getValue();
 			}
 			statement.appendJava( generator );
-			if( generator.isLambaSupported() ) {
+			if( generator.isLambdaSupported() ) {
 				generator.appendString( "}" );
 			} else {
 				generator.appendString( "}}" );

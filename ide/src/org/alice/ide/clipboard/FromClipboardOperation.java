@@ -55,7 +55,7 @@ public abstract class FromClipboardOperation extends org.alice.ide.croquet.model
 
 	@Override
 	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
-		org.lgna.project.ast.AbstractNode node = Clipboard.SINGLETON.peek();
+		org.lgna.project.ast.Node node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
 		if( node instanceof org.lgna.project.ast.Statement ) {
 			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;

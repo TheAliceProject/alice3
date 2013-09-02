@@ -115,7 +115,7 @@ public enum Clipboard {
 		}
 	}
 
-	private final java.util.Stack<org.lgna.project.ast.AbstractNode> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<org.lgna.project.ast.Node> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private final ClipboardDropSite dropSite = new ClipboardDropSite();
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
 	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );
@@ -144,7 +144,7 @@ public enum Clipboard {
 		return this.stack.size();
 	}
 
-	public org.lgna.project.ast.AbstractNode peek() {
+	public org.lgna.project.ast.Node peek() {
 		if( this.stack.size() > 0 ) {
 			return this.stack.peek();
 		} else {
@@ -152,13 +152,13 @@ public enum Clipboard {
 		}
 	}
 
-	public void push( org.lgna.project.ast.AbstractNode node ) {
+	public void push( org.lgna.project.ast.Node node ) {
 		this.stack.push( node );
 		this.dragComponent.refresh();
 	}
 
-	public org.lgna.project.ast.AbstractNode pop() {
-		org.lgna.project.ast.AbstractNode rv = this.stack.pop();
+	public org.lgna.project.ast.Node pop() {
+		org.lgna.project.ast.Node rv = this.stack.pop();
 		this.dragComponent.refresh();
 		return rv;
 	}

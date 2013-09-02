@@ -51,6 +51,7 @@ public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialog
 	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
 		this.type = type;
+		this.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
 	}
 
 	private java.io.File getDefaultDirectory() {
@@ -72,6 +73,6 @@ public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialog
 
 	@Override
 	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type );
+		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeSummaryDataSource( new org.alice.ide.ast.export.type.TypeSummary( this.type ) ) );
 	}
 }
