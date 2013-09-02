@@ -344,7 +344,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 								g2.draw( path );
 
 								java.awt.Rectangle pairBounds = prevBounds.union( bounds );
-								g.drawRect( x, pairBounds.y - ( GAP_Y / 2 ), width, pairBounds.height + GAP_Y );
+								g.drawRect( x, pairBounds.y - ( GAP_Y / 2 ) - 1, width, ( pairBounds.height + GAP_Y ) - 2 );
 							}
 							prevBounds = isStartIndexOfRowPair ? bounds : null;
 						}
