@@ -49,7 +49,7 @@ public final class KeepImplementationCard extends org.lgna.croquet.SimpleComposi
 	private final DifferentImplementation<?> differentImplementation;
 
 	public KeepImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "a9a8f5b2-c84e-48c9-a7eb-84a2350e37f5" ) );
+		super( java.util.UUID.fromString( "2098ebdf-4d46-4f6e-b25b-0cca95f290d3" ) );
 		this.differentImplementation = differentImplementation;
 	}
 

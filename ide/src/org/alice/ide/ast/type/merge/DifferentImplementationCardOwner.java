@@ -98,7 +98,7 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 	};
 
 	private DifferentImplementationCardOwner( DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherCard, org.lgna.croquet.Composite<?> replaceCard, org.lgna.croquet.Composite<?> keepCard, org.lgna.croquet.Composite<?> renameCard ) {
-		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
+		super( java.util.UUID.fromString( "e49e92f7-1eac-4571-bbef-b53970b11b3d" ) );
 		this.differentImplementation = differentImplementation;
 		this.neitherCard = neitherCard;
 		this.replaceCard = replaceCard;
