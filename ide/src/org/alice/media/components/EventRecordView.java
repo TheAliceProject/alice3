@@ -46,7 +46,7 @@ import java.awt.Dimension;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.alice.media.youtube.croquet.EventRecordComposite;
+import org.alice.media.EventRecordComposite;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;

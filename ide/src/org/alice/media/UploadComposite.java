@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.youtube.croquet;
+package org.alice.media;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,13 +51,13 @@ import javax.swing.JFrame;
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.LogInOutComposite;
 import org.alice.ide.croquet.models.help.LogInOutListener;
-import org.alice.media.UploadToYouTubeStatusPane;
-import org.alice.media.YouTubeEvent;
-import org.alice.media.YouTubeEvent.EventType;
-import org.alice.media.YouTubeListener;
-import org.alice.media.YouTubeLoginComposite;
-import org.alice.media.YouTubeUploader;
 import org.alice.media.components.UploadView;
+import org.alice.media.youtube.core.YouTubeEvent;
+import org.alice.media.youtube.core.YouTubeEvent.EventType;
+import org.alice.media.youtube.core.YouTubeListener;
+import org.alice.media.youtube.core.YouTubeUploader;
+import org.alice.media.youtube.croquet.views.UploadToYouTubeStatusPane;
+import org.alice.media.youtube.login.YouTubeLoginComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.StringState;
