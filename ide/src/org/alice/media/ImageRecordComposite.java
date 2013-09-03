@@ -73,9 +73,7 @@ import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 /**
  * @author Matt May
  */
-public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
-
-	private final ExportToYouTubeWizardDialogComposite owner;
+public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, ExportToYouTubeWizardDialogComposite> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private WebmRecordingAdapter encoder;
 	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
@@ -128,8 +126,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	} );
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
-		this.owner = owner;
+		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ), owner );
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 		this.isRecordingState.addValueListener( this.isRecordingListener );
 		restartOperation.setEnabled( false );
@@ -213,7 +210,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			getView().getPlayPauseButton().doClick();
 		}
 		if( ( encoder != null ) ) {
-			owner.setFile( this.encoder.getEncodedVideo() );
+			this.getOwner().setFile( this.encoder.getEncodedVideo() );
 		}
 		super.handlePostDeactivation();
 	}
@@ -221,6 +218,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
 		eventList.clear();
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( owner.getScript() != null ) {
@@ -260,6 +258,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	private void restartProgramContext() {
+		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
 		restartOperation.setEnabled( false );
 		hasStartedRecording = false;
 		RandomUtilities.setSeed( owner.getRandomSeed() );
@@ -315,6 +314,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	public ListCellRenderer<EventWithTime> getCellRenderer() {
-		return owner.getCellRenderer();
+		return this.getOwner().getCellRenderer();
 	}
 }
