@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class Identical<M extends org.lgna.project.ast.Member> {
+	private final BareBonesMemberHub<M> importHub;
+	private final MemberHub<M> projectHub;
+
+	public Identical( M importMember, M projectMember ) {
+		final String POSTFIX = "<br><em>(identical)</em>";
+		this.importHub = new BareBonesMemberHub<M>( importMember, false, "ignore ", POSTFIX );
+		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", POSTFIX ) {
+			@Override
+			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+				return ActionStatus.KEEP_IDENTICAL;
+			}
+		};
+		this.importHub.getIsDesiredState().setEnabled( false );
+		this.projectHub.getIsDesiredState().setEnabled( false );
 	}
 
-	@Override
-	protected String getName() {
-		return null;
+	public BareBonesMemberHub<M> getImportHub() {
+		return this.importHub;
+	}
+
+	public MemberHub<M> getProjectHub() {
+		return this.projectHub;
 	}
 }

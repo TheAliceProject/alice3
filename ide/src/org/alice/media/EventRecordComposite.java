@@ -82,7 +82,7 @@ import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
 /**
  * @author Matt May
  */
-public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
+public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
 	private static final java.util.List<org.lgna.project.ast.JavaMethod> randomNumberFunctionList;
 	static {
@@ -93,7 +93,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		randomNumberFunctionList = Collections.newLinkedList();
 	};
 
-	private final ExportToYouTubeWizardDialogComposite owner;
 	private RunProgramContext programContext;
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
@@ -114,6 +113,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		}
 
 		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+			ExportToYouTubeWizardDialogComposite owner = getOwner();
 			String eventType = "";
 			if( value.getEvent() instanceof MouseEventWrapper ) {
 				eventType = owner.getMouseEventName().getText();
@@ -151,9 +151,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	};
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
-		assert owner != null;
-		this.owner = owner;
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
 		isRecordingState.addValueListener( isRecordingListener );
 		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
@@ -198,6 +196,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	private void restartProgramContext() {
+		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
 		restartRecording.setEnabled( false );
 		if( ( programContext != null ) ) {
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
@@ -265,7 +264,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	private void stashSeed( long currentTimeMillis ) {
-		this.owner.setRandomSeed( currentTimeMillis );
+		this.getOwner().setRandomSeed( currentTimeMillis );
 	}
 
 	class RandomNumberFinder implements edu.cmu.cs.dennisc.pattern.Crawler {
@@ -340,6 +339,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	public ListCellRenderer<EventWithTime> getCellRenderer() {
-		return owner.getCellRenderer();
+		return this.getOwner().getCellRenderer();
 	}
 }

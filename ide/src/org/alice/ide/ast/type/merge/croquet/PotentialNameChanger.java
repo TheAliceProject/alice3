@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public abstract class PotentialNameChanger {
+	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
+			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+		}
+	};
+	private final java.net.URI uriForDescriptionPurposesOnly;
+
+	public PotentialNameChanger( java.net.URI uriForDescriptionPurposesOnly ) {
+		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 	}
 
-	@Override
-	protected String getName() {
-		return null;
+	public java.net.URI getUriForDescriptionPurposesOnly() {
+		return this.uriForDescriptionPurposesOnly;
+	}
+
+	protected abstract boolean isRenameRequired();
+
+	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+		return this.foregroundCustomizer;
 	}
 }

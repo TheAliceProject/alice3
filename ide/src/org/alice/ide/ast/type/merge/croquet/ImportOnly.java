@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class ImportOnly<M extends org.lgna.project.ast.Member> {
+	private final MemberHub<M> importHub;
+
+	public ImportOnly( M importMember ) {
+		this.importHub = new MemberHub<M>( importMember, true, "add ", "" ) {
+			@Override
+			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+				if( getIsDesiredState().getValue() ) {
+					return ActionStatus.ADD_UNIQUE;
+				} else {
+					return ActionStatus.OMIT;
+				}
+			}
+		};
 	}
 
-	@Override
-	protected String getName() {
-		return null;
+	public MemberHub<M> getImportHub() {
+		return this.importHub;
 	}
 }

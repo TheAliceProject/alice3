@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.ast.type.merge.help.diffimp.croquet;
 
-package org.lgna.croquet;
+import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
-	}
-
-	@Override
-	protected String getName() {
-		return null;
+public final class FieldDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserField> {
+	public FieldDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserField> differentImplementation ) {
+		super( java.util.UUID.fromString( "b550ff2b-ac86-408d-b6f8-8ad8ed3365ab" ), differentImplementation );
 	}
 }

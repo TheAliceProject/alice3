@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class AddFunctionsComposite extends AddMethodsComposite<org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView> {
+	public AddFunctionsComposite( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectFunctions ) {
+		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView( this );
 	}
 }

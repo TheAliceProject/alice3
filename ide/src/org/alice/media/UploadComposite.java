@@ -73,9 +73,8 @@ import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
 /**
  * @author Matt May
  */
-public class UploadComposite extends WizardPageComposite<UploadView> {
+public class UploadComposite extends WizardPageComposite<UploadView, ExportToYouTubeWizardDialogComposite> {
 	private final YouTubeUploader uploader = new YouTubeUploader();
-	private final ExportToYouTubeWizardDialogComposite owner;
 
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "294cb10a-ad2f-42cf-8159-ac859c7fe792" ), new YouTubeLoginComposite( this ) );
 
@@ -102,7 +101,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
 			if( exportFile != null ) {
 				try {
-					FileUtilities.copyFile( owner.getFile(), exportFile );
+					FileUtilities.copyFile( getOwner().getFile(), exportFile );
 				} catch( IOException ioe ) {
 					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot export file: " + exportFile );
 				}
@@ -126,8 +125,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private boolean categoriesEnabled = false;
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
-		this.owner = owner;
+		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ), owner );
 		uploader.addYouTubeListener( this.getUploadOperation() );
 		//		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
 		this.registerSubComposite( this.videoComposite );
@@ -141,10 +139,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	public YouTubeUploader getUploader() {
 		return this.uploader;
-	}
-
-	public ExportToYouTubeWizardDialogComposite getOwner() {
-		return this.owner;
 	}
 
 	public LogInOutComposite getLoginComposite() {
@@ -185,18 +179,18 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	}
 
 	public Project getProject() {
-		return owner.getProject();
+		return this.getOwner().getProject();
 	}
 
 	public File getFile() {
-		return owner.getFile();
+		return this.getOwner().getFile();
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		//		logInOutComposite.handlePreActivation();
-		this.videoComposite.getView().setUri( owner.getFile().toURI() );
+		this.videoComposite.getView().setUri( this.getOwner().getFile().toURI() );
 	}
 
 	@Override
@@ -286,7 +280,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		statusPane.setSize( 500, 400 );
 		VideoEntry entry = new VideoEntry();
 
-		MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
+		MediaFileSource source = new MediaFileSource( this.getOwner().getFile(), "video/quicktime" );
 		entry.setMediaSource( source );
 		YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
 

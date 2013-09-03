@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.ast.type.merge.help.diffsig.croquet;
 
-package org.lgna.croquet;
+import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
-	}
-
-	@Override
-	protected String getName() {
-		return null;
+public final class FieldDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<org.lgna.project.ast.UserField> {
+	public FieldDifferentSignatureHelpComposite( DifferentSignature<org.lgna.project.ast.UserField> differentSignature ) {
+		super( java.util.UUID.fromString( "2f0ed547-7cfc-4edc-bf39-1908b3ef6f89" ), differentSignature );
 	}
 }

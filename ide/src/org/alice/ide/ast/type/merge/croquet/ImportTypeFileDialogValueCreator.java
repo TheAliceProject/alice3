@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.FileDialogValueCreator<java.io.File> {
+	private static class SingletonHolder {
+		private static ImportTypeFileDialogValueCreator instance = new ImportTypeFileDialogValueCreator();
+	}
+
+	public static ImportTypeFileDialogValueCreator getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ImportTypeFileDialogValueCreator() {
+		super( java.util.UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
+	}
+
+	private java.io.File getDefaultDirectory() {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	}
+
+	private String getExtension() {
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+	}
+
+	private String getInitialFilename() {
+		return "*." + this.getExtension();
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+	}
+
+	@Override
+	protected java.io.File createValueFromFile( java.io.File file ) {
+		return file;
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class KeepSignatureCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final DifferentSignature<?> differentSignature;
+
+	public KeepSignatureCard( DifferentSignature<?> differentSignature ) {
+		super( java.util.UUID.fromString( "a9a8f5b2-c84e-48c9-a7eb-84a2350e37f5" ) );
+		this.differentSignature = differentSignature;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.project.ast.Member member = this.differentSignature.getProjectHub().getMember();
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0, fill" );
+		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createKeepUniqueMemberLabel( member ) );
+		return rv;
 	}
 }

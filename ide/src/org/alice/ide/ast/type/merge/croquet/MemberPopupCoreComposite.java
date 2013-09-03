@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreComposite<org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView> {
+	private final MemberHub<?> memberHub;
+
+	private final org.lgna.croquet.HtmlStringValue description = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "c6a7c06d-143a-4bd8-afca-c8e4b544473c" ) ) {
+
+	};
+
+	public MemberPopupCoreComposite( MemberHub<?> memberHub ) {
+		super( java.util.UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
+		this.memberHub = memberHub;
+	}
+
+	public MemberHub<?> getMemberHub() {
+		return this.memberHub;
+	}
+
+	public org.lgna.project.ast.Member getMember() {
+		return this.memberHub.getMember();
+	}
+
+	public javax.swing.Icon getIcon() {
+		return this.memberHub.getIcon();
+	}
+
+	public org.lgna.croquet.HtmlStringValue getDescription() {
+		return this.description;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.description.setText( this.memberHub.getDescriptionText() );
+	}
+
+	@Override
+	protected org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView( this );
 	}
 }

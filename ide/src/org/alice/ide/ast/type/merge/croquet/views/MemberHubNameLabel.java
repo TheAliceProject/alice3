@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
+	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
+
+	private final org.lgna.croquet.State.ValueListener<String> nameListener = new org.lgna.croquet.State.ValueListener<String>() {
+		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			setText( nextValue );
+		}
+	};
+
+	public MemberHubNameLabel( org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState ) {
+		this.memberHubWithNameState = memberHubWithNameState;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected void handleDisplayable() {
+		this.memberHubWithNameState.getNameState().addAndInvokeValueListener( this.nameListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.memberHubWithNameState.getNameState().removeValueListener( this.nameListener );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.ast.type.merge.help.croquet;
 
-package org.lgna.croquet;
+import org.alice.ide.ast.type.merge.croquet.ImportTypeComposite;
+import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
+	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
+
+	private final N potentialNameChanger;
+
+	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
+		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
+		this.potentialNameChanger = potentialNameChanger;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+		String rv = super.modifyLocalizedText( element, localizedText );
+		if( rv != null ) {
+			if( element == this.importNameState.getSidekickLabel() ) {
+				rv = ImportTypeComposite.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
+			}
+		}
+		return rv;
+	}
+
+	public N getPotentialNameChanger() {
+		return this.potentialNameChanger;
+	}
+
+	public org.lgna.croquet.PlainStringValue getHeader() {
+		return this.header;
+	}
+
+	public org.lgna.croquet.StringState getImportNameState() {
+		return this.importNameState;
+	}
+
+	public org.lgna.croquet.StringState getProjectNameState() {
+		return this.projectNameState;
 	}
 }

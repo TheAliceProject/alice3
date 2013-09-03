@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+@Deprecated
+public class BracketView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+	private class JBracketView extends javax.swing.JComponent {
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			super.paintComponent( g );
+
+			int w = this.getWidth();
+			int h = this.getHeight();
+
+			int x0 = w / 2;
+			int x1;
+			int y0 = 0;
+			int y1 = h - 1;
+
+			if( isLeading ) {
+				x1 = w - 1;
+			} else {
+				x1 = 0;
+			}
+
+			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+			path.moveTo( x1, y0 );
+			path.lineTo( x0, y0 );
+			path.lineTo( x0, y1 );
+			path.lineTo( x1, y1 );
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.draw( path );
+		}
+	}
+
+	private final boolean isLeading;
+
+	public BracketView( boolean isLeading ) {
+		this.isLeading = isLeading;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected javax.swing.JComponent createAwtComponent() {
+		return new JBracketView();
 	}
 }

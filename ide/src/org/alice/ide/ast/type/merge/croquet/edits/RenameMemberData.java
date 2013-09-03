@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public class RenameMemberData {
+	private final org.lgna.project.ast.Member member;
+	private final String nextName;
+	private String prevName;
+
+	public RenameMemberData( org.lgna.project.ast.Member member, String nextName ) {
+		this.member = member;
+		this.nextName = nextName;
 	}
 
-	@Override
-	protected String getName() {
-		return null;
+	public org.lgna.project.ast.Member getMember() {
+		return this.member;
+	}
+
+	public String getNextName() {
+		return this.nextName;
+	}
+
+	public void setPrevName( String prevName ) {
+		this.prevName = prevName;
+	}
+
+	public String getPrevName() {
+		return this.prevName;
 	}
 }

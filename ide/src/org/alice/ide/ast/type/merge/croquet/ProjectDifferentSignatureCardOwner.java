@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.CardOwnerComposite {
+	private final DifferentSignature<?> differentSignature;
+	private final org.lgna.croquet.Composite<?> keepCard;
+	private final org.lgna.croquet.Composite<?> renameCard;
+
+	private final org.lgna.croquet.State.ValueListener<Boolean> valueListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateCard();
+		}
+	};
+
+	public ProjectDifferentSignatureCardOwner( DifferentSignature<?> differentSignature ) {
+		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
+		this.differentSignature = differentSignature;
+		this.keepCard = new KeepSignatureCard( differentSignature );
+		this.renameCard = new RenameCard( differentSignature.getProjectHub(), differentSignature.getForegroundCustomizer() );
+
+		this.addCard( this.keepCard );
+		this.addCard( this.renameCard );
+		this.showCard( this.renameCard );
+		this.differentSignature.getImportHub().getIsDesiredState().addValueListener( this.valueListener );
 	}
 
-	@Override
-	protected String getName() {
-		return null;
+	private void updateCard() {
+		if( this.differentSignature.getImportHub().getIsDesiredState().getValue() ) {
+			this.showCard( this.renameCard );
+		} else {
+			this.showCard( this.keepCard );
+		}
 	}
 }

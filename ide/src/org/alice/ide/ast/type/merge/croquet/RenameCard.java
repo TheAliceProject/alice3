@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
+public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final MemberHubWithNameState<?> memberHubWithNameState;
+	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
+
+	public RenameCard( MemberHubWithNameState<?> memberHubWithNameState, edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
+		super( java.util.UUID.fromString( "6551b6a3-b2be-43dd-a7fc-78e397765344" ) );
+		this.memberHubWithNameState = memberHubWithNameState;
+		this.foregroundCustomizer = foregroundCustomizer;
 	}
 
 	@Override
-	protected String getName() {
-		return null;
+	protected org.lgna.croquet.components.Panel createView() {
+		MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
+
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
+		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
+		return rv;
 	}
 }
