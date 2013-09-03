@@ -40,10 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media.composites;
+package org.alice.ide.youtube.croquet;
 
 import java.io.File;
 
+import org.alice.ide.youtube.croquet.views.ExecutionPermissionFailedDialogView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
@@ -55,7 +56,6 @@ import org.lgna.croquet.history.CompletionStep;
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.wustl.cse.lookingglass.media.FFmpegProcess;
-import edu.wustl.cse.lookingglass.media.views.ExecutionPermissionFailedDialogView;
 
 /**
  * @author Matt May

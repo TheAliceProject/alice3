@@ -47,7 +47,6 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.alice.ide.IDE;
 import org.lgna.croquet.StringValue;
 import org.lgna.story.event.KeyEvent;
 
@@ -59,14 +58,6 @@ import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
  * @author Dennis Cosgrove
  */
 public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
-	private static class SingletonHolder {
-		private static ExportToYouTubeWizardDialogComposite instance = new ExportToYouTubeWizardDialogComposite();
-	}
-
-	public static ExportToYouTubeWizardDialogComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private UploadComposite uploadComposite = new UploadComposite( this );
@@ -79,7 +70,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private long randomSeed;
 	private EventWithTimeListCellRenderer renderer = new EventWithTimeListCellRenderer();
 
-	private ExportToYouTubeWizardDialogComposite() {
+	public ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
@@ -87,11 +78,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	}
 
 	public org.lgna.project.Project getProject() {
-		if( this.project != null ) {
-			//pass
-		} else if( IDE.getActiveInstance() != null ) {
-			this.project = IDE.getActiveInstance().getProject();
-		}
 		return this.project;
 	}
 

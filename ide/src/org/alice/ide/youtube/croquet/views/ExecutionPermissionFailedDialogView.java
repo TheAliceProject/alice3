@@ -40,47 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media.composites;
+package org.alice.ide.youtube.croquet.views;
 
-import org.alice.ide.IDE;
-import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
+import org.alice.ide.youtube.croquet.ExecutionPermissionFailedDialogComposite;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.components.MigPanel;
 
-import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 
 /**
  * @author Matt May
  */
-//todo: extends IteratingOperation?
-public class UploadOperation extends ActionOperation {
-
-	public UploadOperation() {
-		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
-	}
-
-	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		java.io.File fileKnownToBeNotExecuable;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			fileKnownToBeNotExecuable = null;
-		} else {
-			String command = FFmpegProcess.getFFmpegCommand();
-			java.io.File file = new java.io.File( command );
-			if( file.exists() ) {
-				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
-			} else {
-				fileKnownToBeNotExecuable = null;
-			}
-		}
-		if( fileKnownToBeNotExecuable != null ) {
-			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
-			//composite.initializeIfNecessary();
-			//composite.getOperation().initializeIfNecessary();
-			composite.getOperation().fire( trigger );
-		} else {
-			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
+public class ExecutionPermissionFailedDialogView extends MigPanel {
+	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
+		super( composite );
+		this.addComponent( composite.getExplanation().createLabel(), "wrap" );
+		this.addComponent( composite.getBrowserOperation().createHyperlink(), "wrap" );
+		ActionOperation troubleShootAction = composite.getTroubleShootAction();
+		if( troubleShootAction != null ) {
+			this.addComponent( troubleShootAction.createButton(), "wrap" );
 		}
 	}
 }

@@ -40,24 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media.views;
+package org.alice.ide.youtube.croquet;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectStack;
+import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
 
-import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDialogComposite;
+import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 
 /**
  * @author Matt May
  */
-public class ExecutionPermissionFailedDialogView extends MigPanel {
-	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getExplanation().createLabel(), "wrap" );
-		this.addComponent( composite.getBrowserOperation().createHyperlink(), "wrap" );
-		ActionOperation troubleShootAction = composite.getTroubleShootAction();
-		if( troubleShootAction != null ) {
-			this.addComponent( troubleShootAction.createButton(), "wrap" );
+//todo: extends IteratingOperation?
+public class UploadOperation extends ActionOperation {
+	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
+
+	public UploadOperation() {
+		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
+	}
+
+	private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
+		if( this.exportToYouTubeWizardDialogComposite != null ) {
+			//pass
+		} else {
+			this.exportToYouTubeWizardDialogComposite = new ExportToYouTubeWizardDialogComposite();
+		}
+		return this.exportToYouTubeWizardDialogComposite;
+	}
+
+	@Override
+	protected void perform( Transaction transaction, Trigger trigger ) {
+		java.io.File fileKnownToBeNotExecuable;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			fileKnownToBeNotExecuable = null;
+		} else {
+			String command = FFmpegProcess.getFFmpegCommand();
+			java.io.File file = new java.io.File( command );
+			if( file.exists() ) {
+				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
+			} else {
+				fileKnownToBeNotExecuable = null;
+			}
+		}
+		if( fileKnownToBeNotExecuable != null ) {
+			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
+			composite.getOperation().fire( trigger );
+		} else {
+			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+			wizard.setProject( ProjectStack.peekProject() );
+			try {
+				wizard.getOperation().fire( trigger );
+			} finally {
+				wizard.setProject( null );
+			}
 		}
 	}
 }
