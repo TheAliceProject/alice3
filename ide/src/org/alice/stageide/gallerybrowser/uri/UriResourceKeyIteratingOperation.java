@@ -124,8 +124,8 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 			org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
 			java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
 			org.lgna.project.ast.NamedUserType srcType = importedRootType;
-			org.lgna.project.ast.NamedUserType dstType = org.alice.ide.ast.type.merge.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-			org.alice.ide.ast.type.merge.ImportTypeComposite mergeTypeComposite = new org.alice.ide.ast.type.merge.ImportTypeComposite( this.uri, importedRootType, importedResources, srcType, dstType );
+			org.lgna.project.ast.NamedUserType dstType = org.alice.ide.ast.type.merge.croquet.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+			org.alice.ide.ast.type.merge.croquet.ImportTypeComposite mergeTypeComposite = new org.alice.ide.ast.type.merge.croquet.ImportTypeComposite( this.uri, importedRootType, importedResources, srcType, dstType );
 			return mergeTypeComposite.getOperation();
 		} else {
 			return null;
