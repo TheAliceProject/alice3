@@ -48,7 +48,7 @@ package org.alice.media.components;
 public class UploadView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Panel youtubeDetailsPanel;
 
-	public UploadView( org.alice.media.UploadComposite composite ) {
+	public UploadView( org.alice.media.youtube.croquet.UploadComposite composite ) {
 		super( composite, 24, 0 );
 
 		org.lgna.croquet.components.MigPanel loginPanel = new org.lgna.croquet.components.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );

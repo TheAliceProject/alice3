@@ -114,4 +114,8 @@ public class LogInOutComposite extends CardOwnerComposite {
 	public boolean getCanConnect() {
 		return composite.getCanLogIn();
 	}
+
+	public void addListener( LogInOutListener listener ) {
+		composite.addListener( listener );
+	}
 }

@@ -40,8 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.alice.media.youtube.croquet;
 
+import org.alice.media.IsRecordingIcon;
+import org.alice.media.WebmRecordingAdapter;
 import org.alice.media.components.ImageRecordView;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;

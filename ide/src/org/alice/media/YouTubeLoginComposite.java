@@ -44,6 +44,7 @@ package org.alice.media;
 
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.views.LoginView;
+import org.alice.media.youtube.croquet.UploadComposite;
 
 import com.google.gdata.client.GoogleService.InvalidCredentialsException;
 import com.google.gdata.util.AuthenticationException;

@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
@@ -54,6 +55,8 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.preferences.PreferenceStringState;
+
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 /**
  * @author Matt May
@@ -69,6 +72,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
 	protected Status connectionFailedStatus = createWarningStatus( createKey( "warningConnectionFailed" ) );
 	private final BooleanState connectionFailed = this.createBooleanState( createKey( "doNotLocalize" ), false );
+	private final List<LogInOutListener> listeners = Collections.newCopyOnWriteArrayList();
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
@@ -77,7 +81,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	private final ActionOperation logOutOperation = createActionOperation( createKey( "logOutOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			logout();
+			internalLogout();
 			isLoggedIn.setValueTransactionlessly( false );
 			userNameState.setValueTransactionlessly( "" );
 			passwordState.setValueTransactionlessly( "" );
@@ -114,7 +118,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	@Override
 	protected boolean isClearedForCommit() {
 		if( super.isClearedForCommit() ) {
-			boolean loginSuccess = tryToLogin();
+			boolean loginSuccess = internalLogin();
 			if( loginSuccess ) {
 				isLoggedIn.setValueTransactionlessly( true );
 				status = IS_GOOD_TO_GO_STATUS;
@@ -140,9 +144,22 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return this.status;
 	}
 
+	private final boolean internalLogin() {
+		boolean rv = tryToLogin();
+		if( rv ) {
+			fireLoggedIn();
+		}
+		return rv;
+	}
+
+	private final void internalLogout() {
+		logout();
+		fireLoggedOut();
+	}
+
 	protected abstract boolean tryToLogin();
 
-	public abstract void logout();
+	protected abstract void logout();
 
 	public final ActionOperation getLogOutOperation() {
 		return logOutOperation;
@@ -160,4 +177,19 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return !connectionFailed.getValue();
 	}
 
+	private void fireLoggedIn() {
+		for( LogInOutListener listener : listeners ) {
+			listener.fireLoggedIn( this );
+		}
+	}
+
+	private void fireLoggedOut() {
+		for( LogInOutListener listener : listeners ) {
+			listener.fireLoggedOut( this );
+		}
+	}
+
+	public void addListener( LogInOutListener listener ) {
+		listeners.add( listener );
+	}
 }

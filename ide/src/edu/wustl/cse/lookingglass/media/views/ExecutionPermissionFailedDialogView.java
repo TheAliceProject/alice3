@@ -55,9 +55,9 @@ public class ExecutionPermissionFailedDialogView extends MigPanel {
 	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
 		super( composite );
 		this.getAwtComponent().setMinimumSize( new Dimension( 150, 100 ) );
-		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
+		//		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
 		//		this.getAwtComponent().add( composite.troubleShootAction.createButton().getAwtComponent(), BorderLayout.PAGE_END );
 		//		this.addPageEndComponent( composite.getBrowserOperation().createHyperlink() );
-		this.addPageEndComponent( composite.getTroubleShootAction().createButton() );
+		//		this.addPageEndComponent( composite.getTroubleShootAction().createButton() );
 	}
 }

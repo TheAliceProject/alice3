@@ -43,7 +43,7 @@
 package edu.wustl.cse.lookingglass.media.composites;
 
 import org.alice.ide.IDE;
-import org.alice.media.ExportToYouTubeWizardDialogComposite;
+import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
