@@ -68,7 +68,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	private final org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
 	private final org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
 	private final org.alice.ide.ast.export.ExportTypeToFileDialogOperation exportOperation;
-	private final org.alice.stageide.gallerybrowser.uri.merge.ImportTypeIteratingOperation importOperation;
+	private final org.alice.ide.ast.type.merge.ImportTypeIteratingOperation importOperation;
 
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
@@ -76,7 +76,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type ) );
 		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type ) );
 		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type ) );
-		this.importOperation = new org.alice.stageide.gallerybrowser.uri.merge.ImportTypeIteratingOperation( type );
+		this.importOperation = new org.alice.ide.ast.type.merge.ImportTypeIteratingOperation( type );
 		this.exportOperation = new org.alice.ide.ast.export.ExportTypeToFileDialogOperation( type );
 	}
 
@@ -96,7 +96,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		return this.fieldsToolPaletteCoreComposite;
 	}
 
-	public org.alice.stageide.gallerybrowser.uri.merge.ImportTypeIteratingOperation getImportOperation() {
+	public org.alice.ide.ast.type.merge.ImportTypeIteratingOperation getImportOperation() {
 		return this.importOperation;
 	}
 
