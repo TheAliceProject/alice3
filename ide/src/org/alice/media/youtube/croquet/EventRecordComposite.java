@@ -95,7 +95,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private RunProgramContext programContext;
 	private EventScript script;
-	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
+	private org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 	private double timeInSeconds = 0;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
 	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
@@ -258,38 +258,34 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private boolean containsRandom() {
 		StageIDE ide = StageIDE.getActiveInstance();
-		RandomNumberFinder crawler = new RandomNumberFinder();
+		RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
 		ide.crawlFilteredProgramType( crawler );
-		return crawler.getContainsRandom();
+		return crawler.containsRandom;
 	}
 
 	private void stashSeed( long currentTimeMillis ) {
 		this.getOwner().setRandomSeed( currentTimeMillis );
 	}
 
-	class RandomNumberFinder implements edu.cmu.cs.dennisc.pattern.Crawler {
-
-		private boolean containsRandom = false;
+	private static class RandomUtilitiesMethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+		private boolean containsRandom;
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
-				if( ( (Statement)( (MethodInvocation)crawlable ).getFirstAncestorAssignableTo( Statement.class ) ).isEnabled.getValue() ) {
-					return;
-				}
-				AbstractMethod method = ( (MethodInvocation)crawlable ).method.getValue();
-				if( method.isFunction() ) {
-					if( method.getDeclaringType() instanceof JavaType ) {
-						JavaType jType = (JavaType)method.getDeclaringType();
-						if( jType.getClassReflectionProxy().getReification().equals( RandomUtilities.class ) ) {
-							containsRandom = true;
+				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
+				Statement statement = methodInvocation.getFirstAncestorAssignableTo( Statement.class );
+				if( ( statement != null ) && statement.isEnabled.getValue() ) {
+					AbstractMethod method = methodInvocation.method.getValue();
+					if( method.isFunction() ) {
+						if( method.getDeclaringType() instanceof JavaType ) {
+							JavaType jType = (JavaType)method.getDeclaringType();
+							if( jType.getClassReflectionProxy().getReification().equals( RandomUtilities.class ) ) {
+								this.containsRandom = false;
+							}
 						}
 					}
 				}
 			}
-		}
-
-		public boolean getContainsRandom() {
-			return containsRandom;
 		}
 	}
 

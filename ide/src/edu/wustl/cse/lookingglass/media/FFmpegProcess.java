@@ -43,8 +43,6 @@
  */
 package edu.wustl.cse.lookingglass.media;
 
-import java.io.File;
-
 /**
  * @author Kyle J. Harms
  */
@@ -108,7 +106,7 @@ public class FFmpegProcess {
 		}
 	}
 
-	private static String getFFmpegCommand() {
+	public static String getFFmpegCommand() {
 		// Find the ffmpeg process
 		//<alice>
 		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
@@ -208,9 +206,5 @@ public class FFmpegProcess {
 		} catch( java.io.IOException e ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to read ffmpeg error", e );
 		}
-	}
-
-	public static File getFFmpegCommandFile() {
-		return new File( getFFmpegCommand() );
 	}
 }

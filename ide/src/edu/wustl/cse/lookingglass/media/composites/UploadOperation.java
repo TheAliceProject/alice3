@@ -53,6 +53,7 @@ import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 /**
  * @author Matt May
  */
+//todo: extends IteratingOperation?
 public class UploadOperation extends ActionOperation {
 
 	public UploadOperation() {
@@ -61,10 +62,22 @@ public class UploadOperation extends ActionOperation {
 
 	@Override
 	protected void perform( Transaction transaction, Trigger trigger ) {
-		if( FFmpegProcess.getFFmpegCommandFile().canExecute() ) {
-			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
+		java.io.File fileKnownToBeNotExecuable;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			fileKnownToBeNotExecuable = null;
 		} else {
-			new ExecutionPermissionFailedDialogComposite( FFmpegProcess.getFFmpegCommandFile() );
+			String command = FFmpegProcess.getFFmpegCommand();
+			java.io.File file = new java.io.File( command );
+			if( file.exists() ) {
+				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
+			} else {
+				fileKnownToBeNotExecuable = null;
+			}
+		}
+		if( fileKnownToBeNotExecuable != null ) {
+			new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable ).getOperation().fire();
+		} else {
+			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 		}
 	}
 }
