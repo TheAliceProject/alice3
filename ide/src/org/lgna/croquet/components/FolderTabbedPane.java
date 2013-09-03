@@ -659,10 +659,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		return new FolderTabTitle( item, itemSelectedState );
 	}
 
-	/* package-private */CardPanel getCardPanel() {
-		return this.cardComposite.getView();
-	}
-
 	@Override
 	protected void removeAllDetails() {
 		this.titlesPanel.removeAllComponents();
@@ -697,5 +693,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	@Override
 	protected void addEpilogue() {
+		this.cardComposite.showCardRefrainingFromActivation( this.cardComposite.getShowingCard() );
 	}
 }

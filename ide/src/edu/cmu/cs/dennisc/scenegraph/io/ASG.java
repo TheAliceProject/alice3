@@ -1105,7 +1105,11 @@ public class ASG {
 						if( java.awt.Image.class.isAssignableFrom( propertyValueClass ) ) {
 							String ext = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( filename );
 							String codecName = edu.cmu.cs.dennisc.image.ImageUtilities.getCodecNameForExtension( ext );
-							value = edu.cmu.cs.dennisc.image.ImageUtilities.read( codecName, is );
+							try {
+								value = edu.cmu.cs.dennisc.image.ImageUtilities.read( codecName, is );
+							} catch( java.io.IOException ioe ) {
+								throw new RuntimeException( filename, ioe );
+							}
 						} else if( edu.cmu.cs.dennisc.scenegraph.Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
 							value = decodeVertexArrayInBinary( is );
 						} else if( int[].class.isAssignableFrom( propertyValueClass ) ) {

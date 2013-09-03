@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
+package org.lgna.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove

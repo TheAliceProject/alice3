@@ -44,9 +44,9 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 
 public class Color4fPropertyController extends LabelBasedPropertyController<Color4f>
 {

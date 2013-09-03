@@ -1137,7 +1137,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), constants, selectionIndex, key );
+		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls ), constants, selectionIndex, key );
 		this.mapKeyToImmutableListSelectionState.put( key, rv );
 		return rv;
 	}

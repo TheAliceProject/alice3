@@ -48,8 +48,8 @@ import java.io.File;
 
 import org.alice.media.audio.ScheduledAudioStream;
 
-import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
 

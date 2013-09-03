@@ -40,47 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.swing.icons;
+package org.alice.stageide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PaintIcon implements javax.swing.Icon {
-	private java.awt.Paint fillPaint;
-	private int width;
-	private int height;
-
-	public PaintIcon( java.awt.Paint fillPaint ) {
-		this( fillPaint, ColorIcon.DEFAULT_SIZE );
+public class ToolBarUtilities {
+	private ToolBarUtilities() {
+		throw new AssertionError();
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, int size ) {
-		this( fillPaint, size, size );
+	public static void appendDocumentSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, java.awt.Dimension size ) {
-		this( fillPaint, size.width, size.height );
+	public static void appendUndoRedoSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.history.UndoOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.history.RedoOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, int width, int height ) {
-		this.fillPaint = fillPaint;
-		this.width = width;
-		this.height = height;
-	}
-
-	public int getIconWidth() {
-		return this.width;
-	}
-
-	public int getIconHeight() {
-		return this.height;
-	}
-
-	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setPaint( this.fillPaint );
-		g2.translate( x, y );
-		g2.fillRect( 0, 0, this.width, this.height );
-		g2.translate( -x, -y );
+	public static void appendRunSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getOperation() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 }

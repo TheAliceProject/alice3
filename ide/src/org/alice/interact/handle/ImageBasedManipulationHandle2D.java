@@ -63,11 +63,19 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 	}
 
 	protected ImageState currentState;
-	protected BufferedImage imageMask;
+	private final BufferedImage imageMask;
 
-	public ImageBasedManipulationHandle2D()
+	public ImageBasedManipulationHandle2D( String maskResourceName )
 	{
-		this.setImageMask();
+		BufferedImage image;
+		try {
+			image = edu.cmu.cs.dennisc.image.ImageUtilities.read( this.getClass().getResource( maskResourceName ) );
+		} catch( Throwable t ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( maskResourceName, this );
+			image = null;
+		}
+		this.imageMask = image;
+
 		this.setStateBasedOnManipulationStatus();
 		Dimension size = new Dimension( this.getIcon().getIconWidth(), this.getIcon().getIconHeight() );
 		this.getAwtComponent().setSize( size );
@@ -88,8 +96,6 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		}
 		return null;
 	}
-
-	abstract protected void setImageMask();
 
 	public boolean contains( int x, int y ) {
 		Color color = this.getColor( x, y );

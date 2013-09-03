@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.toolkit.croquet.models;
+package org.lgna.story.implementation.overlay;
+
+import edu.cmu.cs.dennisc.animation.AbstractAnimation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ * 
  */
-public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataListSelectionState<T> {
-	public EnumConstantSelectionState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
+public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+
+	private org.lgna.story.implementation.EntityImp m_entityImp;
+	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
+	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+
+	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
+		assert entityImp != null;
+		m_entityImp = entityImp;
 	}
+
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
+
+	@Override
+	protected void prologue() {
+		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
+		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+		m_sgLayer = camera.getPostRenderLayer();
+		m_sgGraphic = this.getSGGraphic();
+		assert m_sgLayer != null;
+		assert m_sgGraphic != null;
+		m_sgGraphic.setParent( m_sgLayer );
+	}
+
+	@Override
+	protected void preEpilogue() {
+	}
+
+	@Override
+	protected void epilogue() {
+		m_sgGraphic.setParent( null );
+	}
+
 }

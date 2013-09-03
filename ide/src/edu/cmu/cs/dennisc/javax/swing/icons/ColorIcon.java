@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.swing.icons;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 public class ColorIcon implements javax.swing.Icon {
 	public static final int DEFAULT_SIZE = 15;

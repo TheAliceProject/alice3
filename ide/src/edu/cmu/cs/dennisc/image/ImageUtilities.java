@@ -191,16 +191,16 @@ public class ImageUtilities {
 				}
 				return rv;
 			} catch( java.io.FileNotFoundException fnfe ) {
-				throw new RuntimeException( fnfe );
+				throw new RuntimeException( url.toString(), fnfe );
 			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
+				throw new RuntimeException( url.toString(), ioe );
 			}
 		} else {
 			throw new RuntimeException( "Could not find codec for extension: " + extension );
 		}
 	}
 
-	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream ) {
+	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream ) throws java.io.IOException {
 		return read( codecName, inputStream, null );
 	}
 
@@ -356,23 +356,19 @@ public class ImageUtilities {
 		return bufferedImage;
 	}
 
-	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream, javax.imageio.ImageReadParam imageReadParam ) {
-		try {
-			java.io.BufferedInputStream bufferedInputStream;
-			if( inputStream instanceof java.io.BufferedInputStream ) {
-				bufferedInputStream = (java.io.BufferedInputStream)inputStream;
-			} else {
-				bufferedInputStream = new java.io.BufferedInputStream( inputStream );
-			}
-			if( codecName.equals( TGA_CODEC_NAME ) ) {
-				return readTGA( bufferedInputStream );
-				//			} else if (codecName.equals(TIFF_CODEC_NAME)) {
-				//				return readTIFF(bufferedInputStream, null);
-			} else {
-				return javax.imageio.ImageIO.read( bufferedInputStream );
-			}
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
+	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream, javax.imageio.ImageReadParam imageReadParam ) throws java.io.IOException {
+		java.io.BufferedInputStream bufferedInputStream;
+		if( inputStream instanceof java.io.BufferedInputStream ) {
+			bufferedInputStream = (java.io.BufferedInputStream)inputStream;
+		} else {
+			bufferedInputStream = new java.io.BufferedInputStream( inputStream );
+		}
+		if( codecName.equals( TGA_CODEC_NAME ) ) {
+			return readTGA( bufferedInputStream );
+			//			} else if (codecName.equals(TIFF_CODEC_NAME)) {
+			//				return readTIFF(bufferedInputStream, null);
+		} else {
+			return javax.imageio.ImageIO.read( bufferedInputStream );
 		}
 	}
 

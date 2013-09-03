@@ -46,8 +46,6 @@ import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-
 /**
  * @author David Culyba
  */
@@ -75,9 +73,8 @@ public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulation
 	private boolean turningForward = false;
 	private boolean turningBackward = false;
 
-	@Override
-	protected void setImageMask() {
-		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/tiltMask.png" ) );
+	public ManipulationHandle2DCameraTurnUpDown() {
+		super( "images/tiltMask.png" );
 	}
 
 	@Override

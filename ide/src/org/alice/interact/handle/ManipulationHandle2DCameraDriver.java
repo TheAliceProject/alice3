@@ -47,8 +47,6 @@ import javax.swing.ImageIcon;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.ManipulationEvent;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-
 /**
  * @author David Culyba
  */
@@ -85,14 +83,13 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	private boolean movingForward = false;
 	private boolean movingBackward = false;
 
-	@Override
-	public PickHint getPickHint() {
-		return PickHint.PickType.TWO_D_HANDLE.pickHint();
+	public ManipulationHandle2DCameraDriver() {
+		super( "images/driveMask.png" );
 	}
 
 	@Override
-	protected void setImageMask() {
-		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/driveMask.png" ) );
+	public PickHint getPickHint() {
+		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 
 	@Override
