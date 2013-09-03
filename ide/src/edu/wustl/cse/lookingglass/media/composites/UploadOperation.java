@@ -64,7 +64,7 @@ public class UploadOperation extends ActionOperation {
 		if( FFmpegProcess.getFFmpegCommandFile().canExecute() ) {
 			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 		} else {
-			new ExecutionPermissionFailedDialog( FFmpegProcess.getFFmpegCommandFile() );
+			new ExecutionPermissionFailedDialogComposite( FFmpegProcess.getFFmpegCommandFile() );
 		}
 	}
 }

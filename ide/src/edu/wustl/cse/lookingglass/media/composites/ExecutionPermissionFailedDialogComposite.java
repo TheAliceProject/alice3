@@ -57,19 +57,19 @@ import edu.cmu.cs.dennisc.java.awt.DesktopUtilities;
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.wustl.cse.lookingglass.media.FFmpegProcess;
-import edu.wustl.cse.lookingglass.media.views.FFmpegProcessExceptionView;
+import edu.wustl.cse.lookingglass.media.views.ExecutionPermissionFailedDialogView;
 
 /**
  * @author Matt May
  */
-public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmpegProcessExceptionView> {
+public class ExecutionPermissionFailedDialogComposite extends MessageDialogComposite<ExecutionPermissionFailedDialogView> {
 
 	private final StringValue explanationStringState = createStringValue( createKey( "explanation" ) );
 	private final BooleanState fixedState = createBooleanState( createKey( "notToTranslate" ), false );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
 	private File ffmpegFile;
 
-	public ExecutionPermissionFailedDialog( File f ) {
+	public ExecutionPermissionFailedDialogComposite( File f ) {
 		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
 		this.ffmpegFile = f;
 	}
@@ -78,7 +78,7 @@ public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmp
 
 		@Override
 		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
-			if( SystemUtilities.isMac() || SystemUtilities.isLinux() ) {
+			if( SystemUtilities.isMac() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
 			} else if( SystemUtilities.isWindows() ) {
 				DesktopUtilities.open( ffmpegFile.getParentFile() );
@@ -93,8 +93,8 @@ public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmp
 	}
 
 	@Override
-	protected FFmpegProcessExceptionView createView() {
-		return new FFmpegProcessExceptionView( this );
+	protected ExecutionPermissionFailedDialogView createView() {
+		return new ExecutionPermissionFailedDialogView( this );
 	}
 
 	public boolean getIsFixed() {
@@ -115,7 +115,7 @@ public class ExecutionPermissionFailedDialog extends MessageDialogComposite<FFmp
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new ExecutionPermissionFailedDialog( FFmpegProcess.getFFmpegCommandFile() ).getOperation().fire();
+		new ExecutionPermissionFailedDialogComposite( FFmpegProcess.getFFmpegCommandFile() ).getOperation().fire();
 		System.exit( 0 );
 	}
 }

@@ -44,15 +44,15 @@ package edu.wustl.cse.lookingglass.media.views;
 
 import java.awt.Dimension;
 
-import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.MigPanel;
 
-import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDialog;
+import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDialogComposite;
 
 /**
  * @author Matt May
  */
-public class FFmpegProcessExceptionView extends BorderPanel {
-	public FFmpegProcessExceptionView( ExecutionPermissionFailedDialog composite ) {
+public class ExecutionPermissionFailedDialogView extends MigPanel {
+	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
 		super( composite );
 		this.getAwtComponent().setMinimumSize( new Dimension( 150, 100 ) );
 		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
