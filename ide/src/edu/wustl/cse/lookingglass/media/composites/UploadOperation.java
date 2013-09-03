@@ -75,7 +75,10 @@ public class UploadOperation extends ActionOperation {
 			}
 		}
 		if( fileKnownToBeNotExecuable != null ) {
-			new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable ).getOperation().fire();
+			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
+			//composite.initializeIfNecessary();
+			//composite.getOperation().initializeIfNecessary();
+			composite.getOperation().fire( trigger );
 		} else {
 			ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire( trigger );
 		}

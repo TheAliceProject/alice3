@@ -42,8 +42,7 @@
  */
 package edu.wustl.cse.lookingglass.media.views;
 
-import java.awt.Dimension;
-
+import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.components.MigPanel;
 
 import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDialogComposite;
@@ -54,10 +53,11 @@ import edu.wustl.cse.lookingglass.media.composites.ExecutionPermissionFailedDial
 public class ExecutionPermissionFailedDialogView extends MigPanel {
 	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
 		super( composite );
-		this.getAwtComponent().setMinimumSize( new Dimension( 150, 100 ) );
-		//		this.addPageStartComponent( composite.getExplanationStringState().createLabel() );
-		//		this.getAwtComponent().add( composite.troubleShootAction.createButton().getAwtComponent(), BorderLayout.PAGE_END );
-		//		this.addPageEndComponent( composite.getBrowserOperation().createHyperlink() );
-		//		this.addPageEndComponent( composite.getTroubleShootAction().createButton() );
+		this.addComponent( composite.getExplanation().createLabel(), "wrap" );
+		this.addComponent( composite.getBrowserOperation().createHyperlink(), "wrap" );
+		ActionOperation troubleShootAction = composite.getTroubleShootAction();
+		if( troubleShootAction != null ) {
+			this.addComponent( troubleShootAction.createButton(), "wrap" );
+		}
 	}
 }
