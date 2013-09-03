@@ -48,7 +48,7 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationGuideView, M, DifferentImplementation<M>> {
+public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
 	private final org.lgna.croquet.ListSelectionState<DifferentImplementationTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentImplementationTopLevelChoice.class, null );
 	private final org.lgna.croquet.ListSelectionState<DifferentImplementationSelectOne> selectOneState = this.createListSelectionStateForEnum( this.createKey( "selectOneState" ), DifferentImplementationSelectOne.class, null );
 
@@ -83,8 +83,8 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationGuideView createView() {
-		return new org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationGuideView( this );
+	protected org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView createView() {
+		return new org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView( this );
 	}
 
 	@Override

@@ -47,7 +47,7 @@ import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class DifferentImplementationGuideView extends org.lgna.croquet.components.MigPanel {
+public class DifferentImplementationHelpView extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
 		}
@@ -60,7 +60,7 @@ public class DifferentImplementationGuideView extends org.lgna.croquet.component
 	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 	private final org.lgna.croquet.components.MigPanel selectOnePanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 
-	public DifferentImplementationGuideView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
+	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
 		this.addComponent( composite.getHeader().createLabel(), "wrap" );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
