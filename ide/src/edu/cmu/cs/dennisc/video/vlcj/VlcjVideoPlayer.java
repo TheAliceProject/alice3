@@ -89,6 +89,8 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
+			// We must record this position change. VLCJ does not accurately keep position.
+			updatePosition( newPosition );
 			firePositionChanged( newPosition );
 		}
 
@@ -154,6 +156,8 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 	private String mediaPath = null;
 
+	private float position = 0.0f;
+
 	public VlcjVideoPlayer() {
 		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
 			@Override
@@ -188,6 +192,14 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.setEnableMouseInputHandling( false );
 		mediaPlayer.setEnableKeyInputHandling( false );
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
+	}
+
+	/*
+	 * VLCJ does not correctly track the position. We need to keep track of this ourselves.
+	 */
+	@Deprecated
+	private void updatePosition( float newPosition ) {
+		this.position = newPosition;
 	}
 
 	private void fireNewMedia() {
@@ -330,7 +342,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public float getPosition() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		return mediaPlayer.getPosition();
+		// getPosition is ONLY accurate and valid when the media is playing. If it is not playing then it is not accurate.
+		// So we track this ourselves to ensure an accurate position.
+		//return mediaPlayer.getPosition();
+		return this.position;
 	}
 
 	public void setPosition( float position ) {
@@ -343,6 +358,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			//mediaPlayer.pause();
 		}
 		mediaPlayer.setPosition( position );
+		this.updatePosition( position );
+
+		// VLCJ does not fire this unless the video is playing. This seems wrong, especially for gathering thumbnails.
+		this.firePositionChanged( position );
 	}
 
 	public long getLengthInMilliseconds() {
@@ -372,7 +391,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public boolean writeSnapshot( java.io.File file ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+		float seconds = ( ( mediaPlayer.getLength() ) * ( this.getPosition() ) ) / 1000.0f;
 		try {
 			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
 			return true;
@@ -383,7 +402,9 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public java.awt.Image getSnapshot() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+		// TODO: 1.0 means the video is over... so we need something to get the last frame of the video if it's 1.0.
+		//		float position = ( this.getPosition() >= 1.0f ) ? 0.88f : this.getPosition();
+		float seconds = ( ( mediaPlayer.getLength() ) * ( this.getPosition() ) ) / 1000.0f;
 		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 	}
 
