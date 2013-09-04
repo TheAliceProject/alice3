@@ -64,6 +64,10 @@ public interface VideoPlayer {
 
 	public void stop();
 
+	public long getTimeInMilliseconds();
+
+	public void setTimeInMilliseconds( long timeInMilliseconds );
+
 	public float getPosition();
 
 	public void setPosition( float position );

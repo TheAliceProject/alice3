@@ -197,7 +197,6 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		};
 
 		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		//mediaPlayer.addMediaOptions( "--no-osd" );
 		mediaPlayer.setEnableMouseInputHandling( false );
 		mediaPlayer.setEnableKeyInputHandling( false );
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
@@ -320,6 +319,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		if( mediaPlayer.isPlayable() ) {
 			mediaPlayer.play();
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( mediaPlayer );
 			//			if( mediaPlayer.isSeekable() ) {
 			//				mediaPlayer.setPosition( 0.0f );
 			//			}
@@ -330,7 +330,8 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	public void pause() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
-			mediaPlayer.pause();
+			mediaPlayer.setPause( true );
+			//mediaPlayer.pause();
 		} else {
 			System.err.println( "cannot pause " + mediaPlayer );
 		}
@@ -339,6 +340,16 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	public void stop() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.stop();
+	}
+
+	public long getTimeInMilliseconds() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.getTime();
+	}
+
+	public void setTimeInMilliseconds( long timeInMilliseconds ) {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.setTime( timeInMilliseconds );
 	}
 
 	public float getPosition() {
@@ -353,7 +364,6 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		} else {
 			//System.err.println( "cannot setPosition " + position + " " + mediaPlayer + " starting." );
 			mediaPlayer.start();
-			//mediaPlayer.pause();
 		}
 		mediaPlayer.setPosition( position );
 	}
@@ -385,27 +395,32 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = false;
 
-	public boolean writeSnapshot( java.io.File file ) {
+	private double getTimeInSeconds() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		try {
-			if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
-				double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+		return mediaPlayer.getTime() * 0.001;
+	}
+
+	public boolean writeSnapshot( java.io.File file ) {
+		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
+			try {
+				double seconds = this.getTimeInSeconds();
 				edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
-			} else {
-				mediaPlayer.saveSnapshot( file );
+				return true;
+			} catch( Exception e ) {
+				return false;
 			}
-			return true;
-		} catch( Exception e ) {
-			return false;
+		} else {
+			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			return mediaPlayer.saveSnapshot( file );
 		}
 	}
 
 	public java.awt.Image getSnapshot() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
-			double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+			double seconds = this.getTimeInSeconds();
 			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 		} else {
+			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 			return mediaPlayer.getSnapshot();
 		}
 	}

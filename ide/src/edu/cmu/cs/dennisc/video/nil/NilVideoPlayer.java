@@ -49,6 +49,7 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
 	private java.net.URI uri;
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+	private long timeInMilliseconds;
 	private float position;
 	private boolean isMuted;
 	private float volume;
@@ -88,6 +89,14 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void stop() {
+	}
+
+	public long getTimeInMilliseconds() {
+		return this.timeInMilliseconds;
+	}
+
+	public void setTimeInMilliseconds( long timeInMilliseconds ) {
+		this.timeInMilliseconds = timeInMilliseconds;
 	}
 
 	public float getPosition() {
