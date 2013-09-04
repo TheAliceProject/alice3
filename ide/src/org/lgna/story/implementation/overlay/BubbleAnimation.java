@@ -40,78 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.story.implementation.overlay;
 
 /**
  * @author dculyba
  * 
  */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
+public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
+	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble m_bubble;
 
-	protected double m_openingDuration;
-	protected double m_updatingDuration;
-	protected double m_closingDuration;
-
-	protected enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
-	}
-
-	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( entityImp );
-		m_openingDuration = openingDuration;
-		m_updatingDuration = updatingDuration;
-		m_closingDuration = closingDuration;
-	}
-
-	protected double getOpeningDuration() {
-		return m_openingDuration;
-	}
-
-	protected double getUpdatingDuration() {
-		return m_updatingDuration;
-	}
-
-	protected double getClosingDuration() {
-		return m_closingDuration;
-	}
-
-	protected abstract void updateStateAndPortion( State state, double portion );
-
-	@Override
-	protected void prologue() {
-		this.updateStateAndPortion( State.OPENNING, 0.0 );
-		super.prologue();
+	public BubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
+		super( entityImp, openingDuration, updatingDuration, closingDuration );
+		m_bubble = bubble;
 	}
 
 	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( ( m_openingDuration > 0.0 ) && ( deltaSincePrologue <= m_openingDuration ) ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / m_openingDuration;
-		} else if( ( m_updatingDuration > 0.0 ) && ( deltaSincePrologue <= ( m_openingDuration + m_updatingDuration ) ) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue - m_openingDuration ) / m_updatingDuration;
+	protected edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic() {
+		return m_bubble;
+	}
+
+	@Override
+	protected void updateStateAndPortion( State state, double portion ) {
+		if( state == State.OPENNING ) {
+			m_bubble.portion.setValue( portion );
+		} else if( state == State.UPDATING ) {
+			m_bubble.portion.setValue( 1.0 );
 		} else {
-			state = State.CLOSING;
-			if( m_closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue - m_openingDuration - m_updatingDuration ) / m_closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
-			}
+			//state == State.CLOSING;
+			m_bubble.portion.setValue( 1.0 - portion );
 		}
-		this.updateStateAndPortion( state, portion );
-		double toReturn = ( m_openingDuration + m_updatingDuration + m_closingDuration ) - deltaSincePrologue;
-		return toReturn;
 	}
 
 	@Override
-	protected void epilogue() {
-		this.updateStateAndPortion( State.CLOSING, 1.0 );
+	protected void epilogue()
+	{
 		super.epilogue();
+		edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( this.m_bubble );
 	}
 
 }

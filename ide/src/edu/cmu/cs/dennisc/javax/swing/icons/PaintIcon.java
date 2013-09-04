@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+public class PaintIcon implements javax.swing.Icon {
+	private java.awt.Paint fillPaint;
+	private int width;
+	private int height;
 
-	private org.lgna.story.implementation.EntityImp m_entityImp;
-	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
-	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
-
-	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
-		assert entityImp != null;
-		m_entityImp = entityImp;
+	public PaintIcon( java.awt.Paint fillPaint ) {
+		this( fillPaint, ColorIcon.DEFAULT_SIZE );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
-
-	@Override
-	protected void prologue() {
-		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
-		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
-		m_sgLayer = camera.getPostRenderLayer();
-		m_sgGraphic = this.getSGGraphic();
-		assert m_sgLayer != null;
-		assert m_sgGraphic != null;
-		m_sgGraphic.setParent( m_sgLayer );
+	public PaintIcon( java.awt.Paint fillPaint, int size ) {
+		this( fillPaint, size, size );
 	}
 
-	@Override
-	protected void preEpilogue() {
+	public PaintIcon( java.awt.Paint fillPaint, java.awt.Dimension size ) {
+		this( fillPaint, size.width, size.height );
 	}
 
-	@Override
-	protected void epilogue() {
-		m_sgGraphic.setParent( null );
+	public PaintIcon( java.awt.Paint fillPaint, int width, int height ) {
+		this.fillPaint = fillPaint;
+		this.width = width;
+		this.height = height;
 	}
 
+	public int getIconWidth() {
+		return this.width;
+	}
+
+	public int getIconHeight() {
+		return this.height;
+	}
+
+	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setPaint( this.fillPaint );
+		g2.translate( x, y );
+		g2.fillRect( 0, 0, this.width, this.height );
+		g2.translate( -x, -y );
+	}
 }

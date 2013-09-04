@@ -271,7 +271,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 	@Override
 	protected void setSwingValue( Boolean nextValue ) {
-		if( this.swingModel.buttonModel.isSelected() != nextValue ) {
+		if( this.swingModel.buttonModel.isSelected() == nextValue ) {
 			//pass
 		} else {
 			this.isItemStateChangedToBeIgnored = true;

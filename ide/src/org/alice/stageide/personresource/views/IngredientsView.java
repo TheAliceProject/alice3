@@ -79,7 +79,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
 			itemSelectedState.initializeIfNecessary();
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
-			itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( melaninShade ) );
+			itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( melaninShade ) );
 			org.lgna.croquet.components.ToggleButton button = itemSelectedState.createToggleButton();
 			button.tightenUpMargin( COLOR_BUTTON_MARGIN );
 			this.addComponent( button, constraints );
@@ -106,7 +106,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		final org.lgna.croquet.BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
 		final org.lgna.croquet.components.ToggleButton otherColorButton = otherColorState.createToggleButton();
-		final int SIZE = org.alice.ide.swing.icons.ColorIcon.DEFAULT_SIZE;
+		final int SIZE = edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE;
 		class OtherColorIcon implements javax.swing.Icon {
 			public int getIconWidth() {
 				return SIZE;

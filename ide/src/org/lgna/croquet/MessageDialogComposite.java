@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,63 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation;
+package org.lgna.croquet;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver {
+public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements OperationOwningComposite<V> {
+	private final MessageType messageType;
+	private String title;
 
-	private long startTime;
+	private final OwnedByCompositeOperation launchOperation;
 
-	/**
-	 * @param entity
-	 * @param openingDuration
-	 * @param updatingDuration
-	 * @param closingDuration
-	 * @param bubble
-	 */
-	public AudioLimitedBubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		super( entityImp, openingDuration, 100.0, closingDuration, bubble );
-		this.startTime = 0;
+	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
+		super( migrationId );
+		this.messageType = messageType;
+		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
 	}
 
 	@Override
-	protected void prologue()
-	{
-		super.prologue();
-		this.startTime = System.currentTimeMillis();
+	protected void localize() {
+		super.localize();
+		this.title = this.findLocalizedText( "title" );
 	}
 
-	@Override
-	protected void epilogue()
-	{
-		super.epilogue();
-		this.startTime = 0;
+	public String modifyNameIfNecessary( String text ) {
+		return text;
 	}
 
-	public void setDuration( double duration )
-	{
-		double elapsedTime = 0;
-		if( this.startTime != 0 )
-		{
-			long currentTime = System.currentTimeMillis();
-			elapsedTime = ( currentTime - this.startTime ) * 0.001;
-		}
-		if( elapsedTime > this.m_openingDuration )
-		{
-			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
-		}
-		else
-		{
-			this.m_updatingDuration = duration;
-		}
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
 	}
 
-	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource )
-	{
-		this.m_updatingDuration = resource.getDuration();
+	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 	}
 
+	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+
+	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+		return defaultValue;
+	}
+
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
+	}
+
+	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
+		return this.launchOperation;
+	}
+
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		java.awt.Component awtComponent = null; //todo
+		//todo: Icon
+		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
+	}
 }
