@@ -132,8 +132,6 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
 				if( composite instanceof ExecutionPermissionFailedDialogComposite ) {
 					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite)composite;
-
-					//					boolean isPreviousStepExecutionPermissionAndSuccessful = getFFmpegFileIfNotExecutable() == null;
 					return executionComposite.getIsFixed();
 				}
 			}
@@ -147,8 +145,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Object iteratingData ) {
 		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( subSteps.size() == 0 ) {
-			//			if( fileKnownToBeNotExecuable != null ) {
-			if( true ) {
+			if( fileKnownToBeNotExecuable != null ) {
 				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
 			} else {
 				return getWizardModel();
