@@ -40,28 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.meta;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MetaState<T> {
+public class ValueHolder<T> {
 	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	private T prevValue;
+	private T value;
 
-	protected void setPrevValue( T prevValue ) {
-		this.prevValue = prevValue;
+	public ValueHolder() {
 	}
 
-	public abstract T getValue();
+	public ValueHolder( T value ) {
+		this.value = value;
+	}
+
+	public T getValue() {
+		return this.value;
+	}
+
+	public void setValue( T value ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
+			//pass
+		} else {
+			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value, value );
+			this.value = value;
+			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
+				listener.valueChanged( e );
+			}
+		}
+	}
 
 	public void addValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
 	public void addAndInvokeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
-		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.prevValue );
+		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value );
 		listener.valueChanged( e );
 		this.addValueListener( listener );
 	}
@@ -70,17 +87,4 @@ public abstract class MetaState<T> {
 		this.valueListeners.add( listener );
 	}
 
-	protected void checkValueAndFireIfAppropriate() {
-		T nextValue = this.getValue();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
-			//todo: pass?
-			this.prevValue = nextValue;
-		} else {
-			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.prevValue, nextValue );
-			this.prevValue = nextValue;
-			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
-				listener.valueChanged( e );
-			}
-		}
-	}
 }
