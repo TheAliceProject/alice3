@@ -258,9 +258,14 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private boolean containsRandom() {
 		StageIDE ide = StageIDE.getActiveInstance();
-		RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
-		ide.crawlFilteredProgramType( crawler );
-		return crawler.containsRandom;
+		if( ide != null ) {
+			RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
+			ide.crawlFilteredProgramType( crawler );
+			return crawler.containsRandom;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			return false;
+		}
 	}
 
 	private void stashSeed( long currentTimeMillis ) {
@@ -290,7 +295,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	private boolean containsInputEvents() {
-		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+		org.lgna.project.Project project = this.getOwner().getProject();
+		NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = initializeEventListeners.body.getValue();
 		for( Statement statement : body.statements ) {
