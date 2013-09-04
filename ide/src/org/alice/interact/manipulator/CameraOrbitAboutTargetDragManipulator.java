@@ -40,15 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.alice.interact.manipulator;
+
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SModel;
+import org.lgna.story.implementation.EntityImp;
+
+import edu.cmu.cs.dennisc.math.Point3;
 
 /**
  * @author Matt May
  */
-public interface PoserSphereManipulatorListener {
-	public void fireStart( PoserEvent poserEvent );
+public class CameraOrbitAboutTargetDragManipulator extends CameraOrbitDragManipulator {
 
-	public void fireFinish( PoserEvent poserEvent );
+	private EntityImp target;
 
-	public void fireAnchorUpdate( PoserEvent poserEvent );
+	public void setTarget( SModel target ) {
+		this.target = ImplementationAccessor.getImplementation( target );
+	}
+
+	@Override
+	public void setPivotPoint( Point3 pivotPoint ) {
+		if( target != null ) {
+			super.setPivotPoint( target.getAbsoluteTransformation().translation );
+		} else {
+			super.setPivotPoint( pivotPoint );
+		}
+	}
 }

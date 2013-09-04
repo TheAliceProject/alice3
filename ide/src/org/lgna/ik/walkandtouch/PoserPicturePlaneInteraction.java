@@ -72,6 +72,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private CameraImp camera;
 	private List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
+	private JointSelectionSphere anchor;
 
 	public PoserPicturePlaneInteraction( PoserScene scene, OnscreenLookingGlass lookingGlass ) {
 		super( lookingGlass );
@@ -100,7 +101,12 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		}
 		if( selected != null ) {
 			Composite sgComposite = ImplementationAccessor.getImplementation( selected ).getSgComposite();
-			this.selected = selected;
+			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+				this.selected = selected;
+			} else if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+
+				this.anchor = selected;
+			}
 			return (Transformable)sgComposite;
 		} else {
 			return null;
@@ -116,6 +122,10 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireStart( new PoserEvent( selected ) );
 			}
+		} else if( anchor != null ) {
+			for( PoserSphereManipulatorListener listener : listeners ) {
+				listener.fireAnchorUpdate( new PoserEvent( anchor ) );
+			}
 		}
 	}
 
@@ -126,6 +136,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			}
 			selected = null;
 		}
+		anchor = null;
 
 	}
 

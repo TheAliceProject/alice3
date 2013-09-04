@@ -151,6 +151,10 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 				step.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( step, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
 			}
 		}
+
+		@Override
+		public void fireAnchorUpdate( PoserEvent poserEvent ) {
+		}
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
