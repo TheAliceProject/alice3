@@ -436,7 +436,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type ) {
 		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType.getValue() ) {
-			return type.isAssignableTo( org.lgna.story.SScene.class ) == false;
+			return ( type.isAssignableTo( org.lgna.story.SScene.class ) == false ) && ( type.isAssignableTo( org.lgna.story.SProgram.class ) == false );
 		} else {
 			return false;
 		}
