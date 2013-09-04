@@ -154,8 +154,19 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 	private String mediaPath = null;
 
+	private static String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
+
 	public VlcjVideoPlayer() {
 		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
+			@Override
+			protected String[] onGetMediaPlayerFactoryArgs() {
+				String[] defaultArgs = super.onGetMediaPlayerFactoryArgs();
+				String[] defaultPlusCustomArgs = new String[ defaultArgs.length + CUSTOM_FACTORY_ARGS.length ];
+				System.arraycopy( defaultArgs, 0, defaultPlusCustomArgs, 0, defaultArgs.length );
+				System.arraycopy( CUSTOM_FACTORY_ARGS, 0, defaultPlusCustomArgs, defaultArgs.length, CUSTOM_FACTORY_ARGS.length );
+				return defaultPlusCustomArgs;
+			}
+
 			@Override
 			protected java.awt.Canvas onGetCanvas() {
 				java.awt.Canvas rv;
@@ -184,7 +195,9 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 				return rv;
 			}
 		};
+
 		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		//mediaPlayer.addMediaOptions( "--no-osd" );
 		mediaPlayer.setEnableMouseInputHandling( false );
 		mediaPlayer.setEnableKeyInputHandling( false );
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
@@ -370,11 +383,17 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.mute( isMuted );
 	}
 
+	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = false;
+
 	public boolean writeSnapshot( java.io.File file ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
 		try {
-			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
+			if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
+				double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+				edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
+			} else {
+				mediaPlayer.saveSnapshot( file );
+			}
 			return true;
 		} catch( Exception e ) {
 			return false;
@@ -383,8 +402,12 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public java.awt.Image getSnapshot() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
-		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
+			double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
+			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+		} else {
+			return mediaPlayer.getSnapshot();
+		}
 	}
 
 	public void release() {
