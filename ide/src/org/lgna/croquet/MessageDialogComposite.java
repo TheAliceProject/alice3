@@ -91,9 +91,10 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 		return this.launchOperation;
 	}
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		java.awt.Component awtComponent = null; //todo
 		//todo: Icon
 		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
+		completionStep.finish();
 	}
 }

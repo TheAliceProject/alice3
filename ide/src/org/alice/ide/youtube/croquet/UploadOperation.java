@@ -42,20 +42,25 @@
  */
 package org.alice.ide.youtube.croquet;
 
+import java.io.File;
+import java.util.List;
+
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.OperationOwningComposite;
+import org.lgna.croquet.OwnedByCompositeOperation;
+import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
 
 import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 
 /**
  * @author Matt May
  */
-//todo: extends IteratingOperation?
-public class UploadOperation extends ActionOperation {
+public class UploadOperation extends SingleThreadIteratingOperation {
 	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
 
 	public UploadOperation() {
@@ -71,8 +76,23 @@ public class UploadOperation extends ActionOperation {
 		return this.exportToYouTubeWizardDialogComposite;
 	}
 
-	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
+	protected void perform() {
+		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+		if( fileKnownToBeNotExecuable != null ) {
+			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
+			composite.getOperation().fire();
+		} else {
+			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+			wizard.setProject( ProjectStack.peekProject() );
+			try {
+				wizard.getOperation().fire();
+			} finally {
+				wizard.setProject( null );
+			}
+		}
+	}
+
+	private java.io.File getFFmpegFileIfNotExecutable() {
 		java.io.File fileKnownToBeNotExecuable;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			fileKnownToBeNotExecuable = null;
@@ -85,17 +105,61 @@ public class UploadOperation extends ActionOperation {
 				fileKnownToBeNotExecuable = null;
 			}
 		}
-		if( fileKnownToBeNotExecuable != null ) {
-			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
-			composite.getOperation().fire( trigger );
-		} else {
-			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
-			wizard.setProject( ProjectStack.peekProject() );
-			try {
-				wizard.getOperation().fire( trigger );
-			} finally {
-				wizard.setProject( null );
+		return fileKnownToBeNotExecuable;
+	}
+
+	private Model getExecutionPermissionModel( File file ) {
+		ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( file );
+		return composite.getOperation();
+	}
+
+	private Model getWizardModel() {
+		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+		wizard.setProject( ProjectStack.peekProject() );
+		return wizard.getOperation();
+	}
+
+	@Override
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Object iteratingData ) {
+		int size = subSteps.size();
+		if( size == 0 ) {
+			return true;
+		} else if( size == 1 ) {
+			Step<?> prevStep = subSteps.get( 0 );
+			Model prevModel = prevStep.getModel();
+			if( prevModel instanceof OwnedByCompositeOperation ) {
+				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation)prevModel;
+				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
+				if( composite instanceof ExecutionPermissionFailedDialogComposite ) {
+					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite)composite;
+
+					//					boolean isPreviousStepExecutionPermissionAndSuccessful = getFFmpegFileIfNotExecutable() == null;
+					return executionComposite.getIsFixed();
+				}
 			}
+			return false;
+		} else {
+			return false;
 		}
+	}
+
+	@Override
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Object iteratingData ) {
+		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+		if( subSteps.size() == 0 ) {
+			//			if( fileKnownToBeNotExecuable != null ) {
+			if( true ) {
+				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
+			} else {
+				return getWizardModel();
+			}
+		} else {
+			assert fileKnownToBeNotExecuable == null : "this should be null check logic in getNext()";
+			return getWizardModel();
+		}
+	}
+
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 	}
 }

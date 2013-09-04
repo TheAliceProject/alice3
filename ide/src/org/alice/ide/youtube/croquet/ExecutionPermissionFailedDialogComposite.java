@@ -42,13 +42,19 @@
  */
 package org.alice.ide.youtube.croquet;
 
+import java.awt.Container;
 import java.io.File;
+
+import javax.swing.JDialog;
 
 import org.alice.ide.youtube.croquet.views.ExecutionPermissionFailedDialogView;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
 import org.lgna.croquet.MessageType;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -63,13 +69,14 @@ import edu.wustl.cse.lookingglass.media.FFmpegProcess;
 public class ExecutionPermissionFailedDialogComposite extends MessageDialogComposite<ExecutionPermissionFailedDialogView> {
 
 	private final StringValue explanation = createStringValue( createKey( "explanation" ) );
-	//private final BooleanState fixedState = createBooleanState( createKey( "notToTranslate" ), false );
+	private final BooleanState fixedState = createBooleanState( createKey( "notToTranslate" ), false );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
 	private final File ffmpegFile;
 
 	public ExecutionPermissionFailedDialogComposite( File f ) {
 		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
 		this.ffmpegFile = f;
+		fixedState.addValueListener( valueListener );
 	}
 
 	private final ActionOperation troubleShootAction = createActionOperation( createKey( "troubleShoot" ), new Action() {
@@ -78,13 +85,35 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
 			if( SystemUtilities.isMac() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
+				boolean isFixed = ( ffmpegFile != null ) && ffmpegFile.canExecute();
+				fixedState.setValueTransactionlessly( isFixed );
 			} else if( SystemUtilities.isWindows() ) {
+				fixedState.setValueTransactionlessly( true );
 				// TODO later perhaps? (mmay)
 				//				DesktopUtilities.open( ffmpegFile.getParentFile() );
 			}
 			return null;
 		}
 	} );
+
+	private ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+
+		@Override
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		@Override
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			if( nextValue ) {
+				Container awtComponent = ExecutionPermissionFailedDialogComposite.this.getView().getAwtComponent();
+				while( ( awtComponent != null ) && !( awtComponent instanceof JDialog ) ) {
+					awtComponent = awtComponent.getParent();
+				}
+				assert awtComponent != null;
+				( (JDialog)awtComponent ).setVisible( false );
+			}
+		}
+	};
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
@@ -96,9 +125,9 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 		return new ExecutionPermissionFailedDialogView( this );
 	}
 
-	//	public boolean getIsFixed() {
-	//		return fixedState.getValue();
-	//	}
+	public boolean getIsFixed() {
+		return fixedState.getValue();
+	}
 
 	public StringValue getExplanation() {
 		return this.explanation;
@@ -109,7 +138,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	}
 
 	public ActionOperation getTroubleShootAction() {
-		return SystemUtilities.isMac() ? this.troubleShootAction : null;
+		return troubleShootAction;//SystemUtilities.isMac() ? this.troubleShootAction : null;
 	}
 
 	public static void main( String[] args ) {
