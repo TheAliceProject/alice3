@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.Panel> {
 	private final OwnedByCompositeOperation operation;
 
-	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
+	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
@@ -97,10 +97,10 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
-			java.util.Iterator<WizardPageComposite<?>> iterator = this.getWizardPageIterator();
+			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
-				WizardPageComposite<?> page = iterator.next();
+				WizardPageComposite<?, ?> page = iterator.next();
 				if( page.isAutoAdvanceDesired( completionStep ) ) {
 					//pass
 				} else {

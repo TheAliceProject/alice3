@@ -95,6 +95,14 @@ public class IconUtilities {
 		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
 	}
 
+	public static javax.swing.Icon getInformationIcon() {
+		return javax.swing.UIManager.getIcon( "OptionPane.informationIcon" );
+	}
+
+	public static javax.swing.Icon getQuestionIcon() {
+		return javax.swing.UIManager.getIcon( "OptionPane.questionIcon" );
+	}
+
 	public static javax.swing.Icon getWarningIcon() {
 		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
 	}

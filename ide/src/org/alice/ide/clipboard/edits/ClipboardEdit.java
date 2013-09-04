@@ -81,7 +81,7 @@ public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	protected void popAndAdd() {
-		org.lgna.project.ast.AbstractNode node = org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
+		org.lgna.project.ast.Node node = org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
 		if( node == this.statement ) {
 			this.blockStatementIndexPair.getBlockStatement().statements.add( this.blockStatementIndexPair.getIndex(), this.statement );
 		} else {

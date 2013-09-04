@@ -85,8 +85,6 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 	}
 
-	private static final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
-
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model, false );
 
@@ -104,6 +102,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 181 );
 		}
 
+		Class<?> modelResourceCls = null;
 		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
 			if( model instanceof org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode ) {
 				//pass
@@ -112,28 +111,38 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
 				if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
 					org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
-					Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
-					Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
-					if( modelResourceInterfaces.length > 0 ) {
-						Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
-						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-							if( iconFactory != null ) {
-								javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
-								SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
-								superclsLabel.getAwtComponent().setIcon( icon );
-								this.internalAddComponent( superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT );
-							}
-						}
-					}
+					modelResourceCls = instanceCreatorKey.getModelResourceCls();
 				}
 			}
 		} else if( model instanceof org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel ) {
 			org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel uriGalleryDragModel = (org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel)model;
+			org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = uriGalleryDragModel.getResourceKey();
+			if( resourceKey != null ) {
+				modelResourceCls = resourceKey.getModelResourceCls();
+			}
+
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
 			label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.BOTTOM );
 			this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
+		}
+		if( modelResourceCls != null ) {
+			if( modelResourceCls.isEnum() ) {
+				Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
+				if( modelResourceInterfaces.length > 0 ) {
+					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
+					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
+						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+						if( iconFactory != null ) {
+							final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
+							javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
+							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
+							superclsLabel.getAwtComponent().setIcon( icon );
+							this.internalAddComponent( superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT );
+						}
+					}
+				}
+			}
 		}
 
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

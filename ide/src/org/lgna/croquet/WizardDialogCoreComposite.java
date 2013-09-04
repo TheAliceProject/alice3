@@ -130,7 +130,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final PreviousOperation prevOperation = new PreviousOperation( this );
 
 	private static class WizardCardOwnerComposite extends CardOwnerComposite {
-		public WizardCardOwnerComposite( WizardPageComposite<?>[] wizardPages ) {
+		public WizardCardOwnerComposite( WizardPageComposite<?, ?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
 	}
@@ -197,7 +197,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.refreshStatus();
 	}
 
-	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?>>() {
+	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?, ?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?, ?>>() {
 		public Object getElementAt( int index ) {
 			return cardComposite.getCards().get( index );
 		}
@@ -206,9 +206,9 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			return cardComposite.getCards().size();
 		}
 	};
-	private final javax.swing.ListCellRenderer listCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<WizardPageComposite<?>>() {
+	private final javax.swing.ListCellRenderer listCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<WizardPageComposite<?, ?>>() {
 		@Override
-		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.WizardPageComposite<?> value, int index, boolean isSelected, boolean cellHasFocus ) {
+		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.WizardPageComposite<?, ?> value, int index, boolean isSelected, boolean cellHasFocus ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( index + 1 );
 			sb.append( ".    " );
@@ -241,7 +241,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final WizardDialogContentComposite contentComposite = new WizardDialogContentComposite( this );
 	private final WizardCardOwnerComposite cardComposite;
 
-	public WizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>[] wizardPages ) {
+	public WizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>[] wizardPages ) {
 		super( migrationId );
 		this.cardComposite = new WizardCardOwnerComposite( wizardPages );
 	}
@@ -259,15 +259,15 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return this.nextOperation;
 	}
 
-	public void addPage( WizardPageComposite<?> page ) {
+	public void addPage( WizardPageComposite<?, ?> page ) {
 		this.cardComposite.addCard( page );
 	}
 
-	public void removePage( WizardPageComposite<?> page ) {
+	public void removePage( WizardPageComposite<?, ?> page ) {
 		this.cardComposite.removeCard( page );
 	}
 
-	public java.util.Iterator<WizardPageComposite<?>> getWizardPageIterator() {
+	public java.util.Iterator<WizardPageComposite<?, ?>> getWizardPageIterator() {
 		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
@@ -380,9 +380,9 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.index = -1;
 		this.next( true );
 		this.cardComposite.handlePreActivation();
-		Iterator<WizardPageComposite<?>> itr = getWizardPageIterator();
+		Iterator<WizardPageComposite<?, ?>> itr = getWizardPageIterator();
 		while( itr.hasNext() ) {
-			WizardPageComposite<?> next = itr.next();
+			WizardPageComposite<?, ?> next = itr.next();
 			next.resetData();
 		}
 	}
@@ -396,8 +396,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
-			if( subComposite instanceof WizardPageComposite<?> ) {
-				WizardPageComposite<?> wizardPage = (WizardPageComposite<?>)subComposite;
+			if( subComposite instanceof WizardPageComposite<?, ?> ) {
+				WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>)subComposite;
 				wizardPage.handlePreShowDialog( step );
 			}
 		}
@@ -408,8 +408,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super.handlePostHideDialog( step );
 		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
-			if( subComposite instanceof WizardPageComposite<?> ) {
-				WizardPageComposite<?> wizardPage = (WizardPageComposite<?>)subComposite;
+			if( subComposite instanceof WizardPageComposite<?, ?> ) {
+				WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>)subComposite;
 				wizardPage.handlePostHideDialog( step );
 			}
 		}

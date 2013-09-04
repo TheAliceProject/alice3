@@ -45,6 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public final class UriGalleryIcon extends org.lgna.croquet.icon.AbstractIcon {
 	private final javax.swing.Icon base;
 

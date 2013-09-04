@@ -110,4 +110,12 @@ public class LogInOutComposite extends CardOwnerComposite {
 		} );
 		loginThread.start();
 	}
+
+	public boolean getCanConnect() {
+		return composite.getCanLogIn();
+	}
+
+	public void addListener( LogInOutListener listener ) {
+		composite.addListener( listener );
+	}
 }

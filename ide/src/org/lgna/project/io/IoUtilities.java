@@ -308,7 +308,7 @@ public abstract class IoUtilities {
 
 	public static edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
-		assert file.exists();
+		assert file.exists() : file;
 		return readType( new java.util.zip.ZipFile( file ) );
 	}
 

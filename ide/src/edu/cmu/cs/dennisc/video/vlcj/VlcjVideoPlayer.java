@@ -85,7 +85,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void timeChanged( MediaPlayer mediaPlayer, long newTime ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "time changed", newTime );
+			//todo
 		}
 
 		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
@@ -154,8 +154,19 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 	private String mediaPath = null;
 
+	private static String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
+
 	public VlcjVideoPlayer() {
 		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
+			@Override
+			protected String[] onGetMediaPlayerFactoryArgs() {
+				String[] defaultArgs = super.onGetMediaPlayerFactoryArgs();
+				String[] defaultPlusCustomArgs = new String[ defaultArgs.length + CUSTOM_FACTORY_ARGS.length ];
+				System.arraycopy( defaultArgs, 0, defaultPlusCustomArgs, 0, defaultArgs.length );
+				System.arraycopy( CUSTOM_FACTORY_ARGS, 0, defaultPlusCustomArgs, defaultArgs.length, CUSTOM_FACTORY_ARGS.length );
+				return defaultPlusCustomArgs;
+			}
+
 			@Override
 			protected java.awt.Canvas onGetCanvas() {
 				java.awt.Canvas rv;
@@ -184,6 +195,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 				return rv;
 			}
 		};
+
 		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.setEnableMouseInputHandling( false );
 		mediaPlayer.setEnableKeyInputHandling( false );
@@ -191,12 +203,14 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	private void fireNewMedia() {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.newMedia( this );
 		}
 	}
 
 	private void fireVideoOutput( int count ) {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.videoOutput( this, count );
 		}
@@ -209,24 +223,28 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	private void fireLengthChanged( long length ) {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.lengthChanged( this, length );
 		}
 	}
 
 	private void fireMediaChanged() {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.mediaChanged( this );
 		}
 	}
 
 	private void fireOpening() {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.opening( this );
 		}
 	}
 
 	private void firePlaying() {
+		this.markPausedPositionAndTimeInMillisecondsInvalid();
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.playing( this );
 		}
@@ -307,6 +325,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		if( mediaPlayer.isPlayable() ) {
 			mediaPlayer.play();
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "not playable (starting):", mediaPlayer );
 			//			if( mediaPlayer.isSeekable() ) {
 			//				mediaPlayer.setPosition( 0.0f );
 			//			}
@@ -317,7 +336,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	public void pause() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
-			mediaPlayer.pause();
+			mediaPlayer.setPause( true );
 		} else {
 			System.err.println( "cannot pause " + mediaPlayer );
 		}
@@ -328,8 +347,84 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.stop();
 	}
 
+	private Float pausedSetPosition = null;
+	private Long pausedSetTimeInMilliseconds = null;
+
+	private float getPausedSetPosition() {
+		if( this.pausedSetTimeInMilliseconds != null ) {
+			long n = this.getLengthInMilliseconds();
+			if( n != 0 ) {
+				return this.pausedSetTimeInMilliseconds / (float)this.getLengthInMilliseconds();
+			} else {
+				return Float.NaN;
+			}
+		} else {
+			return this.pausedSetPosition != null ? this.pausedSetPosition : Float.NaN;
+		}
+	}
+
+	public Long getPausedSetTimeInMilliseconds() {
+		if( this.pausedSetPosition != null ) {
+			long n = this.getLengthInMilliseconds();
+			if( n != 0 ) {
+				return (long)( this.pausedSetPosition * this.getLengthInMilliseconds() );
+			} else {
+				return null;
+			}
+		} else {
+			return this.pausedSetTimeInMilliseconds;
+		}
+	}
+
+	private void markPausedPositionAndTimeInMillisecondsInvalid() {
+		this.pausedSetPosition = null;
+		this.pausedSetTimeInMilliseconds = null;
+	}
+
+	public long getTimeInMilliseconds() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.canPause() ) {
+			if( mediaPlayer.isPlaying() ) {
+				//pass
+			} else {
+				Long t = this.getPausedSetTimeInMilliseconds();
+				if( t != null ) {
+					return t;
+				} else {
+					//pass
+				}
+			}
+		}
+		return mediaPlayer.getTime();
+	}
+
+	public void setTimeInMilliseconds( long timeInMilliseconds ) {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.canPause() ) {
+			if( mediaPlayer.isPlaying() ) {
+				// pass
+			} else {
+				this.pausedSetPosition = null;
+				this.pausedSetTimeInMilliseconds = timeInMilliseconds;
+			}
+		}
+		mediaPlayer.setTime( timeInMilliseconds );
+	}
+
 	public float getPosition() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.canPause() ) {
+			if( mediaPlayer.isPlaying() ) {
+				//pass
+			} else {
+				float p = this.getPausedSetPosition();
+				if( Float.isNaN( p ) == false ) {
+					return p;
+				} else {
+					//pass
+				}
+			}
+		}
 		return mediaPlayer.getPosition();
 	}
 
@@ -340,9 +435,23 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		} else {
 			//System.err.println( "cannot setPosition " + position + " " + mediaPlayer + " starting." );
 			mediaPlayer.start();
-			//mediaPlayer.pause();
+			mediaPlayer.pause();
+		}
+		if( mediaPlayer.canPause() ) {
+			if( mediaPlayer.isPlaying() ) {
+				// pass
+			} else {
+				this.pausedSetPosition = position;
+				this.pausedSetTimeInMilliseconds = null;
+			}
 		}
 		mediaPlayer.setPosition( position );
+
+		final boolean IS_FIRE_POSITION_CHANGED_DESIRED = false; //todo?
+		if( IS_FIRE_POSITION_CHANGED_DESIRED ) {
+			// VLCJ does not fire this unless the video is playing. This seems wrong, especially for gathering thumbnails.
+			this.firePositionChanged( position );
+		}
 	}
 
 	public long getLengthInMilliseconds() {
@@ -370,21 +479,38 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.mute( isMuted );
 	}
 
-	public boolean writeSnapshot( java.io.File file ) {
+	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux();
+
+	private float getTimeInSeconds() {
+		// TODO: 1.0 means the video is over... so we need something to get the last frame of the video if it's 1.0.
+		//		float position = ( this.getPosition() >= 1.0f ) ? 0.88f : this.getPosition();
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
-		try {
-			edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
-			return true;
-		} catch( Exception e ) {
-			return false;
+		return mediaPlayer.getTime() * 0.001f;
+	}
+
+	public boolean writeSnapshot( java.io.File file ) {
+		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
+			try {
+				float seconds = this.getTimeInSeconds();
+				edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
+				return true;
+			} catch( Exception e ) {
+				return false;
+			}
+		} else {
+			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			return mediaPlayer.saveSnapshot( file );
 		}
 	}
 
 	public java.awt.Image getSnapshot() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		double seconds = ( (double)mediaPlayer.getTime() ) / 1000.0;
-		return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
+			float seconds = this.getTimeInSeconds();
+			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+		} else {
+			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			return mediaPlayer.getSnapshot();
+		}
 	}
 
 	public void release() {

@@ -48,14 +48,18 @@ package edu.wustl.cse.lookingglass.media;
  */
 public class FFmpegImageExtractor {
 
-	public static void getFrameAt( final String videoPath, final double frameTimeSeconds, final java.io.File snapshotFile ) {
+	public static void getFrameAt( final String videoPath, final float frameTimeSeconds, final java.io.File snapshotFile ) {
 		// https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
-		final Double GOP_SEEK = 10.0 * 2.0; // GOP is typically 10 seconds, so let's double it.
-		Double fastSeek = frameTimeSeconds - GOP_SEEK;
-		Double accurateSeek = GOP_SEEK;
-		if( fastSeek < 0.0 ) {
-			fastSeek = 0.0;
+		final Float GOP_SEEK = 10.0f * 2.0f; // GOP is typically 10 seconds, so let's double it.
+		Float fastSeek = frameTimeSeconds - GOP_SEEK;
+		Float accurateSeek = GOP_SEEK;
+		if( fastSeek < 0.0f ) {
+			fastSeek = 0.0f;
 			accurateSeek = frameTimeSeconds;
+		}
+		// Sometimes VLCJ returns negative values for position due to being stopped. Just correct for it.
+		if( accurateSeek < 0.0f ) {
+			accurateSeek = 0.0f;
 		}
 
 		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
@@ -67,7 +71,7 @@ public class FFmpegImageExtractor {
 		}
 	}
 
-	public static java.awt.Image getFrameAt( final String mrl, final double seconds ) {
+	public static java.awt.Image getFrameAt( final String mrl, final float seconds ) {
 		java.awt.Image snapshot = null;
 		try {
 			java.io.File snapshotFile = java.io.File.createTempFile( "snapshot", ".png" );

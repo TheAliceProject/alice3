@@ -1,12 +1,3 @@
-package org.alice.media.audio;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-
 /**
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
@@ -49,6 +40,15 @@ import javax.sound.sampled.AudioSystem;
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+package org.alice.media.audio;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 /**
  * @author dculyba

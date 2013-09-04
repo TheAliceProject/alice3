@@ -386,7 +386,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original ) {
+	public <N extends org.lgna.project.ast.Node> N createCopy( N original ) {
 		org.lgna.project.ast.NamedUserType root = this.getProgramType();
 		return org.lgna.project.ast.AstUtilities.createCopy( original, root );
 	}
