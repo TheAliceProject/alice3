@@ -89,6 +89,8 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
+			// We must record this position change. VLCJ does not accurately keep position.
+			//updatePosition( newPosition );
 			firePositionChanged( newPosition );
 		}
 
@@ -319,7 +321,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		if( mediaPlayer.isPlayable() ) {
 			mediaPlayer.play();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( mediaPlayer );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( mediaPlayer );
 			//			if( mediaPlayer.isSeekable() ) {
 			//				mediaPlayer.setPosition( 0.0f );
 			//			}
@@ -331,7 +333,6 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
 			mediaPlayer.setPause( true );
-			//mediaPlayer.pause();
 		} else {
 			System.err.println( "cannot pause " + mediaPlayer );
 		}
@@ -352,10 +353,50 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.setTime( timeInMilliseconds );
 	}
 
+	//	private Float pausedSetPosition = null;
+	//	private Long pausedSetTimeInMilliseconds = null;
+	//
+	//	//private float position = 0.0f;
+	//
+	//	private float getPausedSetPosition() {
+	//		if( this.pausedSetTimeInMilliseconds != null ) {
+	//			long n = this.getLengthInMilliseconds();
+	//			if( n != 0 ) {
+	//				return this.pausedSetTimeInMilliseconds / (float)this.getLengthInMilliseconds();
+	//			} else {
+	//				return Float.NaN;
+	//			}
+	//		} else {
+	//			return this.pausedSetPosition != null ? this.pausedSetPosition : Float.NaN;
+	//		}
+	//	}
+
 	public float getPosition() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		//		if( mediaPlayer.isPlaying() ) {
+		//			//pass
+		//		} else {
+		//			float p = this.getPausedSetPosition();
+		//			if( Float.isNaN( p ) == false ) {
+		//				return p;
+		//			} else {
+		//				//pass
+		//			}
+		//		}
 		return mediaPlayer.getPosition();
+		//		// getPosition is ONLY accurate and valid when the media is playing. If it is not playing then it is not accurate.
+		//		// So we track this ourselves to ensure an accurate position.
+		//		//return mediaPlayer.getPosition();
+		//		return this.position;
 	}
+
+	//	/*
+	//	 * VLCJ does not correctly track the position. We need to keep track of this ourselves.
+	//	 */
+	//	@Deprecated
+	//	private void updatePosition( float newPosition ) {
+	//		this.position = newPosition;
+	//	}
 
 	public void setPosition( float position ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
@@ -366,6 +407,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			mediaPlayer.start();
 		}
 		mediaPlayer.setPosition( position );
+		//		this.updatePosition( position );
+		//
+		//		// VLCJ does not fire this unless the video is playing. This seems wrong, especially for gathering thumbnails.
+		//		this.firePositionChanged( position );
 	}
 
 	public long getLengthInMilliseconds() {
@@ -393,17 +438,18 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.mute( isMuted );
 	}
 
-	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = false;
+	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux();
 
-	private double getTimeInSeconds() {
+	private float getTimeInSeconds() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		return mediaPlayer.getTime() * 0.001;
+		return mediaPlayer.getTime() * 0.001f;
 	}
 
 	public boolean writeSnapshot( java.io.File file ) {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			try {
-				double seconds = this.getTimeInSeconds();
+				float seconds = this.getTimeInSeconds();
+				//				float seconds = ( ( mediaPlayer.getLength() ) * ( this.getPosition() ) ) / 1000.0f;
 				edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
 				return true;
 			} catch( Exception e ) {
@@ -417,7 +463,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public java.awt.Image getSnapshot() {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
-			double seconds = this.getTimeInSeconds();
+			//			// TODO: 1.0 means the video is over... so we need something to get the last frame of the video if it's 1.0.
+			//			//		float position = ( this.getPosition() >= 1.0f ) ? 0.88f : this.getPosition();
+			//			float seconds = ( ( mediaPlayer.getLength() ) * ( this.getPosition() ) ) / 1000.0f;
+			float seconds = this.getTimeInSeconds();
 			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 		} else {
 			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();

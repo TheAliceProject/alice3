@@ -109,7 +109,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		app.getFrame().setVisible( true );
 
-		final boolean IS_SNAPSHOT_TEST = false;
+		final boolean IS_SNAPSHOT_TEST = true;
 		if( IS_SNAPSHOT_TEST ) {
 			new Thread() {
 				@Override
