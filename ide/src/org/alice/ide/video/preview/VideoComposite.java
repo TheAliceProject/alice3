@@ -109,5 +109,23 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		app.getFrame().setVisible( true );
 
+		final boolean IS_SNAPSHOT_TEST = true;
+		if( IS_SNAPSHOT_TEST ) {
+			new Thread() {
+				@Override
+				public void run() {
+					float tPrev = Float.NaN;
+					while( true ) {
+						float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
+						if( tCurr != tPrev ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
+							tPrev = tCurr;
+							videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
+						}
+						edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+					}
+				}
+			}.start();
+		}
 	}
 }
