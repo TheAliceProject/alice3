@@ -279,9 +279,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 					if( method.isFunction() ) {
 						if( method.getDeclaringType() instanceof JavaType ) {
 							JavaType jType = (JavaType)method.getDeclaringType();
-							if( jType.getClassReflectionProxy().getReification().equals( RandomUtilities.class ) ) {
-								this.containsRandom = false;
-							}
+							this.containsRandom = jType.contentEquals( RandomUtilities.class );
 						}
 					}
 				}
