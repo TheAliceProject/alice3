@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
 	private final EventManager manager;
-	private EventScriptIterator iterator;
+	private final EventScriptIterator iterator;
 
 	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
 		if( script != null ) {
@@ -77,9 +77,5 @@ public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 				}
 			}
 		} );
-	}
-
-	public void resetIterator() {
-		this.iterator.refresh();
 	}
 }

@@ -76,7 +76,7 @@ public class EventScriptIterator {
 		return rv;
 	}
 
-	public void refresh() {
+	public void reset() {
 		itrIndex = 0;
 	}
 
