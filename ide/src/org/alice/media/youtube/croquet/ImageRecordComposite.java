@@ -146,29 +146,43 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			timerInSeconds = tCurrent;
 			getView().updateTime();
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
-				if( image != null ) {
-					//pass
-				} else {
-					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
-					//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
-				}
-				if( image != null ) {
-					boolean[] atIsUpsideDown = { false };
-					synchronized( image ) {
-						image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
-						if( atIsUpsideDown[ 0 ] ) {
-							handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
-						} else {
-							System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+			if( lookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
+				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)lookingGlass;
+				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
+					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
+						if( image != null ) {
+							if( isUpSideDown ) {
+								ImageRecordComposite.this.handleImage( image, imageCount, isUpSideDown );
+								imageCount++;
+							}
 						}
 					}
-					imageCount++;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
-				}
+				} );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+				if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
+					if( image != null ) {
+						//pass
+					} else {
+						image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
+					}
+					if( image != null ) {
+						boolean[] atIsUpsideDown = { false };
+						synchronized( image ) {
+							image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+							if( atIsUpsideDown[ 0 ] ) {
+								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+							} else {
+								System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+							}
+						}
+						imageCount++;
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
+					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+				}
 			}
 		}
 
