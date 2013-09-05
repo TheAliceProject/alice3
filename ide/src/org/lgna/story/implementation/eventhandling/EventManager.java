@@ -101,7 +101,7 @@ public class EventManager {
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final TimerEventHandler timer = new TimerEventHandler();
 	private final SceneActivationHandler sceneActivationHandler = new SceneActivationHandler();
-	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler };
+	private final AbstractEventHandler<?, ?>[] handlers = new AbstractEventHandler[] { keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler };
 
 	private final TimerContingencyManager contingent;
 
@@ -133,7 +133,7 @@ public class EventManager {
 		}
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
-			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene ), 0 );
+			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenLookingGlass().getAWTComponent() ), 0 );
 		}
 	};
 
@@ -161,19 +161,16 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
-		for( AbstractEventHandler handler : handlers ) {
+		for( AbstractEventHandler<?, ?> handler : handlers ) {
 			handler.setScene( scene );
 		}
 		inputRecorder = new InputEventRecorder( scene );
 		contingent = new TimerContingencyManager( timer );
+		scene.addSceneActivationListener( timer );
 	}
 
 	public MouseEventWrapper createWrapper( MouseEvent e ) {
-		return new MouseEventWrapper( e, scene );
-	}
-
-	public void setScene() {
-		scene.addSceneActivationListener( timer );
+		return new MouseEventWrapper( e );
 	}
 
 	public void removeKeyListener( KeyPressListener keyListener ) {
@@ -204,18 +201,18 @@ public class EventManager {
 	//		key.fireAllTargeted(e);
 	//	}
 
-	private AbstractEventHandler[] getEventHandlers() {
+	private AbstractEventHandler<?, ?>[] getEventHandlers() {
 		return handlers;
 	}
 
 	public void silenceAllListeners() {
-		for( AbstractEventHandler handler : this.getEventHandlers() ) {
+		for( AbstractEventHandler<?, ?> handler : this.getEventHandlers() ) {
 			handler.silenceListeners();
 		}
 	}
 
 	public void restoreAllListeners() {
-		for( AbstractEventHandler handler : this.getEventHandlers() ) {
+		for( AbstractEventHandler<?, ?> handler : this.getEventHandlers() ) {
 			handler.restoreListeners();
 		}
 	}

@@ -62,10 +62,16 @@ public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 	@Override
 	public void update() {
 		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+
+			@Override
+			public void run() {
+				if( script != null ) {
+					for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
+						manager.recieveEvent( event );
+					}
+				}
 			}
-		}
+		} );
 	}
 }

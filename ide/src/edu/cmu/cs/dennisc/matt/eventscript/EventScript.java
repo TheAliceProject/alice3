@@ -42,11 +42,11 @@
  */
 package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventWithTime;
 
 /**
  * @author Matt May
@@ -54,19 +54,19 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class EventScript {
 	private final List<EventScriptListener> listeners = Collections.newLinkedList();
 
-	private final List<EventWithTime> eventList = Collections.newLinkedList();
-	private List<EventWithTime> list = Collections.newLinkedList();
+	private final List<EventWithTime> masterEventList = Collections.newLinkedList();
+	private List<EventWithTime> notPoppedEventlist = Collections.newLinkedList();
 	private boolean isVirgin = true;
 
 	public void record( double currentTime, Object e ) {
 		EventWithTime event = new EventWithTime( currentTime, e );
-		eventList.add( event );
+		masterEventList.add( event );
 		fireChanged( event );
 	}
 
 	private void fireChanged( EventWithTime event ) {
 		for( EventScriptListener listener : listeners ) {
-			listener.fireChanged( event );
+			listener.fireMasterEventAdded( event );
 		}
 	}
 
@@ -76,42 +76,14 @@ public class EventScript {
 			refresh();
 		}
 		List<Object> rv = Collections.newLinkedList();
-		while( ( list.size() > 0 ) && ( list.get( 0 ).getTime() < time ) ) {
-			rv.add( list.remove( 0 ).getEvent() );
+		while( ( notPoppedEventlist.size() > 0 ) && ( notPoppedEventlist.get( 0 ).getTime() < time ) ) {
+			rv.add( notPoppedEventlist.remove( 0 ).getEvent() );
 		}
 		return rv;
 	}
 
 	public void refresh() {
-		list = Collections.newLinkedList( eventList );
-	}
-
-	public class EventWithTime {
-		private final Object event;
-		private final double time;
-
-		public EventWithTime( double time, Object event ) {
-			this.time = time;
-			this.event = event;
-		}
-
-		public Object getEvent() {
-			return this.event;
-		}
-
-		public double getTime() {
-			return this.time;
-		}
-
-		public String getReportForEventType( String eventName ) {
-			Date date = new Date( (long)( time * 1000 ) );
-			String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-			return eventName + ": " + timeString;
-		}
-	}
-
-	public int size() {
-		return eventList.size();
+		notPoppedEventlist = Collections.newLinkedList( masterEventList );
 	}
 
 	public void addListener( EventScriptListener listener ) {
@@ -119,6 +91,6 @@ public class EventScript {
 	}
 
 	public List<EventWithTime> getEventList() {
-		return eventList;
+		return masterEventList;
 	}
 }

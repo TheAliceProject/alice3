@@ -52,7 +52,7 @@ import org.lgna.story.event.KeyEvent;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventWithTime;
 
 /**
  * @author Dennis Cosgrove
