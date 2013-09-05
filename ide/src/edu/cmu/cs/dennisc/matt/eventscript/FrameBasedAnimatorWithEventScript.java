@@ -51,21 +51,31 @@ import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
  */
 public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
-	private final EventScript script;
 	private final EventManager manager;
+	private final EventScriptIterator iterator;
 
 	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		this.script = script != null ? script : new EventScript();
+		if( script != null ) {
+			iterator = script.createEventScriptIterator();
+		} else {
+			iterator = null;
+		}
 		this.manager = manager;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+
+			@Override
+			public void run() {
+				if( iterator != null ) {
+					for( Object event : iterator.getEventsSinceLastQuery( getCurrentTime() ) ) {
+						manager.recieveEvent( event );
+					}
+				}
 			}
-		}
+		} );
 	}
 }

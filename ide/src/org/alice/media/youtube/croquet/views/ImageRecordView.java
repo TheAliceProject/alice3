@@ -46,7 +46,7 @@ import org.alice.media.youtube.croquet.ImageRecordComposite;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToggleButton;
 
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
@@ -62,7 +62,7 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
 
-		org.lgna.croquet.components.List<EventWithTime> list = recordComposite.getEventList().createList();
+		org.lgna.croquet.components.List<EventScriptEvent> list = recordComposite.getEventList().createList();
 		list.setCellRenderer( recordComposite.getCellRenderer() );
 		list.setBackgroundColor( this.getBackgroundColor() );
 

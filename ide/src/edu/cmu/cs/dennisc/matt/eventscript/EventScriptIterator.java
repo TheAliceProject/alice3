@@ -42,13 +42,42 @@
  */
 package edu.cmu.cs.dennisc.matt.eventscript;
 
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
+import java.util.List;
+import java.util.ListIterator;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
  */
-public interface EventScriptListener {
+public class EventScriptIterator {
 
-	public void fireChanged( EventWithTime event );
+	private final EventScript eventScript;
+	private int itrIndex = 0;
+
+	public EventScriptIterator( EventScript script ) {
+		eventScript = script;
+	}
+
+	public List<Object> getEventsSinceLastQuery( double time ) {
+		List<Object> rv = Collections.newLinkedList();
+		ListIterator<EventScriptEvent> itr = eventScript.getEventList().listIterator( itrIndex );
+		EventScriptEvent event;
+		while( itr.hasNext() ) {
+			event = itr.next();
+			if( event.getTime() < time ) {
+				rv.add( event.getEvent() );
+				++itrIndex;
+			} else {
+				break;
+			}
+		}
+		return rv;
+	}
+
+	public void reset() {
+		itrIndex = 0;
+	}
 
 }

@@ -42,83 +42,45 @@
  */
 package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
 /**
  * @author Matt May
  */
 public class EventScript {
-	private final List<EventScriptListener> listeners = Collections.newLinkedList();
 
-	private final List<EventWithTime> eventList = Collections.newLinkedList();
-	private List<EventWithTime> list = Collections.newLinkedList();
-	private boolean isVirgin = true;
+	private final List<EventScriptListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final List<EventScriptEvent> masterEventList = Collections.newLinkedList();
 
 	public void record( double currentTime, Object e ) {
-		EventWithTime event = new EventWithTime( currentTime, e );
-		eventList.add( event );
-		fireChanged( event );
+		EventScriptEvent event = new EventScriptEvent( currentTime, e );
+		masterEventList.add( event );
+		fireEventAdded( event );
 	}
 
-	private void fireChanged( EventWithTime event ) {
+	private void fireEventAdded( EventScriptEvent event ) {
 		for( EventScriptListener listener : listeners ) {
-			listener.fireChanged( event );
+			listener.eventAdded( event );
 		}
-	}
-
-	public List<Object> getEventsForTime( double time ) {
-		if( isVirgin ) {
-			isVirgin = false;
-			refresh();
-		}
-		List<Object> rv = Collections.newLinkedList();
-		while( ( list.size() > 0 ) && ( list.get( 0 ).getTime() < time ) ) {
-			rv.add( list.remove( 0 ).getEvent() );
-		}
-		return rv;
-	}
-
-	public void refresh() {
-		list = Collections.newLinkedList( eventList );
-	}
-
-	public class EventWithTime {
-		private final Object event;
-		private final double time;
-
-		public EventWithTime( double time, Object event ) {
-			this.time = time;
-			this.event = event;
-		}
-
-		public Object getEvent() {
-			return this.event;
-		}
-
-		public double getTime() {
-			return this.time;
-		}
-
-		public String getReportForEventType( String eventName ) {
-			Date date = new Date( (long)( time * 1000 ) );
-			String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-			return eventName + ": " + timeString;
-		}
-	}
-
-	public int size() {
-		return eventList.size();
 	}
 
 	public void addListener( EventScriptListener listener ) {
 		this.listeners.add( listener );
 	}
 
-	public List<EventWithTime> getEventList() {
-		return eventList;
+	public void removeListener( EventScriptListener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	public List<EventScriptEvent> getEventList() {
+		return java.util.Collections.unmodifiableList( this.masterEventList );
+	}
+
+	public EventScriptIterator createEventScriptIterator() {
+		return new EventScriptIterator( this );
 	}
 }

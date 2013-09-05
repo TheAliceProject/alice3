@@ -51,7 +51,7 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;
 
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
@@ -71,7 +71,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		timerLabel = new Label( String.valueOf( eventRecordComposite.getTimeInSeconds() ) );
 		this.addComponent( timerLabel, "align center" );
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
-		List<EventWithTime> list = eventRecordComposite.getEventList().createList();
+		List<EventScriptEvent> list = eventRecordComposite.getEventList().createList();
 		list.setOpaque( false );
 		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
 		list.setCellRenderer( eventRecordComposite.getCellRenderer() );

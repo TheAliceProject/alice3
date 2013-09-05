@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,46 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt.eventscript;
+package edu.cmu.cs.dennisc.matt.eventscript.events;
 
-import java.awt.Component;
-import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Matt May
  */
-public class MouseEventWrapper {
-	private final MouseEvent event;
-	private final int originalWidth;
-	private final int originalHeight;
+public class EventScriptEvent {
+	private final Object event;
+	private final double time;
 
-	public MouseEventWrapper( MouseEvent e ) {
-		this.event = e;
-		this.originalWidth = e.getComponent().getWidth();
-		this.originalHeight = e.getComponent().getHeight();
+	public EventScriptEvent( double time, Object event ) {
+		this.time = time;
+		this.event = event;
 	}
 
-	public MouseEvent getTranslatedPointIfNecessary( Component component ) {
-		int newWidth = component.getWidth();
-		int newHeight = component.getHeight();
-		int finalX;
-		int finalY;
-		if( ( this.originalWidth != newWidth ) || ( this.originalHeight != newHeight ) ) {
-			finalX = (int)Math.round( ( event.getX() * newWidth ) / (double)originalWidth );
-			finalY = (int)Math.round( ( event.getY() * newHeight ) / (double)originalHeight );
-		} else {
-			finalX = event.getX();
-			finalY = event.getY();
-		}
-		return new MouseEvent( component,
-				this.event.getID(),
-				this.event.getWhen(),
-				this.event.getModifiers() | this.event.getModifiersEx(),
-				(int)Math.round( finalX ), (int)Math.round( finalY ),
-				this.event.getXOnScreen(),
-				this.event.getYOnScreen(),
-				this.event.getClickCount(),
-				this.event.isPopupTrigger(),
-				this.event.getButton() );
+	public Object getEvent() {
+		return this.event;
+	}
+
+	public double getTime() {
+		return this.time;
+	}
+
+	public String getReportForEventType( String eventName ) {
+		Date date = new Date( (long)( time * 1000 ) );
+		String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+		return eventName + ": " + timeString;
 	}
 }
