@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -80,6 +80,9 @@ import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
@@ -88,7 +91,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 public class EventManager {
 
 	private final SceneImp scene;
-	private final InputEventRecorder inputRecorder = new InputEventRecorder();
+	private final InputEventRecorder inputRecorder;
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
 	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
 	private final TransformationHandler transHandler = new TransformationHandler();
@@ -130,8 +133,7 @@ public class EventManager {
 		}
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
-			e.translatePoint( scene );
-			mouseQuoteClickedUnquote( e.getEvent(), 0 );
+			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene ), 0 );
 		}
 	};
 
@@ -162,7 +164,7 @@ public class EventManager {
 		for( AbstractEventHandler handler : handlers ) {
 			handler.setScene( scene );
 		}
-		inputRecorder.setScene( scene );
+		inputRecorder = new InputEventRecorder( scene );
 		contingent = new TimerContingencyManager( timer );
 	}
 

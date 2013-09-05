@@ -1,5 +1,5 @@
-﻿/*
- * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.lgna.story.SThing;
-import org.lgna.story.Visual;
-import org.lgna.story.event.AbstractEvent;
-import org.lgna.story.implementation.EntityImp;
-
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Matt May
  */
-public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
+public interface EventScriptListener {
 
-	ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>> eventMap = new ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>>();
-	List<L> listenerList = Collections.newCopyOnWriteArrayList();
-	List<SThing> modelList = Collections.newCopyOnWriteArrayList();
+	public void fireChanged( EventWithTime event );
 
-	public final void fireAllTargeted( SThing changedEntity ) {
-		if( shouldFire ) {
-			check( changedEntity );
-		}
-	}
-
-	protected abstract void check( SThing changedEntity );
-
-	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
-		fireAllTargeted( source );
-		//		if( source instanceof Turnable ) {
-		//			fireAllTargeted( (Turnable)source );
-		//		} else {
-		//			Logger.severe( source );
-		//		}
-	}
 }

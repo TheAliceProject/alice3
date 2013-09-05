@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
 import java.util.List;
 import java.util.Map;

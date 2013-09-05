@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
 import java.util.List;
 import java.util.Map;
@@ -62,6 +62,7 @@ import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 /**
  * @author Matt May

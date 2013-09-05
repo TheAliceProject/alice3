@@ -40,30 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import java.awt.event.KeyEvent;
+
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
+public class InputEventRecorder {
+	private final SceneImp scene;
+	private final EventScript eventScript = new EventScript();
 
-	private final EventScript script;
-	private final EventManager manager;
-
-	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		this.script = script != null ? script : new EventScript();
-		this.manager = manager;
+	public InputEventRecorder( SceneImp scene ) {
+		this.scene = scene;
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
-			}
+	public void record( KeyEvent e ) {
+		Animator animator = scene.getProgram().getAnimator();
+		if( animator != null ) {
+			eventScript.record( animator.getCurrentTime(), e );
+		} else {
+			Logger.warning( "animator is null", this, e );
 		}
+	}
+
+	public void record( MouseEventWrapper e ) {
+		Animator animator = scene.getProgram().getAnimator();
+		if( animator != null ) {
+			eventScript.record( animator.getCurrentTime(), e );
+		} else {
+			Logger.warning( "animator is null", this, e );
+		}
+	}
+
+	public EventScript getScript() {
+		return eventScript;
 	}
 }

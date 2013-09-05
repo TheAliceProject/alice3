@@ -40,66 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.awt.event.KeyEvent;
+import org.lgna.story.implementation.eventhandling.EventManager;
 
-import org.lgna.story.implementation.SceneImp;
-
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 
 /**
  * @author Matt May
  */
-public class InputEventRecorder {
+public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
-	private SceneImp scene;
-	private Animator animator;
-	private EventScript eventScript = new EventScript();
+	private final EventScript script;
+	private final EventManager manager;
 
-	public void record( Object event ) {
-		if( event instanceof KeyEvent ) {
-			KeyEvent keyEvent = (KeyEvent)event;
-			record( keyEvent );
-		} else if( event instanceof MouseEventWrapper ) {
-			MouseEventWrapper mouseEvent = (MouseEventWrapper)event;
-			record( mouseEvent );
-		} else {
-			Logger.severe( event );
-		}
+	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
+		this.script = script != null ? script : new EventScript();
+		this.manager = manager;
 	}
 
-	private void record( KeyEvent e ) {
-		if( animator == null ) {
-			animator = scene.getProgram().getAnimator();
-		}
-		if( animator == null ) {
-			Logger.warning( "Not Recording Correctly" );
-			return;
-		} else {
-			eventScript.record( animator.getCurrentTime(), e );
+	@Override
+	public void update() {
+		super.update();
+		if( script != null ) {
+			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
+				manager.recieveEvent( event );
+			}
 		}
 	}
-
-	private void record( MouseEventWrapper e ) {
-		if( animator == null ) {
-			animator = scene.getProgram().getAnimator();
-		}
-		if( animator == null ) {
-			Logger.warning( "Not Recording Correctly" );
-			return;
-		} else {
-			eventScript.record( animator.getCurrentTime(), e );
-		}
-	}
-
-	public EventScript getScript() {
-		return eventScript;
-	}
-
-	public void setScene( SceneImp scene ) {
-		this.scene = scene;
-	}
-
 }

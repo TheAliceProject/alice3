@@ -63,13 +63,13 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
+import org.lgna.story.implementation.eventhandling.EventManager;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**

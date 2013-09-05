@@ -74,10 +74,10 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.EventScriptListener;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScriptListener;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Matt May

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
 import java.util.List;
 
@@ -68,6 +68,8 @@ import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
 import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 /**
  * @author Matt May
