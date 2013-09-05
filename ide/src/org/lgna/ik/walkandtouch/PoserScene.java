@@ -47,9 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.alice.interact.MovementDirection;
 import org.alice.interact.PoserAnimatorDragAdapter;
-import org.alice.interact.handle.JointRotationRingHandle;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserControllerAdapter;
 import org.lgna.ik.poser.PoserEvent;
@@ -87,7 +85,6 @@ public class PoserScene extends SScene {
 	private JointImp currentlyShowingRotationHandles = null;
 	private PoserPicturePlaneInteraction dragAdapter = null;
 	private List<PoserSphereManipulatorListener> dragListeners = Collections.newArrayList();
-	private JointRotationRingHandle handle = new JointRotationRingHandle( MovementDirection.BACKWARD );
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
 	public PoserScene( SCamera camera, SBiped ogre ) {
@@ -159,6 +156,7 @@ public class PoserScene extends SScene {
 		poserAnimatorDragAdapter = new PoserAnimatorDragAdapter();
 		poserAnimatorDragAdapter.setTarget( ogre );
 		poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
+		poserAnimatorDragAdapter.setHandlVisibility( true );
 		//		NiceDragAdapter cameraAdapter = new NiceDragAdapter();
 		//				cameraAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
 	}
@@ -202,11 +200,12 @@ public class PoserScene extends SScene {
 			public void fireFinish( PoserEvent poserEvent ) {
 				JointSelectionSphere jss = poserEvent.getJSS();
 				jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
+				poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
+				poserAnimatorDragAdapter.setSelectedSceneObjectImplementation( jss.getJoint() );
 			}
 
 			@Override
 			public void fireAnchorUpdate( PoserEvent poserEvent ) {
-
 				JointSelectionSphere jss = poserEvent.getJSS();
 				Limb limb = PoserScene.this.jointToLimbMap.get( jss.getJoint() );
 				assert limb != null;

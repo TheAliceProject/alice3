@@ -45,8 +45,13 @@ package org.alice.interact;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
+import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.lgna.story.SModel;
+
+import edu.cmu.cs.dennisc.color.Color4f;
 
 /**
  * @author Matt May
@@ -65,23 +70,23 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		cameraOrbit.addCondition( middleMouseAndAnything );
 		this.manipulators.add( cameraOrbit );
 
-		//		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE ) );
-		//		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
-		//
-		//		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN ) );
-		//		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
-		//
-		//		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED ) );
-		//		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
+		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE ) );
+		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
+
+		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN ) );
+		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
+
+		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED ) );
+		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
 
 	}
 
