@@ -42,12 +42,8 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.alice.media.youtube.croquet.ImageRecordComposite;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
@@ -58,28 +54,34 @@ import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 	private final Label timerLabel;
-	private ToggleButton playPauseButton;
+	private final ToggleButton playPauseButton;
+
+	private static final java.text.SimpleDateFormat MINUTE_SECOND_FORMAT = new java.text.SimpleDateFormat( "mm:ss." );
+	private static final java.text.NumberFormat CENTISECOND_FORMAT = new java.text.DecimalFormat( "00" );
 
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "insets 0", "" );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
+		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
 
-		List<EventWithTime> list = recordComposite.getEventList().createList();
-		list.setMinimumPreferredWidth( 400 );
-		list.setOpaque( false );
+		org.lgna.croquet.components.List<EventWithTime> list = recordComposite.getEventList().createList();
+		list.setCellRenderer( recordComposite.getCellRenderer() );
+		list.setBackgroundColor( this.getBackgroundColor() );
 
 		playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
+		this.timerLabel = new Label();
+		this.timerLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+		this.timerLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		this.updateTime();
 
-		this.addComponent( panel, "span 5" );
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		this.addComponent( list, "wrap, grow, spany 2" );
+		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
+		this.addComponent( list, "grow, shrink, spany 3, wrap" );
 
-		this.addComponent( playPauseButton, "push" );
-		this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField() );
-		this.addComponent( recordComposite.getFrameRateState().createSpinner() );
-		this.addComponent( timerLabel, "push" );
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right, wrap" );
+		this.addComponent( this.lookingGlassContainer, "grow, wrap" );
+
+		this.addComponent( playPauseButton, "split 2" );
+		this.addComponent( timerLabel, "grow, align right, wrap" );
+
+		//this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createLabel(), "push" );
+		//this.addComponent( recordComposite.getFrameRateState().createSpinner() );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
@@ -87,10 +89,13 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public void updateTime() {
-		double timeInSeconds = ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() * 1000;
-		Date date = new Date( (long)timeInSeconds );
-		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-		timerLabel.setText( formattedDate );
+		double timeInSeconds = ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds();
+		long msec = (long)( timeInSeconds * 1000 );
+		java.util.Date date = new java.util.Date( msec );
+		StringBuilder sb = new StringBuilder();
+		sb.append( MINUTE_SECOND_FORMAT.format( date ) );
+		sb.append( CENTISECOND_FORMAT.format( ( msec % 1000 ) / 10 ) );
+		this.timerLabel.setText( sb.toString() );
 	}
 
 	public ToggleButton getPlayPauseButton() {

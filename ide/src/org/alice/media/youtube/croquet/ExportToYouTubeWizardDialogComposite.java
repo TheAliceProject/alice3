@@ -51,8 +51,8 @@ import org.lgna.croquet.StringValue;
 import org.lgna.story.event.KeyEvent;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
-import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 
 /**
  * @author Dennis Cosgrove
@@ -185,6 +185,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 				ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
 				composite.setProject( project );
 				composite.getOperation().fire();
+				System.exit( 0 );
 			}
 		} );
 	}

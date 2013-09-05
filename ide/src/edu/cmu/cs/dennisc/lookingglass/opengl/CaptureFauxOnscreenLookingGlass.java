@@ -56,11 +56,6 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return CaptureFauxOnscreenLookingGlass.this.size;
-		}
-
-		@Override
 		public void paint( java.awt.Graphics g ) {
 			if( image != null ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -69,8 +64,29 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 					g2.translate( 0, this.getHeight() );
 					g2.scale( 1.0, -1.0 );
 				}
-				g.drawImage( image, 0, 0, this );
-				g2.setTransform( m );
+				try {
+					int imageWidth = image.getWidth();
+					int imageHeight = image.getHeight();
+
+					java.awt.Dimension componentSize = this.getSize();
+
+					if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
+						g.drawImage( image, 0, 0, this );
+					} else {
+						java.awt.Dimension imageSize = new java.awt.Dimension( imageWidth, imageHeight );
+						java.awt.Dimension size = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+
+						int x0 = ( componentSize.width - size.width ) / 2;
+						int x1 = x0 + size.width;
+						int y0 = ( componentSize.height - size.height ) / 2;
+						int y1 = y0 + size.height;
+
+						super.paint( g );
+						g.drawImage( image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this );
+					}
+				} finally {
+					g2.setTransform( m );
+				}
 			} else {
 				super.paint( g );
 			}

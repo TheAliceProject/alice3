@@ -75,9 +75,9 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScriptListener;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Matt May
@@ -263,7 +263,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			ide.crawlFilteredProgramType( crawler );
 			return crawler.containsRandom;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
 			return false;
 		}
 	}
