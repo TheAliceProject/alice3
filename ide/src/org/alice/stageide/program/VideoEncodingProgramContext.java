@@ -47,14 +47,14 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
-	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = true;
+	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
 	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 640, 360 );
 
 	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
 
 		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
+			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
 		}
 
 		@Override
@@ -80,15 +80,21 @@ public class VideoEncodingProgramContext extends ProgramContext {
 
 		@Override
 		public void startAnimator() {
-			//super.startAnimator();
-			this.isAnimating = true;
-			new AnimatorThread().start();
+			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
+				this.isAnimating = true;
+				new AnimatorThread().start();
+			} else {
+				super.startAnimator();
+			}
 		}
 
 		@Override
 		public void stopAnimator() {
-			this.isAnimating = false;
-			//super.stopAnimator();
+			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
+				this.isAnimating = false;
+			} else {
+				super.stopAnimator();
+			}
 		}
 	}
 

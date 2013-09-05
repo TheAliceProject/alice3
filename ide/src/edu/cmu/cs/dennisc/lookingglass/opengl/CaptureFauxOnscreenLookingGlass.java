@@ -45,36 +45,34 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass {
+public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass {
 	public static interface Observer {
 		public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown );
 	}
 
 	private class JRecordPanel extends javax.swing.JPanel {
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			super.paintComponent( g );
-
+		public JRecordPanel() {
+			this.setBackground( java.awt.Color.BLACK );
 		}
 
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return CaptureLookingGlass.this.size;
+			return CaptureFauxOnscreenLookingGlass.this.size;
 		}
 
 		@Override
 		public void paint( java.awt.Graphics g ) {
-			//super.paint( g );
 			if( image != null ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.geom.AffineTransform m = g2.getTransform();
-				g2.translate( 0, this.getHeight() );
-				g2.scale( 1.0, -1.0 );
+				if( atIsUpSideDown[ 0 ] ) {
+					g2.translate( 0, this.getHeight() );
+					g2.scale( 1.0, -1.0 );
+				}
 				g.drawImage( image, 0, 0, this );
 				g2.setTransform( m );
 			} else {
-				g.setColor( java.awt.Color.BLACK );
-				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+				super.paint( g );
 			}
 		}
 	}
@@ -85,9 +83,10 @@ public class CaptureLookingGlass extends AbstractLookingGlass implements edu.cmu
 
 	private final javax.media.opengl.GLPbuffer glPixelBuffer;
 
+	private boolean[] atIsUpSideDown = { false };
 	private java.awt.image.BufferedImage image;
 
-	public CaptureLookingGlass( java.awt.Dimension size, AbstractLookingGlass lookingGlassToShareContextWith ) {
+	public CaptureFauxOnscreenLookingGlass( java.awt.Dimension size, AbstractLookingGlass lookingGlassToShareContextWith ) {
 		super( LookingGlassFactory.getInstance() );
 		this.size = size;
 		javax.media.opengl.GLContext share;
@@ -117,15 +116,14 @@ public class CaptureLookingGlass extends AbstractLookingGlass implements edu.cmu
 		return this.image;
 	}
 
-	public void acquireImage( Observer observer ) {
+	public void captureImage( Observer observer ) {
 		if( this.image != null ) {
 			//pass
 		} else {
 			this.image = this.createBufferedImageForUseAsColorBuffer();
 		}
-		boolean[] atIsUpSideDown = { false };
-		this.getColorBufferNotBotheringToFlipVertically( this.image, atIsUpSideDown );
-		observer.handleImage( image, atIsUpSideDown[ 0 ] );
+		this.getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
+		observer.handleImage( this.image, this.atIsUpSideDown[ 0 ] );
 		this.jPanel.repaint();
 	}
 
