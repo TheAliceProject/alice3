@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+﻿/*
+ * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,85 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import org.lgna.story.SThing;
+import org.lgna.story.Visual;
+import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.implementation.EntityImp;
+
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author Matt May
  */
-public class EventScript {
+public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
 
-	List<EventWithTime> eventList = Collections.newLinkedList();
-	List<EventWithTime> list = Collections.newLinkedList();
-	private boolean isVirgin = true;
-	private List<EventScriptListener> listeners = Collections.newLinkedList();
+	ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>> eventMap = new ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>>();
+	List<L> listenerList = Collections.newCopyOnWriteArrayList();
+	List<SThing> modelList = Collections.newCopyOnWriteArrayList();
 
-	public void record( double currentTime, Object e ) {
-		EventWithTime event = new EventWithTime( currentTime, e );
-		eventList.add( event );
-		fireChanged( event );
-	}
-
-	private void fireChanged( EventWithTime event ) {
-		for( EventScriptListener listener : listeners ) {
-			listener.fireChanged( event );
+	public final void fireAllTargeted( SThing changedEntity ) {
+		if( shouldFire ) {
+			check( changedEntity );
 		}
 	}
 
-	public List<Object> getEventsForTime( double time ) {
-		if( isVirgin ) {
-			isVirgin = false;
-			refresh();
-		}
-		List<Object> rv = Collections.newLinkedList();
-		while( ( list.size() > 0 ) && ( list.get( 0 ).getTime() < time ) ) {
-			rv.add( list.remove( 0 ).getEvent() );
-		}
-		return rv;
-	}
+	protected abstract void check( SThing changedEntity );
 
-	public void refresh() {
-		list = Collections.newLinkedList( eventList );
-	}
-
-	public class EventWithTime {
-		Object event;
-		double time;
-
-		public EventWithTime( double time, Object event ) {
-			this.time = time;
-			this.event = event;
-		}
-
-		public Object getEvent() {
-			return this.event;
-		}
-
-		public double getTime() {
-			return this.time;
-		}
-
-		public String getReportForEventType( String eventName ) {
-			Date date = new Date( (long)( time * 1000 ) );
-			String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-			return eventName + ": " + timeString;
-		}
-	}
-
-	public int size() {
-		return eventList.size();
-	}
-
-	public void addListener( EventScriptListener listener ) {
-		this.listeners.add( listener );
-	}
-
-	public List<EventWithTime> getEventList() {
-		return eventList;
+	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
+		fireAllTargeted( source );
+		//		if( source instanceof Turnable ) {
+		//			fireAllTargeted( (Turnable)source );
+		//		} else {
+		//			Logger.severe( source );
+		//		}
 	}
 }

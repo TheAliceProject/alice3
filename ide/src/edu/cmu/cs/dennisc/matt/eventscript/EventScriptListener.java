@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,66 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.awt.event.KeyEvent;
-
-import org.lgna.story.implementation.SceneImp;
-
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Matt May
  */
-public class InputEventRecorder {
+public interface EventScriptListener {
 
-	private SceneImp scene;
-	private Animator animator;
-	private EventScript eventScript = new EventScript();
-
-	public void record( Object event ) {
-		if( event instanceof KeyEvent ) {
-			KeyEvent keyEvent = (KeyEvent)event;
-			record( keyEvent );
-		} else if( event instanceof MouseEventWrapper ) {
-			MouseEventWrapper mouseEvent = (MouseEventWrapper)event;
-			record( mouseEvent );
-		} else {
-			Logger.severe( event );
-		}
-	}
-
-	private void record( KeyEvent e ) {
-		if( animator == null ) {
-			animator = scene.getProgram().getAnimator();
-		}
-		if( animator == null ) {
-			Logger.warning( "Not Recording Correctly" );
-			return;
-		} else {
-			eventScript.record( animator.getCurrentTime(), e );
-		}
-	}
-
-	private void record( MouseEventWrapper e ) {
-		if( animator == null ) {
-			animator = scene.getProgram().getAnimator();
-		}
-		if( animator == null ) {
-			Logger.warning( "Not Recording Correctly" );
-			return;
-		} else {
-			eventScript.record( animator.getCurrentTime(), e );
-		}
-	}
-
-	public EventScript getScript() {
-		return eventScript;
-	}
-
-	public void setScene( SceneImp scene ) {
-		this.scene = scene;
-	}
+	public void fireChanged( EventWithTime event );
 
 }

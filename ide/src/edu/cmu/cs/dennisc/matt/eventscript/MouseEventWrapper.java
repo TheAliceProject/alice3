@@ -40,42 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.util.List;
+import java.awt.event.MouseEvent;
 
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
+import org.lgna.story.implementation.SceneImp;
 
 /**
  * @author Matt May
  */
-public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
+public class MouseEventWrapper {
+	private final MouseEvent event;
+	private final int originalWidth;
+	private final int originalHeight;
 
-	List<SceneActivationListener> listeners = Collections.newLinkedList();
+	public MouseEventWrapper( MouseEvent e, SceneImp scene ) {
+		this.event = e;
+		this.originalWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
+		this.originalHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
+	}
 
-	public void handleEventFire( SceneActivationEvent event ) {
-		for( SceneActivationListener listener : listeners ) {
-			fireEvent( listener, event );
+	//	public MouseEvent getEvent() {
+	//		return this.event;
+	//	}
+	//
+	//	public void translatePoint( SceneImp scene ) {
+	//		int newWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
+	//		double finalX = ( event.getX() * newWidth ) / originalWidth;
+	//		int newHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
+	//		double finalY = ( event.getY() * newHeight ) / originalHeight;
+	//		int deltaX = (int)( finalX - event.getX() );
+	//		int deltaY = (int)( finalY - event.getY() );
+	//		this.event.translatePoint( deltaX, deltaY );
+	//	}
+
+	public MouseEvent getTranslatedPointIfNecessary( SceneImp scene ) {
+		//todo: use scene.getProgram().getOnscreenLookingGlass().getAWTComponent() instead of this.event.getComponent()???
+		int newWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
+		int newHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
+		if( ( this.originalWidth != newWidth ) || ( this.originalHeight != newHeight ) ) {
+			double finalX = ( event.getX() * newWidth ) / (double)originalWidth;
+			double finalY = ( event.getY() * newHeight ) / (double)originalHeight;
+
+			return new MouseEvent( this.event.getComponent(),
+					this.event.getID(),
+					this.event.getWhen(),
+					this.event.getModifiers() | this.event.getModifiersEx(),
+					(int)Math.round( finalX ), (int)Math.round( finalY ),
+					this.event.getXOnScreen(),
+					this.event.getYOnScreen(),
+					this.event.getClickCount(),
+					this.event.isPopupTrigger(),
+					this.event.getButton() );
+		} else {
+			return this.event;
 		}
 	}
-
-	@Override
-	protected void nameOfFireCall( SceneActivationListener listener, SceneActivationEvent event ) {
-		listener.sceneActivated( event );
-	}
-
-	public void addListener( SceneActivationListener listener ) {
-		registerIsFiringMap( listener );
-		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		listeners.add( listener );
-	}
-
-	public void removeListener( SceneActivationListener listener ) {
-		listeners.remove( listener );
-	}
-
 }

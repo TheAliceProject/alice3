@@ -50,7 +50,7 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;
 
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Matt May

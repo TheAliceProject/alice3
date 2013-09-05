@@ -50,9 +50,9 @@ import javax.swing.JList;
 import org.lgna.croquet.StringValue;
 import org.lgna.story.event.KeyEvent;
 
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript.EventWithTime;
 
 /**
  * @author Dennis Cosgrove

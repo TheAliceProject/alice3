@@ -44,8 +44,7 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.AudioSource;
-
-import edu.cmu.cs.dennisc.matt.AabbCollisionDetector;
+import org.lgna.story.implementation.eventhandling.AabbCollisionDetector;
 
 /**
  * @author Dennis Cosgrove

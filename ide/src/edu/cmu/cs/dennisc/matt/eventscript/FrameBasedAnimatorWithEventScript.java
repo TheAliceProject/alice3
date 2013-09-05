@@ -40,44 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.implementation.eventhandling.EventManager;
+
+import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class EventRecord<L, E extends AbstractEvent> {
+public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
-	private final AbstractEventHandler<L, E> handler;
-	private final L listener;
-	private final E event;
-	private double timeOfFire;
+	private final EventScript script;
+	private final EventManager manager;
 
-	public EventRecord( AbstractEventHandler<L, E> handler, L listener, E event, double timeOfFire ) {
-		this.handler = handler;
-		this.listener = listener;
-		this.event = event;
-		this.timeOfFire = timeOfFire;
+	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
+		this.script = script != null ? script : new EventScript();
+		this.manager = manager;
 	}
 
-	public AbstractEvent getEvent() {
-		return this.event;
-	}
-
-	public Object getListener() {
-		return this.listener;
-	}
-
-	public AbstractEventHandler<L, E> getHandler() {
-		return this.handler;
-	}
-
-	public void fire() {
-		this.handler.nameOfFireCall( this.listener, this.event );
-	}
-
-	public Double getTimeOfFire() {
-		return timeOfFire;
+	@Override
+	public void update() {
+		super.update();
+		if( script != null ) {
+			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
+				manager.recieveEvent( event );
+			}
+		}
 	}
 }

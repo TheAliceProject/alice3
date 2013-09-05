@@ -40,55 +40,85 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class EventTranscript {
+public class EventScript {
+	private final List<EventScriptListener> listeners = Collections.newLinkedList();
 
-	private Map<Double, EventRecord> eventMap = Collections.newHashMap();
-	private List<EventRecord> allRecordedEvents = Collections.newArrayList();
-	private List<EventRecord> unPoppedEvents = Collections.newArrayList();
-	private boolean virgin = true;
+	private final List<EventWithTime> eventList = Collections.newLinkedList();
+	private List<EventWithTime> list = Collections.newLinkedList();
+	private boolean isVirgin = true;
 
-	public void register( EventRecord e ) {
-		eventMap.put( e.getTimeOfFire(), e );
-		allRecordedEvents.add( e );//new EventRecord( currentTime, e ) );
+	public void record( double currentTime, Object e ) {
+		EventWithTime event = new EventWithTime( currentTime, e );
+		eventList.add( event );
+		fireChanged( event );
 	}
 
-	public List<EventRecord> getEventRecordsToFire( Double time ) {
-		if( virgin ) {
-			virgin = false;
-			resetQueue();
+	private void fireChanged( EventWithTime event ) {
+		for( EventScriptListener listener : listeners ) {
+			listener.fireChanged( event );
 		}
-		List<EventRecord> rv = Collections.newLinkedList();
-		while( unPoppedEvents.get( 0 ).getTimeOfFire() < time ) {
-			rv.add( eventMap.get( unPoppedEvents.remove( 0 ).getEvent() ) );
+	}
+
+	public List<Object> getEventsForTime( double time ) {
+		if( isVirgin ) {
+			isVirgin = false;
+			refresh();
+		}
+		List<Object> rv = Collections.newLinkedList();
+		while( ( list.size() > 0 ) && ( list.get( 0 ).getTime() < time ) ) {
+			rv.add( list.remove( 0 ).getEvent() );
 		}
 		return rv;
 	}
 
-	private void resetQueue() {
-		unPoppedEvents = Collections.newArrayList( allRecordedEvents );
+	public void refresh() {
+		list = Collections.newLinkedList( eventList );
 	}
 
-	@Override
-	public String toString() {
-		String rv = "";
-		ArrayList<EventRecord> blah;
-		synchronized( allRecordedEvents ) {
-			blah = Collections.newArrayList( allRecordedEvents );
+	public class EventWithTime {
+		private final Object event;
+		private final double time;
+
+		public EventWithTime( double time, Object event ) {
+			this.time = time;
+			this.event = event;
 		}
-		for( EventRecord record : blah ) {
-			rv += record.getEvent() + " @ " + record.getTimeOfFire() + "\n";
+
+		public Object getEvent() {
+			return this.event;
 		}
-		return rv;
+
+		public double getTime() {
+			return this.time;
+		}
+
+		public String getReportForEventType( String eventName ) {
+			Date date = new Date( (long)( time * 1000 ) );
+			String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+			return eventName + ": " + timeString;
+		}
+	}
+
+	public int size() {
+		return eventList.size();
+	}
+
+	public void addListener( EventScriptListener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public List<EventWithTime> getEventList() {
+		return eventList;
 	}
 }
