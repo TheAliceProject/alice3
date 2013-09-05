@@ -163,6 +163,7 @@ public class SceneImp extends EntityImp {
 
 	public SceneImp( org.lgna.story.SScene abstraction ) {
 		eventManager = new org.lgna.story.implementation.eventhandling.EventManager( this );
+		eventManager.initialize();
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue( this.sgBackground.color.getValue() );

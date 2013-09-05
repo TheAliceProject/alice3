@@ -48,6 +48,6 @@ package edu.cmu.cs.dennisc.matt.eventscript.events;
  */
 public interface EventScriptListener {
 
-	public void fireMasterEventAdded( EventWithTime event );
+	public void eventAdded( EventScriptEvent event );
 
 }

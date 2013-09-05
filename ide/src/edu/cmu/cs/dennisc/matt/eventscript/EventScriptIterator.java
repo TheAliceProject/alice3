@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,60 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.youtube.croquet.views;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
 
-import org.alice.media.youtube.croquet.ImageRecordComposite;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.ToggleButton;
-
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final Label timerLabel;
-	private ToggleButton playPauseButton;
+public class EventScriptIterator {
 
-	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "insets 0", "" );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
+	private final EventScript eventScript;
+	private int itrIndex = 0;
 
-		List<EventScriptEvent> list = recordComposite.getEventList().createList();
-		list.setMinimumPreferredWidth( 400 );
-		list.setOpaque( false );
-
-		playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
-
-		this.addComponent( panel, "span 5" );
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		this.addComponent( list, "wrap, grow, spany 2" );
-
-		this.addComponent( playPauseButton, "push" );
-		this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField() );
-		this.addComponent( recordComposite.getFrameRateState().createSpinner() );
-		this.addComponent( timerLabel, "push" );
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right, wrap" );
+	public EventScriptIterator( EventScript script ) {
+		eventScript = script;
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
+	public List<Object> getEventsSinceLastQuery( double time ) {
+		List<Object> rv = Collections.newLinkedList();
+		ListIterator<EventScriptEvent> itr = eventScript.getEventList().listIterator( itrIndex );
+		EventScriptEvent event;
+		while( itr.hasNext() ) {
+			event = itr.next();
+			if( event.getTime() < time ) {
+				rv.add( event.getEvent() );
+				++itrIndex;
+			} else {
+				break;
+			}
+		}
+		return rv;
 	}
 
-	public void updateTime() {
-		double timeInSeconds = ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() * 1000;
-		Date date = new Date( (long)timeInSeconds );
-		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-		timerLabel.setText( formattedDate );
+	public void refresh() {
+		itrIndex = 0;
 	}
 
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
-	}
 }

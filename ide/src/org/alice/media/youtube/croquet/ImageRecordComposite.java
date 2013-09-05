@@ -69,7 +69,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.eventscript.FrameBasedAnimatorWithEventScript;
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**
@@ -92,21 +92,21 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			toggleRecording();
 		}
 	};
-	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new ItemCodec<EventScriptEvent>() {
 
-		public Class<EventWithTime> getValueClass() {
-			return EventWithTime.class;
+		public Class<EventScriptEvent> getValueClass() {
+			return EventScriptEvent.class;
 		}
 
-		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
+		public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
+		public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+		public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
 			sb.append( value );
 		}
 	}, -1 );
@@ -239,7 +239,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		eventList.clear();
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( owner.getScript() != null ) {
-			for( EventWithTime event : owner.getScript().getEventList() ) {
+			for( EventScriptEvent event : owner.getScript().getEventList() ) {
 				eventList.addItem( event );
 			}
 		}
@@ -270,7 +270,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return this.timerInSeconds;
 	}
 
-	public ListSelectionState<EventWithTime> getEventList() {
+	public ListSelectionState<EventScriptEvent> getEventList() {
 		return eventList;
 	}
 
@@ -287,8 +287,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
 
 		getView().revalidateAndRepaint();
-
-		owner.getScript().refresh();
 
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
@@ -327,7 +325,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		programContext.cleanUpProgram();
 	}
 
-	public ListCellRenderer<EventWithTime> getCellRenderer() {
+	public ListCellRenderer<EventScriptEvent> getCellRenderer() {
 		return this.getOwner().getCellRenderer();
 	}
 }

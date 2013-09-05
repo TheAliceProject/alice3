@@ -166,6 +166,9 @@ public class EventManager {
 		}
 		inputRecorder = new InputEventRecorder( scene );
 		contingent = new TimerContingencyManager( timer );
+	}
+
+	public void initialize() {
 		scene.addSceneActivationListener( timer );
 	}
 

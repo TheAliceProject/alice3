@@ -52,7 +52,7 @@ import org.lgna.story.event.KeyEvent;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Dennis Cosgrove
@@ -144,10 +144,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return renderer;
 	}
 
-	private class EventWithTimeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<EventWithTime> {
+	private class EventWithTimeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<EventScriptEvent> {
 
 		@Override
-		protected JLabel getListCellRendererComponent( JLabel rv, JList list, EventWithTime value, int index, boolean isSelected, boolean cellHasFocus ) {
+		protected JLabel getListCellRendererComponent( JLabel rv, JList list, EventScriptEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
 			String eventType = "";
 			if( value.getEvent() instanceof MouseEventWrapper ) {
 				eventType = getMouseEventName().getText();

@@ -45,52 +45,42 @@ package edu.cmu.cs.dennisc.matt.eventscript;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventWithTime;
 
 /**
  * @author Matt May
  */
 public class EventScript {
-	private final List<EventScriptListener> listeners = Collections.newLinkedList();
 
-	private final List<EventWithTime> masterEventList = Collections.newLinkedList();
-	private List<EventWithTime> notPoppedEventlist = Collections.newLinkedList();
-	private boolean isVirgin = true;
+	private final List<EventScriptListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final List<EventScriptEvent> masterEventList = Collections.newLinkedList();
 
 	public void record( double currentTime, Object e ) {
-		EventWithTime event = new EventWithTime( currentTime, e );
+		EventScriptEvent event = new EventScriptEvent( currentTime, e );
 		masterEventList.add( event );
-		fireChanged( event );
+		fireEventAdded( event );
 	}
 
-	private void fireChanged( EventWithTime event ) {
+	private void fireEventAdded( EventScriptEvent event ) {
 		for( EventScriptListener listener : listeners ) {
-			listener.fireMasterEventAdded( event );
+			listener.eventAdded( event );
 		}
-	}
-
-	public List<Object> getEventsForTime( double time ) {
-		if( isVirgin ) {
-			isVirgin = false;
-			refresh();
-		}
-		List<Object> rv = Collections.newLinkedList();
-		while( ( notPoppedEventlist.size() > 0 ) && ( notPoppedEventlist.get( 0 ).getTime() < time ) ) {
-			rv.add( notPoppedEventlist.remove( 0 ).getEvent() );
-		}
-		return rv;
-	}
-
-	public void refresh() {
-		notPoppedEventlist = Collections.newLinkedList( masterEventList );
 	}
 
 	public void addListener( EventScriptListener listener ) {
 		this.listeners.add( listener );
 	}
 
-	public List<EventWithTime> getEventList() {
-		return masterEventList;
+	public void removeListener( EventScriptListener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	public List<EventScriptEvent> getEventList() {
+		return java.util.Collections.unmodifiableList( this.masterEventList );
+	}
+
+	public EventScriptIterator createEventScriptIterator() {
+		return new EventScriptIterator( this );
 	}
 }

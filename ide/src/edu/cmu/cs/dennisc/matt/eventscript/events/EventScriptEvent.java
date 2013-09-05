@@ -48,11 +48,11 @@ import java.util.Date;
 /**
  * @author Matt May
  */
-public class EventWithTime {
+public class EventScriptEvent {
 	private final Object event;
 	private final double time;
 
-	public EventWithTime( double time, Object event ) {
+	public EventScriptEvent( double time, Object event ) {
 		this.time = time;
 		this.event = event;
 	}
