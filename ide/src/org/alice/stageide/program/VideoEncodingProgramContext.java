@@ -47,7 +47,7 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
-	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = true;
+	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
 	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 640, 360 );
 
 	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {

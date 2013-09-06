@@ -129,7 +129,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
 			if( exportFile != null ) {
 				try {
-					FileUtilities.copyFile( getOwner().getFile(), exportFile );
+					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
 					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot export file: " + exportFile );
 				}
@@ -196,7 +196,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.videoComposite.getView().setUri( this.getOwner().getFile().toURI() );
+		this.videoComposite.getView().setUri( this.getOwner().getTempRecordedVideoFile().toURI() );
 	}
 
 	@Override
@@ -282,7 +282,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		statusPane.setSize( 500, 400 );
 		VideoEntry entry = new VideoEntry();
 
-		MediaFileSource source = new MediaFileSource( this.getOwner().getFile(), "video/quicktime" );
+		MediaFileSource source = new MediaFileSource( this.getOwner().getTempRecordedVideoFile(), "video/quicktime" );
 		entry.setMediaSource( source );
 		YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
 

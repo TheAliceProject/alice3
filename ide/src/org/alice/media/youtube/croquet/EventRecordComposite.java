@@ -42,7 +42,6 @@
  */
 package org.alice.media.youtube.croquet;
 
-import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
 import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.youtube.croquet.views.EventRecordView;
 import org.alice.stageide.StageIDE;
@@ -54,6 +53,7 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
@@ -67,7 +67,6 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
-import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
@@ -80,21 +79,18 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	static {
 		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
-		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
+		//		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
 		interactiveMethods = java.util.Collections.unmodifiableList( list );
 	};
 
 	private RunProgramContext programContext;
-	private EventScript script;
-	private org.lgna.croquet.components.BorderPanel lookingGlassContainer;
-	private double timeInSeconds = 0;
+	private EventScript eventScript;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private final ListSelectionState<EventScriptEvent> eventList;
 
 	private final EventScriptListener listener = new EventScriptListener() {
 
 		public void eventAdded( EventScriptEvent event ) {
-			eventList.addItem( event );
+			getEventList().addItem( event );
 		}
 	};
 
@@ -117,7 +113,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
-		this.eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new org.alice.media.youtube.croquet.codecs.EventScriptEventCodec( owner ), -1 );
 		isRecordingState.addValueListener( isRecordingListener );
 		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
@@ -125,8 +120,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private FrameObserver frameListener = new FrameObserver() {
 
 		public void update( double tCurrent ) {
-			timeInSeconds = tCurrent;
-			getView().updateTime();
+			getView().updateTime( tCurrent );
 		}
 
 		public void complete() {
@@ -155,7 +149,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( programContext == null ) {
 			restartProgramContext();
 		}
@@ -173,16 +166,15 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		}
 		programContext = new RunProgramContext( owner.getProject().getProgramType() );
 		programContext.getProgramImp().setControlPanelDesired( false );
-		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
+		programContext.initializeInContainer( getView().getLookingGlassContainer().getAwtComponent(), 640, 360 );
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
-		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
-		owner.setScript( script );
-		eventList.clear();
-		script.addListener( this.listener );
-		this.timeInSeconds = 0;
-		getView().updateTime();
+		eventScript = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		owner.setEventScript( eventScript );
+		getEventList().clear();
+		eventScript.addListener( this.listener );
+		getView().updateTime( 0 );
 	}
 
 	public BooleanState getPlayRecordedOperation() {
@@ -194,7 +186,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	public EventScript getScript() {
-		return this.script;
+		return this.eventScript;
 	}
 
 	@Override
@@ -280,21 +272,17 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	public ListSelectionState<EventScriptEvent> getEventList() {
-		return this.eventList;
-	}
-
-	public double getTimeInSeconds() {
-		return this.timeInSeconds;
+		return getOwner().getEventList();
 	}
 
 	@Override
 	public void resetData() {
+		BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
 		if( lookingGlassContainer != null ) {
 			synchronized( lookingGlassContainer.getTreeLock() ) {
 				lookingGlassContainer.removeAllComponents();
 			}
 		}
-		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
 	}
 
@@ -302,9 +290,5 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	public void handlePostHideDialog( CompletionStep<?> step ) {
 		programContext.cleanUpProgram();
 		super.handlePostHideDialog( step );
-	}
-
-	public ListCellRenderer<EventScriptEvent> getCellRenderer() {
-		return this.getOwner().getCellRenderer();
 	}
 }

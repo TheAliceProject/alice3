@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,49 +42,20 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import org.alice.media.youtube.croquet.EventRecordComposite;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.ToggleButton;
+import org.lgna.croquet.components.renderers.ItemCodecListCellRenderer;
 
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class EventRecordView extends org.lgna.croquet.components.MigPanel {
-
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final TimeLabel timeLabel;
-	private final ToggleButton playPauseButton;
-
-	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		super( eventRecordComposite, "fillx, insets 0", "[grow 0][grow 100]" );
-
-		this.timeLabel = new TimeLabel();
-		//		this.updateTime();
-
-		List<EventScriptEvent> list = new EventScriptListView( eventRecordComposite.getEventList() );
-		list.setBackgroundColor( this.getBackgroundColor() );
-
-		this.playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
-
-		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
-		this.addComponent( list, "aligny top, spany 3, wrap" );
-
-		this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
-		this.addComponent( this.playPauseButton, "split 2" );
-		this.addComponent( this.timeLabel, "grow, align right, wrap" );
-	}
-
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
-	}
-
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
-	}
-
-	public void updateTime( double timeInSeconds ) {
-		this.timeLabel.setTimeInSeconds( timeInSeconds );
+public class EventScriptListView extends List<EventScriptEvent> {
+	public EventScriptListView( ListSelectionState<EventScriptEvent> model ) {
+		super( model );
+		this.setCellRenderer( new ItemCodecListCellRenderer<EventScriptEvent>( model.getItemCodec() ) );
+		this.setMinimumPreferredWidth( 300 );
+		this.getAwtComponent().setEnabled( false );
 	}
 }
