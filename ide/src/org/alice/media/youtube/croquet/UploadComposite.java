@@ -62,7 +62,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.project.Project;
 
 import com.google.gdata.data.media.MediaFileSource;
 import com.google.gdata.data.media.mediarss.MediaCategory;
@@ -192,14 +191,6 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	@Override
 	protected UploadView createView() {
 		return new UploadView( this );
-	}
-
-	public Project getProject() {
-		return this.getOwner().getProject();
-	}
-
-	public File getFile() {
-		return this.getOwner().getFile();
 	}
 
 	@Override

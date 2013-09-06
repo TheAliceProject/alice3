@@ -42,8 +42,6 @@
  */
 package org.alice.media.youtube.croquet;
 
-import java.awt.event.KeyEvent;
-
 import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
 import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.youtube.croquet.views.EventRecordView;
@@ -52,7 +50,6 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -70,12 +67,8 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
-import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
@@ -84,13 +77,11 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> randomNumberFunctionList;
 	static {
 		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
 		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
 		interactiveMethods = java.util.Collections.unmodifiableList( list );
-		randomNumberFunctionList = Collections.newLinkedList();
 	};
 
 	private RunProgramContext programContext;
@@ -98,33 +89,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 	private double timeInSeconds = 0;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new ItemCodec<EventScriptEvent>() {
-
-		public Class<EventScriptEvent> getValueClass() {
-			return EventScriptEvent.class;
-		}
-
-		public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
-			ExportToYouTubeWizardDialogComposite owner = getOwner();
-			String eventType = "";
-			if( value.getEvent() instanceof MouseEventWrapper ) {
-				eventType = owner.getMouseEventName().getText();
-			} else if( value.getEvent() instanceof KeyEvent ) {
-				eventType = owner.getKeyBoardEventName().getText();
-			} else {
-				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-			}
-			sb.append( value.getReportForEventType( eventType ) );
-		}
-	}, -1 );
+	private final ListSelectionState<EventScriptEvent> eventList;
 
 	private final EventScriptListener listener = new EventScriptListener() {
 
@@ -152,6 +117,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
+		this.eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new org.alice.media.youtube.croquet.codecs.EventScriptEventCodec( owner ), -1 );
 		isRecordingState.addValueListener( isRecordingListener );
 		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
