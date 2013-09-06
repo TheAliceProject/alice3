@@ -59,6 +59,10 @@ public class ImportTypeWizard extends org.lgna.croquet.OperationWizardDialogCore
 		this.addPage( new PreviewPage( this ) );
 	}
 
+	public AddMembersPage getAddMembersPage() {
+		return this.addMembersPage;
+	}
+
 	@Override
 	protected boolean isAdornmentDesired() {
 		return false;

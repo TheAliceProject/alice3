@@ -48,6 +48,12 @@ package org.alice.ide.ast.type.preview.croquet.views;
 public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
 		super( page );
-		this.addComponent( new org.lgna.croquet.components.Label( "coming soon: preview of resulting class" ) );
+		org.alice.ide.ast.type.merge.croquet.AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
+		//this.addComponent( new org.lgna.croquet.components.Label( "preview" ), "wrap" );
+
+		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( addMembersPage.getDstType() ) );
+		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+		this.addComponent( classLabel, "wrap" );
+
 	}
 }

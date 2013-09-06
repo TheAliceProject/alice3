@@ -335,4 +335,21 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	@Override
 	public void resetData() {
 	}
+
+	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( AddMembersComposite<?, M> addMembersComposite ) {
+		java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		return hubs;
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewProcedureHubs() {
+		return getPreviewMemberHubs( this.addProceduresComposite );
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewFunctionHubs() {
+		return getPreviewMemberHubs( this.addFunctionsComposite );
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserField>> getPreviewFieldHubs() {
+		return getPreviewMemberHubs( this.addFieldsComposite );
+	}
 }
