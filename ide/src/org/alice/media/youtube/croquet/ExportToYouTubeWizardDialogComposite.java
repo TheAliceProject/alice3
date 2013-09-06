@@ -44,10 +44,10 @@ package org.alice.media.youtube.croquet;
 
 import java.io.File;
 
+import org.alice.media.youtube.croquet.codecs.EventScriptEventCodec;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.codecs.DefaultItemCodec;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
@@ -61,7 +61,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private final UploadComposite uploadComposite = new UploadComposite( this );
 	private final StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
 	private final StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
-	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new DefaultItemCodec<EventScriptEvent>( EventScriptEvent.class ), -1 );
+	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
 	private org.lgna.project.Project project;
 	private EventScript eventScript;

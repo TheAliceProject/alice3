@@ -103,7 +103,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			programContext.getProgramImp().stopAnimator();
-			encoder.stopVideoEncoding();
 			resetData();
 			restartOperation.setEnabled( false );
 			return null;
@@ -169,7 +168,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	public void setRecording( boolean isRecording ) {
-		assert this.isRecordingState.getValue() != isRecording;
 		if( !this.isRecordingState.getValue() ) {
 			encoder.stopVideoEncoding();
 			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
