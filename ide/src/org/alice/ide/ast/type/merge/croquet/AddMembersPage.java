@@ -184,8 +184,8 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.ImportTypeView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.ImportTypeView( this );
+	protected org.alice.ide.ast.type.merge.croquet.views.AddMembersPane createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.AddMembersPane( this );
 	}
 
 	public org.lgna.project.ast.NamedUserType getImportedType() {
