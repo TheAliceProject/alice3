@@ -42,6 +42,9 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
+import org.lgna.ik.poser.AnimatorInputDialogComposite;
+import org.lgna.story.SBiped;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,5 +53,8 @@ public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
 		super( composite );
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( composite.getAddMethodOperation().createButton() );
+		if( composite.getType().isAssignableTo( SBiped.class ) ) {
+			this.addComponent( new AnimatorInputDialogComposite( composite.getType() ).getOperation().createButton() );
+		}
 	}
 }

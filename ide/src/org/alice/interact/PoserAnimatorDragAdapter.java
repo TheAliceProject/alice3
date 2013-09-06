@@ -88,6 +88,12 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
 
+		addHandle( rotateJointAboutXAxis );
+		addHandle( rotateJointAboutYAxis );
+		addHandle( rotateJointAboutZAxis );
+
+		setHandlVisibility( true );
+
 	}
 
 	public final void setTarget( SModel model ) {
