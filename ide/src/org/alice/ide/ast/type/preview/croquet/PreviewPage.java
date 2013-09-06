@@ -40,43 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet;
+package org.alice.ide.ast.type.preview.croquet;
+
+import org.alice.ide.ast.type.croquet.ImportTypeWizard;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.FileDialogValueCreator<java.io.File> {
-	private static class SingletonHolder {
-		private static ImportTypeFileDialogValueCreator instance = new ImportTypeFileDialogValueCreator();
-	}
-
-	public static ImportTypeFileDialogValueCreator getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ImportTypeFileDialogValueCreator() {
-		super( java.util.UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
-	}
-
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-
-	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-
-	private String getInitialFilename() {
-		return "*." + this.getExtension();
+public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
+	public PreviewPage( ImportTypeWizard wizard ) {
+		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
 	}
 
 	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected java.io.File createValueFromFile( java.io.File file ) {
-		return file;
+	public void resetData() {
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
 	}
 }

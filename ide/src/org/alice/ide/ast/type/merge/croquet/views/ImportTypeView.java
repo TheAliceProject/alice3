@@ -57,7 +57,7 @@ public class ImportTypeView extends org.lgna.croquet.components.MigPanel {
 		}
 	}
 
-	public ImportTypeView( org.alice.ide.ast.type.merge.croquet.ImportTypeComposite composite ) {
+	public ImportTypeView( org.alice.ide.ast.type.merge.croquet.AddMembersPage composite ) {
 		super( composite, "fillx" );
 		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) );
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
