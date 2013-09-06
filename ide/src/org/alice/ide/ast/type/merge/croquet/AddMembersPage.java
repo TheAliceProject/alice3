@@ -272,6 +272,57 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		}
 	}
 
+	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( AddMembersComposite<?, M> addMembersComposite ) {
+		if( this.dstType != null ) {
+			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
+				if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
+					hubs.add( importOnly.getImportHub() );
+				}
+			}
+
+			for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
+				if( differentSignature.getImportHub().getIsDesiredState().getValue() ) {
+					hubs.add( differentSignature.getImportHub() );
+				}
+				hubs.add( differentSignature.getProjectHub() );
+			}
+
+			for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
+				if( differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
+					hubs.add( differentImplementation.getImportHub() );
+				}
+				if( differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
+					hubs.add( differentImplementation.getProjectHub() );
+				}
+			}
+
+			for( Identical<M> identical : addMembersComposite.getIdenticals() ) {
+				hubs.add( identical.getProjectHub() );
+			}
+
+			for( ProjectOnly<M> projectOnly : addMembersComposite.getProjectOnlys() ) {
+				hubs.add( projectOnly.getProjectHub() );
+			}
+
+			return hubs;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewProcedureHubs() {
+		return getPreviewMemberHubs( this.addProceduresComposite );
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewFunctionHubs() {
+		return getPreviewMemberHubs( this.addFunctionsComposite );
+	}
+
+	public java.util.List<MemberHub<org.lgna.project.ast.UserField>> getPreviewFieldHubs() {
+		return getPreviewMemberHubs( this.addFieldsComposite );
+	}
+
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo: remove; icons and components rely on repaint being called
@@ -334,22 +385,5 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 	@Override
 	public void resetData() {
-	}
-
-	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( AddMembersComposite<?, M> addMembersComposite ) {
-		java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		return hubs;
-	}
-
-	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewProcedureHubs() {
-		return getPreviewMemberHubs( this.addProceduresComposite );
-	}
-
-	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewFunctionHubs() {
-		return getPreviewMemberHubs( this.addFunctionsComposite );
-	}
-
-	public java.util.List<MemberHub<org.lgna.project.ast.UserField>> getPreviewFieldHubs() {
-		return getPreviewMemberHubs( this.addFieldsComposite );
 	}
 }
