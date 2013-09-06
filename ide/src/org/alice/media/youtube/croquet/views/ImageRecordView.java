@@ -54,7 +54,7 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
 
-		org.lgna.croquet.components.List<EventScriptEvent> list = recordComposite.getEventList().createList();
+		org.lgna.croquet.components.List<EventScriptEvent> list = new EventScriptListView( recordComposite.getEventList() );
 
 		this.timeLabel = new TimeLabel();
 		this.timeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );

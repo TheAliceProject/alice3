@@ -61,10 +61,9 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		super( eventRecordComposite, "fillx, insets 0", "[grow 0][grow 100]" );
 
 		this.timeLabel = new TimeLabel();
-		//		this.updateTime();
+		this.updateTime( 0 );
 
 		List<EventScriptEvent> list = new EventScriptListView( eventRecordComposite.getEventList() );
-		list.setBackgroundColor( this.getBackgroundColor() );
 
 		this.playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
 
@@ -78,10 +77,6 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
-	}
-
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
 	}
 
 	public void updateTime( double timeInSeconds ) {

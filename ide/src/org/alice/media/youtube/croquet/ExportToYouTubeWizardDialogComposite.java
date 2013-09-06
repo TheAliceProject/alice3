@@ -44,6 +44,7 @@ package org.alice.media.youtube.croquet;
 
 import java.io.File;
 
+import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.codecs.DefaultItemCodec;
@@ -108,6 +109,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 
 	public void setRandomSeed( long currentTimeMillis ) {
 		this.randomSeed = currentTimeMillis;
+		RandomUtilities.setSeed( currentTimeMillis );
 	}
 
 	public long getRandomSeed() {

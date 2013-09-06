@@ -75,26 +75,18 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
-	static {
-		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
-		//		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
-		interactiveMethods = java.util.Collections.unmodifiableList( list );
-	};
 
+	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
+	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
+	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 	private RunProgramContext programContext;
 	private EventScript eventScript;
-	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
 
-	private final EventScriptListener listener = new EventScriptListener() {
-
-		public void eventAdded( EventScriptEvent event ) {
-			getEventList().addItem( event );
-		}
-	};
-
-	private BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
+	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
+		isRecordingState.addValueListener( isRecordingListener );
+		//isRecordingState.setIconForBothTrueAndFalse(  );
+	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -111,13 +103,13 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		}
 	};
 
-	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
-		isRecordingState.addValueListener( isRecordingListener );
-		//isRecordingState.setIconForBothTrueAndFalse(  );
-	}
+	private final EventScriptListener listener = new EventScriptListener() {
 
-	private FrameObserver frameListener = new FrameObserver() {
+		public void eventAdded( EventScriptEvent event ) {
+			getEventList().addItem( event );
+		}
+	};
+	private final FrameObserver frameListener = new FrameObserver() {
 
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
@@ -129,9 +121,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			if( isRecordingState.getValue() ) {
-				getView().getPlayPauseButton().doClick();
-			}
+			isRecordingState.setValueTransactionlessly( false );
 			resetData();
 			return null;
 		}
@@ -140,9 +130,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	@Override
 	public void handlePostDeactivation() {
-		if( isRecordingState.getValue() ) {
-			getView().getPlayPauseButton().doClick();
-		}
+		isRecordingState.setValueTransactionlessly( false );
 		super.handlePostDeactivation();
 	}
 
@@ -161,8 +149,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 		}
 		if( containsRandom() ) {
-			stashSeed( System.currentTimeMillis() );
-			RandomUtilities.setSeed( owner.getRandomSeed() );
+			this.getOwner().setRandomSeed( System.currentTimeMillis() );
 		}
 		programContext = new RunProgramContext( owner.getProject().getProgramType() );
 		programContext.getProgramImp().setControlPanelDesired( false );
@@ -224,10 +211,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
 			return true;
 		}
-	}
-
-	private void stashSeed( long currentTimeMillis ) {
-		this.getOwner().setRandomSeed( currentTimeMillis );
 	}
 
 	private static class RandomUtilitiesMethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {

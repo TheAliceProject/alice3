@@ -93,16 +93,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		}
 
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			toggleRecording();
+			setRecording( nextValue );
 		}
 	};
 
 	private final ActionOperation restartOperation = createActionOperation( this.createKey( "restartImageRecorder" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			if( isRecordingState.getValue() ) {
-				isRecordingState.setValueTransactionlessly( true );
-			}
+			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			programContext.getProgramImp().stopAnimator();
 			encoder.stopVideoEncoding();
@@ -188,19 +186,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		}
 	}
 
-	private void toggleRecording() {
-		this.setRecording( !this.isRecording() );
-	}
-
 	public BoundedIntegerState getFrameRateState() {
 		return frameRateState;
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		if( isRecordingState.getValue() ) {
-			isRecordingState.setValueTransactionlessly( false );
-		}
+		isRecordingState.setValueTransactionlessly( false );
 		if( ( encoder != null ) ) {
 			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideo() );
 		}

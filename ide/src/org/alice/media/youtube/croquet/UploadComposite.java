@@ -96,9 +96,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	private final Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
 	private final Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
 
-	private boolean isLoggedIn = false;
-
-	private org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
+	private final org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
 	private boolean isUploaded = false;
 	private boolean categoriesEnabled = false;
 
@@ -137,17 +135,15 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 			return null;
 		}
 	} );
-	private LogInOutListener logInOutListener = new LogInOutListener() {
+	private final LogInOutListener logInOutListener = new LogInOutListener() {
 
 		@Override
 		public void fireLoggedOut( AbstractLoginComposite<?> login ) {
-			isLoggedIn = false;
 			refreshOwnerStatus();
 		}
 
 		@Override
 		public void fireLoggedIn( AbstractLoginComposite<?> login ) {
-			isLoggedIn = true;
 			refreshOwnerStatus();
 		}
 	};
@@ -212,7 +208,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		//		}
 		//		uploadOperation.setEnabled( false );
 		Status rv = IS_GOOD_TO_GO_STATUS;
-		if( !isLoggedIn ) {
+		if( !logInOutComposite.getComposite().getIsLoggedIn().getValue() ) {
 			setEnabled( false );
 			if( logInOutComposite.getCanConnect() ) {
 				return errorNotLoggedIn;
@@ -252,10 +248,6 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 			//			videoCategoryState.setEnabled( isEnabled && categoriesEnabled );
 			isPrivateState.setEnabled( isEnabled );
 		}
-	}
-
-	public void setLoggedIn( boolean isLoggedIn ) {
-		this.isLoggedIn = isLoggedIn;
 	}
 
 	@Override
@@ -309,10 +301,6 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 			statusPane.setVisible( true );
 		} catch( IOException e ) {
 		}
-		return isUploaded;
-	}
-
-	public boolean getIsUploaded() {
 		return isUploaded;
 	}
 }
