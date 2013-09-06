@@ -40,40 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.preview.croquet;
+package org.alice.ide.ast.type.preview.croquet.views;
 
-import org.alice.ide.ast.type.croquet.ImportTypeWizard;
+import org.alice.ide.ast.type.merge.croquet.views.MethodHubHeaderView;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
-	public PreviewPage( ImportTypeWizard wizard ) {
-		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
+public class MethodsSubPane extends MembersSubPane<org.lgna.project.ast.UserMethod> {
+
+	public MethodsSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> hubs ) {
+		super( headerText, baseColor, hubs );
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	protected org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> hub ) {
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		panel.addComponent( new MethodHubHeaderView( hub ), "wrap" );
+		panel.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( hub.getMember().getBodyProperty().getValue() ), "wrap" );
+		return panel;
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
-	}
-
-	@Override
-	public void resetData() {
-	}
-
-	@Override
-	public void handlePreActivation() {
-		this.getView().refreshLater();
-		super.handlePreActivation();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
-	}
 }

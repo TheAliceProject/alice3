@@ -47,35 +47,37 @@ package org.alice.ide.ast.type.preview.croquet.views;
  */
 public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
-		super( page );
+		super( page, "fillx" );
+	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
+		org.alice.ide.ast.type.preview.croquet.PreviewPage page = (org.alice.ide.ast.type.preview.croquet.PreviewPage)this.getComposite();
 		org.alice.ide.ast.type.merge.croquet.AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
 
 		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( addMembersPage.getDstType() ) );
+		//classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		classLabel.scaleFont( 1.2f );
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "wrap" );
 
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+
 		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
 		if( procedureHubs.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "procedures" ), "gap 8, wrap" );
-			for( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> hub : procedureHubs ) {
-				this.addComponent( new org.lgna.croquet.components.Label( hub.getMember().getName() ), "gap 16, wrap" );
-			}
+			this.addComponent( new MethodsSubPane( "procedures", theme.getProcedureColor(), procedureHubs ), "gap 8, grow, shrink, wrap" );
 		}
 
 		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
 		if( functionHubs.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "functions" ), "gap 8, wrap" );
-			for( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> hub : functionHubs ) {
-				this.addComponent( new org.lgna.croquet.components.Label( hub.getMember().getName() ), "gap 16, wrap" );
-			}
+			this.addComponent( new MethodsSubPane( "functions", theme.getFunctionColor(), functionHubs ), "gap 8, grow, shrink, wrap" );
 		}
 
 		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
 		if( fieldHubs.size() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "properties" ), "gap 8, wrap" );
-			for( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> hub : fieldHubs ) {
-				this.addComponent( new org.lgna.croquet.components.Label( hub.getMember().getName() ), "gap 16, wrap" );
-			}
+			this.addComponent( new FieldsSubPane( "properties", theme.getFieldColor(), fieldHubs ), "gap 8, grow, shrink, wrap" );
 		}
 	}
 }

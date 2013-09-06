@@ -40,40 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.preview.croquet;
-
-import org.alice.ide.ast.type.croquet.ImportTypeWizard;
+package org.alice.ide.ast.type.preview.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
-	public PreviewPage( ImportTypeWizard wizard ) {
-		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
+public class FieldsSubPane extends MembersSubPane<org.lgna.project.ast.UserField> {
+
+	public FieldsSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>> hubs ) {
+		super( headerText, baseColor, hubs );
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	protected org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> hub ) {
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), hub.getMember() );
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
-	}
-
-	@Override
-	public void resetData() {
-	}
-
-	@Override
-	public void handlePreActivation() {
-		this.getView().refreshLater();
-		super.handlePreActivation();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
-	}
 }

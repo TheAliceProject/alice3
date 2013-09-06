@@ -40,40 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.preview.croquet;
-
-import org.alice.ide.ast.type.croquet.ImportTypeWizard;
+package org.alice.ide.ast.type.preview.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
-	public PreviewPage( ImportTypeWizard wizard ) {
-		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
+public abstract class MembersSubPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+	public MembersSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<M>> hubs ) {
+		super( null, "fillx", "[grow]" );
+		java.awt.Color headerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
+		java.awt.Color memberViewColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.1, 1.1 );
+
+		this.setBackgroundColor( headerColor );
+		org.lgna.croquet.components.Label headerLabel = new org.lgna.croquet.components.Label( headerText );
+		headerLabel.setBackgroundColor( headerColor );
+		this.addComponent( headerLabel, "grow, shrink, wrap" );
+		for( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub : hubs ) {
+			org.lgna.croquet.components.Component<?> component = this.createMemberViewFor( hub );
+			component.setBackgroundColor( memberViewColor );
+			this.addComponent( component, "grow, shrink, wrap" );
+		}
 	}
 
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
-	}
-
-	@Override
-	public void resetData() {
-	}
-
-	@Override
-	public void handlePreActivation() {
-		this.getView().refreshLater();
-		super.handlePreActivation();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
-	}
+	protected abstract org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub );
 }
