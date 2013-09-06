@@ -40,15 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
-
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public interface EventScriptListener {
-
-	public void fireChanged( EventWithTime event );
-
+public class IsIncludingImportAndExportType {
+	public static boolean getValue() {
+		return false;
+	}
 }

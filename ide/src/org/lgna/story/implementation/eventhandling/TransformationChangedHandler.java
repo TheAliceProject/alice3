@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+﻿/*
+ * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.lgna.story.SThing;
+import org.lgna.story.Visual;
+import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.implementation.EntityImp;
+
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author Matt May
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
+public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
 
-	private final EventScript script;
-	private final EventManager manager;
+	ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>> eventMap = new ConcurrentHashMap<Visual, CopyOnWriteArrayList<Object>>();
+	List<L> listenerList = Collections.newCopyOnWriteArrayList();
+	List<SThing> modelList = Collections.newCopyOnWriteArrayList();
 
-	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		this.script = script != null ? script : new EventScript();
-		this.manager = manager;
+	public final void fireAllTargeted( SThing changedEntity ) {
+		if( shouldFire ) {
+			check( changedEntity );
+		}
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
-			}
-		}
+	protected abstract void check( SThing changedEntity );
+
+	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
+		fireAllTargeted( source );
+		//		if( source instanceof Turnable ) {
+		//			fireAllTargeted( (Turnable)source );
+		//		} else {
+		//			Logger.severe( source );
+		//		}
 	}
 }

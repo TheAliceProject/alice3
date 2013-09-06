@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
+package org.lgna.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class EventTranscript {
+public class ValueHolder<T> {
+	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	private Map<Double, EventRecord> eventMap = Collections.newHashMap();
-	private List<EventRecord> allRecordedEvents = Collections.newArrayList();
-	private List<EventRecord> unPoppedEvents = Collections.newArrayList();
-	private boolean virgin = true;
+	private T value;
 
-	public void register( EventRecord e ) {
-		eventMap.put( e.getTimeOfFire(), e );
-		allRecordedEvents.add( e );//new EventRecord( currentTime, e ) );
+	public ValueHolder() {
 	}
 
-	public List<EventRecord> getEventRecordsToFire( Double time ) {
-		if( virgin ) {
-			virgin = false;
-			resetQueue();
-		}
-		List<EventRecord> rv = Collections.newLinkedList();
-		while( unPoppedEvents.get( 0 ).getTimeOfFire() < time ) {
-			rv.add( eventMap.get( unPoppedEvents.remove( 0 ).getEvent() ) );
-		}
-		return rv;
+	public ValueHolder( T value ) {
+		this.value = value;
 	}
 
-	private void resetQueue() {
-		unPoppedEvents = Collections.newArrayList( allRecordedEvents );
+	public T getValue() {
+		return this.value;
 	}
 
-	@Override
-	public String toString() {
-		String rv = "";
-		ArrayList<EventRecord> blah;
-		synchronized( allRecordedEvents ) {
-			blah = Collections.newArrayList( allRecordedEvents );
+	public void setValue( T value ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
+			//pass
+		} else {
+			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value, value );
+			this.value = value;
+			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
+				listener.valueChanged( e );
+			}
 		}
-		for( EventRecord record : blah ) {
-			rv += record.getEvent() + " @ " + record.getTimeOfFire() + "\n";
-		}
-		return rv;
 	}
+
+	public void addValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+		this.valueListeners.add( listener );
+	}
+
+	public void addAndInvokeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value );
+		listener.valueChanged( e );
+		this.addValueListener( listener );
+	}
+
+	public void removeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+		this.valueListeners.add( listener );
+	}
+
 }

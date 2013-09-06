@@ -42,16 +42,11 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import java.awt.Dimension;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.alice.media.youtube.croquet.EventRecordComposite;
-import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;
 
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
@@ -59,23 +54,28 @@ import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final Label timerLabel;
-	private ToggleButton playPauseButton;
+	private final TimeLabel timeLabel;
+	private final ToggleButton playPauseButton;
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		super( eventRecordComposite, "", "[grow 1][grow 1][grow 1]" );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer );
-		this.addComponent( panel, "wrap, span 3" );
-		playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
-		this.addComponent( playPauseButton );
-		timerLabel = new Label( String.valueOf( eventRecordComposite.getTimeInSeconds() ) );
-		this.addComponent( timerLabel, "align center" );
-		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
-		List<EventWithTime> list = eventRecordComposite.getEventList().createList();
-		list.setOpaque( false );
-		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
+		super( eventRecordComposite, "fillx, insets 0", "[grow 0][grow 100]" );
+
+		this.timeLabel = new TimeLabel();
+		this.updateTime();
+
+		List<EventScriptEvent> list = eventRecordComposite.getEventList().createList();
 		list.setCellRenderer( eventRecordComposite.getCellRenderer() );
-		this.addComponent( list, "east" );
+		list.setBackgroundColor( this.getBackgroundColor() );
+		list.setMinimumPreferredWidth( 300 );
+
+		this.playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
+
+		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
+		this.addComponent( list, "aligny top, spany 3, wrap" );
+
+		this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
+		this.addComponent( this.playPauseButton, "split 2" );
+		this.addComponent( this.timeLabel, "grow, align right, wrap" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
@@ -87,9 +87,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public void updateTime() {
-		double timeInSeconds = ( (EventRecordComposite)this.getComposite() ).getTimeInSeconds() * 1000;
-		Date date = new Date( (long)timeInSeconds );
-		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-		timerLabel.setText( formattedDate );
+		double timeInSeconds = ( (EventRecordComposite)this.getComposite() ).getTimeInSeconds();
+		this.timeLabel.setTimeInSeconds( timeInSeconds );
 	}
 }

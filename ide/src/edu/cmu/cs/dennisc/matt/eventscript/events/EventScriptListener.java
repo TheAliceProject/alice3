@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.youtube.croquet.views;
+package edu.cmu.cs.dennisc.matt.eventscript.events;
 
-import org.alice.media.youtube.croquet.ImageRecordComposite;
-import org.lgna.croquet.components.ToggleButton;
-
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final TimeLabel timeLabel;
-	private final ToggleButton playPauseButton;
+public interface EventScriptListener {
 
-	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
+	public void eventAdded( EventScriptEvent event );
 
-		org.lgna.croquet.components.List<EventScriptEvent> list = recordComposite.getEventList().createList();
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		list.setBackgroundColor( this.getBackgroundColor() );
-
-		this.playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		this.timeLabel = new TimeLabel();
-		this.timeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-		this.updateTime();
-
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
-		this.addComponent( list, "grow, shrink, spany 3, wrap" );
-
-		this.addComponent( this.lookingGlassContainer, "grow, wrap" );
-
-		this.addComponent( playPauseButton, "split 2" );
-		this.addComponent( timeLabel, "grow, align right, wrap" );
-
-		//this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createLabel(), "push" );
-		//this.addComponent( recordComposite.getFrameRateState().createSpinner() );
-	}
-
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
-	}
-
-	public void updateTime() {
-		this.timeLabel.setTimeInSeconds( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() );
-	}
-
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
-	}
 }

@@ -83,7 +83,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 				if( expression instanceof MethodInvocation ) {
 					MethodInvocation methodInvocation = (MethodInvocation)expression;
 					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
-					statementPanel.addComponent( new edu.cmu.cs.dennisc.matt.EventListenerComponent( methodInvocation ) );
+					statementPanel.addComponent( new org.alice.ide.declarationseditor.events.components.EventListenerComponent( methodInvocation ) );
 					return statementPanel;
 				}
 			}

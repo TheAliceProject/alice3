@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript.events;
 
-import java.awt.event.MouseEvent;
-
-import org.lgna.story.implementation.SceneImp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Matt May
  */
-public class MouseEventWrapper {
+public class EventScriptEvent {
+	private final Object event;
+	private final double time;
 
-	private double xVal;
-	private double yVal;
-	private MouseEvent event;
-
-	public MouseEventWrapper( MouseEvent e, SceneImp scene ) {
-		this.event = e;
-		this.xVal = scene.getProgram().getOnscreenLookingGlass().getWidth();
-		this.yVal = scene.getProgram().getOnscreenLookingGlass().getHeight();
+	public EventScriptEvent( double time, Object event ) {
+		this.time = time;
+		this.event = event;
 	}
 
-	public MouseEvent getEvent() {
+	public Object getEvent() {
 		return this.event;
 	}
 
-	public void translatePoint( SceneImp scene ) {
-		int newWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
-		double finalX = ( event.getX() * newWidth ) / xVal;
-		int newHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
-		double finalY = ( event.getY() * newHeight ) / yVal;
-		int deltaX = (int)( finalX - event.getX() );
-		int deltaY = (int)( finalY - event.getY() );
-		event.translatePoint( deltaX, deltaY );
+	public double getTime() {
+		return this.time;
+	}
+
+	public String getReportForEventType( String eventName ) {
+		Date date = new Date( (long)( time * 1000 ) );
+		String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+		return eventName + ": " + timeString;
 	}
 }

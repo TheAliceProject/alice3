@@ -40,42 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import java.util.List;
+import java.awt.event.KeyEvent;
 
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
  */
-public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
+public class InputEventRecorder {
+	private final SceneImp scene;
+	private final EventScript eventScript = new EventScript();
 
-	List<SceneActivationListener> listeners = Collections.newLinkedList();
+	public InputEventRecorder( SceneImp scene ) {
+		this.scene = scene;
+	}
 
-	public void handleEventFire( SceneActivationEvent event ) {
-		for( SceneActivationListener listener : listeners ) {
-			fireEvent( listener, event );
+	public void record( KeyEvent e ) {
+		Animator animator = scene.getProgram().getAnimator();
+		if( animator != null ) {
+			eventScript.record( animator.getCurrentTime(), e );
+		} else {
+			Logger.warning( "animator is null", this, e );
 		}
 	}
 
-	@Override
-	protected void nameOfFireCall( SceneActivationListener listener, SceneActivationEvent event ) {
-		listener.sceneActivated( event );
+	public void record( MouseEventWrapper e ) {
+		Animator animator = scene.getProgram().getAnimator();
+		if( animator != null ) {
+			eventScript.record( animator.getCurrentTime(), e );
+		} else {
+			Logger.warning( "animator is null", this, e );
+		}
 	}
 
-	public void addListener( SceneActivationListener listener ) {
-		registerIsFiringMap( listener );
-		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		listeners.add( listener );
+	public EventScript getScript() {
+		return eventScript;
 	}
-
-	public void removeListener( SceneActivationListener listener ) {
-		listeners.remove( listener );
-	}
-
 }

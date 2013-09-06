@@ -40,54 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.youtube.croquet.views;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import org.alice.media.youtube.croquet.ImageRecordComposite;
-import org.lgna.croquet.components.ToggleButton;
+import org.lgna.story.implementation.eventhandling.EventManager;
 
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final TimeLabel timeLabel;
-	private final ToggleButton playPauseButton;
+public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
-	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
+	private final EventManager manager;
+	private final EventScriptIterator iterator;
 
-		org.lgna.croquet.components.List<EventScriptEvent> list = recordComposite.getEventList().createList();
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		list.setBackgroundColor( this.getBackgroundColor() );
-
-		this.playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		this.timeLabel = new TimeLabel();
-		this.timeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-		this.updateTime();
-
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
-		this.addComponent( list, "grow, shrink, spany 3, wrap" );
-
-		this.addComponent( this.lookingGlassContainer, "grow, wrap" );
-
-		this.addComponent( playPauseButton, "split 2" );
-		this.addComponent( timeLabel, "grow, align right, wrap" );
-
-		//this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createLabel(), "push" );
-		//this.addComponent( recordComposite.getFrameRateState().createSpinner() );
+	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
+		if( script != null ) {
+			iterator = script.createEventScriptIterator();
+		} else {
+			iterator = null;
+		}
+		this.manager = manager;
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
-	}
+	@Override
+	public void update() {
+		super.update();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 
-	public void updateTime() {
-		this.timeLabel.setTimeInSeconds( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() );
-	}
-
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
+			@Override
+			public void run() {
+				if( iterator != null ) {
+					for( Object event : iterator.getEventsSinceLastQuery( getCurrentTime() ) ) {
+						manager.recieveEvent( event );
+					}
+				}
+			}
+		} );
 	}
 }

@@ -40,44 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package edu.cmu.cs.dennisc.matt.eventscript;
 
-import org.lgna.story.event.AbstractEvent;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class EventRecord<L, E extends AbstractEvent> {
+public class MouseEventWrapper {
+	private final MouseEvent event;
+	private final int originalWidth;
+	private final int originalHeight;
 
-	private final AbstractEventHandler<L, E> handler;
-	private final L listener;
-	private final E event;
-	private double timeOfFire;
-
-	public EventRecord( AbstractEventHandler<L, E> handler, L listener, E event, double timeOfFire ) {
-		this.handler = handler;
-		this.listener = listener;
-		this.event = event;
-		this.timeOfFire = timeOfFire;
+	public MouseEventWrapper( MouseEvent e ) {
+		this.event = e;
+		this.originalWidth = e.getComponent().getWidth();
+		this.originalHeight = e.getComponent().getHeight();
 	}
 
-	public AbstractEvent getEvent() {
-		return this.event;
-	}
-
-	public Object getListener() {
-		return this.listener;
-	}
-
-	public AbstractEventHandler<L, E> getHandler() {
-		return this.handler;
-	}
-
-	public void fire() {
-		this.handler.nameOfFireCall( this.listener, this.event );
-	}
-
-	public Double getTimeOfFire() {
-		return timeOfFire;
+	public MouseEvent getTranslatedPointIfNecessary( Component component ) {
+		int newWidth = component.getWidth();
+		int newHeight = component.getHeight();
+		int finalX;
+		int finalY;
+		if( ( this.originalWidth != newWidth ) || ( this.originalHeight != newHeight ) ) {
+			finalX = (int)Math.round( ( event.getX() * newWidth ) / (double)originalWidth );
+			finalY = (int)Math.round( ( event.getY() * newHeight ) / (double)originalHeight );
+		} else {
+			finalX = event.getX();
+			finalY = event.getY();
+		}
+		return new MouseEvent( component,
+				this.event.getID(),
+				this.event.getWhen(),
+				this.event.getModifiers() | this.event.getModifiersEx(),
+				(int)Math.round( finalX ), (int)Math.round( finalY ),
+				this.event.getXOnScreen(),
+				this.event.getYOnScreen(),
+				this.event.getClickCount(),
+				this.event.isPopupTrigger(),
+				this.event.getButton() );
 	}
 }

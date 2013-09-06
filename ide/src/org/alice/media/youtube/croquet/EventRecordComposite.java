@@ -74,10 +74,10 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.EventScriptListener;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
 /**
  * @author Matt May
@@ -98,21 +98,21 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 	private double timeInSeconds = 0;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new ItemCodec<EventScriptEvent>() {
 
-		public Class<EventWithTime> getValueClass() {
-			return EventWithTime.class;
+		public Class<EventScriptEvent> getValueClass() {
+			return EventScriptEvent.class;
 		}
 
-		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
+		public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
+		public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+		public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
 			ExportToYouTubeWizardDialogComposite owner = getOwner();
 			String eventType = "";
 			if( value.getEvent() instanceof MouseEventWrapper ) {
@@ -128,7 +128,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private final EventScriptListener listener = new EventScriptListener() {
 
-		public void fireChanged( EventWithTime event ) {
+		public void eventAdded( EventScriptEvent event ) {
 			eventList.addItem( event );
 		}
 	};
@@ -258,9 +258,14 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private boolean containsRandom() {
 		StageIDE ide = StageIDE.getActiveInstance();
-		RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
-		ide.crawlFilteredProgramType( crawler );
-		return crawler.containsRandom;
+		if( ide != null ) {
+			RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
+			ide.crawlFilteredProgramType( crawler );
+			return crawler.containsRandom;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
+			return true;
+		}
 	}
 
 	private void stashSeed( long currentTimeMillis ) {
@@ -288,7 +293,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	private boolean containsInputEvents() {
-		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+		org.lgna.project.Project project = this.getOwner().getProject();
+		NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = initializeEventListeners.body.getValue();
 		for( Statement statement : body.statements ) {
@@ -307,7 +313,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		return false;
 	}
 
-	public ListSelectionState<EventWithTime> getEventList() {
+	public ListSelectionState<EventScriptEvent> getEventList() {
 		return this.eventList;
 	}
 
@@ -332,7 +338,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		super.handlePostHideDialog( step );
 	}
 
-	public ListCellRenderer<EventWithTime> getCellRenderer() {
+	public ListCellRenderer<EventScriptEvent> getCellRenderer() {
 		return this.getOwner().getCellRenderer();
 	}
 }

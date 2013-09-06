@@ -63,13 +63,13 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
+import org.lgna.story.implementation.eventhandling.EventManager;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**
@@ -92,21 +92,21 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			toggleRecording();
 		}
 	};
-	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new ItemCodec<EventScriptEvent>() {
 
-		public Class<EventWithTime> getValueClass() {
-			return EventWithTime.class;
+		public Class<EventScriptEvent> getValueClass() {
+			return EventScriptEvent.class;
 		}
 
-		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
+		public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
+		public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
 			throw new RuntimeException( "todo" );
 		}
 
-		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+		public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
 			sb.append( value );
 		}
 	}, -1 );
@@ -146,29 +146,43 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			timerInSeconds = tCurrent;
 			getView().updateTime();
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
-				if( image != null ) {
-					//pass
-				} else {
-					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
-					//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
-				}
-				if( image != null ) {
-					boolean[] atIsUpsideDown = { false };
-					synchronized( image ) {
-						image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
-						if( atIsUpsideDown[ 0 ] ) {
-							handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
-						} else {
-							System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+			if( lookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
+				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)lookingGlass;
+				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
+					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
+						if( image != null ) {
+							if( isUpSideDown ) {
+								ImageRecordComposite.this.handleImage( image, imageCount, isUpSideDown );
+								imageCount++;
+							}
 						}
 					}
-					imageCount++;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
-				}
+				} );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+				if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
+					if( image != null ) {
+						//pass
+					} else {
+						image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
+					}
+					if( image != null ) {
+						boolean[] atIsUpsideDown = { false };
+						synchronized( image ) {
+							image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+							if( atIsUpsideDown[ 0 ] ) {
+								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+							} else {
+								System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+							}
+						}
+						imageCount++;
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
+					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+				}
 			}
 		}
 
@@ -225,7 +239,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		eventList.clear();
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( owner.getScript() != null ) {
-			for( EventWithTime event : owner.getScript().getEventList() ) {
+			for( EventScriptEvent event : owner.getScript().getEventList() ) {
 				eventList.addItem( event );
 			}
 		}
@@ -256,7 +270,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return this.timerInSeconds;
 	}
 
-	public ListSelectionState<EventWithTime> getEventList() {
+	public ListSelectionState<EventScriptEvent> getEventList() {
 		return eventList;
 	}
 
@@ -273,8 +287,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
 
 		getView().revalidateAndRepaint();
-
-		owner.getScript().refresh();
 
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
@@ -313,7 +325,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		programContext.cleanUpProgram();
 	}
 
-	public ListCellRenderer<EventWithTime> getCellRenderer() {
+	public ListCellRenderer<EventScriptEvent> getCellRenderer() {
 		return this.getOwner().getCellRenderer();
 	}
 }

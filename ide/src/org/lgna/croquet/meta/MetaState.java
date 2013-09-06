@@ -73,13 +73,14 @@ public abstract class MetaState<T> {
 	protected void checkValueAndFireIfAppropriate() {
 		T nextValue = this.getValue();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
-			//pass
+			//todo: pass?
+			this.prevValue = nextValue;
 		} else {
 			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.prevValue, nextValue );
+			this.prevValue = nextValue;
 			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
 				listener.valueChanged( e );
 			}
-			this.prevValue = nextValue;
 		}
 	}
 }

@@ -40,54 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.youtube.croquet.views;
+package org.lgna.story.implementation.eventhandling;
 
-import org.alice.media.youtube.croquet.ImageRecordComposite;
-import org.lgna.croquet.components.ToggleButton;
+import java.util.List;
 
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final TimeLabel timeLabel;
-	private final ToggleButton playPauseButton;
+public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
 
-	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "fill, insets 0", "[grow,shrink][grow 0,shrink]", "[grow 0,shrink][grow, shrink][grow 0,shrink]" );
+	List<SceneActivationListener> listeners = Collections.newLinkedList();
 
-		org.lgna.croquet.components.List<EventScriptEvent> list = recordComposite.getEventList().createList();
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		list.setBackgroundColor( this.getBackgroundColor() );
-
-		this.playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		this.timeLabel = new TimeLabel();
-		this.timeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-		this.updateTime();
-
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
-		this.addComponent( list, "grow, shrink, spany 3, wrap" );
-
-		this.addComponent( this.lookingGlassContainer, "grow, wrap" );
-
-		this.addComponent( playPauseButton, "split 2" );
-		this.addComponent( timeLabel, "grow, align right, wrap" );
-
-		//this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createLabel(), "push" );
-		//this.addComponent( recordComposite.getFrameRateState().createSpinner() );
+	public void handleEventFire( SceneActivationEvent event ) {
+		for( SceneActivationListener listener : listeners ) {
+			fireEvent( listener, event );
+		}
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
+	@Override
+	protected void nameOfFireCall( SceneActivationListener listener, SceneActivationEvent event ) {
+		listener.sceneActivated( event );
 	}
 
-	public void updateTime() {
-		this.timeLabel.setTimeInSeconds( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() );
+	public void addListener( SceneActivationListener listener ) {
+		registerIsFiringMap( listener );
+		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
+		listeners.add( listener );
 	}
 
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
+	public void removeListener( SceneActivationListener listener ) {
+		listeners.remove( listener );
 	}
+
 }
