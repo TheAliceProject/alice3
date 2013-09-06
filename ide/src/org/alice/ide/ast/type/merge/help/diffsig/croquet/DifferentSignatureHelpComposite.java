@@ -84,7 +84,6 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	@Override
 	public void handlePreActivation() {
 		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
 		DifferentSignatureTopLevelChoice topLevelChoice;
 		if( isImport ) {
 			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
@@ -105,7 +104,7 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 			isImport = true;
 			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
 			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
-		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ) {
 			isImport = false;
 		} else {
 			throw new org.lgna.croquet.CancelException();

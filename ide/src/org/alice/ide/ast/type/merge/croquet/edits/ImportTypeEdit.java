@@ -112,7 +112,7 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 
 		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
 		if( programType != null ) {
-			org.alice.ide.ast.type.merge.croquet.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+			org.alice.ide.ast.type.merge.core.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
 		}
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
@@ -141,7 +141,7 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
 
 		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
 		if( programType != null ) {
-			org.alice.ide.ast.type.merge.croquet.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+			org.alice.ide.ast.type.merge.core.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
 		}
 
 		//todo: remove

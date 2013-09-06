@@ -62,7 +62,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.project.Project;
 
 import com.google.gdata.data.media.MediaFileSource;
 import com.google.gdata.data.media.mediarss.MediaCategory;
@@ -97,9 +96,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	private final Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
 	private final Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
 
-	private boolean isLoggedIn = false;
-
-	private org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
+	private final org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
 	private boolean isUploaded = false;
 	private boolean categoriesEnabled = false;
 
@@ -130,7 +127,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
 			if( exportFile != null ) {
 				try {
-					FileUtilities.copyFile( getOwner().getFile(), exportFile );
+					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
 					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot export file: " + exportFile );
 				}
@@ -138,17 +135,15 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 			return null;
 		}
 	} );
-	private LogInOutListener logInOutListener = new LogInOutListener() {
+	private final LogInOutListener logInOutListener = new LogInOutListener() {
 
 		@Override
 		public void fireLoggedOut( AbstractLoginComposite<?> login ) {
-			isLoggedIn = false;
 			refreshOwnerStatus();
 		}
 
 		@Override
 		public void fireLoggedIn( AbstractLoginComposite<?> login ) {
-			isLoggedIn = true;
 			refreshOwnerStatus();
 		}
 	};
@@ -194,18 +189,10 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		return new UploadView( this );
 	}
 
-	public Project getProject() {
-		return this.getOwner().getProject();
-	}
-
-	public File getFile() {
-		return this.getOwner().getFile();
-	}
-
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.videoComposite.getView().setUri( this.getOwner().getFile().toURI() );
+		this.videoComposite.getView().setUri( this.getOwner().getTempRecordedVideoFile().toURI() );
 	}
 
 	@Override
@@ -221,7 +208,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		//		}
 		//		uploadOperation.setEnabled( false );
 		Status rv = IS_GOOD_TO_GO_STATUS;
-		if( !isLoggedIn ) {
+		if( !logInOutComposite.getComposite().getIsLoggedIn().getValue() ) {
 			setEnabled( false );
 			if( logInOutComposite.getCanConnect() ) {
 				return errorNotLoggedIn;
@@ -263,10 +250,6 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		}
 	}
 
-	public void setLoggedIn( boolean isLoggedIn ) {
-		this.isLoggedIn = isLoggedIn;
-	}
-
 	@Override
 	public void resetData() {
 		titleState.setValueTransactionlessly( "" );
@@ -291,7 +274,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		statusPane.setSize( 500, 400 );
 		VideoEntry entry = new VideoEntry();
 
-		MediaFileSource source = new MediaFileSource( this.getOwner().getFile(), "video/quicktime" );
+		MediaFileSource source = new MediaFileSource( this.getOwner().getTempRecordedVideoFile(), "video/quicktime" );
 		entry.setMediaSource( source );
 		YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
 
@@ -318,10 +301,6 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 			statusPane.setVisible( true );
 		} catch( IOException e ) {
 		}
-		return isUploaded;
-	}
-
-	public boolean getIsUploaded() {
 		return isUploaded;
 	}
 }
