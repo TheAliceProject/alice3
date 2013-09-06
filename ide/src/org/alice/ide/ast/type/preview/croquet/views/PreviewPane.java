@@ -40,47 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.help.croquet;
+package org.alice.ide.ast.type.preview.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
-	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
-
-	private final N potentialNameChanger;
-
-	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
-		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
-		this.potentialNameChanger = potentialNameChanger;
+public class PreviewPane extends org.lgna.croquet.components.MigPanel {
+	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
+		super( page, "fillx" );
 	}
 
 	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.importNameState.getSidekickLabel() ) {
-				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
-			}
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
+		org.alice.ide.ast.type.preview.croquet.PreviewPage page = (org.alice.ide.ast.type.preview.croquet.PreviewPage)this.getComposite();
+		org.alice.ide.ast.type.merge.croquet.AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
+
+		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( addMembersPage.getDstType() ) );
+		//classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		classLabel.scaleFont( 1.2f );
+		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+		this.addComponent( classLabel, "wrap" );
+
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+
+		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
+		if( procedureHubs.size() > 0 ) {
+			this.addComponent( new MethodsSubPane( "procedures", theme.getProcedureColor(), procedureHubs ), "gap 8, grow, shrink, wrap" );
 		}
-		return rv;
-	}
 
-	public N getPotentialNameChanger() {
-		return this.potentialNameChanger;
-	}
+		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
+		if( functionHubs.size() > 0 ) {
+			this.addComponent( new MethodsSubPane( "functions", theme.getFunctionColor(), functionHubs ), "gap 8, grow, shrink, wrap" );
+		}
 
-	public org.lgna.croquet.PlainStringValue getHeader() {
-		return this.header;
-	}
-
-	public org.lgna.croquet.StringState getImportNameState() {
-		return this.importNameState;
-	}
-
-	public org.lgna.croquet.StringState getProjectNameState() {
-		return this.projectNameState;
+		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
+		if( fieldHubs.size() > 0 ) {
+			this.addComponent( new FieldsSubPane( "properties", theme.getFieldColor(), fieldHubs ), "gap 8, grow, shrink, wrap" );
+		}
 	}
 }

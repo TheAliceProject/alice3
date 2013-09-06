@@ -40,47 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.help.croquet;
+package org.alice.ide.ast.type.preview.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
-	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
+public abstract class MembersSubPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+	public MembersSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<M>> hubs ) {
+		super( null, "fillx", "[grow]" );
+		java.awt.Color headerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
+		java.awt.Color memberViewColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.1, 1.1 );
 
-	private final N potentialNameChanger;
-
-	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
-		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
-		this.potentialNameChanger = potentialNameChanger;
-	}
-
-	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.importNameState.getSidekickLabel() ) {
-				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
-			}
+		this.setBackgroundColor( headerColor );
+		org.lgna.croquet.components.Label headerLabel = new org.lgna.croquet.components.Label( headerText );
+		headerLabel.setBackgroundColor( headerColor );
+		this.addComponent( headerLabel, "grow, shrink, wrap" );
+		for( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub : hubs ) {
+			org.lgna.croquet.components.Component<?> component = this.createMemberViewFor( hub );
+			component.setBackgroundColor( memberViewColor );
+			this.addComponent( component, "grow, shrink, wrap" );
 		}
-		return rv;
 	}
 
-	public N getPotentialNameChanger() {
-		return this.potentialNameChanger;
-	}
-
-	public org.lgna.croquet.PlainStringValue getHeader() {
-		return this.header;
-	}
-
-	public org.lgna.croquet.StringState getImportNameState() {
-		return this.importNameState;
-	}
-
-	public org.lgna.croquet.StringState getProjectNameState() {
-		return this.projectNameState;
-	}
+	protected abstract org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub );
 }

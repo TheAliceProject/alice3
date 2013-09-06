@@ -40,47 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.help.croquet;
+package org.alice.ide.ast.type.preview.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
-	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
+public class FieldsSubPane extends MembersSubPane<org.lgna.project.ast.UserField> {
 
-	private final N potentialNameChanger;
-
-	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
-		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
-		this.potentialNameChanger = potentialNameChanger;
+	public FieldsSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>> hubs ) {
+		super( headerText, baseColor, hubs );
 	}
 
 	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.importNameState.getSidekickLabel() ) {
-				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
-			}
-		}
-		return rv;
+	protected org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> hub ) {
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), hub.getMember() );
 	}
 
-	public N getPotentialNameChanger() {
-		return this.potentialNameChanger;
-	}
-
-	public org.lgna.croquet.PlainStringValue getHeader() {
-		return this.header;
-	}
-
-	public org.lgna.croquet.StringState getImportNameState() {
-		return this.importNameState;
-	}
-
-	public org.lgna.croquet.StringState getProjectNameState() {
-		return this.projectNameState;
-	}
 }

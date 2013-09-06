@@ -51,8 +51,8 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	private String name;
 	private String title;
 
-	public WizardPageComposite( java.util.UUID id, O owner ) {
-		super( id );
+	public WizardPageComposite( java.util.UUID migrationId, O owner ) {
+		super( migrationId );
 		this.owner = owner;
 	}
 
