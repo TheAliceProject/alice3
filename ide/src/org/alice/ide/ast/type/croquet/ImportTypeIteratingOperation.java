@@ -40,7 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet;
+package org.alice.ide.ast.type.croquet;
+
 
 /**
  * @author Dennis Cosgrove
@@ -87,7 +88,7 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 						}
 					}
 					if( srcType != null ) {
-						return new ImportTypeComposite( file.toURI(), importedType, importedResources, srcType, this.dstType ).getOperation();
+						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getOperation();
 					} else {
 						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Cannot find class " + this.dstType.getName() + " in " + file );
 						return null;

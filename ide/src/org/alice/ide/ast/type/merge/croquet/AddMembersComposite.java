@@ -69,7 +69,7 @@ public abstract class AddMembersComposite<V extends org.alice.ide.ast.type.merge
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
 			if( element == this.fromImportHeader ) {
-				rv = ImportTypeComposite.modifyFilenameLocalizedText( rv, this.uriForDescriptionPurposesOnly );
+				rv = AddMembersPage.modifyFilenameLocalizedText( rv, this.uriForDescriptionPurposesOnly );
 			}
 		}
 		return rv;

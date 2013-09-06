@@ -42,10 +42,13 @@
  */
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.core.MergeUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.ide.ast.type.merge.croquet.views.ImportTypeView> {
+public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, org.alice.ide.ast.type.croquet.ImportTypeWizard> {
+
 	public static String modifyFilenameLocalizedText( String s, java.net.URI uri ) {
 		java.io.File file = new java.io.File( uri );
 		return s.replaceAll( "</filename/>", file.getName() );
@@ -86,8 +89,8 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		return ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE );
 	}
 
-	public ImportTypeComposite( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
-		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), org.alice.ide.IDE.PROJECT_GROUP );
+	public AddMembersPage( org.alice.ide.ast.type.croquet.ImportTypeWizard wizard, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
+		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), wizard );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.importedRootType = importedRootType;
 		this.importedResources = importedResources;
@@ -165,11 +168,6 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		return null;
 	}
 
@@ -255,8 +253,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.dstType != null ) {
 			java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
@@ -276,7 +273,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo: remove; icons and components rely on repaint being called
 		this.getView().repaint();
 		//
@@ -335,34 +332,7 @@ public class ImportTypeComposite extends org.lgna.croquet.OperationInputDialogCo
 		return false;
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-
-		new org.lgna.croquet.simple.SimpleApplication();
-
-		java.io.File projectFile = new java.io.File( args[ 0 ] );
-
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( projectFile );
-		org.alice.ide.ProjectStack.pushProject( project );
-
-		java.io.File typeFile = new java.io.File( args[ 1 ] );
-
-		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( typeFile );
-		org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
-		java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
-		org.lgna.project.ast.NamedUserType srcType = importedRootType;
-		org.lgna.project.ast.NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-		if( dstType != null ) {
-			//pass
-		} else {
-			dstType = new org.lgna.project.ast.NamedUserType();
-			dstType.name.setValue( importedRootType.getName() );
-		}
-		ImportTypeComposite mergeTypeComposite = new ImportTypeComposite( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
-		mergeTypeComposite.getOperation().fire();
-		System.exit( 0 );
+	@Override
+	public void resetData() {
 	}
 }

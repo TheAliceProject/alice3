@@ -40,47 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.help.croquet;
+package org.alice.ide.ast.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
-	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
+public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.FileDialogValueCreator<java.io.File> {
+	private static class SingletonHolder {
+		private static ImportTypeFileDialogValueCreator instance = new ImportTypeFileDialogValueCreator();
+	}
 
-	private final N potentialNameChanger;
+	public static ImportTypeFileDialogValueCreator getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
-		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
-		this.potentialNameChanger = potentialNameChanger;
+	private ImportTypeFileDialogValueCreator() {
+		super( java.util.UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
+	}
+
+	private java.io.File getDefaultDirectory() {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	}
+
+	private String getExtension() {
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+	}
+
+	private String getInitialFilename() {
+		return "*." + this.getExtension();
 	}
 
 	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.importNameState.getSidekickLabel() ) {
-				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
-			}
-		}
-		return rv;
+	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
 	}
 
-	public N getPotentialNameChanger() {
-		return this.potentialNameChanger;
-	}
-
-	public org.lgna.croquet.PlainStringValue getHeader() {
-		return this.header;
-	}
-
-	public org.lgna.croquet.StringState getImportNameState() {
-		return this.importNameState;
-	}
-
-	public org.lgna.croquet.StringState getProjectNameState() {
-		return this.projectNameState;
+	@Override
+	protected java.io.File createValueFromFile( java.io.File file ) {
+		return file;
 	}
 }
