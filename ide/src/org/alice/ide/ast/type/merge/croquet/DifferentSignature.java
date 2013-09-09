@@ -89,6 +89,10 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 				}
 			}
 		};
+
+		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
+		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
+
 		this.projectHub.getIsDesiredState().setEnabled( false );
 		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
 
