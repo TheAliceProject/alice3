@@ -47,7 +47,7 @@ import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class DifferentSignatureHelpView extends org.lgna.croquet.components.MigPanel {
+public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
 		}
@@ -61,7 +61,6 @@ public class DifferentSignatureHelpView extends org.lgna.croquet.components.MigP
 
 	public DifferentSignatureHelpView( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite ) {
 		super( composite );
-		this.addComponent( composite.getHeader().createLabel(), "wrap" );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
 		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ).createRadioButton();
 
@@ -72,9 +71,12 @@ public class DifferentSignatureHelpView extends org.lgna.croquet.components.MigP
 		this.keepBothPanel.addComponent( composite.getProjectNameState().getSidekickLabel().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getProjectNameState(), foregroundCustomizer ), "wrap" );
 
-		this.addComponent( keepBothRadioButton, "wrap" );
-		this.addComponent( this.keepBothPanel, "wrap" );
-		this.addComponent( selectOneRadioButton, "wrap" );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
+		panel.addComponent( keepBothRadioButton, "wrap" );
+		panel.addComponent( this.keepBothPanel, "wrap" );
+		panel.addComponent( selectOneRadioButton, "wrap" );
+		this.addCenterComponent( panel );
 	}
 
 	@Override

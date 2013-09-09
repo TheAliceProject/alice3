@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.help.diffsig.croquet.MethodDifferentSignatur
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
+public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
 	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
 	private final MemberHubWithNameState<M> importHub;
@@ -107,10 +107,12 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		}
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getImportHub() {
 		return this.importHub;
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getProjectHub() {
 		return this.projectHub;
 	}

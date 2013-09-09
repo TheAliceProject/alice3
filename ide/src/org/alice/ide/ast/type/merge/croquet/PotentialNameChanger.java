@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChanger {
+public abstract class PotentialNameChanger<M extends org.lgna.project.ast.Member> {
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
 			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
@@ -60,6 +60,10 @@ public abstract class PotentialNameChanger {
 	public java.net.URI getUriForDescriptionPurposesOnly() {
 		return this.uriForDescriptionPurposesOnly;
 	}
+
+	public abstract MemberHubWithNameState<M> getImportHub();
+
+	public abstract MemberHubWithNameState<M> getProjectHub();
 
 	protected abstract boolean isRenameRequired();
 

@@ -45,18 +45,60 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
-	public MemberPopupCoreView( final org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite composite ) {
-		super( composite );
-		org.lgna.project.ast.Declaration member = composite.getMember();
-		org.lgna.croquet.components.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub() );
-		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
-		label.setIcon( composite.getIcon() );
-		this.addPageStartComponent( label );
-		this.addCenterComponent( component );
+public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+	private static java.awt.Paint createOmitOrReplacePaint() {
+		int size = 24;
+		int width = size;
+		int height = size;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( new java.awt.Color( 191, 191, 191, 150 ) );
+		g2.fillRect( 0, 0, width, height );
+		g2.setColor( new java.awt.Color( 63, 0, 0, 63 ) );
+		g2.drawLine( 0, height, width, 0 );
+		g2.drawLine( 0, 0, width, height );
+		g2.dispose();
+		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+	}
 
-		label.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
-		this.setMinimumPreferredWidth( 200 );
+	private static final java.awt.Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
+
+	public static org.lgna.croquet.components.Component<?> createView( org.alice.ide.ast.type.merge.croquet.MemberHub<?> memberHub ) {
+		org.lgna.project.ast.Declaration member = memberHub.getMember();
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			return new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)memberHub );
+		} else if( member instanceof org.lgna.project.ast.UserField ) {
+			return new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)memberHub );
+		} else {
+			return new org.lgna.croquet.components.Label( "todo" );
+		}
+	}
+
+	private final org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub;
+
+	public MemberPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub ) {
+		this.memberHub = memberHub;
+	}
+
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		return new DefaultJPanel() {
+			@Override
+			public void paint( java.awt.Graphics g ) {
+				super.paint( g );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				if( memberHub.getActionStatus() == org.alice.ide.ast.type.merge.croquet.ActionStatus.SELECTION_REQUIRED ) {
+					//pass
+				} else {
+					if( memberHub.getIsDesiredState().getValue() ) {
+						//pass
+					} else {
+						g2.setPaint( OMIT_OR_REPLACE_PAINT );
+						g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+					}
+				}
+			}
+		};
 	}
 }
