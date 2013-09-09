@@ -45,25 +45,13 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
-	public MemberPopupCoreView( final org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite composite ) {
-		super( composite );
-		org.lgna.project.ast.Declaration member = composite.getMember();
-		org.lgna.croquet.components.Component<?> panel;
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			panel = new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)composite.getMemberHub() );
-		} else if( member instanceof org.lgna.project.ast.UserField ) {
-			panel = new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)composite.getMemberHub() );
-		} else {
-			panel = new org.lgna.croquet.components.Label( "todo" );
-		}
-		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
-		label.setIcon( composite.getIcon() );
-		this.addPageStartComponent( label );
-		this.addCenterComponent( panel );
-
-		label.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
-		this.setMinimumPreferredWidth( 200 );
+public class MethodPreviewPane extends MemberPreviewPane<org.lgna.project.ast.UserMethod> {
+	public MethodPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
+		super( methodHub );
+		org.lgna.project.ast.UserMethod method = methodHub.getMember();
+		this.addComponent( new MethodHubHeaderView( methodHub ), "wrap" );
+		this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		this.setBackgroundColor( method.isProcedure() ? theme.getProcedureColor() : theme.getFunctionColor() );
 	}
 }
