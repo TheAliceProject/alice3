@@ -64,6 +64,17 @@ public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> e
 
 	private static final java.awt.Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
 
+	public static org.lgna.croquet.components.Component<?> createView( org.alice.ide.ast.type.merge.croquet.MemberHub<?> memberHub ) {
+		org.lgna.project.ast.Declaration member = memberHub.getMember();
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			return new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)memberHub );
+		} else if( member instanceof org.lgna.project.ast.UserField ) {
+			return new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)memberHub );
+		} else {
+			return new org.lgna.croquet.components.Label( "todo" );
+		}
+	}
+
 	private final org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub;
 
 	public MemberPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub ) {

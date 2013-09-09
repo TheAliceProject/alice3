@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.help.diffimp.croquet.MethodDifferentImplemen
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
+public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
 
@@ -133,10 +133,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		}
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getImportHub() {
 		return this.importHub;
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getProjectHub() {
 		return this.projectHub;
 	}

@@ -49,7 +49,9 @@ public class PotentialNameChangerHelpView extends org.lgna.croquet.components.Bo
 	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.MigPanel previewPanel = new org.lgna.croquet.components.MigPanel();
-		previewPanel.addComponent( new org.lgna.croquet.components.Label( "preview" ) );
+		previewPanel.addComponent( new org.lgna.croquet.components.Label( "preview" ), "wrap" );
+		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub() ), "wrap" );
+		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getProjectHub() ), "wrap" );
 		this.addLineEndComponent( previewPanel );
 	}
 }

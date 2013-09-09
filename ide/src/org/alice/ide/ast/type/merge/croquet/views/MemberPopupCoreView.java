@@ -49,18 +49,11 @@ public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel
 	public MemberPopupCoreView( final org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite composite ) {
 		super( composite );
 		org.lgna.project.ast.Declaration member = composite.getMember();
-		org.lgna.croquet.components.Component<?> panel;
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			panel = new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)composite.getMemberHub() );
-		} else if( member instanceof org.lgna.project.ast.UserField ) {
-			panel = new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)composite.getMemberHub() );
-		} else {
-			panel = new org.lgna.croquet.components.Label( "todo" );
-		}
+		org.lgna.croquet.components.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub() );
 		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
 		label.setIcon( composite.getIcon() );
 		this.addPageStartComponent( label );
-		this.addCenterComponent( panel );
+		this.addCenterComponent( component );
 
 		label.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
 		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
