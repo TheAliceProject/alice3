@@ -55,8 +55,7 @@ public class ShapesTabView extends GalleryTabView {
 
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
-		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.NEVER );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( panel );
 		this.addCenterComponent( scrollPane );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}

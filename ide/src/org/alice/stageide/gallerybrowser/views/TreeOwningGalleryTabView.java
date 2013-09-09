@@ -75,18 +75,11 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
-		this.scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		this.scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		this.scrollPane.setBothScrollBarIncrements( 16, 160 );
+		this.scrollPane = createGalleryScrollPane( view );
 
 		final boolean IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES = false;
 		java.awt.Color breadCrumbColor;
-		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) {
+		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && ( composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) ) {
 			breadCrumbColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 		} else {
 			breadCrumbColor = null;
@@ -102,7 +95,6 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		//todo
 		view.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}
 

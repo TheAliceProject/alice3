@@ -47,6 +47,6 @@ package org.alice.ide.croquet.models.ui.preferences;
  */
 public class IsIncludingImportAndExportType {
 	public static boolean getValue() {
-		return false;
+		return true;
 	}
 }

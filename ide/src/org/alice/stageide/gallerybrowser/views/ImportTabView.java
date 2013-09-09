@@ -98,16 +98,15 @@ public class ImportTabView extends GalleryTabView {
 		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[shrink]4[grow]4[shrink]16[shrink]" );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
 		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
 		panel.addComponent( composite.getBrowseOperation().createButton() );
 		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.dragComponentsView );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
 		panel.addComponent( scrollPane, "span 4, wrap" );
-		this.addPageStartComponent( panel );
+		this.addCenterComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.dragComponentsView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.notDirectoryLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.noFilesLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
