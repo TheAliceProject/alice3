@@ -48,6 +48,7 @@ package org.alice.ide.ast.type.preview.croquet.views;
 public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
 		super( page, "fillx" );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
 	}
 
 	@Override

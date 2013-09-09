@@ -58,6 +58,11 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
+	public boolean isClearToCommit() {
+		return true;
+	}
+
+	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return new org.lgna.croquet.components.ScrollPane();
 	}
