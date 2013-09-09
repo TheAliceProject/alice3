@@ -160,15 +160,7 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.scaleFont( 1.2f );
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBothScrollBarIncrements( 16, 160 );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.filteredResourcesView );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
 		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(

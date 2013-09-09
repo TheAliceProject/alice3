@@ -42,13 +42,10 @@
  */
 package org.alice.ide.ast.type.merge.help.croquet;
 
-import org.alice.ide.ast.type.merge.croquet.ImportTypeComposite;
-import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
 	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
 	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
@@ -65,7 +62,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
 			if( element == this.importNameState.getSidekickLabel() ) {
-				rv = ImportTypeComposite.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
+				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
 			}
 		}
 		return rv;

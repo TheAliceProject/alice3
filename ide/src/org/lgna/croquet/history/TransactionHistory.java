@@ -46,10 +46,6 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class TransactionHistory extends TransactionNode<CompletionStep<?>> implements Iterable<Transaction> {
-
-	// Project property for transaction history
-	public static final org.lgna.project.properties.CodablePropertyKey<org.lgna.croquet.history.TransactionHistory> INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
-
 	private final java.util.List<Transaction> transactions;
 
 	public TransactionHistory() {

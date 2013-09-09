@@ -58,4 +58,17 @@ public abstract class GalleryTabView extends org.lgna.croquet.components.BorderP
 	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
 		return this.cache.getGalleryDragComponent( resourceNode );
 	}
+
+	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( view ) {
+			@Override
+			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+			}
+		};
+		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+		rv.setBothScrollBarIncrements( 16, 160 );
+		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		return rv;
+	}
 }

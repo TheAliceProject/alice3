@@ -66,7 +66,6 @@ public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 		try {
 			this.uploadComposite.getUploader().logIn( this.getUserNameState().getValue(), this.getPasswordState().getValue() );
 			setConnectionFailed( false );
-			this.uploadComposite.setLoggedIn( true );
 			return true;
 		} catch( AuthenticationException e ) {
 			if( e instanceof InvalidCredentialsException ) {

@@ -107,6 +107,9 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		};
 
+		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
+		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
+
 		this.importCardOwner = new DifferentImplementationCardOwner.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
 				.replace( new ReplacePositiveImplementationCard( this ) )

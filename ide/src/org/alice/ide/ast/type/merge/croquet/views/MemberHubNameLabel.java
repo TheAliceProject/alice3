@@ -53,7 +53,16 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 		}
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			setText( nextValue );
+			updateText();
+		}
+	};
+
+	private final org.lgna.croquet.State.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateText();
 		}
 	};
 
@@ -61,8 +70,20 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 		this.memberHubWithNameState = memberHubWithNameState;
 	}
 
+	private void updateText() {
+		String text;
+		if( this.memberHubWithNameState.getIsDesiredState().getValue() && this.memberHubWithNameState.getOtherIsDesiredState().getValue() ) {
+			text = this.memberHubWithNameState.getNameState().getValue();
+		} else {
+			text = this.memberHubWithNameState.getMember().getName();
+		}
+		this.setText( text );
+	}
+
 	@Override
 	protected void handleDisplayable() {
+		this.memberHubWithNameState.getIsDesiredState().addValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().addValueListener( this.isDesiredListener );
 		this.memberHubWithNameState.getNameState().addAndInvokeValueListener( this.nameListener );
 		super.handleDisplayable();
 	}
@@ -71,5 +92,7 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
 		this.memberHubWithNameState.getNameState().removeValueListener( this.nameListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().removeValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getIsDesiredState().removeValueListener( this.isDesiredListener );
 	}
 }
