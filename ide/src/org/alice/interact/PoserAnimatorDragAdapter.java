@@ -49,6 +49,7 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
+import org.alice.stageide.sceneeditor.HandleStyle;
 import org.lgna.story.SModel;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -93,6 +94,8 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutZAxis );
 
 		setHandlVisibility( true );
+
+		setInteractionState( HandleStyle.ROTATION );
 
 	}
 
