@@ -51,8 +51,6 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
 public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
 	private final org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentSignatureTopLevelChoice.class, null );
 
-	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
-
 	private final org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice>() {
 		public void changing( org.lgna.croquet.State<DifferentSignatureTopLevelChoice> state, DifferentSignatureTopLevelChoice prevValue, DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
 		}
@@ -68,6 +66,11 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 
 	public org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> getTopLevelChoiceState() {
 		return this.topLevelChoiceState;
+	}
+
+	@Override
+	protected boolean isKeepBothSelected() {
+		return this.topLevelChoiceState.getValue() == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
 	}
 
 	@Override
@@ -107,19 +110,5 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 			isImport = false;
 		}
 		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
-
-		//todo
-		this.getView().repaint();
-
-		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		if( topLevelChoice != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noTopLevelError;
-		}
 	}
 }

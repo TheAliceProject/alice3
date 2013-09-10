@@ -49,11 +49,16 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
 	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( this.createKey( "importNameText" ) );
 	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( this.createKey( "projectNameText" ) );
+	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( this.createKey( "nameChangeRequiredError" ) );
 	private final N potentialNameChanger;
 
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+			if( isKeepBothSelected() ) {
+				return areNamesIdentical() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+			} else {
+				return defaultColor;
+			}
 		}
 	};
 
@@ -65,6 +70,21 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
 		this.potentialNameChanger = potentialNameChanger;
+	}
+
+	protected abstract boolean isKeepBothSelected();
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
+		//todo
+		this.getView().repaint();
+		Status rv = IS_GOOD_TO_GO_STATUS;
+		if( this.isKeepBothSelected() ) {
+			if( this.areNamesIdentical() ) {
+				rv = this.nameChangeRequiredError;
+			}
+		}
+		return rv;
 	}
 
 	@Override
@@ -86,6 +106,10 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		return this.foregroundCustomizer;
 	}
 
+	public ErrorStatus getNameChangeRequiredError() {
+		return this.nameChangeRequiredError;
+	}
+
 	public org.lgna.croquet.PlainStringValue getHeader() {
 		return this.header;
 	}
@@ -98,7 +122,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		return this.projectNameText;
 	}
 
-	protected final boolean isRenameRequired() {
+	private boolean areNamesIdentical() {
 		//todo
 		return this.potentialNameChanger.getImportHub().getNameState().getValue().contentEquals( this.potentialNameChanger.getProjectHub().getNameState().getValue() );
 	}

@@ -76,17 +76,22 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	@Override
+	protected boolean isKeepBothSelected() {
+		return this.topLevelChoiceState.getValue() == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME;
+	}
+
+	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
-
-		//todo
-		this.getView().repaint();
-
-		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		if( topLevelChoice != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noTopLevelError;
+		Status rv = super.getStatusPreRejectorCheck( step );
+		if( rv == IS_GOOD_TO_GO_STATUS ) {
+			DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+			if( topLevelChoice != null ) {
+				//pass
+			} else {
+				rv = this.noTopLevelError;
+			}
 		}
+		return rv;
 	}
 
 	@Override
