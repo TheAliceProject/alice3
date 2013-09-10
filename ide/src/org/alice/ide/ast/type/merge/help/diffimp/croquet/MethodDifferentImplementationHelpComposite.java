@@ -56,7 +56,7 @@ public final class MethodDifferentImplementationHelpComposite extends DifferentI
 		sb.append( "<ol>" );
 		sb.append( "<li><strong>retain both methods</strong> (renaming at least one of them will be required)" );
 		sb.append( "<li><strong>retain only the version from the class file</strong>" );
-		sb.append( "<li><strong>etain only the version already in your project</strong>" );
+		sb.append( "<li><strong>retain only the version already in your project</strong>" );
 		sb.append( "</ol>" );
 		sb.append( "</html>" );
 		this.getHeader().setText( sb.toString() );
