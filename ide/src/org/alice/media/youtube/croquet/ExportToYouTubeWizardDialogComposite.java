@@ -75,17 +75,24 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		this.addPage( this.uploadComposite );
 	}
 
+	public ListSelectionState<EventScriptEvent> getEventList() {
+		return this.eventList;
+	}
+
+	public StringValue getMouseEventName() {
+		return this.mouseEventName;
+	}
+
+	public StringValue getKeyBoardEventName() {
+		return this.keyBoardEventName;
+	}
+
 	public org.lgna.project.Project getProject() {
 		return this.project;
 	}
 
 	public void setProject( org.lgna.project.Project project ) {
 		this.project = project;
-	}
-
-	@Override
-	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
-		return null;
 	}
 
 	public EventScript getEventScript() {
@@ -107,11 +114,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-
 	public void setRandomSeed( long currentTimeMillis ) {
 		this.randomSeed = currentTimeMillis;
 		RandomUtilities.setSeed( currentTimeMillis );
@@ -121,12 +123,9 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return this.randomSeed;
 	}
 
-	public StringValue getMouseEventName() {
-		return this.mouseEventName;
-	}
-
-	public StringValue getKeyBoardEventName() {
-		return this.keyBoardEventName;
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		return null;
 	}
 
 	@Override
@@ -134,27 +133,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return super.isClearedForCommit() && uploadComposite.tryToUpload();
 	}
 
-	//	public EventWithTimeListCellRenderer getCellRenderer() {
-	//		return renderer;
-	//	}
-	//
-	//	private class EventWithTimeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<EventScriptEvent> {
-	//
-	//		@Override
-	//		protected JLabel getListCellRendererComponent( JLabel rv, JList list, EventScriptEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
-	//			String eventType = "";
-	//			if( value.getEvent() instanceof MouseEventWrapper ) {
-	//				eventType = getMouseEventName().getText();
-	//			} else if( value.getEvent() instanceof KeyEvent ) {
-	//				eventType = getKeyBoardEventName().getText();
-	//			} else {
-	//				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-	//			}
-	//			rv.setText( value.getReportForEventType( eventType ) );
-	//			return rv;
-	//		}
-	//
-	//	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
 
 	public static void main( final String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
@@ -184,7 +166,4 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		} );
 	}
 
-	public ListSelectionState<EventScriptEvent> getEventList() {
-		return eventList;
-	}
 }

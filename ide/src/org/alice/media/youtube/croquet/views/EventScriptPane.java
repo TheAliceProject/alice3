@@ -57,13 +57,7 @@ public class EventScriptPane extends org.lgna.croquet.components.MigPanel {
 		list.setCellRenderer( new ItemCodecListCellRenderer<EventScriptEvent>( state.getItemCodec() ) );
 		list.setMinimumPreferredWidth( 240 );
 		list.getAwtComponent().setEnabled( false );
-		java.awt.Color backgroundColor = this.getBackgroundColor();
-		if( backgroundColor != null ) {
-			backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
-		} else {
-			backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 233 );
-		}
-		list.setBackgroundColor( backgroundColor );
+		list.setBackgroundColor( this.getBackgroundColor() );
 
 		this.addComponent( state.getSidekickLabel().createLabel(), "grow, wrap" );
 		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "grow, wrap" );

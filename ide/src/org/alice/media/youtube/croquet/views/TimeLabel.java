@@ -51,6 +51,7 @@ public class TimeLabel extends org.lgna.croquet.components.Label {
 
 	public TimeLabel() {
 		this.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		this.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
 	}
 
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {
