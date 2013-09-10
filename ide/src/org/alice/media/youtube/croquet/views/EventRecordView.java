@@ -43,10 +43,7 @@
 package org.alice.media.youtube.croquet.views;
 
 import org.alice.media.youtube.croquet.EventRecordComposite;
-import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ToggleButton;
-
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
@@ -63,12 +60,12 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		this.timeLabel = new TimeLabel();
 		this.updateTime( 0 );
 
-		List<EventScriptEvent> list = new EventScriptListView( eventRecordComposite.getEventList() );
+		org.lgna.croquet.components.Component<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
 
 		this.playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
 
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
-		this.addComponent( list, "aligny top, spany 3, wrap" );
+		this.addComponent( listPane, "aligny top, spany 3, wrap" );
 
 		this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
 		this.addComponent( this.playPauseButton, "split 2" );

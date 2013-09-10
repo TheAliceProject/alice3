@@ -42,8 +42,6 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
-
 /**
  * @author Matt May
  */
@@ -52,23 +50,21 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private final TimeLabel timeLabel;
 
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "debug, fill, insets 0", "[grow 0,shrink][grow,shrink]" );
+		super( recordComposite, "fill, insets 0", "[grow 0,shrink][grow,shrink]" );
 
-		org.lgna.croquet.components.List<EventScriptEvent> list = new EventScriptListView( recordComposite.getEventList() );
+		org.lgna.croquet.components.Component<?> listPane = new EventScriptPane( recordComposite.getEventList() );
 
 		this.timeLabel = new TimeLabel();
 		this.timeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
 		this.updateTime( 0 );
 
 		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
-		this.addComponent( list, "grow, shrink, spany 4, wrap" );
+		this.addComponent( listPane, "grow, shrink, spany 3, wrap" );
 
 		this.addComponent( this.lookingGlassContainer, "w 640, h 360, wrap" );
 
-		this.addComponent( recordComposite.getIsRecordingState().createToggleButton(), "split 2" );
-		this.addComponent( timeLabel, "grow, align right, wrap" );
-
-		this.addComponent( new org.lgna.croquet.components.BorderPanel(), "push, grow, wrap" );
+		this.addComponent( recordComposite.getIsRecordingState().createToggleButton(), "push, aligny top, split 2" );
+		this.addComponent( timeLabel, "growx, align right, aligny top" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
