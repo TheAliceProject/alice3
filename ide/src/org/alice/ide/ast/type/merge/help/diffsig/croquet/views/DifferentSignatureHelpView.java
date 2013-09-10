@@ -42,7 +42,6 @@
  */
 package org.alice.ide.ast.type.merge.help.diffsig.croquet.views;
 
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 
 /**
  * @author Dennis Cosgrove
@@ -57,25 +56,15 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 		}
 	};
 
-	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
-
 	public DifferentSignatureHelpView( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite ) {
 		super( composite );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
 		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ).createRadioButton();
 
-		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
-
-		org.alice.ide.ast.type.merge.croquet.DifferentSignature differentSignature = composite.getPotentialNameChanger();
-		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
-
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
-		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
+		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );
 		this.addCenterComponent( panel );
 	}
@@ -96,7 +85,7 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 
 	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue ) {
 		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
-		for( java.awt.Component awtComponent : this.keepBothPanel.getAwtComponent().getComponents() ) {
+		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}
 	}

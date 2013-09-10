@@ -42,8 +42,6 @@
  */
 package org.alice.ide.ast.type.merge.help.diffimp.croquet.views;
 
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,25 +57,16 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		}
 	};
 
-	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 	private final org.lgna.croquet.components.MigPanel selectOnePanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 
 	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
 
-		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
-
-		org.alice.ide.ast.type.merge.croquet.DifferentImplementation differentImplementation = composite.getPotentialNameChanger();
-		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
-
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
-		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
+		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 
 		if( IS_TWO_STAGE_DESIRED ) {
 			org.lgna.croquet.components.ToggleButton fromImportToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.FROM_IMPORT ).createToggleButton();
@@ -115,7 +104,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice nextValue ) {
 		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME;
 		boolean isSelectOne = nextValue == org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_ONE;
-		for( java.awt.Component awtComponent : this.keepBothPanel.getAwtComponent().getComponents() ) {
+		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}
 		for( java.awt.Component awtComponent : this.selectOnePanel.getAwtComponent().getComponents() ) {
