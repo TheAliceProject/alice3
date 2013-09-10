@@ -46,8 +46,8 @@ package org.alice.ide.ast.type.merge.croquet.views;
  * @author Dennis Cosgrove
  */
 public class MethodPreviewPane extends MemberPreviewPane<org.lgna.project.ast.UserMethod> {
-	public MethodPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( methodHub );
+	public MethodPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+		super( methodHub, isAlphaDesiredWhenSelectionIsRequired );
 		org.lgna.project.ast.UserMethod method = methodHub.getMember();
 		this.addComponent( new MethodHubHeaderView( methodHub ), "wrap" );
 		this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );

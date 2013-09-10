@@ -46,8 +46,8 @@ package org.alice.ide.ast.type.merge.croquet.views;
  * @author Dennis Cosgrove
  */
 public class FieldPreviewPane extends MemberPreviewPane<org.lgna.project.ast.UserField> {
-	public FieldPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub ) {
-		super( fieldHub );
+	public FieldPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+		super( fieldHub, isAlphaDesiredWhenSelectionIsRequired );
 		org.lgna.project.ast.UserField field = fieldHub.getMember();
 		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
 		this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field ), "wrap" );

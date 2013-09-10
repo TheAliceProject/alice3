@@ -48,8 +48,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
 public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
 	public MemberPopupCoreView( final org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite composite ) {
 		super( composite );
-		org.lgna.project.ast.Declaration member = composite.getMember();
-		org.lgna.croquet.components.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub() );
+		org.lgna.croquet.components.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub(), false );
 		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
 		label.setIcon( composite.getIcon() );
 		this.addPageStartComponent( label );

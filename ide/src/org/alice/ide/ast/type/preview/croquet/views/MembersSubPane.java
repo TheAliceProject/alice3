@@ -55,7 +55,7 @@ public final class MembersSubPane<M extends org.lgna.project.ast.Member> extends
 		headerLabel.setBackgroundColor( headerColor );
 		this.addComponent( headerLabel, "grow, shrink, wrap" );
 		for( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub : hubs ) {
-			this.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( hub ), "grow, shrink, wrap" );
+			this.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( hub, true ), "grow, shrink, wrap" );
 		}
 	}
 }
