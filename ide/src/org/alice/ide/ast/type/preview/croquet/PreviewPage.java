@@ -48,8 +48,22 @@ import org.alice.ide.ast.type.croquet.ImportTypeWizard;
  * @author Dennis Cosgrove
  */
 public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
+	private final org.lgna.croquet.BooleanState isIncludingAllState = this.createBooleanState( this.createKey( "isIncludingAllState" ), false );
+	private final org.lgna.croquet.State.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			getView().refreshLater();
+		}
+	};
+
 	public PreviewPage( ImportTypeWizard wizard ) {
 		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
+	}
+
+	public org.lgna.croquet.BooleanState getIsIncludingAllState() {
+		return this.isIncludingAllState;
 	}
 
 	@Override
@@ -63,18 +77,19 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
-	}
-
-	@Override
 	public void resetData() {
 	}
 
 	@Override
 	public void handlePreActivation() {
-		this.getView().refreshLater();
+		this.isIncludingAllState.addAndInvokeValueListener( this.isIncludingAllListener );
 		super.handlePreActivation();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.isIncludingAllState.removeValueListener( this.isIncludingAllListener );
 	}
 
 	@Override

@@ -274,25 +274,26 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( AddMembersComposite<?, M> addMembersComposite ) {
 		if( this.dstType != null ) {
+			boolean isIncludingAll = getOwner().getPreviewPage().getIsIncludingAllState().getValue();
 			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
-				if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || importOnly.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( importOnly.getImportHub() );
 				}
 			}
 
 			for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
-				if( differentSignature.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentSignature.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentSignature.getImportHub() );
 				}
 				hubs.add( differentSignature.getProjectHub() );
 			}
 
 			for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
-				if( differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentImplementation.getImportHub() );
 				}
-				if( differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentImplementation.getProjectHub() );
 				}
 			}

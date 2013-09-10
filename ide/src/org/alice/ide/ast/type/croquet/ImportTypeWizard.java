@@ -51,16 +51,22 @@ import org.alice.ide.ast.type.preview.croquet.PreviewPage;
  */
 public class ImportTypeWizard extends org.lgna.croquet.OperationWizardDialogCoreComposite {
 	private final AddMembersPage addMembersPage;
+	private final PreviewPage previewPage;
 
 	public ImportTypeWizard( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
 		super( java.util.UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), org.alice.ide.IDE.PROJECT_GROUP );
 		this.addMembersPage = new AddMembersPage( this, uriForDescriptionPurposesOnly, importedRootType, importedResources, srcType, dstType );
+		this.previewPage = new PreviewPage( this );
 		this.addPage( this.addMembersPage );
-		this.addPage( new PreviewPage( this ) );
+		this.addPage( this.previewPage );
 	}
 
 	public AddMembersPage getAddMembersPage() {
 		return this.addMembersPage;
+	}
+
+	public PreviewPage getPreviewPage() {
+		return this.previewPage;
 	}
 
 	@Override
