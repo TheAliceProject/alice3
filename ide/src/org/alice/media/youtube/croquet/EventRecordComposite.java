@@ -44,6 +44,7 @@ package org.alice.media.youtube.croquet;
 
 import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.youtube.croquet.views.EventRecordView;
+import org.alice.media.youtube.croquet.views.icons.IsPlayingIcon;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
@@ -84,8 +85,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
+		this.isRecordingState.setIconForBothTrueAndFalse( new IsPlayingIcon() );
 		isRecordingState.addValueListener( isRecordingListener );
-		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {

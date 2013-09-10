@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -51,14 +51,14 @@ import javax.swing.ButtonModel;
 import javax.swing.Icon;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class IsRecordingIcon implements Icon {
+public class IsPlayingIcon implements Icon {
 	private static final int SIZE = 20;
-	private static final Color RECORD_BASE_COLOR = new Color( 191, 63, 63 );
-	private static final Color RECORD_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 1.5 );
-	private static final Color RECORD_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
-	private static final Color STOP_COLOR = Color.BLACK;
+	private static final Color PLAY_BASE_COLOR = new Color( 63, 191, 63 );
+	private static final Color PLAY_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 1.5 );
+	private static final Color PLAY_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 0.5 );
+	private static final Color PAUSE_COLOR = Color.BLACK;
 
 	public int getIconHeight() {
 		return SIZE;
@@ -76,13 +76,29 @@ public class IsRecordingIcon implements Icon {
 			AbstractButton button = (AbstractButton)c;
 			ButtonModel buttonModel = button.getModel();
 			if( buttonModel.isSelected() ) {
-				g.setColor( STOP_COLOR );
-				g.fillRect( x, y, SIZE, SIZE );
+				g.setColor( PAUSE_COLOR );
+				int width = 4;
+				int height = SIZE - 4;
+				int x0 = x + 2;
+				int x1 = ( x + SIZE ) - width - 4;
+				int y0 = y + 2;
+				g.fillRect( x0, y0, width, height );
+				g.fillRect( x1, y0, width, height );
 			} else {
-				g2.setPaint( new java.awt.GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
-				g.fillOval( x, y, SIZE, SIZE );
+				double x0 = x + 2;
+				double x1 = ( x + SIZE ) - 4;
+				double y0 = y + 2;
+				double y1 = ( y0 + SIZE ) - 4;
+				double yC = ( y0 + y1 ) * 0.5;
+				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+				path.moveTo( x0, y0 );
+				path.lineTo( x0, y1 );
+				path.lineTo( x1, yC );
+				path.closePath();
+				g2.setPaint( new java.awt.GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
+				g2.fill( path );
 				g.setColor( Color.BLACK );
-				g.drawOval( x, y, SIZE, SIZE );
+				g2.draw( path );
 			}
 		}
 		g2.setPaint( prevPaint );
