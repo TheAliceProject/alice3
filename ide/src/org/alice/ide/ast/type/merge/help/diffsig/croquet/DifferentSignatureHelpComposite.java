@@ -49,13 +49,13 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentSignatureTopLevelChoice.class, null );
+	private final org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentSignatureChoice.class, null );
 
-	private final org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice>() {
-		public void changing( org.lgna.croquet.State<DifferentSignatureTopLevelChoice> state, DifferentSignatureTopLevelChoice prevValue, DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentSignatureChoice>() {
+		public void changing( org.lgna.croquet.State<DifferentSignatureChoice> state, DifferentSignatureChoice prevValue, DifferentSignatureChoice nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed( org.lgna.croquet.State<DifferentSignatureTopLevelChoice> state, DifferentSignatureTopLevelChoice prevValue, DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<DifferentSignatureChoice> state, DifferentSignatureChoice prevValue, DifferentSignatureChoice nextValue, boolean isAdjusting ) {
 			handleChanged();
 		}
 	};
@@ -64,13 +64,13 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 		super( migrationId, differentSignature );
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> getTopLevelChoiceState() {
+	public org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> getTopLevelChoiceState() {
 		return this.topLevelChoiceState;
 	}
 
 	@Override
 	protected boolean isKeepBothSelected() {
-		return this.topLevelChoiceState.getValue() == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
+		return this.topLevelChoiceState.getValue() == DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME;
 	}
 
 	@Override
@@ -81,11 +81,11 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	@Override
 	public void handlePreActivation() {
 		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		DifferentSignatureTopLevelChoice topLevelChoice;
+		DifferentSignatureChoice topLevelChoice;
 		if( isImport ) {
-			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
+			topLevelChoice = DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME;
 		} else {
-			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT;
+			topLevelChoice = DifferentSignatureChoice.RETAIN_VERSION_ALREADY_IN_PROJECT;
 		}
 		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
 		this.topLevelChoiceState.addValueListener( this.topLevelListener );
@@ -99,11 +99,11 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	}
 
 	private void handleChanged() {
-		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+		DifferentSignatureChoice topLevelChoice = this.topLevelChoiceState.getValue();
 		boolean isImport;
-		if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+		if( topLevelChoice == DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME ) {
 			isImport = true;
-		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ) {
+		} else if( topLevelChoice == DifferentSignatureChoice.RETAIN_VERSION_ALREADY_IN_PROJECT ) {
 			isImport = false;
 		} else {
 			//should never happen

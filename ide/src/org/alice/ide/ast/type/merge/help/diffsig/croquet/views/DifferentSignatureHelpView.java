@@ -42,24 +42,23 @@
  */
 package org.alice.ide.ast.type.merge.help.diffsig.croquet.views;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue, boolean isAdjusting ) {
 			handleTopLevelChanged( nextValue );
 		}
 	};
 
 	public DifferentSignatureHelpView( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite ) {
 		super( composite );
-		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ).createRadioButton();
+		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME ).createRadioButton();
+		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
@@ -83,8 +82,8 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 		composite.getTopLevelChoiceState().removeValueListener( this.valueListener );
 	}
 
-	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue ) {
-		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
+	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue ) {
+		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME;
 		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}

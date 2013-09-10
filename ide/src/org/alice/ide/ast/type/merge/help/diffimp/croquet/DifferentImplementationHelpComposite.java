@@ -49,15 +49,15 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentImplementationTopLevelChoice.class, null );
+	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentImplementationChoice.class, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
 
-	private final org.lgna.croquet.State.ValueListener<DifferentImplementationTopLevelChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationTopLevelChoice>() {
-		public void changing( org.lgna.croquet.State<DifferentImplementationTopLevelChoice> state, DifferentImplementationTopLevelChoice prevValue, DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationChoice>() {
+		public void changing( org.lgna.croquet.State<DifferentImplementationChoice> state, DifferentImplementationChoice prevValue, DifferentImplementationChoice nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed( org.lgna.croquet.State<DifferentImplementationTopLevelChoice> state, DifferentImplementationTopLevelChoice prevValue, DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<DifferentImplementationChoice> state, DifferentImplementationChoice prevValue, DifferentImplementationChoice nextValue, boolean isAdjusting ) {
 			handleChanged();
 		}
 	};
@@ -66,7 +66,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		super( migrationId, differentImplementation );
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationTopLevelChoice> getTopLevelChoiceState() {
+	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getTopLevelChoiceState() {
 		return this.topLevelChoiceState;
 	}
 
@@ -77,14 +77,14 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 
 	@Override
 	protected boolean isKeepBothSelected() {
-		return this.topLevelChoiceState.getValue() == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME;
+		return this.topLevelChoiceState.getValue() == DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
 	}
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
 		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
-			DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+			DifferentImplementationChoice topLevelChoice = this.topLevelChoiceState.getValue();
 			if( topLevelChoice != null ) {
 				//pass
 			} else {
@@ -98,16 +98,16 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	public void handlePreActivation() {
 		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
 		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
-		DifferentImplementationTopLevelChoice topLevelChoice;
+		DifferentImplementationChoice topLevelChoice;
 		if( isImport ) {
 			if( isProject ) {
-				topLevelChoice = DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME;
+				topLevelChoice = DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
 			} else {
-				topLevelChoice = DifferentImplementationTopLevelChoice.SELECT_IMPORT;
+				topLevelChoice = DifferentImplementationChoice.CHOOSE_VERSION_IN_CLASS_FILE;
 			}
 		} else {
 			if( isProject ) {
-				topLevelChoice = DifferentImplementationTopLevelChoice.SELECT_PROJECT;
+				topLevelChoice = DifferentImplementationChoice.CHOOSE_VERSION_ALREADY_IN_PROJECT;
 			} else {
 				topLevelChoice = null;
 			}
@@ -124,16 +124,16 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	private void handleChanged() {
-		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+		DifferentImplementationChoice topLevelChoice = this.topLevelChoiceState.getValue();
 		boolean isImport;
 		boolean isKeep;
-		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+		if( topLevelChoice == DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME ) {
 			isImport = true;
 			isKeep = true;
-		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_IMPORT ) {
+		} else if( topLevelChoice == DifferentImplementationChoice.CHOOSE_VERSION_IN_CLASS_FILE ) {
 			isImport = true;
 			isKeep = false;
-		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_PROJECT ) {
+		} else if( topLevelChoice == DifferentImplementationChoice.CHOOSE_VERSION_ALREADY_IN_PROJECT ) {
 			isImport = false;
 			isKeep = true;
 		} else {

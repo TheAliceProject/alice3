@@ -40,13 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.help.diffimp.croquet;
+package org.alice.ide.ast.type.merge.help.diffsig.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum DifferentImplementationTopLevelChoice {
-	KEEP_BOTH_AND_RENAME,
-	SELECT_IMPORT,
-	SELECT_PROJECT
+public enum DifferentSignatureChoice {
+	RETAIN_BOTH_AND_RENAME,
+	RETAIN_VERSION_ALREADY_IN_PROJECT
 }
