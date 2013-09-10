@@ -201,6 +201,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
+		this.getView().setEventListPaneVisible( owner.getEventList().getData().getItemCount() > 0 );
+
 		getEventList().clear();
 		if( owner.getEventScript() != null ) {
 			for( EventScriptEvent event : owner.getEventScript().getEventList() ) {

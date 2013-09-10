@@ -49,10 +49,12 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 	private final TimeLabel timeLabel;
 
+	private final org.lgna.croquet.components.Component<?> listPane;
+
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
 
-		org.lgna.croquet.components.Component<?> listPane = new EventScriptPane( recordComposite.getEventList() );
+		this.listPane = new EventScriptPane( recordComposite.getEventList() );
 
 		this.timeLabel = new TimeLabel();
 		this.updateTime( 0 );
@@ -72,5 +74,15 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 
 	public void updateTime( double currTime ) {
 		this.timeLabel.setTimeInSeconds( currTime );
+	}
+
+	public boolean isEventListPaneVisible() {
+		return this.listPane.isVisible();
+	}
+
+	public void setEventListPaneVisible( boolean isEventListPaneVisible ) {
+		synchronized( this.listPane.getTreeLock() ) {
+			this.listPane.setVisible( isEventListPaneVisible );
+		}
 	}
 }
