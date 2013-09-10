@@ -74,9 +74,9 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
-		panel.addComponent( keepBothRadioButton, "wrap" );
+		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
-		panel.addComponent( selectOneRadioButton, "wrap" );
+		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );
 		this.addCenterComponent( panel );
 	}
 

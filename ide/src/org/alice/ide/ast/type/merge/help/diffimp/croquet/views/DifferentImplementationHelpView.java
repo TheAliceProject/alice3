@@ -48,6 +48,8 @@ import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
  * @author Dennis Cosgrove
  */
 public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
+	private static final boolean IS_TWO_STAGE_DESIRED = true;
+
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
 		}
@@ -63,7 +65,6 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_ONE ).createRadioButton();
 
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
@@ -73,17 +74,27 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 
-		org.lgna.croquet.components.ToggleButton fromImportToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.FROM_IMPORT ).createToggleButton();
-		org.lgna.croquet.components.ToggleButton alreadyInProjectToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.ALREADY_IN_PROJECT ).createToggleButton();
-		this.selectOnePanel.addComponent( fromImportToggleButton, "wrap" );
-		this.selectOnePanel.addComponent( alreadyInProjectToggleButton, "wrap" );
-
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
-		panel.addComponent( keepBothRadioButton, "wrap" );
+		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
-		panel.addComponent( selectOneRadioButton, "wrap" );
-		panel.addComponent( this.selectOnePanel, "gap 32, wrap" );
+
+		if( IS_TWO_STAGE_DESIRED ) {
+			org.lgna.croquet.components.ToggleButton fromImportToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.FROM_IMPORT ).createToggleButton();
+			org.lgna.croquet.components.ToggleButton alreadyInProjectToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.ALREADY_IN_PROJECT ).createToggleButton();
+			this.selectOnePanel.addComponent( fromImportToggleButton, "gap top 16, wrap" );
+			this.selectOnePanel.addComponent( alreadyInProjectToggleButton, "wrap" );
+
+			org.lgna.croquet.components.RadioButton selectImportRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_ONE ).createRadioButton();
+			panel.addComponent( selectImportRadioButton, "wrap" );
+			panel.addComponent( this.selectOnePanel, "gap 32, wrap" );
+		} else {
+			org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_IMPORT ).createRadioButton();
+			org.lgna.croquet.components.RadioButton selectProjectRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_PROJECT ).createRadioButton();
+			panel.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationTopLevelChoice.SELECT_ONE.name() ), "gap top 16, wrap" );
+			panel.addComponent( selectOneRadioButton, "gap 32, wrap" );
+			panel.addComponent( selectProjectRadioButton, "gap 32, wrap" );
+		}
 		this.addCenterComponent( panel );
 	}
 

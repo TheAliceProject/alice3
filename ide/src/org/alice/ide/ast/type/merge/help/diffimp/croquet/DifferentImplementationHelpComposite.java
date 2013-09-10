@@ -169,6 +169,12 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 				isImport = false;
 				isKeep = false;
 			}
+		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_IMPORT ) {
+			isImport = true;
+			isKeep = false;
+		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_PROJECT ) {
+			isImport = false;
+			isKeep = true;
 		} else {
 			isImport = false;
 			isKeep = false;
