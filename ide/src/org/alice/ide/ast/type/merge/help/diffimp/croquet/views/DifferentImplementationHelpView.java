@@ -68,9 +68,9 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
 		org.alice.ide.ast.type.merge.croquet.DifferentImplementation differentImplementation = composite.getPotentialNameChanger();
-		this.keepBothPanel.addComponent( differentImplementation.getImportHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( differentImplementation.getProjectHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 
 		org.lgna.croquet.components.ToggleButton fromImportToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.FROM_IMPORT ).createToggleButton();
@@ -81,9 +81,9 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "wrap" );
-		panel.addComponent( this.keepBothPanel, "wrap" );
+		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
 		panel.addComponent( selectOneRadioButton, "wrap" );
-		panel.addComponent( this.selectOnePanel, "wrap" );
+		panel.addComponent( this.selectOnePanel, "gap 32, wrap" );
 		this.addCenterComponent( panel );
 	}
 

@@ -47,6 +47,8 @@ package org.alice.ide.ast.type.merge.help.croquet;
  */
 public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( this.createKey( "importNameText" ) );
+	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( this.createKey( "projectNameText" ) );
 	private final N potentialNameChanger;
 
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
@@ -65,6 +67,17 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		this.potentialNameChanger = potentialNameChanger;
 	}
 
+	@Override
+	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+		String rv = super.modifyLocalizedText( element, localizedText );
+		if( rv != null ) {
+			if( element == this.importNameText ) {
+				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
+			}
+		}
+		return rv;
+	}
+
 	public N getPotentialNameChanger() {
 		return this.potentialNameChanger;
 	}
@@ -75,6 +88,14 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 
 	public org.lgna.croquet.PlainStringValue getHeader() {
 		return this.header;
+	}
+
+	public org.lgna.croquet.PlainStringValue getImportNameText() {
+		return this.importNameText;
+	}
+
+	public org.lgna.croquet.PlainStringValue getProjectNameText() {
+		return this.projectNameText;
 	}
 
 	protected final boolean isRenameRequired() {

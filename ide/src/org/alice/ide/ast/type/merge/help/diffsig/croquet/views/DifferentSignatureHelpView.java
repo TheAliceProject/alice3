@@ -67,15 +67,15 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
 		org.alice.ide.ast.type.merge.croquet.DifferentSignature differentSignature = composite.getPotentialNameChanger();
-		this.keepBothPanel.addComponent( differentSignature.getImportHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( differentSignature.getProjectHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "wrap" );
-		panel.addComponent( this.keepBothPanel, "wrap" );
+		panel.addComponent( this.keepBothPanel, "gap 32, wrap" );
 		panel.addComponent( selectOneRadioButton, "wrap" );
 		this.addCenterComponent( panel );
 	}
