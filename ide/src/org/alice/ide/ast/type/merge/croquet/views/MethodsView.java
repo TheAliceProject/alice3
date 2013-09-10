@@ -40,18 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet;
+package org.alice.ide.ast.type.merge.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AddFunctionsComposite extends AddMethodsComposite<org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView> {
-	public AddFunctionsComposite( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectFunctions ) {
-		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
-	}
-
-	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.AddFunctionsView( this );
+public abstract class MethodsView extends MembersView {
+	public MethodsView( org.alice.ide.ast.type.merge.croquet.MethodsToolPalette<?> composite, java.awt.Color backgroundColor ) {
+		super( composite, backgroundColor );
 	}
 }

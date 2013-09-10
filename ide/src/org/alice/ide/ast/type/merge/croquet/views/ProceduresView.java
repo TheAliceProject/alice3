@@ -40,18 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet;
+package org.alice.ide.ast.type.merge.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AddProceduresComposite extends AddMethodsComposite<org.alice.ide.ast.type.merge.croquet.views.AddProceduresView> {
-	public AddProceduresComposite( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectProcedures ) {
-		super( java.util.UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), uriForDescriptionPurposesOnly, projectProcedures );
-	}
-
-	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.AddProceduresView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.AddProceduresView( this );
+public class ProceduresView extends MethodsView {
+	public ProceduresView( org.alice.ide.ast.type.merge.croquet.ProceduresToolPalette composite ) {
+		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

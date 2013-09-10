@@ -40,13 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddFieldsView extends AddMembersView {
-	public AddFieldsView( org.alice.ide.ast.type.merge.croquet.AddFieldsComposite composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
+public final class FieldsToolPalette extends MembersToolPalette<org.alice.ide.ast.type.merge.croquet.views.FieldsView, org.lgna.project.ast.UserField> {
+	public FieldsToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserField> projectFields ) {
+		super( java.util.UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), uriForDescriptionPurposesOnly, projectFields );
+	}
+
+	@Override
+	protected org.alice.ide.ast.type.merge.croquet.views.FieldsView createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.FieldsView( this );
 	}
 }

@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package org.alice.ide.ast.type.merge.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddProceduresView extends AddMethodsView {
-	public AddProceduresView( org.alice.ide.ast.type.merge.croquet.AddProceduresComposite composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor() );
+public abstract class MethodsToolPalette<V extends org.alice.ide.ast.type.merge.croquet.views.MethodsView> extends MembersToolPalette<V, org.lgna.project.ast.UserMethod> {
+	public MethodsToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectMethods ) {
+		super( migrationId, uriForDescriptionPurposesOnly, projectMethods );
 	}
 }

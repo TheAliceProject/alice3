@@ -45,8 +45,8 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AddFunctionsView extends AddMethodsView {
-	public AddFunctionsView( org.alice.ide.ast.type.merge.croquet.AddFunctionsComposite composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFunctionColor() );
+public class FieldsView extends MembersView {
+	public FieldsView( org.alice.ide.ast.type.merge.croquet.FieldsToolPalette composite ) {
+		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 }

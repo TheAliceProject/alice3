@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMembersComposite<V extends org.alice.ide.ast.type.merge.croquet.views.AddMembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.croquet.views.MembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
 	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final java.util.List<M> unusedProjectMembers;
 	private final java.util.List<ImportOnly<M>> importOnlys = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -58,7 +58,7 @@ public abstract class AddMembersComposite<V extends org.alice.ide.ast.type.merge
 	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( this.createKey( "alreadyInProjectHeader" ) );
 	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
 
-	public AddMembersComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
+	public MembersToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.unusedProjectMembers = projectMembers;

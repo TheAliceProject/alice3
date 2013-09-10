@@ -46,7 +46,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
  * @author Dennis Cosgrove
  */
 public class AddMembersPane extends org.lgna.croquet.components.MigPanel {
-	private void addToolPaletteViewIfAppropriate( org.alice.ide.ast.type.merge.croquet.AddMembersComposite<?, ?> composite, org.lgna.croquet.components.MigPanel panel ) {
+	private void addToolPaletteViewIfAppropriate( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite, org.lgna.croquet.components.MigPanel panel ) {
 		if( composite.getTotalCount() > 0 ) {
 			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
 			toolPaletteView.getTitle().setInert( true );

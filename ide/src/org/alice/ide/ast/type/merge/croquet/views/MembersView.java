@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+public abstract class MembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
 	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
 	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
 	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
@@ -73,7 +73,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-	private static String getTitleText( org.alice.ide.ast.type.merge.croquet.AddMembersComposite<?, ?> composite ) {
+	private static String getTitleText( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite ) {
 		return composite.getOuterComposite().getIsExpandedState().getTrueText();
 	}
 
@@ -118,7 +118,7 @@ public abstract class AddMembersView<M extends org.lgna.project.ast.Member> exte
 		return sb.toString();
 	}
 
-	public AddMembersView( org.alice.ide.ast.type.merge.croquet.AddMembersComposite<?, M> composite, java.awt.Color backgroundColor ) {
+	public MembersView( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, M> composite, java.awt.Color backgroundColor ) {
 		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + "24[grow]" );
 
 		//todo

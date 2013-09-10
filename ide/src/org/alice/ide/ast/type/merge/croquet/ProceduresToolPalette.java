@@ -45,13 +45,13 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class AddFieldsComposite extends AddMembersComposite<org.alice.ide.ast.type.merge.croquet.views.AddFieldsView, org.lgna.project.ast.UserField> {
-	public AddFieldsComposite( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserField> projectFields ) {
-		super( java.util.UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), uriForDescriptionPurposesOnly, projectFields );
+public final class ProceduresToolPalette extends MethodsToolPalette<org.alice.ide.ast.type.merge.croquet.views.ProceduresView> {
+	public ProceduresToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectProcedures ) {
+		super( java.util.UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), uriForDescriptionPurposesOnly, projectProcedures );
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.AddFieldsView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.AddFieldsView( this );
+	protected org.alice.ide.ast.type.merge.croquet.views.ProceduresView createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.ProceduresView( this );
 	}
 }

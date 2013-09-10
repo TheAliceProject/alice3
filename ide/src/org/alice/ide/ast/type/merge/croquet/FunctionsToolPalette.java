@@ -45,8 +45,13 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodsComposite<V extends org.alice.ide.ast.type.merge.croquet.views.AddMethodsView> extends AddMembersComposite<V, org.lgna.project.ast.UserMethod> {
-	public AddMethodsComposite( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectMethods ) {
-		super( migrationId, uriForDescriptionPurposesOnly, projectMethods );
+public final class FunctionsToolPalette extends MethodsToolPalette<org.alice.ide.ast.type.merge.croquet.views.FunctionsView> {
+	public FunctionsToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectFunctions ) {
+		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
+	}
+
+	@Override
+	protected org.alice.ide.ast.type.merge.croquet.views.FunctionsView createView() {
+		return new org.alice.ide.ast.type.merge.croquet.views.FunctionsView( this );
 	}
 }
