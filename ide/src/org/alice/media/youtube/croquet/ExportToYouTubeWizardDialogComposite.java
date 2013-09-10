@@ -83,6 +83,11 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		this.project = project;
 	}
 
+	@Override
+	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+		return null;
+	}
+
 	public EventScript getEventScript() {
 		return this.eventScript;
 	}

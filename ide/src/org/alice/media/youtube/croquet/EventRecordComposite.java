@@ -209,7 +209,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			return crawler.containsRandom;
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
-			return true;
+			return false;
 		}
 	}
 
