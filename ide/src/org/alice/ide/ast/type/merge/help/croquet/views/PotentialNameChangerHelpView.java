@@ -52,12 +52,18 @@ public class PotentialNameChangerHelpView extends org.lgna.croquet.components.Bo
 
 	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite composite ) {
 		super( composite );
+		org.lgna.croquet.components.AbstractLabel label = composite.getHeader().createLabel();
+		label.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getQuestionIcon() );
+		label.setOpaque( true );
+		label.setBackgroundColor( java.awt.Color.WHITE );
+		this.addPageStartComponent( label );
+
 		org.lgna.croquet.components.MigPanel previewPanel = new org.lgna.croquet.components.MigPanel();
 		previewPanel.addComponent( composite.getImportNameText().createLabel(), "wrap" );
 		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub(), true ), "wrap" );
 		previewPanel.addComponent( composite.getProjectNameText().createLabel(), "wrap" );
 		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getProjectHub(), true ), "wrap" );
-		this.addLineEndComponent( previewPanel );
+		this.addCenterComponent( previewPanel );
 
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 

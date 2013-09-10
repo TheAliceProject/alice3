@@ -60,7 +60,6 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME ).createRadioButton();
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
-		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 
@@ -69,7 +68,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 		panel.addComponent( new org.lgna.croquet.components.Label( "SELECT_ONE" ), "gap top 16, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap 32, wrap" );
 		panel.addComponent( selectProjectRadioButton, "gap 32, wrap" );
-		this.addCenterComponent( panel );
+		this.addLineStartComponent( panel );
 	}
 
 	@Override

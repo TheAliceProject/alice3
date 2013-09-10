@@ -61,11 +61,10 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
-		panel.addComponent( composite.getHeader().createLabel(), "wrap" );
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );
-		this.addCenterComponent( panel );
+		this.addLineStartComponent( panel );
 	}
 
 	@Override

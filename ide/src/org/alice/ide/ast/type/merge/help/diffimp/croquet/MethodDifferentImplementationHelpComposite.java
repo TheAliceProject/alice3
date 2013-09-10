@@ -50,5 +50,15 @@ import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
 public final class MethodDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserMethod> {
 	public MethodDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserMethod> differentImplementation ) {
 		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "You have three options:" );
+		sb.append( "<ol>" );
+		sb.append( "<li><strong>retain both methods</strong> (renaming at least one of them will be required)" );
+		sb.append( "<li><strong>retain only the version from the class file</strong>" );
+		sb.append( "<li><strong>etain only the version already in your project</strong>" );
+		sb.append( "</ol>" );
+		sb.append( "</html>" );
+		this.getHeader().setText( sb.toString() );
 	}
 }

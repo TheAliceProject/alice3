@@ -46,7 +46,9 @@ package org.alice.ide.ast.type.merge.help.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	//private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.HtmlStringValue header = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "77e35d67-a35a-4a89-875d-7fab232445d5" ) ) {
+	};
 	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( this.createKey( "importNameText" ) );
 	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( this.createKey( "projectNameText" ) );
 	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( this.createKey( "nameChangeRequiredError" ) );
@@ -110,7 +112,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		return this.nameChangeRequiredError;
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeader() {
+	public org.lgna.croquet.StringValue getHeader() {
 		return this.header;
 	}
 
