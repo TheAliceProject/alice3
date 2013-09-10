@@ -60,8 +60,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public DifferentImplementation( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
-		final String POSTFIX = "<br><em>(different implementation)</em>";
-		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, false ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -84,7 +83,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		};
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, false, "keep ", POSTFIX ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, false ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {

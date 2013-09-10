@@ -49,7 +49,7 @@ public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
 	private final MemberHub<M> projectHub;
 
 	public ProjectOnly( M projectMember ) {
-		this.projectHub = new MemberHub<M>( projectMember, true, "keep ", "" ) {
+		this.projectHub = new MemberHub<M>( projectMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				return ActionStatus.KEEP_UNIQUE;

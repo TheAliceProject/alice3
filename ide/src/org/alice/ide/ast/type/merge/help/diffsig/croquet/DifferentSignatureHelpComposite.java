@@ -53,9 +53,12 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
 
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
-		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+	private final org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentSignatureTopLevelChoice>() {
+		public void changing( org.lgna.croquet.State<DifferentSignatureTopLevelChoice> state, DifferentSignatureTopLevelChoice prevValue, DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<DifferentSignatureTopLevelChoice> state, DifferentSignatureTopLevelChoice prevValue, DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
+			handleChanged();
 		}
 	};
 
@@ -65,15 +68,6 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 
 	public org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> getTopLevelChoiceState() {
 		return this.topLevelChoiceState;
-	}
-
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
-
-	private boolean isRenameRequired() {
-		//todo
-		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
 	}
 
 	@Override
@@ -90,28 +84,49 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 		} else {
 			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT;
 		}
-		this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
-		this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
+		//this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
+		//this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
 		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
+		this.topLevelChoiceState.addValueListener( this.topLevelListener );
 		super.handlePreActivation();
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.topLevelChoiceState.removeValueListener( this.topLevelListener );
+	}
+
+	private void handleChanged() {
 		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
 		boolean isImport;
 		if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
 			isImport = true;
-			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
-			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
 		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ) {
 			isImport = false;
 		} else {
-			throw new org.lgna.croquet.CancelException();
+			//should never happen
+			isImport = false;
 		}
 		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-		return null;
 	}
+
+	//	@Override
+	//	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	//		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+	//		boolean isImport;
+	//		if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+	//			isImport = true;
+	//			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
+	//			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
+	//		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ) {
+	//			isImport = false;
+	//		} else {
+	//			throw new org.lgna.croquet.CancelException();
+	//		}
+	//		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
+	//		return null;
+	//	}
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {

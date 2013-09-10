@@ -59,8 +59,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 
 	public DifferentSignature( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
-		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
-		this.importHub = new MemberHubWithNameState<M>( importMember, true, "add ", postfix ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -75,7 +74,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			}
 		};
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, true, "keep ", postfix ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {

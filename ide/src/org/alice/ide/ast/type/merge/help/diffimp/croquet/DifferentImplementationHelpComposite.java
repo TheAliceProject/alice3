@@ -55,9 +55,21 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
 	private final ErrorStatus noSelectOneError = this.createErrorStatus( this.createKey( "noSelectOneError" ) );
 
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
-		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+	private final org.lgna.croquet.State.ValueListener<DifferentImplementationTopLevelChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationTopLevelChoice>() {
+		public void changing( org.lgna.croquet.State<DifferentImplementationTopLevelChoice> state, DifferentImplementationTopLevelChoice prevValue, DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<DifferentImplementationTopLevelChoice> state, DifferentImplementationTopLevelChoice prevValue, DifferentImplementationTopLevelChoice nextValue, boolean isAdjusting ) {
+			handleChanged();
+		}
+	};
+
+	private final org.lgna.croquet.State.ValueListener<DifferentImplementationSelectOne> selectOneListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationSelectOne>() {
+		public void changing( org.lgna.croquet.State<DifferentImplementationSelectOne> state, DifferentImplementationSelectOne prevValue, DifferentImplementationSelectOne nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<DifferentImplementationSelectOne> state, DifferentImplementationSelectOne prevValue, DifferentImplementationSelectOne nextValue, boolean isAdjusting ) {
+			handleChanged();
 		}
 	};
 
@@ -73,18 +85,30 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		return this.selectOneState;
 	}
 
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
-
-	private boolean isRenameRequired() {
-		//todo
-		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
-	}
-
 	@Override
 	protected org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView createView() {
 		return new org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView( this );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
+
+		//todo
+		this.getView().repaint();
+
+		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+			return IS_GOOD_TO_GO_STATUS;
+		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
+			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
+			if( selectOne != null ) {
+				return IS_GOOD_TO_GO_STATUS;
+			} else {
+				return this.noSelectOneError;
+			}
+		} else {
+			return this.noTopLevelError;
+		}
 	}
 
 	@Override
@@ -110,59 +134,74 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 				selectOne = null;
 			}
 		}
-		this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
-		this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
+		//		this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
+		//		this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
 		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
 		this.selectOneState.setValueTransactionlessly( selectOne );
+		this.topLevelChoiceState.addValueListener( this.topLevelListener );
+		this.selectOneState.addValueListener( this.selectOneListener );
 		super.handlePreActivation();
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.selectOneState.removeValueListener( this.selectOneListener );
+		this.topLevelChoiceState.removeValueListener( this.topLevelListener );
+	}
+
+	private void handleChanged() {
 		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
 		boolean isImport;
 		boolean isKeep;
 		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
 			isImport = true;
 			isKeep = true;
-			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
-			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
 		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
 			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
 			if( selectOne == DifferentImplementationSelectOne.FROM_IMPORT ) {
 				isImport = true;
+				isKeep = false;
 			} else if( selectOne == DifferentImplementationSelectOne.ALREADY_IN_PROJECT ) {
 				isImport = false;
+				isKeep = true;
 			} else {
-				throw new org.lgna.croquet.CancelException();
+				isImport = false;
+				isKeep = false;
 			}
-			isKeep = isImport == false;
 		} else {
-			throw new org.lgna.croquet.CancelException();
+			isImport = false;
+			isKeep = false;
 		}
 		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
 		this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
-		return null;
 	}
 
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
-
-		//todo
-		this.getView().repaint();
-
-		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
-			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
-			if( selectOne != null ) {
-				return IS_GOOD_TO_GO_STATUS;
-			} else {
-				return this.noSelectOneError;
-			}
-		} else {
-			return this.noTopLevelError;
-		}
-	}
+	//	@Override
+	//	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	//		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
+	//		boolean isImport;
+	//		boolean isKeep;
+	//		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
+	//			isImport = true;
+	//			isKeep = true;
+	//			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
+	//			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
+	//		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
+	//			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
+	//			if( selectOne == DifferentImplementationSelectOne.FROM_IMPORT ) {
+	//				isImport = true;
+	//			} else if( selectOne == DifferentImplementationSelectOne.ALREADY_IN_PROJECT ) {
+	//				isImport = false;
+	//			} else {
+	//				throw new org.lgna.croquet.CancelException();
+	//			}
+	//			isKeep = isImport == false;
+	//		} else {
+	//			throw new org.lgna.croquet.CancelException();
+	//		}
+	//		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
+	//		this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
+	//		return null;
+	//	}
 }

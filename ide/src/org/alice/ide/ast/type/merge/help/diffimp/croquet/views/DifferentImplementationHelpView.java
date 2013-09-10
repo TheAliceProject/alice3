@@ -67,10 +67,11 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
-		this.keepBothPanel.addComponent( composite.getImportNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getImportNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getProjectNameState(), foregroundCustomizer ), "wrap" );
+		org.alice.ide.ast.type.merge.croquet.DifferentImplementation differentImplementation = composite.getPotentialNameChanger();
+		this.keepBothPanel.addComponent( differentImplementation.getImportHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
+		this.keepBothPanel.addComponent( differentImplementation.getProjectHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentImplementation.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 
 		org.lgna.croquet.components.ToggleButton fromImportToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.FROM_IMPORT ).createToggleButton();
 		org.lgna.croquet.components.ToggleButton alreadyInProjectToggleButton = composite.getSelectOneState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationSelectOne.ALREADY_IN_PROJECT ).createToggleButton();

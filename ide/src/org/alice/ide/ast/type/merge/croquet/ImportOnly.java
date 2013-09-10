@@ -49,7 +49,7 @@ public final class ImportOnly<M extends org.lgna.project.ast.Member> {
 	private final MemberHub<M> importHub;
 
 	public ImportOnly( M importMember ) {
-		this.importHub = new MemberHub<M>( importMember, true, "add ", "" ) {
+		this.importHub = new MemberHub<M>( importMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( getIsDesiredState().getValue() ) {

@@ -66,10 +66,11 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
-		this.keepBothPanel.addComponent( composite.getImportNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getImportNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getProjectNameState(), foregroundCustomizer ), "wrap" );
+		org.alice.ide.ast.type.merge.croquet.DifferentSignature differentSignature = composite.getPotentialNameChanger();
+		this.keepBothPanel.addComponent( differentSignature.getImportHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
+		this.keepBothPanel.addComponent( differentSignature.getProjectHub().getNameState().getSidekickLabel().createLabel(), "align right" );
+		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( composite.getHeader().createLabel(), "wrap" );

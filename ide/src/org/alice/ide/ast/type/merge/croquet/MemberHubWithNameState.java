@@ -50,8 +50,8 @@ public abstract class MemberHubWithNameState<M extends org.lgna.project.ast.Memb
 
 	private org.lgna.croquet.BooleanState otherIsDesiredState;
 
-	public MemberHubWithNameState( M member, boolean initialValue, String prependText, String appendText ) {
-		super( member, initialValue, prependText, appendText );
+	public MemberHubWithNameState( M member, boolean initialValue ) {
+		super( member, initialValue );
 		this.nameState = new MemberNameState<M>( member );
 	}
 

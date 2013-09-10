@@ -90,7 +90,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 				completionStep.finish();
 			}
 		} catch( CancelException ce ) {
-			completionStep.cancel();
+			cancel( completionStep );
 		}
 	}
 
@@ -122,10 +122,10 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 						if( isCommited ) {
 							createAndCommitEdit( completionStep );
 						} else {
-							completionStep.cancel();
+							cancel( completionStep );
 						}
 					} else {
-						completionStep.cancel();
+						cancel( completionStep );
 					}
 				}
 			}, completionStep );
