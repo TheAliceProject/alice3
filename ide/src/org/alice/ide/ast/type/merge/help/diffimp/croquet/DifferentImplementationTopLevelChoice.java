@@ -47,7 +47,6 @@ package org.alice.ide.ast.type.merge.help.diffimp.croquet;
  */
 public enum DifferentImplementationTopLevelChoice {
 	KEEP_BOTH_AND_RENAME,
-	SELECT_ONE,
 	SELECT_IMPORT,
 	SELECT_PROJECT
 }
