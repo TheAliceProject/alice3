@@ -81,8 +81,9 @@ public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 		//classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		classLabel.scaleFont( 1.2f );
 		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
-		this.addComponent( classLabel, "split 2, grow, shrink, push" );
-		this.addComponent( page.getIsIncludingAllState().createHorizontalRadioButtons(), "wrap" );
+		this.addComponent( classLabel, "split 3, grow, shrink, push" );
+		this.addComponent( page.getIsIncludingAllState().getSidekickLabel().createLabel() );
+		this.addComponent( page.getIsIncludingAllState().createHorizontalToggleButtons( false ), "wrap" );
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
 		panel.setBackgroundColor( this.getBackgroundColor() );
