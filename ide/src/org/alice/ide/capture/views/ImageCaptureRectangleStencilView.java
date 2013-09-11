@@ -82,8 +82,8 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
-					captureImageAndCopyToClipboard();
 					setStencilShowing( false );
+					captureImageAndCopyToClipboard();
 				}
 				invalidateHole();
 				repaint();
@@ -116,9 +116,10 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		synchronized( this.hole ) {
 			if( this.isHoleValid() ) {
 				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
-					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, 300 );
+					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
+					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
 					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copy to clipboard:", image );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
 				}
 			}
 		}
@@ -147,9 +148,11 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	};
 
 	private final java.awt.Rectangle hole = new java.awt.Rectangle();
+	private final org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite;
 
-	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
+	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId, org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite ) {
 		super( window, layerId );
+		this.imageCaptureComposite = imageCaptureComposite;
 	}
 
 	@Override
@@ -210,7 +213,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 		synchronized( this.hole ) {
 			g2.setPaint( java.awt.Color.WHITE );
-			g2.draw( this.hole );
+			g2.drawRect( this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1 );
 		}
 
 		g2.setStroke( prevStroke );

@@ -66,18 +66,17 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		super( migrationId, differentImplementation );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
-
-		sb.append( "Class file </filename/> contains a </kindOfMember/> \"</memberName/>\" which has " );
+		sb.append( "Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has " );
 		sb.append( signatureText );
 		sb.append( " to a </kindOfMember/> already in your project.<p><p>" );
 		sb.append( "They have different " );
 		sb.append( implementationPluralText );
 		sb.append( " which leaves you with three options:" );
 		sb.append( "<ol>" );
-		sb.append( "<li><strong>add and retain both versions</strong>  note: renaming at least one will be required" );
-		sb.append( "<li><strong>add the version in </filename/></strong>" );
+		sb.append( "<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)" );
+		sb.append( "<li>only <strong>add</strong> the version in </filename/>" );
 		//sb.append( " (thereby replacing the version already in your project)" );
-		sb.append( "<li><strong>retain the version already in your project</strong>" );
+		sb.append( "<li>only <strong>retain</strong> the version already in your project" );
 		//sb.append( " (thereby ignoring version in </filename/>)" );
 		sb.append( "</ol>" );
 		sb.append( "</html>" );
@@ -91,7 +90,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 			kindOfMemberText = "property";
 		}
 		String text = sb.toString();
-		text = text.replaceAll( "</filename/>", "Nnnn.a3c" );
+		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
 		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
 		text = text.replaceAll( "</memberName/>", member.getName() );
 		this.getHeader().setText( text );

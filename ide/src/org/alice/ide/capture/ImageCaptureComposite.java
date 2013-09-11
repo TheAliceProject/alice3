@@ -64,6 +64,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
+			image = convertToRgbaIfNecessary( image );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
@@ -74,6 +75,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
+			image = convertToRgbaIfNecessary( image );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
@@ -85,7 +87,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
 			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
 				public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.components.AbstractWindow<?> key ) {
-					return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID );
+					return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
 				}
 			} );
 			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
@@ -93,12 +95,32 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		}
 	} );
 
+	private final org.lgna.croquet.PlainStringValue operationsHeader = this.createStringValue( this.createKey( "operationsHeader" ) );
+	private final org.lgna.croquet.PlainStringValue propertiesHeader = this.createStringValue( this.createKey( "propertiesHeader" ) );
 	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( this.createKey( "dpiState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
+	private final org.lgna.croquet.BooleanState isAlphaChannelState = this.createPreferenceBooleanState( this.createKey( "isAlphaChannelState" ), false );
 
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private ImageCaptureComposite() {
 		super( java.util.UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );
+	}
+
+	public java.awt.Image convertToRgbaIfNecessary( java.awt.Image image ) {
+		if( this.isAlphaChannelState.getValue() ) {
+			int imageType = java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE; //to pre or not to pre
+			return edu.cmu.cs.dennisc.image.ImageUtilities.createBufferedImage( image, imageType );
+		} else {
+			return image;
+		}
+	}
+
+	public org.lgna.croquet.PlainStringValue getOperationsHeader() {
+		return this.operationsHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getPropertiesHeader() {
+		return this.propertiesHeader;
 	}
 
 	public org.lgna.croquet.Operation getCaptureEntireWindowOperation() {
@@ -117,8 +139,17 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		return this.dpiState;
 	}
 
-	private int getDpi() {
-		return this.dpiState.getValue();
+	public org.lgna.croquet.BooleanState getIsAlphaChannelState() {
+		return this.isAlphaChannelState;
+	}
+
+	public int getDpi() {
+		final boolean IS_SPINNER_UPDATING_CORRECTLY = false;
+		if( IS_SPINNER_UPDATING_CORRECTLY ) {
+			return this.dpiState.getValue();
+		} else {
+			return (Integer)this.dpiState.getSwingModel().getSpinnerModel().getValue();
+		}
 	}
 
 	@Override
