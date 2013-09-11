@@ -62,6 +62,26 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 
 	public DifferentSignatureHelpComposite( java.util.UUID migrationId, DifferentSignature<M> differentSignature ) {
 		super( migrationId, differentSignature );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+
+		sb.append( "Class file </filename/> contains a </kindOfMember/> \"</memberName/>\" which " );
+		sb.append( "<strong>TODO</strong>" );
+		sb.append( " to a </kindOfMember/> already in your project.<p><p>" );
+		sb.append( "You have two options:" );
+		sb.append( "<ol>" );
+		sb.append( "<li><strong>add and retain both versions</strong>  note: renaming at least one will be required" );
+		sb.append( "<li><strong>retain only the version already in your project</strong>" );
+		sb.append( "</ol>" );
+		sb.append( "</html>" );
+
+		org.lgna.project.ast.Member member = differentSignature.getImportHub().getMember();
+		String kindOfMemberText = "TODO_member";
+		String text = sb.toString();
+		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentSignature.getUriForDescriptionPurposesOnly() );
+		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
+		text = text.replaceAll( "</memberName/>", member.getName() );
+		this.getHeader().setText( text );
 	}
 
 	public org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> getTopLevelChoiceState() {

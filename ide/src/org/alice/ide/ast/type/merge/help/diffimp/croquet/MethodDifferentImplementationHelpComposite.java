@@ -67,7 +67,7 @@ public final class MethodDifferentImplementationHelpComposite extends DifferentI
 		org.lgna.project.ast.UserMethod member = differentImplementation.getImportHub().getMember();
 		String kindOfMemberText = member.isProcedure() ? "procedure" : "function";
 		String text = sb.toString();
-		text = text.replaceAll( "</filename/>", "Nnnn.a3c" );
+		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
 		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
 		text = text.replaceAll( "</memberName/>", member.getName() );
 		this.getHeader().setText( text );
