@@ -50,12 +50,15 @@ import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 public class PotentialNameChangerHelpView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 
-	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite composite ) {
+	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite<?, ?, ?> composite ) {
 		super( composite );
 		org.lgna.croquet.components.AbstractLabel label = composite.getHeader().createLabel();
 		label.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getQuestionIcon() );
 		label.setOpaque( true );
 		label.setBackgroundColor( java.awt.Color.WHITE );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		label.getAwtComponent().setIconTextGap( 12 );
 		this.addPageStartComponent( label );
 
 		org.lgna.croquet.components.MigPanel previewPanel = new org.lgna.croquet.components.MigPanel();
@@ -67,7 +70,7 @@ public class PotentialNameChangerHelpView extends org.lgna.croquet.components.Bo
 
 		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
-		org.alice.ide.ast.type.merge.croquet.PotentialNameChanger potentialNameChanger = composite.getPotentialNameChanger();
+		org.alice.ide.ast.type.merge.croquet.PotentialNameChanger<?> potentialNameChanger = composite.getPotentialNameChanger();
 		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
 		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
