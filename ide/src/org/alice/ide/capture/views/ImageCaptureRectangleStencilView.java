@@ -82,8 +82,8 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
-					captureImageAndCopyToClipboard();
 					setStencilShowing( false );
+					captureImageAndCopyToClipboard();
 				}
 				invalidateHole();
 				repaint();
@@ -210,7 +210,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 		synchronized( this.hole ) {
 			g2.setPaint( java.awt.Color.WHITE );
-			g2.draw( this.hole );
+			g2.drawRect( this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1 );
 		}
 
 		g2.setStroke( prevStroke );
