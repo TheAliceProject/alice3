@@ -56,7 +56,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			if( isKeepBothSelected() ) {
+			if( isRetainBothSelected() ) {
 				return areNamesIdentical() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
 			} else {
 				return defaultColor;
@@ -74,14 +74,14 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		this.potentialNameChanger = potentialNameChanger;
 	}
 
-	protected abstract boolean isKeepBothSelected();
+	protected abstract boolean isRetainBothSelected();
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
 		//todo
 		this.getView().repaint();
 		Status rv = IS_GOOD_TO_GO_STATUS;
-		if( this.isKeepBothSelected() ) {
+		if( this.isRetainBothSelected() ) {
 			if( this.areNamesIdentical() ) {
 				rv = this.nameChangeRequiredError;
 			}

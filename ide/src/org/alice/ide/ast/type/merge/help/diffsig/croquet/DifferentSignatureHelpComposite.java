@@ -69,7 +69,7 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	}
 
 	@Override
-	protected boolean isKeepBothSelected() {
+	protected boolean isRetainBothSelected() {
 		return this.topLevelChoiceState.getValue() == DifferentSignatureChoice.RETAIN_BOTH_AND_RENAME;
 	}
 

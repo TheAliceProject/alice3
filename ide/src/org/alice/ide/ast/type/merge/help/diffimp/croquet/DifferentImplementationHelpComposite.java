@@ -76,7 +76,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	@Override
-	protected boolean isKeepBothSelected() {
+	protected boolean isRetainBothSelected() {
 		return this.topLevelChoiceState.getValue() == DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
 	}
 
