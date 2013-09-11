@@ -116,9 +116,10 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		synchronized( this.hole ) {
 			if( this.isHoleValid() ) {
 				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
-					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpiState().getValue() );
+					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
 					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
 					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
 				}
 			}
 		}

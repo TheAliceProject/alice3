@@ -143,8 +143,13 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		return this.isAlphaChannelState;
 	}
 
-	private int getDpi() {
-		return this.dpiState.getValue();
+	public int getDpi() {
+		final boolean IS_SPINNER_UPDATING_CORRECTLY = false;
+		if( IS_SPINNER_UPDATING_CORRECTLY ) {
+			return this.dpiState.getValue();
+		} else {
+			return (Integer)this.dpiState.getSwingModel().getSpinnerModel().getValue();
+		}
 	}
 
 	@Override
