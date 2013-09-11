@@ -62,8 +62,39 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		}
 	};
 
-	public DifferentImplementationHelpComposite( java.util.UUID migrationId, DifferentImplementation<M> differentImplementation ) {
+	public DifferentImplementationHelpComposite( java.util.UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText ) {
 		super( migrationId, differentImplementation );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+
+		sb.append( "Class file </filename/> contains a </kindOfMember/> \"</memberName/>\" which has " );
+		sb.append( signatureText );
+		sb.append( " to a </kindOfMember/> already in your project.<p><p>" );
+		sb.append( "They have different " );
+		sb.append( implementationPluralText );
+		sb.append( " which leaves you with three options:" );
+		sb.append( "<ol>" );
+		sb.append( "<li><strong>add and retain both versions</strong>  note: renaming at least one will be required" );
+		sb.append( "<li><strong>add the version in </filename/></strong>" );
+		//sb.append( " (thereby replacing the version already in your project)" );
+		sb.append( "<li><strong>retain the version already in your project</strong>" );
+		//sb.append( " (thereby ignoring version in </filename/>)" );
+		sb.append( "</ol>" );
+		sb.append( "</html>" );
+
+		String kindOfMemberText;
+		M member = differentImplementation.getImportHub().getMember();
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
+		} else {
+			kindOfMemberText = "property";
+		}
+		String text = sb.toString();
+		text = text.replaceAll( "</filename/>", "Nnnn.a3c" );
+		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
+		text = text.replaceAll( "</memberName/>", member.getName() );
+		this.getHeader().setText( text );
 	}
 
 	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getTopLevelChoiceState() {

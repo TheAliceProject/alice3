@@ -49,27 +49,6 @@ import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
  */
 public final class MethodDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserMethod> {
 	public MethodDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserMethod> differentImplementation ) {
-		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation );
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-
-		sb.append( "Class file </filename/> contains a </kindOfMember/> \"</memberName/>\" which has an identical signature to a </kindOfMember/> already in your project.<p><p>" );
-		sb.append( "They have diffent implementations which leaves you with three options:" );
-		sb.append( "<ol>" );
-		sb.append( "<li><strong>add and retain both versions</strong>  note: renaming at least one will be required" );
-		sb.append( "<li><strong>add the version in </filename/></strong>" );
-		//sb.append( " (thereby replacing the version already in your project)" );
-		sb.append( "<li><strong>retain the version already in your project</strong>" );
-		//sb.append( " (thereby ignoring version in </filename/>)" );
-		sb.append( "</ol>" );
-		sb.append( "</html>" );
-
-		org.lgna.project.ast.UserMethod member = differentImplementation.getImportHub().getMember();
-		String kindOfMemberText = member.isProcedure() ? "procedure" : "function";
-		String text = sb.toString();
-		text = text.replaceAll( "</filename/>", "Nnnn.a3c" );
-		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
-		text = text.replaceAll( "</memberName/>", member.getName() );
-		this.getHeader().setText( text );
+		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation, "an identical signature", "implementations" );
 	}
 }
