@@ -57,15 +57,15 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 
 	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
-		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME ).createRadioButton();
+		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.CHOOSE_VERSION_IN_CLASS_FILE ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectProjectRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.CHOOSE_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
-		panel.addComponent( new org.lgna.croquet.components.Label( "SELECT_ONE" ), "gap top 16, wrap" );
+		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ).createRadioButton();
+		org.lgna.croquet.components.RadioButton selectProjectRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
+		panel.addComponent( composite.getSelectOneHeader().createLabel(), "gap top 16, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap 32, wrap" );
 		panel.addComponent( selectProjectRadioButton, "gap 32, wrap" );
 		this.addLineStartComponent( panel );
@@ -74,7 +74,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	@Override
 	public void handleCompositePreActivation() {
 		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
-		composite.getTopLevelChoiceState().addAndInvokeValueListener( this.valueListener );
+		composite.getChoiceState().addAndInvokeValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
 
@@ -82,11 +82,11 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
 		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
-		composite.getTopLevelChoiceState().removeValueListener( this.valueListener );
+		composite.getChoiceState().removeValueListener( this.valueListener );
 	}
 
 	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice nextValue ) {
-		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
+		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
 		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}

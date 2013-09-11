@@ -112,7 +112,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> is to be kept.</html>" );
+			sb.append( "</strong> is to be retained.</html>" );
 			return sb.toString();
 		}
 	},
@@ -122,7 +122,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> is to be kept.</html>" );
+			sb.append( "</strong> is to be retained.</html>" );
 			return sb.toString();
 		}
 	},
@@ -132,7 +132,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> is to be kept.</html>" );
+			sb.append( "</strong> is to be retained.</html>" );
 			return sb.toString();
 		}
 	},
@@ -142,7 +142,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> is to be kept.</html>" );
+			sb.append( "</strong> is to be retained.</html>" );
 			return sb.toString();
 		}
 	},
@@ -152,7 +152,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> is to be kept.</html>" );
+			sb.append( "</strong> is to be retained.</html>" );
 			return sb.toString();
 		}
 	},
@@ -174,7 +174,7 @@ public enum ActionStatus {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>You must select which version of <strong>" );
 			sb.append( member.getName() );
-			sb.append( "</strong> to add/keep <em>or</em> select both and rename at least one of them.</html>" );
+			sb.append( "</strong> to add/retain <em>or</em> select both and rename at least one of them.</html>" );
 			return sb.toString();
 		}
 	};

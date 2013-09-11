@@ -49,9 +49,11 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentImplementationChoice.class, null );
+	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
+
+	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( this.createKey( "selectOneHeader" ) );
 
 	private final org.lgna.croquet.State.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationChoice>() {
 		public void changing( org.lgna.croquet.State<DifferentImplementationChoice> state, DifferentImplementationChoice prevValue, DifferentImplementationChoice nextValue, boolean isAdjusting ) {
@@ -96,8 +98,12 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getTopLevelChoiceState() {
-		return this.topLevelChoiceState;
+	public org.lgna.croquet.PlainStringValue getSelectOneHeader() {
+		return this.selectOneHeader;
+	}
+
+	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getChoiceState() {
+		return this.choiceState;
 	}
 
 	@Override
@@ -107,14 +113,14 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 
 	@Override
 	protected boolean isRetainBothSelected() {
-		return this.topLevelChoiceState.getValue() == DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
+		return this.choiceState.getValue() == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
 	}
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
 		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
-			DifferentImplementationChoice topLevelChoice = this.topLevelChoiceState.getValue();
+			DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
 			if( topLevelChoice != null ) {
 				//pass
 			} else {
@@ -131,39 +137,39 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		DifferentImplementationChoice topLevelChoice;
 		if( isImport ) {
 			if( isProject ) {
-				topLevelChoice = DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME;
+				topLevelChoice = DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
 			} else {
-				topLevelChoice = DifferentImplementationChoice.CHOOSE_VERSION_IN_CLASS_FILE;
+				topLevelChoice = DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE;
 			}
 		} else {
 			if( isProject ) {
-				topLevelChoice = DifferentImplementationChoice.CHOOSE_VERSION_ALREADY_IN_PROJECT;
+				topLevelChoice = DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
 			} else {
 				topLevelChoice = null;
 			}
 		}
-		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
-		this.topLevelChoiceState.addValueListener( this.topLevelListener );
+		this.choiceState.setValueTransactionlessly( topLevelChoice );
+		this.choiceState.addValueListener( this.topLevelListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		this.topLevelChoiceState.removeValueListener( this.topLevelListener );
+		this.choiceState.removeValueListener( this.topLevelListener );
 	}
 
 	private void handleChanged() {
-		DifferentImplementationChoice topLevelChoice = this.topLevelChoiceState.getValue();
+		DifferentImplementationChoice choice = this.choiceState.getValue();
 		boolean isImport;
 		boolean isKeep;
-		if( topLevelChoice == DifferentImplementationChoice.RETAIN_BOTH_AND_RENAME ) {
+		if( choice == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ) {
 			isImport = true;
 			isKeep = true;
-		} else if( topLevelChoice == DifferentImplementationChoice.CHOOSE_VERSION_IN_CLASS_FILE ) {
+		} else if( choice == DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ) {
 			isImport = true;
 			isKeep = false;
-		} else if( topLevelChoice == DifferentImplementationChoice.CHOOSE_VERSION_ALREADY_IN_PROJECT ) {
+		} else if( choice == DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ) {
 			isImport = false;
 			isKeep = true;
 		} else {
