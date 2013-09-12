@@ -49,7 +49,14 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, null );
+	private final org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
+		public String customize( String localization, DifferentImplementationChoice value ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localization, value );
+			return org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
+		}
+	};
+
+	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, this.localizationCustomizer, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
 

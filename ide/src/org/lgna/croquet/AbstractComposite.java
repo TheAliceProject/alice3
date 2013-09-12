@@ -1135,12 +1135,16 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls ), constants, selectionIndex, key );
+		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls, localizationCustomizer ), constants, selectionIndex, key );
 		this.mapKeyToImmutableListSelectionState.put( key, rv );
 		return rv;
+	}
+
+	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+		return this.createListSelectionStateForEnum( key, valueCls, null, initialValue );
 	}
 
 	protected <T> RefreshableDataListSelectionState<T> createListSelectionState( Key key, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {

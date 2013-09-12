@@ -46,26 +46,41 @@ package org.lgna.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<T> {
+	public static interface LocalizationCustomizer<T extends Enum<T>> {
+		public String customize( String localization, T value );
+	}
+
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Class, EnumCodec> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
-		return map.getInitializingIfAbsent( (Class)valueCls, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
+	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls, final LocalizationCustomizer<T> localizationCustomizer ) {
+		EnumCodec<T> rv = map.getInitializingIfAbsent( (Class)valueCls, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
 			public EnumCodec initialize( Class valueCls ) {
-				return new EnumCodec( valueCls );
+				return new EnumCodec( valueCls, localizationCustomizer );
 			}
 		} );
+		assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( localizationCustomizer, rv.getLocalizationCustomizer() ) : rv;
+		return rv;
+	}
+
+	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
+		return getInstance( valueCls, null );
 	}
 
 	private final Class<T> valueCls;
-
+	private final LocalizationCustomizer<T> localizationCustomizer;
 	private java.util.Map<T, String> mapValueToLocalization;
 
-	private EnumCodec( Class<T> valueCls ) {
+	private EnumCodec( Class<T> valueCls, LocalizationCustomizer<T> localizationCustomizer ) {
 		this.valueCls = valueCls;
+		this.localizationCustomizer = localizationCustomizer;
 	}
 
 	public Class<T> getValueClass() {
 		return this.valueCls;
+	}
+
+	public LocalizationCustomizer<T> getLocalizationCustomizer() {
+		return this.localizationCustomizer;
 	}
 
 	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -90,6 +105,9 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 						String localizationKey = clsName + "." + enumConstant.name();
 						try {
 							String localizationValue = resourceBundle.getString( localizationKey );
+							if( this.localizationCustomizer != null ) {
+								localizationValue = this.localizationCustomizer.customize( localizationValue, value );
+							}
 							this.mapValueToLocalization.put( enumConstant, localizationValue );
 						} catch( java.util.MissingResourceException mre ) {
 							//pass
