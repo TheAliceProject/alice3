@@ -40,7 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.undo;
+package org.alice.ide.croquet.models.history;
+
+import org.lgna.croquet.undo.UndoHistory;
 
 class HistoryStackModel extends javax.swing.AbstractListModel {
 	private UndoHistory projectHistory;
