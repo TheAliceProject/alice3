@@ -51,6 +51,6 @@ public class IsToolBarShowing {
 	}
 
 	public static boolean getValue() {
-		return false;
+		return true;
 	}
 }
