@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.history;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
 	private final org.lgna.croquet.Group historyGroup;

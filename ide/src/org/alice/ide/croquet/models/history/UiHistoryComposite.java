@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.history;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class UiHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
