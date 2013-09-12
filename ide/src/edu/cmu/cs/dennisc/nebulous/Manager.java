@@ -94,6 +94,11 @@ public class Manager {
 					throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
 				}
 			}
+			edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext.addUnusedTexturesListener( new edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext.UnusedTexturesListener() {
+				public void unusedTexturesCleared( javax.media.opengl.GL gl ) {
+					unloadUnusedNebulousTextureData( gl );
+				}
+			} );
 		}
 	}
 
