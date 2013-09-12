@@ -609,7 +609,7 @@ public abstract class VirtualMachine {
 				this.setLocal( localAccess.local.getValue(), rightHandValue );
 			} else if( leftHandExpression instanceof org.lgna.project.ast.ArrayAccess ) {
 				org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftHandExpression;
-				this.setItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluate( arrayAccess.index.getValue(), Integer.class ), rightHandValue );
+				this.setItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ), rightHandValue );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression.leftHandSide.getValue(), rightHandValue );
 			}
@@ -642,7 +642,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateArrayAccess( org.lgna.project.ast.ArrayAccess arrayAccess ) {
-		return this.getItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluate( arrayAccess.index.getValue(), Integer.class ) );
+		return this.getItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ) );
 	}
 
 	protected Integer evaluateArrayLength( org.lgna.project.ast.ArrayLength arrayLength ) {
@@ -729,7 +729,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateLogicalComplement( org.lgna.project.ast.LogicalComplement logicalComplement ) {
-		Boolean operand = this.evaluate( logicalComplement.operand.getValue(), Boolean.class );
+		Boolean operand = this.evaluateBoolean( logicalComplement.operand.getValue(), "logical complement expression is null" );
 		return !operand;
 	}
 
@@ -944,8 +944,34 @@ public abstract class VirtualMachine {
 		return cls.cast( value );
 	}
 
+	private boolean evaluateBoolean( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
+		Object value = this.evaluate( expression );
+		if( value != null ) {
+			if( value instanceof Boolean ) {
+				return (Boolean)value;
+			} else {
+				throw new LgnaVmClassCastException( this, Boolean.class, value.getClass() );
+			}
+		} else {
+			throw new LgnaVmNullPointerException( nullExceptionMessage, this );
+		}
+	}
+
+	private int evaluateInt( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
+		Object value = this.evaluate( expression );
+		if( value != null ) {
+			if( value instanceof Integer ) {
+				return (Integer)value;
+			} else {
+				throw new LgnaVmClassCastException( this, Integer.class, value.getClass() );
+			}
+		} else {
+			throw new LgnaVmNullPointerException( nullExceptionMessage, this );
+		}
+	}
+
 	protected void executeAssertStatement( org.lgna.project.ast.AssertStatement assertStatement ) {
-		assert this.evaluate( assertStatement.expression.getValue(), Boolean.class ) : this.evaluate( assertStatement.message.getValue() );
+		assert this.evaluateBoolean( assertStatement.expression.getValue(), "assert condition is null" ) : this.evaluate( assertStatement.message.getValue() );
 	}
 
 	protected void executeBlockStatement( org.lgna.project.ast.BlockStatement blockStatement ) throws ReturnException {
@@ -959,7 +985,7 @@ public abstract class VirtualMachine {
 
 	protected void executeConditionalStatement( org.lgna.project.ast.ConditionalStatement conditionalStatement ) throws ReturnException {
 		for( org.lgna.project.ast.BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
-			if( evaluate( booleanExpressionBodyPair.expression.getValue(), Boolean.class ) ) {
+			if( this.evaluateBoolean( booleanExpressionBodyPair.expression.getValue(), "if condition is null" ) ) {
 				this.execute( booleanExpressionBodyPair.body.getValue() );
 				return;
 			}
@@ -975,7 +1001,7 @@ public abstract class VirtualMachine {
 		org.lgna.project.ast.UserLocal constant = countLoop.constant.getValue();
 		this.pushLocal( variable, -1 );
 		try {
-			final int n = this.evaluate( countLoop.count.getValue(), Integer.class );
+			final int n = this.evaluateInt( countLoop.count.getValue(), "count expression is null" );
 			this.pushLocal( constant, n );
 			try {
 				for( int i = 0; i < n; i++ ) {
@@ -993,8 +1019,6 @@ public abstract class VirtualMachine {
 	protected void executeDoInOrder( org.lgna.project.ast.DoInOrder doInOrder ) throws ReturnException {
 		executeBlockStatement( doInOrder.body.getValue() );
 	}
-
-	private static int threadCount = 0;
 
 	protected void executeDoTogether( org.lgna.project.ast.DoTogether doTogether ) throws ReturnException {
 		org.lgna.project.ast.BlockStatement blockStatement = doTogether.body.getValue();
@@ -1113,7 +1137,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeWhileLoop( org.lgna.project.ast.WhileLoop whileLoop ) throws ReturnException {
-		while( this.evaluate( whileLoop.conditional.getValue(), Boolean.class ) ) {
+		while( this.evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
 			this.execute( whileLoop.body.getValue() );
 		}
 	}
