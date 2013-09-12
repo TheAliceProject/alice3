@@ -45,42 +45,30 @@ package org.lgna.common;
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaIllegalArgumentException extends LgnaRuntimeException {
+public class LgnaIllegalKeyArgumentException extends LgnaRuntimeException {
+	//todo: switch order?
 	//todo: remove return value?
-	public static <T> T checkArgumentNotNull( T value, int index ) {
+	public static <T> T checkArgumentNotNull( T value, String keyArgumentName ) {
 		if( value != null ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
+			throw new LgnaIllegalKeyArgumentException( keyArgumentName, value );
 		}
 	}
 
-	private final int index;
+	private final String keyArgumentName;
 	private final Object value;
 
-	public LgnaIllegalArgumentException( String message, int index, Object value ) {
-		super( message );
-		this.index = index;
+	public LgnaIllegalKeyArgumentException( String keyArgumentName, Object value ) {
+		this.keyArgumentName = keyArgumentName;
 		this.value = value;
 	}
 
-	public int getIndex() {
-		return this.index;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
 	@Override
-	protected void appendFormattedString( java.lang.StringBuilder sb ) {
-		sb.append( "<html>" );
-		sb.append( "<h1>" );
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "</h1>" );
-		sb.append( "<h2>" );
-		sb.append( this.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "</html>" );
+	protected void appendFormattedString( StringBuilder sb ) {
+		sb.append( "key argument \"" );
+		sb.append( this.keyArgumentName );
+		sb.append( "\" has an illegal value: " );
+		sb.append( this.value );
 	}
 }
