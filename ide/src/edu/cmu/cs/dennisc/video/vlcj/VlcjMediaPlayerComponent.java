@@ -1,23 +1,23 @@
 /**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
+ * Copyright (c) 2008-2013, Washington University in St. Louis. All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, 
  *    this list of conditions and the following disclaimer.
- *
+ * 
  * 2. Redistributions in binary form must reproduce the above copyright notice, 
  *    this list of conditions and the following disclaimer in the documentation 
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
- *    Carnegie Mellon University.
+ * 3. Products derived from the software may not be called "Looking Glass", nor 
+ *    may "Looking Glass" appear in their name, without prior written permission
+ *    of Washington University in St. Louis.
  *
  * 4. All advertising materials mentioning features or use of this software must
  *    display the following acknowledgement: "This product includes software 
- *    developed by Carnegie Mellon University"
+ *    developed by Washington University in St. Louis"
  *
  * 5. The gallery of art assets and animations provided with this software is 
  *    contributed by Electronic Arts Inc. and may be used for personal, 
@@ -25,14 +25,15 @@
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
  *    notice, list of conditions and the disclaimer contained in 
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
- * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL 
+ * EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, 
+ * TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS, 
+ * COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ * INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
@@ -40,57 +41,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package edu.cmu.cs.dennisc.video.vlcj;
 
 /**
- * @author Dennis Cosgrove
+ * @author Kyle J. Harms
  */
-public interface VideoPlayer {
+public interface VlcjMediaPlayerComponent {
+
+	public static String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
+
+	public uk.co.caprica.vlcj.player.MediaPlayer getMediaPlayer();
+
+	/**
+	 * Get the video surface {@link java.awt.Canvas} component.
+	 * <p>
+	 * An application may want to add key/mouse listeners to the video surface component.
+	 * 
+	 * @return video surface component
+	 */
 	public java.awt.Component getVideoSurface();
 
 	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
 
 	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
 
-	public void prepareMedia( java.net.URI uri );
-
-	public boolean isPlayable();
-
-	public boolean isPlaying();
-
-	public void playResume();
-
-	public void pause();
-
-	public void stop();
-
-	public long getTimeInMilliseconds();
-
-	public void setTimeInMilliseconds( long timeInMilliseconds );
-
-	public float getPosition();
-
-	public void setPosition( float position );
-
-	public long getLengthInMilliseconds();
-
-	public boolean isMuted();
-
-	public void setMuted( boolean isMuted );
-
-	public float getVolume();
-
-	public void setVolume( float volume );
-
-	public boolean writeSnapshot( java.io.File file );
-
-	public java.awt.Image getSnapshot();
-
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
 	public void release();
-
-	public java.awt.Dimension getVideoSize();
 }

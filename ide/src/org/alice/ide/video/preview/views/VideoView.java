@@ -369,7 +369,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 			if( this.uri != null ) {
 				this.videoPlayer.prepareMedia( this.uri );
 			}
-			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
+			java.awt.Component videoSurface = this.videoPlayer.getVideoSurface();
 			java.awt.Component component;
 			if( videoSurface != null ) {
 				videoSurface.setPreferredSize( new java.awt.Dimension( 320, 180 ) );
