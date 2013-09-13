@@ -154,7 +154,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private String mediaPath = null;
 
 	public VlcjVideoPlayer() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() && ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getJavaVersionAsDouble() >= 1.7 ) ) {
 			// The mac for now needs to use a software renderer
 			this.mediaPlayerComponent = new LightweightMediaPlayerComponent();
 		} else {

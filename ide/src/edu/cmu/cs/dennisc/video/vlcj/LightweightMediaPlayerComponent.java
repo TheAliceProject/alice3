@@ -43,21 +43,17 @@
  */
 package edu.cmu.cs.dennisc.video.vlcj;
 
-import uk.co.caprica.vlcj.player.direct.DirectMediaPlayer;
-import uk.co.caprica.vlcj.player.direct.RenderCallback;
-import uk.co.caprica.vlcj.player.direct.RenderCallbackAdapter;
-
 /**
  * @author Kyle J. Harms
  */
-public class LightweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.DirectMediaPlayerComponent implements VlcjMediaPlayerComponent {
+/* package-private */class LightweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.DirectMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
 	private final javax.swing.JPanel panel;
-	private final java.awt.image.BufferedImage image;
 
-	private final int width = 640;
-	private final int height = 360;
+	private Object lock = "LightweightMediaPlayerComponent lock";
 
+	private java.awt.image.BufferedImage image;
+	private int[] rgbs;
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 
 	public LightweightMediaPlayerComponent() {
@@ -70,41 +66,92 @@ public class LightweightMediaPlayerComponent extends uk.co.caprica.vlcj.componen
 
 		this.panel = new javax.swing.JPanel() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.setColor( java.awt.Color.black );
-				g2.fillRect( 0, 0, getWidth(), getHeight() );
-				g2.drawImage( image, null, 0, 0 );
-			}
-
-			@Override
 			public void paint( java.awt.Graphics g ) {
-				super.paint( g );
+				synchronized( lock ) {
+					if( image != null ) {
+						int imageWidth = image.getWidth();
+						int imageHeight = image.getHeight();
+
+						java.awt.Dimension componentSize = this.getSize();
+
+						if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
+							g.drawImage( image, 0, 0, this );
+						} else {
+							java.awt.Dimension imageSize = new java.awt.Dimension( imageWidth, imageHeight );
+							java.awt.Dimension size = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+
+							int x0 = ( componentSize.width - size.width ) / 2;
+							int x1 = x0 + size.width;
+							int y0 = ( componentSize.height - size.height ) / 2;
+							int y1 = y0 + size.height;
+
+							super.paint( g ); //todo: only paint outer bars
+
+							g.drawImage( image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this );
+						}
+					} else {
+						super.paint( g );
+					}
+				}
 				if( painter != null ) {
 					painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
 				}
 			}
 		};
-		this.panel.setBackground( java.awt.Color.black );
+		this.panel.setBackground( java.awt.Color.BLACK );
 		this.panel.setOpaque( true );
-		//		this.panel.setPreferredSize( new java.awt.Dimension( bufferWidth, bufferHeight ) );
-		//		this.panel.setMinimumSize( new java.awt.Dimension( bufferWidth, bufferHeight ) );
-		//		this.panel.setMaximumSize( new java.awt.Dimension( bufferWidth, bufferHeight ) );
-
-		this.image = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage( width, height );
 	}
 
 	@Override
-	protected RenderCallback onGetRenderCallback() {
-		return new RenderCallbackAdapter( new int[ width * height ] ) {
-			@Override
-			protected void onDisplay( DirectMediaPlayer mediaPlayer, int[] rgbBuffer ) {
-				// Simply copy buffer to the image and repaint
-				LightweightMediaPlayerComponent.this.image.setRGB( 0, 0, width, height, rgbBuffer, 0, width );
-				LightweightMediaPlayerComponent.this.panel.repaint();
+	public void display( uk.co.caprica.vlcj.player.direct.DirectMediaPlayer mediaPlayer, com.sun.jna.Memory[] nativeBuffers, uk.co.caprica.vlcj.player.direct.BufferFormat bufferFormat ) {
+		//super.display( mediaPlayer, nativeBuffers, bufferFormat );
+		synchronized( this.lock ) {
+			int width = bufferFormat.getWidth();
+			int height = bufferFormat.getHeight();
+
+			//todo: bufferFormat pitches and lines?
+
+			if( this.image != null ) {
+				if( ( this.image.getWidth() != width ) || ( this.image.getHeight() != height ) ) {
+					this.image = null;
+				}
 			}
-		};
+			if( this.rgbs != null ) {
+				if( this.rgbs.length != ( width * height ) ) {
+					this.rgbs = null;
+				}
+			}
+			if( this.image != null ) {
+				//pass
+			} else {
+				this.image = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage( width, height );
+			}
+			if( this.rgbs != null ) {
+				//pass
+			} else {
+				this.rgbs = new int[ width * height ];
+			}
+
+			java.nio.ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].size() );
+			java.nio.IntBuffer intBuffer = byteBuffer.asIntBuffer();
+			intBuffer.get( this.rgbs, 0, bufferFormat.getHeight() * bufferFormat.getWidth() );
+
+			this.image.setRGB( 0, 0, width, height, this.rgbs, 0, width );
+		}
+		this.panel.repaint();
 	}
+
+	//	@Override
+	//	protected RenderCallback onGetRenderCallback() {
+	//		return new RenderCallbackAdapter( new int[ width * height ] ) {
+	//			@Override
+	//			protected void onDisplay( DirectMediaPlayer mediaPlayer, int[] rgbBuffer ) {
+	//				// Simply copy buffer to the image and repaint
+	//				LightweightMediaPlayerComponent.this.image.setRGB( 0, 0, width, height, rgbBuffer, 0, width );
+	//				LightweightMediaPlayerComponent.this.panel.repaint();
+	//			}
+	//		};
+	//	}
 
 	public java.awt.Component getVideoSurface() {
 		return this.panel;

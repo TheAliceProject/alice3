@@ -46,19 +46,12 @@ package edu.cmu.cs.dennisc.video.vlcj;
 /**
  * @author Kyle J. Harms
  */
-public interface VlcjMediaPlayerComponent {
+/* package-private */interface VlcjMediaPlayerComponent {
 
-	public static String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
+	public static final String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
 
 	public uk.co.caprica.vlcj.player.MediaPlayer getMediaPlayer();
 
-	/**
-	 * Get the video surface {@link java.awt.Canvas} component.
-	 * <p>
-	 * An application may want to add key/mouse listeners to the video surface component.
-	 * 
-	 * @return video surface component
-	 */
 	public java.awt.Component getVideoSurface();
 
 	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();

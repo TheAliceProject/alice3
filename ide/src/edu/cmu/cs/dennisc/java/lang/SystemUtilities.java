@@ -173,6 +173,20 @@ public class SystemUtilities {
 		return ( bitCount != null ) && ( bitCount == 32 );
 	}
 
+	public static double getJavaVersionAsDouble() {
+		try {
+			String javaVersionText = System.getProperty( "java.version" );
+			int i = javaVersionText.indexOf( '.' );
+			if( i > 0 ) {
+				return Double.parseDouble( javaVersionText.substring( 0, i + 2 ) );
+			} else {
+				throw new RuntimeException();
+			}
+		} catch( Throwable t ) {
+			return Double.NaN;
+		}
+	}
+
 	public static boolean isPlatformSpecificLibraryLoadingDesired() {
 		return true;
 	}
@@ -269,9 +283,5 @@ public class SystemUtilities {
 
 	public static String[] getLibraryPath() {
 		return parsePath( "java.library.path" );
-	}
-
-	public static void main( String[] args ) {
-		System.out.println( getPropertiesAsXMLString() );
 	}
 }

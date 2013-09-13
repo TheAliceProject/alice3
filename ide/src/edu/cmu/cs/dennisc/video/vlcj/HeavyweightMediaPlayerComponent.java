@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
 /**
  * @author Kyle J. Harms
  */
-public class HeavyweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
+/* package-private */class HeavyweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
 	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 
