@@ -120,6 +120,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
 					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
+					imageComposite.setImageClearShapesAndShowFrame( image );
 				}
 			}
 		}
@@ -134,6 +135,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	}
 
 	private final MouseAdapter mouseAdapter = new MouseAdapter();
+	private final org.alice.imageeditor.croquet.ImageEditorFrame imageComposite = new org.alice.imageeditor.croquet.ImageEditorFrame();
 
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private final java.awt.event.ActionListener escapeKeyListener = new java.awt.event.ActionListener() {
