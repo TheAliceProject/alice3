@@ -57,28 +57,25 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.imageHolder;
 	}
 
+	private void copyImageToClipboard( java.awt.Image image ) {
+		if( image != null ) {
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+		}
+	}
+
 	public void addShape( java.awt.Shape shape ) {
 		this.shapes.add( shape );
-		java.awt.Image image = this.getView().render();
-		if( image != null ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-		}
+		this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void removeShape( java.awt.Shape shape ) {
 		this.shapes.remove( shape );
-		java.awt.Image image = this.getView().render();
-		if( image != null ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-		}
+		this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void clearShapes() {
 		this.shapes.clear();
-		java.awt.Image image = this.imageHolder.getValue();
-		if( image != null ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-		}
+		this.copyImageToClipboard( this.imageHolder.getValue() );
 	}
 
 	public java.util.List<java.awt.Shape> getShapes() {
