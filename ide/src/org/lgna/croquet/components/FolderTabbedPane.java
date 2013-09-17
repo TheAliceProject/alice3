@@ -644,7 +644,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		javax.swing.JPanel rv = super.createAwtComponent();
 		this.innerHeaderPanel.addCenterComponent( this.titlesScrollPane );
 		this.outerHeaderPanel.addCenterComponent( this.innerHeaderPanel );
-		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
+		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.PAGE_START );
 		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
