@@ -64,6 +64,11 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 
 	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
 
+	@Override
+	protected final javax.swing.SwingWorker<T, V> getSwingWorker() {
+		return this.swingWorker;
+	}
+
 	protected final void publish( V... chunks ) {
 		this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
 	}

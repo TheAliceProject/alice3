@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.java.awt.datatransfer;
  * @author Dennis Cosgrove
  */
 public class TransferableImageWithDpi implements java.awt.datatransfer.Transferable {
+	private static final java.awt.datatransfer.DataFlavor PNG_IMAGE_FLAVOR = new java.awt.datatransfer.DataFlavor( "image/png", "PNG Image" );
+
 	private static final java.awt.datatransfer.DataFlavor[] DPI_DATA_FLAVORS = {
+			//PNG_IMAGE_FLAVOR,
 			java.awt.datatransfer.DataFlavor.javaFileListFlavor,
 			java.awt.datatransfer.DataFlavor.imageFlavor
 	};
@@ -96,12 +99,22 @@ public class TransferableImageWithDpi implements java.awt.datatransfer.Transfera
 		return file;
 	}
 
+	private java.io.InputStream createStream( java.awt.datatransfer.DataFlavor flavor ) throws java.io.IOException {
+		java.awt.image.RenderedImage renderedImage = this.getRenderedImage();
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		javax.imageio.ImageIO.write( renderedImage, flavor.getSubType(), baos );
+		baos.flush();
+		return new java.io.ByteArrayInputStream( baos.toByteArray() );
+	}
+
 	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
 		if( java.awt.datatransfer.DataFlavor.javaFileListFlavor.equals( flavor ) ) {
 			String ext = "png";
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.createFile( ext ) );
 		} else if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
 			return image;
+		} else if( PNG_IMAGE_FLAVOR.equals( flavor ) ) {
+			return this.createStream( flavor );
 		} else {
 			throw new java.awt.datatransfer.UnsupportedFlavorException( flavor );
 		}

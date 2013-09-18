@@ -55,15 +55,19 @@ public abstract class AbstractWorker<T, V> {
 		@Override
 		protected final void done() {
 			super.done();
-			T value;
-			try {
-				value = this.get();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.ExecutionException ee ) {
-				throw new RuntimeException( ee );
+			if( this.isCancelled() ) {
+				//pass
+			} else {
+				T value;
+				try {
+					value = this.get();
+				} catch( InterruptedException ie ) {
+					throw new RuntimeException( ie );
+				} catch( java.util.concurrent.ExecutionException ee ) {
+					throw new RuntimeException( ee );
+				}
+				AbstractWorker.this.handleDone_onEventDispatchThread( value );
 			}
-			AbstractWorker.this.handleDone_onEventDispatchThread( value );
 		}
 	}
 

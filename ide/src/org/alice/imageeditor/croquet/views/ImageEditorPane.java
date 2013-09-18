@@ -58,6 +58,31 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private static final javax.swing.KeyStroke CLEAR_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK );
 
+	private class FileListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<java.io.File> {
+		@Override
+		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, java.io.File value, int index, boolean isSelected, boolean cellHasFocus ) {
+			if( value != null ) {
+				String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
+				String path = value.getAbsolutePath();
+				if( path.substring( 0, rootDirectoryPath.length() ).contentEquals( rootDirectoryPath ) ) {
+					StringBuilder sb = new StringBuilder();
+					sb.append( "<html>" );
+					sb.append( rootDirectoryPath );
+					sb.append( "<strong>" );
+					sb.append( path.substring( rootDirectoryPath.length() ) );
+					sb.append( "</strong>" );
+					sb.append( "</html>" );
+					rv.setText( sb.toString() );
+				}
+			} else {
+				rv.setText( "<html><em>working</em></html>" );
+				rv.setBackground( java.awt.Color.WHITE );
+				rv.setForeground( java.awt.Color.GRAY );
+			}
+			return rv;
+		}
+	};
+
 	private class JImageView extends javax.swing.JComponent {
 		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
@@ -189,9 +214,40 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	//private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final JImageView jImageView = new JImageView();
 
+	private final org.lgna.croquet.components.Button saveButton;
+	private final javax.swing.JComboBox jComboBox;
+
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
 		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
+
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
+		panel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
+		panel.addComponent( composite.getRootDirectoryState().createTextField(), "growx" );
+		panel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
+		//panel.addComponent( composite.getFilenameState().createTextField(), "growx, push" );
+
+		this.jComboBox = new javax.swing.JComboBox( composite.getFilenameComboBoxModel() );
+		this.jComboBox.setEditable( true );
+		this.jComboBox.setRenderer( new FileListCellRenderer() );
+		this.jComboBox.setMaximumRowCount( 24 );
+		panel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
+		panel.getAwtComponent().add( jComboBox, "growx, push" );
+		this.saveButton = composite.getSaveOperation().createButton();
+		panel.addComponent( this.saveButton );
+		this.addPageEndComponent( panel );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getRoot().setDefaultButton( this.saveButton );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				jComboBox.requestFocusInWindow();
+			}
+		} );
+
 	}
 
 	@Override
