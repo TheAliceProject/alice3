@@ -296,25 +296,25 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.saveOperation;
 	}
 
-	private void copyImageToClipboard( java.awt.Image image ) {
-		if( image != null ) {
-			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
-		}
-	}
+	//	private void copyImageToClipboard( java.awt.Image image ) {
+	//		if( image != null ) {
+	//			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+	//		}
+	//	}
 
 	public void addShape( java.awt.Shape shape ) {
 		this.shapes.add( shape );
-		this.copyImageToClipboard( this.getView().render() );
+		//this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void removeShape( java.awt.Shape shape ) {
 		this.shapes.remove( shape );
-		this.copyImageToClipboard( this.getView().render() );
+		//this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void clearShapes() {
 		this.shapes.clear();
-		this.copyImageToClipboard( this.imageHolder.getValue() );
+		//this.copyImageToClipboard( this.imageHolder.getValue() );
 	}
 
 	public java.util.List<java.awt.Shape> getShapes() {
@@ -365,7 +365,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 
-		final javax.swing.ImageIcon icon = new javax.swing.ImageIcon( org.alice.stageide.StageIDE.class.getResource( "images/SplashScreen.png" ) );
+		final javax.swing.ImageIcon icon = new javax.swing.ImageIcon( org.alice.ide.help.views.HelpView.class.getResource( "images/help.png" ) );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ImageEditorFrame imageComposite = new ImageEditorFrame();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

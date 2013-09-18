@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Operation> extends AbstractButton<J, M> {
-	private String clobberText;
-
-	public OperationButton( M model, String uiDefaultsName ) {
-		super( model, uiDefaultsName );
-		this.setAction( model.getSwingModel().getAction() );
+public class DocumentUtilities {
+	private DocumentUtilities() {
+		throw new AssertionError();
 	}
 
-	public OperationButton( M model ) {
-		this( model, null );
-	}
-
-	public boolean isTextClobbered() {
-		return this.clobberText != null;
-	}
-
-	public String getClobberText() {
-		return this.clobberText;
-	}
-
-	public void setClobberText( String clobberText ) {
-		this.clobberText = clobberText;
-		this.repaint();
+	public static String getText( javax.swing.text.Document document ) {
+		try {
+			return document.getText( 0, document.getLength() );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
 	}
 }

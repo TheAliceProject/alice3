@@ -84,6 +84,20 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
+	private final javax.swing.event.DocumentListener editorListener = new javax.swing.event.DocumentListener() {
+		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			handleEditorChanged( e );
+		}
+
+		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			handleEditorChanged( e );
+		}
+
+		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			handleEditorChanged( e );
+		}
+	};
+
 	private class JImageView extends javax.swing.JComponent {
 		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
@@ -271,7 +285,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
 		filePanel.getAwtComponent().add( jComboBox, "growx, push" );
 		this.saveButton = composite.getSaveOperation().createButton();
-		filePanel.addComponent( this.saveButton, "gap 16" );
+		filePanel.addComponent( this.saveButton, "w 120, gap 16" );
 
 		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
 		this.addLineEndComponent( controlPanel );
@@ -312,14 +326,37 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
-		this.jComboBox.getEditor().getEditorComponent().addFocusListener( this.comboBoxEditorFocusListener );
+		java.awt.Component awtEditorComponent = this.jComboBox.getEditor().getEditorComponent();
+		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
+
+		if( awtEditorComponent instanceof javax.swing.JTextField ) {
+			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+			jTextField.getDocument().addDocumentListener( this.editorListener );
+		}
+
 		super.handleCompositePreActivation();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		this.jComboBox.getEditor().getEditorComponent().removeFocusListener( this.comboBoxEditorFocusListener );
+		java.awt.Component awtEditorComponent = this.jComboBox.getEditor().getEditorComponent();
+		if( awtEditorComponent instanceof javax.swing.JTextField ) {
+			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+			jTextField.getDocument().removeDocumentListener( this.editorListener );
+		}
+		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
+	}
+
+	private void handleEditorChanged( javax.swing.event.DocumentEvent e ) {
+		javax.swing.text.Document document = e.getDocument();
+		String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( document );
+		java.io.File f = new java.io.File( text );
+		if( f.isFile() ) {
+			this.saveButton.setClobberText( "save over..." );
+		} else {
+			this.saveButton.setClobberText( null );
+		}
 	}
 }
