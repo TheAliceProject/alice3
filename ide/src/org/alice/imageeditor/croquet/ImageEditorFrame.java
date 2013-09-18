@@ -67,6 +67,15 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = new org.lgna.croquet.ValueHolder<java.awt.Image>();
 	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
+	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( this.createKey( "clearOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			clearShapes();
+			//todo
+			getView().repaint();
+			return null;
+		}
+	} );
+
 	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), DEFAULT_ROOT_DIRECTORY_PATH, null );
 
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
@@ -267,6 +276,10 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.imageHolder;
 	}
 
+	public org.lgna.croquet.Operation getClearOperation() {
+		return this.clearOperation;
+	}
+
 	public org.lgna.croquet.StringState getRootDirectoryState() {
 		return this.rootDirectoryState;
 	}
@@ -285,7 +298,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private void copyImageToClipboard( java.awt.Image image ) {
 		if( image != null ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
 		}
 	}
 

@@ -45,9 +45,11 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SaveOverPane extends org.lgna.croquet.components.BorderPanel {
+public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
 	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
 		super( composite );
-		this.addCenterComponent( new org.lgna.croquet.components.Label( "todo" ) );
+		this.addComponent( composite.getHeader().createLabel(), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( "TODO: old image" ), "split 2" );
+		this.addComponent( new org.lgna.croquet.components.Label( "TODO: new image" ) );
 	}
 }

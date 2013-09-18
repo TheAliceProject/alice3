@@ -136,13 +136,13 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			}
 		};
 
-		private final java.awt.event.ActionListener clearListener = new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
-				composite.clearShapes();
-				repaint();
-			}
-		};
+		//		private final java.awt.event.ActionListener clearListener = new java.awt.event.ActionListener() {
+		//			public void actionPerformed( java.awt.event.ActionEvent e ) {
+		//				org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
+		//				composite.clearShapes();
+		//				repaint();
+		//			}
+		//		};
 
 		private void render( java.awt.Graphics g ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -188,7 +188,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			this.addMouseListener( this.mouseListener );
 			this.addMouseMotionListener( this.mouseMotionListener );
 			this.registerKeyboardAction( this.escapeListener, ESCAPE_KEY_STROKE, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
-			this.registerKeyboardAction( this.clearListener, CLEAR_KEY_STROKE, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
+			//this.registerKeyboardAction( this.clearListener, CLEAR_KEY_STROKE, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 		}
 
 		@Override
@@ -243,13 +243,10 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.event.ValueListener<java.awt.Image> imageListener = new org.lgna.croquet.event.ValueListener<java.awt.Image>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Image> e ) {
-			//			java.awt.Image image = e.getNextValue();
-			//			label.setIcon( image != null ? new javax.swing.ImageIcon( image ) : null );
 			repaint();
 		}
 	};
 
-	//private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final JImageView jImageView = new JImageView();
 
 	private final org.lgna.croquet.components.Button saveButton;
@@ -257,23 +254,28 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
-		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
-		panel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
-		panel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx" );
-		panel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
+		org.lgna.croquet.components.MigPanel controlPanel = new org.lgna.croquet.components.MigPanel();
+		controlPanel.addComponent( composite.getClearOperation().createButton() );
+
+		org.lgna.croquet.components.MigPanel filePanel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
+		filePanel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
+		filePanel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx" );
+		filePanel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
 
 		this.jComboBox = new javax.swing.JComboBox( composite.getFilenameComboBoxModel() );
 		this.jComboBox.setEditable( true );
 		this.jComboBox.setRenderer( new FileListCellRenderer() );
 		this.jComboBox.setMaximumRowCount( 24 );
 
-		panel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
-		panel.getAwtComponent().add( jComboBox, "growx, push" );
+		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
+		filePanel.getAwtComponent().add( jComboBox, "growx, push" );
 		this.saveButton = composite.getSaveOperation().createButton();
-		panel.addComponent( this.saveButton, "gap 16" );
-		this.addPageEndComponent( panel );
+		filePanel.addComponent( this.saveButton, "gap 16" );
+
+		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
+		this.addLineEndComponent( controlPanel );
+		this.addPageEndComponent( filePanel );
 	}
 
 	@Override

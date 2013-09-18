@@ -83,7 +83,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 			synchronized( hole ) {
 				if( isHoleValid() ) {
 					setStencilShowing( false );
-					captureImageAndCopyToClipboard();
+					captureImageAndShowFrame();
 				}
 				invalidateHole();
 				repaint();
@@ -112,14 +112,14 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		}
 	}
 
-	private void captureImageAndCopyToClipboard() {
+	private void captureImageAndShowFrame() {
 		synchronized( this.hole ) {
 			if( this.isHoleValid() ) {
 				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
 					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
 					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
-					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
+					//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
 					imageComposite.setImageClearShapesAndShowFrame( image );
 				}
 			}
