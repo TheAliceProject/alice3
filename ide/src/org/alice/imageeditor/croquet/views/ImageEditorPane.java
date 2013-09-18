@@ -261,7 +261,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
 		panel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
-		panel.addComponent( composite.getRootDirectoryState().createTextField(), "growx" );
+		panel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx" );
 		panel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
 
 		this.jComboBox = new javax.swing.JComboBox( composite.getFilenameComboBoxModel() );
@@ -272,7 +272,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		panel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
 		panel.getAwtComponent().add( jComboBox, "growx, push" );
 		this.saveButton = composite.getSaveOperation().createButton();
-		panel.addComponent( this.saveButton );
+		panel.addComponent( this.saveButton, "gap 16" );
 		this.addPageEndComponent( panel );
 	}
 

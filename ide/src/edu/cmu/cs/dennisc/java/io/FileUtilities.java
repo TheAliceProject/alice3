@@ -301,7 +301,7 @@ public class FileUtilities {
 					return file.isDirectory();
 				}
 			} );
-			if( files != dirs ) {
+			if( dirs != null ) {
 				for( java.io.File childDir : dirs ) {
 					appendDescendants( descendants, childDir, fileFilter, depth );
 				}
@@ -375,10 +375,22 @@ public class FileUtilities {
 		};
 	}
 
-	public static java.io.FileFilter createFileFilter( final String extension ) {
+	public static java.io.FileFilter createFileWithExtensionFilter( final String extension ) {
 		return new java.io.FileFilter() {
 			public boolean accept( java.io.File file ) {
-				return file.getName().endsWith( extension );
+				if( file.isFile() ) {
+					return file.getName().endsWith( extension );
+				} else {
+					return false;
+				}
+			}
+		};
+	}
+
+	public static java.io.FileFilter createDirectoryFilter() {
+		return new java.io.FileFilter() {
+			public boolean accept( java.io.File file ) {
+				return file.isDirectory();
 			}
 		};
 	}
