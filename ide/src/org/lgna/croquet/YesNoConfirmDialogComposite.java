@@ -45,16 +45,17 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
+public abstract class YesNoConfirmDialogComposite<V extends org.lgna.croquet.components.Panel> extends SingleValueCreatorInputDialogCoreComposite<V, YesNoOption> {
 	private final MessageType messageType;
 	private String title;
 
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
+	public YesNoConfirmDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
 		super( migrationId );
 		this.messageType = messageType;
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
+	}
+
+	public YesNoConfirmDialogComposite( java.util.UUID migrationId ) {
+		this( migrationId, MessageType.QUESTION );
 	}
 
 	@Override
@@ -63,38 +64,13 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	public String modifyNameIfNecessary( String text ) {
-		return text;
+	@Override
+	protected YesNoOption createValue() {
+		return null;
 	}
 
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	}
-
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
-		return this.launchOperation;
-	}
-
-	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
 	}
 }

@@ -46,12 +46,29 @@ package org.alice.imageeditor.croquet;
  * @author Dennis Cosgrove
  */
 public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.imageeditor.croquet.views.ImageEditorPane> {
+	private static java.io.File getBestGuessPicturesDirectory() {
+		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+		java.io.File userDirectory;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			userDirectory = defaultDirectory.getParentFile();
+		} else {
+			userDirectory = defaultDirectory;
+		}
+		java.io.File file = new java.io.File( userDirectory, "Pictures" );
+		if( file.isDirectory() ) {
+			return file;
+		} else {
+			return defaultDirectory;
+		}
+	}
+
+	//private static final java.io.File DEFAULT_DIRECTORY = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+	private static final String DEFAULT_ROOT_DIRECTORY_PATH = getBestGuessPicturesDirectory().getAbsolutePath();
+
 	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = new org.lgna.croquet.ValueHolder<java.awt.Image>();
 	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), "", null );
-
-	//private final org.lgna.croquet.StringState filenameState = this.createStringState( this.createKey( "filenameState" ), "" );
+	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), DEFAULT_ROOT_DIRECTORY_PATH, null );
 
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
@@ -110,9 +127,15 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 
 		public void setSelectedItem( Object selectedItem ) {
-			if( this.selectedItem != selectedItem ) {
-				this.selectedItem = selectedItem;
-				this.fireContentsChanged();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.selectedItem, selectedItem ) ) {
+				//pass
+			} else {
+				if( ( this.selectedItem != null ) && ( selectedItem != null ) && this.selectedItem.toString().contentEquals( selectedItem.toString() ) ) {
+					//pass
+				} else {
+					this.selectedItem = selectedItem;
+					this.fireContentsChanged();
+				}
 			}
 		}
 
@@ -167,11 +190,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private FilenameListWorker worker;
 
-	private final org.lgna.croquet.Operation saveOperation = this.createActionOperation( this.createKey( "saveOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			return null;
-		}
-	} );
+	private final SaveOperation saveOperation = new SaveOperation( this );
+
+	private static final java.io.File[] IN_THE_MIDST_OF_WORKING_DATA = new java.io.File[] { null };//, null, null, null, null, null, null, null };
 
 	private final org.lgna.croquet.State.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.State.ValueListener<String>() {
 		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -197,7 +218,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 				if( worker != null ) {
 					//pass
 				} else {
-					filenameComboBoxModel.setData( new java.io.File[] { null } );
+					filenameComboBoxModel.setData( IN_THE_MIDST_OF_WORKING_DATA );
 					worker = new FilenameListWorker( file );
 					worker.execute();
 				}
@@ -266,6 +287,17 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		org.lgna.croquet.components.AbstractWindow<?> window = this.getView().getRoot();
 		if( window != null ) {
 			window.pack();
+		}
+	}
+
+	/* package-private */java.io.File getFile() {
+		Object selectedItem = this.filenameComboBoxModel.getSelectedItem();
+		if( selectedItem instanceof java.io.File ) {
+			java.io.File file = (java.io.File)selectedItem;
+			return file;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( selectedItem );
+			return null;
 		}
 	}
 

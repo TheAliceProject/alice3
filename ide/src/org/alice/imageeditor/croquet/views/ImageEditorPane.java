@@ -62,20 +62,21 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, java.io.File value, int index, boolean isSelected, boolean cellHasFocus ) {
 			if( value != null ) {
-				String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
-				String path = value.getAbsolutePath();
-				if( path.substring( 0, rootDirectoryPath.length() ).contentEquals( rootDirectoryPath ) ) {
-					StringBuilder sb = new StringBuilder();
-					sb.append( "<html>" );
-					sb.append( rootDirectoryPath );
-					sb.append( "<strong>" );
-					sb.append( path.substring( rootDirectoryPath.length() ) );
-					sb.append( "</strong>" );
-					sb.append( "</html>" );
-					rv.setText( sb.toString() );
-				}
+				// slow as all getout and not really worth it
+				//				String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
+				//				String path = value.getAbsolutePath();
+				//				if( path.substring( 0, rootDirectoryPath.length() ).contentEquals( rootDirectoryPath ) ) {
+				//					StringBuilder sb = new StringBuilder();
+				//					sb.append( "<html>" );
+				//					sb.append( rootDirectoryPath );
+				//					sb.append( "<strong>" );
+				//					sb.append( path.substring( rootDirectoryPath.length() ) );
+				//					sb.append( "</strong>" );
+				//					sb.append( "</html>" );
+				//					rv.setText( sb.toString() );
+				//				}
 			} else {
-				rv.setText( "<html><em>working</em></html>" );
+				rv.setText( "working" );
 				rv.setBackground( java.awt.Color.WHITE );
 				rv.setForeground( java.awt.Color.GRAY );
 			}
@@ -200,6 +201,43 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
+	private final java.awt.event.FocusListener comboBoxEditorFocusListener = new java.awt.event.FocusListener() {
+		public void focusGained( java.awt.event.FocusEvent e ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					javax.swing.ComboBoxEditor editor = jComboBox.getEditor();
+					java.awt.Component editorComponent = editor.getEditorComponent();
+					if( editorComponent instanceof javax.swing.text.JTextComponent ) {
+						javax.swing.text.JTextComponent jTextComponent = (javax.swing.text.JTextComponent)editorComponent;
+						String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
+						String path = jTextComponent.getText();
+						if( path.startsWith( rootDirectoryPath ) ) {
+							int startIndex = rootDirectoryPath.length();
+							if( path.length() > startIndex ) {
+								char c = path.charAt( startIndex );
+								if( ( c == '/' ) || ( c == '\\' ) ) {
+									startIndex += 1;
+								}
+							}
+							int endIndex = path.length();
+							if( path.endsWith( ".png" ) ) {
+								endIndex -= 4;
+							}
+							jTextComponent.select( startIndex, endIndex );
+						} else {
+							jTextComponent.selectAll();
+						}
+					} else {
+						editor.selectAll();
+					}
+				}
+			} );
+		}
+
+		public void focusLost( java.awt.event.FocusEvent e ) {
+		}
+	};
+
 	private java.awt.Point ptPressed;
 	private java.awt.Point ptDragged;
 
@@ -225,12 +263,12 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		panel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
 		panel.addComponent( composite.getRootDirectoryState().createTextField(), "growx" );
 		panel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
-		//panel.addComponent( composite.getFilenameState().createTextField(), "growx, push" );
 
 		this.jComboBox = new javax.swing.JComboBox( composite.getFilenameComboBoxModel() );
 		this.jComboBox.setEditable( true );
 		this.jComboBox.setRenderer( new FileListCellRenderer() );
 		this.jComboBox.setMaximumRowCount( 24 );
+
 		panel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
 		panel.getAwtComponent().add( jComboBox, "growx, push" );
 		this.saveButton = composite.getSaveOperation().createButton();
@@ -272,12 +310,14 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
+		this.jComboBox.getEditor().getEditorComponent().addFocusListener( this.comboBoxEditorFocusListener );
 		super.handleCompositePreActivation();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
+		this.jComboBox.getEditor().getEditorComponent().removeFocusListener( this.comboBoxEditorFocusListener );
+		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
 	}
 }

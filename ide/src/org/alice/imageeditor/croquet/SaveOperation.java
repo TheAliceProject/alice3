@@ -40,61 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.imageeditor.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final MessageType messageType;
-	private String title;
+public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
+	private final ImageEditorFrame imageEditorFrame;
+	private final SaveOverComposite saveOverComposite = new SaveOverComposite();
+	private java.io.File file;
 
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
+	public SaveOperation( ImageEditorFrame imageEditorFrame ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "754c7a0e-8aec-4760-83e0-dff2817ac7a0" ) );
+		this.imageEditorFrame = imageEditorFrame;
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+		if( subSteps.size() == 0 ) {
+			this.file = this.imageEditorFrame.getFile();
+			if( this.file != null ) {
+				return this.file.exists();
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
 	}
 
-	public String modifyNameIfNecessary( String text ) {
-		return text;
+	@Override
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		//note: could return from within switch, but switches without breaks seem ill advised at the moment
+		org.lgna.croquet.Model rv;
+		switch( subSteps.size() ) {
+		case 0:
+			if( this.file != null ) {
+				if( this.file.exists() ) {
+					rv = this.saveOverComposite.getValueCreator();
+				} else {
+					rv = null;
+				}
+			} else {
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Please select a file" );
+				throw new org.lgna.croquet.CancelException();
+			}
+			break;
+		case 1:
+			rv = this.saveOverComposite.getValueCreator();
+			break;
+		default:
+			rv = null;
+		}
+		return rv;
 	}
 
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	}
-
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
-		return this.launchOperation;
-	}
-
-	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: save" );
 	}
 }

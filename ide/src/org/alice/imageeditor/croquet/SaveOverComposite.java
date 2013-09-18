@@ -40,61 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.imageeditor.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final MessageType messageType;
-	private String title;
-
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
+public class SaveOverComposite extends org.lgna.croquet.YesNoConfirmDialogComposite<org.lgna.croquet.components.Panel> {
+	public SaveOverComposite() {
+		super( java.util.UUID.fromString( "3f859738-f422-4aae-bee4-9001d6bd94f9" ) );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
-
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
-
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	}
-
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
-		return this.launchOperation;
-	}
-
-	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
+	protected org.alice.imageeditor.croquet.views.SaveOverPane createView() {
+		return new org.alice.imageeditor.croquet.views.SaveOverPane( this );
 	}
 }
