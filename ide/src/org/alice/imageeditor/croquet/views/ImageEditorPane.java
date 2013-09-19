@@ -84,20 +84,6 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
-	private final javax.swing.event.DocumentListener editorListener = new javax.swing.event.DocumentListener() {
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-			handleEditorChanged( e );
-		}
-
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-			handleEditorChanged( e );
-		}
-
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-			handleEditorChanged( e );
-		}
-	};
-
 	private class JImageView extends javax.swing.JComponent {
 		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
@@ -219,7 +205,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		public void focusGained( java.awt.event.FocusEvent e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					javax.swing.ComboBoxEditor editor = jComboBox.getEditor();
+					javax.swing.ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
 					java.awt.Component editorComponent = editor.getEditorComponent();
 					if( editorComponent instanceof javax.swing.text.JTextComponent ) {
 						javax.swing.text.JTextComponent jTextComponent = (javax.swing.text.JTextComponent)editorComponent;
@@ -264,7 +250,6 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	private final JImageView jImageView = new JImageView();
 
 	private final org.lgna.croquet.components.Button saveButton;
-	private final javax.swing.JComboBox jComboBox;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
@@ -277,10 +262,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		filePanel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx" );
 		filePanel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
 
-		this.jComboBox = new javax.swing.JComboBox( composite.getFilenameComboBoxModel() );
-		this.jComboBox.setEditable( true );
-		this.jComboBox.setRenderer( new FileListCellRenderer() );
-		this.jComboBox.setMaximumRowCount( 24 );
+		javax.swing.JComboBox jComboBox = composite.getJComboBox();
+		jComboBox.setRenderer( new FileListCellRenderer() );
+		jComboBox.setMaximumRowCount( 24 );
 
 		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
 		filePanel.getAwtComponent().add( jComboBox, "growx, push" );
@@ -298,7 +282,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		this.getRoot().setDefaultButton( this.saveButton );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				jComboBox.requestFocusInWindow();
+				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
 			}
 		} );
 
@@ -326,37 +310,16 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
-		java.awt.Component awtEditorComponent = this.jComboBox.getEditor().getEditorComponent();
+		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
-
-		if( awtEditorComponent instanceof javax.swing.JTextField ) {
-			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
-			jTextField.getDocument().addDocumentListener( this.editorListener );
-		}
-
 		super.handleCompositePreActivation();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		java.awt.Component awtEditorComponent = this.jComboBox.getEditor().getEditorComponent();
-		if( awtEditorComponent instanceof javax.swing.JTextField ) {
-			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
-			jTextField.getDocument().removeDocumentListener( this.editorListener );
-		}
+		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
-	}
-
-	private void handleEditorChanged( javax.swing.event.DocumentEvent e ) {
-		javax.swing.text.Document document = e.getDocument();
-		String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( document );
-		java.io.File f = new java.io.File( text );
-		if( f.isFile() ) {
-			this.saveButton.setClobberText( "save over..." );
-		} else {
-			this.saveButton.setClobberText( null );
-		}
 	}
 }
