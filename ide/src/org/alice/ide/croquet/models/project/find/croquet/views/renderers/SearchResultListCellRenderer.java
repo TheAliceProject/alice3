@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import org.alice.ide.croquet.models.project.find.croquet.ReferencesComposite;
+import org.lgna.project.ast.AbstractDeclaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
+public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchObject<T>> {
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchObject<T> value, int index, boolean isSelected, boolean cellHasFocus ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( value.getName() );
+		sb.append( " (" );
+		sb.append( value.getReferences().size() );
+		sb.append( ")" );
+		rv.setText( sb.toString() );
+		rv.setIcon( value.getIcon() );
 		return rv;
-	}
-
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
 	}
 }

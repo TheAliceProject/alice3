@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.project.FindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.FindComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -60,6 +60,6 @@ public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
 				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				new FindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
 	}
 }

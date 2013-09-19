@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project.find.croquet;
 
-import org.alice.ide.croquet.models.project.find.croquet.ReferencesComposite;
+import java.util.List;
+
+import org.alice.ide.croquet.models.project.find.core.SearchObject;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.project.ast.UserField;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeleteFindComposite extends FindComposite {
 
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+	private final UserField field;
+
+	public DeleteFindComposite( UserField field ) {
+		super( java.util.UUID.fromString( "c95adf19-dd80-410c-b5f5-489239076f6d" ) );
+		this.field = field;
+		getSearchState().setValueTransactionlessly( field.getName() );
+		getSearchState().setEnabled( false );
+		getReferenceResults().setShowGenerated( false );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		ListSelectionState<SearchObject> searchResults = getSearchResults();
+		for( SearchObject obj : searchResults ) {
+			if( obj.getSearchObject() != field ) {
+				getSearchResults().removeItem( obj );
+			}
+		}
+		assert getSearchResults().getItemCount() == 1;
+		getSearchResults().setSelectedIndex( 0 );
+	}
+
+	@Override
+	protected List<SearchObject<?>> setSearchResults() {
+		return manager.getResultsForField( field );
 	}
 }

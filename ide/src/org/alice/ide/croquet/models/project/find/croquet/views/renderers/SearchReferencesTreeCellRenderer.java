@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import org.alice.ide.croquet.models.project.find.croquet.ReferencesComposite;
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.alice.ide.croquet.models.project.find.core.SearchObjectNode;
+import org.alice.ide.swing.BasicTreeNodeRenderer;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SearchReferencesTreeCellRenderer extends BasicTreeNodeRenderer {
 
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
+	@Override
+	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		assert rv instanceof DefaultTreeCellRenderer;
+		assert value instanceof SearchObjectNode;
+		SearchObjectNode node = (SearchObjectNode)value;
+		if( node.getParent() != null ) {
+			if( node.getIsLeaf() ) {
+				Object astValue = node.getValue();
+				assert astValue != null;
+				assert astValue instanceof Expression : astValue.getClass();
+				return PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
+			} else {
+				Object astValue = node.getValue();
+				assert astValue instanceof UserMethod;
+				UserMethod uMethod = (UserMethod)astValue;
+				return new JLabel( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
+			}
 		}
 		return rv;
-	}
-
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
 	}
 }

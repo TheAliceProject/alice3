@@ -40,30 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project.stats.croquet;
 
-import org.alice.ide.croquet.models.project.find.croquet.ReferencesComposite;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.TabSelectionState;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
 
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+	public static final Integer TOP_SIZE = 250;
+	public static final Integer BOTTOM_SIZE = 100;
+	private TabSelectionState<SimpleTabComposite> tabState;
+
+	private StatisticsFrameComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.INFORMATION_GROUP );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
+	private static class SingletonHolder {
+		private static StatisticsFrameComposite instance = new StatisticsFrameComposite();
+
+	}
+
+	public static StatisticsFrameComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	@Override
+	protected StatisticsFrameView createView() {
+		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
+		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, flowControlFrequencyTab, methodTab );
+		return new StatisticsFrameView( this );
+	}
+
+	public TabSelectionState<SimpleTabComposite> getTabState() {
+		return this.tabState;
 	}
 }
