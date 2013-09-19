@@ -42,6 +42,7 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
@@ -60,7 +61,6 @@ import edu.cmu.cs.dennisc.color.Color4f;
 public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
-	private SModel model;
 
 	@Override
 	protected void setUpControls() {
@@ -93,14 +93,16 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutYAxis );
 		addHandle( rotateJointAboutZAxis );
 
-		setHandlVisibility( true );
+		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
 
+		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
+		this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, group );
 		setInteractionState( HandleStyle.ROTATION );
 
+		setHandlVisibility( true );
 	}
 
 	public final void setTarget( SModel model ) {
-		this.model = model;
 		orbiter.setTarget( model );
 	}
 }
