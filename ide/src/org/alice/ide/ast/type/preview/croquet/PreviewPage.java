@@ -77,6 +77,11 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
+	public boolean isAccountedForInPreferredSizeCalculation() {
+		return false;
+	}
+
+	@Override
 	public void resetData() {
 	}
 

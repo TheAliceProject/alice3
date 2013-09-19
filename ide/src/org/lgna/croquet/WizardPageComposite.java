@@ -81,6 +81,10 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 
 	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
 
+	public boolean isAccountedForInPreferredSizeCalculation() {
+		return true;
+	}
+
 	protected boolean isOptional() {
 		return false;
 	}

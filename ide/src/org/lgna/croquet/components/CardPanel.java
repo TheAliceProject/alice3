@@ -47,11 +47,42 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
+	private class CustomPreferredSizeCardLayout extends java.awt.CardLayout {
+		public CustomPreferredSizeCardLayout( int hgap, int vgap ) {
+			super( hgap, vgap );
+		}
+
+		@Override
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			synchronized( parent.getTreeLock() ) {
+				org.lgna.croquet.CardOwnerComposite cardOwner = (org.lgna.croquet.CardOwnerComposite)getComposite();
+
+				int widthMax = 0;
+				int heightMax = 0;
+
+				for( org.lgna.croquet.Composite<?> card : cardOwner.getCards() ) {
+					if( cardOwner.isCardAccountedForInPreferredSizeCalculation( card ) ) {
+						java.awt.Component awtChild = card.getView().getAwtComponent(); //ask scrollpane?
+						java.awt.Dimension awtChildPreferredSize = awtChild.getPreferredSize();
+						widthMax = Math.max( widthMax, awtChildPreferredSize.width );
+						heightMax = Math.max( heightMax, awtChildPreferredSize.height );
+					}
+				}
+				java.awt.Insets insets = parent.getInsets();
+				int hgap = this.getHgap();
+				int vgap = this.getVgap();
+				return new java.awt.Dimension(
+						hgap + insets.left + widthMax + insets.right + hgap,
+						vgap + insets.top + heightMax + insets.bottom + vgap );
+			}
+		}
+	}
+
 	private final java.awt.CardLayout cardLayout;
 
 	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
-		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
+		this.cardLayout = new CustomPreferredSizeCardLayout( hgap, vgap );
 		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
 		if( composite != null ) {
 			java.util.List<org.lgna.croquet.Composite<?>> cards = composite.getCards();
