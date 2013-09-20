@@ -295,6 +295,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		filePanel.addComponent( this.saveButton, "w 120, gap 16, wrap" );
 		filePanel.getAwtComponent().add( this.jPathLabel, "skip 1" );
 
+		this.jPathLabel.setForeground( java.awt.Color.DARK_GRAY );
+
 		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
 		this.addLineEndComponent( controlPanel );
 		this.addPageEndComponent( filePanel );
