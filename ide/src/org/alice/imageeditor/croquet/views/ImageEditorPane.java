@@ -136,14 +136,6 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			}
 		};
 
-		//		private final java.awt.event.ActionListener clearListener = new java.awt.event.ActionListener() {
-		//			public void actionPerformed( java.awt.event.ActionEvent e ) {
-		//				org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
-		//				composite.clearShapes();
-		//				repaint();
-		//			}
-		//		};
-
 		private void render( java.awt.Graphics g ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
@@ -151,7 +143,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			if( image != null ) {
 				g.drawImage( image, 0, 0, this );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( composite.getImageHolder().getValue() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 			}
 
 			java.awt.Stroke prevStroke = g2.getStroke();
@@ -190,7 +182,6 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			this.addMouseListener( this.mouseListener );
 			this.addMouseMotionListener( this.mouseMotionListener );
 			this.registerKeyboardAction( this.escapeListener, ESCAPE_KEY_STROKE, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
-			//this.registerKeyboardAction( this.clearListener, CLEAR_KEY_STROKE, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 		}
 
 		@Override
@@ -240,18 +231,47 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
-	private java.awt.Point ptPressed;
-	private java.awt.Point ptDragged;
-
 	private final org.lgna.croquet.event.ValueListener<java.awt.Image> imageListener = new org.lgna.croquet.event.ValueListener<java.awt.Image>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Image> e ) {
 			repaint();
 		}
 	};
 
+	private final org.lgna.croquet.event.ValueListener<String> pathListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			updatePathLabel( e.getNextValue() );
+		}
+	};
+
 	private final JImageView jImageView = new JImageView();
 
+	private static final class JShowingLabel extends javax.swing.JLabel {
+		private boolean isShowing = true;
+
+		@Override
+		public boolean isShowing() {
+			return super.isShowing();
+		}
+
+		public void setShowing( boolean isShowing ) {
+			this.isShowing = isShowing;
+			this.repaint();
+		}
+
+		@Override
+		public void paint( java.awt.Graphics g ) {
+			if( this.isShowing ) {
+				super.paint( g );
+			}
+		}
+	}
+
+	private final JShowingLabel jPathLabel = new JShowingLabel();
+
 	private final org.lgna.croquet.components.Button saveButton;
+
+	private java.awt.Point ptPressed;
+	private java.awt.Point ptDragged;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
@@ -272,23 +292,26 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
 		filePanel.getAwtComponent().add( jComboBox, "growx, push" );
 		this.saveButton = composite.getSaveOperation().createButton();
-		filePanel.addComponent( this.saveButton, "w 120, gap 16" );
+		filePanel.addComponent( this.saveButton, "w 120, gap 16, wrap" );
+		filePanel.getAwtComponent().add( this.jPathLabel, "skip 1" );
 
 		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
 		this.addLineEndComponent( controlPanel );
 		this.addPageEndComponent( filePanel );
+
+		this.updatePathLabel( composite.getPathHolder().getValue() );
 	}
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getRoot().setDefaultButton( this.saveButton );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
+	private void updatePathLabel( String nextPath ) {
+		this.jPathLabel.setText( nextPath );
+		if( nextPath != null ) {
+			java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
+			if( awtEditorComponent instanceof javax.swing.JTextField ) {
+				javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+				boolean isEqual = jTextField.getText().contentEquals( nextPath );
+				this.jPathLabel.setShowing( isEqual == false );
 			}
-		} );
-
+		}
 	}
 
 	@Override
@@ -313,8 +336,15 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
+		this.getComposite().getPathHolder().addAndInvokeValueListener( this.pathListener );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
+		this.getRoot().setDefaultButton( this.saveButton );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
+			}
+		} );
 		super.handleCompositePreActivation();
 	}
 
@@ -323,6 +353,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		super.handleCompositePostDeactivation();
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
+		this.getComposite().getPathHolder().removeValueListener( this.pathListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
 	}
 }
