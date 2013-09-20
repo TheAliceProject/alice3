@@ -150,6 +150,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 			java.awt.Image image = composite.getImageHolder().getValue();
 			if( image != null ) {
 				g.drawImage( image, 0, 0, this );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( composite.getImageHolder().getValue() );
 			}
 
 			java.awt.Stroke prevStroke = g2.getStroke();
@@ -254,8 +256,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
 
-		org.lgna.croquet.components.MigPanel controlPanel = new org.lgna.croquet.components.MigPanel();
-		controlPanel.addComponent( composite.getClearOperation().createButton() );
+		org.lgna.croquet.components.MigPanel controlPanel = new org.lgna.croquet.components.MigPanel( null );
+		controlPanel.addComponent( composite.getClearOperation().createButton(), "wrap" );
+		controlPanel.addComponent( composite.getCopyOperation().createButton(), "push, aligny bottom" );
 
 		org.lgna.croquet.components.MigPanel filePanel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
 		filePanel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );

@@ -79,6 +79,13 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	} );
 
+	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( this.createKey( "copyOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			copyImageToClipboard( getView().render() );
+			return null;
+		}
+	} );
+
 	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), DEFAULT_ROOT_DIRECTORY_PATH, null );
 
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
@@ -268,6 +275,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 					worker.execute();
 				}
 			}
+			updatePath();
 		}
 	};
 
@@ -302,6 +310,10 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.clearOperation;
 	}
 
+	public org.lgna.croquet.Operation getCopyOperation() {
+		return this.copyOperation;
+	}
+
 	public org.lgna.croquet.StringState getRootDirectoryState() {
 		return this.rootDirectoryState;
 	}
@@ -318,25 +330,22 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.saveOperation;
 	}
 
-	//	private void copyImageToClipboard( java.awt.Image image ) {
-	//		if( image != null ) {
-	//			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
-	//		}
-	//	}
+	private void copyImageToClipboard( java.awt.Image image ) {
+		if( image != null ) {
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+		}
+	}
 
 	public void addShape( java.awt.Shape shape ) {
 		this.shapes.add( shape );
-		//this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void removeShape( java.awt.Shape shape ) {
 		this.shapes.remove( shape );
-		//this.copyImageToClipboard( this.getView().render() );
 	}
 
 	public void clearShapes() {
 		this.shapes.clear();
-		//this.copyImageToClipboard( this.imageHolder.getValue() );
 	}
 
 	public java.util.List<java.awt.Shape> getShapes() {
@@ -369,6 +378,18 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	}
 
+	private void updatePath() {
+		String rootDirectoryPath = this.rootDirectoryState.getValue();
+		java.awt.Component awtComponent = this.jComboBox.getEditor().getEditorComponent();
+		if( awtComponent instanceof javax.swing.JTextField ) {
+			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtComponent;
+			String subPath = jTextField.getText();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rootDirectoryPath, subPath );
+		} else {
+			throw new RuntimeException( String.valueOf( awtComponent ) );
+		}
+	}
+
 	private void handleEditorChanged( javax.swing.event.DocumentEvent e ) {
 		javax.swing.text.Document document = e.getDocument();
 		String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( document );
@@ -384,6 +405,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			this.saveOperation.setName( "save" );
 			this.saveOperation.setEnabled( false );
 		}
+		this.updatePath();
 	}
 
 	@Override
