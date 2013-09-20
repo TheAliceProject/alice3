@@ -94,6 +94,23 @@ public class FileUtilities {
 		return s_defaultDirectory;
 	}
 
+	public static boolean isValidFile( java.io.File file ) {
+		if( file != null ) {
+			try {
+				file.getCanonicalPath();
+				return true;
+			} catch( java.io.IOException ioe ) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isValidPath( String path ) {
+		return isValidFile( path != null ? new java.io.File( path ) : null );
+	}
+
 	public static String getCanonicalPathIfPossible( java.io.File file ) {
 		if( file != null ) {
 			try {

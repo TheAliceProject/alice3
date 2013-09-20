@@ -305,6 +305,12 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	private void updatePathLabel( String nextPath ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidPath( nextPath ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "INVALID PATH:", nextPath );
+		}
+
 		this.jPathLabel.setText( nextPath );
 		if( nextPath != null ) {
 			java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
