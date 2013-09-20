@@ -276,7 +276,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 				} else {
 					this.saveOperation.setName( "save" );
 				}
-				this.saveOperation.setEnabled( true );
+				this.saveOperation.setEnabled( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidFile( file ) );
 			} else {
 				this.pathHolder.setValue( rootDirectoryPath );
 				this.saveOperation.setName( "save" );
