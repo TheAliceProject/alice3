@@ -125,122 +125,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	} );
 
-	private class FilenameComboBoxModel implements javax.swing.ComboBoxModel {
-		private boolean isWorking;
-		private java.util.List<java.io.File> data;
-
-		private Object selectedItem;
-
-		private final java.util.List<javax.swing.event.ListDataListener> listDataListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-		public int getSize() {
-			int isWorkingDelta = this.isWorking ? 1 : 0;
-			return this.data != null ? this.data.size() + isWorkingDelta : 0;
-		}
-
-		public Object getElementAt( int index ) {
-			return ( index < this.data.size() ) ? this.data.get( index ) : null;
-		}
-
-		public Object getSelectedItem() {
-			return this.selectedItem;
-		}
-
-		public void setSelectedItem( Object selectedItem ) {
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.selectedItem, selectedItem ) ) {
-				//pass
-			} else {
-				if( ( this.selectedItem != null ) && ( selectedItem != null ) && this.selectedItem.toString().contentEquals( selectedItem.toString() ) ) {
-					//pass
-				} else {
-					this.selectedItem = selectedItem;
-					this.fireContentsChanged();
-				}
-			}
-		}
-
-		public void addListDataListener( javax.swing.event.ListDataListener listener ) {
-			this.listDataListeners.add( listener );
-		}
-
-		public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
-			this.listDataListeners.remove( listener );
-		}
-
-		public void prologue() {
-			this.isWorking = true;
-			this.data = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-			this.fireContentsChanged();
-		}
-
-		public void addAll( java.util.List<java.io.File> files ) {
-			this.data.addAll( files );
-			this.fireContentsChanged();
-		}
-
-		public void done( java.io.File[] data ) {
-			//todo: check
-			this.isWorking = false;
-		}
-
-		private void fireContentsChanged() {
-			javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, -1, -1 );
-			for( javax.swing.event.ListDataListener listDataListener : listDataListeners ) {
-				listDataListener.contentsChanged( e );
-			}
-		}
-	}
-
 	private final FilenameComboBoxModel filenameComboBoxModel = new FilenameComboBoxModel();
-
-	private static final java.io.FileFilter PNG_FILE_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createFileWithExtensionFilter( ".png" );
-	private static final java.io.FileFilter DIRECTORY_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createDirectoryFilter();
-
-	private class FilenameListWorker extends org.lgna.croquet.worker.WorkerWithProgress<java.io.File[], java.io.File> {
-		private final java.io.File rootDirectory;
-
-		public FilenameListWorker( java.io.File rootDirectory ) {
-			this.rootDirectory = rootDirectory;
-		}
-
-		private void appendDescendants( java.util.List<java.io.File> descendants, java.io.File dir ) {
-			java.io.File[] files = dir.listFiles( PNG_FILE_FILTER );
-			if( ( files != null ) && ( files.length > 0 ) ) {
-				for( java.io.File childFile : files ) {
-					descendants.add( childFile );
-				}
-				this.publish( files );
-			}
-
-			java.io.File[] dirs = dir.listFiles( DIRECTORY_FILTER );
-			if( dirs != null ) {
-				for( java.io.File childDir : dirs ) {
-					this.appendDescendants( descendants, childDir );
-				}
-			}
-		}
-
-		@Override
-		protected java.io.File[] do_onBackgroundThread() throws Exception {
-			if( this.rootDirectory.isDirectory() ) {
-				java.util.List<java.io.File> descendants = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				this.appendDescendants( descendants, this.rootDirectory );
-				return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( descendants, java.io.File.class );
-			} else {
-				return new java.io.File[ 0 ];
-			}
-		}
-
-		@Override
-		protected void handleDone_onEventDispatchThread( java.io.File[] value ) {
-			filenameComboBoxModel.done( value );
-		}
-
-		@Override
-		protected void handleProcess_onEventDispatchThread( java.util.List<java.io.File> files ) {
-			filenameComboBoxModel.addAll( files );
-		}
-	}
 
 	private FilenameListWorker worker;
 
@@ -254,9 +139,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			java.io.File file = new java.io.File( nextValue );
 			if( file.isDirectory() ) {
 				if( worker != null ) {
-					if( worker.rootDirectory.equals( file ) ) {
+					if( worker.getRootDirectory().equals( file ) ) {
 						//pass
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.rootDirectory, file );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
 					} else {
 						if( worker.isDone() ) {
 							//pass
@@ -270,8 +155,8 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 				if( worker != null ) {
 					//pass
 				} else {
+					worker = new FilenameListWorker( filenameComboBoxModel, file );
 					filenameComboBoxModel.prologue();
-					worker = new FilenameListWorker( file );
 					worker.execute();
 				}
 			}
@@ -428,6 +313,13 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			jTextField.getDocument().removeDocumentListener( this.editorListener );
 		}
 		this.rootDirectoryState.removeValueListener( this.rootDirectoryListener );
+		if( this.worker != null ) {
+			if( this.worker.isCancelled() || this.worker.isDone() ) {
+				//pass
+			} else {
+				this.worker.cancel( true );
+			}
+		}
 	}
 
 	public static void main( String[] args ) throws Exception {
