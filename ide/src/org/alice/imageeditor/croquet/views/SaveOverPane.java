@@ -46,10 +46,28 @@ package org.alice.imageeditor.croquet.views;
  * @author Dennis Cosgrove
  */
 public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
+	private final org.lgna.croquet.components.Label toBeReplacedImageLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.components.Label nextImageLabel = new org.lgna.croquet.components.Label();
+
 	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
 		super( composite );
 		this.addComponent( composite.getHeader().createLabel(), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.Label( "TODO: old image" ), "split 2" );
-		this.addComponent( new org.lgna.croquet.components.Label( "TODO: new image" ) );
+		this.addComponent( this.toBeReplacedImageLabel, "split 2" );
+		this.addComponent( this.nextImageLabel );
 	}
+
+	@Override
+	public org.alice.imageeditor.croquet.SaveOverComposite getComposite() {
+		return (org.alice.imageeditor.croquet.SaveOverComposite)super.getComposite();
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		org.alice.imageeditor.croquet.ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
+		this.toBeReplacedImageLabel.setIcon( new javax.swing.ImageIcon( frame.getFile().getAbsolutePath() ) );
+		this.nextImageLabel.setIcon( new javax.swing.ImageIcon( frame.getView().render() ) );
+		super.handleCompositePreActivation();
+		this.getRoot().pack();
+	}
+
 }

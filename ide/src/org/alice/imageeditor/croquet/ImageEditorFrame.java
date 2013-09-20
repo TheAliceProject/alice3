@@ -240,7 +240,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	}
 
-	/* package-private */java.io.File getFile() {
+	public java.io.File getFile() {
 		String path = this.pathHolder.getValue();
 		return new java.io.File( path );
 	}

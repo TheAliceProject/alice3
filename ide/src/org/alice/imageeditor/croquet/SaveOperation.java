@@ -46,19 +46,23 @@ package org.alice.imageeditor.croquet;
  * @author Dennis Cosgrove
  */
 public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
-	private final ImageEditorFrame imageEditorFrame;
-	private final SaveOverComposite saveOverComposite = new SaveOverComposite();
+	private final ImageEditorFrame owner;
+	private final SaveOverComposite saveOverComposite = new SaveOverComposite( this );
 	private java.io.File file;
 
-	public SaveOperation( ImageEditorFrame imageEditorFrame ) {
+	public SaveOperation( ImageEditorFrame owner ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "754c7a0e-8aec-4760-83e0-dff2817ac7a0" ) );
-		this.imageEditorFrame = imageEditorFrame;
+		this.owner = owner;
+	}
+
+	public ImageEditorFrame getOwner() {
+		return this.owner;
 	}
 
 	@Override
 	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		if( subSteps.size() == 0 ) {
-			this.file = this.imageEditorFrame.getFile();
+			this.file = this.owner.getFile();
 			if( this.file != null ) {
 				return this.file.exists();
 			} else {
