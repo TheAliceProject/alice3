@@ -62,7 +62,7 @@ public class CardPanel extends Panel {
 
 				for( org.lgna.croquet.Composite<?> card : cardOwner.getCards() ) {
 					if( cardOwner.isCardAccountedForInPreferredSizeCalculation( card ) ) {
-						java.awt.Component awtChild = card.getView().getAwtComponent(); //ask scrollpane?
+						java.awt.Component awtChild = card.getRootComponent().getAwtComponent();
 						java.awt.Dimension awtChildPreferredSize = awtChild.getPreferredSize();
 						widthMax = Math.max( widthMax, awtChildPreferredSize.width );
 						heightMax = Math.max( heightMax, awtChildPreferredSize.height );
