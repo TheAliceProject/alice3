@@ -62,18 +62,21 @@ package org.alice.imageeditor.croquet;
 	}
 
 	private void appendDescendants( java.util.List<java.io.File> descendants, java.io.File dir ) {
-		java.io.File[] files = dir.listFiles( PNG_FILE_FILTER );
-		if( ( files != null ) && ( files.length > 0 ) ) {
-			for( java.io.File childFile : files ) {
-				descendants.add( childFile );
+		if( this.isCancelled() ) {
+			//pass
+		} else {
+			java.io.File[] files = dir.listFiles( PNG_FILE_FILTER );
+			if( ( files != null ) && ( files.length > 0 ) ) {
+				for( java.io.File childFile : files ) {
+					descendants.add( childFile );
+				}
+				this.publish( files );
 			}
-			this.publish( files );
-		}
-
-		java.io.File[] dirs = dir.listFiles( DIRECTORY_FILTER );
-		if( dirs != null ) {
-			for( java.io.File childDir : dirs ) {
-				this.appendDescendants( descendants, childDir );
+			java.io.File[] dirs = dir.listFiles( DIRECTORY_FILTER );
+			if( dirs != null ) {
+				for( java.io.File childDir : dirs ) {
+					this.appendDescendants( descendants, childDir );
+				}
 			}
 		}
 	}
