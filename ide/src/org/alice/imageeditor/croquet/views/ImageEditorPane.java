@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
+public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b ) {
 		int x = Math.min( a.x, b.x );
 		int y = Math.min( a.y, b.y );
@@ -227,32 +227,30 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Button saveButton;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
-		super( composite );
+		super( composite, "", "[][]16[]" );
 
-		org.lgna.croquet.components.MigPanel controlPanel = new org.lgna.croquet.components.MigPanel( null );
-		controlPanel.addComponent( composite.getClearOperation().createButton(), "wrap" );
-		controlPanel.addComponent( composite.getCopyOperation().createButton(), "push, aligny bottom" );
-
-		org.lgna.croquet.components.MigPanel filePanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
-		filePanel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
-		filePanel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx, shrinkx" );
-		filePanel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
+		this.saveButton = composite.getSaveOperation().createButton();
 
 		javax.swing.JComboBox jComboBox = composite.getJComboBox();
 		jComboBox.setRenderer( new org.alice.imageeditor.croquet.views.renderers.FilenameListCellRenderer() );
 		jComboBox.setMaximumRowCount( 24 );
+		jComboBox.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
 
-		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
-		filePanel.getAwtComponent().add( jComboBox, "push" );
-		this.saveButton = composite.getSaveOperation().createButton();
-		filePanel.addComponent( this.saveButton, "w 120, gap 16, wrap" );
-		filePanel.getAwtComponent().add( this.jPathLabel, "skip 1" );
+		this.getAwtComponent().add( this.jImageView, "align center, spanx 2, spany 2" );
+
+		this.addComponent( composite.getClearOperation().createButton(), "wrap" );
+		this.addComponent( composite.getCopyOperation().createButton(), "aligny top, wrap" );
+
+		this.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx, shrinkx" );
+		this.addComponent( composite.getBrowseOperation().createButton() );
+		this.addComponent( this.saveButton, "spany 3, grow, wrap" );
+
+		this.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
+		this.getAwtComponent().add( jComboBox, "wrap" );
+		this.getAwtComponent().add( this.jPathLabel, "skip 1" );
 
 		this.jPathLabel.setForeground( java.awt.Color.DARK_GRAY );
-
-		this.getAwtComponent().add( this.jImageView, java.awt.BorderLayout.CENTER );
-		this.addLineEndComponent( controlPanel );
-		this.addPageEndComponent( filePanel );
 
 		this.updatePathLabel( composite.getPathHolder().getValue() );
 	}
