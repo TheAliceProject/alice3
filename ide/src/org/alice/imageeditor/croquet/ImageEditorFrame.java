@@ -337,6 +337,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				imageComposite.setImageClearShapesAndShowFrame( icon.getImage() );
+				( (org.lgna.croquet.components.Frame)imageComposite.getView().getRoot() ).setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 			}
 		} );
 	}
