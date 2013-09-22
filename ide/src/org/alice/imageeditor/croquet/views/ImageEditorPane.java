@@ -58,9 +58,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private static final javax.swing.KeyStroke CLEAR_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK );
 
-	private class FileListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<java.io.File> {
+	private class FileListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
 		@Override
-		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, java.io.File value, int index, boolean isSelected, boolean cellHasFocus ) {
+		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
 			if( value != null ) {
 				// slow as all getout and not really worth it
 				//				String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();

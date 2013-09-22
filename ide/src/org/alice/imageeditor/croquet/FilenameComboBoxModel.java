@@ -59,7 +59,8 @@ package org.alice.imageeditor.croquet;
 	}
 
 	public Object getElementAt( int index ) {
-		return ( index < this.data.size() ) ? this.data.get( index ) : null;
+		java.io.File file = ( index < this.data.size() ) ? this.data.get( index ) : null;
+		return file != null ? file.getAbsolutePath() : null;
 	}
 
 	public Object getSelectedItem() {
@@ -74,7 +75,7 @@ package org.alice.imageeditor.croquet;
 				//pass
 			} else {
 				this.selectedItem = selectedItem;
-				this.fireContentsChanged();
+				this.fireContentsChanged( -1, -1 );
 			}
 		}
 	}
@@ -90,12 +91,13 @@ package org.alice.imageeditor.croquet;
 	public void prologue() {
 		this.isWorking = true;
 		this.data = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		this.fireContentsChanged();
+		this.fireContentsChanged( 0, 0 );
 	}
 
 	public void addAll( java.util.List<java.io.File> files ) {
+		int indexA = this.data.size();
 		this.data.addAll( files );
-		this.fireContentsChanged();
+		this.fireContentsChanged( indexA, this.data.size() - 1 );
 	}
 
 	public void done( java.io.File[] data ) {
@@ -103,8 +105,8 @@ package org.alice.imageeditor.croquet;
 		this.isWorking = false;
 	}
 
-	private void fireContentsChanged() {
-		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, -1, -1 );
+	private void fireContentsChanged( int indexA, int indexB ) {
+		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
 		for( javax.swing.event.ListDataListener listDataListener : listDataListeners ) {
 			listDataListener.contentsChanged( e );
 		}

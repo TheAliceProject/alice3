@@ -94,11 +94,15 @@ package org.alice.imageeditor.croquet;
 
 	@Override
 	protected void handleProcess_onEventDispatchThread( java.util.List<java.io.File> files ) {
-		this.filenameComboBoxModel.addAll( files );
+		synchronized( this.filenameComboBoxModel ) {
+			this.filenameComboBoxModel.addAll( files );
+		}
 	}
 
 	@Override
 	protected void handleDone_onEventDispatchThread( java.io.File[] value ) {
-		this.filenameComboBoxModel.done( value );
+		synchronized( this.filenameComboBoxModel ) {
+			this.filenameComboBoxModel.done( value );
+		}
 	}
 }

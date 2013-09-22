@@ -122,26 +122,28 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			java.io.File file = new java.io.File( nextValue );
 			if( file.isDirectory() ) {
-				if( worker != null ) {
-					if( worker.getRootDirectory().equals( file ) ) {
-						//pass
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
-					} else {
-						if( worker.isDone() ) {
+				synchronized( filenameComboBoxModel ) {
+					if( worker != null ) {
+						if( worker.getRootDirectory().equals( file ) ) {
 							//pass
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "cancel" );
-							worker.cancel( true );
+							if( worker.isDone() ) {
+								//pass
+							} else {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "cancel" );
+								worker.cancel( true );
+							}
+							worker = null;
 						}
-						worker = null;
 					}
-				}
-				if( worker != null ) {
-					//pass
-				} else {
-					worker = new FilenameListWorker( filenameComboBoxModel, file );
-					filenameComboBoxModel.prologue();
-					worker.execute();
+					if( worker != null ) {
+						//pass
+					} else {
+						worker = new FilenameListWorker( filenameComboBoxModel, file );
+						filenameComboBoxModel.prologue();
+						worker.execute();
+					}
 				}
 			}
 			updatePath();
@@ -288,6 +290,8 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	}
 
 	private void handleEditorChanged( javax.swing.event.DocumentEvent e ) {
+		String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( e.getDocument() );
+		this.filenameComboBoxModel.setSelectedItem( text );
 		this.updatePath();
 	}
 
