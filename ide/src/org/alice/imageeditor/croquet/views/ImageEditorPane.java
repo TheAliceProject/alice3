@@ -58,32 +58,6 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private static final javax.swing.KeyStroke CLEAR_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK );
 
-	private class FileListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
-		@Override
-		protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
-			if( value != null ) {
-				// slow as all getout and not really worth it
-				//				String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
-				//				String path = value.getAbsolutePath();
-				//				if( path.substring( 0, rootDirectoryPath.length() ).contentEquals( rootDirectoryPath ) ) {
-				//					StringBuilder sb = new StringBuilder();
-				//					sb.append( "<html>" );
-				//					sb.append( rootDirectoryPath );
-				//					sb.append( "<strong>" );
-				//					sb.append( path.substring( rootDirectoryPath.length() ) );
-				//					sb.append( "</strong>" );
-				//					sb.append( "</html>" );
-				//					rv.setText( sb.toString() );
-				//				}
-			} else {
-				rv.setText( "working" );
-				rv.setBackground( java.awt.Color.WHITE );
-				rv.setForeground( java.awt.Color.GRAY );
-			}
-			return rv;
-		}
-	};
-
 	private class JImageView extends javax.swing.JComponent {
 		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
@@ -135,6 +109,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 				repaint();
 			}
 		};
+
+		private java.awt.Point ptPressed;
+		private java.awt.Point ptDragged;
 
 		private void render( java.awt.Graphics g ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -245,33 +222,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 
 	private final JImageView jImageView = new JImageView();
 
-	private static final class JShowingLabel extends javax.swing.JLabel {
-		private boolean isShowing = true;
-
-		@Override
-		public boolean isShowing() {
-			return super.isShowing();
-		}
-
-		public void setShowing( boolean isShowing ) {
-			this.isShowing = isShowing;
-			this.repaint();
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			if( this.isShowing ) {
-				super.paint( g );
-			}
-		}
-	}
-
-	private final JShowingLabel jPathLabel = new JShowingLabel();
+	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
 
 	private final org.lgna.croquet.components.Button saveButton;
-
-	private java.awt.Point ptPressed;
-	private java.awt.Point ptDragged;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite );
@@ -280,17 +233,17 @@ public class ImageEditorPane extends org.lgna.croquet.components.BorderPanel {
 		controlPanel.addComponent( composite.getClearOperation().createButton(), "wrap" );
 		controlPanel.addComponent( composite.getCopyOperation().createButton(), "push, aligny bottom" );
 
-		org.lgna.croquet.components.MigPanel filePanel = new org.lgna.croquet.components.MigPanel( null, "fillx" );
+		org.lgna.croquet.components.MigPanel filePanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
 		filePanel.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
-		filePanel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx" );
+		filePanel.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx, shrinkx" );
 		filePanel.addComponent( composite.getBrowseOperation().createButton(), "wrap" );
 
 		javax.swing.JComboBox jComboBox = composite.getJComboBox();
-		jComboBox.setRenderer( new FileListCellRenderer() );
+		jComboBox.setRenderer( new org.alice.imageeditor.croquet.views.renderers.FilenameListCellRenderer() );
 		jComboBox.setMaximumRowCount( 24 );
 
 		filePanel.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
-		filePanel.getAwtComponent().add( jComboBox, "growx, push" );
+		filePanel.getAwtComponent().add( jComboBox, "push" );
 		this.saveButton = composite.getSaveOperation().createButton();
 		filePanel.addComponent( this.saveButton, "w 120, gap 16, wrap" );
 		filePanel.getAwtComponent().add( this.jPathLabel, "skip 1" );
