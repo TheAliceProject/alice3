@@ -71,6 +71,12 @@ package org.alice.imageeditor.croquet;
 					descendants.add( childFile );
 				}
 				this.publish( files );
+				boolean IS_YIELD_BEHAVING_THE_WAY_I_EXPECT = false;
+				if( IS_YIELD_BEHAVING_THE_WAY_I_EXPECT ) {
+					Thread.yield();
+				} else {
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 10 );
+				}
 			}
 			java.io.File[] dirs = dir.listFiles( DIRECTORY_FILTER );
 			if( dirs != null ) {
@@ -83,6 +89,7 @@ package org.alice.imageeditor.croquet;
 
 	@Override
 	protected java.io.File[] do_onBackgroundThread() throws Exception {
+		//Thread.currentThread().setPriority( Thread.MIN_PRIORITY );
 		if( this.rootDirectory.isDirectory() ) {
 			java.util.List<java.io.File> descendants = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.appendDescendants( descendants, this.rootDirectory );

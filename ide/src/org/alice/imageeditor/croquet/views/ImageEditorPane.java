@@ -227,7 +227,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.Button saveButton;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
-		super( composite, "", "[][]16[]" );
+		super( composite, "fillx", "[grow 0][grow 100]16[grow 0]" );
 
 		this.saveButton = composite.getSaveOperation().createButton();
 
@@ -238,8 +238,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 		this.getAwtComponent().add( this.jImageView, "align center, spanx 2, spany 2" );
 
-		this.addComponent( composite.getClearOperation().createButton(), "wrap" );
-		this.addComponent( composite.getCopyOperation().createButton(), "aligny top, wrap" );
+		this.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
+		this.addComponent( composite.getCopyOperation().createButton(), "growx, aligny top, wrap" );
 
 		this.addComponent( composite.getRootDirectoryState().getSidekickLabel().createLabel(), "align right" );
 		this.addComponent( composite.getRootDirectoryState().createTextField(), "split 2, growx, shrinkx" );
@@ -247,7 +247,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( this.saveButton, "spany 3, grow, wrap" );
 
 		this.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
-		this.getAwtComponent().add( jComboBox, "wrap" );
+		this.getAwtComponent().add( jComboBox, "growx, shrinkx, wrap" );
 		this.getAwtComponent().add( this.jPathLabel, "skip 1" );
 
 		this.jPathLabel.setForeground( java.awt.Color.DARK_GRAY );
@@ -268,7 +268,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 			if( awtEditorComponent instanceof javax.swing.JTextField ) {
 				javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
 				boolean isEqual = jTextField.getText().contentEquals( nextPath );
-				this.jPathLabel.setShowing( isEqual == false );
+				boolean isShowing = false == ( isEqual || org.alice.imageeditor.croquet.ImageEditorFrame.INVALID_PATH_NOT_A_DIRECTORY.contentEquals( nextPath ) || org.alice.imageeditor.croquet.ImageEditorFrame.INVALID_PATH_EMPTY_SUB_PATH.contentEquals( nextPath ) );
+				this.jPathLabel.setShowing( isShowing );
 			}
 		}
 	}

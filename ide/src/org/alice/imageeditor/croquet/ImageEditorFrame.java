@@ -46,6 +46,8 @@ package org.alice.imageeditor.croquet;
  * @author Dennis Cosgrove
  */
 public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.imageeditor.croquet.views.ImageEditorPane> {
+	public static String INVALID_PATH_NOT_A_DIRECTORY = "INVALID_PATH_NOT_A_DIRECTORY";
+	public static String INVALID_PATH_EMPTY_SUB_PATH = "INVALID_PATH_EMPTY_SUB_PATH";
 	private static final String DEFAULT_ROOT_DIRECTORY_PATH = edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities.getBestGuessPicturesDirectory().getAbsolutePath();
 
 	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), DEFAULT_ROOT_DIRECTORY_PATH, null );
@@ -121,28 +123,32 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			java.io.File file = new java.io.File( nextValue );
-			if( file.isDirectory() ) {
-				synchronized( filenameComboBoxModel ) {
-					if( worker != null ) {
-						if( worker.getRootDirectory().equals( file ) ) {
-							//pass
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
-						} else {
-							if( worker.isDone() ) {
-								//pass
-							} else {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "cancel" );
-								worker.cancel( true );
-							}
-							worker = null;
-						}
-					}
-					if( worker != null ) {
+			synchronized( filenameComboBoxModel ) {
+				if( worker != null ) {
+					if( worker.getRootDirectory().equals( file ) ) {
 						//pass
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
 					} else {
+						if( worker.isDone() ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "cancel" );
+							worker.cancel( true );
+						}
+						worker = null;
+					}
+				}
+				if( worker != null ) {
+					//pass
+				} else {
+					if( file.isDirectory() ) {
 						worker = new FilenameListWorker( filenameComboBoxModel, file );
 						filenameComboBoxModel.prologue();
 						worker.execute();
+					} else {
+						filenameComboBoxModel.setSelectedItem( "" );
+						filenameComboBoxModel.prologue();
+						filenameComboBoxModel.done( new java.io.File[ 0 ] );
 					}
 				}
 			}
@@ -266,21 +272,29 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 				} else {
 					text = text + ".png";
 				}
+				java.io.File rootDirectory = new java.io.File( rootDirectoryPath );
 				java.io.File file;
-				if( text.startsWith( rootDirectoryPath ) ) {
-					file = new java.io.File( text );
+				String path;
+				if( rootDirectory.isDirectory() ) {
+					if( text.startsWith( rootDirectoryPath ) ) {
+						file = new java.io.File( text );
+					} else {
+						file = new java.io.File( new java.io.File( rootDirectoryPath ), text );
+					}
+					path = file.getAbsolutePath();
 				} else {
-					file = new java.io.File( new java.io.File( rootDirectoryPath ), text );
+					file = null;
+					path = INVALID_PATH_NOT_A_DIRECTORY;
 				}
-				this.pathHolder.setValue( file.getAbsolutePath() );
-				if( file.isFile() ) {
+				this.pathHolder.setValue( path );
+				if( ( file != null ) && file.isFile() ) {
 					this.saveOperation.setName( "save over..." );
 				} else {
 					this.saveOperation.setName( "save" );
 				}
 				this.saveOperation.setEnabled( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidFile( file ) );
 			} else {
-				this.pathHolder.setValue( rootDirectoryPath );
+				this.pathHolder.setValue( INVALID_PATH_EMPTY_SUB_PATH );
 				this.saveOperation.setName( "save" );
 				this.saveOperation.setEnabled( false );
 			}
