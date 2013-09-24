@@ -111,7 +111,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.Button saveButton;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
-		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow][grow 0][grow 0][grow 0][grow 0][grow 0][grow 0]" );
+		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow,shrink]16[grow 0, shrink 0][grow 0, shrink 0][grow 0, shrink 0]" );
 
 		this.jImageView = new JImageView( composite );
 		this.saveButton = composite.getSaveOperation().createButton();
