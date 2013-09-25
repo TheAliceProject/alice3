@@ -199,6 +199,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
+	private boolean handleVisibility;
 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
@@ -394,8 +395,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	public void setHandlVisibility( boolean isVisible )
 	{
+		this.handleVisibility = isVisible;
 		if( this.handleManager != null ) {
-			this.handleManager.setHandlesShowing( isVisible );
+			this.handleManager.setHandlesShowing( handleVisibility );
 		}
 	}
 
@@ -465,19 +467,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		if( this.selectedObject != selected )
 		{
-			System.out.println( "HERE" );
 			this.fireSelecting( new SelectionEvent( this, selected ) );
 			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
 			if( HandleManager.isSelectable( sgTransformable ) )
 			{
-				this.handleManager.setHandlesShowing( true );
+				this.handleManager.setHandlesShowing( handleVisibility );
 				this.handleManager.setSelectedObject( sgTransformable );
-				System.out.println( "TRUE: " + selected );
-				System.out.println( "currHandleSet: " + handleManager.getCurrentHandleSet() );
 			}
 			else
 			{
-				System.out.println( "NULL (mmay)" );
 				this.handleManager.setSelectedObject( null );
 			}
 			this.currentInputState.setCurrentlySelectedObject( sgTransformable );

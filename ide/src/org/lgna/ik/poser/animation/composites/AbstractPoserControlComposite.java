@@ -68,15 +68,16 @@ import org.lgna.story.Color;
  */
 public abstract class AbstractPoserControlComposite<T extends AbstractPoserControlView> extends SimpleComposite<T> {
 
-	private JointSelectionSphereState rightArmAnchor;
-	private JointSelectionSphereState leftArmAnchor;
-	private JointSelectionSphereState rightLegAnchor;
-	private JointSelectionSphereState leftLegAnchor;
-	private StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
-	private StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
-	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
-	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	private BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final JointSelectionSphereState rightArmAnchor;
+	private final JointSelectionSphereState leftArmAnchor;
+	private final JointSelectionSphereState rightLegAnchor;
+	private final JointSelectionSphereState leftLegAnchor;
+	private final StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
+	private final StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
+	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
+	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
+	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), true );
 	protected AbstractPoserInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
 
@@ -185,5 +186,9 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public PoserControllerAdapter getAdapter() {
 		return this.adapter;
+	}
+
+	public BooleanState getJointRotationHandleVisibilityState() {
+		return jointRotationHandleVisibilityState;
 	}
 }

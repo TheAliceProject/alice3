@@ -48,6 +48,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.alice.interact.PoserAnimatorDragAdapter;
+import org.alice.stageide.sceneeditor.HandleStyle;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserControllerAdapter;
 import org.lgna.ik.poser.PoserEvent;
@@ -62,7 +65,6 @@ import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.implementation.JointImp;
-import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
@@ -75,15 +77,13 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 public class PoserScene extends SScene {
 	private final SSun sun = new SSun();
 	private final SGround snow = new SGround();
-	private final SCamera camera;
+	public final SCamera camera;
 	public final SBiped ogre;
 	private ArrayList<JointSelectionSphere> jssArr;
 	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
 	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
 	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
-	private JointImp currentlyShowingRotationHandles = null;
-	private PoserPicturePlaneInteraction dragAdapter = null;
 	private List<PoserSphereManipulatorListener> dragListeners = Collections.newArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
@@ -124,7 +124,50 @@ public class PoserScene extends SScene {
 		for( SJoint joint : sJointList ) {
 			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
 		}
+		addDragListener( sphereDragListener );
 	}
+
+	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
+
+		@Override
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		@Override
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			poserAnimatorDragAdapter.setHandlVisibility( nextValue );
+		}
+	};
+	private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
+
+		public void fireStart( PoserEvent poserEvent ) {
+			JointSelectionSphere jss = poserEvent.getJSS();
+			jss.setVehicle( PoserScene.this );
+			JointImp end = jss.getJoint();
+			JointId anchor = getAnchorForEndJoint( end );
+			if( anchor != null ) {
+				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( anchor ) );
+				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
+			}
+			jss.setVehicle( end.getAbstraction() );
+
+		}
+
+		public void fireFinish( PoserEvent poserEvent ) {
+			JointSelectionSphere jss = poserEvent.getJSS();
+			jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
+			poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
+			poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+		}
+
+		@Override
+		public void fireAnchorUpdate( PoserEvent poserEvent ) {
+			JointSelectionSphere jss = poserEvent.getJSS();
+			Limb limb = PoserScene.this.jointToLimbMap.get( jss.getJoint() );
+			assert limb != null;
+			PoserScene.this.adapter.updateSphere( limb, jss );
+		}
+	};;
 
 	private JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
 		return new JointSelectionSphere( (JointImp)ImplementationAccessor.getImplementation( joint ), child );
@@ -153,12 +196,6 @@ public class PoserScene extends SScene {
 
 	private void performInitializeEvents() {
 		addCustomDragAdapter();
-		poserAnimatorDragAdapter = new PoserAnimatorDragAdapter();
-		poserAnimatorDragAdapter.setTarget( ogre );
-		poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
-		poserAnimatorDragAdapter.setHandlVisibility( true );
-		//		NiceDragAdapter cameraAdapter = new NiceDragAdapter();
-		//				cameraAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
 	}
 
 	private OnscreenLookingGlass getOnscreenLookingGlass() {
@@ -169,49 +206,22 @@ public class PoserScene extends SScene {
 
 		if( e.getButton() == 3 ) {//MouseClickEvent.isThisRightClick( e ) ) {
 			adapter.updateSphere( jointToLimbMap.get( sphere.getJoint() ), sphere );
-			toggleRotationHandles( sphere.getJoint() );
 		} else {
 			//			dragAdapter.fireStart( poserEvent );
 		}
 	}
 
 	public void addCustomDragAdapter() {
-		//		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
-		//		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
-		//		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
-		//		this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
-		//		this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
-		//		this.dragAdapter.makeCameraActive( camera );
-		addDragListener( new PoserSphereManipulatorListener() {
-
-			public void fireStart( PoserEvent poserEvent ) {
-				JointSelectionSphere jss = poserEvent.getJSS();
-				jss.setVehicle( PoserScene.this );
-				JointImp end = jss.getJoint();
-				JointId anchor = getAnchorForEndJoint( end );
-				if( anchor != null ) {
-					JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( anchor ) );
-					IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
-				}
-				jss.setVehicle( end.getAbstraction() );
-
-			}
-
-			public void fireFinish( PoserEvent poserEvent ) {
-				JointSelectionSphere jss = poserEvent.getJSS();
-				jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
-				poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
-				poserAnimatorDragAdapter.setSelectedSceneObjectImplementation( jss.getJoint() );
-			}
-
-			@Override
-			public void fireAnchorUpdate( PoserEvent poserEvent ) {
-				JointSelectionSphere jss = poserEvent.getJSS();
-				Limb limb = PoserScene.this.jointToLimbMap.get( jss.getJoint() );
-				assert limb != null;
-				PoserScene.this.adapter.updateSphere( limb, jss );
-			}
-		} );
+		poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
+		poserAnimatorDragAdapter.setAnimator( ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getAnimator() );
+		poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
+		poserAnimatorDragAdapter.setTarget( ogre );
+		poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
+		poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+		for( PoserSphereManipulatorListener sphereListener : dragListeners ) {
+			poserAnimatorDragAdapter.addSphereDragListener( sphereListener );
+		}
+		poserAnimatorDragAdapter.clear();
 	}
 
 	private JointId getAnchorForEndJoint( JointImp joint ) {
@@ -234,20 +244,6 @@ public class PoserScene extends SScene {
 		return false;
 	}
 
-	private void toggleRotationHandles( JointImp joint ) {
-		if( this.currentlyShowingRotationHandles == joint ) {
-			hideRotationHandles();
-		} else {
-			showRotationHandles( joint );
-		}
-	}
-
-	private void hideRotationHandles() {
-	}
-
-	private void showRotationHandles( JointImp joint ) {
-	}
-
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
@@ -268,6 +264,7 @@ public class PoserScene extends SScene {
 
 	public void setAdapter( PoserControllerAdapter adapter ) {
 		this.adapter = adapter;
+		adapter.getJointRotationHandleVisibilityState().addValueListener( jointHandleVisibilityListener );
 	}
 
 	public List<JointSelectionSphere> getJointsForLimb( Limb key ) {
@@ -281,23 +278,9 @@ public class PoserScene extends SScene {
 		return limbToJointMap.get( key ).get( 0 );
 	}
 
-	public PoserPicturePlaneInteraction getDragAdapter() {
-		return this.dragAdapter;
-	}
-
-	public void initDragAdapter() {
-		ProgramImp program = ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram();
-		dragAdapter = new PoserPicturePlaneInteraction( this, program.getOnscreenLookingGlass() );
-		dragAdapter.startUp();
-		for( PoserSphereManipulatorListener listener : dragListeners ) {
-			dragAdapter.addListener( listener );
-		}
-		dragListeners.clear();
-	}
-
 	public void addDragListener( PoserSphereManipulatorListener sphereDragListener ) {
-		if( dragAdapter != null ) {
-			dragAdapter.addListener( sphereDragListener );
+		if( poserAnimatorDragAdapter != null ) {
+			poserAnimatorDragAdapter.addSphereDragListener( sphereDragListener );
 		} else {
 			dragListeners.add( sphereDragListener );
 		}

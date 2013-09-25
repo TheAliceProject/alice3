@@ -52,7 +52,7 @@ import test.ik.IkTestApplication;
  * @author Matt May
  */
 public class IkPoser extends SProgram {
-	private static final boolean SHOULD_I_ANIMATE = true;
+	private static final boolean SHOULD_I_ANIMATE = false;
 
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();

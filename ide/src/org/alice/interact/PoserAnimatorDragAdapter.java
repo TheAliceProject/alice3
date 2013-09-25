@@ -45,22 +45,34 @@ package org.alice.interact;
 import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.stageide.sceneeditor.HandleStyle;
+import org.lgna.ik.poser.PoserSphereManipulatorListener;
+import org.lgna.ik.walkandtouch.PoserPicturePlaneInteraction;
+import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.story.SModel;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 
 /**
  * @author Matt May
  */
 public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
+	private PoserPicturePlaneInteraction dragAdapter = null;
+	private final PoserScene poserScene;
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
+
+	public PoserAnimatorDragAdapter( PoserScene poserScene ) {
+		this.poserScene = poserScene;
+	}
 
 	@Override
 	protected void setUpControls() {
@@ -94,15 +106,38 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutZAxis );
 
 		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+		selectObject.setEnabled( false );
+		selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
 
 		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
 		this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, group );
 		setInteractionState( HandleStyle.ROTATION );
 
-		setHandlVisibility( true );
+		//		this.manipulators.add( selectObject );
+
 	}
 
 	public final void setTarget( SModel model ) {
 		orbiter.setTarget( model );
+	}
+
+	@Override
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		super.setOnscreenLookingGlass( onscreenLookingGlass );
+		initDragAdapter( onscreenLookingGlass );
+	}
+
+	private void initDragAdapter( OnscreenLookingGlass onscreenLookingGlass ) {
+		dragAdapter = new PoserPicturePlaneInteraction( poserScene, onscreenLookingGlass );
+		dragAdapter.startUp();
+	}
+
+	public void addSphereDragListener( PoserSphereManipulatorListener sphereDragListener ) {
+		try {
+			dragAdapter.addListener( sphereDragListener );
+		} catch( NullPointerException e ) {
+			Logger.severe( "Drag Adapter cannot be initialized until OnscreenLookingGlass is set" );
+			Thread.dumpStack();
+		}
 	}
 }
