@@ -101,8 +101,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
 		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		if( window == this.getFrame() ) {
+			//pass
+		} else {
+			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		}
 	}
 
 	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
@@ -129,6 +133,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		super.initialize( args );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		this.getPerspectiveState().addValueListener( this.perspectiveListener );
+		this.registerScreenCaptureKeyStrokes( this.getFrame() );
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
