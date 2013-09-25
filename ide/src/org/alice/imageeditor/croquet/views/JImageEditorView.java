@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class JImageView extends javax.swing.JComponent {
+public class JImageEditorView extends javax.swing.JComponent {
 	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b, double scale ) {
 		int x = Math.min( a.x, b.x );
 		int y = Math.min( a.y, b.y );
@@ -125,7 +125,7 @@ public class JImageView extends javax.swing.JComponent {
 
 	private final org.alice.imageeditor.croquet.ImageEditorFrame composite;
 
-	public JImageView( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
+	public JImageEditorView( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		this.composite = composite;
 	}
 

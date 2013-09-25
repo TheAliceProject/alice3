@@ -121,7 +121,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
-	private final JImageView jImageView;
+	private final JImageEditorView jImageView;
 
 	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
 
@@ -130,7 +130,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow,shrink]16[grow 0, shrink 0][grow 0, shrink 0][grow 0, shrink 0]" );
 
-		this.jImageView = new JImageView( composite );
+		this.jImageView = new JImageEditorView( composite );
 		this.saveButton = composite.getSaveOperation().createButton();
 
 		javax.swing.JComboBox jComboBox = composite.getJComboBox();
