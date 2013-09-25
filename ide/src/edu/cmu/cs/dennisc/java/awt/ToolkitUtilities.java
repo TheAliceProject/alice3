@@ -54,4 +54,16 @@ public class ToolkitUtilities {
 	public static boolean isDynamicLayoutSupported() {
 		return "true".equals( java.awt.Toolkit.getDefaultToolkit().getDesktopProperty( "awt.dynamicLayoutSupported" ) );
 	}
+
+	private static int getScreenResolution( java.awt.Toolkit toolkit ) {
+		return toolkit.getScreenResolution();
+	}
+
+	public static int getScreenResolution( java.awt.Component awtComponent ) {
+		return getScreenResolution( awtComponent.getToolkit() );
+	}
+
+	public static int getScreenResolution() {
+		return getScreenResolution( java.awt.Toolkit.getDefaultToolkit() );
+	}
 }

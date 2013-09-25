@@ -46,15 +46,15 @@ package org.alice.imageeditor.croquet.views;
  * @author Dennis Cosgrove
  */
 public class JImageView extends javax.swing.JComponent {
-	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b ) {
+	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b, double scale ) {
 		int x = Math.min( a.x, b.x );
 		int y = Math.min( a.y, b.y );
 		int width = Math.abs( b.x - a.x );
 		int height = Math.abs( b.y - a.y );
-		return new java.awt.Rectangle( x, y, width, height );
+		return new java.awt.geom.Rectangle2D.Double( x / scale, y / scale, width / scale, height / scale );
 	}
 
-	private static final java.awt.Stroke SHAPE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	private static final java.awt.Stroke SHAPE_STROKE = new java.awt.BasicStroke( 8.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Stroke OUTLINE_STROKE = new java.awt.BasicStroke( 0.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND, 8.0f, new float[] { 8.0f }, 0.0f );
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private static final javax.swing.KeyStroke CLEAR_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK );
@@ -64,7 +64,7 @@ public class JImageView extends javax.swing.JComponent {
 		final int N = 5;
 		DROP_SHADOW_STROKES = new java.awt.Stroke[ N ];
 		for( int i = 0; i < N; i++ ) {
-			DROP_SHADOW_STROKES[ i ] = new java.awt.BasicStroke( ( i + 1 ) * 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+			DROP_SHADOW_STROKES[ i ] = new java.awt.BasicStroke( ( i + 1 ) * 5.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 		}
 	};
 
@@ -82,7 +82,7 @@ public class JImageView extends javax.swing.JComponent {
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
-				composite.addShape( createShape( ptPressed, e.getPoint() ) );
+				composite.addShape( createShape( ptPressed, e.getPoint(), getScale() ) );
 				ptPressed = null;
 				ptDragged = null;
 				repaint();
@@ -129,18 +129,13 @@ public class JImageView extends javax.swing.JComponent {
 		this.composite = composite;
 	}
 
-	/* package-private */void render( java.awt.Graphics2D g2 ) {
-		java.awt.Image image = composite.getImageHolder().getValue();
-		if( image != null ) {
-			g2.drawImage( image, 0, 0, this );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		}
-
+	private void drawShapes( java.awt.Graphics2D g2 ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
+		Object prevAntialias = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 		if( composite.getDropShadowState().getValue() ) {
-			final int DROP_SHADOW_OFFSET = 4;
+			final int DROP_SHADOW_OFFSET = 8;
 			g2.translate( DROP_SHADOW_OFFSET, DROP_SHADOW_OFFSET );
 			g2.setPaint( DROP_SHADOW_PAINT );
 			for( java.awt.Stroke stroke : DROP_SHADOW_STROKES ) {
@@ -159,19 +154,62 @@ public class JImageView extends javax.swing.JComponent {
 		}
 
 		if( ( ptPressed != null ) && ( ptDragged != null ) ) {
-			g2.draw( createShape( ptPressed, ptDragged ) );
+			g2.draw( createShape( ptPressed, ptDragged, this.getScale() ) );
 		}
 
 		g2.setStroke( prevStroke );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialias );
+	}
+
+	/* package-private */void render( java.awt.Graphics2D g2 ) {
+		java.awt.Image image = composite.getImageHolder().getValue();
+		if( image != null ) {
+			g2.drawImage( image, 0, 0, this );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
+		this.drawShapes( g2 );
+	}
+
+	private int getImageResolution() {
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: getImageResolution()" );
+		return 300;
+	}
+
+	private int getScreenResolution() {
+		return edu.cmu.cs.dennisc.java.awt.ToolkitUtilities.getScreenResolution( this );
+	}
+
+	private double getScale() {
+		if( composite.getShowInScreenResolutionState().getValue() ) {
+			return this.getScreenResolution() / (double)this.getImageResolution();
+		} else {
+			return 1.0;
+		}
 	}
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.translate( 1, 1 );
-		this.render( g2 );
-		g2.translate( -1, -1 );
+
+		java.awt.Image image = composite.getImageHolder().getValue();
+
+		if( image != null ) {
+			java.awt.geom.AffineTransform m = g2.getTransform();
+			g2.translate( 1, 1 );
+			double scale = this.getScale();
+			if( scale != 1.0 ) {
+				g2.drawImage( image.getScaledInstance( this.getWidth() - 2, this.getHeight() - 2, java.awt.Image.SCALE_SMOOTH ), 0, 0, this );
+				g2.scale( scale, scale );
+				//g2.setRenderingHint( java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+			} else {
+				g2.drawImage( image, 0, 0, this );
+			}
+
+			this.drawShapes( g2 );
+			g2.setTransform( m );
+		}
 		if( composite.getShowDashedBorderState().getValue() ) {
 			java.awt.Stroke prevStroke = g2.getStroke();
 			g2.setColor( java.awt.Color.DARK_GRAY );
@@ -182,10 +220,27 @@ public class JImageView extends javax.swing.JComponent {
 	}
 
 	@Override
+	public java.awt.Dimension getMinimumSize() {
+		return this.getPreferredSize();
+	}
+
+	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Image image = composite.getImageHolder().getValue();
 		if( image != null ) {
-			return new java.awt.Dimension( image.getWidth( this ) + 2, image.getHeight( this ) + 2 );
+			int imageWidth = image.getWidth( this );
+			int imageHeight = image.getHeight( this );
+			int width;
+			int height;
+			if( composite.getShowInScreenResolutionState().getValue() ) {
+				double scale = this.getScale();
+				width = (int)Math.ceil( imageWidth * scale );
+				height = (int)Math.ceil( imageHeight * scale );
+			} else {
+				width = imageWidth;
+				height = imageHeight;
+			}
+			return new java.awt.Dimension( width + 2, height + 2 );
 		} else {
 			return super.getPreferredSize();
 		}

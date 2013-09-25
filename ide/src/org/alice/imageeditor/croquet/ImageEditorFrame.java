@@ -108,6 +108,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	} );
 
 	private final org.lgna.croquet.BooleanState showDashedBorderState = this.createBooleanState( this.createKey( "showDashedBorderState" ), true );
+	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( this.createKey( "showInScreenResolutionState" ), true );
 	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( this.createKey( "dropShadowState" ), true );
 
 	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = new org.lgna.croquet.ValueHolder<java.awt.Image>();
@@ -200,6 +201,10 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	public org.lgna.croquet.BooleanState getShowDashedBorderState() {
 		return this.showDashedBorderState;
+	}
+
+	public org.lgna.croquet.BooleanState getShowInScreenResolutionState() {
+		return this.showInScreenResolutionState;
 	}
 
 	public org.lgna.croquet.BooleanState getDropShadowState() {

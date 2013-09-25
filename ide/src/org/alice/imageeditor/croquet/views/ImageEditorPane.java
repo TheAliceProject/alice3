@@ -104,6 +104,23 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
+	private final org.lgna.croquet.State.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			jImageView.revalidate();
+			org.lgna.croquet.components.AbstractWindow<?> window = getRoot();
+			if( window != null ) {
+				java.awt.Dimension size = window.getSize();
+				java.awt.Dimension preferredSize = window.getAwtComponent().getPreferredSize();
+				if( ( size.width < preferredSize.width ) || ( size.height < preferredSize.height ) ) {
+					window.setSize( Math.max( size.width, preferredSize.width ), Math.max( size.height, preferredSize.height ) );
+				}
+			}
+		}
+	};
+
 	private final JImageView jImageView;
 
 	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
@@ -128,6 +145,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		panel.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getDropShadowState().createCheckBox(), "growx, wrap" );
 		panel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, gap bottom 16, wrap" );
+		panel.addComponent( composite.getShowInScreenResolutionState().getSidekickLabel().createLabel(), "split 2" );
+		panel.addComponent( composite.getShowInScreenResolutionState().createHorizontalToggleButtons(), "growx, wrap" );
 		panel.addComponent( composite.getShowDashedBorderState().createCheckBox(), "growx, wrap" );
 		panel.addComponent( composite.getCopyOperation().createButton(), "pushy, aligny bottom, growx" );
 		this.addComponent( panel, "aligny top, grow, shrink, wrap" );
@@ -186,6 +205,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 	@Override
 	public void handleCompositePreActivation() {
+		this.getComposite().getShowInScreenResolutionState().addValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
+		this.getComposite().getShowDashedBorderState().addValueListener( this.repaintImageViewListener );
+		this.getComposite().getDropShadowState().addValueListener( this.repaintImageViewListener );
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
 		this.getComposite().getPathHolder().addAndInvokeValueListener( this.pathListener );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
@@ -196,20 +218,18 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
 			}
 		} );
-
-		this.getComposite().getShowDashedBorderState().addValueListener( this.repaintImageViewListener );
-		this.getComposite().getDropShadowState().addValueListener( this.repaintImageViewListener );
 		super.handleCompositePreActivation();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		this.getComposite().getDropShadowState().removeValueListener( this.repaintImageViewListener );
-		this.getComposite().getShowDashedBorderState().removeValueListener( this.repaintImageViewListener );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getPathHolder().removeValueListener( this.pathListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
+		this.getComposite().getDropShadowState().removeValueListener( this.repaintImageViewListener );
+		this.getComposite().getShowDashedBorderState().removeValueListener( this.repaintImageViewListener );
+		this.getComposite().getShowInScreenResolutionState().removeValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
 	}
 }
