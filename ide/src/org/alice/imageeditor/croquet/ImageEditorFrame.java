@@ -260,6 +260,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		this.getBooleanState().setValueTransactionlessly( true );
 		org.lgna.croquet.components.AbstractWindow<?> window = this.getView().getRoot();
 		if( window != null ) {
+			this.getView().revalidateAndRepaint();
 			window.pack();
 		}
 	}
