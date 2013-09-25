@@ -199,6 +199,11 @@ public class ImageCaptureUtilities {
 			lightweightComponent.print( g );
 		}
 
+		//todo: check for heavyweight popup menus
+		//for( java.awt.Window window : java.awt.Window.getWindows() ) {
+		//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( window );
+		//}
+
 		g2.setTransform( prevTrans );
 		g.dispose();
 

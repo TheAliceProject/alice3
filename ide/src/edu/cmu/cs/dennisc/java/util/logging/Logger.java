@@ -120,15 +120,7 @@ public class Logger {
 		String separator = "";
 		for( Object o : objects ) {
 			sb.append( separator );
-			if( o != null ) {
-				if( o instanceof Object[] ) {
-					sb.append( java.util.Arrays.toString( (Object[])o ) );
-				} else {
-					sb.append( o );
-				}
-			} else {
-				sb.append( (Object)null );
-			}
+			sb.append( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.toString( o ) );
 			separator = " ";
 		}
 		return sb.toString();
