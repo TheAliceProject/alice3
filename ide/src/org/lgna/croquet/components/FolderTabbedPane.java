@@ -64,32 +64,50 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			java.awt.FontMetrics fm = button.getFontMetrics( font );
 			String text = button.getText();
 			javax.swing.Icon icon = button.getIcon();
-			int verticalAlignment = button.getVerticalAlignment();
-			int horizontalAlignment = button.getHorizontalAlignment();
-			int verticalTextPosition = button.getVerticalTextPosition();
-			int horizontalTextPosition = button.getHorizontalTextPosition();
-			java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
-			java.awt.Rectangle iconR = new java.awt.Rectangle();
-			java.awt.Rectangle textR = new java.awt.Rectangle();
-			int textIconGap = button.getIconTextGap();
-			javax.swing.SwingUtilities.layoutCompoundLabel( c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap );
+			java.awt.Dimension size;
+			if( icon != null ) {
+				int verticalAlignment = button.getVerticalAlignment();
+				int horizontalAlignment = button.getHorizontalAlignment();
+				int verticalTextPosition = button.getVerticalTextPosition();
+				int horizontalTextPosition = button.getHorizontalTextPosition();
+				java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
+				java.awt.Rectangle iconR = new java.awt.Rectangle();
+				java.awt.Rectangle textR = new java.awt.Rectangle();
+				int textIconGap = button.getIconTextGap();
+				javax.swing.SwingUtilities.layoutCompoundLabel( c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap );
 
-			java.awt.Rectangle bounds = iconR.union( textR );
+				size = iconR.union( textR ).getSize();
+			} else {
+				size = fm.getStringBounds( text, button.getGraphics() ).getBounds().getSize();
+			}
 
 			java.awt.Insets insets = button.getInsets();
-			bounds.width += insets.left + insets.right;
-			bounds.height += insets.top + insets.bottom;
+			size.width += insets.left + insets.right;
+			size.height += insets.top + insets.bottom;
 
 			if( button.getComponentCount() > 0 ) {
 				for( java.awt.Component component : button.getComponents() ) {
 					//if( component.isVisible() ) {
-					bounds.width += 4;
-					bounds.width += component.getPreferredSize().width;
+					size.width += 4;
+					size.width += component.getPreferredSize().width;
 					//}
 				}
 			}
 
-			return bounds.getSize();
+			return size;
+		}
+
+		@Override
+		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.Icon icon = button.getIcon();
+			if( icon != null ) {
+				super.paint( g, c );
+			} else {
+				String text = button.getText();
+				java.awt.Insets insets = button.getInsets();
+				g.drawString( text, insets.left, button.getBaseline( c.getWidth(), c.getHeight() ) );
+			}
 		}
 	}
 
