@@ -101,6 +101,9 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: save" );
+		if( this.file != null ) {
+			edu.cmu.cs.dennisc.image.ImageUtilities.write( this.file, owner.getView().render() );
+			this.getOwner().getBooleanState().setValueTransactionlessly( false );
+		}
 	}
 }
