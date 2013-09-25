@@ -48,7 +48,7 @@ import org.lgna.croquet.Application;
 /**
  * @author Dennis Cosgrove
  */
-public class Dialog extends AbstractWindow<javax.swing.JDialog> {
+public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	public enum DefaultCloseOperation {
 		DO_NOTHING( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ),
 		HIDE( javax.swing.WindowConstants.HIDE_ON_CLOSE ),

@@ -66,6 +66,9 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 	private static final java.awt.Paint STENCIL_PAINT = createStencilPaint();
 
+	private final JZoomView jZoomView = new JZoomView();
+	private final org.lgna.croquet.components.Window window = new org.lgna.croquet.components.Window();
+
 	private final class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		private int xPressed = -1;
 		private int yPressed = -1;
@@ -85,6 +88,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 					setStencilShowing( false );
 					captureImageAndShowFrame();
 				}
+				jZoomView.handleMouseMovedOrDragged( null );
 				invalidateHole();
 				repaint();
 			}
@@ -99,13 +103,22 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		private void handleMouseMovedOrDragged( java.awt.event.MouseEvent e ) {
+			final int OFFSET = 32;
+			jZoomView.handleMouseMovedOrDragged( e );
+			window.setLocation( e.getXOnScreen() + OFFSET, e.getYOnScreen() + OFFSET );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+		}
+
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			this.handleMouseMovedOrDragged( e );
 		}
 
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
 					edu.cmu.cs.dennisc.java.awt.RectangleUtilities.setBounds( hole, this.xPressed, this.yPressed, e.getX(), e.getY() );
+					this.handleMouseMovedOrDragged( e );
 				}
 				repaint();
 			}
@@ -128,6 +141,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 	private void invalidateHole() {
 		this.hole.setBounds( -1, -1, -1, -1 );
+		//this.window.setVisible( false );
 	}
 
 	private boolean isHoleValid() {
@@ -155,6 +169,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId, org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite ) {
 		super( window, layerId );
 		this.imageCaptureComposite = imageCaptureComposite;
+		this.window.getAwtComponent().setContentPane( this.jZoomView );
 	}
 
 	@Override
@@ -177,6 +192,11 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 				this.removeMouseListener( this.mouseAdapter );
 			}
 			super.setStencilShowing( isShowing );
+			if( isShowing ) {
+				this.window.getAwtComponent().toFront();
+				this.window.pack();
+			}
+			this.window.setVisible( isShowing );
 			if( isShowing ) {
 				this.addMouseListener( this.mouseAdapter );
 				this.addMouseMotionListener( this.mouseAdapter );
@@ -218,6 +238,10 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 			g2.drawRect( this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1 );
 		}
 
+		java.awt.event.MouseEvent e = this.jZoomView.getMouseEvent();
+		if( e != null ) {
+
+		}
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
 	}
