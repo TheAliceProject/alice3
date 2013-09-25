@@ -443,10 +443,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
+	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation();
+
 	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.preservePreferences();
-		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( trigger );
+		this.clearanceCheckingExitOperation.fire( trigger );
 	}
 
 	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
