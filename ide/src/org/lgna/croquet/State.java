@@ -52,7 +52,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 
-	private final java.util.List<ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<ValueListener<T>> oldSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	private T previousValue;
@@ -77,10 +78,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
 	public void addValueListener( ValueListener<T> valueListener ) {
-		if( this.valueListeners.contains( valueListener ) ) {
+		if( this.oldSchoolValueListeners.contains( valueListener ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
 		}
-		this.valueListeners.add( valueListener );
+		this.oldSchoolValueListeners.add( valueListener );
 	}
 
 	@Deprecated
@@ -92,12 +93,52 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	public void removeValueListener( ValueListener<T> valueListener ) {
-		if( this.valueListeners.contains( valueListener ) ) {
+		if( this.oldSchoolValueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
 		}
-		this.valueListeners.remove( valueListener );
+		this.oldSchoolValueListeners.remove( valueListener );
+	}
+
+	public void addNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
+		if( this.newSchoolValueListeners.contains( valueListener ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
+		}
+		this.newSchoolValueListeners.add( valueListener );
+	}
+
+	public void addAndInvokeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
+		this.addNewSchoolValueListener( valueListener );
+		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.getValue() );
+		valueListener.valueChanged( e );
+	}
+
+	public void removeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
+		if( this.newSchoolValueListeners.contains( valueListener ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
+		}
+		this.newSchoolValueListeners.remove( valueListener );
+	}
+
+	protected void fireChanging( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		for( ValueListener<T> valueListener : this.oldSchoolValueListeners ) {
+			valueListener.changing( this, prevValue, nextValue, isAdjusting.value );
+		}
+	}
+
+	protected void fireChanged( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		for( ValueListener<T> valueListener : this.oldSchoolValueListeners ) {
+			valueListener.changed( this, prevValue, nextValue, isAdjusting.value );
+		}
+		if( this.newSchoolValueListeners.size() > 0 ) {
+			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( prevValue, nextValue, isAdjusting.value );
+			for( org.lgna.croquet.event.ValueListener<T> valueListener : this.newSchoolValueListeners ) {
+				valueListener.valueChanged( e );
+			}
+		}
 	}
 
 	@Override
@@ -133,18 +174,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {
 		return this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ), null );
-	}
-
-	protected void fireChanging( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
-		for( ValueListener<T> valueListener : this.valueListeners ) {
-			valueListener.changing( this, prevValue, nextValue, isAdjusting.value );
-		}
-	}
-
-	protected void fireChanged( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
-		for( ValueListener<T> valueListener : this.valueListeners ) {
-			valueListener.changed( this, prevValue, nextValue, isAdjusting.value );
-		}
 	}
 
 	@Override
