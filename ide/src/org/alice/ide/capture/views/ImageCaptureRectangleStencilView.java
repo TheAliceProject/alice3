@@ -104,10 +104,8 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		}
 
 		private void handleMouseMovedOrDragged( java.awt.event.MouseEvent e ) {
-			final int OFFSET = 32;
 			jZoomView.handleMouseMovedOrDragged( e );
-			window.setLocation( e.getXOnScreen() + OFFSET, e.getYOnScreen() + OFFSET );
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+			updateWindowLocation( e.getXOnScreen(), e.getYOnScreen() );
 		}
 
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
@@ -137,6 +135,11 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 				}
 			}
 		}
+	}
+
+	private void updateWindowLocation( int xScreen, int yScreen ) {
+		final int OFFSET = 32;
+		window.setLocation( xScreen + OFFSET, yScreen + OFFSET );
 	}
 
 	private void invalidateHole() {
@@ -193,8 +196,11 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 			}
 			super.setStencilShowing( isShowing );
 			if( isShowing ) {
-				this.window.getAwtComponent().toFront();
+				java.awt.PointerInfo pointerInfo = java.awt.MouseInfo.getPointerInfo();
+				java.awt.Point p = pointerInfo.getLocation();
+				this.updateWindowLocation( p.x, p.y );
 				this.window.pack();
+				this.window.getAwtComponent().toFront();
 			}
 			this.window.setVisible( isShowing );
 			if( isShowing ) {
