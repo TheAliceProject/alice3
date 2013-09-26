@@ -82,7 +82,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
-				composite.addShape( createShape( ptPressed, e.getPoint(), getScale() ) );
+				handleMouseReleased( e.getPoint() );
 				ptPressed = null;
 				ptDragged = null;
 				repaint();
@@ -123,10 +123,23 @@ public class JImageEditorView extends javax.swing.JComponent {
 	private java.awt.Point ptPressed;
 	private java.awt.Point ptDragged;
 
-	private final org.alice.imageeditor.croquet.ImageEditorFrame composite;
+	private final org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame;
+	private java.awt.Rectangle selection = null;
+	private java.awt.Rectangle commitedCrop = null;
 
-	public JImageEditorView( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
-		this.composite = composite;
+	public JImageEditorView( org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame ) {
+		this.imageEditorFrame = imageEditorFrame;
+	}
+
+	private void handleMouseReleased( java.awt.Point p ) {
+		java.awt.Shape shape = createShape( ptPressed, p, getScale() );
+		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
+		if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
+			imageEditorFrame.addShape( shape );
+		} else {
+			this.selection = shape.getBounds();
+			this.repaint();
+		}
 	}
 
 	private void drawShapes( java.awt.Graphics2D g2 ) {
@@ -134,13 +147,13 @@ public class JImageEditorView extends javax.swing.JComponent {
 		Object prevAntialias = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
-		if( composite.getDropShadowState().getValue() ) {
+		if( imageEditorFrame.getDropShadowState().getValue() ) {
 			final int DROP_SHADOW_OFFSET = 8;
 			g2.translate( DROP_SHADOW_OFFSET, DROP_SHADOW_OFFSET );
 			g2.setPaint( DROP_SHADOW_PAINT );
 			for( java.awt.Stroke stroke : DROP_SHADOW_STROKES ) {
 				g2.setStroke( stroke );
-				for( java.awt.Shape shape : composite.getShapes() ) {
+				for( java.awt.Shape shape : imageEditorFrame.getShapes() ) {
 					g2.draw( shape );
 				}
 			}
@@ -149,12 +162,30 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 		g2.setPaint( java.awt.Color.RED );
 		g2.setStroke( SHAPE_STROKE );
-		for( java.awt.Shape shape : composite.getShapes() ) {
+		for( java.awt.Shape shape : imageEditorFrame.getShapes() ) {
 			g2.draw( shape );
 		}
 
+		java.awt.Shape cropShape = null;
+
+		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( ( ptPressed != null ) && ( ptDragged != null ) ) {
-			g2.draw( createShape( ptPressed, ptDragged, this.getScale() ) );
+			java.awt.Shape shape = createShape( ptPressed, ptDragged, this.getScale() );
+			if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
+				g2.draw( shape );
+			} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
+				cropShape = shape;
+			}
+		} else {
+			if( this.selection != null ) {
+				cropShape = this.selection;
+			}
+		}
+
+		if( cropShape != null ) {
+			java.awt.geom.Area area = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createSubtraction( javax.swing.SwingUtilities.getLocalBounds( this ), cropShape );
+			g2.setPaint( new java.awt.Color( 0, 0, 0, 127 ) );
+			g2.fill( area );
 		}
 
 		g2.setStroke( prevStroke );
@@ -162,7 +193,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 	}
 
 	/* package-private */void render( java.awt.Graphics2D g2 ) {
-		java.awt.Image image = composite.getImageHolder().getValue();
+		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
 		if( image != null ) {
 			g2.drawImage( image, 0, 0, this );
 		} else {
@@ -181,7 +212,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 	}
 
 	private double getScale() {
-		if( composite.getShowInScreenResolutionState().getValue() ) {
+		if( imageEditorFrame.getShowInScreenResolutionState().getValue() ) {
 			return this.getScreenResolution() / (double)this.getImageResolution();
 		} else {
 			return 1.0;
@@ -193,7 +224,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 		super.paintComponent( g );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-		java.awt.Image image = composite.getImageHolder().getValue();
+		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
 
 		if( image != null ) {
 			java.awt.geom.AffineTransform m = g2.getTransform();
@@ -210,7 +241,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 			this.drawShapes( g2 );
 			g2.setTransform( m );
 		}
-		if( composite.getShowDashedBorderState().getValue() ) {
+		if( imageEditorFrame.getShowDashedBorderState().getValue() ) {
 			java.awt.Stroke prevStroke = g2.getStroke();
 			g2.setColor( java.awt.Color.DARK_GRAY );
 			g2.setStroke( OUTLINE_STROKE );
@@ -226,13 +257,13 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		java.awt.Image image = composite.getImageHolder().getValue();
+		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
 		if( image != null ) {
 			int imageWidth = image.getWidth( this );
 			int imageHeight = image.getHeight( this );
 			int width;
 			int height;
-			if( composite.getShowInScreenResolutionState().getValue() ) {
+			if( imageEditorFrame.getShowInScreenResolutionState().getValue() ) {
 				double scale = this.getScale();
 				width = (int)Math.ceil( imageWidth * scale );
 				height = (int)Math.ceil( imageHeight * scale );

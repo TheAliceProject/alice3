@@ -40,71 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt.geom;
+package org.alice.imageeditor.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AreaUtilities {
-	private AreaUtilities() {
-		throw new AssertionError();
-	}
-
-	public static java.awt.geom.Area createArea( java.awt.Shape shape ) {
-		if( shape != null ) {
-			return new java.awt.geom.Area( shape );
-		} else {
-			//todo: return null?
-			return new java.awt.geom.Area();
-		}
-	}
-
-	public static java.awt.geom.Area createIntersection( java.awt.Shape a, java.awt.Shape b ) {
-		if( a != null ) {
-			java.awt.geom.Area rv = new java.awt.geom.Area( a );
-			if( b != null ) {
-				rv.intersect( new java.awt.geom.Area( b ) );
-			} else {
-				//pass
-			}
-			return rv;
-		} else {
-			if( b != null ) {
-				return new java.awt.geom.Area( b );
-			} else {
-				//todo: return null?
-				return new java.awt.geom.Area();
-			}
-		}
-	}
-
-	public static java.awt.geom.Area createUnion( java.awt.Shape a, java.awt.Shape b ) {
-		if( a != null ) {
-			java.awt.geom.Area rv = new java.awt.geom.Area( a );
-			if( b != null ) {
-				rv.add( new java.awt.geom.Area( b ) );
-			} else {
-				//pass
-			}
-			return rv;
-		} else {
-			if( b != null ) {
-				return new java.awt.geom.Area( b );
-			} else {
-				//todo: return null?
-				return new java.awt.geom.Area();
-			}
-		}
-	}
-
-	public static java.awt.geom.Area createSubtraction( java.awt.Shape a, java.awt.Shape b ) {
-		assert a != null;
-		java.awt.geom.Area rv = new java.awt.geom.Area( a );
-		if( b != null ) {
-			rv.subtract( new java.awt.geom.Area( b ) );
-		} else {
-			//pass
-		}
-		return rv;
-	}
+public enum Tool {
+	ADD_RECTANGLE,
+	SELECT_CROP_BOUND
 }
