@@ -172,7 +172,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidPath( nextPath ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "INVALID PATH:", nextPath );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "INVALID PATH:", nextPath );
 		}
 
 		this.jPathLabel.setText( nextPath );

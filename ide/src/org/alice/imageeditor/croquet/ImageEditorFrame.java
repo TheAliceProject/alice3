@@ -127,15 +127,31 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private final org.lgna.croquet.ListSelectionState<Tool> toolState = this.createListSelectionStateForEnum( this.createKey( "toolState" ), Tool.class, Tool.ADD_RECTANGLE );
 
-	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = new org.lgna.croquet.ValueHolder<java.awt.Image>();
+	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = org.lgna.croquet.ValueHolder.createInstance( null );
 
-	private final org.lgna.croquet.ValueHolder<String> pathHolder = new org.lgna.croquet.ValueHolder<String>();
+	private final org.lgna.croquet.ValueHolder<String> pathHolder = org.lgna.croquet.ValueHolder.createInstance( INVALID_PATH_EMPTY_SUB_PATH );
 
 	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private final org.lgna.croquet.ValueHolder<java.awt.Rectangle> cropSelectHolder = org.lgna.croquet.ValueHolder.createInstance( null );
+
+	private final org.lgna.croquet.ValueHolder<java.awt.Rectangle> cropCommitHolder = org.lgna.croquet.ValueHolder.createInstance( null );
 
 	private final FilenameComboBoxModel filenameComboBoxModel = new FilenameComboBoxModel();
 
 	private FilenameListWorker worker;
+
+	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropSelectListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+			handleCropSelectChanged( e );
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropCommitListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+			handleCropCommitChanged( e );
+		}
+	};
 
 	private final org.lgna.croquet.State.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.State.ValueListener<String>() {
 		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -201,12 +217,28 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		this.uncropOperation.setEnabled( false );
 	}
 
+	private void handleCropSelectChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		this.cropOperation.setEnabled( e.getNextValue() != null );
+	}
+
+	private void handleCropCommitChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		this.uncropOperation.setEnabled( e.getNextValue() != null );
+	}
+
 	public org.lgna.croquet.ValueHolder<java.awt.Image> getImageHolder() {
 		return this.imageHolder;
 	}
 
 	public org.lgna.croquet.ValueHolder<String> getPathHolder() {
 		return this.pathHolder;
+	}
+
+	public org.lgna.croquet.ValueHolder<java.awt.Rectangle> getCropSelectHolder() {
+		return this.cropSelectHolder;
+	}
+
+	public org.lgna.croquet.ValueHolder<java.awt.Rectangle> getCropCommitHolder() {
+		return this.cropCommitHolder;
 	}
 
 	public org.lgna.croquet.ListSelectionState<Tool> getToolState() {
@@ -264,9 +296,11 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	}
 
 	private void crop() {
+		this.cropCommitHolder.setValue( this.cropSelectHolder.getValue() );
 	}
 
 	private void uncrop() {
+		this.cropCommitHolder.setValue( null );
 	}
 
 	public void addShape( java.awt.Shape shape ) {
@@ -371,12 +405,16 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			jTextField.getDocument().addDocumentListener( this.editorListener );
 		}
 		this.updatePath();
+		this.cropSelectHolder.addValueListener( this.cropSelectListener );
+		this.cropCommitHolder.addValueListener( this.cropCommitListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
+		this.cropCommitHolder.removeValueListener( this.cropCommitListener );
+		this.cropSelectHolder.removeValueListener( this.cropSelectListener );
 		java.awt.Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
 		if( awtEditorComponent instanceof javax.swing.JTextField ) {
 			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;

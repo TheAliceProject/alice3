@@ -60,7 +60,7 @@ public class ValueEvent<T> {
 	}
 
 	public static <T> ValueEvent<T> createInstance( T nextValue ) {
-		return new ValueEvent<T>( false, nextValue, null, false );
+		return new ValueEvent<T>( false, null, nextValue, false );
 	}
 
 	private ValueEvent( boolean isPreviousValueValid, T previousValue, T nextValue, boolean isAdjusting ) {

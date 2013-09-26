@@ -124,8 +124,6 @@ public class JImageEditorView extends javax.swing.JComponent {
 	private java.awt.Point ptDragged;
 
 	private final org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame;
-	private java.awt.Rectangle selection = null;
-	private java.awt.Rectangle commitedCrop = null;
 
 	public JImageEditorView( org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame ) {
 		this.imageEditorFrame = imageEditorFrame;
@@ -136,9 +134,8 @@ public class JImageEditorView extends javax.swing.JComponent {
 		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
 			imageEditorFrame.addShape( shape );
-		} else {
-			this.selection = shape.getBounds();
-			this.repaint();
+		} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
+			this.imageEditorFrame.getCropSelectHolder().setValue( shape.getBounds() );
 		}
 	}
 
@@ -177,8 +174,9 @@ public class JImageEditorView extends javax.swing.JComponent {
 				cropShape = shape;
 			}
 		} else {
-			if( this.selection != null ) {
-				cropShape = this.selection;
+			java.awt.Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
+			if( selection != null ) {
+				cropShape = selection;
 			}
 		}
 

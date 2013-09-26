@@ -45,15 +45,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ValueHolder<T> {
+public final class ValueHolder<T> {
 	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private T value;
 
-	public ValueHolder() {
+	public static <T> ValueHolder<T> createInstance( T value ) {
+		return new ValueHolder<T>( value );
 	}
 
-	public ValueHolder( T value ) {
+	private ValueHolder( T value ) {
 		this.value = value;
 	}
 
