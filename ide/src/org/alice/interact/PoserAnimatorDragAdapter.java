@@ -43,6 +43,7 @@
 package org.alice.interact;
 
 import org.alice.interact.PickHint.PickType;
+import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MousePressCondition;
@@ -68,6 +69,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	private PoserPicturePlaneInteraction dragAdapter = null;
 	private final PoserScene poserScene;
+	private ManipulatorConditionSet selectObject;
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
 
 	public PoserAnimatorDragAdapter( PoserScene poserScene ) {
@@ -105,16 +107,21 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutYAxis );
 		addHandle( rotateJointAboutZAxis );
 
-		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+		selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+
 		selectObject.setEnabled( false );
 		selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
+		selectObject.addCondition( new DragAndDropCondition() );
 
 		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
 		this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, group );
 		setInteractionState( HandleStyle.ROTATION );
 
-		//		this.manipulators.add( selectObject );
+		this.manipulators.add( selectObject );
 
+		for( int i = 0; i < this.manipulators.size(); i++ ) {
+			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		}
 	}
 
 	public final void setTarget( SModel model ) {
@@ -139,5 +146,11 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 			Logger.severe( "Drag Adapter cannot be initialized until OnscreenLookingGlass is set" );
 			Thread.dumpStack();
 		}
+	}
+
+	@Override
+	public void setHandlVisibility( boolean isVisible ) {
+		super.setHandlVisibility( isVisible );
+		selectObject.setEnabled( isVisible );
 	}
 }

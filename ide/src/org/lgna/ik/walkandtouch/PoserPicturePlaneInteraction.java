@@ -70,7 +70,6 @@ import examples.math.pictureplane.PicturePlaneInteraction;
  */
 public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
-	//	private final ObjectRotateDragManipulator rotatifier = new ObjectRotateDragManipulator();
 	private static final double MIN_SELECTION_DISTANCE = 50;
 	private final PoserScene scene;
 	private final CameraImp camera;
@@ -83,8 +82,6 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)ImplementationAccessor.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
-		//		rotatifier.setCamera( camera.getSgCamera() );
-		//		rotatifier.setOnscreenLookingGlass( sceneImp.getProgram().getOnscreenLookingGlass() );
 	}
 
 	@Override
@@ -129,8 +126,11 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		LookingGlass lg = implementation.getProgram().getOnscreenLookingGlass();
 		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 		if( ( pickResult != null ) && ( pickResult.getVisual() != null ) ) {
-			if( pickResult.getVisual().getParent() instanceof ManipulationHandle3D ) {
-				return (ManipulationHandle3D)pickResult.getVisual().getParent();
+			Composite composite = pickResult.getVisual().getParent();
+			if( composite != null ) {
+				if( composite.getParent() instanceof ManipulationHandle3D ) {
+					return (ManipulationHandle3D)composite.getParent();
+				}
 			}
 		}
 		return null;
@@ -180,8 +180,6 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		if( selected != null ) {
 			super.handleMouseDragged( e );
 			fireMousePressed( e );
-		} else {
-			//									rotatifier.doClickManipulator( clickInput, previousInput )
 		}
 	}
 

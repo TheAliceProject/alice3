@@ -77,7 +77,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), true );
+	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
 	protected AbstractPoserInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
 
