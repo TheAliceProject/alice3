@@ -108,7 +108,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
-				handleMouseReleased( getClampedPoint( e ) );
+				handleMouseReleased( e );
 				ptPressed = null;
 				ptDragged = null;
 				repaint();
@@ -154,13 +154,17 @@ public class JImageEditorView extends javax.swing.JComponent {
 		this.imageEditorFrame = imageEditorFrame;
 	}
 
-	private void handleMouseReleased( java.awt.Point p ) {
+	private void handleMouseReleased( final java.awt.event.MouseEvent e ) {
+		java.awt.Point p = getClampedPoint( e );
 		java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
 		java.awt.Shape shape = createShape( ptPressed, p, getScale(), crop );
 		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
 			if( shape != null ) {
-				imageEditorFrame.addShape( shape );
+				org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, null, org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ), null );
+				org.alice.imageeditor.croquet.edits.AddShapeEdit edit = new org.alice.imageeditor.croquet.edits.AddShapeEdit( completionStep, shape, imageEditorFrame );
+				completionStep.commitAndInvokeDo( edit );
 			}
 		} else if( tool == org.alice.imageeditor.croquet.Tool.CROP_SELECT ) {
 			this.imageEditorFrame.getCropSelectHolder().setValue( shape != null ? shape.getBounds() : null );
