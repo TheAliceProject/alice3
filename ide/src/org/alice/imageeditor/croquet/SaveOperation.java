@@ -79,6 +79,16 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 		org.lgna.croquet.Model rv;
 		switch( subSteps.size() ) {
 		case 0:
+			java.awt.Rectangle cropSelection = owner.getCropSelectHolder().getValue();
+			if( cropSelection != null ) {
+				int result = javax.swing.JOptionPane.showConfirmDialog( owner.getView().getAwtComponent(), "You have set a crop rectangle.  Commit this crop and continue?", "Crop?", javax.swing.JOptionPane.OK_CANCEL_OPTION );
+				if( result == javax.swing.JOptionPane.OK_OPTION ) {
+					owner.crop();
+				} else {
+					//cancel
+					return null;
+				}
+			}
 			if( this.file != null ) {
 				if( this.file.exists() ) {
 					rv = this.saveOverComposite.getValueCreator();

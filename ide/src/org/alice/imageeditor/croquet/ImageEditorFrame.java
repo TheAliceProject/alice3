@@ -217,14 +217,6 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		this.uncropOperation.setEnabled( false );
 	}
 
-	private void handleCropSelectChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
-		this.cropOperation.setEnabled( e.getNextValue() != null );
-	}
-
-	private void handleCropCommitChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
-		this.uncropOperation.setEnabled( e.getNextValue() != null );
-	}
-
 	public org.lgna.croquet.ValueHolder<java.awt.Image> getImageHolder() {
 		return this.imageHolder;
 	}
@@ -295,12 +287,24 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	}
 
-	private void crop() {
+	/* package-private */void crop() {
 		this.cropCommitHolder.setValue( this.cropSelectHolder.getValue() );
+		this.cropSelectHolder.setValue( null );
+		this.getView().revalidateAndRepaint();
 	}
 
 	private void uncrop() {
+		this.cropSelectHolder.setValue( this.cropCommitHolder.getValue() );
 		this.cropCommitHolder.setValue( null );
+		this.getView().revalidateAndRepaint();
+	}
+
+	private void handleCropSelectChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		this.cropOperation.setEnabled( e.getNextValue() != null );
+	}
+
+	private void handleCropCommitChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		this.uncropOperation.setEnabled( e.getNextValue() != null );
 	}
 
 	public void addShape( java.awt.Shape shape ) {
@@ -441,6 +445,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ImageEditorFrame imageComposite = new ImageEditorFrame();
 		imageComposite.getShowInScreenResolutionState().setValueTransactionlessly( false );
+		imageComposite.getToolState().setValueTransactionlessly( Tool.SELECT_CROP_BOUND );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				imageComposite.setImageClearShapesAndShowFrame( image );

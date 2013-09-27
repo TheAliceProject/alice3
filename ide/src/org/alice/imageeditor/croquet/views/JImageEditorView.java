@@ -46,12 +46,31 @@ package org.alice.imageeditor.croquet.views;
  * @author Dennis Cosgrove
  */
 public class JImageEditorView extends javax.swing.JComponent {
-	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b, double scale ) {
+	private static final int CLICK_THRESHOLD = 3;
+	private static final java.awt.Paint CROP_PAINT = new java.awt.Color( 0, 0, 0, 127 );
+
+	private static java.awt.Shape createShape( java.awt.Point a, java.awt.Point b, double scale, java.awt.Rectangle cropRectangle ) {
 		int x = Math.min( a.x, b.x );
 		int y = Math.min( a.y, b.y );
 		int width = Math.abs( b.x - a.x );
 		int height = Math.abs( b.y - a.y );
-		return new java.awt.geom.Rectangle2D.Double( x / scale, y / scale, width / scale, height / scale );
+
+		x -= 1;
+		y -= 1;
+
+		if( ( width > CLICK_THRESHOLD ) || ( height > CLICK_THRESHOLD ) ) {
+			double sx = x / scale;
+			double sy = y / scale;
+			double sw = width / scale;
+			double sh = height / scale;
+			if( cropRectangle != null ) {
+				sx += cropRectangle.x;
+				sy += cropRectangle.y;
+			}
+			return new java.awt.geom.Rectangle2D.Double( sx, sy, sw, sh );
+		} else {
+			return null;
+		}
 	}
 
 	private static final java.awt.Stroke SHAPE_STROKE = new java.awt.BasicStroke( 8.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
@@ -70,10 +89,18 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 	private static final java.awt.Paint DROP_SHADOW_PAINT = new java.awt.Color( 127, 127, 127, 15 );
 
+	private static java.awt.Point getClampedPoint( java.awt.event.MouseEvent e ) {
+		java.awt.Component awtComponent = e.getComponent();
+		java.awt.Point rv = e.getPoint();
+		rv.x = Math.min( Math.max( 1, e.getX() ), awtComponent.getWidth() - 2 );
+		rv.y = Math.min( Math.max( 1, e.getY() ), awtComponent.getHeight() - 2 );
+		return rv;
+	}
+
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( e.getButton() == java.awt.event.MouseEvent.BUTTON1 ) {
-				ptPressed = e.getPoint();
+				ptPressed = getClampedPoint( e );
 			} else {
 				ptPressed = null;
 				repaint();
@@ -82,7 +109,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
-				handleMouseReleased( e.getPoint() );
+				handleMouseReleased( getClampedPoint( e ) );
 				ptPressed = null;
 				ptDragged = null;
 				repaint();
@@ -130,16 +157,21 @@ public class JImageEditorView extends javax.swing.JComponent {
 	}
 
 	private void handleMouseReleased( java.awt.Point p ) {
-		java.awt.Shape shape = createShape( ptPressed, p, getScale() );
+		java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+		java.awt.Shape shape = createShape( ptPressed, p, getScale(), crop );
 		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
-			imageEditorFrame.addShape( shape );
+			if( shape != null ) {
+				imageEditorFrame.addShape( shape );
+			}
 		} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
-			this.imageEditorFrame.getCropSelectHolder().setValue( shape.getBounds() );
+			this.imageEditorFrame.getCropSelectHolder().setValue( shape != null ? shape.getBounds() : null );
 		}
 	}
 
-	private void drawShapes( java.awt.Graphics2D g2 ) {
+	private void drawShapes( java.awt.Graphics2D g2, java.awt.geom.AffineTransform mOriginal ) {
+		java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+
 		java.awt.Stroke prevStroke = g2.getStroke();
 		Object prevAntialias = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
@@ -165,39 +197,49 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 		java.awt.Shape cropShape = null;
 
+		boolean isInTheMidstOfDragging = ( ptPressed != null ) && ( ptDragged != null );
 		org.alice.imageeditor.croquet.Tool tool = this.imageEditorFrame.getToolState().getValue();
-		if( ( ptPressed != null ) && ( ptDragged != null ) ) {
-			java.awt.Shape shape = createShape( ptPressed, ptDragged, this.getScale() );
-			if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
-				g2.draw( shape );
-			} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
-				cropShape = shape;
+		if( isInTheMidstOfDragging ) {
+			java.awt.Shape shape = createShape( ptPressed, ptDragged, this.getScale(), crop );
+			if( shape != null ) {
+				if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
+					g2.draw( shape );
+				} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
+					cropShape = shape;
+				}
 			}
-		} else {
-			java.awt.Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
-			if( selection != null ) {
+		}
+
+		java.awt.Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
+		if( selection != null ) {
+			if( cropShape != null ) {
+				// pass
+			} else {
 				cropShape = selection;
 			}
 		}
 
 		if( cropShape != null ) {
-			java.awt.geom.Area area = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createSubtraction( javax.swing.SwingUtilities.getLocalBounds( this ), cropShape );
-			g2.setPaint( new java.awt.Color( 0, 0, 0, 127 ) );
-			g2.fill( area );
+			try {
+				java.awt.geom.AffineTransform m = g2.getTransform();
+				java.awt.geom.Point2D.Double ptA = new java.awt.geom.Point2D.Double( 0, 0 );
+				java.awt.geom.Point2D.Double ptB = new java.awt.geom.Point2D.Double( this.getWidth(), this.getHeight() );
+				mOriginal.transform( ptA, ptA );
+				mOriginal.transform( ptB, ptB );
+				m.inverseTransform( ptA, ptA );
+				m.inverseTransform( ptB, ptB );
+
+				java.awt.Shape bounds = new java.awt.geom.Rectangle2D.Double( ptA.getX(), ptA.getY(), ptB.getX() - ptA.getX(), ptB.getY() - ptA.getY() );
+				java.awt.geom.Area area = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createSubtraction( bounds, cropShape );
+				g2.setPaint( CROP_PAINT );
+				g2.fill( area );
+			} catch( java.awt.geom.NoninvertibleTransformException nte ) {
+				throw new RuntimeException( nte );
+			}
 		}
 
 		g2.setStroke( prevStroke );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialias );
-	}
-
-	/* package-private */void render( java.awt.Graphics2D g2 ) {
-		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
-		if( image != null ) {
-			g2.drawImage( image, 0, 0, this );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		}
-		this.drawShapes( g2 );
 	}
 
 	private int getImageResolution() {
@@ -227,16 +269,32 @@ public class JImageEditorView extends javax.swing.JComponent {
 		if( image != null ) {
 			java.awt.geom.AffineTransform m = g2.getTransform();
 			g2.translate( 1, 1 );
+			java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
 			double scale = this.getScale();
 			if( scale != 1.0 ) {
-				g2.drawImage( image.getScaledInstance( this.getWidth() - 2, this.getHeight() - 2, java.awt.Image.SCALE_SMOOTH ), 0, 0, this );
-				g2.scale( scale, scale );
-				//g2.setRenderingHint( java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+				int imageWidth = image.getWidth( this );
+				int imageHeight = image.getHeight( this );
+				int scaledImageWidth = (int)Math.ceil( imageWidth * scale );
+				int scaledImageHeight = (int)Math.ceil( imageHeight * scale );
+				if( crop != null ) {
+					g2.scale( scale, scale );
+					if( crop != null ) {
+						g2.translate( -crop.x, -crop.y );
+					}
+					g2.drawImage( image, 0, 0, this );
+				} else {
+					java.awt.Image scaledImage = image.getScaledInstance( scaledImageWidth, scaledImageHeight, java.awt.Image.SCALE_SMOOTH );
+					g2.drawImage( scaledImage, 0, 0, this );
+					g2.scale( scale, scale );
+				}
 			} else {
+				if( crop != null ) {
+					g2.translate( -crop.x, -crop.y );
+				}
 				g2.drawImage( image, 0, 0, this );
 			}
 
-			this.drawShapes( g2 );
+			this.drawShapes( g2, m );
 			g2.setTransform( m );
 		}
 		if( imageEditorFrame.getShowDashedBorderState().getValue() ) {
@@ -245,6 +303,20 @@ public class JImageEditorView extends javax.swing.JComponent {
 			g2.setStroke( OUTLINE_STROKE );
 			g2.drawRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1 );
 			g2.setStroke( prevStroke );
+		}
+	}
+
+	/* package-private */void render( java.awt.Graphics2D g2 ) {
+		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
+		if( image != null ) {
+			java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+			if( crop != null ) {
+				g2.translate( -crop.x, -crop.y );
+			}
+			g2.drawImage( image, 0, 0, this );
+			this.drawShapes( g2, g2.getTransform() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 	}
 
@@ -257,17 +329,22 @@ public class JImageEditorView extends javax.swing.JComponent {
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Image image = imageEditorFrame.getImageHolder().getValue();
 		if( image != null ) {
-			int imageWidth = image.getWidth( this );
-			int imageHeight = image.getHeight( this );
+			java.awt.Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+			int srcWidth = image.getWidth( this );
+			int srcHeight = image.getHeight( this );
 			int width;
 			int height;
+			if( crop != null ) {
+				srcWidth = crop.width;
+				srcHeight = crop.height;
+			}
 			if( imageEditorFrame.getShowInScreenResolutionState().getValue() ) {
 				double scale = this.getScale();
-				width = (int)Math.ceil( imageWidth * scale );
-				height = (int)Math.ceil( imageHeight * scale );
+				width = (int)Math.ceil( srcWidth * scale );
+				height = (int)Math.ceil( srcHeight * scale );
 			} else {
-				width = imageWidth;
-				height = imageHeight;
+				width = srcWidth;
+				height = srcHeight;
 			}
 			return new java.awt.Dimension( width + 2, height + 2 );
 		} else {

@@ -196,7 +196,19 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
 		java.awt.Image image = composite.getImageHolder().getValue();
 		if( image != null ) {
-			java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( image.getWidth( this.jImageView ), image.getHeight( this.jImageView ), java.awt.image.BufferedImage.TYPE_INT_BGR );
+			int width;
+			int height;
+			java.awt.Rectangle selection = composite.getCropSelectHolder().getValue();
+			assert selection == null : selection;
+			java.awt.Rectangle crop = composite.getCropCommitHolder().getValue();
+			if( crop != null ) {
+				width = crop.width;
+				height = crop.height;
+			} else {
+				width = image.getWidth( this.jImageView );
+				height = image.getWidth( this.jImageView );
+			}
+			java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_BGR );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)rv.getGraphics();
 			this.jImageView.render( g2 );
 			g2.dispose();
