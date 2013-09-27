@@ -121,19 +121,22 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
-	private static final javax.swing.KeyStroke CROP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
-	private final java.awt.event.ActionListener cropListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			getComposite().getToolState().setValueTransactionlessly( org.alice.imageeditor.croquet.Tool.CROP_SELECT );
-		}
-	};
+	private class SelectToolActionListener implements java.awt.event.ActionListener {
+		private final org.alice.imageeditor.croquet.Tool tool;
 
-	private static final javax.swing.KeyStroke RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F11, 0 );
-	private final java.awt.event.ActionListener rectangleListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			getComposite().getToolState().setValueTransactionlessly( org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE );
+		public SelectToolActionListener( org.alice.imageeditor.croquet.Tool tool ) {
+			this.tool = tool;
 		}
-	};
+
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			getComposite().getToolState().setValueTransactionlessly( this.tool );
+		}
+	}
+
+	private static final javax.swing.KeyStroke CROP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
+	private static final javax.swing.KeyStroke RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F11, 0 );
+	private final java.awt.event.ActionListener cropListener = new SelectToolActionListener( org.alice.imageeditor.croquet.Tool.CROP_SELECT );
+	private final java.awt.event.ActionListener rectangleListener = new SelectToolActionListener( org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE );
 
 	private final JImageEditorView jImageView;
 
