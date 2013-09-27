@@ -105,7 +105,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 						try {
 							String localizationValue = resourceBundle.getString( localizationKey );
 							if( this.localizationCustomizer != null ) {
-								localizationValue = this.localizationCustomizer.customize( localizationValue, value );
+								localizationValue = this.localizationCustomizer.customize( localizationValue, enumConstant );
 							}
 							this.mapValueToLocalization.put( enumConstant, localizationValue );
 						} catch( java.util.MissingResourceException mre ) {

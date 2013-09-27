@@ -125,7 +125,15 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( this.createKey( "showInScreenResolutionState" ), true );
 	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( this.createKey( "dropShadowState" ), true );
 
-	private final org.lgna.croquet.ListSelectionState<Tool> toolState = this.createListSelectionStateForEnum( this.createKey( "toolState" ), Tool.class, Tool.ADD_RECTANGLE );
+	private final org.lgna.croquet.ListSelectionState<Tool> toolState = this.createListSelectionStateForEnum( this.createKey( "toolState" ), Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
+		public String customize( String localization, Tool value ) {
+			if( value == Tool.ADD_RECTANGLE ) {
+				return localization + " (F11)";
+			} else {
+				return localization + " (F12)";
+			}
+		}
+	}, Tool.ADD_RECTANGLE );
 
 	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = org.lgna.croquet.ValueHolder.createInstance( null );
 
@@ -451,7 +459,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ImageEditorFrame imageComposite = new ImageEditorFrame();
 		imageComposite.getShowInScreenResolutionState().setValueTransactionlessly( false );
-		imageComposite.getToolState().setValueTransactionlessly( Tool.SELECT_CROP_BOUND );
+		imageComposite.getToolState().setValueTransactionlessly( Tool.CROP_SELECT );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				imageComposite.setImageClearShapesAndShowFrame( image );

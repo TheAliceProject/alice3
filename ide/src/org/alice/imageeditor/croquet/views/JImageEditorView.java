@@ -162,7 +162,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 			if( shape != null ) {
 				imageEditorFrame.addShape( shape );
 			}
-		} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
+		} else if( tool == org.alice.imageeditor.croquet.Tool.CROP_SELECT ) {
 			this.imageEditorFrame.getCropSelectHolder().setValue( shape != null ? shape.getBounds() : null );
 		}
 	}
@@ -202,7 +202,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 			if( shape != null ) {
 				if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
 					g2.draw( shape );
-				} else if( tool == org.alice.imageeditor.croquet.Tool.SELECT_CROP_BOUND ) {
+				} else if( tool == org.alice.imageeditor.croquet.Tool.CROP_SELECT ) {
 					cropShape = shape;
 				}
 			}

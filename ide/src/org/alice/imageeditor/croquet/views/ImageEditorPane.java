@@ -121,6 +121,20 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
+	private static final javax.swing.KeyStroke CROP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
+	private final java.awt.event.ActionListener cropListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			getComposite().getToolState().setValueTransactionlessly( org.alice.imageeditor.croquet.Tool.CROP_SELECT );
+		}
+	};
+
+	private static final javax.swing.KeyStroke RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F11, 0 );
+	private final java.awt.event.ActionListener rectangleListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			getComposite().getToolState().setValueTransactionlessly( org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE );
+		}
+	};
+
 	private final JImageEditorView jImageView;
 
 	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
@@ -243,12 +257,16 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
 			}
 		} );
+		this.registerKeyboardAction( this.cropListener, CROP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.rectangleListener, RECTANGLE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
 		super.handleCompositePreActivation();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
+		this.unregisterKeyboardAction( RECTANGLE_KEY_STROKE );
+		this.unregisterKeyboardAction( CROP_KEY_STROKE );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getPathHolder().removeValueListener( this.pathListener );

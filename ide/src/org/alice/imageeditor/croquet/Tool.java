@@ -47,5 +47,5 @@ package org.alice.imageeditor.croquet;
  */
 public enum Tool {
 	ADD_RECTANGLE,
-	SELECT_CROP_BOUND
+	CROP_SELECT
 }
