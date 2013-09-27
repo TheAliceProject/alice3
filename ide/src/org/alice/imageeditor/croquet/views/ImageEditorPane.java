@@ -206,7 +206,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 				height = crop.height;
 			} else {
 				width = image.getWidth( this.jImageView );
-				height = image.getWidth( this.jImageView );
+				height = image.getHeight( this.jImageView );
 			}
 			java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_BGR );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)rv.getGraphics();
