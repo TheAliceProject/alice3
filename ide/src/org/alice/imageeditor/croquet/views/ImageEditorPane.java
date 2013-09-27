@@ -126,6 +126,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
 
 	private final org.lgna.croquet.components.Button saveButton;
+	private final org.lgna.croquet.components.Button cropButton;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow,shrink]16[grow 0, shrink 0][grow 0, shrink 0][grow 0, shrink 0]" );
@@ -142,8 +143,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill" );
 
+		this.cropButton = composite.getCropOperation().createButton();
 		panel.addComponent( composite.getToolState().createVerticalDefaultRadioButtons(), "growx, wrap" );
-		panel.addComponent( composite.getCropOperation().createButton(), "growx, split 2" );
+		panel.addComponent( this.cropButton, "growx, split 2" );
 		panel.addComponent( composite.getUncropOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getDropShadowState().createCheckBox(), "growx, wrap" );
@@ -218,6 +220,14 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	}
 
+	public void setDefaultButtonToSave() {
+		this.getRoot().setDefaultButton( this.saveButton );
+	}
+
+	public void setDefaultButtonToCrop() {
+		this.getRoot().setDefaultButton( this.cropButton );
+	}
+
 	@Override
 	public void handleCompositePreActivation() {
 		this.getComposite().getShowInScreenResolutionState().addValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
@@ -227,7 +237,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		this.getComposite().getPathHolder().addAndInvokeValueListener( this.pathListener );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
-		this.getRoot().setDefaultButton( this.saveButton );
+		this.setDefaultButtonToSave();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();

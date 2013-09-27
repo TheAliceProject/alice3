@@ -290,6 +290,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	/* package-private */void crop() {
 		this.cropCommitHolder.setValue( this.cropSelectHolder.getValue() );
 		this.cropSelectHolder.setValue( null );
+		this.getView().setDefaultButtonToSave();
 		this.getView().revalidateAndRepaint();
 	}
 
@@ -301,6 +302,11 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private void handleCropSelectChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
 		this.cropOperation.setEnabled( e.getNextValue() != null );
+		if( this.cropOperation.isEnabled() ) {
+			this.getView().setDefaultButtonToCrop();
+		} else {
+			this.getView().setDefaultButtonToSave();
+		}
 	}
 
 	private void handleCropCommitChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
