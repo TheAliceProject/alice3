@@ -123,34 +123,6 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		}
 	}
 
-	private void captureImageAndShowFrame() {
-		synchronized( this.hole ) {
-			if( this.isHoleValid() ) {
-				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
-					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
-					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
-					//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
-					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copied to clipboard:", image );
-					imageComposite.setImageClearShapesAndShowFrame( image );
-				}
-			}
-		}
-	}
-
-	private void updateWindowLocation( int xScreen, int yScreen ) {
-		final int OFFSET = 32;
-		window.setLocation( xScreen + OFFSET, yScreen + OFFSET );
-	}
-
-	private void invalidateHole() {
-		this.hole.setBounds( -1, -1, -1, -1 );
-		//this.window.setVisible( false );
-	}
-
-	private boolean isHoleValid() {
-		return this.hole.width > -1;
-	}
-
 	private final MouseAdapter mouseAdapter = new MouseAdapter();
 	private final org.alice.imageeditor.croquet.ImageEditorFrame imageComposite = new org.alice.imageeditor.croquet.ImageEditorFrame();
 
@@ -173,6 +145,36 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		super( window, layerId );
 		this.imageCaptureComposite = imageCaptureComposite;
 		this.window.getAwtComponent().setContentPane( this.jZoomView );
+	}
+
+	private void captureImageAndShowFrame() {
+		synchronized( this.hole ) {
+			if( this.isHoleValid() ) {
+				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
+					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
+					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
+					imageComposite.setImageClearShapesAndShowFrame( image );
+				}
+			}
+		}
+	}
+
+	public org.alice.imageeditor.croquet.ImageEditorFrame getImageComposite() {
+		return this.imageComposite;
+	}
+
+	private void updateWindowLocation( int xScreen, int yScreen ) {
+		final int OFFSET = 32;
+		window.setLocation( xScreen + OFFSET, yScreen + OFFSET );
+	}
+
+	private void invalidateHole() {
+		this.hole.setBounds( -1, -1, -1, -1 );
+		//this.window.setVisible( false );
+	}
+
+	private boolean isHoleValid() {
+		return this.hole.width > -1;
 	}
 
 	@Override

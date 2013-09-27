@@ -103,7 +103,6 @@ public class JImageEditorView extends javax.swing.JComponent {
 				ptPressed = getClampedPoint( e );
 			} else {
 				ptPressed = null;
-				repaint();
 			}
 		}
 
@@ -128,7 +127,6 @@ public class JImageEditorView extends javax.swing.JComponent {
 
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
-
 		}
 
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
@@ -259,6 +257,24 @@ public class JImageEditorView extends javax.swing.JComponent {
 		}
 	}
 
+	private int scaledImageWidth = -1;
+	private int scaledImageHeight = -1;
+	private java.awt.Image scaledImage = null;
+
+	private java.awt.Image getScaledImage( java.awt.Image image, int width, int height ) {
+		if( ( width != this.scaledImageWidth ) || ( height != this.scaledImageHeight ) ) {
+			this.scaledImage = null;
+		}
+		if( this.scaledImage != null ) {
+			//pass
+		} else {
+			this.scaledImageWidth = width;
+			this.scaledImageHeight = height;
+			this.scaledImage = image.getScaledInstance( this.scaledImageWidth, this.scaledImageHeight, java.awt.Image.SCALE_SMOOTH );
+		}
+		return this.scaledImage;
+	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
@@ -283,8 +299,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 					}
 					g2.drawImage( image, 0, 0, this );
 				} else {
-					java.awt.Image scaledImage = image.getScaledInstance( scaledImageWidth, scaledImageHeight, java.awt.Image.SCALE_SMOOTH );
-					g2.drawImage( scaledImage, 0, 0, this );
+					g2.drawImage( this.getScaledImage( image, scaledImageWidth, scaledImageHeight ), 0, 0, this );
 					g2.scale( scale, scale );
 				}
 			} else {
