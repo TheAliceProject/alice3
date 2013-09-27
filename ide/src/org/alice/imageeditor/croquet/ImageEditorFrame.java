@@ -116,8 +116,12 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( this.createKey( "copyOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			copyImageToClipboard( getView().render() );
-			return null;
+			if( isGoodToGoCroppingIfNecessary() ) {
+				copyImageToClipboard( getView().render() );
+				return null;
+			} else {
+				throw new org.lgna.croquet.CancelException();
+			}
 		}
 	} );
 
@@ -223,6 +227,20 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		this.saveOperation.setEnabled( false );
 		this.cropOperation.setEnabled( false );
 		this.uncropOperation.setEnabled( false );
+	}
+
+	/* package-private */boolean isGoodToGoCroppingIfNecessary() {
+		java.awt.Rectangle cropSelection = this.getCropSelectHolder().getValue();
+		if( cropSelection != null ) {
+			int result = javax.swing.JOptionPane.showConfirmDialog( this.getView().getAwtComponent(), "You have set a crop rectangle.  Commit this crop and continue?", "Crop?", javax.swing.JOptionPane.OK_CANCEL_OPTION );
+			if( result == javax.swing.JOptionPane.OK_OPTION ) {
+				this.crop();
+			} else {
+				//cancel
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public org.lgna.croquet.ValueHolder<java.awt.Image> getImageHolder() {

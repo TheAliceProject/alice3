@@ -79,24 +79,18 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 		org.lgna.croquet.Model rv;
 		switch( subSteps.size() ) {
 		case 0:
-			java.awt.Rectangle cropSelection = owner.getCropSelectHolder().getValue();
-			if( cropSelection != null ) {
-				int result = javax.swing.JOptionPane.showConfirmDialog( owner.getView().getAwtComponent(), "You have set a crop rectangle.  Commit this crop and continue?", "Crop?", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-				if( result == javax.swing.JOptionPane.OK_OPTION ) {
-					owner.crop();
+			if( owner.isGoodToGoCroppingIfNecessary() ) {
+				if( this.file != null ) {
+					if( this.file.exists() ) {
+						rv = this.saveOverComposite.getValueCreator();
+					} else {
+						rv = null;
+					}
 				} else {
-					//cancel
-					return null;
-				}
-			}
-			if( this.file != null ) {
-				if( this.file.exists() ) {
-					rv = this.saveOverComposite.getValueCreator();
-				} else {
-					rv = null;
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Please select a file" );
+					throw new org.lgna.croquet.CancelException();
 				}
 			} else {
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Please select a file" );
 				throw new org.lgna.croquet.CancelException();
 			}
 			break;

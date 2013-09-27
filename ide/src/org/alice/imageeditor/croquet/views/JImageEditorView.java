@@ -162,7 +162,8 @@ public class JImageEditorView extends javax.swing.JComponent {
 		if( tool == org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE ) {
 			if( shape != null ) {
 				org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, null, org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ), null );
+				org.lgna.croquet.CompletionModel model = null;
+				org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, model, org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ), null );
 				org.alice.imageeditor.croquet.edits.AddShapeEdit edit = new org.alice.imageeditor.croquet.edits.AddShapeEdit( completionStep, shape, imageEditorFrame );
 				completionStep.commitAndInvokeDo( edit );
 			}
