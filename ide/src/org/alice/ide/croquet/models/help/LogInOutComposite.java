@@ -45,8 +45,6 @@ package org.alice.ide.croquet.models.help;
 import java.util.UUID;
 
 import org.lgna.croquet.CardOwnerComposite;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 
 /**
  * @author Matt May
@@ -56,15 +54,10 @@ public class LogInOutComposite extends CardOwnerComposite {
 	private final LogInCard logInCard;
 	private final LogOutCard logOutCard;
 	private AbstractLoginComposite composite;
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> isLoggedInListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateLogInOutComposite();
 		}
-
 	};
 
 	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
@@ -76,7 +69,8 @@ public class LogInOutComposite extends CardOwnerComposite {
 		this.addCard( this.logInCard );
 		this.addCard( this.logOutCard );
 
-		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
+		//todo: move to activate/deactivate
+		composite.getIsLoggedIn().addNewSchoolValueListener( isLoggedInListener );
 	}
 
 	private void updateLogInOutComposite() {

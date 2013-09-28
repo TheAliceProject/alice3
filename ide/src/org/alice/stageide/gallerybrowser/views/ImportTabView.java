@@ -81,11 +81,8 @@ public class ImportTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<String> directoryListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<java.lang.String> state, java.lang.String prevValue, java.lang.String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<String> directoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
 			handleDirectoryChanged();
 		}
 	};
@@ -137,13 +134,13 @@ public class ImportTabView extends GalleryTabView {
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
-		importTab.getDirectoryState().addAndInvokeValueListener( this.directoryListener );
+		importTab.getDirectoryState().addAndInvokeNewSchoolValueListener( this.directoryListener );
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
-		importTab.getDirectoryState().removeValueListener( this.directoryListener );
+		importTab.getDirectoryState().removeNewSchoolValueListener( this.directoryListener );
 		super.handleCompositePostDeactivation();
 	}
 

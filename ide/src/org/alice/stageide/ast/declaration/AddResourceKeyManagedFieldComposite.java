@@ -63,12 +63,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
@@ -81,7 +78,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
 				.build() );
-		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
+		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
 	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {

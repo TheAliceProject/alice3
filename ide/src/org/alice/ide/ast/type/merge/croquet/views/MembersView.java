@@ -141,7 +141,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( label, "wrap" );
 
 			//todo: removeValueListener somewhere
-			importOnly.getImportHub().getIsDesiredState().addValueListener( new IsAddDesiredListener( label ) );
+			importOnly.getImportHub().getIsDesiredState().addNewSchoolValueListener( new IsAddDesiredListener( label ) );
 		}
 
 		for( final org.alice.ide.ast.type.merge.croquet.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
@@ -171,7 +171,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			//this.addComponent( MemberViewUtilities.createTextField( differentSignature.getProjectNameState(), differentSignature.getForegroundCustomizer() ), "wrap" );
 
 			//todo: removeValueListener somewhere
-			differentSignature.getImportHub().getIsDesiredState().addValueListener( new IsAddDesiredListener( textField ) );
+			differentSignature.getImportHub().getIsDesiredState().addNewSchoolValueListener( new IsAddDesiredListener( textField ) );
 
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_POST_GAP );
 		}

@@ -95,20 +95,14 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> repaintImageViewListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> repaintImageViewListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			jImageView.repaint();
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			jImageView.revalidate();
 			org.lgna.croquet.components.AbstractWindow<?> window = getRoot();
 			if( window != null ) {
@@ -247,9 +241,9 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 	@Override
 	public void handleCompositePreActivation() {
-		this.getComposite().getShowInScreenResolutionState().addValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
-		this.getComposite().getShowDashedBorderState().addValueListener( this.repaintImageViewListener );
-		this.getComposite().getDropShadowState().addValueListener( this.repaintImageViewListener );
+		this.getComposite().getShowInScreenResolutionState().addNewSchoolValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
+		this.getComposite().getShowDashedBorderState().addNewSchoolValueListener( this.repaintImageViewListener );
+		this.getComposite().getDropShadowState().addNewSchoolValueListener( this.repaintImageViewListener );
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
 		this.getComposite().getPathHolder().addAndInvokeValueListener( this.pathListener );
 		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
@@ -274,8 +268,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getPathHolder().removeValueListener( this.pathListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );
-		this.getComposite().getDropShadowState().removeValueListener( this.repaintImageViewListener );
-		this.getComposite().getShowDashedBorderState().removeValueListener( this.repaintImageViewListener );
-		this.getComposite().getShowInScreenResolutionState().removeValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
+		this.getComposite().getDropShadowState().removeNewSchoolValueListener( this.repaintImageViewListener );
+		this.getComposite().getShowDashedBorderState().removeNewSchoolValueListener( this.repaintImageViewListener );
+		this.getComposite().getShowInScreenResolutionState().removeNewSchoolValueListener( this.revalidateImageViewAndResizeWindowIfNecessaryListener );
 	}
 }

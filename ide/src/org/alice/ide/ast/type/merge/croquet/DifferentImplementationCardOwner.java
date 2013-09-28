@@ -88,11 +88,8 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 	private final org.lgna.croquet.Composite<?> keepCard;
 	private final org.lgna.croquet.Composite<?> renameCard;
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> valueListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateCard();
 		}
 	};
@@ -118,8 +115,8 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 			this.addCard( this.renameCard );
 		}
 
-		this.differentImplementation.getImportHub().getIsDesiredState().addValueListener( this.valueListener );
-		this.differentImplementation.getProjectHub().getIsDesiredState().addAndInvokeValueListener( this.valueListener );
+		this.differentImplementation.getImportHub().getIsDesiredState().addNewSchoolValueListener( this.valueListener );
+		this.differentImplementation.getProjectHub().getIsDesiredState().addAndInvokeNewSchoolValueListener( this.valueListener );
 	}
 
 	private void updateCard() {

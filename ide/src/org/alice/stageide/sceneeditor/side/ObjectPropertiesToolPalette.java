@@ -44,11 +44,8 @@
 package org.alice.stageide.sceneeditor.side;
 
 public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
 		}
 	};
@@ -87,12 +84,12 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stage
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactoryListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactoryListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeNewSchoolValueListener( this.instanceFactoryListener );
 		super.handlePostDeactivation();
 	}
 }

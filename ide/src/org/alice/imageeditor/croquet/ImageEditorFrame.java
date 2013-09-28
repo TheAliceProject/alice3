@@ -165,12 +165,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			java.io.File file = new java.io.File( nextValue );
+	private final org.lgna.croquet.event.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			java.io.File file = new java.io.File( e.getNextValue() );
 			synchronized( filenameComboBoxModel ) {
 				if( worker != null ) {
 					if( worker.getRootDirectory().equals( file ) ) {
@@ -434,7 +431,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	@Override
 	public void handlePreActivation() {
-		this.rootDirectoryState.addAndInvokeValueListener( this.rootDirectoryListener );
+		this.rootDirectoryState.addAndInvokeNewSchoolValueListener( this.rootDirectoryListener );
 		java.awt.Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
 		if( awtEditorComponent instanceof javax.swing.JTextField ) {
 			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
@@ -456,7 +453,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
 			jTextField.getDocument().removeDocumentListener( this.editorListener );
 		}
-		this.rootDirectoryState.removeValueListener( this.rootDirectoryListener );
+		this.rootDirectoryState.removeNewSchoolValueListener( this.rootDirectoryListener );
 		if( this.worker != null ) {
 			if( this.worker.isCancelled() || this.worker.isDone() ) {
 				//pass

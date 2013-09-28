@@ -47,11 +47,8 @@ package org.alice.stageide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class PaintView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
-	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			PaintView.this.repaint();
 		}
 	};
@@ -63,12 +60,12 @@ public class PaintView extends org.lgna.croquet.components.ViewController<javax.
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addValueListener( this.valueObserver );
+		this.getModel().addNewSchoolValueListener( this.valueListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().removeValueListener( this.valueObserver );
+		this.getModel().removeNewSchoolValueListener( this.valueListener );
 		super.handleUndisplayable();
 	}
 

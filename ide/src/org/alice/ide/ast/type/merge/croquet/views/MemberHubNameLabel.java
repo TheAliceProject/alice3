@@ -48,20 +48,14 @@ package org.alice.ide.ast.type.merge.croquet.views;
 public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
 
-	private final org.lgna.croquet.State.ValueListener<String> nameListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
 			updateText();
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged(org.lgna.croquet.event.ValueEvent<Boolean> e) {
 			updateText();
 		}
 	};
@@ -82,17 +76,17 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 
 	@Override
 	protected void handleDisplayable() {
-		this.memberHubWithNameState.getIsDesiredState().addValueListener( this.isDesiredListener );
-		this.memberHubWithNameState.getOtherIsDesiredState().addValueListener( this.isDesiredListener );
-		this.memberHubWithNameState.getNameState().addAndInvokeValueListener( this.nameListener );
+		this.memberHubWithNameState.getIsDesiredState().addNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().addNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getNameState().addAndInvokeNewSchoolValueListener( this.nameListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.memberHubWithNameState.getNameState().removeValueListener( this.nameListener );
-		this.memberHubWithNameState.getOtherIsDesiredState().removeValueListener( this.isDesiredListener );
-		this.memberHubWithNameState.getIsDesiredState().removeValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getNameState().removeNewSchoolValueListener( this.nameListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().removeNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getIsDesiredState().removeNewSchoolValueListener( this.isDesiredListener );
 	}
 }

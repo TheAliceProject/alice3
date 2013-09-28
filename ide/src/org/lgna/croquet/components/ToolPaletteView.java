@@ -114,11 +114,8 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {
-	private final org.lgna.croquet.State.ValueListener<Boolean> isCoreShowingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> isCoreShowingListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			ToolPaletteView.this.revalidateAndRepaint();
 		}
 	};
@@ -141,7 +138,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	protected void handleDisplayable() {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().addAndInvokeValueListener( this.isCoreShowingListener );
+		composite.getIsExpandedState().addAndInvokeNewSchoolValueListener( this.isCoreShowingListener );
 		super.handleDisplayable();
 	}
 
@@ -157,7 +154,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	protected void handleUndisplayable() {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().removeValueListener( this.isCoreShowingListener );
+		composite.getIsExpandedState().removeNewSchoolValueListener( this.isCoreShowingListener );
 		super.handleUndisplayable();
 	}
 

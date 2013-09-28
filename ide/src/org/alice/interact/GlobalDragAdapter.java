@@ -143,7 +143,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, selectionOnly );
 				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, selectionOnly );
 
-				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeValueListener( this.handleStateValueObserver );
+				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		}
 		else {
@@ -560,7 +560,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				//			
 				//			this.interactionSelectionState.setSelectedItem(defaultInteraction);
 
-				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeValueListener( this.handleStateValueObserver );
+				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		}
 	}

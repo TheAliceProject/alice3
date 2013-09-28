@@ -65,12 +65,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, final org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-			IDE.this.setPerspective( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+			IDE.this.setPerspective( e.getNextValue() );
 		}
 	};
 
@@ -80,12 +77,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueListener( new org.lgna.croquet.ListSelectionState.ValueListener<java.util.Locale>() {
-			public void changing( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-				org.lgna.croquet.Application.getActiveInstance().setLocale( nextValue );
+		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
+				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}
 		} );
 
@@ -131,8 +125,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
-		this.getPerspectiveState().addValueListener( this.perspectiveListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
+		this.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
 		this.registerScreenCaptureKeyStrokes( this.getFrame() );
 	}
 
@@ -324,12 +318,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return ( ( expression instanceof org.lgna.project.ast.TypeExpression ) || ( expression instanceof org.lgna.project.ast.ResourceExpression ) ) == false;
 	}
 
-	private java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
 			if( nextValue != null ) {
 				org.lgna.project.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {

@@ -134,11 +134,9 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		final org.lgna.croquet.components.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
 		customColorDialogButton.setClobberText( "Custom Color..." );
 
-		org.lgna.croquet.State.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
-			public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
+		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Color> e ) {
+				java.awt.Color nextValue = e.getNextValue();
 				boolean isColorMelaninShade = false;
 				for( java.awt.Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades() ) {
 					if( melaninShade.equals( nextValue ) ) {
@@ -154,7 +152,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 				otherColorState.setEnabled( otherColorCallable.getValue() != null );
 			}
 		};
-		skinColorState.addAndInvokeValueListener( colorListener );
+		skinColorState.addAndInvokeNewSchoolValueListener( colorListener );
 
 		this.addComponent( customColorDialogButton, "gapx 0, wrap" );
 

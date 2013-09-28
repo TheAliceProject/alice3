@@ -60,12 +60,9 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 			CodeContextSplitComposite.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			CodeContextSplitComposite.this.handleDeclarationStateChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite> e ) {
+			CodeContextSplitComposite.this.handleDeclarationStateChanged( e.getNextValue() );
 		}
 	};
 
@@ -173,12 +170,12 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeValueListener( this.declarationListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}

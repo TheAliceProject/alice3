@@ -49,11 +49,8 @@ public class ExpressionStateView extends org.lgna.croquet.components.BorderPanel
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model;
 	private final org.alice.ide.x.AstI18nFactory factory;
 
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			ExpressionStateView.this.refreshLater();
 		}
 	};
@@ -66,12 +63,12 @@ public class ExpressionStateView extends org.lgna.croquet.components.BorderPanel
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.model.addAndInvokeValueListener( this.valueListener );
+		this.model.addAndInvokeNewSchoolValueListener( this.valueListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.model.removeValueListener( this.valueListener );
+		this.model.removeNewSchoolValueListener( this.valueListener );
 		super.handleUndisplayable();
 	}
 
