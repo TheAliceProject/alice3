@@ -59,6 +59,13 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 	}
 
 	private static class DefaultEmptyListPainter<T> implements javax.swing.Painter<List<T>> {
+		private static final java.util.Map<java.awt.font.TextAttribute, Object> mapDeriveFont;
+		static {
+			mapDeriveFont = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			mapDeriveFont.put( java.awt.font.TextAttribute.POSTURE, java.awt.font.TextAttribute.POSTURE_OBLIQUE );
+			mapDeriveFont.put( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
+		}
+
 		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
 			org.lgna.croquet.ListSelectionState<T> state = listView.getModel();
 			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();
@@ -66,7 +73,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 			if( ( text != null ) && ( text.length() > 0 ) ) {
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 				g2.setPaint( java.awt.Color.DARK_GRAY );
-				g2.setFont( g2.getFont().deriveFont( java.awt.Font.ITALIC ) );
+				g2.setFont( g2.getFont().deriveFont( mapDeriveFont ) );
 				g2.drawString( text, 0, g2.getFontMetrics().getAscent() );
 			}
 		}
