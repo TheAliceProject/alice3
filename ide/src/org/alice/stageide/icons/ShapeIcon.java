@@ -68,12 +68,16 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 		int yOffset = PAD;
 		int width = this.getIconWidth() - PAD - PAD;
 		int height = this.getIconHeight() - PAD - PAD;
-		g2.translate( xOffset, yOffset );
 
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-		g2.translate( -xOffset, -yOffset );
+		edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g2 );
+		gc.pushAndSetAntialiasing( true );
+		try {
+			g2.translate( xOffset, yOffset );
+			this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+			g2.translate( -xOffset, -yOffset );
+		} finally {
+			gc.popAntialiasing();
+			gc.popGraphics();
+		}
 	}
 }
