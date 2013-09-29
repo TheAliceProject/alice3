@@ -187,7 +187,14 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		@Override
 		protected String getSubKeyForLocalization() {
-			return "emptyConditionText";
+			StringBuilder sb = new StringBuilder();
+			String subKey = ListSelectionState.this.getSubKeyForLocalization();
+			if( subKey != null ) {
+				sb.append( subKey );
+				sb.append( "." );
+			}
+			sb.append( "emptyConditionText" );
+			return sb.toString();
 		}
 	}
 
