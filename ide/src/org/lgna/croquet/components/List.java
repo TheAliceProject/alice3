@@ -58,6 +58,22 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		}
 	}
 
+	private static class DefaultEmptyListPainter<T> implements javax.swing.Painter<List<T>> {
+		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
+			org.lgna.croquet.ListSelectionState<T> state = listView.getModel();
+			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();
+			String text = emptyConditionText.getText();
+			if( ( text != null ) && ( text.length() > 0 ) ) {
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.setFont( g2.getFont().deriveFont( java.awt.Font.ITALIC ) );
+				g2.drawString( text, 0, g2.getFontMetrics().getAscent() );
+			}
+		}
+	}
+
+	private javax.swing.Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
+
 	public List( org.lgna.croquet.ListSelectionState<T> model ) {
 		super( model );
 		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
@@ -94,11 +110,30 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		public java.awt.Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
+
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			super.paintComponent( g );
+			javax.swing.ListModel model = this.getModel();
+			if( model.getSize() == 0 ) {
+				if( emptyConditionPainter != null ) {
+					emptyConditionPainter.paint( (java.awt.Graphics2D)g, List.this, this.getWidth(), this.getHeight() );
+				}
+			}
+		}
 	}
 
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		return new JDefaultList();
+	}
+
+	public javax.swing.Painter<List<T>> getEmptyConditionPainter() {
+		return this.emptyConditionPainter;
+	}
+
+	public void setEmptyConditionPainter( javax.swing.Painter<List<T>> emptyConditionPainter ) {
+		this.emptyConditionPainter = emptyConditionPainter;
 	}
 
 	@Override
