@@ -184,8 +184,8 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private static final int SIZE = 64;
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( SIZE / 25.0f );
-	private final edu.cmu.cs.dennisc.java.awt.Painter painter = new edu.cmu.cs.dennisc.java.awt.Painter() {
-		public void paint( java.awt.Graphics2D g2, int width, int height ) {
+	private final edu.cmu.cs.dennisc.java.awt.Painter<Void> painter = new edu.cmu.cs.dennisc.java.awt.Painter<Void>() {
+		public void paint( java.awt.Graphics2D g2, Void value, int width, int height ) {
 			int x = ( width - SIZE ) / 2;
 			int y = ( height - SIZE ) / 2;
 			PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );

@@ -54,9 +54,9 @@ package edu.cmu.cs.dennisc.video.vlcj;
 
 	public java.awt.Component getVideoSurface();
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+	public edu.cmu.cs.dennisc.java.awt.Painter<Void> getPainter();
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<Void> painter );
 
 	public void release();
 }

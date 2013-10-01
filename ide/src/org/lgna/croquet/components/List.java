@@ -58,7 +58,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		}
 	}
 
-	private static class DefaultEmptyListPainter<T> implements javax.swing.Painter<List<T>> {
+	private static class DefaultEmptyListPainter<T> implements edu.cmu.cs.dennisc.java.awt.Painter<List<T>> {
 		private static final java.util.Map<java.awt.font.TextAttribute, Object> mapDeriveFont;
 		static {
 			mapDeriveFont = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -79,7 +79,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		}
 	}
 
-	private javax.swing.Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
+	private edu.cmu.cs.dennisc.java.awt.Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
 
 	public List( org.lgna.croquet.ListSelectionState<T> model ) {
 		super( model );
@@ -135,11 +135,11 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		return new JDefaultList();
 	}
 
-	public javax.swing.Painter<List<T>> getEmptyConditionPainter() {
+	public edu.cmu.cs.dennisc.java.awt.Painter<List<T>> getEmptyConditionPainter() {
 		return this.emptyConditionPainter;
 	}
 
-	public void setEmptyConditionPainter( javax.swing.Painter<List<T>> emptyConditionPainter ) {
+	public void setEmptyConditionPainter( edu.cmu.cs.dennisc.java.awt.Painter<List<T>> emptyConditionPainter ) {
 		this.emptyConditionPainter = emptyConditionPainter;
 	}
 

@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
  */
 /* package-private */class HeavyweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
-	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+	private edu.cmu.cs.dennisc.java.awt.Painter<Void> painter;
 
 	@Override
 	protected String[] onGetMediaPlayerFactoryArgs() {
@@ -68,7 +68,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
 				public void paint( java.awt.Graphics g ) {
 					super.paint( g );
 					if( painter != null ) {
-						painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
+						painter.paint( (java.awt.Graphics2D)g, null, this.getWidth(), this.getHeight() );
 					}
 				}
 			};
@@ -78,7 +78,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
 				public void paint( java.awt.Graphics g ) {
 					super.paint( g );
 					if( painter != null ) {
-						painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
+						painter.paint( (java.awt.Graphics2D)g, null, this.getWidth(), this.getHeight() );
 					}
 				}
 			};
@@ -87,11 +87,11 @@ package edu.cmu.cs.dennisc.video.vlcj;
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
+	public edu.cmu.cs.dennisc.java.awt.Painter<Void> getPainter() {
 		return this.painter;
 	}
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<Void> painter ) {
 		this.painter = painter;
 	}
 }

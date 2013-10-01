@@ -555,7 +555,7 @@ public class ImageUtilities {
 		return bi;
 	}
 
-	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter, float alpha ) {
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter<Void> painter, float alpha ) {
 		int width = getWidth( image );
 		int height = getHeight( image );
 		java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
@@ -564,7 +564,7 @@ public class ImageUtilities {
 
 		java.awt.image.BufferedImage alphaImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
 		java.awt.Graphics2D ag2 = alphaImage.createGraphics();
-		painter.paint( ag2, width, height );
+		painter.paint( ag2, null, width, height );
 		ag2.dispose();
 
 		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.DST_IN, alpha ) );
@@ -573,7 +573,7 @@ public class ImageUtilities {
 		return rv;
 	}
 
-	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter<Void> painter ) {
 		return createAlphaMaskedImage( image, painter, 1.0f );
 	}
 }

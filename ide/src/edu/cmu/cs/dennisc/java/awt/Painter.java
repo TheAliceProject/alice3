@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public interface Painter {
-	public void paint( java.awt.Graphics2D g2, int width, int height );
+public interface Painter<T> {
+	public void paint( java.awt.Graphics2D g2, T value, int width, int height );
 }
