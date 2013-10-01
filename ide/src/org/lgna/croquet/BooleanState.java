@@ -139,10 +139,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				boolean isSelected = buttonModel.isSelected();
 				if( isTextVariable() ) {
-					this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					this.putValue( NAME, getTextFor( isSelected ) );
 				}
 				if( isIconVariable() ) {
-					this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					this.putValue( SMALL_ICON, getIconFor( isSelected ) );
 				}
 			}
 		};
