@@ -281,14 +281,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
-	private org.lgna.croquet.components.PageAxisPanel createAdornmentPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
-		final int PAD = 16;
-		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
+	private org.lgna.croquet.components.MigPanel createAdornmentPanel( org.lgna.croquet.components.JComponent<?> header ) {
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
-		rv.addComponent( header );
-		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
-		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( PAD / 2 ) );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+		rv.addComponent( header, "wrap" );
+		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
 		return rv;
 	}
 
@@ -309,12 +306,12 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			//list.setEnabled( false );
 			list.setCellRenderer( this.listCellRenderer );
 
-			org.lgna.croquet.components.PageAxisPanel stepsView = this.createAdornmentPageAxisPanel( stepsLabel );
+			org.lgna.croquet.components.MigPanel stepsView = this.createAdornmentPanel( stepsLabel );
 			stepsView.setBackgroundColor( java.awt.Color.WHITE );
-			stepsView.getAwtComponent().add( list );
+			stepsView.getAwtComponent().add( list, "aligny top" );
 
-			org.lgna.croquet.components.PageAxisPanel mainView = this.createAdornmentPageAxisPanel( this.stepLabel );
-			mainView.addComponent( cardPanel );
+			org.lgna.croquet.components.MigPanel mainView = this.createAdornmentPanel( this.stepLabel );
+			mainView.addComponent( cardPanel, "aligny top" );
 
 			rv = new org.lgna.croquet.components.BorderPanel.Builder()
 					.lineStart( stepsView )
