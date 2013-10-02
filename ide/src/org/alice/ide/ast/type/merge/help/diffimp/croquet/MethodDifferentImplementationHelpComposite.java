@@ -49,6 +49,6 @@ import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
  */
 public final class MethodDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserMethod> {
 	public MethodDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserMethod> differentImplementation ) {
-		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation );
+		super( java.util.UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation, "an identical signature", "implementations" );
 	}
 }

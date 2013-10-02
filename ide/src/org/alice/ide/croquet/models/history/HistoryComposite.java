@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.history;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
 	private final org.lgna.croquet.Group historyGroup;
@@ -57,7 +57,7 @@ public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
 	@Override
 	protected final org.lgna.croquet.components.View createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.getAwtComponent().add( new org.lgna.croquet.undo.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
+		rv.getAwtComponent().add( new org.alice.ide.croquet.models.history.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 }

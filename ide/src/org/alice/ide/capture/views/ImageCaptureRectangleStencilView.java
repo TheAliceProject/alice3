@@ -66,6 +66,9 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 	private static final java.awt.Paint STENCIL_PAINT = createStencilPaint();
 
+	private final JZoomView jZoomView = new JZoomView();
+	private final org.lgna.croquet.components.Window window = new org.lgna.croquet.components.Window();
+
 	private final class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		private int xPressed = -1;
 		private int yPressed = -1;
@@ -82,9 +85,10 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
-					captureImageAndCopyToClipboard();
 					setStencilShowing( false );
+					captureImageAndShowFrame();
 				}
+				jZoomView.handleMouseMovedOrDragged( null );
 				invalidateHole();
 				repaint();
 			}
@@ -99,40 +103,28 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		private void handleMouseMovedOrDragged( java.awt.event.MouseEvent e ) {
+			jZoomView.handleMouseMovedOrDragged( e );
+			updateWindowLocation( e.getXOnScreen(), e.getYOnScreen() );
+		}
+
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			this.handleMouseMovedOrDragged( e );
 		}
 
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
 					edu.cmu.cs.dennisc.java.awt.RectangleUtilities.setBounds( hole, this.xPressed, this.yPressed, e.getX(), e.getY() );
+					this.handleMouseMovedOrDragged( e );
 				}
 				repaint();
 			}
 		}
 	}
 
-	private void captureImageAndCopyToClipboard() {
-		synchronized( this.hole ) {
-			if( this.isHoleValid() ) {
-				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
-					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, 300 );
-					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copy to clipboard:", image );
-				}
-			}
-		}
-	}
-
-	private void invalidateHole() {
-		this.hole.setBounds( -1, -1, -1, -1 );
-	}
-
-	private boolean isHoleValid() {
-		return this.hole.width > -1;
-	}
-
 	private final MouseAdapter mouseAdapter = new MouseAdapter();
+	private final org.alice.imageeditor.croquet.ImageEditorFrame imageComposite = new org.alice.imageeditor.croquet.ImageEditorFrame();
 
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private final java.awt.event.ActionListener escapeKeyListener = new java.awt.event.ActionListener() {
@@ -147,9 +139,42 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	};
 
 	private final java.awt.Rectangle hole = new java.awt.Rectangle();
+	private final org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite;
 
-	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
+	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId, org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite ) {
 		super( window, layerId );
+		this.imageCaptureComposite = imageCaptureComposite;
+		this.window.getAwtComponent().setContentPane( this.jZoomView );
+	}
+
+	private void captureImageAndShowFrame() {
+		synchronized( this.hole ) {
+			if( this.isHoleValid() ) {
+				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
+					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
+					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
+					imageComposite.setImageClearShapesAndShowFrame( image );
+				}
+			}
+		}
+	}
+
+	public org.alice.imageeditor.croquet.ImageEditorFrame getImageComposite() {
+		return this.imageComposite;
+	}
+
+	private void updateWindowLocation( int xScreen, int yScreen ) {
+		final int OFFSET = 32;
+		window.setLocation( xScreen + OFFSET, yScreen + OFFSET );
+	}
+
+	private void invalidateHole() {
+		this.hole.setBounds( -1, -1, -1, -1 );
+		//this.window.setVisible( false );
+	}
+
+	private boolean isHoleValid() {
+		return this.hole.width > -1;
 	}
 
 	@Override
@@ -172,6 +197,14 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 				this.removeMouseListener( this.mouseAdapter );
 			}
 			super.setStencilShowing( isShowing );
+			if( isShowing ) {
+				java.awt.PointerInfo pointerInfo = java.awt.MouseInfo.getPointerInfo();
+				java.awt.Point p = pointerInfo.getLocation();
+				this.updateWindowLocation( p.x, p.y );
+				this.window.pack();
+				this.window.getAwtComponent().toFront();
+			}
+			this.window.setVisible( isShowing );
 			if( isShowing ) {
 				this.addMouseListener( this.mouseAdapter );
 				this.addMouseMotionListener( this.mouseAdapter );
@@ -210,9 +243,13 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 		synchronized( this.hole ) {
 			g2.setPaint( java.awt.Color.WHITE );
-			g2.draw( this.hole );
+			g2.drawRect( this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1 );
 		}
 
+		java.awt.event.MouseEvent e = this.jZoomView.getMouseEvent();
+		if( e != null ) {
+
+		}
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
 	}

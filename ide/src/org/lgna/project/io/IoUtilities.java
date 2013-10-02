@@ -178,13 +178,13 @@ public abstract class IoUtilities {
 				if( modifiedText != null ) {
 					//pass
 				} else {
-					modifiedText = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
+					modifiedText = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( new java.io.InputStreamReader( is, "UTF-8" ) );
 				}
 				modifiedText = migrationManager.migrate( modifiedText, decodedVersion );
 			}
 		}
 		if( modifiedText != null ) {
-			is = new java.io.ByteArrayInputStream( modifiedText.getBytes() );
+			is = new java.io.ByteArrayInputStream( modifiedText.getBytes( "UTF-8" ) );
 		}
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}

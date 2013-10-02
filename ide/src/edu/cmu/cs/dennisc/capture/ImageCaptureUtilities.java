@@ -88,8 +88,7 @@ public class ImageCaptureUtilities {
 	}
 
 	private static ImageScalePair createImage( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
-		java.awt.Toolkit toolkit = awtComponent.getToolkit();
-		int dpiScreen = toolkit.getScreenResolution();
+		int dpiScreen = edu.cmu.cs.dennisc.java.awt.ToolkitUtilities.getScreenResolution( awtComponent );
 		int dpiImageActual;
 		if( dpiImage != null ) {
 			dpiImageActual = dpiImage;
@@ -199,6 +198,11 @@ public class ImageCaptureUtilities {
 			}
 			lightweightComponent.print( g );
 		}
+
+		//todo: check for heavyweight popup menus
+		//for( java.awt.Window window : java.awt.Window.getWindows() ) {
+		//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( window );
+		//}
 
 		g2.setTransform( prevTrans );
 		g.dispose();

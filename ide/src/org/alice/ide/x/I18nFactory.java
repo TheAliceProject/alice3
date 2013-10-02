@@ -196,7 +196,11 @@ public abstract class I18nFactory {
 				}
 			};
 			for( org.alice.ide.i18n.Line line : lines ) {
-				pagePane.addComponent( createComponent( line, owner ) );
+				if( line.getChunks().length > 0 ) {
+					pagePane.addComponent( createComponent( line, owner ) );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( line );
+				}
 			}
 			pagePane.revalidateAndRepaint();
 			return pagePane;

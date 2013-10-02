@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.help.diffsig.croquet.MethodDifferentSignatur
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
+public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
 	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
 	private final MemberHubWithNameState<M> importHub;
@@ -59,8 +59,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 
 	public DifferentSignature( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
-		String postfix = projectMember instanceof org.lgna.project.ast.UserMethod ? METHOD_POST_FIX : FIELD_POST_FIX;
-		this.importHub = new MemberHubWithNameState<M>( importMember, true, "add ", postfix ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -75,7 +74,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 			}
 		};
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, true, "keep ", postfix ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, true ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -89,6 +88,10 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 				}
 			}
 		};
+
+		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
+		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
+
 		this.projectHub.getIsDesiredState().setEnabled( false );
 		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
 
@@ -103,10 +106,12 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		}
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getImportHub() {
 		return this.importHub;
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getProjectHub() {
 		return this.projectHub;
 	}

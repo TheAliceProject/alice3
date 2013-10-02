@@ -48,11 +48,6 @@ package org.alice.ide.capture.views;
 public class ImageCaptureView extends org.lgna.croquet.components.MigPanel {
 	public ImageCaptureView( org.alice.ide.capture.ImageCaptureComposite composite ) {
 		super( composite );
-		this.addComponent( composite.getCaptureEntireWindowOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getCaptureEntireContentPaneOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getCaptureRectangleOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getDpiState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getDpiState().createSpinner(), "wrap" );
 
 		java.awt.Toolkit toolkit = this.getAwtComponent().getToolkit();
 		StringBuilder sb = new StringBuilder();
@@ -60,6 +55,17 @@ public class ImageCaptureView extends org.lgna.croquet.components.MigPanel {
 		sb.append( toolkit.getScreenResolution() );
 		sb.append( ")" );
 		org.lgna.croquet.components.Label screenDpiLabel = new org.lgna.croquet.components.Label( sb.toString() );
-		this.addComponent( screenDpiLabel );
+
+		this.addComponent( composite.getOperationsHeader().createLabel(), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "span 2, grow, shrink, wrap" );
+		this.addComponent( composite.getCaptureEntireWindowOperation().createButton(), "skip, wrap" );
+		this.addComponent( composite.getCaptureEntireContentPaneOperation().createButton(), "skip, wrap" );
+		this.addComponent( composite.getCaptureRectangleOperation().createButton(), "skip, wrap" );
+		this.addComponent( composite.getPropertiesHeader().createLabel(), "top 32, wrap" );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "span 2, grow, shrink, wrap" );
+		this.addComponent( composite.getDpiState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getDpiState().createSpinner(), "split 2" );
+		this.addComponent( screenDpiLabel, "wrap" );
+		this.addComponent( composite.getIsAlphaChannelState().createCheckBox(), "skip, wrap" );
 	}
 }

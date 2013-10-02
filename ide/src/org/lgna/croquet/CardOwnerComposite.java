@@ -60,6 +60,10 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		return null;
 	}
 
+	public boolean isCardAccountedForInPreferredSizeCalculation( Composite<?> card ) {
+		return true;
+	}
+
 	public void addCard( Composite<?> card ) {
 		assert card != null : this;
 		if( this.cards.contains( card ) ) {

@@ -44,31 +44,29 @@ package org.alice.media.youtube.croquet;
 
 import java.io.File;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
-
+import org.alice.media.youtube.croquet.codecs.EventScriptEventCodec;
+import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringValue;
-import org.lgna.story.event.KeyEvent;
 
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
-	private EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
-	private ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
-	private UploadComposite uploadComposite = new UploadComposite( this );
-	private StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
-	private StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
+	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
+	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
+	private final UploadComposite uploadComposite = new UploadComposite( this );
+	private final StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
+	private final StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
+	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
 	private org.lgna.project.Project project;
-	private EventScript script;
-	private File file;
+	private EventScript eventScript;
+	private File tempRecordedVideoFile;
 	private long randomSeed;
-	private EventWithTimeListCellRenderer renderer = new EventWithTimeListCellRenderer();
 
 	public ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
@@ -77,54 +75,8 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		this.addPage( this.uploadComposite );
 	}
 
-	public org.lgna.project.Project getProject() {
-		return this.project;
-	}
-
-	public void setProject( org.lgna.project.Project project ) {
-		this.project = project;
-	}
-
-	public EventScript getScript() {
-		return this.script;
-	}
-
-	public void setScript( EventScript script ) {
-		this.script = script;
-	}
-
-	public File getFile() {
-		return this.file;
-	}
-
-	public void setFile( File file ) {
-		this.file = file;
-		if( this.file != null ) {
-			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.file );
-		}
-	}
-
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		return 900;
-	}
-
-	@Override
-	protected org.lgna.croquet.DialogCoreComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-
-	public void setRandomSeed( long currentTimeMillis ) {
-		this.randomSeed = currentTimeMillis;
-	}
-
-	public long getRandomSeed() {
-		return this.randomSeed;
+	public ListSelectionState<EventScriptEvent> getEventList() {
+		return this.eventList;
 	}
 
 	public StringValue getMouseEventName() {
@@ -135,31 +87,55 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return this.keyBoardEventName;
 	}
 
+	public org.lgna.project.Project getProject() {
+		return this.project;
+	}
+
+	public void setProject( org.lgna.project.Project project ) {
+		this.project = project;
+	}
+
+	public EventScript getEventScript() {
+		return this.eventScript;
+	}
+
+	public void setEventScript( EventScript script ) {
+		this.eventScript = script;
+	}
+
+	public File getTempRecordedVideoFile() {
+		return this.tempRecordedVideoFile;
+	}
+
+	public void setTempRecordedVideoFile( File file ) {
+		this.tempRecordedVideoFile = file;
+		if( this.tempRecordedVideoFile != null ) {
+			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.tempRecordedVideoFile );
+		}
+	}
+
+	public void setRandomSeed( long currentTimeMillis ) {
+		this.randomSeed = currentTimeMillis;
+		RandomUtilities.setSeed( currentTimeMillis );
+	}
+
+	public long getRandomSeed() {
+		return this.randomSeed;
+	}
+
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		return null;
+	}
+
 	@Override
 	protected boolean isClearedForCommit() {
 		return super.isClearedForCommit() && uploadComposite.tryToUpload();
 	}
 
-	public EventWithTimeListCellRenderer getCellRenderer() {
-		return renderer;
-	}
-
-	private class EventWithTimeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<EventWithTime> {
-
-		@Override
-		protected JLabel getListCellRendererComponent( JLabel rv, JList list, EventWithTime value, int index, boolean isSelected, boolean cellHasFocus ) {
-			String eventType = "";
-			if( value.getEvent() instanceof MouseEventWrapper ) {
-				eventType = getMouseEventName().getText();
-			} else if( value.getEvent() instanceof KeyEvent ) {
-				eventType = getKeyBoardEventName().getText();
-			} else {
-				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-			}
-			rv.setText( value.getReportForEventType( eventType ) );
-			return rv;
-		}
-
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
 	}
 
 	public static void main( final String[] args ) throws Exception {
@@ -185,7 +161,9 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 				ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
 				composite.setProject( project );
 				composite.getOperation().fire();
+				System.exit( 0 );
 			}
 		} );
 	}
+
 }

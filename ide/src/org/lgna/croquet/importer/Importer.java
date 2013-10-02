@@ -75,7 +75,7 @@ public abstract class Importer<T> {
 					StringBuilder sb = new StringBuilder();
 					sb.append( "Unable to import: " );
 					sb.append( file.getAbsolutePath() );
-					org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Exception Thrown", org.lgna.croquet.MessageType.ERROR );
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Exception Thrown", org.lgna.croquet.MessageType.ERROR );
 					return null;
 				}
 			} else {

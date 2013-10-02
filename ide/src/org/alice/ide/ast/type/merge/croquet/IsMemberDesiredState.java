@@ -46,37 +46,11 @@ package org.alice.ide.ast.type.merge.croquet;
  * @author Dennis Cosgrove
  */
 public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
-	public static boolean IS_VERBOSE = false;
 	private final M member;
-	private String prependText;
-	private String appendText;
 
-	public IsMemberDesiredState( M member, boolean initialValue, String prependText, String appendText ) {
+	public IsMemberDesiredState( M member, boolean initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
 		this.member = member;
-		this.prependText = prependText;
-		this.appendText = appendText;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	public void setPrependText( String prependText ) {
-		this.prependText = prependText;
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	public void setAppendText( String appendText ) {
-		this.appendText = appendText;
-		this.setTextForBothTrueAndFalseBasedOnMemberName();
-	}
-
-	private void setTextForBothTrueAndFalseBasedOnMemberName() {
-		String text = IS_VERBOSE ? "<html>" + prependText + "<strong>" + this.member.getName() + "</strong>" + appendText + "</html>" : "";
-		this.setTextForBothTrueAndFalse( text );
 	}
 
 	public M getMember() {

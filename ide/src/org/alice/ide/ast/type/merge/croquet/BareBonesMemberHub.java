@@ -48,8 +48,8 @@ package org.alice.ide.ast.type.merge.croquet;
 public class BareBonesMemberHub<M extends org.lgna.project.ast.Member> {
 	private final IsMemberDesiredState<M> isDesiredState;
 
-	public BareBonesMemberHub( M member, boolean initialValue, String prependText, String appendText ) {
-		this.isDesiredState = new IsMemberDesiredState<M>( member, initialValue, prependText, appendText );
+	public BareBonesMemberHub( M member, boolean initialValue ) {
+		this.isDesiredState = new IsMemberDesiredState<M>( member, initialValue );
 	}
 
 	public M getMember() {

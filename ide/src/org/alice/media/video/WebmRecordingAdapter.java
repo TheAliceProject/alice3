@@ -48,7 +48,6 @@ import java.io.File;
 
 import org.alice.media.audio.ScheduledAudioStream;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
@@ -79,14 +78,6 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 		return this.encoder != null ? this.encoder.getEncodedVideo() : null;
 	}
 
-	public boolean isVideoEncoding() {
-		if( this.encoder == null ) {
-			return false;
-		} else {
-			return this.encoder.isRunning();
-		}
-	}
-
 	public void initializeAudioRecording() {
 		this.audioMuxer = new org.alice.media.audio.AudioMuxer();
 	}
@@ -102,17 +93,23 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 	}
 
 	public void startVideoEncoding() {
-		assert this.isVideoEncoding() == false;
+		assert ( this.encoder == null ) || ( this.encoder.isRunning() == false );
 		assert frameRate != null;
 		assert dimension != null;
 
 		this.encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		this.encoder.start( this.audioMuxer );
+		synchronized( this.encoder ) {
+			this.encoder.start( this.audioMuxer );
+		}
 	}
 
 	public void stopVideoEncoding() {
-		if( this.isVideoEncoding() ) {
-			this.encoder.stop();
+		if( this.encoder != null ) {
+			synchronized( this.encoder ) {
+				if( this.encoder.isRunning() ) {
+					this.encoder.stop();
+				}
+			}
 
 			// Reset the audio compiler, just in case. We want to make sure someone restarts it.
 			this.audioMuxer = null;
@@ -120,10 +117,12 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 	}
 
 	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		if( this.isVideoEncoding() ) {
-			this.encoder.addBufferedImage( image, isUpsideDown );
-		} else {
-			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
+		if( this.encoder != null ) {
+			synchronized( this.encoder ) {
+				if( this.encoder.isRunning() ) {
+					this.encoder.addBufferedImage( image, isUpsideDown );
+				}
+			}
 		}
 	}
 }

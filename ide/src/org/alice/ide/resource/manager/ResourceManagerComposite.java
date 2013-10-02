@@ -65,12 +65,9 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.State.ValueListener<org.lgna.common.Resource>() {
-		public void changing( org.lgna.croquet.State<org.lgna.common.Resource> state, org.lgna.common.Resource prevValue, org.lgna.common.Resource nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.common.Resource> state, org.lgna.common.Resource prevValue, org.lgna.common.Resource nextValue, boolean isAdjusting ) {
-			handleSelection( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
+			handleSelection( e.getNextValue() );
 		}
 	};
 
@@ -115,7 +112,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 			project = null;
 		}
 		this.reloadTableModel( project );
-		this.getResourceState().addAndInvokeValueListener( this.rowListener );
+		this.getResourceState().addAndInvokeNewSchoolValueListener( this.rowListener );
 		super.handlePreActivation();
 	}
 
@@ -128,7 +125,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 				project.removeResourceListener( this.resourceListener );
 			}
 		}
-		this.getResourceState().removeValueListener( this.rowListener );
+		this.getResourceState().removeNewSchoolValueListener( this.rowListener );
 		super.handlePostDeactivation();
 	}
 

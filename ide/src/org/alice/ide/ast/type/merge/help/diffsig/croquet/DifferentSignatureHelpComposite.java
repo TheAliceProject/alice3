@@ -49,31 +49,50 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentSignatureTopLevelChoice.class, null );
+	private final org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceState" ), DifferentSignatureChoice.class, null );
 
-	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
-
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
-		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+	private final org.lgna.croquet.event.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentSignatureChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
+			handleChanged();
 		}
 	};
 
-	public DifferentSignatureHelpComposite( java.util.UUID migrationId, DifferentSignature<M> differentSignature ) {
+	public DifferentSignatureHelpComposite( java.util.UUID migrationId, DifferentSignature<M> differentSignature, String signatureText ) {
 		super( migrationId, differentSignature );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has a " );
+		sb.append( signatureText );
+		sb.append( " different to that of a </kindOfMember/> already in your project.<p><p>" );
+		sb.append( "You have two options:" );
+		sb.append( "<ol>" );
+		sb.append( "<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)" );
+		sb.append( "<li>only <strong>retain</strong> the version already in your project" );
+		sb.append( "</ol>" );
+		sb.append( "</html>" );
+
+		String kindOfMemberText;
+		M member = differentSignature.getImportHub().getMember();
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
+		} else {
+			kindOfMemberText = "property";
+		}
+		String text = sb.toString();
+		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentSignature.getUriForDescriptionPurposesOnly() );
+		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
+		text = text.replaceAll( "</memberName/>", member.getName() );
+		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentSignatureTopLevelChoice> getTopLevelChoiceState() {
-		return this.topLevelChoiceState;
+	public org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> getChoiceState() {
+		return this.choiceState;
 	}
 
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
-
-	private boolean isRenameRequired() {
-		//todo
-		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+	@Override
+	protected boolean isRetainBothSelected() {
+		return this.choiceState.getValue() == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
 	}
 
 	@Override
@@ -84,47 +103,34 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	@Override
 	public void handlePreActivation() {
 		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
-		DifferentSignatureTopLevelChoice topLevelChoice;
+		DifferentSignatureChoice topLevelChoice;
 		if( isImport ) {
-			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
+			topLevelChoice = DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
 		} else {
-			topLevelChoice = DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT;
+			topLevelChoice = DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
 		}
-		this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
-		this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
-		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
+		this.choiceState.setValueTransactionlessly( topLevelChoice );
+		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
 		super.handlePreActivation();
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		boolean isImport;
-		if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
-			isImport = true;
-			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
-			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
-		} else if( topLevelChoice == DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
-			isImport = false;
-		} else {
-			throw new org.lgna.croquet.CancelException();
-		}
-		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-		return null;
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
 	}
 
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
-
-		//todo
-		this.getView().repaint();
-
-		DifferentSignatureTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		if( topLevelChoice != null ) {
-			return IS_GOOD_TO_GO_STATUS;
+	private void handleChanged() {
+		DifferentSignatureChoice choice = this.choiceState.getValue();
+		boolean isImport;
+		if( choice == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ) {
+			isImport = true;
+		} else if( choice == DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ) {
+			isImport = false;
 		} else {
-			return this.noTopLevelError;
+			//should never happen
+			isImport = false;
 		}
+		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
 	}
 }

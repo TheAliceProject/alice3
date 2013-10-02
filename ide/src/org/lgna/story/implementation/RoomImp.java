@@ -51,21 +51,21 @@ public class RoomImp extends VisualScaleModelImp {
 	public final PaintProperty wallPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue( org.lgna.story.Paint value ) {
-			walls.setPaint( value );
+			TexturedPaintUtilities.setPaint( walls, value );
 		}
 	};
 
 	public final PaintProperty floorPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue( org.lgna.story.Paint value ) {
-			floor.setPaint( value );
+			TexturedPaintUtilities.setPaint( floor, value );
 		}
 	};
 
 	public final PaintProperty ceilingPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue( org.lgna.story.Paint value ) {
-			ceiling.setPaint( value );
+			TexturedPaintUtilities.setPaint( ceiling, value );
 		}
 	};
 

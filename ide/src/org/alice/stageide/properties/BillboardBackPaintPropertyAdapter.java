@@ -79,7 +79,7 @@ public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<P
 	{
 		if( this.instance != null )
 		{
-			return this.instance.getBackPaint();
+			return this.instance.backPaint.getValue();
 		}
 		return null;
 	}

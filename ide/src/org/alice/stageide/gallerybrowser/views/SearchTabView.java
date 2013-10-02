@@ -65,12 +65,9 @@ public class SearchTabView extends GalleryTabView {
 		public abstract boolean accept( String lcName, String lcFilter );
 	}
 
-	private final org.lgna.croquet.StringState.ValueListener<String> filterListener = new org.lgna.croquet.StringState.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			SearchTabView.this.handleFilterChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			SearchTabView.this.handleFilterChanged( e.getNextValue() );
 		}
 	};
 
@@ -160,15 +157,7 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.scaleFont( 1.2f );
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBothScrollBarIncrements( 16, 160 );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.filteredResourcesView );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
 		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(
@@ -182,14 +171,14 @@ public class SearchTabView extends GalleryTabView {
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
-		composite.getFilterState().addAndInvokeValueListener( this.filterListener );
+		composite.getFilterState().addAndInvokeNewSchoolValueListener( this.filterListener );
 		this.filterTextField.requestFocusLater();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
-		composite.getFilterState().removeValueListener( this.filterListener );
+		composite.getFilterState().removeNewSchoolValueListener( this.filterListener );
 		super.handleCompositePostDeactivation();
 	}
 

@@ -42,58 +42,47 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.alice.media.youtube.croquet.ImageRecordComposite;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.ToggleButton;
-
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-
 /**
  * @author Matt May
  */
 public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final Label timerLabel;
-	private ToggleButton playPauseButton;
+	private final TimeLabel timeLabel;
+
+	private final org.lgna.croquet.components.Component<?> listPane;
 
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "insets 0", "" );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
+		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
 
-		List<EventWithTime> list = recordComposite.getEventList().createList();
-		list.setMinimumPreferredWidth( 400 );
-		list.setOpaque( false );
+		this.listPane = new EventScriptPane( recordComposite.getEventList() );
 
-		playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
-		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
+		this.timeLabel = new TimeLabel();
+		this.updateTime( 0 );
 
-		this.addComponent( panel, "span 5" );
-		list.setCellRenderer( recordComposite.getCellRenderer() );
-		this.addComponent( list, "wrap, grow, spany 2" );
+		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
+		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );
 
-		this.addComponent( playPauseButton, "push" );
-		this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField() );
-		this.addComponent( recordComposite.getFrameRateState().createSpinner() );
-		this.addComponent( timerLabel, "push" );
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right, wrap" );
+		this.addComponent( this.lookingGlassContainer, "w 640, h 360, wrap" );
+
+		this.addComponent( recordComposite.getIsRecordingState().createToggleButton(), "push, aligny top, split 2" );
+		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
 
-	public void updateTime() {
-		double timeInSeconds = ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() * 1000;
-		Date date = new Date( (long)timeInSeconds );
-		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-		timerLabel.setText( formattedDate );
+	public void updateTime( double currTime ) {
+		this.timeLabel.setTimeInSeconds( currTime );
 	}
 
-	public ToggleButton getPlayPauseButton() {
-		return this.playPauseButton;
+	public boolean isEventListPaneVisible() {
+		return this.listPane.isVisible();
+	}
+
+	public void setEventListPaneVisible( boolean isEventListPaneVisible ) {
+		synchronized( this.listPane.getTreeLock() ) {
+			this.listPane.setVisible( isEventListPaneVisible );
+		}
 	}
 }

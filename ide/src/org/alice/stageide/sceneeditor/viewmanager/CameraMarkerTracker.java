@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.View>
+public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.View>
 {
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;
@@ -180,10 +180,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 
-	public void changing( org.lgna.croquet.State<org.alice.stageide.sceneeditor.View> state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
-	}
-
-	public void changed( org.lgna.croquet.State<org.alice.stageide.sceneeditor.View> state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+	public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
 		if( ( this.perspectiveCamera == null ) || ( this.orthographicCamera == null ) )
 		{
 			return;
@@ -191,7 +188,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		else
 		{
 			CameraMarkerImp previousMarker = this.activeMarker;
-			this.activeMarker = this.getCameraMarker( nextValue );
+			this.activeMarker = this.getCameraMarker( e.getNextValue() );
 			if( previousMarker != this.activeMarker )
 			{
 				stopTrackingCamera();

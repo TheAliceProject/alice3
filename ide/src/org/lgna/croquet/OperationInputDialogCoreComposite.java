@@ -93,13 +93,13 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 								completionStep.finish();
 							}
 						} catch( CancelException ce ) {
-							completionStep.cancel();
+							cancel( completionStep );
 						}
 					} else {
-						completionStep.cancel();
+						cancel( completionStep );
 					}
 				} else {
-					completionStep.cancel();
+					cancel( completionStep );
 				}
 			}
 		}, completionStep );

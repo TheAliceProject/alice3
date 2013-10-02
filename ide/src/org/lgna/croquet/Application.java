@@ -213,7 +213,7 @@ public abstract class Application {
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 
-	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
+	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof org.lgna.croquet.components.Component<?> ) {

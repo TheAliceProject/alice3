@@ -122,11 +122,8 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 
 		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-		private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.UserField>() {
-			public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+		private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
 				repaint();
 			}
 		};
@@ -138,12 +135,12 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		@Override
 		protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 			super.handleAddedTo( parent );
-			this.getModel().addValueListener( this.selectionListener );
+			this.getModel().addNewSchoolValueListener( this.selectionListener );
 		}
 
 		@Override
 		protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
-			this.getModel().removeValueListener( this.selectionListener );
+			this.getModel().removeNewSchoolValueListener( this.selectionListener );
 			super.handleRemovedFrom( parent );
 		}
 

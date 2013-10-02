@@ -62,4 +62,11 @@ public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
 	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
+
+	@Override
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		//todo
+		dragModel = null;
+		return super.createStatementPane( dragModel, statement, statementListProperty );
+	}
 }

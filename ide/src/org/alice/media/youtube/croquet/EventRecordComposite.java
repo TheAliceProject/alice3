@@ -42,21 +42,18 @@
  */
 package org.alice.media.youtube.croquet;
 
-import java.awt.event.KeyEvent;
-
-import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
 import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.youtube.croquet.views.EventRecordView;
+import org.alice.media.youtube.croquet.views.icons.IsPlayingIcon;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
@@ -70,76 +67,29 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
-import edu.cmu.cs.dennisc.matt.EventScriptListener;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
 /**
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> randomNumberFunctionList;
-	static {
-		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
-		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
-		interactiveMethods = java.util.Collections.unmodifiableList( list );
-		randomNumberFunctionList = Collections.newLinkedList();
-	};
 
-	private RunProgramContext programContext;
-	private EventScript script;
-	private org.lgna.croquet.components.BorderPanel lookingGlassContainer;
-	private double timeInSeconds = 0;
+	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
+	private RunProgramContext programContext;
+	private EventScript eventScript;
 
-		public Class<EventWithTime> getValueClass() {
-			return EventWithTime.class;
-		}
-
-		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
-			ExportToYouTubeWizardDialogComposite owner = getOwner();
-			String eventType = "";
-			if( value.getEvent() instanceof MouseEventWrapper ) {
-				eventType = owner.getMouseEventName().getText();
-			} else if( value.getEvent() instanceof KeyEvent ) {
-				eventType = owner.getKeyBoardEventName().getText();
-			} else {
-				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-			}
-			sb.append( value.getReportForEventType( eventType ) );
-		}
-	}, -1 );
-
-	private final EventScriptListener listener = new EventScriptListener() {
-
-		public void fireChanged( EventWithTime event ) {
-			eventList.addItem( event );
-		}
-	};
-
-	private BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
+	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
+		this.isRecordingState.setIconForBothTrueAndFalse( new IsPlayingIcon() );
+		isRecordingState.addNewSchoolValueListener( isRecordingListener );
+	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
@@ -150,17 +100,16 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		}
 	};
 
-	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
-		isRecordingState.addValueListener( isRecordingListener );
-		//isRecordingState.setIconForBothTrueAndFalse(  );
-	}
+	private final EventScriptListener listener = new EventScriptListener() {
 
-	private FrameObserver frameListener = new FrameObserver() {
+		public void eventAdded( EventScriptEvent event ) {
+			getEventList().addItem( event );
+		}
+	};
+	private final FrameObserver frameListener = new FrameObserver() {
 
 		public void update( double tCurrent ) {
-			timeInSeconds = tCurrent;
-			getView().updateTime();
+			getView().updateTime( tCurrent );
 		}
 
 		public void complete() {
@@ -169,9 +118,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			if( isRecordingState.getValue() ) {
-				getView().getPlayPauseButton().doClick();
-			}
+			isRecordingState.setValueTransactionlessly( false );
 			resetData();
 			return null;
 		}
@@ -180,16 +127,13 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	@Override
 	public void handlePostDeactivation() {
-		if( isRecordingState.getValue() ) {
-			getView().getPlayPauseButton().doClick();
-		}
+		isRecordingState.setValueTransactionlessly( false );
 		super.handlePostDeactivation();
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( programContext == null ) {
 			restartProgramContext();
 		}
@@ -202,21 +146,19 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 		}
 		if( containsRandom() ) {
-			stashSeed( System.currentTimeMillis() );
-			RandomUtilities.setSeed( owner.getRandomSeed() );
+			this.getOwner().setRandomSeed( System.currentTimeMillis() );
 		}
 		programContext = new RunProgramContext( owner.getProject().getProgramType() );
 		programContext.getProgramImp().setControlPanelDesired( false );
-		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
+		programContext.initializeInContainer( getView().getLookingGlassContainer().getAwtComponent(), 640, 360 );
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
-		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
-		owner.setScript( script );
-		eventList.clear();
-		script.addListener( this.listener );
-		this.timeInSeconds = 0;
-		getView().updateTime();
+		eventScript = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		owner.setEventScript( eventScript );
+		getEventList().clear();
+		eventScript.addListener( this.listener );
+		getView().updateTime( 0 );
 	}
 
 	public BooleanState getPlayRecordedOperation() {
@@ -228,7 +170,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	public EventScript getScript() {
-		return this.script;
+		return this.eventScript;
 	}
 
 	@Override
@@ -263,13 +205,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			ide.crawlFilteredProgramType( crawler );
 			return crawler.containsRandom;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
 			return false;
 		}
-	}
-
-	private void stashSeed( long currentTimeMillis ) {
-		this.getOwner().setRandomSeed( currentTimeMillis );
 	}
 
 	private static class RandomUtilitiesMethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
@@ -284,9 +222,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 					if( method.isFunction() ) {
 						if( method.getDeclaringType() instanceof JavaType ) {
 							JavaType jType = (JavaType)method.getDeclaringType();
-							if( jType.getClassReflectionProxy().getReification().equals( RandomUtilities.class ) ) {
-								this.containsRandom = false;
-							}
+							this.containsRandom = jType.contentEquals( RandomUtilities.class );
 						}
 					}
 				}
@@ -315,22 +251,18 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		return false;
 	}
 
-	public ListSelectionState<EventWithTime> getEventList() {
-		return this.eventList;
-	}
-
-	public double getTimeInSeconds() {
-		return this.timeInSeconds;
+	public ListSelectionState<EventScriptEvent> getEventList() {
+		return getOwner().getEventList();
 	}
 
 	@Override
 	public void resetData() {
+		BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
 		if( lookingGlassContainer != null ) {
 			synchronized( lookingGlassContainer.getTreeLock() ) {
 				lookingGlassContainer.removeAllComponents();
 			}
 		}
-		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
 	}
 
@@ -338,9 +270,5 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	public void handlePostHideDialog( CompletionStep<?> step ) {
 		programContext.cleanUpProgram();
 		super.handlePostHideDialog( step );
-	}
-
-	public ListCellRenderer<EventWithTime> getCellRenderer() {
-		return this.getOwner().getCellRenderer();
 	}
 }

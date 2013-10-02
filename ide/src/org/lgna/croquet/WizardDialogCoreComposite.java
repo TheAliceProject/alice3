@@ -133,6 +133,16 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		public WizardCardOwnerComposite( WizardPageComposite<?, ?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
+
+		@Override
+		public boolean isCardAccountedForInPreferredSizeCalculation( org.lgna.croquet.Composite<?> card ) {
+			if( card instanceof WizardPageComposite ) {
+				WizardPageComposite page = (WizardPageComposite)card;
+				return page.isAccountedForInPreferredSizeCalculation();
+			} else {
+				return super.isCardAccountedForInPreferredSizeCalculation( card );
+			}
+		}
 	}
 
 	private final PlainStringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );

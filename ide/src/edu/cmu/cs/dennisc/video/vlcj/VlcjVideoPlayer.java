@@ -149,56 +149,24 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	};
 	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = new java.util.concurrent.CopyOnWriteArrayList<edu.cmu.cs.dennisc.video.event.MediaListener>();
-	private final uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent embeddedMediaPlayerComponent;
+	private final VlcjMediaPlayerComponent mediaPlayerComponent;
 
-	private edu.cmu.cs.dennisc.java.awt.Painter painter;
 	private String mediaPath = null;
 
-	private static String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
-
 	public VlcjVideoPlayer() {
-		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
-			@Override
-			protected String[] onGetMediaPlayerFactoryArgs() {
-				String[] defaultArgs = super.onGetMediaPlayerFactoryArgs();
-				String[] defaultPlusCustomArgs = new String[ defaultArgs.length + CUSTOM_FACTORY_ARGS.length ];
-				System.arraycopy( defaultArgs, 0, defaultPlusCustomArgs, 0, defaultArgs.length );
-				System.arraycopy( CUSTOM_FACTORY_ARGS, 0, defaultPlusCustomArgs, defaultArgs.length, CUSTOM_FACTORY_ARGS.length );
-				return defaultPlusCustomArgs;
-			}
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() && ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getJavaVersionAsDouble() >= 1.7 ) ) {
+			// The mac for now needs to use a software renderer
+			this.mediaPlayerComponent = new LightweightMediaPlayerComponent();
+		} else {
+			this.mediaPlayerComponent = new HeavyweightMediaPlayerComponent();
+		}
 
-			@Override
-			protected java.awt.Canvas onGetCanvas() {
-				java.awt.Canvas rv;
-				if( uk.co.caprica.vlcj.runtime.RuntimeUtil.isWindows() ) {
-					rv = new uk.co.caprica.vlcj.runtime.windows.WindowsCanvas() {
-						@Override
-						public void paint( java.awt.Graphics g ) {
-							super.paint( g );
-							if( painter != null ) {
-								painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
-							}
-						}
-					};
-				} else {
-					rv = new java.awt.Canvas() {
-						@Override
-						public void paint( java.awt.Graphics g ) {
-							super.paint( g );
-							if( painter != null ) {
-								painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
-							}
-						}
-					};
-				}
-				rv.setBackground( java.awt.Color.BLACK );
-				return rv;
-			}
-		};
-
-		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		mediaPlayer.setEnableMouseInputHandling( false );
-		mediaPlayer.setEnableKeyInputHandling( false );
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer instanceof uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer ) {
+			uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer embeddedMediaPlayer = (uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer)mediaPlayer;
+			embeddedMediaPlayer.setEnableMouseInputHandling( false );
+			embeddedMediaPlayer.setEnableKeyInputHandling( false );
+		}
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
 	}
 
@@ -282,16 +250,16 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		this.mediaListeners.add( listener );
 	}
 
-	public java.awt.Canvas getVideoSurface() {
-		return this.embeddedMediaPlayerComponent.getVideoSurface();
+	public java.awt.Component getVideoSurface() {
+		return this.mediaPlayerComponent.getVideoSurface();
 	}
 
 	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
-		return this.painter;
+		return this.mediaPlayerComponent.getPainter();
 	}
 
 	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
-		this.painter = painter;
+		this.mediaPlayerComponent.setPainter( painter );
 	}
 
 	public void prepareMedia( java.net.URI uri ) {
@@ -303,7 +271,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			} else {
 				this.mediaPath = uri.toString();
 			}
-			uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			mediaPlayer.prepareMedia( this.mediaPath );
 		} else {
 			System.err.println( "uri is null" );
@@ -311,17 +279,17 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public boolean isPlayable() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isPlayable();
 	}
 
 	public boolean isPlaying() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isPlaying();
 	}
 
 	public void playResume() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.isPlayable() ) {
 			mediaPlayer.play();
 		} else {
@@ -334,7 +302,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void pause() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
 			mediaPlayer.setPause( true );
 		} else {
@@ -343,7 +311,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void stop() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.stop();
 	}
 
@@ -382,7 +350,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public long getTimeInMilliseconds() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
 			if( mediaPlayer.isPlaying() ) {
 				//pass
@@ -399,7 +367,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
 			if( mediaPlayer.isPlaying() ) {
 				// pass
@@ -412,7 +380,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public float getPosition() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
 			if( mediaPlayer.isPlaying() ) {
 				//pass
@@ -429,7 +397,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void setPosition( float position ) {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.isSeekable() ) {
 			//pass
 		} else {
@@ -455,27 +423,27 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public long getLengthInMilliseconds() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.getLength();
 	}
 
 	public float getVolume() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.getVolume() * 0.01f;
 	}
 
 	public void setVolume( float volume ) {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.setVolume( Math.round( volume * 100 ) ); // 200?
 	}
 
 	public boolean isMuted() {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isMute();
 	}
 
 	public void setMuted( boolean isMuted ) {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.mute( isMuted );
 	}
 
@@ -484,7 +452,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private float getTimeInSeconds() {
 		// TODO: 1.0 means the video is over... so we need something to get the last frame of the video if it's 1.0.
 		//		float position = ( this.getPosition() >= 1.0f ) ? 0.88f : this.getPosition();
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.getTime() * 0.001f;
 	}
 
@@ -498,7 +466,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 				return false;
 			}
 		} else {
-			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			return mediaPlayer.saveSnapshot( file );
 		}
 	}
@@ -508,16 +476,16 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			float seconds = this.getTimeInSeconds();
 			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 		} else {
-			MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			return mediaPlayer.getSnapshot();
 		}
 	}
 
 	public void release() {
-		this.embeddedMediaPlayerComponent.release();
+		this.mediaPlayerComponent.release();
 	}
 
 	public java.awt.Dimension getVideoSize() {
-		return this.embeddedMediaPlayerComponent.getMediaPlayer().getVideoDimension();
+		return this.mediaPlayerComponent.getMediaPlayer().getVideoDimension();
 	}
 }

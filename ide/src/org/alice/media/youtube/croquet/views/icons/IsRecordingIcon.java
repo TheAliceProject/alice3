@@ -71,6 +71,7 @@ public class IsRecordingIcon implements Icon {
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Paint prevPaint = g2.getPaint();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		if( c instanceof AbstractButton ) {
 			AbstractButton button = (AbstractButton)c;
 			ButtonModel buttonModel = button.getModel();
@@ -81,7 +82,6 @@ public class IsRecordingIcon implements Icon {
 				g2.setPaint( new java.awt.GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
 				g.fillOval( x, y, SIZE, SIZE );
 				g.setColor( Color.BLACK );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 				g.drawOval( x, y, SIZE, SIZE );
 			}
 		}

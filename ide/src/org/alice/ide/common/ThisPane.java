@@ -48,11 +48,9 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
 	private org.lgna.project.ast.AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
-	private org.lgna.croquet.ListSelectionState.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite> e ) {
+			org.alice.ide.declarationseditor.DeclarationComposite nextValue = e.getNextValue();
 			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
 		}
 	};
@@ -67,12 +65,12 @@ public class ThisPane extends AccessiblePane {
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeValueListener( this.codeSelectionObserver );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.codeSelectionObserver );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationListener );
 		super.handleUndisplayable();
 	}
 

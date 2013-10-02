@@ -49,8 +49,8 @@ public abstract class MemberHub<M extends org.lgna.project.ast.Member> extends B
 	private final MemberPopupCoreComposite popup = new MemberPopupCoreComposite( this );
 	private final javax.swing.Icon icon = new org.alice.ide.ast.type.merge.croquet.views.icons.ActionStatusIcon( this );
 
-	public MemberHub( M member, boolean initialValue, String prependText, String appendText ) {
-		super( member, initialValue, prependText, appendText );
+	public MemberHub( M member, boolean initialValue ) {
+		super( member, initialValue );
 	}
 
 	public javax.swing.Icon getIcon() {

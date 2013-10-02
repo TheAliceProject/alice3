@@ -43,17 +43,18 @@
 
 package org.alice.stageide.program;
 
-import java.awt.Component;
-
 /**
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
+	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
+	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 640, 360 );
+
 	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
 
 		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
+			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
 		}
 
 		@Override
@@ -63,6 +64,37 @@ public class VideoEncodingProgramContext extends ProgramContext {
 
 		public void setAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator ) {
 			this.animator = animator;
+		}
+
+		private boolean isAnimating;
+
+		class AnimatorThread extends Thread {
+			@Override
+			public void run() {
+				while( isAnimating ) {
+					animator.update();
+					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+				}
+			}
+		}
+
+		@Override
+		public void startAnimator() {
+			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
+				this.isAnimating = true;
+				new AnimatorThread().start();
+			} else {
+				super.startAnimator();
+			}
+		}
+
+		@Override
+		public void stopAnimator() {
+			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
+				this.isAnimating = false;
+			} else {
+				super.stopAnimator();
+			}
 		}
 	}
 
@@ -88,8 +120,8 @@ public class VideoEncodingProgramContext extends ProgramContext {
 
 	//todo: add String[] args?
 	public void initializeInContainer( java.awt.Container container ) {
-		Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
-		awtComponent.setSize( 640, 360 );
+		java.awt.Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
+		awtComponent.setSize( SIZE );
 		container.add( awtComponent );
 	}
 }

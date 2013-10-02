@@ -81,11 +81,8 @@ public class ImportTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<String> directoryListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<java.lang.String> state, java.lang.String prevValue, java.lang.String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<String> directoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
 			handleDirectoryChanged();
 		}
 	};
@@ -98,16 +95,15 @@ public class ImportTabView extends GalleryTabView {
 		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[shrink]4[grow]4[shrink]16[shrink]" );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
 		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
 		panel.addComponent( composite.getBrowseOperation().createButton() );
 		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.dragComponentsView );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
 		panel.addComponent( scrollPane, "span 4, wrap" );
-		this.addPageStartComponent( panel );
+		this.addCenterComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.dragComponentsView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.notDirectoryLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.noFilesLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
@@ -138,13 +134,13 @@ public class ImportTabView extends GalleryTabView {
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
-		importTab.getDirectoryState().addAndInvokeValueListener( this.directoryListener );
+		importTab.getDirectoryState().addAndInvokeNewSchoolValueListener( this.directoryListener );
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
-		importTab.getDirectoryState().removeValueListener( this.directoryListener );
+		importTab.getDirectoryState().removeNewSchoolValueListener( this.directoryListener );
 		super.handleCompositePostDeactivation();
 	}
 

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.video;
  * @author Dennis Cosgrove
  */
 public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
+	public java.awt.Component getVideoSurface();
 
 	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
 

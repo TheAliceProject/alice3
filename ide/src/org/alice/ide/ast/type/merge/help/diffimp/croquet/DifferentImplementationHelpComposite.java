@@ -49,37 +49,65 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationTopLevelChoice> topLevelChoiceState = this.createListSelectionStateForEnum( this.createKey( "topLevelChoiceState" ), DifferentImplementationTopLevelChoice.class, null );
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationSelectOne> selectOneState = this.createListSelectionStateForEnum( this.createKey( "selectOneState" ), DifferentImplementationSelectOne.class, null );
-
-	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
-	private final ErrorStatus noSelectOneError = this.createErrorStatus( this.createKey( "noSelectOneError" ) );
-
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
-		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+	private final org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
+		public String customize( String localization, DifferentImplementationChoice value ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localization, value );
+			return org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
 		}
 	};
 
-	public DifferentImplementationHelpComposite( java.util.UUID migrationId, DifferentImplementation<M> differentImplementation ) {
+	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, this.localizationCustomizer, null );
+
+	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
+
+	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( this.createKey( "selectOneHeader" ) );
+
+	private final org.lgna.croquet.event.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentImplementationChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
+			handleChanged();
+		}
+	};
+
+	public DifferentImplementationHelpComposite( java.util.UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText ) {
 		super( migrationId, differentImplementation );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has " );
+		sb.append( signatureText );
+		sb.append( " to a </kindOfMember/> already in your project.<p><p>" );
+		sb.append( "They have different " );
+		sb.append( implementationPluralText );
+		sb.append( " which leaves you with three options:" );
+		sb.append( "<ol>" );
+		sb.append( "<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)" );
+		sb.append( "<li>only <strong>add</strong> the version in </filename/>" );
+		//sb.append( " (thereby replacing the version already in your project)" );
+		sb.append( "<li>only <strong>retain</strong> the version already in your project" );
+		//sb.append( " (thereby ignoring version in </filename/>)" );
+		sb.append( "</ol>" );
+		sb.append( "</html>" );
+
+		String kindOfMemberText;
+		M member = differentImplementation.getImportHub().getMember();
+		if( member instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
+		} else {
+			kindOfMemberText = "property";
+		}
+		String text = sb.toString();
+		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
+		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
+		text = text.replaceAll( "</memberName/>", member.getName() );
+		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationTopLevelChoice> getTopLevelChoiceState() {
-		return this.topLevelChoiceState;
+	public org.lgna.croquet.PlainStringValue getSelectOneHeader() {
+		return this.selectOneHeader;
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationSelectOne> getSelectOneState() {
-		return this.selectOneState;
-	}
-
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
-
-	private boolean isRenameRequired() {
-		//todo
-		return this.getProjectNameState().getValue().contentEquals( this.getImportNameState().getValue() );
+	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getChoiceState() {
+		return this.choiceState;
 	}
 
 	@Override
@@ -88,81 +116,71 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	@Override
-	public void handlePreActivation() {
-		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
-		DifferentImplementationTopLevelChoice topLevelChoice;
-		DifferentImplementationSelectOne selectOne;
-		if( isImport ) {
-			if( isProject ) {
-				topLevelChoice = DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME;
-				selectOne = null;
-			} else {
-				topLevelChoice = DifferentImplementationTopLevelChoice.SELECT_ONE;
-				selectOne = DifferentImplementationSelectOne.FROM_IMPORT;
-			}
-		} else {
-			if( isProject ) {
-				topLevelChoice = DifferentImplementationTopLevelChoice.SELECT_ONE;
-				selectOne = DifferentImplementationSelectOne.ALREADY_IN_PROJECT;
-			} else {
-				topLevelChoice = null;
-				selectOne = null;
-			}
-		}
-		this.getImportNameState().setValueTransactionlessly( this.getPotentialNameChanger().getImportHub().getNameState().getValue() );
-		this.getProjectNameState().setValueTransactionlessly( this.getPotentialNameChanger().getProjectHub().getNameState().getValue() );
-		this.topLevelChoiceState.setValueTransactionlessly( topLevelChoice );
-		this.selectOneState.setValueTransactionlessly( selectOne );
-		super.handlePreActivation();
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		boolean isImport;
-		boolean isKeep;
-		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
-			isImport = true;
-			isKeep = true;
-			this.getPotentialNameChanger().getImportHub().getNameState().setValueTransactionlessly( this.getImportNameState().getValue() );
-			this.getPotentialNameChanger().getProjectHub().getNameState().setValueTransactionlessly( this.getProjectNameState().getValue() );
-		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
-			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
-			if( selectOne == DifferentImplementationSelectOne.FROM_IMPORT ) {
-				isImport = true;
-			} else if( selectOne == DifferentImplementationSelectOne.ALREADY_IN_PROJECT ) {
-				isImport = false;
-			} else {
-				throw new org.lgna.croquet.CancelException();
-			}
-			isKeep = isImport == false;
-		} else {
-			throw new org.lgna.croquet.CancelException();
-		}
-		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-		this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
-		return null;
+	protected boolean isRetainBothSelected() {
+		return this.choiceState.getValue() == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
 	}
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
-
-		//todo
-		this.getView().repaint();
-
-		DifferentImplementationTopLevelChoice topLevelChoice = this.topLevelChoiceState.getValue();
-		if( topLevelChoice == DifferentImplementationTopLevelChoice.KEEP_BOTH_AND_RENAME ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else if( topLevelChoice == DifferentImplementationTopLevelChoice.SELECT_ONE ) {
-			DifferentImplementationSelectOne selectOne = this.selectOneState.getValue();
-			if( selectOne != null ) {
-				return IS_GOOD_TO_GO_STATUS;
+		Status rv = super.getStatusPreRejectorCheck( step );
+		if( rv == IS_GOOD_TO_GO_STATUS ) {
+			DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
+			if( topLevelChoice != null ) {
+				//pass
 			} else {
-				return this.noSelectOneError;
+				rv = this.noTopLevelError;
+			}
+		}
+		return rv;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
+		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
+		DifferentImplementationChoice topLevelChoice;
+		if( isImport ) {
+			if( isProject ) {
+				topLevelChoice = DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
+			} else {
+				topLevelChoice = DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE;
 			}
 		} else {
-			return this.noTopLevelError;
+			if( isProject ) {
+				topLevelChoice = DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
+			} else {
+				topLevelChoice = null;
+			}
 		}
+		this.choiceState.setValueTransactionlessly( topLevelChoice );
+		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
+		super.handlePreActivation();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
+	}
+
+	private void handleChanged() {
+		DifferentImplementationChoice choice = this.choiceState.getValue();
+		boolean isImport;
+		boolean isKeep;
+		if( choice == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ) {
+			isImport = true;
+			isKeep = true;
+		} else if( choice == DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ) {
+			isImport = true;
+			isKeep = false;
+		} else if( choice == DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ) {
+			isImport = false;
+			isKeep = true;
+		} else {
+			isImport = false;
+			isKeep = false;
+		}
+		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
+		this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
 	}
 }

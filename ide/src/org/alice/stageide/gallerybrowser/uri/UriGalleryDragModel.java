@@ -233,6 +233,18 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else {
 			this.text = "new " + typeName + "()";
 		}
+
+		if( typeName != null ) {
+			java.io.File file = new java.io.File( this.uri );
+			if( ( file != null ) || file.exists() ) {
+				String baseName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( file );
+				if( typeName.contentEquals( baseName ) ) {
+					//pass
+				} else {
+					this.text = "<html>" + this.text + " <em>from " + file.getName() + "</em></html>";
+				}
+			}
+		}
 	}
 
 	@Override

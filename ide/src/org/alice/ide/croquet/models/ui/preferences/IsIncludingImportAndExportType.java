@@ -46,7 +46,9 @@ package org.alice.ide.croquet.models.ui.preferences;
  * @author Dennis Cosgrove
  */
 public class IsIncludingImportAndExportType {
+	private static final boolean value = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType", false );
+
 	public static boolean getValue() {
-		return false;
+		return value;
 	}
 }

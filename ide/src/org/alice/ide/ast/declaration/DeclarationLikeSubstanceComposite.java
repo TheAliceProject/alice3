@@ -474,12 +474,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
@@ -559,7 +556,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		this.mapTypeToInitializer.clear();
 
 		if( this.isInitializerEditable() ) {
-			this.initializerState.addValueListener( this.initializerListener );
+			this.initializerState.addNewSchoolValueListener( this.initializerListener );
 		}
 		this.getView().handleInitializerChanged( this.getInitializer() );
 		super.handlePreShowDialog( step );
@@ -569,7 +566,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		if( this.isInitializerEditable() ) {
-			this.initializerState.removeValueListener( this.initializerListener );
+			this.initializerState.removeNewSchoolValueListener( this.initializerListener );
 		}
 		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
