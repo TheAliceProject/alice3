@@ -101,7 +101,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 		org.lgna.story.SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, org.lgna.story.SJointedModel.class );
 		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.ImplementationAccessor.getImplementation( model );
 
-		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.ide.IDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
 		org.lgna.project.virtualmachine.UserInstance userInstance = null;
 		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { nextValue } );
 		org.lgna.story.resources.JointedModelResource resource = (org.lgna.story.resources.JointedModelResource)array[ 0 ];

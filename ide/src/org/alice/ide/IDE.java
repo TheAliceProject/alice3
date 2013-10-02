@@ -443,26 +443,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.clearanceCheckingExitOperation.fire( trigger );
 	}
 
-	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
-
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 
 	protected abstract void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm );
 
-	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
-		if( this.vmForSceneEditor != null ) {
-			//pass
-		} else {
-			this.vmForSceneEditor = this.createVirtualMachineForSceneEditor();
-			this.registerAdaptersForSceneEditorVm( this.vmForSceneEditor );
-		}
-		return this.vmForSceneEditor;
-	}
-
-	public org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
-		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	public final org.lgna.project.virtualmachine.VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
+		org.lgna.project.virtualmachine.VirtualMachine vm = this.createVirtualMachineForSceneEditor();
+		this.registerAdaptersForSceneEditorVm( vm );
+		return vm;
 	}
 
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {

@@ -82,7 +82,7 @@ public class PaintView extends org.lgna.croquet.components.ViewController<javax.
 				super.paintComponent( g );
 				org.lgna.project.ast.Expression expression = PaintView.this.getModel().getValue();
 				if( expression != null ) {
-					org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+					org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
 
 					Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 					assert values.length == 1;

@@ -52,6 +52,8 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel {
 
+	private org.lgna.project.virtualmachine.VirtualMachine vm;
+
 	private java.util.Map<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance> mapSceneFieldToInstance = new java.util.HashMap<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance>();
 	private java.util.Map<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField> mapSceneInstanceToField = new java.util.HashMap<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField>();
 
@@ -166,7 +168,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			return null;
 		}
 		try {
-			Object[] values = this.getVM().ENTRY_POINT_evaluate(
+			Object[] values = this.getVirtualMachine().ENTRY_POINT_evaluate(
 					getActiveSceneInstance(),
 					new Expression[] { expression }
 					);
@@ -224,13 +226,13 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	{
 		for( org.lgna.project.ast.Statement statement : statements )
 		{
-			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( this.getActiveSceneInstance(), statement );
+			this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( this.getActiveSceneInstance(), statement );
 		}
 	}
 
 	public void addField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, int index, org.lgna.project.ast.Statement... statements ) {
 		assert declaringType == this.getActiveSceneType() : declaringType;
-		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
+		this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
 		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
@@ -312,12 +314,13 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
-	}
-
-	protected org.lgna.project.virtualmachine.VirtualMachine getVM() {
-		return this.getIDE().getVirtualMachineForSceneEditor();
+	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
+		if( this.vm != null ) {
+			//pass
+		} else {
+			this.vm = org.alice.ide.IDE.getActiveInstance().createRegisteredVirtualMachineForSceneEditor();
+		}
+		return this.vm;
 	}
 
 	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
@@ -370,7 +373,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
-		return getVM().ENTRY_POINT_createInstance( this.programType );
+		return getVirtualMachine().ENTRY_POINT_createInstance( this.programType );
 	}
 
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {

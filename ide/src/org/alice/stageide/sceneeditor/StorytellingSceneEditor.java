@@ -847,7 +847,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			} finally {
 				ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
 			}
-			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
+			this.getVirtualMachine().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
 			getPropertyPanel().setSceneInstance( sceneAliceInstance );
 
