@@ -132,6 +132,7 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 
 		tlComposite.getTimeLine().addListener( timeLineListener );
+		tlComposite.setInitialPose( Pose.createPoseFromT( parent.getBiped() ) );
 	}
 
 	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {

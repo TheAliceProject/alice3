@@ -51,6 +51,8 @@ import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.views.TimeLineView;
+import org.lgna.ik.poser.pose.Pose;
+import org.lgna.story.SBiped;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -64,6 +66,15 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 	private boolean isTimeMutable = true;
 	private final TimeLine timeLine = new TimeLine();
 	private KeyFrameData selected = null;
+
+	//	private final ListSelectionState<JointId> jointIdState =
+	//			createListSelectionState( createKey( "animatedJoints" ), new RefreshableListData(ItemCodec<T>) {
+	//			}, -1 );
+
+	public TimeLineComposite() {
+		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+	}
+
 	private final ListSelectionState<KeyFrameData> listState =
 			createListSelectionState( createKey( "DO NOT TRANSLATE" ),
 					new RefreshableListData<KeyFrameData>( new ItemCodec<KeyFrameData>() {
@@ -90,10 +101,6 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 							return timeLine.getKeyFrames();
 						}
 					}, -1 );
-
-	public TimeLineComposite() {
-		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
-	}
 
 	public void selectKeyFrame( KeyFrameData keyFrameData ) {
 		if( selected != null ) {
@@ -141,6 +148,10 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 
 	public KeyFrameData getSelectedKeyFrame() {
 		return selected;
+	}
+
+	public void setInitialPose( Pose<SBiped> pose ) {
+		this.timeLine.setInitialPose( pose );
 	}
 
 }
