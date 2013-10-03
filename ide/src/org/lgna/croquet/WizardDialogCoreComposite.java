@@ -319,7 +319,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 					.build();
 			rv.setBackgroundColor( cardPanel.getBackgroundColor() );
 		} else {
-			rv = cardPanel;
+			rv = cardPanel; //note: the composite is not correct.  worth addressing?
 		}
 		return rv;
 	}
