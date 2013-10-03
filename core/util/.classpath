@@ -17,7 +17,7 @@
 	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar"/>
 	<classpathentry kind="lib" path="/ide/lib/swingworker/swing-worker-1.2.jar"/>
-	<classpathentry kind="lib" path="/ide/lib/jogl2/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="/ide/lib/jogl2/jogl-all.jar" sourcepath="/ide/dev/jogl2/src.zip"/>
+	<classpathentry kind="lib" path="/ide/lib/jogl2/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jogl2/lib/jogl-all.jar" sourcepath="/ide/dev/jogl2/jogl-java-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
