@@ -68,9 +68,7 @@ public abstract class CustomView extends org.lgna.croquet.components.JComponent<
 					super.paintComponent( g2 );
 					CustomView.this.paintComponentEpilogue( g2 );
 				} finally {
-					gc.popPaint();
-					gc.popAntialiasing();
-					gc.popGraphics();
+					gc.popAll();
 				}
 			}
 

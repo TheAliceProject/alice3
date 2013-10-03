@@ -61,11 +61,49 @@ public final class GraphicsContext {
 				}
 			} );
 		}
-		rv.pushGraphics( (java.awt.Graphics2D)g );
+		rv.pushAll( (java.awt.Graphics2D)g );
 		return rv;
 	}
 
-	private final java.util.Stack<java.awt.Graphics2D> g2Stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private static void popTo( java.util.Stack<?> stack, int size ) {
+		while( stack.size() > size ) {
+			stack.pop();
+		}
+	}
+
+	private class GraphicsAndStackSizes {
+		private final java.awt.Graphics2D graphics2d;
+		private final int paintStackSize;
+		private final int strokeStackSize;
+		private final int fontStackSize;
+		private final int clipStackSize;
+		private final int transformStackSize;
+		private final int antialiasingStackSize;
+		private final int textAntialiasingStackSize;
+
+		public GraphicsAndStackSizes( java.awt.Graphics2D graphics2d ) {
+			this.graphics2d = graphics2d;
+			this.paintStackSize = paintStack.size();
+			this.strokeStackSize = strokeStack.size();
+			this.fontStackSize = fontStack.size();
+			this.clipStackSize = clipStack.size();
+			this.transformStackSize = transformStack.size();
+			this.antialiasingStackSize = antialiasingStack.size();
+			this.textAntialiasingStackSize = textAntialiasingStack.size();
+		}
+
+		public void popAll() {
+			popTo( paintStack, this.paintStackSize );
+			popTo( strokeStack, this.strokeStackSize );
+			popTo( fontStack, this.fontStackSize );
+			popTo( clipStack, this.clipStackSize );
+			popTo( transformStack, this.transformStackSize );
+			popTo( antialiasingStack, this.antialiasingStackSize );
+			popTo( textAntialiasingStack, this.textAntialiasingStackSize );
+		}
+	}
+
+	private final java.util.Stack<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	private final java.util.Stack<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private final java.util.Stack<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -79,52 +117,58 @@ public final class GraphicsContext {
 	public GraphicsContext() {
 	}
 
-	public void pushGraphics( java.awt.Graphics2D g ) {
-		this.g2Stack.push( g );
+	public void pushAll( java.awt.Graphics2D g ) {
+		this.mainStack.push( new GraphicsAndStackSizes( g ) );
 	}
 
-	public void popGraphics() {
-		this.g2Stack.pop();
+	public void popAll() {
+		GraphicsAndStackSizes graphicsAndStackSizes = this.mainStack.pop();
+		graphicsAndStackSizes.popAll();
+	}
+
+	private java.awt.Graphics2D getGraphics2d() {
+		GraphicsAndStackSizes graphicsAndStackSizes = this.mainStack.peek();
+		return graphicsAndStackSizes.graphics2d;
 	}
 
 	public void pushFont() {
-		this.fontStack.push( this.g2Stack.peek().getFont() );
+		this.fontStack.push( this.getGraphics2d().getFont() );
 	}
 
 	public void popFont() {
-		this.g2Stack.peek().setFont( this.fontStack.pop() );
+		this.getGraphics2d().setFont( this.fontStack.pop() );
 	}
 
 	public void pushClip() {
-		this.clipStack.push( this.g2Stack.peek().getClip() );
+		this.clipStack.push( this.getGraphics2d().getClip() );
 	}
 
 	public void popClip() {
-		this.g2Stack.peek().setClip( this.clipStack.pop() );
+		this.getGraphics2d().setClip( this.clipStack.pop() );
 	}
 
 	public void pushTransform() {
-		this.transformStack.push( this.g2Stack.peek().getTransform() );
+		this.transformStack.push( this.getGraphics2d().getTransform() );
 	}
 
 	public void popTransform() {
-		this.g2Stack.peek().setTransform( this.transformStack.pop() );
+		this.getGraphics2d().setTransform( this.transformStack.pop() );
 	}
 
 	public void pushPaint() {
-		this.paintStack.push( this.g2Stack.peek().getPaint() );
+		this.paintStack.push( this.getGraphics2d().getPaint() );
 	}
 
 	public void popPaint() {
-		this.g2Stack.peek().setPaint( this.paintStack.pop() );
+		this.getGraphics2d().setPaint( this.paintStack.pop() );
 	}
 
 	public void pushStroke() {
-		this.strokeStack.push( this.g2Stack.peek().getStroke() );
+		this.strokeStack.push( this.getGraphics2d().getStroke() );
 	}
 
 	public void popStroke() {
-		this.g2Stack.peek().setStroke( this.strokeStack.pop() );
+		this.getGraphics2d().setStroke( this.strokeStack.pop() );
 	}
 
 	private static void pushAndSetRenderingHint( java.awt.Graphics2D g2, java.util.Stack<Object> stack, java.awt.RenderingHints.Key key, Object value ) {
@@ -137,18 +181,18 @@ public final class GraphicsContext {
 	}
 
 	public void pushAndSetAntialiasing( boolean b ) {
-		pushAndSetRenderingHint( this.g2Stack.peek(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		pushAndSetRenderingHint( this.getGraphics2d(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
 	}
 
 	public void popAntialiasing() {
-		popRenderingHint( this.g2Stack.peek(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING );
+		popRenderingHint( this.getGraphics2d(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING );
 	}
 
 	public void pushAndSetTextAntialiasing( boolean b ) {
-		pushAndSetRenderingHint( this.g2Stack.peek(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF );
+		pushAndSetRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF );
 	}
 
 	public void popTextAntialiasing() {
-		popRenderingHint( this.g2Stack.peek(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+		popRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
 	}
 }
