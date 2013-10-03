@@ -30,5 +30,7 @@
 	<classpathentry kind="lib" path="lib/youtube/lib/gdata-media-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/lib/gdata-youtube-meta-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/croquet"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/ide/lib/apple/AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/jmf.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jmfmp3/lib/ext/mp3plugin.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jogl2/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jogl2/lib/jogl-all.jar" sourcepath="/ide/dev/jogl2/jogl-java-src.zip"/>
+	<classpathentry kind="lib" path="/ide/lib/mail/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/mig_layout/miglayout-4.0-swing.jar" sourcepath="/ide/dev/mig_layout/miglayout-4.0-sources.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/rpc/xmlrpc-client-1.1.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jira/jira-soapclient-4.0-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/vlcj/jna-3.5.2.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/vlcj/platform-3.5.2.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/vlcj/vlcj-2.4.1.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/customizer.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/swingworker/swing-worker-1.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
