@@ -117,9 +117,10 @@ public class BeveledShape {
 	}
 
 	public void draw( java.awt.Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
-		java.awt.Paint prevPaint = g2.getPaint();
+		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
 		try {
+			gc.pushStroke();
+			gc.pushPaint();
 			if( bevelState == BevelState.FLUSH ) {
 				g2.setStroke( new java.awt.BasicStroke( flushStrokeWidth, CAP, JOIN ) );
 				g2.setPaint( NEUTRAL_PAINT );
@@ -166,8 +167,7 @@ public class BeveledShape {
 				}
 			}
 		} finally {
-			g2.setPaint( prevPaint );
-			g2.setStroke( prevStroke );
+			gc.popAll();
 		}
 	}
 
