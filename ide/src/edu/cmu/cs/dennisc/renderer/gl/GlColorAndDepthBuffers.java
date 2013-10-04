@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class GlColorAndDepthBuffers extends GlColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers {
+	private java.nio.FloatBuffer depthBuffer;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	/*package-private*/java.nio.FloatBuffer acquireFloatBuffer( int width, int height ) {
+		int capacity = width * height;
+		if( this.depthBuffer != null ) {
+			if( this.depthBuffer.capacity() == capacity ) {
+				//pass
+			} else {
+				this.depthBuffer = null;
+			}
+		}
+		if( this.depthBuffer != null ) {
+			//pass
+		} else {
+			this.depthBuffer = java.nio.FloatBuffer.allocate( capacity );
+		}
+		return this.depthBuffer;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	/*package-private*/void releaseFloatBuffer() {
+	}
 }

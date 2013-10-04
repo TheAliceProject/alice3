@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class RenderFactory {
+	public static ColorBuffer createColorBuffer() {
+		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
+		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public static HeavyweightOnscreenRenderTarget createHeavyweightRenderTarget() {
+		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
+		return rv;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static LightweightOnscreenRenderTarget createLightweightRenderTarget() {
+		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
+		return rv;
+	}
 }

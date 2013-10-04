@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class GlOffscreenRenderTarget extends GlRenderTarget {
+	private final javax.media.opengl.GLPbuffer glPixelBuffer;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public GlOffscreenRenderTarget( int width, int height ) {
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
+			//			this.glPixelBuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height, share );
+			//
+			//			// This is a work around for Linux users.
+			//			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
+			//			// return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
+			//			if( mapPixelBufferToDimension != null ) {
+			//				mapPixelBufferToDimension.put( this.glPixelBuffer, new java.awt.Dimension( width, height ) );
+			//			}
+			this.glPixelBuffer = null;
+		} else {
+			this.glPixelBuffer = null;
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected javax.media.opengl.GLAutoDrawable getGlAutoDrawable() {
+		return this.glPixelBuffer;
+	}
 }

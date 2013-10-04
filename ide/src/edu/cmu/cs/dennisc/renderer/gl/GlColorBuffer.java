@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class GlColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
+	private final Object imageLock = "imageLock";
+	private java.awt.image.BufferedImage image;
+	private boolean isRightSideUp;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public Object getImageLock() {
+		return this.imageLock;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height, boolean isAlphaChannelDesired ) {
+		int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_3BYTE_BGR : java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		if( this.image != null ) {
+			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
+				//pass
+			} else {
+				this.image = null;
+			}
+		}
+		if( this.image != null ) {
+			//pass
+		} else {
+			this.image = new java.awt.image.BufferedImage( width, height, imageType );
+		}
+		return this.image;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	/*package-private*/void releaseImage( boolean isRightSideUp ) {
+		this.isRightSideUp = true;
+	}
+
+	public java.awt.image.BufferedImage getImage() {
+		return this.image;
+	}
+
+	public boolean isRightSideUp() {
+		return this.isRightSideUp;
+	}
 }
