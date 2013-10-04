@@ -46,6 +46,32 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.RenderTarget {
+	private javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+
+		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		}
+
+		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+			handleDisplay( drawable );
+		}
+
+		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+	};
+
+	private final edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext();
+
+	private void handleDisplay( javax.media.opengl.GLAutoDrawable glDrawable ) {
+		javax.media.opengl.GL gl = glDrawable.getGL();
+		javax.media.opengl.GL2 gl2 = gl.getGL2();
+		rc.gl = gl2;
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
+			edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera ).performClearAndRenderOffscreen( rc, glDrawable.getWidth(), glDrawable.getHeight() );
+		}
+	}
+
 	protected abstract javax.media.opengl.GLAutoDrawable getGlAutoDrawable();
 
 	public int getWidth() {
@@ -58,13 +84,22 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		this.sgCameras.add( sgCamera );
+		if( this.sgCameras.size() == 1 ) {
+			this.getGlAutoDrawable().addGLEventListener( this.glEventListener );
+		}
 	}
 
 	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		if( ( this.sgCameras.size() == 1 ) && this.sgCameras.contains( sgCamera ) ) {
+			this.getGlAutoDrawable().removeGLEventListener( this.glEventListener );
+		}
 		this.sgCameras.remove( sgCamera );
 	}
 
 	public void clearSgCameras() {
+		if( this.sgCameras.size() > 0 ) {
+			this.getGlAutoDrawable().removeGLEventListener( this.glEventListener );
+		}
 		this.sgCameras.clear();
 	}
 
@@ -84,11 +119,11 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		return java.util.Collections.unmodifiableList( this.listeners );
 	}
 
-	public void getColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
 		throw new RuntimeException( "todo" );
 	}
 
-	public void getColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
 		throw new RuntimeException( "todo" );
 	}
 
@@ -146,11 +181,11 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		}
 	}
 
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.lookingglass.PickResult> observer ) {
+	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
 		throw new RuntimeException( "todo" );
 	}
 
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.Observer<java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult>> observer ) {
+	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
 		throw new RuntimeException( "todo" );
 	}
 

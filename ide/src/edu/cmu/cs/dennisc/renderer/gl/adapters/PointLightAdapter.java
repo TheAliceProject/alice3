@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
-	}
+public class PointLightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends LightAdapter<E> {
+	private float m_constant;
+	private float m_linear;
+	private float m_quadratic;
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
-	}
-
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
+	@Override
+	protected float[] getPosition( float[] rv ) {
+		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		rv[ 0 ] = (float)db.get( 12 );
+		rv[ 1 ] = (float)db.get( 13 );
+		rv[ 2 ] = (float)db.get( 14 );
+		rv[ 3 ] = 1.0f;
 		return rv;
 	}
 
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
+	@Override
+	protected float getConstantAttenuation() {
+		return m_constant;
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
+	@Override
+	protected float getLinearAttenuation() {
+		return m_linear;
+	}
 
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
+	@Override
+	protected float getQuadraticAttenuation() {
+		return m_quadratic;
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.constantAttenuation ) {
+			m_constant = m_element.constantAttenuation.getValue().floatValue();
+		} else if( property == m_element.linearAttenuation ) {
+			m_linear = m_element.linearAttenuation.getValue().floatValue();
+		} else if( property == m_element.quadraticAttenuation ) {
+			m_quadratic = m_element.quadraticAttenuation.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

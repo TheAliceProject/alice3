@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+package edu.cmu.cs.dennisc.renderer.gl.adapters.graphics;
 
-/**
- * @author Dennis Cosgrove
- */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
+public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText> extends TextAdapter<E> {
+	private java.awt.Color fillColor = null;
+	private java.awt.Color outlineColor = null;
+
+	protected abstract void render(
+			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
+			float wrapWidth,
+			java.awt.Color fillColor,
+			java.awt.Color outlineColor );
+
+	@Override
+	protected void render(
+			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
+			float wrapWidth ) {
+		this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
 	}
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
-	}
-
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		return rv;
-	}
-
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
-
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.fillColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.fillColor.getValue();
+			if( color != null ) {
+				this.fillColor = color.getAsAWTColor();
+			} else {
+				this.fillColor = null;
 			}
-		} );
+		} else if( property == m_element.outlineColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.outlineColor.getValue();
+			if( color != null ) {
+				this.outlineColor = color.getAsAWTColor();
+			} else {
+				this.outlineColor = null;
+			}
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

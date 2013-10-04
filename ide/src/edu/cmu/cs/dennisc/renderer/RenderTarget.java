@@ -42,9 +42,6 @@
  */
 package edu.cmu.cs.dennisc.renderer;
 
-import edu.cmu.cs.dennisc.lookingglass.PickResult;
-import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -67,9 +64,9 @@ public interface RenderTarget {
 
 	java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners();
 
-	void getColorBuffer( ColorBuffer colorBuffer, Observer<ColorBuffer> observer );
+	void captureColorBuffer( ColorBuffer colorBuffer, Observer<ColorBuffer> observer );
 
-	void getColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
+	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
 
 	java.awt.Graphics2D createGraphics();
 
@@ -95,9 +92,9 @@ public interface RenderTarget {
 
 	void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
 
-	void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, Observer<PickResult> observer );
+	void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer );
 
-	void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, Observer<java.util.List<PickResult>> observer );
+	void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer );
 
 	//	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	//

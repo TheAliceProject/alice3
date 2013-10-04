@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
-	}
+public class ScalableAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph.Scalable> {
+	private double x;
+	private double y;
+	private double z;
+	private boolean isIdentity = true;
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
-	}
-
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		return rv;
-	}
-
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
-
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
+	@Override
+	public void renderOpaque( RenderContext rc ) {
+		if( this.isIdentity ) {
+			super.renderOpaque( rc );
+		} else {
+			rc.gl.glPushMatrix();
+			rc.incrementScaledCount();
+			try {
+				rc.gl.glScaled( this.x, this.y, this.z );
+				super.renderOpaque( rc );
+			} finally {
+				rc.decrementScaledCount();
+				rc.gl.glPopMatrix();
 			}
-		} );
+		}
+	}
+
+	@Override
+	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+		if( this.isIdentity ) {
+			super.renderGhost( rc, root );
+		} else {
+			rc.gl.glPushMatrix();
+			rc.incrementScaledCount();
+			try {
+				rc.gl.glScaled( this.x, this.y, this.z );
+				super.renderGhost( rc, root );
+			} finally {
+				rc.decrementScaledCount();
+				rc.gl.glPopMatrix();
+			}
+		}
+	}
+
+	@Override
+	public void pick( PickContext pc, PickParameters pickParameters ) {
+		if( this.isIdentity ) {
+			super.pick( pc, pickParameters );
+		} else {
+			pc.gl.glPushMatrix();
+			pc.incrementScaledCount();
+			try {
+				pc.gl.glScaled( this.x, this.y, this.z );
+				super.pick( pc, pickParameters );
+			} finally {
+				pc.decrementScaledCount();
+				pc.gl.glPopMatrix();
+			}
+		}
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.scale ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
+			this.isIdentity = ( scale.x == 1.0 ) && ( scale.y == 1.0 ) && ( scale.z == 1.0 );
+			this.x = scale.x;
+			this.y = scale.y;
+			this.z = scale.z;
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

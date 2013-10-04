@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,84 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
+public abstract class Context {
+	public javax.media.opengl.GL2 gl;
+	public javax.media.opengl.glu.GLU glu;
+
+	private javax.media.opengl.glu.GLUquadric m_quadric;
+
+	public Context() {
+		glu = new javax.media.opengl.glu.GLU();
 	}
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
+	private int scaledCount = 0;
+	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	public void initialize() {
+		this.scaledCount = 0;
+		this.disableNormalize();
 	}
 
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		return rv;
+	public boolean isScaled() {
+		return this.scaledCount > 0;
 	}
 
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
+	protected abstract void enableNormalize();
+
+	protected abstract void disableNormalize();
+
+	public void incrementScaledCount() {
+		this.scaledCount++;
+		if( this.scaledCount == 1 ) {
+			this.enableNormalize();
+		}
+
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
-
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
+	public void decrementScaledCount() {
+		if( this.scaledCount == 1 ) {
+			this.disableNormalize();
+		}
+		this.scaledCount--;
 	}
+
+	public void pushScaledCountAndSetToZero() {
+		this.scaledCountStack.push( this.scaledCount );
+		this.scaledCount = 0;
+	}
+
+	public void popAndRestoreScaledCount() {
+		this.scaledCount = this.scaledCountStack.pop();
+	}
+
+	//todo: synchronize?
+	public javax.media.opengl.glu.GLUquadric getQuadric() {
+		if( m_quadric == null ) {
+			m_quadric = glu.gluNewQuadric();
+		}
+		return m_quadric;
+	}
+
+	protected abstract void handleGLChange();
+
+	//	private boolean isGLChanged = true;
+	//	public boolean isGLChanged() {
+	//		return this.isGLChanged;
+	//	}
+	public void setGL( javax.media.opengl.GL2 gl ) {
+		//		this.isGLChanged = this.gl != gl;
+		//		if( this.isGLChanged ) {
+		if( this.gl != gl ) {
+			this.gl = gl;
+			handleGLChange();
+		}
+	}
+
+	public abstract void setAppearanceIndex( int index );
 }

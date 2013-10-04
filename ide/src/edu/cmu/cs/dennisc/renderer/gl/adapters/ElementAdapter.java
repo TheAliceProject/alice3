@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
+public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Element> extends AbstractElementAdapter<E> {
+	@Override
+	public void initialize( E element ) {
+		super.initialize( element );
+		for( edu.cmu.cs.dennisc.property.Property<?> property : m_element.getProperties() ) {
+			edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
+			propertyChanged( instanceProperty );
+		}
 	}
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
 	}
 
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		return rv;
+	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
+		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
+		ElementAdapter elementAdapter = (ElementAdapter)AdapterFactory.getAdapterForElement( sgElement );
+		elementAdapter.propertyChanged( instanceProperty );
 	}
 
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
-
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
+	@Override
+	public String toString() {
+		if( m_element != null ) {
+			return getClass().getName() + " " + m_element.toString();
+		} else {
+			return super.toString();
+		}
 	}
 }

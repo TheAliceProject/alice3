@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenderFactory {
-	public static ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
+public class PickContext extends Context {
+	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+
+	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
+		synchronized( m_pickNameMap ) {
+			int name = m_pickNameMap.size();
+			m_pickNameMap.put( new Integer( name ), visualAdapter );
+			return name;
+		}
 	}
 
-	public static ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
+	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
+		synchronized( m_pickNameMap ) {
+			return m_pickNameMap.get( name );
+		}
 	}
 
-	public static HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		return rv;
+	@Override
+	protected void enableNormalize() {
 	}
 
-	public static LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		return rv;
+	@Override
+	protected void disableNormalize() {
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
+	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
+	}
 
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
+	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
+		gl.glMatrixMode( GL_MODELVIEW );
+		synchronized( cameraAdapter ) {
+			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+		}
+		m_pickNameMap.clear();
+		sceneAdapter.pick( this, pickParameters );
+	}
+
+	@Override
+	protected void handleGLChange() {
+	}
+
+	//todo: remove?
+	@Override
+	public void setAppearanceIndex( int index ) {
 	}
 }
