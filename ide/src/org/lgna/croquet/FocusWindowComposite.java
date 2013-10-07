@@ -53,10 +53,11 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 			}
 
 			public void windowLostFocus( java.awt.event.WindowEvent e ) {
-				//javax.swing.JFrame window = (javax.swing.JFrame)e.getComponent();
-				//if( window.isUndecorated() ) {
-				e.getComponent().setVisible( false );
-				//}
+				javax.swing.JFrame window = (javax.swing.JFrame)e.getComponent();
+				if( window.isUndecorated() ) {
+					//note: dialog operations or browser operations will need to be addressed 
+					e.getComponent().setVisible( false );
+				}
 			}
 		};
 
