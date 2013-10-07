@@ -44,14 +44,18 @@ package org.alice.ide.video.preview.views;
 
 class PlayCanvasIcon implements javax.swing.Icon {
 	public static void paint( java.awt.Component c, java.awt.Graphics g, javax.swing.ButtonModel buttonModel, java.awt.Stroke stroke, int x, int y, int width, int height ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g.translate( x, y );
-		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		try {
-			if( buttonModel.isEnabled() ) {
-				if( buttonModel.isSelected() ) {
-					//pass
-				} else {
+		if( buttonModel.isEnabled() ) {
+			if( buttonModel.isSelected() ) {
+				//pass
+			} else {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g2 );
+				try {
+					gc.pushAndSetAntialiasing( true );
+					gc.pushStroke();
+					gc.pushTransform();
+					gc.pushPaint();
+					g.translate( x, y );
 					if( buttonModel.isRollover() ) {
 						float xCenter = width * 0.5f;
 						float yCenter = height * 0.5f;
@@ -62,7 +66,6 @@ class PlayCanvasIcon implements javax.swing.Icon {
 						}
 					}
 
-					java.awt.Stroke prevStroke = g2.getStroke();
 					g2.setStroke( stroke );
 					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, width, height, width * 0.6f, height * 0.6f );
 					g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 70 ) );
@@ -74,12 +77,10 @@ class PlayCanvasIcon implements javax.swing.Icon {
 					int h = (int)( height * 0.45 );
 					int xFudge = width / 20;
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, ( ( width - w ) / 2 ) + xFudge, ( height - h ) / 2, w, h );
-					g2.setStroke( prevStroke );
+				} finally {
+					gc.popAll();
 				}
 			}
-		} finally {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-			g.translate( -x, -y );
 		}
 	}
 

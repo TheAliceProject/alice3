@@ -187,9 +187,13 @@ public class GlDrawableUtilities {
 		return rv;
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilities_PixelBuffer() {
+	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent() {
 		javax.media.opengl.GLCapabilities rv = createGlCapabilities();
-		rv.setPBuffer( true );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			//pass
+		} else {
+			rv.setPBuffer( true );
+		}
 		return rv;
 	}
 
@@ -210,7 +214,7 @@ public class GlDrawableUtilities {
 	}
 
 	/* package-private */static javax.media.opengl.awt.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.awt.GLJPanel( createGlCapabilities_PixelBuffer(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
+		return new javax.media.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
 	}
 
 	/* package-private */static boolean canCreateExternalGLDrawable() {

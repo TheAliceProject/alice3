@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package examples.croquet.focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Hyperlink( org.lgna.croquet.Operation model ) {
-		super( model );
+public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( this.createKey( "questionState" ), true );
+
+	public ExampleMainComposite() {
+		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
 	}
 
-	public boolean isUnderlinedOnlyWhenRolledOver() {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
-		return ui.isUnderlinedOnlyWhenRolledOver();
+	public ExampleFocusWindowComposite getFocusWindow() {
+		return this.focusWindow;
 	}
 
-	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
-		ui.setUnderlinedOnlyWhenRolledOver( isUnderlinedOnlyWhenRolledOver );
+	public org.lgna.croquet.BooleanState getQuestionState() {
+		return this.questionState;
 	}
 
 	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
+	protected org.lgna.croquet.components.Panel createView() {
+		return new examples.croquet.focuswindow.views.ExampleMainPane( this );
+	}
 
-			@Override
-			public void updateUI() {
-				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
-			}
-		};
-		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
-		rv.setBackground( java.awt.Color.LIGHT_GRAY );
-		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-		return rv;
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		app.getFrame().setMainComposite( new ExampleMainComposite() );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
 	}
 }

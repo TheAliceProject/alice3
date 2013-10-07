@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package examples.croquet.focuswindow.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Hyperlink( org.lgna.croquet.Operation model ) {
-		super( model );
-	}
-
-	public boolean isUnderlinedOnlyWhenRolledOver() {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
-		return ui.isUnderlinedOnlyWhenRolledOver();
-	}
-
-	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
-		ui.setUnderlinedOnlyWhenRolledOver( isUnderlinedOnlyWhenRolledOver );
-	}
-
-	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
-
-			@Override
-			public void updateUI() {
-				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
-			}
-		};
-		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
-		rv.setBackground( java.awt.Color.LIGHT_GRAY );
-		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-		return rv;
+public class ExampleMainPane extends org.lgna.croquet.components.MigPanel {
+	public ExampleMainPane( examples.croquet.focuswindow.ExampleMainComposite composite ) {
+		super( composite );
+		this.addComponent( composite.getQuestionState().createCheckBox() );
+		org.lgna.croquet.components.Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
+		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
+		this.addComponent( hyperlink );
 	}
 }
