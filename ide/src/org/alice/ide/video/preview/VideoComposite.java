@@ -91,41 +91,45 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 			uriA = fileA.toURI();
 			uriB = fileB.toURI();
 		}
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
-		final VideoComposite videoComposite = new VideoComposite();
-		videoComposite.getView().setUri( uriA );
-		app.getFrame().setMainComposite( videoComposite );
+				final VideoComposite videoComposite = new VideoComposite();
+				videoComposite.getView().setUri( uriA );
+				app.getFrame().setMainComposite( videoComposite );
 
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				videoComposite.getView().setUri( uriB );
-			}
-		};
-		action.putValue( javax.swing.Action.NAME, "set second video" );
-		app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
-
-		app.getFrame().pack();
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-		app.getFrame().setVisible( true );
-
-		final boolean IS_SNAPSHOT_TEST = true;
-		if( IS_SNAPSHOT_TEST ) {
-			new Thread() {
-				@Override
-				public void run() {
-					float tPrev = Float.NaN;
-					while( true ) {
-						float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
-						if( tCurr != tPrev ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
-							tPrev = tCurr;
-							videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
-						}
-						edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+				javax.swing.Action action = new javax.swing.AbstractAction() {
+					public void actionPerformed( java.awt.event.ActionEvent e ) {
+						videoComposite.getView().setUri( uriB );
 					}
+				};
+				action.putValue( javax.swing.Action.NAME, "set second video" );
+				app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
+
+				app.getFrame().pack();
+				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+				app.getFrame().setVisible( true );
+
+				final boolean IS_SNAPSHOT_TEST = false;
+				if( IS_SNAPSHOT_TEST ) {
+					new Thread() {
+						@Override
+						public void run() {
+							float tPrev = Float.NaN;
+							while( true ) {
+								float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
+								if( tCurr != tPrev ) {
+									edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
+									tPrev = tCurr;
+									videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
+								}
+								edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+							}
+						}
+					}.start();
 				}
-			}.start();
-		}
+			}
+		} );
 	}
 }
