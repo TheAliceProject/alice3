@@ -40,7 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue;
+
+import edu.cmu.cs.dennisc.issue.Attachment;
 
 /**
  * @author Dennis Cosgrove
