@@ -188,9 +188,13 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( SIZE / 25.0f );
 	private final edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter = new edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer>() {
 		public void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int width, int height ) {
-			int x = ( width - SIZE ) / 2;
-			int y = ( height - SIZE ) / 2;
-			PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );
+			if( ( videoPlayer != null ) && videoPlayer.isPlaying() ) {
+				//pass
+			} else {
+				int x = ( width - SIZE ) / 2;
+				int y = ( height - SIZE ) / 2;
+				PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );
+			}
 		}
 	};
 
