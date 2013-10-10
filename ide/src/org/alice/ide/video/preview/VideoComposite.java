@@ -48,11 +48,15 @@ package org.alice.ide.video.preview;
 public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
 	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( this.createKey( "togglePlayPauseOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
-			if( videoPlayer.isPlaying() ) {
-				videoPlayer.pause();
+			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
+				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
+				if( videoPlayer.isPlaying() ) {
+					videoPlayer.pause();
+				} else {
+					videoPlayer.playResume();
+				}
 			} else {
-				videoPlayer.playResume();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 			}
 			return null;
 		}
@@ -86,7 +90,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 				directory = directory.getParentFile();
 			}
-			java.io.File fileA = new java.io.File( directory, "Videos/a.webm" );
+			java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
 			java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
 			uriA = fileA.toURI();
 			uriB = fileB.toURI();
