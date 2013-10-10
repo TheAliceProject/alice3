@@ -152,13 +152,14 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final VlcjMediaPlayerComponent mediaPlayerComponent;
 
 	private String mediaPath = null;
+	private boolean isPrepared;
 
 	public VlcjVideoPlayer() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() && ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getJavaVersionAsDouble() >= 1.7 ) ) {
 			// The mac for now needs to use a software renderer
-			this.mediaPlayerComponent = new LightweightMediaPlayerComponent();
+			this.mediaPlayerComponent = new LightweightMediaPlayerComponent( this );
 		} else {
-			this.mediaPlayerComponent = new HeavyweightMediaPlayerComponent();
+			this.mediaPlayerComponent = new HeavyweightMediaPlayerComponent( this );
 		}
 
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
@@ -254,15 +255,15 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return this.mediaPlayerComponent.getVideoSurface();
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
+	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
 		return this.mediaPlayerComponent.getPainter();
 	}
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
 		this.mediaPlayerComponent.setPainter( painter );
 	}
 
-	public void prepareMedia( java.net.URI uri ) {
+	public boolean prepareMedia( java.net.URI uri ) {
 		if( uri != null ) {
 			String scheme = uri.getScheme();
 			if( scheme.equalsIgnoreCase( "file" ) ) {
@@ -272,10 +273,22 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 				this.mediaPath = uri.toString();
 			}
 			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
-			mediaPlayer.prepareMedia( this.mediaPath );
+			this.isPrepared = mediaPlayer.prepareMedia( this.mediaPath );
 		} else {
-			System.err.println( "uri is null" );
+			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
+			mediaPlayer.release();
+			this.mediaPath = null;
+			this.isPrepared = false;
 		}
+		return this.isPrepared;
+	}
+
+	public void parse() {
+		this.mediaPlayerComponent.getMediaPlayer().parseMedia();
+	}
+
+	public boolean isPrepared() {
+		return this.isPrepared;
 	}
 
 	public boolean isPlayable() {
@@ -413,6 +426,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 				this.pausedSetTimeInMilliseconds = null;
 			}
 		}
+
 		mediaPlayer.setPosition( position );
 
 		final boolean IS_FIRE_POSITION_CHANGED_DESIRED = false; //todo?

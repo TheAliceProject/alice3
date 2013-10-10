@@ -179,17 +179,24 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private static final java.text.SimpleDateFormat FORMAT = new java.text.SimpleDateFormat( "m:ss" );
 
 	private java.net.URI uri;
+	private boolean isErrorFreeSinceLastPrepareMedia = true;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
 	private final JFauxSlider jSlider = new JFauxSlider();
 
 	private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private static final int SIZE = 64;
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( SIZE / 25.0f );
-	private final edu.cmu.cs.dennisc.java.awt.Painter<Void> painter = new edu.cmu.cs.dennisc.java.awt.Painter<Void>() {
-		public void paint( java.awt.Graphics2D g2, Void value, int width, int height ) {
-			int x = ( width - SIZE ) / 2;
-			int y = ( height - SIZE ) / 2;
-			PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );
+	private final edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter = new edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer>() {
+		public void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int width, int height ) {
+			if( videoPlayer != null ) {
+				if( videoPlayer.isPlaying() ) {
+					//pass
+				} else {
+					int x = ( width - SIZE ) / 2;
+					int y = ( height - SIZE ) / 2;
+					PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );
+				}
+			}
 		}
 	};
 
@@ -250,7 +257,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		public void error( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+			handleError();
 		}
 	};
 
@@ -266,11 +273,15 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		public void mousePressed( java.awt.event.MouseEvent e ) {
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getVideoPlayer();
-			if( videoPlayer.isPlaying() ) {
-				videoPlayer.pause();
+			if( isErrorFreeSinceLastPrepareMedia ) {
+				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getVideoPlayer();
+				if( videoPlayer.isPlaying() ) {
+					videoPlayer.pause();
+				} else {
+					videoPlayer.playResume();
+				}
 			} else {
-				videoPlayer.playResume();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( e );
 			}
 			buttonModel.setPressed( true );
 			getVideoPlayer().getVideoSurface().repaint();
@@ -294,11 +305,11 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		public void thumbDragged( float position ) {
-			getVideoPlayer().setPosition( position );
+			setPosition( position );
 		}
 
 		public void thumbReleased( float position ) {
-			getVideoPlayer().setPosition( position );
+			setPosition( position );
 			if( this.wasPlaying ) {
 				play();
 			} else {
@@ -344,6 +355,20 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		this.playPauseButton.repaint();
 	}
 
+	private void prepareMedia() {
+		this.isErrorFreeSinceLastPrepareMedia = true;
+		this.videoPlayer.prepareMedia( this.uri );
+	}
+
+	private void handleError() {
+		this.isErrorFreeSinceLastPrepareMedia = false;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+	}
+
+	public boolean isErrorFreeSinceLastPrepareMedia() {
+		return this.isErrorFreeSinceLastPrepareMedia;
+	}
+
 	public void setUri( java.net.URI uri ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.uri, uri ) ) {
 			//pass
@@ -353,7 +378,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 				if( this.videoPlayer.isPlaying() ) {
 					this.videoPlayer.stop();
 				}
-				this.videoPlayer.prepareMedia( this.uri );
+				this.prepareMedia();
 			} else {
 				getVideoPlayer();
 			}
@@ -368,7 +393,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 			this.videoPlayer.setPainter( this.painter );
 			this.videoPlayer.addMediaListener( this.mediaListener );
 			if( this.uri != null ) {
-				this.videoPlayer.prepareMedia( this.uri );
+				this.prepareMedia();
 			}
 			java.awt.Component videoSurface = this.videoPlayer.getVideoSurface();
 			java.awt.Component component;
@@ -386,32 +411,32 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		return this.videoPlayer;
 	}
 
+	private void setPosition( float position ) {
+		if( this.isErrorFreeSinceLastPrepareMedia ) {
+			this.getVideoPlayer().setPosition( position );
+		}
+	}
+
 	private void play() {
-		if( this.uri != null ) {
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
-			videoPlayer.playResume();
-			this.revalidateAndRepaint();
+		if( this.isErrorFreeSinceLastPrepareMedia ) {
+			if( this.uri != null ) {
+				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
+				videoPlayer.playResume();
+				this.revalidateAndRepaint();
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
 
 	private void pause() {
-		if( this.videoPlayer != null ) {
-			this.videoPlayer.pause();
-			this.revalidateAndRepaint();
+		if( this.isErrorFreeSinceLastPrepareMedia ) {
+			if( this.videoPlayer != null ) {
+				this.videoPlayer.pause();
+				this.revalidateAndRepaint();
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
-
-	//	private void setPlaying( boolean isPlaying ) {
-	//		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( isPlaying );
-	//		if( isPlaying ) {
-	//			this.play();
-	//		} else {
-	//			this.pause();
-	//		}
-	//	}
-	//
-	//	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
-	//		boolean isPlaying = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-	//		this.setPlaying( isPlaying );
-	//	}
 }
