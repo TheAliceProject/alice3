@@ -40,53 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.walkandtouch;
 
-import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
-import org.alice.ide.name.validators.FieldNameValidator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import java.util.ArrayList;
+
+import org.lgna.ik.poser.JointSelectionSphere;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SCamera;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJoint;
+import org.lgna.story.implementation.JointImp;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class PoserInputDialogComposite extends AbstractPoserInputDialogComposite<PoserControlComposite> {
+public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 
-	private FieldNameValidator validator;
-
-	public PoserInputDialogComposite( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
+	public FlyerPoserScene( SCamera camera, SFlyer ogre ) {
+		super( camera, ogre );
 	}
 
 	@Override
-	protected PoserControlComposite createControlComposite() {
-		return new PoserControlComposite( this );
-	}
+	protected void initializeJointSelectionSpheresAndLimbs() {
+		JointSelectionSphere a = createJSS( model.getRightHip(), null );
+		JointSelectionSphere b = createJSS( model.getRightKnee(), a );
+		JointSelectionSphere c = createJSS( model.getRightAnkle(), b );
+		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
+		JointSelectionSphere d = createJSS( model.getRightWingShoulder(), null );
+		JointSelectionSphere e = createJSS( model.getRightWingElbow(), d );
+		JointSelectionSphere f = createJSS( model.getRightWingWrist(), e );
+		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f ) );
+		JointSelectionSphere g = createJSS( model.getLeftHip(), null );
+		JointSelectionSphere h = createJSS( model.getLeftKnee(), g );
+		JointSelectionSphere i = createJSS( model.getLeftAnkle(), h );
+		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( g, h, i ) );
+		JointSelectionSphere j = createJSS( model.getLeftWingShoulder(), null );
+		JointSelectionSphere k = createJSS( model.getLeftWingElbow(), j );
+		JointSelectionSphere l = createJSS( model.getLeftWingWrist(), k );
+		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( j, k, l ) );
 
-	@Override
-	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
-		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
-		UserType<?> declaringType = this.getDeclaringType();
-		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		if( validator != null ) {
-			//pass
-		} else {
-			this.validator = new FieldNameValidator( getDeclaringType() );
+		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
+			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
+				jointToLimbMap.put( sphere.getJoint(), limb );
+				sphere.setOpacity( 0 );
+			}
 		}
-		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-		String candidate = getControlComposite().getNameState().getValue();
-		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-		if( explanation != null ) {
-			errorStatus.setText( explanation );
-			return errorStatus;
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
+		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, g, h, i, j, k, l );
+	}
+
+	@Override
+	protected void initializeLimbAnchors() {
+		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getRightWingShoulder(), model.getLeftWingShoulder(), model.getRightHip(), model.getLeftHip() );
+		for( SJoint joint : sJointList ) {
+			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
 		}
 	}
+
 }

@@ -51,12 +51,14 @@ import org.lgna.ik.poser.pose.Pose;
 public class KeyFrameData {
 
 	private double eventTime;
-	private Pose pose;
+	private Pose<?> pose;
 	private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
+	private Pose<?> poseForAnimator;
 
-	public KeyFrameData( double time, Pose pose ) {
+	public KeyFrameData( double time, Pose<?> pose ) {
 		this.eventTime = time;
 		this.pose = pose;
+		this.poseForAnimator = pose;
 	}
 
 	public void setStyle( KeyFrameStyles style ) {
@@ -67,7 +69,7 @@ public class KeyFrameData {
 		return this.eventTime;
 	}
 
-	public Pose getPose() {
+	public Pose<?> getPose() {
 		return pose;
 	}
 
@@ -75,7 +77,7 @@ public class KeyFrameData {
 		return style;
 	}
 
-	public void setPose( Pose pose ) {
+	public void setPose( Pose<?> pose ) {
 		this.pose = pose;
 	}
 
@@ -83,7 +85,11 @@ public class KeyFrameData {
 		this.eventTime = newTime;
 	}
 
-	public void getPoseActual() {
+	public Pose<?> getPoseActual() {
+		return poseForAnimator;
+	}
 
+	public void setPoseActual( Pose<?> pose ) {
+		this.poseForAnimator = pose;
 	}
 }

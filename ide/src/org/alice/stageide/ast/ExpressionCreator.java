@@ -203,56 +203,12 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	//	private static final Class<org.lgna.ik.poser.Pose.Builder> POSE_BUILDER_CLS = org.lgna.ik.poser.Pose.Builder.class;
-	//	private static final org.lgna.project.ast.JavaMethod RIGHT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	//	private static final org.lgna.project.ast.JavaMethod LEFT_ARM_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftArm", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	//	private static final org.lgna.project.ast.JavaMethod RIGHT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "rightLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	//	private static final org.lgna.project.ast.JavaMethod LEFT_LEG_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "leftLeg", org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class, org.lgna.story.Orientation.class );
-	//	private static final org.lgna.project.ast.JavaMethod BUILD_METHOD = org.lgna.project.ast.JavaMethod.getInstance( POSE_BUILDER_CLS, "build" );
-	//
-	//	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.Pose pose ) {
-	//		if( pose != null ) {
-	//			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( POSE_BUILDER_CLS );
-	//
-	//			org.lgna.project.ast.Expression builderExpression1 = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression0, RIGHT_ARM_METHOD
-	//					, this.createOrientationExpression( pose.getRightClavicleOrientation() )
-	//					, this.createOrientationExpression( pose.getRightShoulderOrientation() )
-	//					, this.createOrientationExpression( pose.getRightElbowOrientation() )
-	//					, this.createOrientationExpression( pose.getRightWristOrientation() )
-	//					);
-	//
-	//			org.lgna.project.ast.Expression builderExpression2 = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression1, LEFT_ARM_METHOD
-	//					, this.createOrientationExpression( pose.getLeftClavicleOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftShoulderOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftElbowOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftWristOrientation() )
-	//					);
-	//
-	//			org.lgna.project.ast.Expression builderExpression3 = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression2, RIGHT_LEG_METHOD
-	//					, this.createOrientationExpression( pose.getPelvisOrientation() )
-	//					, this.createOrientationExpression( pose.getRightHipOrientation() )
-	//					, this.createOrientationExpression( pose.getRightKneeOrientation() )
-	//					, this.createOrientationExpression( pose.getRightAnkleOrientation() )
-	//					);
-	//
-	//			org.lgna.project.ast.Expression builderExpression4 = org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression3, LEFT_LEG_METHOD
-	//					, this.createOrientationExpression( pose.getPelvisOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftHipOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftKneeOrientation() )
-	//					, this.createOrientationExpression( pose.getLeftAnkleOrientation() )
-	//					);
-	//
-	//			return org.lgna.project.ast.AstUtilities.createMethodInvocation( builderExpression4, BUILD_METHOD );
-	//		} else {
-	//			return new org.lgna.project.ast.NullLiteral();
-	//		}
-	//	}
 	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "addCustom", Orientation.class, JointId.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.pose.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
-			PoseBuilder builder = pose.getBuilder();
+			PoseBuilder<?> builder = pose.getBuilder();
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
 			org.lgna.project.ast.Expression prevExpression = null;
 			for( JointKey key : pose.getJointKeys() ) {

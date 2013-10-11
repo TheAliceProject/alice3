@@ -71,13 +71,13 @@ import examples.math.pictureplane.PicturePlaneInteraction;
 public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private static final double MIN_SELECTION_DISTANCE = 50;
-	private final PoserScene scene;
+	private final AbstractPoserScene scene;
 	private final CameraImp camera;
 	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
 	private JointSelectionSphere anchor;
 
-	public PoserPicturePlaneInteraction( PoserScene scene, OnscreenLookingGlass lookingGlass ) {
+	public PoserPicturePlaneInteraction( AbstractPoserScene scene, OnscreenLookingGlass lookingGlass ) {
 		super( lookingGlass, ( (CameraImp)( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)ImplementationAccessor.getImplementation( scene );
@@ -92,7 +92,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		}
 		ArrayList<Point> sphereLocations = Collections.newArrayList();
 		double minDist = MIN_SELECTION_DISTANCE;
-		JointSelectionSphere[] arr = scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
 		JointSelectionSphere selected = null;
 		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
 		for( JointSelectionSphere sphere : arr ) {

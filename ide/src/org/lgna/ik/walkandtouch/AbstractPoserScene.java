@@ -57,10 +57,10 @@ import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SJoint;
+import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
@@ -74,58 +74,32 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 /**
  * @author Matt May
  */
-public class PoserScene extends SScene {
+public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene {
 	private final SSun sun = new SSun();
 	private final SGround snow = new SGround();
 	public final SCamera camera;
-	public final SBiped ogre;
-	private ArrayList<JointSelectionSphere> jssArr;
-	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
+	public final T model;
+	protected ArrayList<JointSelectionSphere> jssArr;
+	protected final ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
-	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
-	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
-	private List<PoserSphereManipulatorListener> dragListeners = Collections.newArrayList();
+	protected final Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
+	protected final Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
+	protected final List<PoserSphereManipulatorListener> dragListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
-	public PoserScene( SCamera camera, SBiped ogre ) {
+	public AbstractPoserScene( SCamera camera, T ogre ) {
 		this.camera = camera;
 		this.camera.setVehicle( this );
-		this.ogre = ogre;
-		//		ogre.getPelvis()
-		//		JointSelectionSphere pelvis = createJSS( ogre.getPelvis(), null );
-		JointSelectionSphere a = createJSS( ogre.getRightHip(), null );
-		JointSelectionSphere b = createJSS( ogre.getRightKnee(), a );
-		JointSelectionSphere c = createJSS( ogre.getRightAnkle(), b );
-		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
-		JointSelectionSphere d = createJSS( ogre.getRightClavicle(), null );
-		JointSelectionSphere e = createJSS( ogre.getRightShoulder(), d );
-		JointSelectionSphere f = createJSS( ogre.getRightElbow(), e );
-		JointSelectionSphere g = createJSS( ogre.getRightWrist(), f );
-		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f, g ) );
-		JointSelectionSphere h = createJSS( ogre.getLeftHip(), null );
-		JointSelectionSphere i = createJSS( ogre.getLeftKnee(), h );
-		JointSelectionSphere j = createJSS( ogre.getLeftAnkle(), i );
-		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( h, i, j ) );
-		JointSelectionSphere k = createJSS( ogre.getLeftClavicle(), null );
-		JointSelectionSphere l = createJSS( ogre.getLeftShoulder(), k );
-		JointSelectionSphere m = createJSS( ogre.getLeftElbow(), l );
-		JointSelectionSphere n = createJSS( ogre.getLeftWrist(), m );
-		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( k, l, m, n ) );
+		this.model = ogre;
 
-		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
-			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
-				jointToLimbMap.put( sphere.getJoint(), limb );
-				sphere.setOpacity( 0 );
-			}
-		}
-
-		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l, m, n );
-		ArrayList<SJoint> sJointList = Collections.newArrayList( ogre.getRightClavicle(), ogre.getLeftClavicle(), ogre.getRightHip(), ogre.getLeftHip() );
-		for( SJoint joint : sJointList ) {
-			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
-		}
 		addDragListener( sphereDragListener );
+		initializeJointSelectionSpheresAndLimbs();
+		initializeLimbAnchors();
 	}
+
+	protected abstract void initializeJointSelectionSpheresAndLimbs();
+
+	protected abstract void initializeLimbAnchors();
 
 	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
 
@@ -142,15 +116,14 @@ public class PoserScene extends SScene {
 
 		public void fireStart( PoserEvent poserEvent ) {
 			JointSelectionSphere jss = poserEvent.getJSS();
-			jss.setVehicle( PoserScene.this );
+			jss.setVehicle( AbstractPoserScene.this );
 			JointImp end = jss.getJoint();
 			JointId anchor = getAnchorForEndJoint( end );
 			if( anchor != null ) {
-				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( anchor ) );
+				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( model.getJoint( anchor ) );
 				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
 			}
 			jss.setVehicle( end.getAbstraction() );
-
 		}
 
 		public void fireFinish( PoserEvent poserEvent ) {
@@ -163,13 +136,13 @@ public class PoserScene extends SScene {
 		@Override
 		public void fireAnchorUpdate( PoserEvent poserEvent ) {
 			JointSelectionSphere jss = poserEvent.getJSS();
-			Limb limb = PoserScene.this.jointToLimbMap.get( jss.getJoint() );
+			Limb limb = AbstractPoserScene.this.jointToLimbMap.get( jss.getJoint() );
 			assert limb != null;
-			PoserScene.this.adapter.updateSphere( limb, jss );
+			AbstractPoserScene.this.adapter.updateSphere( limb, jss );
 		}
-	};;
+	};
 
-	private JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
+	protected JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
 		return new JointSelectionSphere( (JointImp)ImplementationAccessor.getImplementation( joint ), child );
 	}
 
@@ -177,18 +150,12 @@ public class PoserScene extends SScene {
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.ogre.setVehicle( this );
+		this.model.setVehicle( this );
 
-		this.ogre.place( SpatialRelation.ABOVE, this.snow );
+		this.model.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
-
-		//		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
-
-		//camera vantage point taken care of by camera navigator
-		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+		camera.turnToFace( model );
 		performInitializeEvents();
-		//		selector = new JointSelectionAdapter( this );
-
 	}
 
 	private void performCustomSetup() {
@@ -212,16 +179,18 @@ public class PoserScene extends SScene {
 	}
 
 	public void addCustomDragAdapter() {
-		poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
-		poserAnimatorDragAdapter.setAnimator( ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getAnimator() );
-		poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
-		poserAnimatorDragAdapter.setTarget( ogre );
-		poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
-		poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
-		for( PoserSphereManipulatorListener sphereListener : dragListeners ) {
-			poserAnimatorDragAdapter.addSphereDragListener( sphereListener );
+		synchronized( dragListeners ) {
+			poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
+			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getAnimator() );
+			poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
+			poserAnimatorDragAdapter.setTarget( model );
+			poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
+			poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+			for( PoserSphereManipulatorListener sphereListener : dragListeners ) {
+				poserAnimatorDragAdapter.addSphereDragListener( sphereListener );
+			}
 		}
-		poserAnimatorDragAdapter.clear();
+		dragListeners.clear();
 	}
 
 	private JointId getAnchorForEndJoint( JointImp joint ) {

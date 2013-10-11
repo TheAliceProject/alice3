@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.lgna.ik.poser;
 
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
+import org.lgna.ik.walkandtouch.FlyerPoserScene;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.SFlyer;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public final class QuadrupedImp extends JointedModelImp<org.lgna.story.SQuadruped, org.lgna.story.resources.QuadrupedResource> {
-	public QuadrupedImp( org.lgna.story.SQuadruped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.QuadrupedResource> factory ) {
-		super( abstraction, factory );
+public class FlyerPoserInputDialog extends AbstractPoserInputDialogComposite<SFlyer> {
+
+	public FlyerPoserInputDialog( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ) );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	protected AbstractPoserScene<SFlyer> initScene() {
+		return new FlyerPoserScene( getCamera(), getModel() );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.HEAD ) );
+	public Class<SFlyer> getClassForM() {
+		return SFlyer.class;
 	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.MOUTH ) );
-	}
 }

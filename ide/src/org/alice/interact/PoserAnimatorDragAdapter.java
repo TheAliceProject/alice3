@@ -47,15 +47,17 @@ import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MousePressCondition;
+import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
+import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.stageide.sceneeditor.HandleStyle;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
 import org.lgna.ik.walkandtouch.PoserPicturePlaneInteraction;
-import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.story.SModel;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -68,11 +70,11 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	private PoserPicturePlaneInteraction dragAdapter = null;
-	private final PoserScene poserScene;
+	private final AbstractPoserScene poserScene;
 	private ManipulatorConditionSet selectObject;
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
 
-	public PoserAnimatorDragAdapter( PoserScene poserScene ) {
+	public PoserAnimatorDragAdapter( AbstractPoserScene poserScene ) {
 		this.poserScene = poserScene;
 	}
 
@@ -106,6 +108,11 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutXAxis );
 		addHandle( rotateJointAboutYAxis );
 		addHandle( rotateJointAboutZAxis );
+
+		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
+		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition( new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
+		this.manipulators.add( mouseWheelCameraZoom );
 
 		selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
 

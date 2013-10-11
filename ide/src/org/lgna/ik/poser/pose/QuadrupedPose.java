@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.lgna.ik.poser.pose;
 
+import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.ik.poser.pose.builder.QuadrupedPoseBuilder;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.QuadrupedResource;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public final class QuadrupedImp extends JointedModelImp<org.lgna.story.SQuadruped, org.lgna.story.resources.QuadrupedResource> {
-	public QuadrupedImp( org.lgna.story.SQuadruped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.QuadrupedResource> factory ) {
-		super( abstraction, factory );
+public class QuadrupedPose extends Pose<SQuadruped> {
+
+	public QuadrupedPose( JointKey... pairs ) {
+		super( SQuadruped.class, QuadrupedResource.class, pairs );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	protected JointId[] getJointIdRoots() {
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.HEAD ) );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.MOUTH ) );
+	public PoseBuilder getBuilder() {
+		return new QuadrupedPoseBuilder();
 	}
 }

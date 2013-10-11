@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.animation;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,6 @@ import org.lgna.ik.poser.pose.JointKey;
 import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
 import org.lgna.story.AnimationStyle;
-import org.lgna.story.SBiped;
 import org.lgna.story.resources.JointId;
 
 import com.sun.tools.javac.util.Pair;
@@ -69,12 +69,14 @@ public class TimeLine {
 	//I used datas here, get over it
 	private List<KeyFrameData> datas = Collections.newArrayList();
 	private List<TimeLineListener> listeners = Collections.newArrayList();
-	private Pose<SBiped> initialPose;
+	private Pose<?> initialPose;
+	private final List<JointId> usedIds = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
 			datas.add( keyFrameData );
 			fireKeyFrameAdded( keyFrameData );
+			checkAddingJoints( keyFrameData );
 			return;
 		}
 		for( int i = 0; i != datas.size(); ++i ) {
@@ -92,9 +94,9 @@ public class TimeLine {
 		addKeyFrameData( new KeyFrameData( time, pose ) );
 	}
 
-	public void addKeyFrameData( Pose<?> pose ) {
-		addKeyFrameData( pose, currentTime );
-	}
+	//	public void addKeyFrameData( Pose<?> pose ) {
+	//		addKeyFrameData( pose, currentTime );
+	//	}
 
 	public void addListener( TimeLineListener listener ) {
 		this.listeners.add( listener );
@@ -117,11 +119,13 @@ public class TimeLine {
 
 	public void modifyExistingPose( KeyFrameData data, Pose<?> newPose ) {
 		data.setPose( newPose );
+		checkAddingJoints( data );
 		fireKeyFrameModified( data );
 	}
 
 	public void removeKeyFrameData( KeyFrameData item ) {
 		datas.remove( item );
+		checkRemovingJoints();
 		fireKeyFrameDeleted( item );
 	}
 
@@ -258,9 +262,10 @@ public class TimeLine {
 		if( ( before == null ) && ( after == null ) ) {
 			return null;
 		} else if( before == null ) {
-			return after.getPose();
+			return interpolatePoses( before, after, desiredTime );
+			//			return after.getPose();
 		} else if( after == null ) {
-			return before.getPose();
+			return before.getPoseActual();
 		} else {
 			return interpolatePoses( before, after, desiredTime );
 		}
@@ -280,25 +285,25 @@ public class TimeLine {
 
 		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
 		Pose<?> init = getInitPoseIfNecessary( key1, key2 );
-		//		Pose<?> pose1 = key1.getPose();
-		Pose<?> pose2 = key2.getPose();
+		Pose<?> pose2 = key2.getPoseActual();
 		Map<JointId, Pair<Orientation, Orientation>> map = Collections.newInitializingIfAbsentHashMap();
-		for( JointKey key : init.getJointKeys() ) {
-			map.put( key.getJointId(), new Pair<Orientation, Orientation>( key.getOrientation(), null ) );
+		for( JointId key : usedIds ) {
+			map.put( key, new Pair<Orientation, Orientation>( lgnaOrientationForId( key, init ), null ) );
 		}
-		for( JointKey key : pose2.getJointKeys() ) {
-			Pair<Orientation, Orientation> pair = map.get( key.getJointId() );
+		for( JointId key : usedIds ) {
+			Pair<Orientation, Orientation> pair = map.get( key );
 			if( pair != null ) {
 				assert pair.fst != null;
 				assert pair.snd == null;
-				map.put( key.getJointId(), new Pair<Orientation, Orientation>( pair.fst, key.getOrientation() ) );
+				map.put( key, new Pair<Orientation, Orientation>( pair.fst, lgnaOrientationForId( key, pose2 ) ) );
 			} else {
-				map.put( key.getJointId(), new Pair<Orientation, Orientation>( null, key.getOrientation() ) );
-				throw new RuntimeException( "UNHANDLED: no policy yet set for how to handle animation with no initial orientation" );
+				map.put( key, new Pair<Orientation, Orientation>( null, lgnaOrientationForId( key, pose2 ) ) );
+				throw new RuntimeException( "UNHANDLED: " + key );
 			}
 		}
 		init.getJointKeys();
-		double k = ( targetTime - key1.getEventTime() ) / ( key2.getEventTime() - key1.getEventTime() );
+		double prevTime = key1 != null ? key1.getEventTime() : 0;
+		double k = ( targetTime - prevTime ) / ( key2.getEventTime() - prevTime );
 		List<JointKey> builderList = Collections.newArrayList();
 		for( JointId joint : map.keySet() ) {
 			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).fst.createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).snd.createOrthogonalMatrix3x3() ), k );
@@ -312,18 +317,23 @@ public class TimeLine {
 	}
 
 	private Pose<?> getInitPoseIfNecessary( KeyFrameData key1, KeyFrameData key2 ) {
+		if( key1 != null ) {
+			//pass
+		} else {
+			return initialPose;
+		}
 		List<JointKey> rvKeys = Collections.newArrayList();
 		List<JointId> unhandledIds = Collections.newArrayList();
 		PoseBuilder<?> builder = key1.getPose().getBuilder();
-		for( JointKey jointKey : key2.getPose().getJointKeys() ) {
+		for( JointKey jointKey : key2.getPoseActual().getJointKeys() ) {
 			rvKeys.add( jointKey );
 			unhandledIds.add( jointKey.getJointId() );
 		}
-		for( JointKey jointKey : key1.getPose().getJointKeys() ) {
+		for( JointKey jointKey : key1.getPoseActual().getJointKeys() ) {
 			unhandledIds.remove( jointKey.getJointId() );
 		}
 		if( unhandledIds.isEmpty() ) {
-			return key1.getPose();
+			return key1.getPoseActual();
 		} else {
 			return getInitPose( getPriorKeyFrame( key1 ), builder, unhandledIds, rvKeys );
 		}
@@ -369,7 +379,92 @@ public class TimeLine {
 		return rv;
 	}
 
-	public void setInitialPose( Pose<SBiped> pose ) {
+	private void checkRemovingJoints() {
+		if( getNoLongerUsedJoints().isEmpty() ) {
+			return;
+		} else {
+			correctPoseActuals();
+		}
+	}
+
+	private List<JointId> getNoLongerUsedJoints() {
+		ArrayList<JointId> unused = Collections.newArrayList( usedIds );
+		for( JointId id : usedIds ) {
+			boolean removed = false;
+			for( KeyFrameData data : datas ) {
+				for( JointKey key : data.getPose().getJointKeys() ) {
+					if( key.getJointId().equals( id ) ) {
+						removed = true;
+						unused.remove( id );
+					}
+				}
+				if( removed ) {
+					break;
+				}
+			}
+		}
+		return unused;
+	}
+
+	private void checkAddingJoints( KeyFrameData keyFrameData ) {
+		//		List<JointId> idsForUpdate = Collections.newArrayList();
+		for( JointKey key : keyFrameData.getPose().getJointKeys() ) {
+			if( !usedIds.contains( key.getJointId() ) ) {
+				//				idsForUpdate.add( key.getJointId() );
+				usedIds.add( key.getJointId() );
+			}
+		}
+		//		if( !idsForUpdate.isEmpty() ) {
+		correctPoseActuals();
+		//		}
+	}
+
+	private void correctPoseActuals() {
+		Pose<?> prev = initialPose;
+		for( KeyFrameData data : datas ) {
+			PoseBuilder<?> builder = data.getPoseActual().getBuilder();
+			for( JointId id : usedIds ) {
+				if( contains( data.getPose().getJointKeys(), id ) ) {
+					builder.addCustom( orientationForId( id, data.getPose() ), id );
+				} else {
+					builder.addCustom( orientationForId( id, initialPose ), id );
+					//					builder.addCustom( orientationForId( id, prev ), id );
+					// thought this would be correct changed to other open to either
+				}
+			}
+			data.setPoseActual( builder.build() );
+			prev = data.getPoseActual();
+		}
+	}
+
+	private static org.lgna.story.Orientation orientationForId( JointId id, Pose<?> pose ) {
+		for( JointKey key : pose.getJointKeys() ) {
+			if( key.getJointId().equals( id ) ) {
+				return key.getLGNAOrientation();
+			}
+		}
+		return null;
+	}
+
+	private static Orientation lgnaOrientationForId( JointId id, Pose<?> pose ) {
+		for( JointKey key : pose.getJointKeys() ) {
+			if( key.getJointId().equals( id ) ) {
+				return key.getOrientation();
+			}
+		}
+		return null;
+	}
+
+	private static boolean contains( JointKey[] jointKeys, JointId id ) {
+		for( JointKey key : jointKeys ) {
+			if( key.getJointId().equals( id ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void setInitialPose( Pose<?> pose ) {
 		this.initialPose = pose;
 	}
 }

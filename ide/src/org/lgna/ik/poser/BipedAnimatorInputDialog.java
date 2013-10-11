@@ -42,72 +42,33 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.ik.poser.pose.JointQPair;
-
-import edu.cmu.cs.dennisc.animation.Style;
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
+import org.lgna.ik.walkandtouch.BipedPoserScene;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SBiped;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class JointQPairTreeAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	private static class JointInfo {
-		private final org.lgna.story.implementation.JointImp jointImp;
-		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
-		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+public class BipedAnimatorInputDialog extends AbstractAnimatorInputDialogComposite<SBiped> {
 
-		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointQPair jointQPair ) {
-			this.jointImp = jointedModel.getJointImplementation( jointQPair.getJointId() );
-			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
-			this.q1 = jointQPair.getUnitQuaternion();
-		}
-
-		public void setPortion( double portion ) {
-			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion );
-			jointImp.setLocalOrientation( q.createOrthogonalMatrix3x3() );
-		}
-
-		public void epilogue() {
-			jointImp.setLocalOrientation( this.q1.createOrthogonalMatrix3x3() );
-		}
+	public BipedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
+		super( valueType, editedMethod, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
 	}
 
-	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel;
-	private final Pose pose;
-	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-	public JointQPairTreeAnimation( double duration, Style style, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, Pose pose ) {
-		super( duration, style );
-		this.jointedModel = jointedModel;
-		this.pose = pose;
-	}
-
-	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointQPair jointQPair ) {
-		jointInfos.add( new JointInfo( jointedModel, jointQPair ) );
-		JointQPair child = jointQPair.getChild();
-		if( child != null ) {
-			appendJointInfos( jointInfos, jointedModel, child );
-		}
+	public BipedAnimatorInputDialog( NamedUserType type ) {
+		this( type, null );
 	}
 
 	@Override
-	protected void prologue() {
-		this.jointInfos.clear();
-		for( JointQPair jointQPair : this.pose.getChains() ) {
-			appendJointInfos( this.jointInfos, this.jointedModel, jointQPair );
-		}
+	public AbstractPoserScene<SBiped> initScene() {
+		return new BipedPoserScene( this.getCamera(), this.getModel() );
 	}
 
 	@Override
-	protected void setPortion( double portion ) {
-		for( JointInfo jointInfo : this.jointInfos ) {
-			jointInfo.setPortion( portion );
-		}
+	public Class<SBiped> getClassForM() {
+		return SBiped.class;
 	}
 
-	@Override
-	protected void epilogue() {
-		for( JointInfo jointInfo : this.jointInfos ) {
-			jointInfo.epilogue();
-		}
-	}
 }

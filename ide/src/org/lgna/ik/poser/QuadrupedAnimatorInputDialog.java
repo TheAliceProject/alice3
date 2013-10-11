@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.lgna.ik.poser;
 
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
+import org.lgna.ik.walkandtouch.QuadrupedPoserScene;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SQuadruped;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public final class QuadrupedImp extends JointedModelImp<org.lgna.story.SQuadruped, org.lgna.story.resources.QuadrupedResource> {
-	public QuadrupedImp( org.lgna.story.SQuadruped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.QuadrupedResource> factory ) {
-		super( abstraction, factory );
+public class QuadrupedAnimatorInputDialog extends AbstractAnimatorInputDialogComposite<SQuadruped> {
+
+	public QuadrupedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
+		super( valueType, editedMethod, java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ) );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	protected AbstractPoserScene<SQuadruped> initScene() {
+		return new QuadrupedPoserScene( getCamera(), this.getModel() );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.HEAD ) );
+	public Class<SQuadruped> getClassForM() {
+		return SQuadruped.class;
 	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.MOUTH ) );
-	}
 }

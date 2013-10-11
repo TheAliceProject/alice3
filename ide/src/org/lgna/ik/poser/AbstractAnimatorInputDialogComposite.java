@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.UUID;
+
 import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
@@ -50,40 +52,39 @@ import org.lgna.croquet.components.View;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
-import org.lgna.ik.poser.pose.BipedPose;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
 import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.SetPose;
 
 /**
  * @author Matt May
  */
-public class AnimatorInputDialogComposite extends AbstractPoserInputDialogComposite<AnimatorControlComposite> {
+public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorInputDialogComposite<AnimatorControlComposite<M>, M> {
 
-	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", BipedPose.class, SetPose.Detail[].class );
+	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", org.lgna.ik.poser.pose.Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
 
-	public AnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+	public AbstractAnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
+		super( valueType, uuid );
 		this.method = editedMethod;
 	}
 
-	public AnimatorInputDialogComposite( NamedUserType valueType ) {
-		this( valueType, null );
-	}
-
 	@Override
-	protected AnimatorControlComposite createControlComposite() {
-		return new AnimatorControlComposite( this );
+	protected AnimatorControlComposite<M> createControlComposite() {
+		return new AnimatorControlComposite<M>( this );
 	}
 
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		AnimatorControlComposite controlComposite = this.getControlComposite();
+		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
 		BlockStatement body = controlComposite.createMethodBody();
 		if( method != null ) {
 			return new ChangeMethodBodyEdit( completionStep, method, body );
@@ -120,16 +121,36 @@ public class AnimatorInputDialogComposite extends AbstractPoserInputDialogCompos
 	}
 
 	public static boolean isStrictlyAnimation( UserMethod candidate ) {
-		if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
-			return false;
+		if( candidate != null ) {
+			if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
+				return false;
+			}
+			if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
+				return false;
+			}
+			return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
+		} else {
+			return true;
 		}
-		if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
-			return false;
-		}
-		return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
 	}
 
 	public UserMethod getMethod() {
 		return this.method;
+	}
+
+	public static AbstractAnimatorInputDialogComposite<?> getDialogForUserType( UserType<?> declaringType, UserMethod method ) {
+		if( declaringType != null ) {
+			if( ( declaringType instanceof NamedUserType ) && AbstractAnimatorInputDialogComposite.isStrictlyAnimation( method ) ) {
+				NamedUserType namedUserType = (NamedUserType)declaringType;
+				if( namedUserType.isAssignableTo( SBiped.class ) ) {
+					return new BipedAnimatorInputDialog( namedUserType, method );
+				} else if( namedUserType.isAssignableTo( SQuadruped.class ) ) {
+					return new QuadrupedAnimatorInputDialog( namedUserType, method );
+				} else if( namedUserType.isAssignableTo( SFlyer.class ) ) {
+					return new FlyerAnimatorInputDialog( namedUserType, method );
+				}
+			}
+		}
+		return null;
 	}
 }

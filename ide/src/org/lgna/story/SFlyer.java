@@ -203,7 +203,14 @@ public class SFlyer extends SJointedModel implements Articulable {
 	public SJoint getRightFoot() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_FOOT );
 	}
+
 	//	public SJoint getRightToe() {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
 	//	}
+
+	public void setPose( org.lgna.ik.poser.pose.Pose<SFlyer> pose, SetPose.Detail... details ) {
+		double duration = Duration.getValue( details );
+		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
+		this.getImplementation().setPose( pose, duration, style );
+	}
 }
