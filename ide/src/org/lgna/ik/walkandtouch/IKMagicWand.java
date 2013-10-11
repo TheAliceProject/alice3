@@ -49,11 +49,7 @@ import org.lgna.ik.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
-import org.lgna.story.SThing;
-import org.lgna.story.implementation.AsSeenBy;
-import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
@@ -73,7 +69,6 @@ public class IKMagicWand {
 		LEFT_LEG
 	}
 
-	private static double legLength;
 	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Collections.newArrayList(
@@ -115,12 +110,7 @@ public class IKMagicWand {
 		//		while( true ) {
 
 		//not bad concurrent programming practice
-		boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-		boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
-
 		//these could be multiple. in this app it is one pair.
-
-		double deltaTime = IkConstants.DESIRED_DELTA_TIME;
 
 		//					edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
 		myPositionConstraint.setEeDesiredPosition( target );
@@ -241,198 +231,6 @@ public class IKMagicWand {
 			}
 
 			currTransformation = end.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).translation;
-		}
-	}
-
-	public static void moveChainToPointSelfSpace( JointImp anchor, JointImp end, Point3 target ) {
-
-		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
-		Point3 targetPrime = jointedParent.getTransformation( AsSeenBy.SCENE ).createTransformed( target );
-		moveChainToPointInSceneSpace( anchor, end, targetPrime );
-	}
-
-	/**
-	 * bipedStrides
-	 * 
-	 * @return
-	 */
-	public static double stride( BipedImp bipedImp, Limb limb, boolean shouldBackStep ) {
-		final JointImp anchor;
-		final JointImp rightEnd;
-		final JointImp leftEnd;
-		if( limb == Limb.RIGHT_LEG ) {
-			anchor = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getPelvis() );
-			rightEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightAnkle() );
-			leftEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getLeftAnkle() );
-			double legLength = anchor.getDistanceTo( rightEnd );
-			Thread backThread = new Thread() {
-				@Override
-				public void run() {
-					moveChainToPointSelfSpace( anchor, leftEnd, new Point3( 0, 0, 0.5 ) );
-				};
-			};
-			Thread leftStep = new Thread() {
-				@Override
-				public void run() {
-					moveChainToPointSelfSpace( anchor, rightEnd, new Point3( 0, 0, -0.5 ) );
-				};
-			};
-			leftStep.start();
-			if( shouldBackStep ) {
-				backThread.start();
-				bipedImp.getAbstraction().move( MoveDirection.FORWARD, 1 );
-			}
-			return .5;
-		}
-		if( limb == Limb.LEFT_LEG ) {
-			anchor = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getPelvis() );
-			rightEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightAnkle() );
-			leftEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getLeftAnkle() );
-			double legLength = anchor.getDistanceTo( rightEnd );
-			Thread backThread = new Thread() {
-				@Override
-				public void run() {
-					moveChainToPointSelfSpace( anchor, rightEnd, new Point3( 0, 0, 0.5 ) );
-				};
-			};
-			Thread leftStep = new Thread() {
-				@Override
-				public void run() {
-					moveChainToPointSelfSpace( anchor, leftEnd, new Point3( 0, 0, -0.5 ) );
-				};
-			};
-			leftStep.start();
-			if( shouldBackStep ) {
-				backThread.start();
-				bipedImp.getAbstraction().move( MoveDirection.FORWARD, 1 );
-			}
-			return .5;
-		}
-		return 0;
-	}
-
-	private static double calcLength( JointImp anchor, JointImp end ) {
-		if( end.equals( anchor ) ) {
-			return 0;
-		}
-		Point3 endPoint = end.getAbsoluteTransformation().translation;
-		Point3 parentPoint = end.getVehicle().getAbsoluteTransformation().translation;
-		double dist = Point3.calculateDistanceBetween( endPoint, parentPoint );
-		return dist + calcLength( anchor, (JointImp)end.getVehicle() );
-	}
-
-	public static void walkTo( final BipedImp walker, SThing target ) {
-		legLength = legLength == 0 ? legLength = getLegLength( walker ) : legLength;
-		IKBipedPose walkPose1 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 30, 1, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -30, 1, false ) ) );
-		IKBipedPose walkPose2 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 15, .95, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -20, .95, false ) ) );
-		IKBipedPose walkPose3 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 5, 1, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -10, .9, false ) ) );
-		IKBipedPose walkPose4 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 0, 1, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -5, .85, false ) ) );
-		IKBipedPose walkPose5 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, -5, 1, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, 5, .925, false ) ) );
-		IKBipedPose walkPose6 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, -10, .95, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, 20, 1, false ) ) );
-		IKBipedPose walkPose7 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, -25, .9, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, 25, .9, false ) ) );
-		IKBipedPose walkPose8 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, -15, .85, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, 15, .95, false ) ) );
-		IKBipedPose walkPose9 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, -5, .825, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, 0, 1, false ) ) );
-		IKBipedPose walkPose10 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 5, 0.9, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -5, 1, false ) ) );
-		IKBipedPose walkPose11 = new IKBipedPose( walker,
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ) ).getJointId(), calcLegPoint( walker, 5, 0.9, true ) ),
-				new JointPositionPair( ( (JointImp)ImplementationAccessor.getImplementation( walker.getAbstraction().getLeftAnkle() ) ).getJointId(), calcLegPoint( walker, -15, 1, false ) ) );
-		for( int i = 0; i != 10; ++i ) {
-			assumePose( walkPose4, walker );
-			assumePose( walkPose5, walker );
-			assumePose( walkPose6, walker );
-			assumePose( walkPose7, walker );
-			assumePose( walkPose8, walker );
-			assumePose( walkPose9, walker );
-			assumePose( walkPose10, walker );
-			assumePose( walkPose11, walker );
-			assumePose( walkPose1, walker );
-			assumePose( walkPose2, walker );
-			assumePose( walkPose3, walker );
-		}
-	}
-
-	/**
-	 * Used for Walk
-	 */
-	private static Point3 calcLegPoint( BipedImp walker, double theta, double length, boolean isRight ) {
-		assert Math.abs( theta ) < 180;
-		assert length <= 1;
-		assert length > 0;
-		double x = isRight ? .1 : -.1;
-		double z = Math.sin( ( -theta * Math.PI ) / 180 ) * length * legLength;
-		double y = z == 0 ? 0 : legLength - Math.abs( z / Math.tan( ( theta * Math.PI ) / 180 ) );
-		return new Point3( x, y, z );
-	}
-
-	private static double getLegLength( BipedImp walker ) {
-		Point3 pointA = ImplementationAccessor.getImplementation( walker.getAbstraction().getPelvis() ).getAbsoluteTransformation().translation;
-		Point3 pointB = ImplementationAccessor.getImplementation( walker.getAbstraction().getRightAnkle() ).getAbsoluteTransformation().translation;
-		return Point3.calculateDistanceBetween( pointA, pointB );
-	}
-
-	public static void assumePose( final IKBipedPose pose, final BipedImp biped ) {
-		Thread rightArmThread = new Thread() {
-			@Override
-			public void run() {
-				if( pose.getPairForLimb( Limb.RIGHT_ARM ) != org.lgna.ik.walkandtouch.IKBipedPose.DEFAULT ) {
-					moveChainToPointSelfSpace( (JointImp)ImplementationAccessor.getImplementation( biped.getAbstraction().getRightClavicle() ), biped.getJointImplementation( pose.getPairForLimb( Limb.RIGHT_ARM ).joint ), pose.getPairForLimb( Limb.RIGHT_ARM ).point );
-				}
-			};
-		};
-		Thread leftArmThread = new Thread() {
-			@Override
-			public void run() {
-				if( pose.getPairForLimb( Limb.LEFT_ARM ) != org.lgna.ik.walkandtouch.IKBipedPose.DEFAULT ) {
-					moveChainToPointSelfSpace( (JointImp)ImplementationAccessor.getImplementation( pose.getModel().getAbstraction().getLeftClavicle() ), biped.getJointImplementation( pose.getPairForLimb( Limb.LEFT_ARM ).joint ), pose.getPairForLimb( Limb.LEFT_ARM ).point );
-				}
-			};
-		};
-		Thread rightLegThread = new Thread() {
-			@Override
-			public void run() {
-				if( pose.getPairForLimb( Limb.RIGHT_LEG ) != org.lgna.ik.walkandtouch.IKBipedPose.DEFAULT ) {
-					moveChainToPointSelfSpace( (JointImp)ImplementationAccessor.getImplementation( pose.getModel().getAbstraction().getPelvis() ), biped.getJointImplementation( pose.getPairForLimb( Limb.RIGHT_LEG ).joint ), pose.getPairForLimb( Limb.RIGHT_LEG ).point );
-				}
-			};
-		};
-		Thread leftLegThread = new Thread() {
-			@Override
-			public void run() {
-				if( pose.getPairForLimb( Limb.LEFT_LEG ) != org.lgna.ik.walkandtouch.IKBipedPose.DEFAULT ) {
-					moveChainToPointSelfSpace( (JointImp)ImplementationAccessor.getImplementation( pose.getModel().getAbstraction().getPelvis() ), biped.getJointImplementation( pose.getPairForLimb( Limb.LEFT_LEG ).joint ), pose.getPairForLimb( Limb.LEFT_LEG ).point );
-				}
-			};
-		};
-		rightArmThread.start();
-		leftArmThread.start();
-		rightLegThread.start();
-		leftLegThread.start();
-		while( rightArmThread.isAlive() || leftArmThread.isAlive() || rightLegThread.isAlive() || leftLegThread.isAlive() ) {
-			try {
-				Thread.sleep( 50 );
-			} catch( InterruptedException e ) {
-				e.printStackTrace();
-			}
 		}
 	}
 

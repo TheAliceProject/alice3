@@ -99,8 +99,4 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 		}
 		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, ImplementationAccessor.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
 	}
-
-	public void walkTo( final SThing entity ) {
-		IKMagicWand.walkTo( this, entity );
-	}
 }

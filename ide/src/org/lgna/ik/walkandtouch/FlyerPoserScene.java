@@ -99,4 +99,9 @@ public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 		}
 	}
 
+	@Override
+	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
+		return limbToJointMap.get( key ).get( 0 );
+	}
+
 }
