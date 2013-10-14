@@ -76,13 +76,17 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 
 	public UserField createPoseField( String value ) {
 		try {
-			Pose pose = parent.getPose();
+			Pose<?> pose = parent.getPose();
 			Expression rhSide = new ExpressionCreator().createExpression( pose );
 			UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
 			return rv;
 		} catch( CannotCreateExpressionException e ) {
 			throw new CancelException();
 		}
+	}
+
+	public AbstractPoserOrAnimatorInputDialogComposite getParent() {
+		return parent;
 	}
 
 }
