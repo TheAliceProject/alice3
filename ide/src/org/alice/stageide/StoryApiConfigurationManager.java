@@ -442,13 +442,38 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		}
 	}
 
-	public boolean isBuildMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+	private org.lgna.project.ast.AbstractType<?, ?, ?> getSpecificPoseBuilderType( org.lgna.project.ast.Expression expression ) {
+		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+			return getSpecificPoseBuilderType( methodInvocation.expression.getValue() );
+		} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+			return instanceCreation.getType();
+		} else {
+			return null;
+		}
+	}
+
+	private org.lgna.project.ast.AbstractType<?, ?, ?> getBuildMethodPoseBuilderType( org.lgna.project.ast.MethodInvocation methodInvocation, boolean isSpecificPoseBuilderTypeRequired ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( "build".equals( method.getName() ) ) {
-			if( methodInvocation.expression.getExpressionType().isAssignableTo( org.lgna.ik.poser.pose.builder.PoseBuilder.class ) ) {
-				return true;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = methodInvocation.expression.getExpressionType();
+			if( type.isAssignableTo( org.lgna.ik.poser.pose.builder.PoseBuilder.class ) ) {
+				if( isSpecificPoseBuilderTypeRequired ) {
+					return getSpecificPoseBuilderType( methodInvocation.expression.getValue() );
+				} else {
+					return type;
+				}
 			}
 		}
-		return false;
+		return null;
+	}
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getBuildMethodPoseBuilderType( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		return getBuildMethodPoseBuilderType( methodInvocation, true );
+	}
+
+	public boolean isBuildMethod( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		return getBuildMethodPoseBuilderType( methodInvocation, false ) != null;
 	}
 }

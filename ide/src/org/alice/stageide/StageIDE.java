@@ -254,7 +254,7 @@ public class StageIDE extends org.alice.ide.IDE {
 						}
 					} else if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
 						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
-						if( StoryApiConfigurationManager.getInstance().isBuildMethodInvocation( methodInvocation ) ) {
+						if( StoryApiConfigurationManager.getInstance().isBuildMethod( methodInvocation ) ) {
 							return false;
 						}
 					}

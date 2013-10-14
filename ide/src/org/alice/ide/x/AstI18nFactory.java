@@ -219,8 +219,13 @@ public abstract class AstI18nFactory extends I18nFactory {
 					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
 						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
 						if( expression == methodInvocation.expression.getValue() ) {
-							if( org.alice.stageide.StoryApiConfigurationManager.getInstance().isBuildMethodInvocation( methodInvocation ) ) {
-								component = new org.lgna.croquet.components.Label( "new PoseBuilder(...)" );
+							org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.stageide.StoryApiConfigurationManager.getInstance().getBuildMethodPoseBuilderType( methodInvocation );
+							if( type != null ) {
+								StringBuilder sb = new StringBuilder();
+								sb.append( "new " );
+								sb.append( type.getName() );
+								sb.append( "(...)." );
+								component = new org.lgna.croquet.components.Label( sb.toString() );
 							}
 						}
 					}
