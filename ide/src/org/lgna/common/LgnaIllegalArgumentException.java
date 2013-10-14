@@ -51,7 +51,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 		if( value != null ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "argument must not be null", index, value );
+			throw new LgnaIllegalArgumentException( "argument must not be null", index, value );
 		}
 	}
 
@@ -60,7 +60,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 		if( Double.isNaN( value.doubleValue() ) == false ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "argument must be a number", index, value );
+			throw new LgnaIllegalArgumentException( "argument must be a number", index, value );
 		}
 	}
 
@@ -69,7 +69,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 		if( value.doubleValue() > 0.0 ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "argument must be positive", index, value );
+			throw new LgnaIllegalArgumentException( "argument must be positive", index, value );
 		}
 	}
 
@@ -78,7 +78,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 		if( value.doubleValue() >= 0.0 ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
+			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
 		}
 	}
 
@@ -88,7 +88,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 		if( ( 0.0 <= d ) && ( d <= 1.0 ) ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
+			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
 		}
 	}
 

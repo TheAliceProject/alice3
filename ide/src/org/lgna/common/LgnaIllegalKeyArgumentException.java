@@ -48,18 +48,56 @@ package org.lgna.common;
 public class LgnaIllegalKeyArgumentException extends LgnaRuntimeException {
 	//todo: switch order?
 	//todo: remove return value?
-	public static <T> T checkArgumentNotNull( T value, String keyArgumentName ) {
+	public static <T> T checkArgumentIsNotNull( T value, String keyArgumentName ) {
 		if( value != null ) {
 			return value;
 		} else {
-			throw new LgnaIllegalKeyArgumentException( keyArgumentName, value );
+			throw new LgnaIllegalKeyArgumentException( "argument must not be null", keyArgumentName, value );
+		}
+	}
+
+	public static Number checkArgumentIsNumber( Number value, String keyArgumentName ) {
+		checkArgumentIsNotNull( value, keyArgumentName );
+		if( Double.isNaN( value.doubleValue() ) == false ) {
+			return value;
+		} else {
+			throw new LgnaIllegalKeyArgumentException( "argument must be a number", keyArgumentName, value );
+		}
+	}
+
+	public static Number checkArgumentIsPositive( Number value, String keyArgumentName ) {
+		checkArgumentIsNumber( value, keyArgumentName );
+		if( value.doubleValue() > 0.0 ) {
+			return value;
+		} else {
+			throw new LgnaIllegalKeyArgumentException( "argument must be positive", keyArgumentName, value );
+		}
+	}
+
+	public static Number checkArgumentIsPositiveOrZero( Number value, String keyArgumentName ) {
+		checkArgumentIsNumber( value, keyArgumentName );
+		if( value.doubleValue() >= 0.0 ) {
+			return value;
+		} else {
+			throw new LgnaIllegalKeyArgumentException( "argument must be positive or zero", keyArgumentName, value );
+		}
+	}
+
+	public static Number checkArgumentIsBetween0and1( Number value, String keyArgumentName ) {
+		checkArgumentIsNumber( value, keyArgumentName );
+		double d = value.doubleValue();
+		if( ( 0.0 <= d ) && ( d <= 1.0 ) ) {
+			return value;
+		} else {
+			throw new LgnaIllegalKeyArgumentException( "argument must be positive or zero", keyArgumentName, value );
 		}
 	}
 
 	private final String keyArgumentName;
 	private final Object value;
 
-	public LgnaIllegalKeyArgumentException( String keyArgumentName, Object value ) {
+	public LgnaIllegalKeyArgumentException( String detail, String keyArgumentName, Object value ) {
+		super( detail );
 		this.keyArgumentName = keyArgumentName;
 		this.value = value;
 	}
@@ -68,7 +106,10 @@ public class LgnaIllegalKeyArgumentException extends LgnaRuntimeException {
 	protected void appendFormattedString( StringBuilder sb ) {
 		sb.append( "key argument \"" );
 		sb.append( this.keyArgumentName );
-		sb.append( "\" has an illegal value: " );
+		sb.append( "\"" );
+		sb.append( this.getMessage() );
+		sb.append( ".  value: " );
 		sb.append( this.value );
+		sb.append( "." );
 	}
 }
