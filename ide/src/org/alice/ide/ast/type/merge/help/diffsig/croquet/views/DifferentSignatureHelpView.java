@@ -42,45 +42,32 @@
  */
 package org.alice.ide.ast.type.merge.help.diffsig.croquet.views;
 
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
-public class DifferentSignatureHelpView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue, boolean isAdjusting ) {
-			handleTopLevelChanged( nextValue );
+public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
+			handleTopLevelChanged( e.getNextValue() );
 		}
 	};
 
-	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
-
 	public DifferentSignatureHelpView( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite ) {
 		super( composite );
-		this.addComponent( composite.getHeader().createLabel(), "wrap" );
-		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getTopLevelChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_ORIGINAL_IN_PROJECT ).createRadioButton();
+		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
+		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 
-		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
-
-		this.keepBothPanel.addComponent( composite.getImportNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getImportNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameState().getSidekickLabel().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( composite.getProjectNameState(), foregroundCustomizer ), "wrap" );
-
-		this.addComponent( keepBothRadioButton, "wrap" );
-		this.addComponent( this.keepBothPanel, "wrap" );
-		this.addComponent( selectOneRadioButton, "wrap" );
+		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
+		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
+		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );
+		this.addLineStartComponent( panel );
 	}
 
 	@Override
 	public void handleCompositePreActivation() {
 		org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getTopLevelChoiceState().addAndInvokeValueListener( this.valueListener );
+		composite.getChoiceState().addAndInvokeNewSchoolValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
 
@@ -88,12 +75,12 @@ public class DifferentSignatureHelpView extends org.lgna.croquet.components.MigP
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
 		org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getTopLevelChoiceState().removeValueListener( this.valueListener );
+		composite.getChoiceState().removeNewSchoolValueListener( this.valueListener );
 	}
 
-	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice nextValue ) {
-		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureTopLevelChoice.KEEP_BOTH_AND_RENAME;
-		for( java.awt.Component awtComponent : this.keepBothPanel.getAwtComponent().getComponents() ) {
+	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue ) {
+		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
+		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}
 	}

@@ -42,19 +42,41 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.PickHint.PickType;
+import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MousePressCondition;
+import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
+import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
+import org.alice.interact.manipulator.ObjectRotateDragManipulator;
+import org.alice.stageide.sceneeditor.HandleStyle;
+import org.lgna.ik.poser.PoserSphereManipulatorListener;
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
+import org.lgna.ik.walkandtouch.PoserPicturePlaneInteraction;
 import org.lgna.story.SModel;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 
 /**
  * @author Matt May
  */
 public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
+	private PoserPicturePlaneInteraction dragAdapter = null;
+	private final AbstractPoserScene poserScene;
+	private ManipulatorConditionSet selectObject;
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
-	private SModel model;
+
+	public PoserAnimatorDragAdapter( AbstractPoserScene poserScene ) {
+		this.poserScene = poserScene;
+	}
 
 	@Override
 	protected void setUpControls() {
@@ -65,28 +87,77 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		cameraOrbit.addCondition( middleMouseAndAnything );
 		this.manipulators.add( cameraOrbit );
 
-		//		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE ) );
-		//		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
-		//
-		//		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN ) );
-		//		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
-		//
-		//		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED ) );
-		//		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
-		//		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		//		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		//		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
+		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE ) );
+		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
 
+		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN ) );
+		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
+
+		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED ) );
+		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
+
+		addHandle( rotateJointAboutXAxis );
+		addHandle( rotateJointAboutYAxis );
+		addHandle( rotateJointAboutZAxis );
+
+		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
+		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition( new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
+		this.manipulators.add( mouseWheelCameraZoom );
+
+		selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+
+		selectObject.setEnabled( false );
+		selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
+		selectObject.addCondition( new DragAndDropCondition() );
+
+		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
+		this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, group );
+		setInteractionState( HandleStyle.ROTATION );
+
+		this.manipulators.add( selectObject );
+
+		for( int i = 0; i < this.manipulators.size(); i++ ) {
+			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		}
 	}
 
 	public final void setTarget( SModel model ) {
-		this.model = model;
 		orbiter.setTarget( model );
+	}
+
+	@Override
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		super.setOnscreenLookingGlass( onscreenLookingGlass );
+		initDragAdapter( onscreenLookingGlass );
+	}
+
+	private void initDragAdapter( OnscreenLookingGlass onscreenLookingGlass ) {
+		dragAdapter = new PoserPicturePlaneInteraction( poserScene, onscreenLookingGlass );
+		dragAdapter.startUp();
+	}
+
+	public void addSphereDragListener( PoserSphereManipulatorListener sphereDragListener ) {
+		try {
+			dragAdapter.addListener( sphereDragListener );
+		} catch( NullPointerException e ) {
+			Logger.severe( "Drag Adapter cannot be initialized until OnscreenLookingGlass is set" );
+			Thread.dumpStack();
+		}
+	}
+
+	@Override
+	public void setHandlVisibility( boolean isVisible ) {
+		super.setHandlVisibility( isVisible );
+		selectObject.setEnabled( isVisible );
 	}
 }

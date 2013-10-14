@@ -56,9 +56,4 @@ public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croque
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
-
-	@Override
-	protected org.lgna.croquet.components.ToolBarView createView() {
-		return new org.lgna.croquet.components.ToolBarView( this );
-	}
 }

@@ -49,6 +49,6 @@ import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
  */
 public final class MethodDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<org.lgna.project.ast.UserMethod> {
 	public MethodDifferentSignatureHelpComposite( DifferentSignature<org.lgna.project.ast.UserMethod> differentSignature ) {
-		super( java.util.UUID.fromString( "aa2122eb-647e-4cc7-a78c-b479ca518aa4" ), differentSignature );
+		super( java.util.UUID.fromString( "aa2122eb-647e-4cc7-a78c-b479ca518aa4" ), differentSignature, "signature" );
 	}
 }

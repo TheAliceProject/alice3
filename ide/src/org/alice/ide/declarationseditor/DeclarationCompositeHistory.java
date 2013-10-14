@@ -56,19 +56,13 @@ public class DeclarationCompositeHistory {
 
 	private java.util.List<DeclarationComposite> history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
-	private final org.lgna.croquet.State.ValueListener<DeclarationComposite> declarationListener = new org.lgna.croquet.State.ValueListener<DeclarationComposite>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			DeclarationCompositeHistory.this.appendIfAppropriate( nextValue );
+	private final org.lgna.croquet.event.ValueListener<DeclarationComposite> declarationListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<DeclarationComposite> e ) {
+			DeclarationCompositeHistory.this.appendIfAppropriate( e.getNextValue() );
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
 			DeclarationCompositeHistory.this.resetStack();
 		}
 	};
@@ -76,8 +70,8 @@ public class DeclarationCompositeHistory {
 	private int ignoreCount = 0;
 
 	private DeclarationCompositeHistory() {
-		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
-		DeclarationsEditorComposite.getInstance().getTabState().addValueListener( this.declarationListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
+		DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationListener );
 		this.resetStack();
 	}
 

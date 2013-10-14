@@ -45,7 +45,7 @@ package org.alice.stageide.showme;
 /**
  * @author Dennis Cosgrove
  */
-public class DragIntoSceneStencilModel extends org.lgna.croquet.StencilModel {
+public class DragIntoSceneStencilModel extends IdeStencil {
 	public DragIntoSceneStencilModel() {
 		super( java.util.UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
 	}

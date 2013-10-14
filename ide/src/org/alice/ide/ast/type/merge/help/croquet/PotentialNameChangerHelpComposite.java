@@ -46,22 +46,55 @@ package org.alice.ide.ast.type.merge.help.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.components.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final org.lgna.croquet.StringState importNameState = this.createStringState( this.createKey( "importNameState" ) );
-	private final org.lgna.croquet.StringState projectNameState = this.createStringState( this.createKey( "projectNameState" ) );
+	//private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.HtmlStringValue header = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "77e35d67-a35a-4a89-875d-7fab232445d5" ) ) {
+	};
 
+	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( this.createKey( "importNameText" ) );
+	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( this.createKey( "projectNameText" ) );
+	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( this.createKey( "nameChangeRequiredError" ) );
 	private final N potentialNameChanger;
+
+	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
+			if( isRetainBothSelected() ) {
+				return areNamesIdentical() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+			} else {
+				return defaultColor;
+			}
+		}
+	};
+
+	private boolean isImportDesiredPre;
+	private boolean isProjectDesiredPre;
+	private String importNamePre;
+	private String projectNamePre;
 
 	public PotentialNameChangerHelpComposite( java.util.UUID migrationId, N potentialNameChanger ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP );
 		this.potentialNameChanger = potentialNameChanger;
 	}
 
+	protected abstract boolean isRetainBothSelected();
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
+		//todo
+		this.getView().repaint();
+		Status rv = IS_GOOD_TO_GO_STATUS;
+		if( this.isRetainBothSelected() ) {
+			if( this.areNamesIdentical() ) {
+				rv = this.nameChangeRequiredError;
+			}
+		}
+		return rv;
+	}
+
 	@Override
 	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
-			if( element == this.importNameState.getSidekickLabel() ) {
+			if( element == this.importNameText ) {
 				rv = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
 			}
 		}
@@ -72,15 +105,52 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 		return this.potentialNameChanger;
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeader() {
+	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+		return this.foregroundCustomizer;
+	}
+
+	public ErrorStatus getNameChangeRequiredError() {
+		return this.nameChangeRequiredError;
+	}
+
+	public org.lgna.croquet.StringValue getHeader() {
 		return this.header;
 	}
 
-	public org.lgna.croquet.StringState getImportNameState() {
-		return this.importNameState;
+	public org.lgna.croquet.PlainStringValue getImportNameText() {
+		return this.importNameText;
 	}
 
-	public org.lgna.croquet.StringState getProjectNameState() {
-		return this.projectNameState;
+	public org.lgna.croquet.PlainStringValue getProjectNameText() {
+		return this.projectNameText;
 	}
+
+	private boolean areNamesIdentical() {
+		//todo
+		return this.potentialNameChanger.getImportHub().getNameState().getValue().contentEquals( this.potentialNameChanger.getProjectHub().getNameState().getValue() );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		this.isImportDesiredPre = this.potentialNameChanger.getImportHub().getIsDesiredState().getValue();
+		this.isProjectDesiredPre = this.potentialNameChanger.getProjectHub().getIsDesiredState().getValue();
+		this.importNamePre = this.potentialNameChanger.getImportHub().getNameState().getValue();
+		this.projectNamePre = this.potentialNameChanger.getProjectHub().getNameState().getValue();
+		super.handlePreActivation();
+	}
+
+	@Override
+	protected void cancel( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		this.potentialNameChanger.getImportHub().getIsDesiredState().setValueTransactionlessly( this.isImportDesiredPre );
+		this.potentialNameChanger.getProjectHub().getIsDesiredState().setValueTransactionlessly( this.isProjectDesiredPre );
+		this.potentialNameChanger.getImportHub().getNameState().setValueTransactionlessly( this.importNamePre );
+		this.potentialNameChanger.getProjectHub().getNameState().setValueTransactionlessly( this.projectNamePre );
+		super.cancel( completionStep );
+	}
+
+	@Override
+	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+		return null;
+	}
+
 }

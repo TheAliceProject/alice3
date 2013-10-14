@@ -49,25 +49,25 @@ public class ValueEvent<T> {
 	private final boolean isPreviousValueValid;
 	private final T previousValue;
 	private final T nextValue;
+	private final boolean isAdjusting;
+
+	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue, boolean isAdjusting ) {
+		return new ValueEvent<T>( true, previousValue, nextValue, isAdjusting );
+	}
 
 	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue ) {
-		return new ValueEvent<T>( previousValue, nextValue );
+		return createInstance( previousValue, nextValue, false );
 	}
 
 	public static <T> ValueEvent<T> createInstance( T nextValue ) {
-		return new ValueEvent<T>( nextValue );
+		return new ValueEvent<T>( false, null, nextValue, false );
 	}
 
-	private ValueEvent( T previousValue, T nextValue ) {
-		this.isPreviousValueValid = true;
+	private ValueEvent( boolean isPreviousValueValid, T previousValue, T nextValue, boolean isAdjusting ) {
+		this.isPreviousValueValid = isPreviousValueValid;
 		this.previousValue = previousValue;
 		this.nextValue = nextValue;
-	}
-
-	private ValueEvent( T nextValue ) {
-		this.isPreviousValueValid = false;
-		this.previousValue = null;
-		this.nextValue = nextValue;
+		this.isAdjusting = isAdjusting;
 	}
 
 	public boolean isPreviousValueValid() {
@@ -80,5 +80,9 @@ public class ValueEvent<T> {
 
 	public T getNextValue() {
 		return this.nextValue;
+	}
+
+	public boolean isAdjusting() {
+		return this.isAdjusting;
 	}
 }

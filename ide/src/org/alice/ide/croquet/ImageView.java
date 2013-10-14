@@ -51,11 +51,11 @@ public class ImageView extends org.lgna.croquet.components.JComponent<edu.cmu.cs
 		return new edu.cmu.cs.dennisc.javax.swing.components.JImageView();
 	}
 
-	public java.awt.image.BufferedImage getBufferedImage() {
-		return this.getAwtComponent().getBufferedImage();
+	public java.awt.Image getImage() {
+		return this.getAwtComponent().getImage();
 	}
 
-	public void setBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
-		this.getAwtComponent().setBufferedImage( bufferedImage );
+	public void setImage( java.awt.Image image ) {
+		this.getAwtComponent().setImage( image );
 	}
 }

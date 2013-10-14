@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
@@ -135,5 +136,9 @@ public class PoserControllerAdapter {
 
 	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
 		controlComposite.updateSphere( limb, sphere );
+	}
+
+	public BooleanState getJointRotationHandleVisibilityState() {
+		return controlComposite.getJointRotationHandleVisibilityState();
 	}
 }

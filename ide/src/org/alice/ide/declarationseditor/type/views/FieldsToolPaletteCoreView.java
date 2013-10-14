@@ -42,8 +42,7 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
-import org.lgna.ik.poser.PoserInputDialogComposite;
-import org.lgna.story.SBiped;
+import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -63,8 +62,9 @@ public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
 		}
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().createButton() );
-		if( type.isAssignableTo( SBiped.class ) ) {
-			this.addComponent( new PoserInputDialogComposite( type ).getOperation().createButton() );
+		AbstractPoserInputDialogComposite<?> dialog = AbstractPoserInputDialogComposite.getDialogForUserType( type );
+		if( dialog != null ) {
+			this.addComponent( dialog.getOperation().createButton() );
 		}
 	}
 }

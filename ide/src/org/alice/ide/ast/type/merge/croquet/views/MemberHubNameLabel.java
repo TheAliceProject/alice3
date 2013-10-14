@@ -48,12 +48,15 @@ package org.alice.ide.ast.type.merge.croquet.views;
 public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
 
-	private final org.lgna.croquet.State.ValueListener<String> nameListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
+			updateText();
 		}
+	};
 
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			setText( nextValue );
+	private final org.lgna.croquet.event.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged(org.lgna.croquet.event.ValueEvent<Boolean> e) {
+			updateText();
 		}
 	};
 
@@ -61,15 +64,29 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 		this.memberHubWithNameState = memberHubWithNameState;
 	}
 
+	private void updateText() {
+		String text;
+		if( this.memberHubWithNameState.getIsDesiredState().getValue() && this.memberHubWithNameState.getOtherIsDesiredState().getValue() ) {
+			text = this.memberHubWithNameState.getNameState().getValue();
+		} else {
+			text = this.memberHubWithNameState.getMember().getName();
+		}
+		this.setText( text );
+	}
+
 	@Override
 	protected void handleDisplayable() {
-		this.memberHubWithNameState.getNameState().addAndInvokeValueListener( this.nameListener );
+		this.memberHubWithNameState.getIsDesiredState().addNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().addNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getNameState().addAndInvokeNewSchoolValueListener( this.nameListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.memberHubWithNameState.getNameState().removeValueListener( this.nameListener );
+		this.memberHubWithNameState.getNameState().removeNewSchoolValueListener( this.nameListener );
+		this.memberHubWithNameState.getOtherIsDesiredState().removeNewSchoolValueListener( this.isDesiredListener );
+		this.memberHubWithNameState.getIsDesiredState().removeNewSchoolValueListener( this.isDesiredListener );
 	}
 }

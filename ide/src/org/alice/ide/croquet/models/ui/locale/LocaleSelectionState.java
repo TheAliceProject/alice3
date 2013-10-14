@@ -82,11 +82,8 @@ public class LocaleSelectionState extends org.lgna.croquet.preferences.Preferenc
 				new java.util.Locale( "zh", "CN" ),
 				new java.util.Locale( "zh", "TW" ),
 				new java.util.Locale( "ko" ) );
-		this.addValueListener( new ValueListener<java.util.Locale>() {
-			public void changing( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
 			}
 		} );

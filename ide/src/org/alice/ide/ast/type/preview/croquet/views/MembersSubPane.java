@@ -45,22 +45,17 @@ package org.alice.ide.ast.type.preview.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersSubPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+public final class MembersSubPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
 	public MembersSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<M>> hubs ) {
 		super( null, "fillx", "[grow]" );
 		java.awt.Color headerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
-		java.awt.Color memberViewColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.1, 1.1 );
 
 		this.setBackgroundColor( headerColor );
 		org.lgna.croquet.components.Label headerLabel = new org.lgna.croquet.components.Label( headerText );
 		headerLabel.setBackgroundColor( headerColor );
 		this.addComponent( headerLabel, "grow, shrink, wrap" );
 		for( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub : hubs ) {
-			org.lgna.croquet.components.Component<?> component = this.createMemberViewFor( hub );
-			component.setBackgroundColor( memberViewColor );
-			this.addComponent( component, "grow, shrink, wrap" );
+			this.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( hub, true ), "grow, shrink, wrap" );
 		}
 	}
-
-	protected abstract org.lgna.croquet.components.Component<?> createMemberViewFor( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub );
 }

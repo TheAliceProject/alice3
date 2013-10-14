@@ -43,10 +43,6 @@
 package org.alice.media.youtube.croquet.views;
 
 import org.alice.media.youtube.croquet.EventRecordComposite;
-import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.ToggleButton;
-
-import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
  * @author Matt May
@@ -55,24 +51,23 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 	private final TimeLabel timeLabel;
-	private final ToggleButton playPauseButton;
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		super( eventRecordComposite, "fillx, insets 0", "[grow 0][grow 100]" );
+		super( eventRecordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
 
 		this.timeLabel = new TimeLabel();
 		this.updateTime( 0 );
 
-		List<EventScriptEvent> list = new EventScriptListView( eventRecordComposite.getEventList() );
-
-		this.playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
+		org.lgna.croquet.components.Component<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
 
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
-		this.addComponent( list, "aligny top, spany 3, wrap" );
+		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );
 
-		this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
-		this.addComponent( this.playPauseButton, "split 2" );
-		this.addComponent( this.timeLabel, "grow, align right, wrap" );
+		//this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
+		this.addComponent( this.lookingGlassContainer, "w 640, h 360, wrap" );
+
+		this.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton(), "push, aligny top, split 2" );
+		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {

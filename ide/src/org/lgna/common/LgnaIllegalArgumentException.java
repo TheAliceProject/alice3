@@ -46,6 +46,7 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public class LgnaIllegalArgumentException extends LgnaRuntimeException {
+	//todo: remove return value?
 	public static <T> T checkArgumentNotNull( T value, int index ) {
 		if( value != null ) {
 			return value;

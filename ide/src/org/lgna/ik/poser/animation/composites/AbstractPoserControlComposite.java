@@ -52,14 +52,14 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
+import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControllerAdapter;
 import org.lgna.ik.poser.view.AbstractPoserControlView;
+import org.lgna.ik.walkandtouch.AbstractPoserScene;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
-import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
 
@@ -68,23 +68,24 @@ import org.lgna.story.Color;
  */
 public abstract class AbstractPoserControlComposite<T extends AbstractPoserControlView> extends SimpleComposite<T> {
 
-	private JointSelectionSphereState rightArmAnchor;
-	private JointSelectionSphereState leftArmAnchor;
-	private JointSelectionSphereState rightLegAnchor;
-	private JointSelectionSphereState leftLegAnchor;
-	private StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
-	private StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
-	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
-	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	private BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	protected AbstractPoserInputDialogComposite parent;
+	private final JointSelectionSphereState rightArmAnchor;
+	private final JointSelectionSphereState leftArmAnchor;
+	private final JointSelectionSphereState rightLegAnchor;
+	private final JointSelectionSphereState leftLegAnchor;
+	private final StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
+	private final StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
+	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
+	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
+	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
+	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
 
-	public AbstractPoserControlComposite( AbstractPoserInputDialogComposite parent, UUID uid ) {
+	public AbstractPoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent, UUID uid ) {
 		super( uid );
 		this.parent = parent;
 		parent.getJointSelectionSheres();
-		PoserScene scene = parent.getScene();
+		AbstractPoserScene scene = parent.getScene();
 		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
 		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
 		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
@@ -100,7 +101,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			parent.getBiped().straightenOutJoints();
+			parent.getModel().straightenOutJoints();
 			return null;
 		}
 
@@ -185,5 +186,9 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public PoserControllerAdapter getAdapter() {
 		return this.adapter;
+	}
+
+	public BooleanState getJointRotationHandleVisibilityState() {
+		return jointRotationHandleVisibilityState;
 	}
 }

@@ -57,12 +57,9 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
-		public void changing( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
-			handleChanged( prevValue, nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.modelresource.ResourceNode> e ) {
+			handleChanged( e.getPreviousValue(), e.getNextValue() );
 		}
 	};
 
@@ -75,18 +72,11 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
-		this.scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		this.scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		this.scrollPane.setBothScrollBarIncrements( 16, 160 );
+		this.scrollPane = createGalleryScrollPane( view );
 
 		final boolean IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES = false;
 		java.awt.Color breadCrumbColor;
-		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) {
+		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && ( composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) ) {
 			breadCrumbColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 		} else {
 			breadCrumbColor = null;
@@ -102,7 +92,6 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		//todo
 		view.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}
 
@@ -110,7 +99,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	protected void handleDisplayable() {
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
-		state.addValueListener( this.treeListener );
+		state.addNewSchoolValueListener( this.treeListener );
 		super.handleDisplayable();
 	}
 
@@ -119,7 +108,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		super.handleUndisplayable();
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
-		state.removeValueListener( this.treeListener );
+		state.removeNewSchoolValueListener( this.treeListener );
 	}
 
 	private void handleChanged( org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue ) {

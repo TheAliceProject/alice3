@@ -47,12 +47,6 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class Component<J extends java.awt.Component> extends ScreenElement {
-	public interface ContainmentObserver {
-		public void addedTo( Component<?> parent );
-
-		public void removedFrom( Component<?> parent );
-	}
-
 	private static java.util.Map<java.awt.Component, Component<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 
 	private static class InternalAwtContainerAdapter extends Container<java.awt.Container> {

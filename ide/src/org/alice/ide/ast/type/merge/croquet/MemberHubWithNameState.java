@@ -48,9 +48,19 @@ package org.alice.ide.ast.type.merge.croquet;
 public abstract class MemberHubWithNameState<M extends org.lgna.project.ast.Member> extends MemberHub<M> {
 	private final MemberNameState<M> nameState;
 
-	public MemberHubWithNameState( M member, boolean initialValue, String prependText, String appendText ) {
-		super( member, initialValue, prependText, appendText );
+	private org.lgna.croquet.BooleanState otherIsDesiredState;
+
+	public MemberHubWithNameState( M member, boolean initialValue ) {
+		super( member, initialValue );
 		this.nameState = new MemberNameState<M>( member );
+	}
+
+	public org.lgna.croquet.BooleanState getOtherIsDesiredState() {
+		return this.otherIsDesiredState;
+	}
+
+	public void setOtherIsDesiredState( org.lgna.croquet.BooleanState otherBooleanState ) {
+		this.otherIsDesiredState = otherBooleanState;
 	}
 
 	public MemberNameState<M> getNameState() {

@@ -5054,6 +5054,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
 					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
 
+					//added for older projects
+					//todo: do others require this?
+					"name=\"org.lgna.story.resources.prop.UFOResource",
+					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+					//
+
 					"name=\"org.lgna.story.resources.prop.PirateShipResource",
 					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
 

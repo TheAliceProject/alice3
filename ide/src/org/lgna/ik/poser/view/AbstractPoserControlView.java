@@ -58,6 +58,7 @@ public class AbstractPoserControlView extends MigPanel {
 		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
 		super( poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" +
 				"[grow 0]" + //straightenOutJoints
+				"[grow 0]" + //handle visibility
 				"[grow 0]" + //delete row
 				"[]10" + //list section
 				"[grow 0]0[grow 0]" + //save and export rows
@@ -85,5 +86,6 @@ public class AbstractPoserControlView extends MigPanel {
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
 		this.addComponent( llDropDown, "wrap" );
 		this.addComponent( poserControlComposite.getStraightenJointsOperation().createButton(), "wrap, spanx 4, growx" );
+		this.addComponent( poserControlComposite.getJointRotationHandleVisibilityState().createCheckBox(), "wrap" );
 	}
 }

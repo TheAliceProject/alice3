@@ -42,8 +42,7 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-import org.lgna.ik.poser.AnimatorInputDialogComposite;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.ik.poser.AbstractAnimatorInputDialogComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -59,8 +58,9 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
-				if( ( method.getDeclaringType() instanceof NamedUserType ) && AnimatorInputDialogComposite.isStrictlyAnimation( method ) ) {
-					prepModels.add( new AnimatorInputDialogComposite( (NamedUserType)method.getDeclaringType(), method ).getOperation().getMenuItemPrepModel() );
+				AbstractAnimatorInputDialogComposite<?> dialog = AbstractAnimatorInputDialogComposite.getDialogForUserType( method.getDeclaringType(), method );
+				if( dialog != null ) {
+					prepModels.add( dialog.getOperation().getMenuItemPrepModel() );
 				}
 				return new MethodMenuModel( key, prepModels );
 			}

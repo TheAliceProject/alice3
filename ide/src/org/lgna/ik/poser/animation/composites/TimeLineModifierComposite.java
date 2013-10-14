@@ -67,19 +67,20 @@ import org.lgna.ik.poser.pose.Pose;
 public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierView> {
 
 	private TimeLineComposite composite;
-	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
 	private KeyFrameData selectedKeyFrame;
-	private ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
+	private final BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
+	private final ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
 		composite.getTimeLine().addListener( listener );
 		currentTime.addValueListener( timeListener );
+		styleSelectionState.addValueListener( styleListener );
 		updateSelectedEvent( null );
 	}
 
-	private TimeLineListener listener = new TimeLineListener() {
+	private final TimeLineListener listener = new TimeLineListener() {
 
 		public void currentTimeChanged( double currentTime, Pose pose ) {
 			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
@@ -110,7 +111,19 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		}
 
 	};
-	ValueListener<Double> timeListener = new ValueListener<Double>() {
+	private final ValueListener<KeyFrameStyles> styleListener = new ValueListener<KeyFrameStyles>() {
+
+		@Override
+		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+		}
+
+		@Override
+		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+			selectedKeyFrame.setStyle( nextValue );
+		}
+	};
+
+	private final ValueListener<Double> timeListener = new ValueListener<Double>() {
 
 		public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 		}

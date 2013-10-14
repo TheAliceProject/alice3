@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.help.diffimp.croquet.MethodDifferentImplemen
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger {
+public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
 
@@ -60,8 +60,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	public DifferentImplementation( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
-		final String POSTFIX = "<br><em>(different implementation)</em>";
-		this.importHub = new MemberHubWithNameState<M>( importMember, false, "replace/add  ", POSTFIX ) {
+		this.importHub = new MemberHubWithNameState<M>( importMember, false ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -84,7 +83,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 			}
 		};
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, false, "keep ", POSTFIX ) {
+		this.projectHub = new MemberHubWithNameState<M>( projectMember, false ) {
 			@Override
 			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
@@ -106,6 +105,9 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				}
 			}
 		};
+
+		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
+		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
 
 		this.importCardOwner = new DifferentImplementationCardOwner.Builder( this )
 				.neither( new ActionMustBeTakenCard( this ) )
@@ -130,10 +132,12 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		}
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getImportHub() {
 		return this.importHub;
 	}
 
+	@Override
 	public MemberHubWithNameState<M> getProjectHub() {
 		return this.projectHub;
 	}

@@ -55,7 +55,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
 		@Override
 		protected void internalSetValue( org.lgna.story.Paint value ) {
-			BillboardImp.this.sgBackFace.setPaint( value );
+			TexturedPaintUtilities.setPaint( BillboardImp.this.sgBackFace, value );
 		}
 	};
 
@@ -222,21 +222,21 @@ public class BillboardImp extends VisualScaleModelImp {
 		this.sgBackFace.updateAspectRatio( widthToHeightAspectRatio );
 	}
 
-	public org.lgna.story.Paint getFrontPaint() {
-		return this.sgFrontFace.getPaint();
-	}
-
+	//	public org.lgna.story.Paint getFrontPaint() {
+	//		return this.sgFrontFace.getPaint();
+	//	}
+	//
 	public void setFrontPaint( org.lgna.story.Paint frontPaint ) {
-		this.sgFrontFace.setPaint( frontPaint );
+		TexturedPaintUtilities.setPaint( this.sgFrontFace, frontPaint );
 		this.updateAspectRatio();
 	}
 
-	public org.lgna.story.Paint getBackPaint() {
-		return this.sgBackFace.getPaint();
-	}
-
+	//	public org.lgna.story.Paint getBackPaint() {
+	//		return this.sgBackFace.getPaint();
+	//	}
+	//
 	public void setBackPaint( org.lgna.story.Paint backPaint ) {
-		this.sgBackFace.setPaint( backPaint );
+		TexturedPaintUtilities.setPaint( this.sgBackFace, backPaint );
 		this.updateAspectRatio();
 	}
 

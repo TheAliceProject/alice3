@@ -42,19 +42,7 @@
  */
 package org.lgna.ik.poser.animation;
 
-import java.util.List;
-import java.util.Map;
-
-import org.lgna.ik.poser.pose.JointKey;
 import org.lgna.ik.poser.pose.Pose;
-import org.lgna.ik.poser.pose.builder.PoseBuilder;
-import org.lgna.story.resources.JointId;
-
-import com.sun.tools.javac.util.Pair;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.math.Orientation;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Matt May
@@ -63,82 +51,14 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 public class KeyFrameData {
 
 	private double eventTime;
-	private Pose pose;
+	private Pose<?> pose;
 	private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
+	private Pose<?> poseForAnimator;
 
-	public KeyFrameData( double time, Pose pose ) {
+	public KeyFrameData( double time, Pose<?> pose ) {
 		this.eventTime = time;
 		this.pose = pose;
-	}
-
-	//	public static Pose interpolatePoses( KeyFrameData key1, KeyFrameData key2, double targetTime ) {
-	//
-	//		//TODO "Easing is not implemented, yet.";
-	//
-	//		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
-	//		Pose pose1 = key1.getPose();
-	//		Pose pose2 = key2.getPose();
-	//		double k = ( targetTime - key1.getEventTime() ) / ( key2.getEventTime() - key1.getEventTime() );
-	//
-	//		UnitQuaternion leftClavicleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftClavicle().getUnitQuaternion(), pose2.getLeftClavicle().getUnitQuaternion(), k );
-	//		UnitQuaternion leftShoulderUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftShoulder().getUnitQuaternion(), pose2.getLeftShoulder().getUnitQuaternion(), k );
-	//		UnitQuaternion leftElbowUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftElbow().getUnitQuaternion(), pose2.getLeftElbow().getUnitQuaternion(), k );
-	//		UnitQuaternion leftWristUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftWrist().getUnitQuaternion(), pose2.getLeftWrist().getUnitQuaternion(), k );
-	//		UnitQuaternion rightClavicleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightClavicle().getUnitQuaternion(), pose2.getRightClavicle().getUnitQuaternion(), k );
-	//		UnitQuaternion rightShoulderUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightShoulder().getUnitQuaternion(), pose2.getRightShoulder().getUnitQuaternion(), k );
-	//		UnitQuaternion rightElbowUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightElbow().getUnitQuaternion(), pose2.getRightElbow().getUnitQuaternion(), k );
-	//		UnitQuaternion rightWristUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightWrist().getUnitQuaternion(), pose2.getRightWrist().getUnitQuaternion(), k );
-	//		UnitQuaternion pelvisUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getPelvis().getUnitQuaternion(), pose2.getPelvis().getUnitQuaternion(), k );
-	//		UnitQuaternion leftHipUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftHip().getUnitQuaternion(), pose2.getLeftHip().getUnitQuaternion(), k );
-	//		UnitQuaternion leftKneeUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftKnee().getUnitQuaternion(), pose2.getLeftKnee().getUnitQuaternion(), k );
-	//		UnitQuaternion leftAnkleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getLeftAnkle().getUnitQuaternion(), pose2.getLeftAnkle().getUnitQuaternion(), k );
-	//		UnitQuaternion rightHipUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightHip().getUnitQuaternion(), pose2.getRightHip().getUnitQuaternion(), k );
-	//		UnitQuaternion rightKneeUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightKnee().getUnitQuaternion(), pose2.getRightKnee().getUnitQuaternion(), k );
-	//		UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( pose1.getRightAnkle().getUnitQuaternion(), pose2.getRightAnkle().getUnitQuaternion(), k );
-	//		Pose out = new Pose.BuilderWithQuaternions()
-	//				.leftArm( leftClavicleUnitQuaternion, leftShoulderUnitQuaternion, leftElbowUnitQuaternion, leftWristUnitQuaternion )
-	//				.rightArm( rightClavicleUnitQuaternion, rightShoulderUnitQuaternion, rightElbowUnitQuaternion, rightWristUnitQuaternion )
-	//				.leftLeg( pelvisUnitQuaternion, leftHipUnitQuaternion, leftKneeUnitQuaternion, leftAnkleUnitQuaternion )
-	//				.rightLeg( pelvisUnitQuaternion, rightHipUnitQuaternion, rightKneeUnitQuaternion, rightAnkleUnitQuaternion )
-	//				.build();
-	//		return out;
-	//
-	//	}
-	public static Pose interpolatePoses( KeyFrameData key1, KeyFrameData key2, double targetTime ) {
-
-		//TODO "Easing is not implemented, yet.";
-
-		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
-		Pose pose1 = key1.getPose();
-		Pose pose2 = key2.getPose();
-		Map<JointId, Pair<Orientation, Orientation>> map = Collections.newInitializingIfAbsentHashMap();
-		for( JointKey key : pose1.getJointKeys() ) {
-			map.put( key.getJointId(), new Pair<Orientation, Orientation>( key.getOrientation(), null ) );
-		}
-		for( JointKey key : pose2.getJointKeys() ) {
-			Pair<Orientation, Orientation> pair = map.get( key.getJointId() );
-			if( pair != null ) {
-				assert pair.fst != null;
-				assert pair.snd == null;
-				map.put( key.getJointId(), new Pair<Orientation, Orientation>( pair.fst, key.getOrientation() ) );
-			} else {
-				map.put( key.getJointId(), new Pair<Orientation, Orientation>( null, key.getOrientation() ) );
-				throw new RuntimeException( "UNHANDLED: no policy yet set for how to handle animation with no initial orientation" );
-			}
-		}
-		pose1.getJointKeys();
-		double k = ( targetTime - key1.getEventTime() ) / ( key2.getEventTime() - key1.getEventTime() );
-		List<JointKey> builderList = Collections.newArrayList();
-		for( JointId joint : map.keySet() ) {
-			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).fst.createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).snd.createOrthogonalMatrix3x3() ), k );
-			builderList.add( new JointKey( rightAnkleUnitQuaternion.createOrthogonalMatrix3x3(), joint ) );
-		}
-		PoseBuilder builder = pose1.getBuilder();
-		for( JointKey key : builderList ) {
-			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
-		}
-		return builder.build();
-
+		this.poseForAnimator = pose;
 	}
 
 	public void setStyle( KeyFrameStyles style ) {
@@ -149,7 +69,7 @@ public class KeyFrameData {
 		return this.eventTime;
 	}
 
-	public Pose getPose() {
+	public Pose<?> getPose() {
 		return pose;
 	}
 
@@ -157,11 +77,19 @@ public class KeyFrameData {
 		return style;
 	}
 
-	public void setPose( Pose pose ) {
+	public void setPose( Pose<?> pose ) {
 		this.pose = pose;
 	}
 
 	public void setTime( double newTime ) {
 		this.eventTime = newTime;
+	}
+
+	public Pose<?> getPoseActual() {
+		return poseForAnimator;
+	}
+
+	public void setPoseActual( Pose<?> pose ) {
+		this.poseForAnimator = pose;
 	}
 }

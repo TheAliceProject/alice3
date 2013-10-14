@@ -43,7 +43,7 @@
 package org.alice.stageide.apis.org.lgna.story;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class ClassInfoUtilities {
 	private ClassInfoUtilities() {

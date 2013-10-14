@@ -93,11 +93,8 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			}
 		}
 		rv.getAwtComponent().setIcon( new TypeDropDownIcon() );
-		this.addValueListener( new ValueListener<org.lgna.project.ast.UserType>() {
-			public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
+		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserType>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserType> e ) {
 				rv.revalidateAndRepaint();
 			}
 		} );

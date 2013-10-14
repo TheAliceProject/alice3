@@ -175,4 +175,30 @@ public class ArrayUtilities {
 		}
 		return rv;
 	}
+
+	public static String toString( Object o ) {
+		if( o != null ) {
+			if( o instanceof Object[] ) {
+				return java.util.Arrays.toString( (Object[])o );
+			} else if( o instanceof byte[] ) {
+				return java.util.Arrays.toString( (byte[])o );
+			} else if( o instanceof short[] ) {
+				return java.util.Arrays.toString( (short[])o );
+			} else if( o instanceof char[] ) {
+				return java.util.Arrays.toString( (char[])o );
+			} else if( o instanceof int[] ) {
+				return java.util.Arrays.toString( (int[])o );
+			} else if( o instanceof long[] ) {
+				return java.util.Arrays.toString( (long[])o );
+			} else if( o instanceof float[] ) {
+				return java.util.Arrays.toString( (float[])o );
+			} else if( o instanceof double[] ) {
+				return java.util.Arrays.toString( (double[])o );
+			} else {
+				return o.toString();
+			}
+		} else {
+			return null;
+		}
+	}
 }

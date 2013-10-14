@@ -139,10 +139,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				boolean isSelected = buttonModel.isSelected();
 				if( isTextVariable() ) {
-					this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					this.putValue( NAME, getTextFor( isSelected ) );
 				}
 				if( isIconVariable() ) {
-					this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					this.putValue( SMALL_ICON, getIconFor( isSelected ) );
 				}
 			}
 		};
@@ -528,7 +530,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return this.menuModel;
 	}
 
-	private final static class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
+	private static final class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
 		public InternalRadioButton( Operation operation ) {
 			super( operation );
 		}
@@ -539,24 +541,32 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 	}
 
-	private final class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
-		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final InternalRadioButton trueButton;
-		private final InternalRadioButton falseButton;
-		private final int axis;
-		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
+	private static final class InternalToggleButton extends org.lgna.croquet.components.OperationButton<javax.swing.JToggleButton, Operation> {
+		public InternalToggleButton( Operation operation ) {
+			super( operation );
+		}
 
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				handleChanged( nextValue );
+		@Override
+		protected javax.swing.JToggleButton createAwtComponent() {
+			return new javax.swing.JToggleButton();
+		}
+	}
+
+	private abstract class AbstractToggleButtonsPanel extends org.lgna.croquet.components.Panel {
+		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+		private final org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> trueButton;
+		private final org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton;
+		private final int axis;
+		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
+				handleChanged( e.getNextValue() );
 			}
 		};
 
-		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
+		public AbstractToggleButtonsPanel( boolean isVertical, boolean isTrueFirst, org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> trueButton, org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton ) {
 			this.axis = isVertical ? javax.swing.BoxLayout.PAGE_AXIS : javax.swing.BoxLayout.LINE_AXIS;
-			this.trueButton = new InternalRadioButton( getSetToTrueOperation() );
-			this.falseButton = new InternalRadioButton( getSetToFalseOperation() );
+			this.trueButton = trueButton;
+			this.falseButton = falseButton;
 			if( isTrueFirst ) {
 				this.internalAddComponent( this.trueButton );
 				this.internalAddComponent( this.falseButton );
@@ -574,20 +584,32 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 
 		private void handleChanged( Boolean nextValue ) {
-			InternalRadioButton selected = nextValue ? this.trueButton : this.falseButton;
+			org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> selected = nextValue ? this.trueButton : this.falseButton;
 			this.buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
 		}
 
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			BooleanState.this.addAndInvokeValueListener( this.valueListener );
+			BooleanState.this.addAndInvokeNewSchoolValueListener( this.valueListener );
 		}
 
 		@Override
 		protected void handleUndisplayable() {
-			BooleanState.this.removeValueListener( this.valueListener );
+			BooleanState.this.removeNewSchoolValueListener( this.valueListener );
 			super.handleUndisplayable();
+		}
+	}
+
+	private final class RadioButtonsPanel extends AbstractToggleButtonsPanel {
+		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
+			super( isVertical, isTrueFirst, new InternalRadioButton( getSetToTrueOperation() ), new InternalRadioButton( getSetToFalseOperation() ) );
+		}
+	}
+
+	private final class ToggleButtonsPanel extends AbstractToggleButtonsPanel {
+		public ToggleButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
+			super( isVertical, isTrueFirst, new InternalToggleButton( getSetToTrueOperation() ), new InternalToggleButton( getSetToFalseOperation() ) );
 		}
 	}
 
@@ -607,4 +629,19 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return this.createHorizontalRadioButtons( true );
 	}
 
+	public org.lgna.croquet.components.Panel createVerticalToggleButtons( boolean isTrueFirst ) {
+		return new ToggleButtonsPanel( true, isTrueFirst );
+	}
+
+	public org.lgna.croquet.components.Panel createHorizontalToggleButtons( boolean isTrueFirst ) {
+		return new ToggleButtonsPanel( false, isTrueFirst );
+	}
+
+	public org.lgna.croquet.components.Panel createVerticalToggleButtons() {
+		return this.createVerticalToggleButtons( true );
+	}
+
+	public org.lgna.croquet.components.Panel createHorizontalToggleButtons() {
+		return this.createHorizontalToggleButtons( true );
+	}
 }

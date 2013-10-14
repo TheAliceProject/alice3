@@ -62,9 +62,9 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	private final org.lgna.project.ast.NamedUserType srcType;
 	private final org.lgna.project.ast.NamedUserType dstType;
 
-	private final AddProceduresComposite addProceduresComposite;
-	private final AddFunctionsComposite addFunctionsComposite;
-	private final AddFieldsComposite addFieldsComposite;
+	private final ProceduresToolPalette addProceduresComposite;
+	private final FunctionsToolPalette addFunctionsComposite;
+	private final FieldsToolPalette addFieldsComposite;
 
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( this.createKey( "actionItemsRemainingError" ) );
 
@@ -109,17 +109,17 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 					}
 				}
 			}
-			this.addProceduresComposite = this.registerSubComposite( new AddProceduresComposite( this.uriForDescriptionPurposesOnly, projectProcedures ) );
-			this.addFunctionsComposite = this.registerSubComposite( new AddFunctionsComposite( this.uriForDescriptionPurposesOnly, projectFunctions ) );
+			this.addProceduresComposite = this.registerSubComposite( new ProceduresToolPalette( this.uriForDescriptionPurposesOnly, projectProcedures ) );
+			this.addFunctionsComposite = this.registerSubComposite( new FunctionsToolPalette( this.uriForDescriptionPurposesOnly, projectFunctions ) );
 
 			java.util.List<org.lgna.project.ast.UserField> dstFields = this.dstType.getDeclaredFields();
 			java.util.List<org.lgna.project.ast.UserField> projectFields = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( dstFields.size() );
 			projectFields.addAll( dstFields );
-			this.addFieldsComposite = this.registerSubComposite( new AddFieldsComposite( this.uriForDescriptionPurposesOnly, projectFields ) );
+			this.addFieldsComposite = this.registerSubComposite( new FieldsToolPalette( this.uriForDescriptionPurposesOnly, projectFields ) );
 
 			for( org.lgna.project.ast.UserMethod importMethod : this.srcType.methods ) {
 				if( isManagementLevelAppropriate( importMethod ) ) {
-					AddMethodsComposite<?> addMethodsComposite = importMethod.isProcedure() ? this.addProceduresComposite : this.addFunctionsComposite;
+					MethodsToolPalette<?> addMethodsComposite = importMethod.isProcedure() ? this.addProceduresComposite : this.addFunctionsComposite;
 					org.lgna.project.ast.UserMethod projectMethod = MergeUtilities.findMethodWithMatchingName( importMethod, dstType );
 					if( projectMethod != null ) {
 						if( MergeUtilities.isEquivalent( importMethod, projectMethod ) ) {
@@ -171,15 +171,15 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		return null;
 	}
 
-	public AddProceduresComposite getAddProceduresComposite() {
+	public ProceduresToolPalette getAddProceduresComposite() {
 		return this.addProceduresComposite;
 	}
 
-	public AddFunctionsComposite getAddFunctionsComposite() {
+	public FunctionsToolPalette getAddFunctionsComposite() {
 		return this.addFunctionsComposite;
 	}
 
-	public AddFieldsComposite getAddFieldsComposite() {
+	public FieldsToolPalette getAddFieldsComposite() {
 		return this.addFieldsComposite;
 	}
 
@@ -217,7 +217,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		return org.lgna.project.ast.AstUtilities.createCopy( original, this.importedRootType );
 	}
 
-	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, AddMembersComposite<?, M> addMembersComposite ) {
+	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 			if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
 				membersToAdd.add( this.createImportCopy( importOnly.getImportHub().getMember() ) );
@@ -259,7 +259,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 			java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( AddMethodsComposite<?> addMethodsComposite : new AddMethodsComposite[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
+			for( MethodsToolPalette<?> addMethodsComposite : new MethodsToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				addMembersAndRenames( methodsToAdd, methodsToRemove, renames, addMethodsComposite );
 			}
 
@@ -272,27 +272,28 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		}
 	}
 
-	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( AddMembersComposite<?, M> addMembersComposite ) {
+	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( MembersToolPalette<?, M> addMembersComposite ) {
 		if( this.dstType != null ) {
+			boolean isIncludingAll = getOwner().getPreviewPage().getIsIncludingAllState().getValue();
 			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
-				if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || importOnly.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( importOnly.getImportHub() );
 				}
 			}
 
 			for( DifferentSignature<M> differentSignature : addMembersComposite.getDifferentSignatures() ) {
-				if( differentSignature.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentSignature.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentSignature.getImportHub() );
 				}
 				hubs.add( differentSignature.getProjectHub() );
 			}
 
 			for( DifferentImplementation<M> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
-				if( differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentImplementation.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentImplementation.getImportHub() );
 				}
-				if( differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
+				if( isIncludingAll || differentImplementation.getProjectHub().getIsDesiredState().getValue() ) {
 					hubs.add( differentImplementation.getProjectHub() );
 				}
 			}
@@ -330,7 +331,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		//
 
 		StringBuffer sb = new StringBuffer();
-		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
+		for( MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
 			addMembersComposite.appendStatusPreRejectorCheck( sb, step );
 		}
 		if( sb.length() > 0 ) {
@@ -358,7 +359,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	private void applyAllDifferentImplementations( boolean isAccept ) {
-		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
+		for( MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
 			for( DifferentImplementation<?> differentImplementation : addMembersComposite.getDifferentImplementations() ) {
 				differentImplementation.getImportHub().getIsDesiredState().setValueTransactionlessly( isAccept );
 				differentImplementation.getProjectHub().getIsDesiredState().setValueTransactionlessly( isAccept == false );
@@ -375,7 +376,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	public boolean isContainingDifferentImplementations() {
-		for( AddMembersComposite<?, ?> addMembersComposite : new AddMembersComposite[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
+		for( MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] { this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite() } ) {
 			if( addMembersComposite.getDifferentImplementations().size() > 0 ) {
 				return true;
 			}

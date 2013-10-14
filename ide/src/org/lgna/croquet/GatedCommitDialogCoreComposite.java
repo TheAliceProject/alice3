@@ -162,7 +162,8 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		if( event != null ) {
 			org.lgna.croquet.history.TransactionNode<?> node = event.getNode();
 			if( node != null ) {
-				s = node.getFirstStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
+				//todo:
+				s = node.getFirstStepOfModelAssignableTo( OwnedByCompositeOperation.class, org.lgna.croquet.history.CompletionStep.class );
 			}
 		}
 		this.updateStatus( s );
@@ -179,6 +180,10 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.removeListener( this.listener );
 		super.handlePostHideDialog( completionStep );
+	}
+
+	protected void cancel( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		completionStep.cancel();
 	}
 
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {

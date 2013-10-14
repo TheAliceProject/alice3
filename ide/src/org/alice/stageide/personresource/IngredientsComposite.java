@@ -169,11 +169,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite> tabListener = new org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite>() {
-		public void changing( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.croquet.SimpleTabComposite> tabListener = new org.lgna.croquet.event.ValueListener<org.lgna.croquet.SimpleTabComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.croquet.SimpleTabComposite> e ) {
 			updateCameraPointOfView();
 			updateLastActiveOutfitTab();
 		}
@@ -375,7 +372,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		if( activeCount == 0 ) {
 			this.addListeners();
 
-			this.bodyHeadHairTabState.addAndInvokeValueListener( this.tabListener );
+			this.bodyHeadHairTabState.addAndInvokeNewSchoolValueListener( this.tabListener );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.activeCount );
 		}
@@ -386,7 +383,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	public void handlePostDeactivation() {
 		this.activeCount--;
 		if( activeCount == 0 ) {
-			this.bodyHeadHairTabState.removeValueListener( this.tabListener );
+			this.bodyHeadHairTabState.removeNewSchoolValueListener( this.tabListener );
 			this.removeListeners();
 		}
 		if( activeCount != 0 ) {

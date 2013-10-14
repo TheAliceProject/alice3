@@ -52,7 +52,7 @@ import test.ik.IkTestApplication;
  * @author Matt May
  */
 public class IkPoser extends SProgram {
-	private static final boolean SHOULD_I_ANIMATE = false;
+	private static final boolean SHOULD_I_ANIMATE = true;
 
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
@@ -82,12 +82,12 @@ public class IkPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		AbstractPoserInputDialogComposite composite;
+		AbstractPoserOrAnimatorInputDialogComposite composite;
 
 		if( SHOULD_I_ANIMATE ) {
-			composite = new AnimatorInputDialogComposite( type );
+			composite = new BipedAnimatorInputDialog( type );
 		} else {
-			composite = new PoserInputDialogComposite( type );
+			composite = new BipedPoserInputDialog( type );
 		}
 		app.getFrame().setMainComposite( composite );
 

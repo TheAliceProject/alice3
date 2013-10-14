@@ -52,7 +52,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		private Throwable prevThrowable = null;
 
 		public RenderPane() {
-			super( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), null );
+			super( GlDrawableUtilities.createGlCapabilities_PixelBuffer(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), null );
 			//			edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 1.5f );
 		}
 

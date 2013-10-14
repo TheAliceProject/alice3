@@ -42,18 +42,11 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.List;
-
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.views.TimeLineView;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.ik.poser.pose.Pose;
 
 /**
  * @author Matt May
@@ -64,32 +57,6 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 	private boolean isTimeMutable = true;
 	private final TimeLine timeLine = new TimeLine();
 	private KeyFrameData selected = null;
-	private final ListSelectionState<KeyFrameData> listState =
-			createListSelectionState( createKey( "DO NOT TRANSLATE" ),
-					new RefreshableListData<KeyFrameData>( new ItemCodec<KeyFrameData>() {
-
-						public Class<KeyFrameData> getValueClass() {
-							return KeyFrameData.class;
-						}
-
-						public KeyFrameData decodeValue( BinaryDecoder binaryDecoder ) {
-							throw new RuntimeException( "DO THIS YOURSELF" );
-						}
-
-						public void encodeValue( BinaryEncoder binaryEncoder, KeyFrameData value ) {
-							throw new RuntimeException( "DO THIS YOURSELF" );
-						}
-
-						public void appendRepresentation( StringBuilder sb, KeyFrameData value ) {
-							sb.append( value );
-						}
-					} ) {
-
-						@Override
-						protected List<KeyFrameData> createValues() {
-							return timeLine.getKeyFrames();
-						}
-					}, -1 );
 
 	public TimeLineComposite() {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
@@ -135,12 +102,11 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 		return timeLine;
 	}
 
-	public ListSelectionState<KeyFrameData> getListState() {
-		return this.listState;
-	}
-
 	public KeyFrameData getSelectedKeyFrame() {
 		return selected;
 	}
 
+	public void setInitialPose( Pose<?> pose ) {
+		this.timeLine.setInitialPose( pose );
+	}
 }

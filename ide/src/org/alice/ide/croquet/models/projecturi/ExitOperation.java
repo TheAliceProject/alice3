@@ -55,13 +55,12 @@ public final class ExitOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	private ExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "40b55a1c-d499-4937-a4b8-8499c4cd1a20" ) );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "0079ff1b-f22f-4888-a30d-5594125435ab" ) );
 	}
 
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		step.finish();
-		System.exit( 0 );
+		//todo: create substep?
+		org.alice.ide.IDE.getActiveInstance().handleQuit( trigger );
 	}
 }

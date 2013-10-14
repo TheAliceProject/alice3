@@ -42,6 +42,7 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
+
 /**
  * @author Dennis Cosgrove
  */

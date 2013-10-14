@@ -42,6 +42,8 @@
  */
 package examples.math.pictureplane;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -89,9 +91,10 @@ public abstract class PicturePlaneInteraction {
 		}
 	};
 
-	public PicturePlaneInteraction( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	public PicturePlaneInteraction( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
-		this.sgCamera = this.onscreenLookingGlass.getCameraAt( 0 ); //todo
+		//		this.sgCamera = this.onscreenLookingGlass.getCameraAt( 0 ); //todo
+		this.sgCamera = camera;
 	}
 
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {

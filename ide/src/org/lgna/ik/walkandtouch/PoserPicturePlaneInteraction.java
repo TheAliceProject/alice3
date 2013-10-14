@@ -47,6 +47,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
@@ -56,7 +57,9 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.lookingglass.LookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -68,23 +71,28 @@ import examples.math.pictureplane.PicturePlaneInteraction;
 public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private static final double MIN_SELECTION_DISTANCE = 50;
-	private PoserScene scene;
-	private CameraImp camera;
-	private List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final AbstractPoserScene scene;
+	private final CameraImp camera;
+	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
 	private JointSelectionSphere anchor;
 
-	public PoserPicturePlaneInteraction( PoserScene scene, OnscreenLookingGlass lookingGlass ) {
-		super( lookingGlass );
+	public PoserPicturePlaneInteraction( AbstractPoserScene scene, OnscreenLookingGlass lookingGlass ) {
+		super( lookingGlass, ( (CameraImp)( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
 		this.scene = scene;
-		this.camera = ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera();
+		SceneImp sceneImp = (SceneImp)ImplementationAccessor.getImplementation( scene );
+		this.camera = sceneImp.findFirstCamera();
 	}
 
 	@Override
 	protected Transformable pick( MouseEvent e ) {
+		ManipulationHandle3D handle = checkIfHandleSelected( e );
+		if( handle != null ) {
+			return handle;
+		}
 		ArrayList<Point> sphereLocations = Collections.newArrayList();
 		double minDist = MIN_SELECTION_DISTANCE;
-		JointSelectionSphere[] arr = scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
 		JointSelectionSphere selected = null;
 		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
 		for( JointSelectionSphere sphere : arr ) {
@@ -111,6 +119,21 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		} else {
 			return null;
 		}
+	}
+
+	private ManipulationHandle3D checkIfHandleSelected( MouseEvent e ) {
+		SceneImp implementation = ImplementationAccessor.getImplementation( scene );
+		LookingGlass lg = implementation.getProgram().getOnscreenLookingGlass();
+		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+		if( ( pickResult != null ) && ( pickResult.getVisual() != null ) ) {
+			Composite composite = pickResult.getVisual().getParent();
+			if( composite != null ) {
+				if( composite.getParent() instanceof ManipulationHandle3D ) {
+					return (ManipulationHandle3D)composite.getParent();
+				}
+			}
+		}
+		return null;
 	}
 
 	public void addListener( PoserSphereManipulatorListener sphereDragListener ) {
@@ -154,8 +177,13 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	@Override
 	protected void handleMouseDragged( MouseEvent e ) {
-		super.handleMouseDragged( e );
-		fireMousePressed( e );
+		if( selected != null ) {
+			super.handleMouseDragged( e );
+			fireMousePressed( e );
+		}
+	}
+
+	protected void handleStateChange() {
 	}
 
 }

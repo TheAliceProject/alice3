@@ -42,11 +42,17 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
+import org.lgna.ik.poser.AbstractAnimatorInputDialogComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProceduresToolPaletteCoreView extends MethodsToolPaletteCoreView {
 	public ProceduresToolPaletteCoreView( org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite composite ) {
 		super( composite );
+		AbstractAnimatorInputDialogComposite<?> dialog = AbstractAnimatorInputDialogComposite.getDialogForUserType( composite.getType(), null );
+		if( dialog != null ) {
+			this.addComponent( dialog.getOperation().createButton() );
+		}
 	}
 }

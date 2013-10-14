@@ -45,7 +45,7 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposite {
+public final class CodeToolBarComposite extends org.alice.ide.toolbar.croquet.IdeToolBar {
 	private static class SingletonHolder {
 		private static CodeToolBarComposite instance = new CodeToolBarComposite();
 	}

@@ -90,6 +90,8 @@ public abstract class SJointedModel extends SModel {
 		this.getImplementation().setNewResource( resource );
 	}
 
+	//	public abstract void setPose( org.lgna.ik.poser.pose.Pose<?> pose, SetPose.Detail... details );
+
 	//TODO: Get this to work
 	//	@MethodTemplate()
 	//	public void sayOutLoud( String text, org.alice.flite.VoiceType voice, SayOutLoud.Detail... details ) {

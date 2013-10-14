@@ -42,166 +42,71 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import org.alice.ide.IDE;
-import org.lgna.croquet.OperationInputDialogCoreComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.components.SplitPane;
-import org.lgna.croquet.components.View;
-import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
-import org.lgna.ik.poser.pose.Pose;
-import org.lgna.ik.walkandtouch.PoserScene;
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+import org.alice.ide.name.validators.FieldNameValidator;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.Duration;
-import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
-import org.lgna.story.SCamera;
-import org.lgna.story.StraightenOutJoints;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.PointOfViewEvent;
-import org.lgna.story.resources.JointId;
-
-import test.ik.croquet.SceneComposite;
-import edu.cmu.cs.dennisc.java.util.Collections;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SQuadruped;
 
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserInputDialogComposite<T extends AbstractPoserControlComposite> extends OperationInputDialogCoreComposite<View> {
+public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorInputDialogComposite<PoserControlComposite, M> {
 
-	private IkPoser poser;
+	private FieldNameValidator validator;
 
-	private final SCamera camera = new SCamera();
-	private final SBiped biped;
-	private final PoserScene scene;
-	private UserType<?> userType;
-	private T controlComposite;
-	private List<JointId> usedJoints = Collections.newArrayList();
-
-	private final SplitComposite splitComposite;
-
-	private SceneComposite sceneComposite;
-
-	private boolean isInitialized = false;
-
-	//note: this relies on very specific ordering at the moment
-	protected abstract T createControlComposite();
-
-	protected AbstractPoserInputDialogComposite( NamedUserType userType, UUID uuid ) {
-		super( uuid, IDE.PROJECT_GROUP );
-		this.biped = deriveBipedFromUserType( userType );
-		this.scene = new PoserScene( camera, biped );
-		this.userType = userType;
-		this.poser = new IkPoser();
-		controlComposite = this.createControlComposite();
-		sceneComposite = new SceneComposite();
-		sceneComposite.getView().setMinimumPreferredHeight( 400 );
-		sceneComposite.getView().setMinimumPreferredWidth( ( 400 * 16 ) / 9 );
-		this.splitComposite = createHorizontalSplitComposite( controlComposite, sceneComposite, 0.25 );
-		scene.addPointOfViewChangeListener( transformationListener, scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
+	public AbstractPoserInputDialogComposite( NamedUserType valueType, UUID uuid ) {
+		super( valueType, uuid );
 	}
 
-	private PointOfViewChangeListener transformationListener = new PointOfViewChangeListener() {
+	@Override
+	protected PoserControlComposite createControlComposite() {
+		return new PoserControlComposite( this );
+	}
 
-		@Override
-		public void pointOfViewChanged( PointOfViewEvent e ) {
-			if( isInitialized ) {
-				JointId jointId = ( (JointSelectionSphere)e.getEntity() ).getJoint().getJointId();
-				if( !usedJoints.contains( jointId ) ) {
-					usedJoints.add( jointId );
-				}
+	@Override
+	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
+		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
+		UserType<?> declaringType = this.getDeclaringType();
+		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		if( validator != null ) {
+			//pass
+		} else {
+			this.validator = new FieldNameValidator( getDeclaringType() );
+		}
+		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+		String candidate = getControlComposite().getNameState().getValue();
+		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+		if( explanation != null ) {
+			errorStatus.setText( explanation );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
+	}
+
+	public static AbstractPoserInputDialogComposite<?> getDialogForUserType( UserType<?> declaringType ) {
+		if( ( declaringType instanceof NamedUserType ) ) {
+			NamedUserType namedUserType = (NamedUserType)declaringType;
+			if( namedUserType.isAssignableTo( SBiped.class ) ) {
+				return new BipedPoserInputDialog( namedUserType );
+			} else if( namedUserType.isAssignableTo( SQuadruped.class ) ) {
+				return new QuadrupedPoserInputDialog( namedUserType );
+			} else if( namedUserType.isAssignableTo( SFlyer.class ) ) {
+				return new FlyerPoserInputDialog( namedUserType );
 			}
 		}
-	};
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		sceneComposite.getView().initializeInAwtContainer( poser );
-		initializeTest();
-	}
-
-	private SBiped deriveBipedFromUserType( NamedUserType type ) {
-
-		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-
-		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
-		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
-
-		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
-		final int N = userConstructor.requiredParameters.size();
-		Object[] arguments = new Object[ N ];
-		switch( N ) {
-		case 0:
-			break;
-		case 1:
-			arguments[ 0 ] = bipedResource;
-			break;
-		case 2:
-			assert false : N;
-		}
-		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
-		return userInstance.getJavaInstance( SBiped.class );
-	}
-
-	public PoserScene getScene() {
-		return this.scene;
-	}
-
-	public SBiped getBiped() {
-		return this.biped;
-	}
-
-	public void initializeTest() {
-		if( !isInitialized ) {
-			this.poser.setActiveScene( this.scene );
-			this.camera.move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
-			this.camera.move( MoveDirection.UP, 1, new Duration( 0 ) );
-			this.biped.turnToFace( camera, new Duration( 0 ) );
-			scene.initDragAdapter();
-			isInitialized = true;
-		}
-	}
-
-	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
-		return scene.getJointSelectionSheres();
-	}
-
-	public void setAdapter( PoserControllerAdapter adapter ) {
-		scene.setAdapter( adapter );
-	}
-
-	public Pose getPose() {
-		return org.lgna.ik.poser.pose.Pose.createPoseFromT( biped, usedJoints.toArray( new JointId[ 0 ] ) );
-	}
-
-	public void setPose( Pose pose ) {
-		if( pose != null ) {
-			pose.applyToJointedModel( biped );
-		} else {
-			biped.straightenOutJoints( StraightenOutJoints.duration( 0 ) );
-		}
-	}
-
-	public UserType<?> getDeclaringType() {
-		return userType;
-	}
-
-	public IkPoser getProgram() {
-		return this.poser;
-	}
-
-	@Override
-	protected View createView() {
-		SplitPane view = splitComposite.getView();
-		return view;
-	}
-
-	protected T getControlComposite() {
-		return this.controlComposite;
+		return null;
 	}
 }

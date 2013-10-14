@@ -138,12 +138,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	public ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void changing( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
-			AbstractDragAdapter.this.setInteractionState( nextValue );
+	protected final org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.HandleStyle> e ) {
+			setInteractionState( e.getNextValue() );
 		}
 	};
 
@@ -199,6 +196,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
+	private boolean handleVisibility;
 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
@@ -394,8 +392,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	public void setHandlVisibility( boolean isVisible )
 	{
+		this.handleVisibility = isVisible;
 		if( this.handleManager != null ) {
-			this.handleManager.setHandlesShowing( isVisible );
+			this.handleManager.setHandlesShowing( handleVisibility );
 		}
 	}
 
@@ -469,7 +468,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
 			if( HandleManager.isSelectable( sgTransformable ) )
 			{
-				this.handleManager.setHandlesShowing( true );
+				this.handleManager.setHandlesShowing( handleVisibility );
 				this.handleManager.setSelectedObject( sgTransformable );
 			}
 			else

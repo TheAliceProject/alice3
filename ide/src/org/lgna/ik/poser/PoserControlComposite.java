@@ -60,7 +60,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 
 	StringState nameState = createStringState( createKey( "poseName" ) );
 
-	public PoserControlComposite( AbstractPoserInputDialogComposite parent ) {
+	public PoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent ) {
 		super( parent,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 	}

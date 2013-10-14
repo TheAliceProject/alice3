@@ -71,7 +71,7 @@ public class CheckIfAnimationCrawler implements Crawler {
 	public void visit( Crawlable crawlable ) {
 		if( crawlable instanceof MethodInvocation ) {
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( !methodInv.method.getValue().equals( AnimatorInputDialogComposite.SET_POSE ) ) {
+			if( !methodInv.method.getValue().equals( AbstractAnimatorInputDialogComposite.SET_POSE ) ) {
 				containsNotSetPose = false;
 			} else {
 				containsSetPose = true;

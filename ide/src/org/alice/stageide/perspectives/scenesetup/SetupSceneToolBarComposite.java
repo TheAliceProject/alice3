@@ -45,7 +45,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposite {
+public class SetupSceneToolBarComposite extends org.alice.ide.toolbar.croquet.IdeToolBar {
 	private static class SingletonHolder {
 		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
 	}

@@ -42,18 +42,11 @@
  */
 package org.lgna.ik.poser.pose;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lgna.ik.poser.pose.builder.BipedPoseBuilder;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
-import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -61,7 +54,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class BipedPose extends Pose<SBiped> {
 
 	public BipedPose( JointKey... pairs ) {
-		super( SBiped.class, pairs );
+		super( SBiped.class, BipedResource.class, pairs );
 	}
 
 	@Override
@@ -70,37 +63,7 @@ public class BipedPose extends Pose<SBiped> {
 	}
 
 	@Override
-	public JointId[] getDefaultJoints() {
-		ArrayList<JointId> rv = Collections.newArrayList();
-		JointId[] roots = BipedResource.JOINT_ID_ROOTS;
-		for( JointId id : roots ) {
-			rv.addAll( tunnel( id ) );
-		}
-		return rv.toArray( new JointId[ 0 ] );
-	}
-
-	private ArrayList<JointId> tunnel( JointId id ) {
-		ArrayList<JointId> rv = Collections.newArrayList( id );
-		for( JointId child : id.getChildren( BipedResource.class ) ) {
-			rv.addAll( tunnel( child ) );
-		}
-		return rv;
-	}
-
-	public static BipedPose createPoseFromBiped( SBiped model, JointId[] arr ) {
-		List<JointKey> list = Collections.newArrayList();
-		for( JointId id : arr ) {
-			JointImp implementation = ImplementationAccessor.getImplementation( model.getJoint( id ) );
-			list.add( new JointKey( implementation.getLocalOrientation(), id ) );
-		}
-		BipedPoseBuilder builder = new BipedPoseBuilder();
-		for( JointKey key : list ) {
-			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
-		}
-		return builder.build();
-	}
-
-	public static BipedPose createPoseFromBiped( SBiped model ) {
-		return createPoseFromBiped( model, new BipedPose().getDefaultJoints() );
+	protected JointId[] getJointIdRoots() {
+		return BipedResource.JOINT_ID_ROOTS;
 	}
 }
