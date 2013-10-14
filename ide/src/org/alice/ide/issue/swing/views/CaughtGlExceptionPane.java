@@ -90,7 +90,7 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 	@Override
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		rv = super.addAttachments( rv );
-		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
+		rv.addAttachment( new org.alice.ide.issue.GraphicsPropertiesAttachment() );
 		return rv;
 	}
 }

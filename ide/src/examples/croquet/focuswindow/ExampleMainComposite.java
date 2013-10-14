@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.controls;
+package examples.croquet.focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelControl extends javax.swing.JSlider {
-	public VolumeLevelControl() {
-		this.setValue( 100 );
-		this.setMaximum( 200 );
+public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( this.createKey( "questionState" ), true );
 
-		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labels.put( 0, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Silent (0.0)" ) );
-		labels.put( 100, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Normal (1.0)" ) );
-		labels.put( 200, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Louder (2.0)" ) );
-		this.setLabelTable( labels );
-		this.setPaintLabels( true );
-		this.setOrientation( javax.swing.SwingConstants.VERTICAL );
-
-		this.setSnapToTicks( true );
-		this.setMinorTickSpacing( 10 );
-		this.setMajorTickSpacing( 100 );
-		this.setPaintTicks( true );
+	public ExampleMainComposite() {
+		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
 	}
 
-	public double getVolumeLevel() {
-		return this.getValue() / 100.0;
+	public ExampleFocusWindowComposite getFocusWindow() {
+		return this.focusWindow;
 	}
 
-	public void setVolumeLevel( double volumeLevel ) {
-		this.setValue( (int)( ( volumeLevel * 100 ) + 0.5 ) );
+	public org.lgna.croquet.BooleanState getQuestionState() {
+		return this.questionState;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new examples.croquet.focuswindow.views.ExampleMainPane( this );
+	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		app.getFrame().setMainComposite( new ExampleMainComposite() );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
 	}
 }

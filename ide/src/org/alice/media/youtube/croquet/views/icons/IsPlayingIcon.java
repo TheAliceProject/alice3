@@ -103,9 +103,7 @@ public class IsPlayingIcon implements Icon {
 					g2.draw( path );
 				}
 			} finally {
-				gc.popPaint();
-				gc.popAntialiasing();
-				gc.popGraphics();
+				gc.popAll();
 			}
 		}
 	}

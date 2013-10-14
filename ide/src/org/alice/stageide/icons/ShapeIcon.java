@@ -76,8 +76,7 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 			this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
 			g2.translate( -xOffset, -yOffset );
 		} finally {
-			gc.popAntialiasing();
-			gc.popGraphics();
+			gc.popAll();
 		}
 	}
 }

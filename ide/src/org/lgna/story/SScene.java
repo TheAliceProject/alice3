@@ -78,6 +78,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -91,6 +92,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -102,6 +104,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -113,6 +116,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -125,6 +129,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFogDensity( Number density, SetFogDensity.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( density, 0 );
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -132,12 +137,14 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addMouseClickOnScreenListener( org.lgna.story.event.MouseClickOnScreenListener listener, AddMouseClickOnScreenListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addMouseClickOnObjectListener( org.lgna.story.event.MouseClickOnObjectListener listener, AddMouseClickOnObjectListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 
@@ -151,12 +158,15 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addTimeListener( org.lgna.story.event.TimeListener timeListener, Number frequency, AddTimeListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( timeListener, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( frequency, 1 );
 		this.getImplementation().getEventManager().addTimerEventListener( timeListener, frequency, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( sceneActivationListener, 0 );
 		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
 
@@ -164,18 +174,21 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyListener, 0 );
 		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addArrowKeyPressListener( org.lgna.story.event.ArrowKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyPressListener, 0 );
 		this.getImplementation().getEventManager().addArrowKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addNumberKeyPressListener( org.lgna.story.event.NumberKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyPressListener, 0 );
 		this.getImplementation().getEventManager().addNumberKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 

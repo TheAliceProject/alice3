@@ -96,8 +96,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
 						g.drawRoundRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8 );
 					} finally {
-						gc.popAntialiasing();
-						gc.popGraphics();
+						gc.popAll();
 					}
 				}
 			};

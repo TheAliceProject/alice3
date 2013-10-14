@@ -64,6 +64,7 @@ public abstract class SJointedModel extends SModel {
 
 	@MethodTemplate( )
 	public void say( String text, Say.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
 		this.getImplementation().say( text, Duration.getValue( details ),
 				TextFont.getValue( details, new Font( new java.awt.Font( null, java.awt.Font.PLAIN, 16 ) ) ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
@@ -73,6 +74,7 @@ public abstract class SJointedModel extends SModel {
 
 	@MethodTemplate( )
 	public void think( String text, Think.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
 		this.getImplementation().think( text, Duration.getValue( details ),
 				TextFont.getValue( details, new Font( new java.awt.Font( null, java.awt.Font.PLAIN, 16 ) ) ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
@@ -87,6 +89,7 @@ public abstract class SJointedModel extends SModel {
 
 	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	protected void setJointedModelResource( org.lgna.story.resources.JointedModelResource resource ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( resource, 0 );
 		this.getImplementation().setNewResource( resource );
 	}
 

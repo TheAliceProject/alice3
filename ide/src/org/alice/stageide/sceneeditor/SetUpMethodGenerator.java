@@ -204,12 +204,16 @@ public class SetUpMethodGenerator {
 		return positionStatement;
 	}
 
-	public static org.lgna.project.ast.Statement createSetterStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
-		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(
+	public static org.lgna.project.ast.MethodInvocation createSetterInvocation( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
+		return org.lgna.project.ast.AstUtilities.createMethodInvocation(
 				SetUpMethodGenerator.createInstanceExpression( isThis, field ),
 				setter,
 				expression
 				);
+	}
+
+	public static org.lgna.project.ast.ExpressionStatement createSetterStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.ExpressionStatement( createSetterInvocation( isThis, field, setter, expression ) );
 	}
 
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform )

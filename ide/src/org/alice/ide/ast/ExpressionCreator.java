@@ -96,7 +96,8 @@ public abstract class ExpressionCreator {
 		}
 	}
 
-	protected final org.lgna.project.ast.Expression createEnumExpression( Enum<?> value ) {
+	//todo:
+	public final org.lgna.project.ast.Expression createEnumExpression( Enum<?> value ) {
 		if( value != null ) {
 			return this.createPublicStaticFieldAccess( edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( value ) );
 			//			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
