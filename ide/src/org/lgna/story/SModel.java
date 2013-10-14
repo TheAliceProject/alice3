@@ -79,7 +79,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( opacity, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
