@@ -54,7 +54,9 @@ import org.lgna.croquet.components.View;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.walkandtouch.AbstractPoserScene;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserParameter;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Duration;
 import org.lgna.story.MoveDirection;
@@ -80,7 +82,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	private final AbstractPoserScene scene;
 	private UserType<?> userType;
 	private T controlComposite;
-	private List<JointId> usedJoints = Collections.newArrayList();
+	private final List<JointId> usedJoints = Collections.newArrayList();
 
 	private final SplitComposite splitComposite;
 
@@ -102,21 +104,15 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		sceneComposite.getView().setMinimumPreferredHeight( 400 );
 		sceneComposite.getView().setMinimumPreferredWidth( ( 400 * 16 ) / 9 );
 		this.splitComposite = createHorizontalSplitComposite( controlComposite, sceneComposite, 0.25 );
-		assert scene != null;
-		assert scene.getJointSelectionSheres() != null;
-		assert transformationListener != null;
-		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 	}
 
 	private PointOfViewChangeListener transformationListener = new PointOfViewChangeListener() {
 
 		@Override
 		public void pointOfViewChanged( PointOfViewEvent e ) {
-			if( isInitialized ) {
-				JointId jointId = ( (JointSelectionSphere)e.getEntity() ).getJoint().getJointId();
-				if( !usedJoints.contains( jointId ) ) {
-					usedJoints.add( jointId );
-				}
+			JointId jointId = ( (JointSelectionSphere)e.getEntity() ).getJoint().getJointId();
+			if( !usedJoints.contains( jointId ) ) {
+				usedJoints.add( jointId );
 			}
 		}
 	};
@@ -132,9 +128,6 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
-		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
-		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
-
 		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
 		final int N = userConstructor.requiredParameters.size();
 		Object[] arguments = new Object[ N ];
@@ -142,7 +135,9 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		case 0:
 			break;
 		case 1:
-			arguments[ 0 ] = bipedResource;
+			UserParameter constructorParameter0 = userConstructor.requiredParameters.get( 0 );
+			AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
+			arguments[ 0 ] = null;
 			break;
 		case 2:
 			assert false : N;
@@ -162,6 +157,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 			this.getCamera().move( MoveDirection.UP, 1, new Duration( 0 ) );
 			this.getModel().turnToFace( getCamera(), new Duration( 0 ) );
 			isInitialized = true;
+			scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 		}
 	}
 
@@ -174,6 +170,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	}
 
 	public Pose getPose() {
+		System.out.println( "getPose usedJoints: " + usedJoints );
 		return org.lgna.ik.poser.pose.Pose.createPoseFromT( getModel(), usedJoints.toArray( new JointId[ 0 ] ) );
 	}
 
@@ -213,5 +210,9 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 	public AbstractPoserScene getScene() {
 		return scene;
+	}
+
+	public List<JointId> getUsedJoints() {
+		return this.usedJoints;
 	}
 }
