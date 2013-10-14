@@ -213,11 +213,27 @@ public abstract class AstI18nFactory extends I18nFactory {
 				//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 				//					rv = this.createComponent( expression );
 			} else {
-				org.lgna.croquet.components.JComponent<?> component = this.createComponent( expression );
-				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
-					rv = new org.alice.ide.x.components.ExpressionView( this, expression );
-				} else {
+				org.lgna.croquet.components.JComponent<?> component = null;
+				if( expression != null ) {
+					org.lgna.project.ast.Node parent = expression.getParent();
+					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
+						if( expression == methodInvocation.expression.getValue() ) {
+							if( org.alice.stageide.StoryApiConfigurationManager.getInstance().isBuildMethodInvocation( methodInvocation ) ) {
+								component = new org.lgna.croquet.components.Label( "new PoseBuilder(...)" );
+							}
+						}
+					}
+				}
+				if( component != null ) {
 					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+				} else {
+					component = this.createComponent( expression );
+					if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
+						rv = new org.alice.ide.x.components.ExpressionView( this, expression );
+					} else {
+						rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+					}
 				}
 			}
 			return rv;

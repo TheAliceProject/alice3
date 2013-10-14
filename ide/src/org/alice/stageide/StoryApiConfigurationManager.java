@@ -441,4 +441,14 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			return false;
 		}
 	}
+
+	public boolean isBuildMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+		if( "build".equals( method.getName() ) ) {
+			if( methodInvocation.expression.getExpressionType().isAssignableTo( org.lgna.ik.poser.pose.builder.PoseBuilder.class ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
