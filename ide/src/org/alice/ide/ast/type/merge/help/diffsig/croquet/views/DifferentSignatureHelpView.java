@@ -46,12 +46,9 @@ package org.alice.ide.ast.type.merge.help.diffsig.croquet.views;
  * @author Dennis Cosgrove
  */
 public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> state, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice prevValue, org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue, boolean isAdjusting ) {
-			handleTopLevelChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
+			handleTopLevelChanged( e.getNextValue() );
 		}
 	};
 
@@ -70,7 +67,7 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 	@Override
 	public void handleCompositePreActivation() {
 		org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().addAndInvokeValueListener( this.valueListener );
+		composite.getChoiceState().addAndInvokeNewSchoolValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
 
@@ -78,7 +75,7 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
 		org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().removeValueListener( this.valueListener );
+		composite.getChoiceState().removeNewSchoolValueListener( this.valueListener );
 	}
 
 	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice nextValue ) {

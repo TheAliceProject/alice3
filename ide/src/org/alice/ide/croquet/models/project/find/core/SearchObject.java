@@ -117,6 +117,9 @@ public class SearchObject<T extends AbstractDeclaration> {
 			return org.alice.ide.declarationseditor.DeclarationTabState.getFieldIcon();
 		} else if( this.searchObject instanceof org.lgna.project.ast.AbstractConstructor ) {
 			return org.alice.ide.declarationseditor.DeclarationTabState.getConstructorIcon();
+		} else if( this.searchObject instanceof org.lgna.project.ast.AbstractParameter ) {
+			//todo?
+			return null;
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.searchObject );
 			return null;

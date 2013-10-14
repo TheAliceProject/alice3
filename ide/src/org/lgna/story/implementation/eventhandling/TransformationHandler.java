@@ -59,15 +59,15 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  */
 public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
 
-	private Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newConcurrentHashMap();
+	private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newConcurrentHashMap();
 
 	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
 		registerIsFiringMap( transformationlistener );
 		registerPolicyMap( transformationlistener, MultipleEventPolicy.IGNORE );
 		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( shouldListenTo );
 		for( SThing m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
+			if( !getModelList().contains( m ) ) {
+				getModelList().add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 				//				collisionEventHandler.register( collisionListener, groupOne, groupTwo );
 			}
@@ -88,7 +88,7 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
 	}
 
 	@Override
-	protected void nameOfFireCall( PointOfViewChangeListener listener, PointOfViewEvent event ) {
+	protected void fire( PointOfViewChangeListener listener, PointOfViewEvent event ) {
 		listener.pointOfViewChanged( event );
 	}
 }

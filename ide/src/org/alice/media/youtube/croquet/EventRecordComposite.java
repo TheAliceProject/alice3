@@ -51,10 +51,9 @@ import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
@@ -86,14 +85,11 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsPlayingIcon() );
-		isRecordingState.addValueListener( isRecordingListener );
+		isRecordingState.addNewSchoolValueListener( isRecordingListener );
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );

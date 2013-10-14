@@ -139,10 +139,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				boolean isSelected = buttonModel.isSelected();
 				if( isTextVariable() ) {
-					this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+					this.putValue( NAME, getTextFor( isSelected ) );
 				}
 				if( isIconVariable() ) {
-					this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+					this.putValue( SMALL_ICON, getIconFor( isSelected ) );
 				}
 			}
 		};
@@ -383,6 +385,10 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new org.lgna.croquet.components.ToggleButton( this );
 	}
 
+	public org.lgna.croquet.views.ToggleButtonLabelCombo createToggleButtonLabelCombo() {
+		return new org.lgna.croquet.views.ToggleButtonLabelCombo( this );
+	}
+
 	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );
@@ -555,12 +561,9 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		private final org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> trueButton;
 		private final org.lgna.croquet.components.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton;
 		private final int axis;
-		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				handleChanged( nextValue );
+		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
+				handleChanged( e.getNextValue() );
 			}
 		};
 
@@ -592,12 +595,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			BooleanState.this.addAndInvokeValueListener( this.valueListener );
+			BooleanState.this.addAndInvokeNewSchoolValueListener( this.valueListener );
 		}
 
 		@Override
 		protected void handleUndisplayable() {
-			BooleanState.this.removeValueListener( this.valueListener );
+			BooleanState.this.removeNewSchoolValueListener( this.valueListener );
 			super.handleUndisplayable();
 		}
 	}

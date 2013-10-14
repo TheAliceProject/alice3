@@ -48,12 +48,9 @@ package examples.croquet.number;
 public final class NumberDemoComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<examples.croquet.number.views.NumberDemoView> {
 	private final org.lgna.croquet.BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState( this.createKey( "waterTempFahrenheitState" ), new BoundedIntegerDetails().minimum( 32 ).maximum( 212 ).initialValue( 70 ) );
 
-	private final org.lgna.croquet.State.ValueListener<Integer> listener = new org.lgna.croquet.State.ValueListener<Integer>() {
-		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-			System.out.println( nextValue );
+	private final org.lgna.croquet.event.ValueListener<Integer> listener = new org.lgna.croquet.event.ValueListener<Integer>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+			System.out.println( e.getNextValue() );
 		}
 	};
 
@@ -83,12 +80,12 @@ public final class NumberDemoComposite extends org.lgna.croquet.OperationInputDi
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.waterTempFahrenheitState.addValueListener( this.listener );
+		this.waterTempFahrenheitState.addNewSchoolValueListener( this.listener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.waterTempFahrenheitState.removeValueListener( this.listener );
+		this.waterTempFahrenheitState.removeNewSchoolValueListener( this.listener );
 		super.handlePostDeactivation();
 	}
 

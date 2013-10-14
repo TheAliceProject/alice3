@@ -56,14 +56,13 @@ import javax.swing.JList;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFlowControlFrequencyComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.HorizontalAlignment;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.ast.AbstractEachInTogether;
 import org.lgna.project.ast.AbstractForEachLoop;
 import org.lgna.project.ast.ConditionalStatement;
@@ -90,7 +89,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
 		statsDisplay.setMaximum();
 		userMethodList.setValueTransactionlessly( StatisticsFlowControlFrequencyComposite.root );
-		userMethodList.addValueListener( statsDisplay );
+		userMethodList.addNewSchoolValueListener( statsDisplay );
 		statsDisplay.update( StatisticsFlowControlFrequencyComposite.root );
 		gridPanel.addComponent( statsDisplay.getLayout() );
 		org.lgna.croquet.components.List<UserMethod> list = new org.lgna.croquet.components.List<UserMethod>( userMethodList );
@@ -225,11 +224,8 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			return ( (StatisticsFlowControlFrequencyComposite)getComposite() ).getCount( method, cls );
 		}
 
-		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
-			update( nextValue );
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserMethod> e ) {
+			update( e.getNextValue() );
 		}
 	}
 

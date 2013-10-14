@@ -40,34 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.imageeditor.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class FolderIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final org.lgna.croquet.icon.IconFactory iconFactory;
-
-	public FolderIconFactory( org.lgna.croquet.icon.IconFactory iconFactory ) {
-		super( IsCachingDesired.FALSE );
-		this.iconFactory = iconFactory;
-	}
-
+public class FilenameListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		java.awt.Dimension subIconSize;
-		if( size.equals( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE ) ) {
-			subIconSize = new java.awt.Dimension();
-			subIconSize.width = ( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.width * 3 ) / 4;
-			subIconSize.height = ( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.height * 3 ) / 4;
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
+		if( value != null ) {
+			//pass
 		} else {
-			subIconSize = size;
+			rv.setText( "working" );
+			rv.setBackground( java.awt.Color.WHITE );
+			rv.setForeground( java.awt.Color.GRAY );
 		}
-		return new FolderIcon( size, this.iconFactory != null ? this.iconFactory.getIcon( subIconSize ) : null );
+		return rv;
 	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return new java.awt.Dimension( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE );
-	}
-}
+};

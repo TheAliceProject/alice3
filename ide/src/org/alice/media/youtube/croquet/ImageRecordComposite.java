@@ -51,11 +51,10 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
@@ -84,16 +83,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ), owner );
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
-		this.isRecordingState.addValueListener( this.isRecordingListener );
+		this.isRecordingState.addNewSchoolValueListener( this.isRecordingListener );
 		restartOperation.setEnabled( false );
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			setRecording( nextValue );
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			setRecording( e.getNextValue() );
 		}
 	};
 

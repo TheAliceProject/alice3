@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,52 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class BracketView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
-	private class JBracketView extends javax.swing.JComponent {
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			super.paintComponent( g );
+public class TestA3P {
+	public static void main( String[] args ) throws Exception {
+		String path = args.length > 0 ? args[ 0 ] : new java.io.File( org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance(), "a.a3p" ).getAbsolutePath();
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( path );
+		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+		org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod( "main", String[].class );
 
-			int w = this.getWidth();
-			int h = this.getHeight();
+		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
-			int x0 = w / 2;
-			int x1;
-			int y0 = 0;
-			int y1 = h - 1;
-
-			if( isLeading ) {
-				x1 = w - 1;
-			} else {
-				x1 = 0;
-			}
-
-			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo( x1, y0 );
-			path.lineTo( x0, y0 );
-			path.lineTo( x0, y1 );
-			path.lineTo( x1, y1 );
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.draw( path );
-		}
-	}
-
-	private final boolean isLeading;
-
-	public BracketView( boolean isLeading ) {
-		this.isLeading = isLeading;
-	}
-
-	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		return new JBracketView();
+		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerAbstractClassAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
+		vm.registerProtectedMethodAdapter(
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
+		
+		vm.ENTRY_POINT_invoke( null, mainMethod, ((Object)args) );
 	}
 }

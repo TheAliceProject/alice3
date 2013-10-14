@@ -52,7 +52,7 @@ import org.lgna.croquet.TabSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractFolderTabbedPane<E> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
@@ -64,32 +64,50 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			java.awt.FontMetrics fm = button.getFontMetrics( font );
 			String text = button.getText();
 			javax.swing.Icon icon = button.getIcon();
-			int verticalAlignment = button.getVerticalAlignment();
-			int horizontalAlignment = button.getHorizontalAlignment();
-			int verticalTextPosition = button.getVerticalTextPosition();
-			int horizontalTextPosition = button.getHorizontalTextPosition();
-			java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
-			java.awt.Rectangle iconR = new java.awt.Rectangle();
-			java.awt.Rectangle textR = new java.awt.Rectangle();
-			int textIconGap = button.getIconTextGap();
-			javax.swing.SwingUtilities.layoutCompoundLabel( c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap );
+			java.awt.Dimension size;
+			if( icon != null ) {
+				int verticalAlignment = button.getVerticalAlignment();
+				int horizontalAlignment = button.getHorizontalAlignment();
+				int verticalTextPosition = button.getVerticalTextPosition();
+				int horizontalTextPosition = button.getHorizontalTextPosition();
+				java.awt.Rectangle viewR = new java.awt.Rectangle( Short.MAX_VALUE, Short.MAX_VALUE );
+				java.awt.Rectangle iconR = new java.awt.Rectangle();
+				java.awt.Rectangle textR = new java.awt.Rectangle();
+				int textIconGap = button.getIconTextGap();
+				javax.swing.SwingUtilities.layoutCompoundLabel( c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap );
 
-			java.awt.Rectangle bounds = iconR.union( textR );
+				size = iconR.union( textR ).getSize();
+			} else {
+				size = fm.getStringBounds( text, button.getGraphics() ).getBounds().getSize();
+			}
 
 			java.awt.Insets insets = button.getInsets();
-			bounds.width += insets.left + insets.right;
-			bounds.height += insets.top + insets.bottom;
+			size.width += insets.left + insets.right;
+			size.height += insets.top + insets.bottom;
 
 			if( button.getComponentCount() > 0 ) {
 				for( java.awt.Component component : button.getComponents() ) {
 					//if( component.isVisible() ) {
-					bounds.width += 4;
-					bounds.width += component.getPreferredSize().width;
+					size.width += 4;
+					size.width += component.getPreferredSize().width;
 					//}
 				}
 			}
 
-			return bounds.getSize();
+			return size;
+		}
+
+		@Override
+		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.Icon icon = button.getIcon();
+			if( icon != null ) {
+				super.paint( g, c );
+			} else {
+				String text = button.getText();
+				java.awt.Insets insets = button.getInsets();
+				g.drawString( text, insets.left, button.getBaseline( c.getWidth(), c.getHeight() ) );
+			}
 		}
 	}
 
@@ -350,13 +368,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private static final class InternalCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
-		public InternalCardOwnerComposite() {
-			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
-		}
-	}
-
-	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
 	private final TitlesPanel titlesPanel = this.createTitlesPanel();
 	private final ScrollPane titlesScrollPane = new ScrollPane( this.titlesPanel );
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
@@ -502,12 +513,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
-		for( org.lgna.croquet.TabComposite<?> card : model ) {
-			if( card != null ) {
-				this.cardComposite.addCard( card );
-			}
-		}
-		this.cardComposite.getView().setBackgroundColor( null );
+		org.lgna.croquet.CardOwnerComposite cardOwner = this.getCardOwner();
+		cardOwner.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
 		this.titlesPanel.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.titlesScrollPane.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
@@ -518,7 +525,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.titlesScrollPane.addMouseMotionListener( this.scrollListener );
 
 		this.titlesScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
-		this.cardComposite.getView().setBorder( new javax.swing.border.Border() {
+		cardOwner.getView().setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1, 1, 0, 0 );
 			}
@@ -555,35 +562,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		PopupOperation popupOperation = new PopupOperation();
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
 
-	}
-
-	@Override
-	protected void handleValueChanged( final E card ) {
-		if( cardComposite.getShowingCard() == card ) {
-			//pass
-		} else {
-			if( cardComposite.getCards().contains( card ) ) {
-				cardComposite.showCardRefrainingFromActivation( card );
-				this.repaint();
-			} else {
-				if( card != null ) {
-					cardComposite.addCard( card );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
-					javax.swing.SwingUtilities.invokeLater( new Runnable() {
-						public void run() {
-							cardComposite.showCardRefrainingFromActivation( card );
-							repaint();
-						}
-					} );
-				}
-			}
-		}
-		if( card != null ) {
-			BooleanStateButton<?> button = this.getItemDetails( card );
-			if( button != null ) {
-				button.scrollToVisible();
-			}
-		}
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {
@@ -645,7 +623,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.innerHeaderPanel.addCenterComponent( this.titlesScrollPane );
 		this.outerHeaderPanel.addCenterComponent( this.innerHeaderPanel );
 		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.PAGE_START );
-		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
+		rv.add( this.getCardOwner().getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 
@@ -661,26 +639,23 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	@Override
 	protected void removeAllDetails() {
+		super.removeAllDetails();
 		this.titlesPanel.removeAllComponents();
-		this.cardComposite.getView().removeAllComponents();
-	}
-
-	@Override
-	protected void addPrologue( int count ) {
 	}
 
 	@Override
 	protected void addItem( E item, BooleanStateButton<?> button ) {
+		super.addItem( item, button );
 		if( button instanceof FolderTabbedPane.FolderTabTitle ) {
 			FolderTabTitle title = (FolderTabTitle)button;
 			title.setCloseable( item.isCloseable() );
 		}
 		this.titlesPanel.addComponent( button );
-		this.cardComposite.getView().addComposite( item );
 	}
 
 	@Override
 	protected void addSeparator() {
+		super.addSeparator();
 		this.titlesPanel.addComponent( BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 
@@ -689,10 +664,5 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		super.setBackgroundColor( color );
 		this.titlesPanel.setBackgroundColor( color );
 		this.titlesScrollPane.setBackgroundColor( color );
-	}
-
-	@Override
-	protected void addEpilogue() {
-		this.cardComposite.showCardRefrainingFromActivation( this.cardComposite.getShowingCard() );
 	}
 }

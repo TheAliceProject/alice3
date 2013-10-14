@@ -49,11 +49,8 @@ import org.alice.ide.ast.type.croquet.ImportTypeWizard;
  */
 public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
 	private final org.lgna.croquet.BooleanState isIncludingAllState = this.createBooleanState( this.createKey( "isIncludingAllState" ), false );
-	private final org.lgna.croquet.State.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			getView().refreshLater();
 		}
 	};
@@ -77,19 +74,24 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
+	public boolean isAccountedForInPreferredSizeCalculation() {
+		return false;
+	}
+
+	@Override
 	public void resetData() {
 	}
 
 	@Override
 	public void handlePreActivation() {
-		this.isIncludingAllState.addAndInvokeValueListener( this.isIncludingAllListener );
+		this.isIncludingAllState.addAndInvokeNewSchoolValueListener( this.isIncludingAllListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		this.isIncludingAllState.removeValueListener( this.isIncludingAllListener );
+		this.isIncludingAllState.removeNewSchoolValueListener( this.isIncludingAllListener );
 	}
 
 	@Override

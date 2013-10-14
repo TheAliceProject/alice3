@@ -175,6 +175,31 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
+	private class EmptyConditionText extends PlainStringValue {
+		public EmptyConditionText() {
+			super( java.util.UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
+		}
+
+		@Override
+		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return ListSelectionState.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			StringBuilder sb = new StringBuilder();
+			String subKey = ListSelectionState.this.getSubKeyForLocalization();
+			if( subKey != null ) {
+				sb.append( subKey );
+				sb.append( "." );
+			}
+			sb.append( "emptyConditionText" );
+			return sb.toString();
+		}
+	}
+
+	private final PlainStringValue emptyConditionText = new EmptyConditionText();
+
 	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
@@ -206,6 +231,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Override
 	protected void localize() {
+	}
+
+	public PlainStringValue getEmptyConditionText() {
+		this.emptyConditionText.initializeIfNecessary();
+		return this.emptyConditionText;
 	}
 
 	private InternalPrepModel<T> prepModel;

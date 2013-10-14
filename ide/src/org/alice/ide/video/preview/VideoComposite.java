@@ -48,11 +48,15 @@ package org.alice.ide.video.preview;
 public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
 	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( this.createKey( "togglePlayPauseOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
-			if( videoPlayer.isPlaying() ) {
-				videoPlayer.pause();
+			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
+				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
+				if( videoPlayer.isPlaying() ) {
+					videoPlayer.pause();
+				} else {
+					videoPlayer.playResume();
+				}
 			} else {
-				videoPlayer.playResume();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 			}
 			return null;
 		}
@@ -86,46 +90,50 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 				directory = directory.getParentFile();
 			}
-			java.io.File fileA = new java.io.File( directory, "Videos/a.webm" );
+			java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
 			java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
 			uriA = fileA.toURI();
 			uriB = fileB.toURI();
 		}
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
-		final VideoComposite videoComposite = new VideoComposite();
-		videoComposite.getView().setUri( uriA );
-		app.getFrame().setMainComposite( videoComposite );
+				final VideoComposite videoComposite = new VideoComposite();
+				videoComposite.getView().setUri( uriA );
+				app.getFrame().setMainComposite( videoComposite );
 
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				videoComposite.getView().setUri( uriB );
-			}
-		};
-		action.putValue( javax.swing.Action.NAME, "set second video" );
-		app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
-
-		app.getFrame().pack();
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-		app.getFrame().setVisible( true );
-
-		final boolean IS_SNAPSHOT_TEST = true;
-		if( IS_SNAPSHOT_TEST ) {
-			new Thread() {
-				@Override
-				public void run() {
-					float tPrev = Float.NaN;
-					while( true ) {
-						float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
-						if( tCurr != tPrev ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
-							tPrev = tCurr;
-							videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
-						}
-						edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+				javax.swing.Action action = new javax.swing.AbstractAction() {
+					public void actionPerformed( java.awt.event.ActionEvent e ) {
+						videoComposite.getView().setUri( uriB );
 					}
+				};
+				action.putValue( javax.swing.Action.NAME, "set second video" );
+				app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
+
+				app.getFrame().pack();
+				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+				app.getFrame().setVisible( true );
+
+				final boolean IS_SNAPSHOT_TEST = false;
+				if( IS_SNAPSHOT_TEST ) {
+					new Thread() {
+						@Override
+						public void run() {
+							float tPrev = Float.NaN;
+							while( true ) {
+								float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
+								if( tCurr != tPrev ) {
+									edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
+									tPrev = tCurr;
+									videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
+								}
+								edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+							}
+						}
+					}.start();
 				}
-			}.start();
-		}
+			}
+		} );
 	}
 }

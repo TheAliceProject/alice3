@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.views;
 
-package org.alice.ide.swing;
+/**
+ * @author Dennis Cosgrove
+ */
+public class ToggleButtonLabelCombo extends org.lgna.croquet.components.Panel {
+	private final org.lgna.croquet.components.ToggleButton toggleButton;
+	private final org.lgna.croquet.components.AbstractLabel label;
 
-public abstract class FieldListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.AbstractField> {
+	public ToggleButtonLabelCombo( org.lgna.croquet.BooleanState state ) {
+		this.toggleButton = state.createToggleButton();
+		this.label = state.getSidekickLabel().createLabel();
+		this.internalAddComponent( this.toggleButton );
+		this.internalAddComponent( this.label );
+	}
+
+	public org.lgna.croquet.components.ToggleButton getToggleButton() {
+		return this.toggleButton;
+	}
+
+	public org.lgna.croquet.components.AbstractLabel getLabel() {
+		return this.label;
+	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-		} else {
-			rv.setText( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForNull() );
-		}
-		return rv;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 }

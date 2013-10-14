@@ -46,12 +46,9 @@ package org.alice.ide.ast.type.merge.help.diffimp.croquet.views;
  * @author Dennis Cosgrove
  */
 public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> valueListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> state, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice prevValue, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> state, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice prevValue, org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice nextValue, boolean isAdjusting ) {
-			handleTopLevelChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
+			handleTopLevelChanged( e.getNextValue() );
 		}
 	};
 
@@ -74,7 +71,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	@Override
 	public void handleCompositePreActivation() {
 		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().addAndInvokeValueListener( this.valueListener );
+		composite.getChoiceState().addAndInvokeNewSchoolValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
 
@@ -82,7 +79,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
 		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().removeValueListener( this.valueListener );
+		composite.getChoiceState().removeNewSchoolValueListener( this.valueListener );
 	}
 
 	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice nextValue ) {

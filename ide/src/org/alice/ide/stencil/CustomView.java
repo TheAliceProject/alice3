@@ -59,17 +59,16 @@ public abstract class CustomView extends org.lgna.croquet.components.JComponent<
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Paint prevPaint = g2.getPaint();
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );
+				gc.pushAndSetAntialiasing( true );
+				gc.pushPaint();
 				try {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					CustomView.this.paintComponentPrologue( g2 );
 					super.paintComponent( g2 );
 					CustomView.this.paintComponentEpilogue( g2 );
 				} finally {
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					g2.setPaint( prevPaint );
+					gc.popAll();
 				}
 			}
 

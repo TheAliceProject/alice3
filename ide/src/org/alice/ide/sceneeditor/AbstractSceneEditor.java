@@ -52,6 +52,8 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel {
 
+	private org.lgna.project.virtualmachine.VirtualMachine vm;
+
 	private java.util.Map<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance> mapSceneFieldToInstance = new java.util.HashMap<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance>();
 	private java.util.Map<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField> mapSceneInstanceToField = new java.util.HashMap<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField>();
 
@@ -60,6 +62,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private org.lgna.project.ast.NamedUserType programType;
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	private org.lgna.project.ast.UserField selectedField;
+
+	private final SceneFieldListSelectionState sceneFieldListSelectionState = new SceneFieldListSelectionState();
 
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
@@ -70,20 +74,17 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	};
 
-	private org.lgna.croquet.ListSelectionState.ValueListener<org.lgna.project.ast.UserField> selectedSceneObserver = new org.lgna.croquet.ListSelectionState.ValueListener<org.lgna.project.ast.UserField>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectedSceneObserver = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
+			org.lgna.project.ast.UserField nextValue = e.getNextValue();
 			AbstractSceneEditor.this.setActiveScene( nextValue );
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+			org.alice.ide.perspectives.ProjectPerspective prevValue = e.getPreviousValue();
+			org.alice.ide.perspectives.ProjectPerspective nextValue = e.getNextValue();
 			if( prevValue != nextValue ) {
 				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
 			}
@@ -128,7 +129,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	protected void initializeObservers() {
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeValueListener( this.perspectiveListener );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	protected void setInitialCodeStateForField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement code ) {
@@ -140,7 +141,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	public org.lgna.project.ast.UserField getActiveSceneField() {
-		return SceneFieldListSelectionState.getInstance().getValue();
+		return this.sceneFieldListSelectionState.getValue();
 	}
 
 	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM( Object javaInstance ) {
@@ -167,7 +168,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			return null;
 		}
 		try {
-			Object[] values = this.getVM().ENTRY_POINT_evaluate(
+			Object[] values = this.getVirtualMachine().ENTRY_POINT_evaluate(
 					getActiveSceneInstance(),
 					new Expression[] { expression }
 					);
@@ -225,13 +226,13 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	{
 		for( org.lgna.project.ast.Statement statement : statements )
 		{
-			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( this.getActiveSceneInstance(), statement );
+			this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( this.getActiveSceneInstance(), statement );
 		}
 	}
 
 	public void addField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, int index, org.lgna.project.ast.Statement... statements ) {
 		assert declaringType == this.getActiveSceneType() : declaringType;
-		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
+		this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
 		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
@@ -298,8 +299,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public org.lgna.project.virtualmachine.UserInstance getActiveSceneInstance()
 	{
-		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getValue();
-		return this.mapSceneFieldToInstance.get( activeSceneField );
+		return this.mapSceneFieldToInstance.get( this.getActiveSceneField() );
 	}
 
 	public <T extends org.lgna.story.implementation.EntityImp> T getActiveSceneImplementation() {
@@ -314,12 +314,13 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
-	}
-
-	protected org.lgna.project.virtualmachine.VirtualMachine getVM() {
-		return this.getIDE().getVirtualMachineForSceneEditor();
+	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
+		if( this.vm != null ) {
+			//pass
+		} else {
+			this.vm = org.alice.ide.IDE.getActiveInstance().createRegisteredVirtualMachineForSceneEditor();
+		}
+		return this.vm;
 	}
 
 	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
@@ -331,7 +332,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		rv.ensureInverseMapExists();
 		mapSceneFieldToInstance.put( sceneField, rv );
 		mapSceneInstanceToField.put( rv, sceneField );
-		SceneFieldListSelectionState.getInstance().addItem( sceneField );
+		this.sceneFieldListSelectionState.addItem( sceneField );
 
 		//		for (org.lgna.project.ast.AbstractField field : sceneField.valueType.getValue().getDeclaredFields())
 		//		{
@@ -348,7 +349,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		this.initializeIfNecessary();
 		//
 
-		SceneFieldListSelectionState.getInstance().setValueTransactionlessly( sceneField );
+		this.sceneFieldListSelectionState.setValueTransactionlessly( sceneField );
 
 		//Run the "setActiveScene" call on the program to get the active scene set in the right state
 		//		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
@@ -372,14 +373,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
-		return getVM().ENTRY_POINT_createInstance( this.programType );
+		return getVirtualMachine().ENTRY_POINT_createInstance( this.programType );
 	}
 
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
 		if( this.programType != programType ) {
 			if( this.programType != null ) {
-				SceneFieldListSelectionState.getInstance().removeValueListener( this.selectedSceneObserver );
-				SceneFieldListSelectionState.getInstance().clear();
+				this.sceneFieldListSelectionState.removeNewSchoolValueListener( this.selectedSceneObserver );
+				this.sceneFieldListSelectionState.clear();
 			}
 			this.programType = programType;
 			mapSceneFieldToInstance.clear();
@@ -396,11 +397,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			} else {
 				setProgramInstance( null );
 			}
-			if( SceneFieldListSelectionState.getInstance().getItemCount() > 0 )
+			if( this.sceneFieldListSelectionState.getItemCount() > 0 )
 			{
-				SceneFieldListSelectionState.getInstance().setSelectedIndex( 0 );
+				this.sceneFieldListSelectionState.setSelectedIndex( 0 );
 			}
-			SceneFieldListSelectionState.getInstance().addAndInvokeValueListener( this.selectedSceneObserver );
+			this.sceneFieldListSelectionState.addAndInvokeNewSchoolValueListener( this.selectedSceneObserver );
 		}
 	}
 

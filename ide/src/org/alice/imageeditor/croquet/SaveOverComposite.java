@@ -46,14 +46,25 @@ package org.alice.imageeditor.croquet;
  * @author Dennis Cosgrove
  */
 public class SaveOverComposite extends org.lgna.croquet.YesNoConfirmDialogComposite<org.lgna.croquet.components.Panel> {
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+	private final org.lgna.croquet.PlainStringValue prevHeader = this.createStringValue( this.createKey( "prevHeader" ) );
+	private final org.lgna.croquet.PlainStringValue nextHeader = this.createStringValue( this.createKey( "nextHeader" ) );
+	private final SaveOperation owner;
 
-	public SaveOverComposite() {
+	public SaveOverComposite( SaveOperation owner ) {
 		super( java.util.UUID.fromString( "3f859738-f422-4aae-bee4-9001d6bd94f9" ) );
+		this.owner = owner;
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeader() {
-		return this.header;
+	public org.lgna.croquet.PlainStringValue getPrevHeader() {
+		return this.prevHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getNextHeader() {
+		return this.nextHeader;
+	}
+
+	public SaveOperation getOwner() {
+		return this.owner;
 	}
 
 	@Override

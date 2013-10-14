@@ -56,7 +56,7 @@ public class CaptureMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 
 	private CaptureMenuModel() {
 		super( java.util.UUID.fromString( "e21b65a4-1989-4b66-a5c8-81795cac3fba" ),
-				org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
+				//org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
 				org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(),
 				SEPARATOR,
 				org.alice.ide.capture.ImageCaptureComposite.getInstance().getBooleanState().getMenuItemPrepModel() );

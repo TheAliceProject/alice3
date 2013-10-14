@@ -60,27 +60,18 @@ class IkProgram extends SProgram {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> linearAngularEnabledListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> linearAngularEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId> jointIdListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId>() {
-		public void changing( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.story.resources.JointId> jointIdListener = new org.lgna.croquet.event.ValueListener<org.lgna.story.resources.JointId>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.story.resources.JointId> e ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.ik.Bone> boneListener = new org.lgna.croquet.State.ValueListener<org.lgna.ik.Bone>() {
-		public void changing( org.lgna.croquet.State<org.lgna.ik.Bone> state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.ik.Bone> state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.ik.Bone> boneListener = new org.lgna.croquet.event.ValueListener<org.lgna.ik.Bone>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.ik.Bone> e ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
@@ -158,11 +149,11 @@ class IkProgram extends SProgram {
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 
-		test.ik.croquet.AnchorJointIdState.getInstance().addValueListener( this.jointIdListener );
-		test.ik.croquet.EndJointIdState.getInstance().addValueListener( this.jointIdListener );
-		test.ik.croquet.BonesState.getInstance().addValueListener( this.boneListener );
-		test.ik.croquet.IsLinearEnabledState.getInstance().addValueListener( this.linearAngularEnabledListener );
-		test.ik.croquet.IsAngularEnabledState.getInstance().addValueListener( this.linearAngularEnabledListener );
+		test.ik.croquet.AnchorJointIdState.getInstance().addNewSchoolValueListener( this.jointIdListener );
+		test.ik.croquet.EndJointIdState.getInstance().addNewSchoolValueListener( this.jointIdListener );
+		test.ik.croquet.BonesState.getInstance().addNewSchoolValueListener( this.boneListener );
+		test.ik.croquet.IsLinearEnabledState.getInstance().addNewSchoolValueListener( this.linearAngularEnabledListener );
+		test.ik.croquet.IsAngularEnabledState.getInstance().addNewSchoolValueListener( this.linearAngularEnabledListener );
 
 		this.getTargetImp().setTransformation( this.getEndImp() );
 		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );

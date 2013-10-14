@@ -51,11 +51,8 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
 public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
 	private final org.lgna.croquet.ListSelectionState<DifferentSignatureChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceState" ), DifferentSignatureChoice.class, null );
 
-	private final org.lgna.croquet.State.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentSignatureChoice>() {
-		public void changing( org.lgna.croquet.State<DifferentSignatureChoice> state, DifferentSignatureChoice prevValue, DifferentSignatureChoice nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<DifferentSignatureChoice> state, DifferentSignatureChoice prevValue, DifferentSignatureChoice nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentSignatureChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
 			handleChanged();
 		}
 	};
@@ -113,14 +110,14 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 			topLevelChoice = DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
 		}
 		this.choiceState.setValueTransactionlessly( topLevelChoice );
-		this.choiceState.addValueListener( this.topLevelListener );
+		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		this.choiceState.removeValueListener( this.topLevelListener );
+		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
 	}
 
 	private void handleChanged() {

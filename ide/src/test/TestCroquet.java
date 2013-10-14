@@ -86,20 +86,14 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestDoubleState doubleState = new TestDoubleState();
 		final TestBooleanState booleanState = new TestBooleanState();
 
-		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
-			public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+		integerState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Integer>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
 		} );
-		booleanState.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "prev:", prevValue, "next:", nextValue, "isAdjusting:", isAdjusting );
+		booleanState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Boolean>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
 		} );
 
@@ -126,12 +120,9 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );
-		fileSelectionState.addValueListener( new org.lgna.croquet.State.ValueListener<java.io.File>() {
-			public void changing( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue );
+		fileSelectionState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.io.File>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.io.File> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e.getNextValue() );
 			}
 		} );
 

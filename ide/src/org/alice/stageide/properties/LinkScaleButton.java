@@ -69,11 +69,8 @@ public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateBut
 		this( booleanState, IsAllScaleLinkedState.class.getResource( "images/scaleLinked.png" ), IsAllScaleLinkedState.class.getResource( "images/scaleUnlinked.png" ) );
 	}
 
-	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			LinkScaleButton.this.updateLabel();
 		}
 	};
@@ -81,12 +78,12 @@ public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateBut
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueListener( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeNewSchoolValueListener( this.valueListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueListener( this.valueObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeNewSchoolValueListener( this.valueListener );
 		super.handleUndisplayable();
 	}
 

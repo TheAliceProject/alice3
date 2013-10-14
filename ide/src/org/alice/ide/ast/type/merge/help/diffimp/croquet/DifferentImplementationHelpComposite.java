@@ -62,11 +62,8 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 
 	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( this.createKey( "selectOneHeader" ) );
 
-	private final org.lgna.croquet.State.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.State.ValueListener<DifferentImplementationChoice>() {
-		public void changing( org.lgna.croquet.State<DifferentImplementationChoice> state, DifferentImplementationChoice prevValue, DifferentImplementationChoice nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<DifferentImplementationChoice> state, DifferentImplementationChoice prevValue, DifferentImplementationChoice nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentImplementationChoice>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
 			handleChanged();
 		}
 	};
@@ -156,14 +153,14 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 			}
 		}
 		this.choiceState.setValueTransactionlessly( topLevelChoice );
-		this.choiceState.addValueListener( this.topLevelListener );
+		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		this.choiceState.removeValueListener( this.topLevelListener );
+		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
 	}
 
 	private void handleChanged() {

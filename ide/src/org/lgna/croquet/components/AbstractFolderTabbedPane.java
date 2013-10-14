@@ -40,34 +40,80 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.components;
+
+import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+public abstract class AbstractFolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+	private static final class FolderTabbedPaneCardOwner extends org.lgna.croquet.CardOwnerComposite {
+		public FolderTabbedPaneCardOwner() {
+			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
+		}
+	}
 
-	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		super( IsCachingDesired.TRUE );
-		this.iconFactories = iconFactories;
+	private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
+
+	public AbstractFolderTabbedPane( TabSelectionState<E> model ) {
+		super( model );
+		for( org.lgna.croquet.TabComposite<?> card : model ) {
+			if( card != null ) {
+				this.cardOwner.addCard( card );
+			}
+		}
+	}
+
+	public org.lgna.croquet.CardOwnerComposite getCardOwner() {
+		return this.cardOwner;
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.iconFactories );
-	}
-
-	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
-		return this.iconFactories;
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+	protected void handleValueChanged( final E card ) {
+		if( this.cardOwner.getShowingCard() == card ) {
+			//pass
 		} else {
-			return sizeIfResolutionIndependent;
+			if( this.cardOwner.getCards().contains( card ) ) {
+				this.cardOwner.showCardRefrainingFromActivation( card );
+				this.repaint();
+			} else {
+				if( card != null ) {
+					this.cardOwner.addCard( card );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						public void run() {
+							cardOwner.showCardRefrainingFromActivation( card );
+							repaint();
+						}
+					} );
+				}
+			}
 		}
+		if( card != null ) {
+			BooleanStateButton<?> button = this.getItemDetails( card );
+			if( button != null ) {
+				button.scrollToVisible();
+			}
+		}
+	}
+
+	@Override
+	protected void removeAllDetails() {
+		this.cardOwner.getView().removeAllComponents();
+	}
+
+	@Override
+	protected void addPrologue( int count ) {
+	}
+
+	@Override
+	protected void addItem( E item, BooleanStateButton<?> button ) {
+		this.cardOwner.getView().addComposite( item );
+	}
+
+	@Override
+	protected void addEpilogue() {
+		this.cardOwner.showCardRefrainingFromActivation( this.cardOwner.getShowingCard() );
 	}
 }

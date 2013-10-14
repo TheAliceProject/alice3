@@ -51,6 +51,16 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 		super( model );
 	}
 
+	public boolean isUnderlinedOnlyWhenRolledOver() {
+		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
+		return ui.isUnderlinedOnlyWhenRolledOver();
+	}
+
+	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
+		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
+		ui.setUnderlinedOnlyWhenRolledOver( isUnderlinedOnlyWhenRolledOver );
+	}
+
 	@Override
 	protected final javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton() {

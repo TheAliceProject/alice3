@@ -50,11 +50,8 @@ public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.C
 	private final org.lgna.croquet.Composite<?> keepCard;
 	private final org.lgna.croquet.Composite<?> renameCard;
 
-	private final org.lgna.croquet.State.ValueListener<Boolean> valueListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateCard();
 		}
 	};
@@ -68,7 +65,7 @@ public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.C
 		this.addCard( this.keepCard );
 		this.addCard( this.renameCard );
 		this.showCard( this.renameCard );
-		this.differentSignature.getImportHub().getIsDesiredState().addValueListener( this.valueListener );
+		this.differentSignature.getImportHub().getIsDesiredState().addNewSchoolValueListener( this.valueListener );
 	}
 
 	private void updateCard() {

@@ -65,12 +65,9 @@ public class SearchTabView extends GalleryTabView {
 		public abstract boolean accept( String lcName, String lcFilter );
 	}
 
-	private final org.lgna.croquet.StringState.ValueListener<String> filterListener = new org.lgna.croquet.StringState.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			SearchTabView.this.handleFilterChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			SearchTabView.this.handleFilterChanged( e.getNextValue() );
 		}
 	};
 
@@ -174,14 +171,14 @@ public class SearchTabView extends GalleryTabView {
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
-		composite.getFilterState().addAndInvokeValueListener( this.filterListener );
+		composite.getFilterState().addAndInvokeNewSchoolValueListener( this.filterListener );
 		this.filterTextField.requestFocusLater();
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
-		composite.getFilterState().removeValueListener( this.filterListener );
+		composite.getFilterState().removeNewSchoolValueListener( this.filterListener );
 		super.handleCompositePostDeactivation();
 	}
 

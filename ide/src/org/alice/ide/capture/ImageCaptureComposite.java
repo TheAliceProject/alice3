@@ -59,13 +59,24 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 
 	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER + 1;
 
+	private org.alice.ide.capture.views.ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		return mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
+			public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.components.AbstractWindow<?> key ) {
+				return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
+			}
+		} );
+	}
+
 	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( this.createKey( "captureEntireWindow" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+
+			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
+			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
+			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
 	} );
@@ -76,7 +87,9 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
+			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
+			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
 	} );
@@ -85,11 +98,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
-			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
-				public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.components.AbstractWindow<?> key ) {
-					return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
-				}
-			} );
+			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
 			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
 			return null;
 		}

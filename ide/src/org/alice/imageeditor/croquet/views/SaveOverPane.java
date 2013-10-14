@@ -46,10 +46,62 @@ package org.alice.imageeditor.croquet.views;
  * @author Dennis Cosgrove
  */
 public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
+	private final org.alice.ide.croquet.ImageView toBeReplacedImageView = new org.alice.ide.croquet.ImageView();
+	private final org.alice.ide.croquet.ImageView nextImageView = new org.alice.ide.croquet.ImageView();
+	private final org.lgna.croquet.components.Label toBeReplacedHeaderLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.components.Label toBeReplacedDetailsLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.components.Label nextDetailsLabel = new org.lgna.croquet.components.Label();
+
 	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getHeader().createLabel(), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.Label( "TODO: old image" ), "split 2" );
-		this.addComponent( new org.lgna.croquet.components.Label( "TODO: new image" ) );
+		super( composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]" );
+		this.addComponent( this.toBeReplacedHeaderLabel );
+		this.addComponent( new org.lgna.croquet.components.VerticalSeparator(), "spany 3, growy" );
+		this.addComponent( composite.getNextHeader().createLabel(), "wrap" );
+		this.addComponent( this.toBeReplacedImageView, "grow, shrink" );
+		this.addComponent( this.nextImageView, "skip 1, grow, shrink, wrap" );
+		this.addComponent( this.toBeReplacedDetailsLabel );
+		this.addComponent( this.nextDetailsLabel, "skip 1" );
+		this.setMinimumPreferredHeight( 300 );
+		this.setMinimumPreferredWidth( 800 );
+	}
+
+	@Override
+	public org.alice.imageeditor.croquet.SaveOverComposite getComposite() {
+		return (org.alice.imageeditor.croquet.SaveOverComposite)super.getComposite();
+	}
+
+	private static String getResolutionText( java.awt.Image image ) {
+		StringBuilder sb = new StringBuilder();
+		//sb.append( "(" );
+		sb.append( "resolution: " );
+		sb.append( image.getWidth( null ) );
+		sb.append( " x " );
+		sb.append( image.getHeight( null ) );
+		//sb.append( ")" );
+		return sb.toString();
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		org.alice.imageeditor.croquet.ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
+		java.io.File file = frame.getFile();
+		java.awt.Image toBeReplacedImage = edu.cmu.cs.dennisc.image.ImageUtilities.read( file );
+		java.awt.Image nextImage = frame.getView().render();
+		this.toBeReplacedImageView.setImage( toBeReplacedImage );
+		this.nextImageView.setImage( nextImage );
+
+		java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
+		java.text.DateFormat timeFormat = java.text.DateFormat.getTimeInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
+		java.util.Date date = new java.util.Date( file.lastModified() );
+		this.toBeReplacedHeaderLabel.setText( this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format( date ) + " " + timeFormat.format( date ) + ")" );
+		this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
+		this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
+		super.handleCompositePreActivation();
+		org.lgna.croquet.components.AbstractWindow<?> window = this.getRoot();
+		if( window instanceof org.lgna.croquet.components.Dialog ) {
+			org.lgna.croquet.components.Dialog dialog = (org.lgna.croquet.components.Dialog)window;
+			dialog.setTitle( "Save Over " + file );
+			dialog.pack();
+		}
 	}
 }

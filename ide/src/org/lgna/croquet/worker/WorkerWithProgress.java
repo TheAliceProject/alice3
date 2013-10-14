@@ -58,7 +58,11 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 		@Override
 		protected void process( java.util.List<V> chunks ) {
 			super.process( chunks );
-			WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
+			if( this.isCancelled() ) {
+				//pass
+			} else {
+				WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
+			}
 		}
 	}
 
@@ -70,7 +74,11 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 	}
 
 	protected final void publish( V... chunks ) {
-		this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled. omitting publish:", java.util.Arrays.toString( chunks ) );
+		} else {
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
+		}
 	}
 
 	public int getProgress() {
@@ -78,9 +86,13 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 	}
 
 	protected final void setProgress( int progress ) {
-		assert progress >= 0 : progress;
-		assert progress <= 100 : progress;
-		this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled.  omitting setProgress:", progress );
+		} else {
+			assert progress >= 0 : progress;
+			assert progress <= 100 : progress;
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
+		}
 	}
 
 	protected abstract void handleProcess_onEventDispatchThread( java.util.List<V> chunks );

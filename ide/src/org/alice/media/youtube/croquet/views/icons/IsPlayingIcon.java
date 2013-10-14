@@ -69,38 +69,42 @@ public class IsPlayingIcon implements Icon {
 	}
 
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint prevPaint = g2.getPaint();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel buttonModel = button.getModel();
-			if( buttonModel.isSelected() ) {
-				g.setColor( PAUSE_COLOR );
-				int width = 4;
-				int height = SIZE - 4;
-				int x0 = x + 2;
-				int x1 = ( x + SIZE ) - width - 4;
-				int y0 = y + 2;
-				g.fillRect( x0, y0, width, height );
-				g.fillRect( x1, y0, width, height );
-			} else {
-				double x0 = x + 2;
-				double x1 = ( x + SIZE ) - 4;
-				double y0 = y + 2;
-				double y1 = ( y0 + SIZE ) - 4;
-				double yC = ( y0 + y1 ) * 0.5;
-				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-				path.moveTo( x0, y0 );
-				path.lineTo( x0, y1 );
-				path.lineTo( x1, yC );
-				path.closePath();
-				g2.setPaint( new java.awt.GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
-				g2.fill( path );
-				g.setColor( Color.BLACK );
-				g2.draw( path );
+			edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );
+			gc.pushAndSetAntialiasing( true );
+			gc.pushPaint();
+			try {
+				AbstractButton button = (AbstractButton)c;
+				ButtonModel buttonModel = button.getModel();
+				if( buttonModel.isSelected() ) {
+					g.setColor( PAUSE_COLOR );
+					int width = 4;
+					int height = SIZE - 4;
+					int x0 = x + 2;
+					int x1 = ( x + SIZE ) - width - 4;
+					int y0 = y + 2;
+					g.fillRect( x0, y0, width, height );
+					g.fillRect( x1, y0, width, height );
+				} else {
+					double x0 = x + 2;
+					double x1 = ( x + SIZE ) - 4;
+					double y0 = y + 2;
+					double y1 = ( y0 + SIZE ) - 4;
+					double yC = ( y0 + y1 ) * 0.5;
+					java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+					path.moveTo( x0, y0 );
+					path.lineTo( x0, y1 );
+					path.lineTo( x1, yC );
+					path.closePath();
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					g2.setPaint( new java.awt.GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
+					g2.fill( path );
+					g.setColor( Color.BLACK );
+					g2.draw( path );
+				}
+			} finally {
+				gc.popAll();
 			}
 		}
-		g2.setPaint( prevPaint );
 	}
 }

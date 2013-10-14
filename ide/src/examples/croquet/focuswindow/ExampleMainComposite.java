@@ -40,64 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package examples.croquet.focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class ActionRequiredView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
-	private static javax.swing.Icon ICON =
-			new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon(
-					edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon(),
-					0.5f
-			);
+public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( this.createKey( "questionState" ), true );
 
-	private class JActionRequiredView extends javax.swing.JComponent {
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			super.paintComponent( g );
-
-			int w = this.getWidth();
-			int h = this.getHeight();
-
-			int x0 = w / 2;
-			int x1;
-			int y0 = 0;
-			int y1 = h - 1;
-
-			if( isLeading ) {
-				x1 = w - 1;
-			} else {
-				x1 = 0;
-			}
-
-			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo( x1, y0 );
-			path.lineTo( x0, y0 );
-			path.lineTo( x0, y1 );
-			path.lineTo( x1, y1 );
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.draw( path );
-
-			if( isActionRequiredCriterion.accept( null ) ) {
-				ICON.paintIcon( this, g2, 0, ( h - ICON.getIconHeight() ) / 2 );
-			}
-		}
+	public ExampleMainComposite() {
+		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
 	}
 
-	private final edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion;
-	private final boolean isLeading;
+	public ExampleFocusWindowComposite getFocusWindow() {
+		return this.focusWindow;
+	}
 
-	public ActionRequiredView( edu.cmu.cs.dennisc.pattern.Criterion<Void> isActionRequiredCriterion, boolean isLeading ) {
-		this.isActionRequiredCriterion = isActionRequiredCriterion;
-		this.isLeading = isLeading;
+	public org.lgna.croquet.BooleanState getQuestionState() {
+		return this.questionState;
 	}
 
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		return new JActionRequiredView();
+	protected org.lgna.croquet.components.Panel createView() {
+		return new examples.croquet.focuswindow.views.ExampleMainPane( this );
+	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		app.getFrame().setMainComposite( new ExampleMainComposite() );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
 	}
 }

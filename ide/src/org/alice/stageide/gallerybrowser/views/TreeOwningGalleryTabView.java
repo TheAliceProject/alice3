@@ -57,12 +57,9 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
-		public void changing( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
-			handleChanged( prevValue, nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.modelresource.ResourceNode> e ) {
+			handleChanged( e.getPreviousValue(), e.getNextValue() );
 		}
 	};
 
@@ -102,7 +99,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	protected void handleDisplayable() {
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
-		state.addValueListener( this.treeListener );
+		state.addNewSchoolValueListener( this.treeListener );
 		super.handleDisplayable();
 	}
 
@@ -111,7 +108,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		super.handleUndisplayable();
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
-		state.removeValueListener( this.treeListener );
+		state.removeNewSchoolValueListener( this.treeListener );
 	}
 
 	private void handleChanged( org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue ) {
