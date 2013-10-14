@@ -220,7 +220,9 @@ public class FindContentManager {
 					String name = o.getName();
 					Matcher matcher = pattern.matcher( name.toLowerCase() );
 					if( matcher.find() ) {
-						rv.add( o );
+						if( o.getReferences().size() > 0 ) {
+							rv.add( o );
+						}
 					}
 				}
 				break;

@@ -72,13 +72,19 @@ public class FindView extends BorderPanel {
 	private InputMap inputMap;
 	private final Object left;
 	private final Object right;
-	private Tree<SearchObjectNode> referencesTreeList;
+	private final Tree<SearchObjectNode> referencesTreeList;
 	private final List<SearchObject> searchResultsList;
 
 	private final ValueListener<SearchObject> resultsListener = new ValueListener<SearchObject>() {
 		@Override
 		public void valueChanged( ValueEvent<SearchObject> e ) {
 			searchResultsList.ensureIndexIsVisible( searchResultsList.getAwtComponent().getSelectedIndex() );
+		}
+	};
+	private final ValueListener<SearchObjectNode> referencesListener = new ValueListener<SearchObjectNode>() {
+		@Override
+		public void valueChanged( ValueEvent<SearchObjectNode> e ) {
+			referencesTreeList.getAwtComponent().scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
 		}
 	};
 
@@ -110,6 +116,11 @@ public class FindView extends BorderPanel {
 		referencesTreeList.getAwtComponent().addTreeExpansionListener( composite.getTreeExpansionListener() );
 	}
 
+	@Override
+	public FindComposite getComposite() {
+		return (FindComposite)super.getComposite();
+	}
+
 	public void enableLeftAndRight() {
 		inputMap.put( KeyStroke.getKeyStroke( "LEFT" ), left );
 		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), right );
@@ -126,15 +137,15 @@ public class FindView extends BorderPanel {
 
 	@Override
 	protected void handleDisplayable() {
-		FindComposite findComposite = (FindComposite)this.getComposite();
-		findComposite.getSearchResults().addNewSchoolValueListener( this.resultsListener );
+		this.getComposite().getSearchResults().addNewSchoolValueListener( this.resultsListener );
+		this.getComposite().getReferenceResults().addNewSchoolValueListener( this.referencesListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		FindComposite findComposite = (FindComposite)this.getComposite();
-		findComposite.getSearchResults().removeNewSchoolValueListener( this.resultsListener );
+		this.getComposite().getSearchResults().removeNewSchoolValueListener( this.resultsListener );
+		this.getComposite().getReferenceResults().removeNewSchoolValueListener( this.referencesListener );
 	}
 }
