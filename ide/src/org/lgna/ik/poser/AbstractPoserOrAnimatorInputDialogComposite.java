@@ -95,7 +95,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 	protected AbstractPoserOrAnimatorInputDialogComposite( NamedUserType userType, UUID uuid ) {
 		super( uuid, IDE.PROJECT_GROUP );
-		model = deriveBipedFromUserType( userType );
+		model = createInstanceFromType( userType );
 		this.scene = initScene();
 		this.userType = userType;
 		this.poser = new IkPoser();
@@ -124,7 +124,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		initializeTest();
 	}
 
-	private M deriveBipedFromUserType( NamedUserType type ) {
+	private M createInstanceFromType( NamedUserType type ) {
 
 		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
@@ -137,7 +137,17 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		case 1:
 			UserParameter constructorParameter0 = userConstructor.requiredParameters.get( 0 );
 			AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
-			arguments[ 0 ] = null;
+			if( parameter0Type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)parameter0Type;
+				Class<?> cls = javaType.getClassReflectionProxy().getReification();
+				if( cls.isEnum() ) {
+					arguments[ 0 ] = cls.getEnumConstants()[ 0 ];
+				} else {
+					throw new RuntimeException( "todo: " + cls.getName() );
+				}
+			} else {
+				throw new RuntimeException( parameter0Type.getName() );
+			}
 			break;
 		case 2:
 			assert false : N;
