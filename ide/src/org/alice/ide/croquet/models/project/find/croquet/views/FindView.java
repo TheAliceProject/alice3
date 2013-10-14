@@ -58,6 +58,8 @@ import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
@@ -71,6 +73,14 @@ public class FindView extends BorderPanel {
 	private final Object left;
 	private final Object right;
 	private Tree<SearchObjectNode> referencesTreeList;
+	private final List<SearchObject> searchResultsList;
+
+	private final ValueListener<SearchObject> resultsListener = new ValueListener<SearchObject>() {
+		@Override
+		public void valueChanged( ValueEvent<SearchObject> e ) {
+			searchResultsList.ensureIndexIsVisible( searchResultsList.getAwtComponent().getSelectedIndex() );
+		}
+	};
 
 	public FindView( FindComposite composite ) {
 		super( composite );
@@ -81,7 +91,7 @@ public class FindView extends BorderPanel {
 		this.addPageStartComponent( searchBox );
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
-		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
+		searchResultsList = composite.getSearchResults().createList();
 		referencesTreeList = composite.getReferenceResults().createTree();
 		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
@@ -112,5 +122,19 @@ public class FindView extends BorderPanel {
 
 	public Tree<SearchObjectNode> getTree() {
 		return referencesTreeList;
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		FindComposite findComposite = (FindComposite)this.getComposite();
+		findComposite.getSearchResults().addNewSchoolValueListener( this.resultsListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		FindComposite findComposite = (FindComposite)this.getComposite();
+		findComposite.getSearchResults().removeNewSchoolValueListener( this.resultsListener );
 	}
 }
