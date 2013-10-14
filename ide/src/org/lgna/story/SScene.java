@@ -201,8 +201,8 @@ public abstract class SScene extends SThing {
 	//TransformationListeners
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
-		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
+	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener pointOfViewChangeListener, SThing[] shouldListenTo ) {
+		this.getImplementation().getEventManager().addTransformationListener( pointOfViewChangeListener, shouldListenTo );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )

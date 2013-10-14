@@ -62,10 +62,13 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
  */
 public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
-	private Map<TimeListener, Double> freqMap = Collections.newConcurrentHashMap();
-	private List<TimeListener> timerList = Collections.newCopyOnWriteArrayList();
+	private final Map<TimeListener, Double> freqMap = Collections.newConcurrentHashMap();
+	private final List<TimeListener> timerList = Collections.newCopyOnWriteArrayList();
+	private final Map<TimeListener, Double> mostRecentFire = Collections.newConcurrentHashMap();
+	private final Map<TimeListener, Boolean> activationMap = Collections.newConcurrentHashMap();
 	private Double currentTime;
-	private Map<TimeListener, Double> mostRecentFire = Collections.newConcurrentHashMap();
+	private boolean isEnabled = false;
+	private boolean isActivated = false;
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
@@ -73,9 +76,6 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 			update();
 		}
 	};
-	private boolean isEnabled = false;
-	private boolean isActivated = false;
-	private Map<TimeListener, Boolean> activationMap = Collections.newConcurrentHashMap();
 
 	public void enable() {
 		isEnabled = true;
@@ -118,7 +118,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 	}
 
 	@Override
-	protected void nameOfFireCall( TimeListener listener, TimeEvent event ) {
+	protected void fire( TimeListener listener, TimeEvent event ) {
 		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() + ( currentTime - mostRecentFire.get( listener ) ) ) );
 	}
 
