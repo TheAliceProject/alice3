@@ -42,16 +42,26 @@
  */
 package org.alice.ide.croquet.models.project.find.croquet.views;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.TreePath;
 
-import org.alice.ide.croquet.models.project.find.core.SearchObject;
-import org.alice.ide.croquet.models.project.find.core.SearchObjectNode;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.List;
@@ -61,6 +71,9 @@ import org.lgna.croquet.components.Tree;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 
+import com.sun.tools.javac.util.Pair;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
@@ -72,24 +85,31 @@ public class FindView extends BorderPanel {
 	private InputMap inputMap;
 	private final Object left;
 	private final Object right;
-	private final Tree<SearchObjectNode> referencesTreeList;
-	private final List<SearchObject> searchResultsList;
+	private final Tree<SearchTreeNode> referencesTreeList;
+	private final List<SearchResult> searchResultsList;
+	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Collections.newHashMap();
+	private final Map<SearchResult, Pair<Integer, Integer>> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
+	private final FindReferencesTreeState referenceResults;
+	private final ListSelectionState<SearchResult> searchResults;
+	boolean listIsSelected = true;
 
-	private final ValueListener<SearchObject> resultsListener = new ValueListener<SearchObject>() {
+	private final ValueListener<SearchResult> resultsListener = new ValueListener<SearchResult>() {
 		@Override
-		public void valueChanged( ValueEvent<SearchObject> e ) {
+		public void valueChanged( ValueEvent<SearchResult> e ) {
 			searchResultsList.ensureIndexIsVisible( searchResultsList.getAwtComponent().getSelectedIndex() );
 		}
 	};
-	private final ValueListener<SearchObjectNode> referencesListener = new ValueListener<SearchObjectNode>() {
+	private final ValueListener<SearchTreeNode> referencesListener = new ValueListener<SearchTreeNode>() {
 		@Override
-		public void valueChanged( ValueEvent<SearchObjectNode> e ) {
+		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
 			referencesTreeList.getAwtComponent().scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
 		}
 	};
 
 	public FindView( AbstractFindComposite composite ) {
 		super( composite );
+		referenceResults = getComposite().getReferenceResults();
+		searchResults = getComposite().getSearchResults();
 		searchBox = composite.getSearchState().createTextField();
 		inputMap = searchBox.getAwtComponent().getInputMap();
 		left = inputMap.get( KeyStroke.getKeyStroke( "LEFT" ) );
@@ -98,7 +118,8 @@ public class FindView extends BorderPanel {
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
 		searchResultsList = composite.getSearchResults().createList();
-		referencesTreeList = composite.getReferenceResults().createTree();
+		referencesTreeList = referenceResults.createTree();
+		referenceResults.addNewSchoolValueListener( referenceTreeListener );
 		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
@@ -107,14 +128,141 @@ public class FindView extends BorderPanel {
 		//		bPanel.addPageEndComponent( composite.getHowToAddOperation().createButton() );
 		panel.addComponent( bPanel );
 		searchResultsList.setCellRenderer( new SearchResultListCellRenderer() );
+		composite.getSearchResults().addNewSchoolValueListener( searchResultsValueListener );
 		referencesTreeList.setCellRenderer( new SearchReferencesTreeCellRenderer() );
 		panel.addComponent( new ScrollPane( referencesTreeList ) );
 		this.addCenterComponent( panel );
-		searchBox.addKeyListener( composite.getKeyListener() );
+		searchBox.addKeyListener( keyListener );
 		searchResultsList.getAwtComponent().setFocusable( false );
 		referencesTreeList.getAwtComponent().setFocusable( false );
-		referencesTreeList.getAwtComponent().addTreeExpansionListener( composite.getTreeExpansionListener() );
+		referencesTreeList.getAwtComponent().addTreeExpansionListener( treeListener );
 	}
+
+	private final ValueListener<SearchResult> searchResultsValueListener = new ValueListener<SearchResult>() {
+
+		@Override
+		public void valueChanged( ValueEvent<SearchResult> e ) {
+			//			if( !listIsSelected ) {
+			listIsSelected = true;
+			Map<Integer, Boolean> innerMap = searchResultToExpandParentsMap.get( searchResults.getValue() );
+			if( innerMap != null ) {
+				for( Integer i : innerMap.keySet() ) {
+					if( innerMap.get( i ) ) {
+						getTree().expandNode( referenceResults.selectAtCoordinates( i, -1 ) );
+					}
+				}
+			}
+		}
+		//		}
+	};
+	private ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
+
+		@Override
+		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
+			if( e.getNextValue() != null ) {
+				searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
+			}
+		}
+	};
+
+	private final TreeExpansionListener treeListener = new TreeExpansionListener() {
+
+		public void treeExpanded( TreeExpansionEvent event ) {
+			ListSelectionState<SearchResult> searchResults = getComposite().getSearchResults();
+			TreePath path = event.getPath();
+			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
+				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
+			}
+			searchResultToExpandParentsMap.get( searchResults.getValue() ).put( ( (SearchTreeNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), true );
+		}
+
+		public void treeCollapsed( TreeExpansionEvent event ) {
+			ListSelectionState<SearchResult> searchResults = getComposite().getSearchResults();
+			TreePath path = event.getPath();
+			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
+				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
+			}
+			searchResultToExpandParentsMap.get( searchResults.getValue() ).put( ( (SearchTreeNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), false );
+		}
+	};
+
+	private final KeyListener keyListener = new KeyListener() {
+
+		private boolean isListSelected() {
+			return listIsSelected;
+		}
+
+		boolean isTreeSelected() {
+			return !listIsSelected;
+		}
+
+		private void setListSelected() {
+			listIsSelected = true;
+		}
+
+		private void setTreeSelected() {
+			listIsSelected = false;
+		}
+
+		public void keyTyped( KeyEvent e ) {
+		}
+
+		public void keyReleased( KeyEvent e ) {
+		}
+
+		public void keyPressed( KeyEvent e ) {
+			int keyCode = e.getKeyCode();
+
+			if( keyCode == KeyEvent.VK_UP ) {
+				if( isListSelected() ) {
+					if( searchResults.getValue() != null ) {
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
+						if( searchResults.getValue() == null ) {
+							enableLeftAndRight();
+						}
+					}
+				} else if( isTreeSelected() ) {
+					referenceResults.moveSelectedUpOne();
+				}
+			} else if( keyCode == KeyEvent.VK_DOWN ) {
+				if( isListSelected() ) {
+					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
+						disableLeftAndRight();
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
+						//						Map<Integer, Boolean> innerMap = searchResultToExpandParentsMap.get( searchResults.getValue() );
+						//						if( innerMap != null ) {
+						//							for( Integer i : innerMap.keySet() ) {
+						//								if( innerMap.get( i ) ) {
+						//									getTree().expandNode( referenceResults.selectAtCoordinates( i, -1 ) );
+						//								}
+						//							}
+						//						}
+					}
+				} else if( isTreeSelected() ) {
+					referenceResults.moveSelectedDownOne();
+					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
+				}
+			} else if( keyCode == KeyEvent.VK_LEFT ) {
+				if( isTreeSelected() ) {
+					setListSelected();
+					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceTreeState.getSelectedCoordinates() );
+					referenceResults.setValueTransactionlessly( null );
+				}
+			} else if( keyCode == KeyEvent.VK_RIGHT ) {
+				if( isListSelected() ) {
+					if( referenceResults.isEmpty() ) {
+						setTreeSelected();
+						Pair<Integer, Integer> pair = searchResultToLastTreeCoordinatesMap.get( searchResults.getValue() );
+						if( pair != null ) {
+							referenceResults.setValueTransactionlessly( referenceResults.selectAtCoordinates( pair.fst, pair.snd ) );
+						} else {
+							referenceResults.setValueTransactionlessly( referenceResults.getTopValue() );
+						}
+					}
+				}
+			}
+		}
+	};
 
 	@Override
 	public AbstractFindComposite getComposite() {
@@ -131,7 +279,7 @@ public class FindView extends BorderPanel {
 		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), "NONE" );
 	}
 
-	public Tree<SearchObjectNode> getTree() {
+	public Tree<SearchTreeNode> getTree() {
 		return referencesTreeList;
 	}
 

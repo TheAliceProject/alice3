@@ -42,22 +42,14 @@
  */
 package org.alice.ide.croquet.models.project.find.croquet;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.TreePath;
 
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.find.core.FindContentManager;
-import org.alice.ide.croquet.models.project.find.core.FindReferencesTreeState;
-import org.alice.ide.croquet.models.project.find.core.SearchObject;
-import org.alice.ide.croquet.models.project.find.core.SearchObjectNode;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.FindView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -78,11 +70,6 @@ import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.ImplementationAccessor;
-
-import com.sun.tools.javac.util.Pair;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -90,44 +77,14 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	public static final Group FIND_COMPOSITE_GROUP = Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
-	protected final FindContentManager manager = new FindContentManager();
+	private final FindContentManager manager = new FindContentManager();
 	private final StringState searchState = createStringState( createKey( "searchState" ) );
 	private final BooleanState isNavigationEnabledState = createBooleanState( createKey( "isNavigationEnabledState" ), true );
 	private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
-	private final Map<SearchObject<?>, Map<Integer, Boolean>> expandMap = Collections.newHashMap();
 	private boolean isActive;
 
 	protected AbstractFindComposite( UUID migrationID ) {
 		super( migrationID, FIND_COMPOSITE_GROUP );
-		searchState.addValueListener( searchStateListener );
-		searchResults.addValueListener( new ValueListener<SearchObject>() {
-
-			public void changing( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
-				referenceTreeState.refreshWith( searchResults.getValue() );
-			}
-		} );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
-		referenceTreeState.addValueListener( new ValueListener<SearchObjectNode>() {
-
-			public void changing( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
-				if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
-					if( nextValue.getValue() instanceof Expression ) {
-						IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-						searchResults.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
-					} else {
-						IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-						IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
-					}
-				}
-			}
-		} );
 	}
 
 	private final ValueListener<String> searchStateListener = new ValueListener<String>() {
@@ -158,8 +115,34 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 			refresh();
 		}
 	};
+	ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
 
-	private final RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( new DefaultItemCodec<SearchObject>( SearchObject.class ) ) {
+		public void changing( State<SearchResult> state, SearchResult prevValue, SearchResult nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<SearchResult> state, SearchResult prevValue, SearchResult nextValue, boolean isAdjusting ) {
+			referenceTreeState.refreshWith( searchResults.getValue() );
+		}
+	};
+	ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
+
+		public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
+				if( nextValue.getValue() instanceof Expression ) {
+					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					searchResults.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
+				} else {
+					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+				}
+			}
+		}
+	};
+
+	private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>( new DefaultItemCodec<SearchResult>( SearchResult.class ) ) {
 
 		@Override
 		protected List createValues() {
@@ -172,13 +155,10 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResults.getValue() != null ) {
-				//				searchResults.getValue().getSearchObject().
-				AbstractDeclaration searchObject = searchResults.getValue().getSearchObject();
+				AbstractDeclaration searchObject = searchResults.getValue().getDeclaration();
 				AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo( AbstractMethod.class );
 				if( searchObject instanceof AbstractMethod ) {
 					AbstractType<?, ?, ?> declaringType = ( (AbstractMethod)searchObject ).getDeclaringType();
-					//					AnonymousConstructorPane.lookup( awtComponent )
-					//					MemberTabComposite.
 					IDE.getActiveInstance().getMethodInvocations( (AbstractMethod)searchObject );
 				}
 			}
@@ -186,96 +166,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	} );
-	private final ListSelectionState<SearchObject> searchResults = createListSelectionState( createKey( "searchResultsList" ), data, -1 );
-
-	private final TreeExpansionListener treeListener = new TreeExpansionListener() {
-
-		public void treeExpanded( TreeExpansionEvent event ) {
-			TreePath path = event.getPath();
-			if( expandMap.get( searchResults.getValue() ) == null ) {
-				expandMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
-			}
-			expandMap.get( searchResults.getValue() ).put( ( (SearchObjectNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), true );
-		}
-
-		public void treeCollapsed( TreeExpansionEvent event ) {
-			TreePath path = event.getPath();
-			if( expandMap.get( searchResults.getValue() ) == null ) {
-				expandMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
-			}
-			expandMap.get( searchResults.getValue() ).put( ( (SearchObjectNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), false );
-		}
-	};
-	private final KeyListener keyListener = new KeyListener() {
-
-		@SuppressWarnings( "rawtypes" )
-		State selected = searchResults;
-		Map<SearchObject<?>, Pair<Integer, Integer>> pairMap = Collections.newHashMap();
-
-		public void keyTyped( KeyEvent e ) {
-		}
-
-		public void keyReleased( KeyEvent e ) {
-		}
-
-		public void keyPressed( KeyEvent e ) {
-			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
-				if( selected == searchResults ) {
-					if( searchResults.getValue() != null ) {
-						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
-						Map<Integer, Boolean> innerMap = expandMap.get( searchResults.getValue() );
-						if( innerMap != null ) {
-							for( Integer i : innerMap.keySet() ) {
-								if( innerMap.get( i ) ) {
-									getView().getTree().expandNode( referenceTreeState.selectAtCoordinates( i, -1 ) );
-								}
-							}
-						}
-						if( searchResults.getValue() == null ) {
-							getView().enableLeftAndRight();
-						}
-					}
-				} else if( selected == referenceTreeState ) {
-					referenceTreeState.moveSelectedUpOne();
-				}
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
-				if( selected == searchResults ) {
-					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
-						getView().disableLeftAndRight();
-						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
-						Map<Integer, Boolean> innerMap = expandMap.get( searchResults.getValue() );
-						if( innerMap != null ) {
-							for( Integer i : innerMap.keySet() ) {
-								if( innerMap.get( i ) ) {
-									getView().getTree().expandNode( referenceTreeState.selectAtCoordinates( i, -1 ) );
-								}
-							}
-						}
-					}
-				} else if( selected == referenceTreeState ) {
-					referenceTreeState.moveSelectedDownOne();
-				}
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
-				if( selected != searchResults ) {
-					selected = searchResults;
-					pairMap.put( searchResults.getValue(), referenceTreeState.getSelectedCoordinates() );
-					referenceTreeState.setValueTransactionlessly( null );
-				}
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
-				if( selected != referenceTreeState ) {
-					if( referenceTreeState.isEmpty() ) {
-						selected = referenceTreeState;
-						Pair<Integer, Integer> pair = pairMap.get( searchResults.getValue() );
-						if( pairMap.get( searchResults.getValue() ) != null ) {
-							referenceTreeState.setValueTransactionlessly( referenceTreeState.selectAtCoordinates( pair.fst, pair.snd ) );
-						} else {
-							referenceTreeState.setValueTransactionlessly( referenceTreeState.getTopValue() );
-						}
-					}
-				}
-			}
-		}
-	};
+	private final ListSelectionState<SearchResult> searchResults = createListSelectionState( createKey( "searchResultsList" ), data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {
@@ -284,7 +175,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 	}
 
-	protected List<SearchObject<?>> setSearchResults() {
+	protected List<SearchResult> setSearchResults() {
 		return manager.getResultsForString( searchState.getValue() );
 	}
 
@@ -297,6 +188,11 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		searchState.addValueListener( searchStateListener );
+		searchResults.addValueListener( searchResultsListener );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
+		referenceTreeState.addValueListener( referenceTreeListener );
 		this.isActive = true;
 		if( !manager.isInitialized() ) {
 			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
@@ -307,6 +203,11 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	@Override
 	public void handlePostDeactivation() {
 		this.isActive = false;
+		searchState.removeValueListener( searchStateListener );
+		searchResults.removeValueListener( searchResultsListener );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectDocumentChangeListener );
+		referenceTreeState.removeValueListener( referenceTreeListener );
 		super.handlePostDeactivation();
 	}
 
@@ -314,8 +215,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		return this.searchState;
 	}
 
-	@SuppressWarnings( "rawtypes" )
-	public ListSelectionState<SearchObject> getSearchResults() {
+	public ListSelectionState<SearchResult> getSearchResults() {
 		return this.searchResults;
 	}
 
@@ -323,15 +223,11 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		return this.referenceTreeState;
 	}
 
-	public KeyListener getKeyListener() {
-		return this.keyListener;
-	}
-
-	public TreeExpansionListener getTreeExpansionListener() {
-		return treeListener;
-	}
-
 	public ActionOperation getHowToAddOperation() {
 		return this.howToAddOperation;
+	}
+
+	public FindContentManager getManager() {
+		return this.manager;
 	}
 }

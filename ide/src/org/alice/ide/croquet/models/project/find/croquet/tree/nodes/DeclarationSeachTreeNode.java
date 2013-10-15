@@ -40,22 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
+package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
+import org.lgna.project.ast.AbstractDeclaration;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchResult> {
+public class DeclarationSeachTreeNode extends SearchTreeNode {
+
+	private AbstractDeclaration declaration;
+
+	public DeclarationSeachTreeNode( SearchTreeNode parent, AbstractDeclaration expression ) {
+		super( parent );
+		this.declaration = expression;
+	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
-		sb.append( " (" );
-		sb.append( value.getReferences().size() );
-		sb.append( ")" );
-		rv.setText( sb.toString() );
-		rv.setIcon( value.getIcon() );
-		return rv;
+	public Object getValue() {
+		return declaration;
 	}
 }

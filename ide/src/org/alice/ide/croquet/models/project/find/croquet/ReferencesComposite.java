@@ -63,7 +63,7 @@ public class ReferencesComposite extends AbstractFindComposite {
 		getSearchState().setValueTransactionlessly( method.getName() );
 		if( getSearchResults().getItemCount() > 0 ) {
 			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
-				if( getSearchResults().getItemAt( i ).getSearchObject().equals( method ) ) {
+				if( getSearchResults().getItemAt( i ).getDeclaration().equals( method ) ) {
 					getSearchResults().setSelectedIndex( i );
 				}
 			}

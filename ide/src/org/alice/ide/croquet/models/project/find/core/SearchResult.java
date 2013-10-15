@@ -64,32 +64,35 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class SearchObject<T extends AbstractDeclaration> {
+public class SearchResult {
 
-	private final Class<T> cls;
-	private final T searchObject;
+	private final AbstractDeclaration declaration;
 	private final List<Expression> references = Collections.newArrayList();
 
 	@SuppressWarnings( "unchecked" )
-	public static final List<Class<? extends AbstractDeclaration>> clsList =
+	private static final List<Class<? extends AbstractDeclaration>> clsList =
 			Collections.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
 
-	public SearchObject( Class<T> cls, T object ) {
-		assert clsList.contains( cls );
-		this.cls = cls;
-		this.searchObject = object;
+	public SearchResult( AbstractDeclaration object ) {
+		assert checkClass( object );
+		this.declaration = object;
 	}
 
-	public T getSearchObject() {
-		return this.searchObject;
+	private boolean checkClass( AbstractDeclaration object ) {
+		for( Class<?> cls : clsList ) {
+			if( cls.isAssignableFrom( object.getClass() ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public Class<T> getObjectType() {
-		return cls;
+	public AbstractDeclaration getDeclaration() {
+		return this.declaration;
 	}
 
 	public String getName() {
-		return ( (AbstractDeclaration)searchObject ).getName();
+		return declaration.getName();
 	}
 
 	@Override
@@ -106,44 +109,44 @@ public class SearchObject<T extends AbstractDeclaration> {
 	}
 
 	public Icon getIcon() {
-		if( this.searchObject instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)this.searchObject;
+		if( this.declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)this.declaration;
 			if( method.isProcedure() ) {
 				return org.alice.ide.declarationseditor.DeclarationTabState.getProcedureIcon();
 			} else {
 				return org.alice.ide.declarationseditor.DeclarationTabState.getFunctionIcon();
 			}
-		} else if( this.searchObject instanceof org.lgna.project.ast.AbstractField ) {
+		} else if( this.declaration instanceof org.lgna.project.ast.AbstractField ) {
 			return org.alice.ide.declarationseditor.DeclarationTabState.getFieldIcon();
-		} else if( this.searchObject instanceof org.lgna.project.ast.AbstractConstructor ) {
+		} else if( this.declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
 			return org.alice.ide.declarationseditor.DeclarationTabState.getConstructorIcon();
-		} else if( this.searchObject instanceof org.lgna.project.ast.AbstractParameter ) {
+		} else if( this.declaration instanceof org.lgna.project.ast.AbstractParameter ) {
 			//todo?
 			return null;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.searchObject );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.declaration );
 			return null;
 		}
 	}
 
 	public void stencilHighlightForReference( Expression reference ) {
 		assert reference != null;
-		if( searchObject instanceof AbstractField ) {
+		if( declaration instanceof AbstractField ) {
 			assert reference instanceof FieldAccess;
 			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
-		} else if( searchObject instanceof AbstractMethod ) {
+		} else if( declaration instanceof AbstractMethod ) {
 			assert reference instanceof MethodInvocation;
 			Statement statement = reference.getFirstAncestorAssignableTo( Statement.class );
 			assert statement != null;
 			IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatement( statement, "" );
-		} else if( searchObject instanceof UserParameter ) {
+		} else if( declaration instanceof UserParameter ) {
 			assert reference instanceof ParameterAccess;
 			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
-		} else if( searchObject instanceof UserLocal ) {
+		} else if( declaration instanceof UserLocal ) {
 			assert reference instanceof LocalAccess;
 			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
 		} else {
-			assert false : searchObject.getClass();
+			assert false : declaration.getClass();
 		}
 	}
 }

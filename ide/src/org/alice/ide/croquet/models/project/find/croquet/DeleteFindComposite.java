@@ -44,7 +44,7 @@ package org.alice.ide.croquet.models.project.find.croquet;
 
 import java.util.List;
 
-import org.alice.ide.croquet.models.project.find.core.SearchObject;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.project.ast.UserField;
 
@@ -66,9 +66,9 @@ public class DeleteFindComposite extends AbstractFindComposite {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		ListSelectionState<SearchObject> searchResults = getSearchResults();
-		for( SearchObject obj : searchResults ) {
-			if( obj.getSearchObject() != field ) {
+		ListSelectionState<SearchResult> searchResults = getSearchResults();
+		for( SearchResult obj : searchResults ) {
+			if( obj.getDeclaration() != field ) {
 				getSearchResults().removeItem( obj );
 			}
 		}
@@ -77,7 +77,7 @@ public class DeleteFindComposite extends AbstractFindComposite {
 	}
 
 	@Override
-	protected List<SearchObject<?>> setSearchResults() {
-		return manager.getResultsForField( field );
+	protected List<SearchResult> setSearchResults() {
+		return getManager().getResultsForField( field );
 	}
 }

@@ -40,100 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.core;
+package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
-import java.util.List;
-
-import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class SearchObjectNode {
+public class ExpressionSearchTreeNode extends SearchTreeNode {
 
-	private AbstractDeclaration decValue;
-	private Expression exValue;
-	private SearchObjectNode parent;
-	private List<SearchObjectNode> children = Collections.newArrayList();
+	private Expression expression;
 
-	public SearchObjectNode( Object reference, SearchObjectNode parent ) {
-		this.parent = parent;
-		if( reference != null ) {
-			if( reference instanceof Expression ) {
-				exValue = (Expression)reference;
-			} else if( reference instanceof AbstractDeclaration ) {
-				decValue = (AbstractDeclaration)reference;
-			}
-		}
-	}
-
-	public SearchObjectNode getParent() {
-		return parent;
-	}
-
-	public List<SearchObjectNode> getChildren() {
-		return children;
-	}
-
-	public Object getValue() {
-		if( decValue != null ) {
-			return decValue;
-		} else if( exValue != null ) {
-			return exValue;
-		}
-		return null;
-	}
-
-	public boolean getIsLeaf() {
-		return this.children.size() == 0;
-	}
-
-	public boolean childrenContains( Object reference ) {
-		return getChildForReference( reference ) != null;
-	}
-
-	public void addChild( SearchObjectNode newChildNode ) {
-		this.children.add( newChildNode );
-	}
-
-	public void removeAllChildren() {
-		this.children.clear();
-	}
-
-	public SearchObjectNode getChildForReference( Object reference ) {
-		for( SearchObjectNode child : children ) {
-			if( child.getValue().equals( reference ) ) {
-				return child;
-			}
-		}
-		return null;
-	}
-
-	public int getLocationAmongstSiblings() {
-		return this.getParent().getChildren().indexOf( this );
-	}
-
-	public SearchObjectNode getYoungerSibling() {
-		int location = this.getLocationAmongstSiblings();
-		assert location < ( this.parent.children.size() - 1 );
-		return this.getParent().children.get( location + 1 );
-	}
-
-	public SearchObjectNode getOlderSibling() {
-		int location = this.getLocationAmongstSiblings();
-		assert location > 0;
-		return this.getParent().children.get( location - 1 );
+	public ExpressionSearchTreeNode( SearchTreeNode parent, Expression expression ) {
+		super( parent );
+		this.expression = expression;
 	}
 
 	@Override
-	public String toString() {
-		if( getValue() instanceof MethodInvocation ) {
-			return ( (MethodInvocation)getValue() ).method.getValue().getName();
-		}
-		return getValue() != null ? getValue().toString() : "ROOT";
+	public Object getValue() {
+		return expression;
 	}
 }

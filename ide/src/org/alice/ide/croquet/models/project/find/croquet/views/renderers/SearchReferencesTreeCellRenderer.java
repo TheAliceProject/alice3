@@ -48,8 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.alice.ide.croquet.models.project.find.core.SearchObjectNode;
-import org.alice.ide.swing.BasicTreeNodeRenderer;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
@@ -57,25 +56,26 @@ import org.lgna.project.ast.UserMethod;
 /**
  * @author Matt May
  */
-public class SearchReferencesTreeCellRenderer extends BasicTreeNodeRenderer {
-
+public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
 	@Override
 	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert rv instanceof DefaultTreeCellRenderer;
-		assert value instanceof SearchObjectNode;
-		SearchObjectNode node = (SearchObjectNode)value;
+		assert value instanceof SearchTreeNode;
+		SearchTreeNode node = (SearchTreeNode)value;
 		if( node.getParent() != null ) {
 			if( node.getIsLeaf() ) {
 				Object astValue = node.getValue();
 				assert astValue != null;
 				assert astValue instanceof Expression : astValue.getClass();
-				return PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
+				//note: creating component every time we render.  not as cell renderers are intended.
+				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
 			} else {
 				Object astValue = node.getValue();
 				assert astValue instanceof UserMethod;
 				UserMethod uMethod = (UserMethod)astValue;
-				return new JLabel( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
+				assert rv instanceof JLabel;
+				JLabel rvLabel = (JLabel)rv;
+				rvLabel.setText( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
 			}
 		}
 		return rv;

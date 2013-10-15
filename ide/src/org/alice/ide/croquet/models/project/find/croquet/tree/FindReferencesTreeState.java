@@ -40,13 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.core;
+package org.alice.ide.croquet.models.project.find.croquet.tree;
 
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.DeclarationSeachTreeNode;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.ExpressionSearchTreeNode;
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.codecs.DefaultItemCodec;
@@ -58,57 +62,57 @@ import com.sun.tools.javac.util.Pair;
 /**
  * @author Matt May
  */
-public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObjectNode> {
+public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTreeNode> {
 
-	private final static SearchObjectNode root = new SearchObjectNode( null, null );
+	private final static SearchTreeNode root = new SearchTreeNode( null );
 	private boolean showGenerated = true;
-	private final static ItemCodec<SearchObjectNode> codec = new DefaultItemCodec<SearchObjectNode>( SearchObjectNode.class );
+	private final static ItemCodec<SearchTreeNode> codec = new DefaultItemCodec<SearchTreeNode>( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
 		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, codec );
 	}
 
 	@Override
-	protected String getTextForNode( SearchObjectNode node ) {
+	protected String getTextForNode( SearchTreeNode node ) {
 		return "TODO: get text";
 	}
 
 	@Override
-	protected Icon getIconForNode( SearchObjectNode node ) {
+	protected Icon getIconForNode( SearchTreeNode node ) {
 		return null;
 	}
 
 	@Override
-	public SearchObjectNode getParent( SearchObjectNode node ) {
+	public SearchTreeNode getParent( SearchTreeNode node ) {
 		return node.getParent();
 	}
 
 	@Override
-	protected int getChildCount( SearchObjectNode parent ) {
+	protected int getChildCount( SearchTreeNode parent ) {
 		return parent.getChildren().size();
 	}
 
 	@Override
-	protected SearchObjectNode getChild( SearchObjectNode parent, int index ) {
+	protected SearchTreeNode getChild( SearchTreeNode parent, int index ) {
 		return parent.getChildren().get( index );
 	}
 
 	@Override
-	protected int getIndexOfChild( SearchObjectNode parent, SearchObjectNode child ) {
+	protected int getIndexOfChild( SearchTreeNode parent, SearchTreeNode child ) {
 		return parent.getChildren().indexOf( child );
 	}
 
 	@Override
-	protected SearchObjectNode getRoot() {
+	protected SearchTreeNode getRoot() {
 		return root;
 	}
 
 	@Override
-	public boolean isLeaf( SearchObjectNode node ) {
+	public boolean isLeaf( SearchTreeNode node ) {
 		return node.getIsLeaf();
 	}
 
-	public void refreshWith( SearchObject<?> searchObject ) {
+	public void refreshWith( SearchResult searchObject ) {
 		this.setValueTransactionlessly( null );
 		root.removeAllChildren();
 		if( searchObject != null ) {
@@ -116,13 +120,13 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 			for( Expression reference : references ) {
 				UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
 				if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
-					SearchObjectNode userMethodNode = root.getChildForReference( userMethod );
+					SearchTreeNode userMethodNode = root.getChildForReference( userMethod );
 					if( userMethodNode == null ) {
-						SearchObjectNode newChildNode = new SearchObjectNode( userMethod, root );
+						SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, userMethod );
 						root.addChild( newChildNode );
-						newChildNode.addChild( new SearchObjectNode( reference, newChildNode ) );
+						newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
 					} else {
-						userMethodNode.addChild( new SearchObjectNode( reference, userMethodNode ) );
+						userMethodNode.addChild( new ExpressionSearchTreeNode( userMethodNode, reference ) );
 					}
 				}
 			}
@@ -131,10 +135,10 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	}
 
 	public void moveSelectedUpOne() {
-		SearchObjectNode selected = this.getValue();
+		SearchTreeNode selected = this.getValue();
 		if( selected.getParent() == root ) {
 			if( selected.getLocationAmongstSiblings() > 0 ) {
-				SearchObjectNode olderSibling = selected.getOlderSibling();
+				SearchTreeNode olderSibling = selected.getOlderSibling();
 				setValueTransactionlessly( olderSibling.getChildren().get( olderSibling.getChildren().size() - 1 ) );
 			}
 		} else {
@@ -147,7 +151,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	}
 
 	public void moveSelectedDownOne() {
-		SearchObjectNode selected = this.getValue();
+		SearchTreeNode selected = this.getValue();
 		if( selected.getParent() == root ) {
 			this.setValueTransactionlessly( selected.getChildren().get( 0 ) );
 		} else {
@@ -159,7 +163,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 		}
 	}
 
-	public SearchObjectNode selectAtCoordinates( int a, int b ) {
+	public SearchTreeNode selectAtCoordinates( int a, int b ) {
 		if( b == -1 ) {
 			return root.getChildren().get( a );
 		} else {
@@ -171,14 +175,14 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 		return root.getChildren().size() > 0;
 	}
 
-	public SearchObjectNode getTopValue() {
+	public SearchTreeNode getTopValue() {
 		return root.getChildren().get( 0 );
 	}
 
 	public Pair<Integer, Integer> getSelectedCoordinates() {
 		int a;
 		int b;
-		SearchObjectNode value = this.getValue();
+		SearchTreeNode value = this.getValue();
 		if( value.getParent() == root ) {
 			b = -1;
 			a = value.getLocationAmongstSiblings();

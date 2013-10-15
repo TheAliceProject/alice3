@@ -40,22 +40,93 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
+package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
+import java.util.List;
+
+import org.lgna.project.ast.MethodInvocation;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchResult> {
+public class SearchTreeNode {
+
+	private final SearchTreeNode parent;
+	private final List<SearchTreeNode> children = Collections.newArrayList();
+
+	public SearchTreeNode( SearchTreeNode parent ) {
+		this.parent = parent;
+	}
+
+	public SearchTreeNode getParent() {
+		return parent;
+	}
+
+	public List<SearchTreeNode> getChildren() {
+		return children;
+	}
+
+	public Object getValue() {
+		return null;
+	}
+
+	//	{
+	//		if( decValue != null ) {
+	//			return decValue;
+	//		} else if( exValue != null ) {
+	//			return exValue;
+	//		}
+	//		return null;
+	//	}
+
+	public boolean getIsLeaf() {
+		return this.children.size() == 0;
+	}
+
+	public boolean childrenContains( Object reference ) {
+		return getChildForReference( reference ) != null;
+	}
+
+	public void addChild( SearchTreeNode newChildNode ) {
+		this.children.add( newChildNode );
+	}
+
+	public void removeAllChildren() {
+		this.children.clear();
+	}
+
+	public SearchTreeNode getChildForReference( Object reference ) {
+		for( SearchTreeNode child : children ) {
+			if( child.getValue().equals( reference ) ) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public int getLocationAmongstSiblings() {
+		return this.getParent().getChildren().indexOf( this );
+	}
+
+	public SearchTreeNode getYoungerSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location < ( this.parent.children.size() - 1 );
+		return this.getParent().children.get( location + 1 );
+	}
+
+	public SearchTreeNode getOlderSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location > 0;
+		return this.getParent().children.get( location - 1 );
+	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
-		sb.append( " (" );
-		sb.append( value.getReferences().size() );
-		sb.append( ")" );
-		rv.setText( sb.toString() );
-		rv.setIcon( value.getIcon() );
-		return rv;
+	public String toString() {
+		if( getValue() instanceof MethodInvocation ) {
+			return ( (MethodInvocation)getValue() ).method.getValue().getName();
+		}
+		return getValue() != null ? getValue().toString() : "ROOT";
 	}
 }

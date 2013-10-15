@@ -58,7 +58,6 @@ import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.LocalAccess;
 import org.lgna.project.ast.LocalDeclarationStatement;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.Node;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
@@ -76,27 +75,27 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  */
 public class FindContentManager {
 
-	private final List<SearchObject<?>> objectList = Collections.newArrayList();
+	private final List<SearchResult> objectList = Collections.newArrayList();
 	private final List<Object> superTypeList = Collections.newArrayList();
-	private UserType scene;
+	private UserType sceneType;
 
-	Crawler crawler = new Crawler() {
+	private final Crawler crawler = new Crawler() {
 		public void visit( Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInv = (MethodInvocation)crawlable;
-				SearchObject<?> checkFind = checkFind( methodInv.method.getValue() );
+				SearchResult checkFind = checkFind( methodInv.method.getValue() );
 				if( checkFind != null ) {
 					checkFind.addReference( methodInv );
 				}
 			} else if( crawlable instanceof FieldAccess ) {
 				FieldAccess fieldAccess = (FieldAccess)crawlable;
-				SearchObject<?> checkFind = checkFind( fieldAccess.field.getValue() );
+				SearchResult checkFind = checkFind( fieldAccess.field.getValue() );
 				if( checkFind != null ) {
 					checkFind.addReference( fieldAccess );
 				}
 			} else if( crawlable instanceof LocalAccess ) {
 				LocalAccess localAccess = (LocalAccess)crawlable;
-				SearchObject<?> checkFind = checkFind( localAccess.local.getValue() );
+				SearchResult checkFind = checkFind( localAccess.local.getValue() );
 				if( checkFind != null ) {
 					checkFind.addReference( localAccess );
 				}
@@ -105,36 +104,30 @@ public class FindContentManager {
 
 	};
 
-	public void initialize( UserType scene ) {
-		this.scene = scene;
-		tunnelField( scene );
-		for( SearchObject<?> object : objectList ) {
-			if( object.getSearchObject() instanceof UserMethod ) {
-				UserMethod method = (UserMethod)object.getSearchObject();
+	public void initialize( UserType sceneType ) {
+		this.sceneType = sceneType;
+		tunnelField( sceneType );
+		for( SearchResult object : objectList ) {
+			if( object.getDeclaration() instanceof UserMethod ) {
+				UserMethod method = (UserMethod)object.getDeclaration();
 				method.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 			}
 		}
 	}
 
-	private void tunnelField( UserType type ) {
-		NodeListProperty<Node> methods = type.methods;
-		NodeListProperty<Node> fields = type.fields;
+	private void tunnelField( UserType<?> type ) {
 		tunnelSuper( (AbstractType)type.superType.getValue() );
-		for( Node o : fields ) {
-			assert o instanceof AbstractField;
-			AbstractField field = (AbstractField)o;
+		for( UserField field : type.fields ) {
 			if( !checkContains( field ) ) {
-				objectList.add( new SearchObject<AbstractField>( AbstractField.class, field ) );
+				objectList.add( new SearchResult( field ) );
 				if( field.getValueType() instanceof UserType ) {
 					tunnelField( (UserType)field.getValueType() );
 				}
 			}
 		}
-		for( Node o : methods ) {
-			assert o instanceof AbstractMethod;
-			AbstractMethod method = (AbstractMethod)o;
+		for( UserMethod method : type.methods ) {
 			if( !checkContains( method ) ) {
-				objectList.add( new SearchObject<AbstractMethod>( AbstractMethod.class, method ) );
+				objectList.add( new SearchResult( method ) );
 				if( method instanceof UserMethod ) {
 					tunnelMethod( (UserMethod)method );
 				}
@@ -153,12 +146,12 @@ public class FindContentManager {
 		ArrayList<AbstractMethod> methods = parent.getDeclaredMethods();
 		for( AbstractField field : fields ) {
 			if( !checkContains( field ) ) {
-				objectList.add( new SearchObject<AbstractField>( AbstractField.class, field ) );
+				objectList.add( new SearchResult( field ) );
 			}
 		}
 		for( AbstractMethod method : methods ) {
 			if( !checkContains( method ) ) {
-				objectList.add( new SearchObject<AbstractMethod>( AbstractMethod.class, method ) );
+				objectList.add( new SearchResult( method ) );
 			}
 		}
 		if( parent != null ) {
@@ -174,13 +167,13 @@ public class FindContentManager {
 		BlockStatement blockStatement = method.body.getValue();
 		for( UserParameter parameter : nodeListProperty ) {
 			assert !checkContains( parameter );
-			objectList.add( new SearchObject<UserParameter>( UserParameter.class, parameter ) );
+			objectList.add( new SearchResult( parameter ) );
 		}
 		for( Statement statement : blockStatement.statements ) {
 			if( statement instanceof LocalDeclarationStatement ) {
 				UserLocal local = ( (LocalDeclarationStatement)statement ).local.getValue();
 				assert !checkContains( local );
-				objectList.add( new SearchObject<UserLocal>( UserLocal.class, local ) );
+				objectList.add( new SearchResult( local ) );
 			}
 		}
 	}
@@ -189,17 +182,17 @@ public class FindContentManager {
 		return checkFind( searchObject ) != null;
 	}
 
-	private SearchObject<?> checkFind( Object searchObject ) {
-		for( SearchObject<?> object : objectList ) {
-			if( object.getSearchObject().equals( searchObject ) ) {
+	private SearchResult checkFind( Object searchObject ) {
+		for( SearchResult object : objectList ) {
+			if( object.getDeclaration().equals( searchObject ) ) {
 				return object;
 			}
 		}
 		return null;
 	}
 
-	public List<SearchObject<?>> getResultsForString( String nextValue ) {
-		List<SearchObject<?>> rv = Collections.newArrayList();
+	public List<SearchResult> getResultsForString( String nextValue ) {
+		List<SearchResult> rv = Collections.newArrayList();
 		String check = nextValue;
 		//all these characters break regex
 		check = check.replaceAll( "\\*", ".*" );
@@ -216,7 +209,7 @@ public class FindContentManager {
 		while( true ) {
 			try {
 				Pattern pattern = Pattern.compile( check.toLowerCase() );
-				for( SearchObject<?> o : objectList ) {
+				for( SearchResult o : objectList ) {
 					String name = o.getName();
 					Matcher matcher = pattern.matcher( name.toLowerCase() );
 					if( matcher.find() ) {
@@ -234,11 +227,11 @@ public class FindContentManager {
 		return rv;
 	}
 
-	public List<SearchObject<?>> getResultsForField( UserField field ) {
-		List<SearchObject<?>> resultsForString = getResultsForString( field.getName() );
-		List<SearchObject<?>> rv = Collections.newArrayList();
-		for( SearchObject obj : resultsForString ) {
-			if( obj.getSearchObject().equals( field ) ) {
+	public List<SearchResult> getResultsForField( UserField field ) {
+		List<SearchResult> resultsForString = getResultsForString( field.getName() );
+		List<SearchResult> rv = Collections.newArrayList();
+		for( SearchResult obj : resultsForString ) {
+			if( obj.getDeclaration().equals( field ) ) {
 				rv.add( obj );
 			}
 		}
@@ -249,18 +242,18 @@ public class FindContentManager {
 		}
 	}
 
-	private List<SearchObject<?>> sortByRelevance( String string, List<SearchObject<?>> searchResults ) {
-		List<SearchObject<?>> unsortedList = Collections.newArrayList( searchResults );
-		List<SearchObject<?>> rv = Collections.newArrayList();
-		Map<SearchObject<?>, Double> scoreMap = Collections.newHashMap();
-		for( SearchObject<?> obj : unsortedList ) {
+	private List<SearchResult> sortByRelevance( String string, List<SearchResult> searchResults ) {
+		List<SearchResult> unsortedList = Collections.newArrayList( searchResults );
+		List<SearchResult> rv = Collections.newArrayList();
+		Map<SearchResult, Double> scoreMap = Collections.newHashMap();
+		for( SearchResult obj : unsortedList ) {
 			scoreMap.put( obj, score( obj, string ) );
 		}
 		//n^2 sort O:-)
 		while( !unsortedList.isEmpty() ) {
 			double max = Double.NEGATIVE_INFINITY;
-			SearchObject<?> maxObj = null;
-			for( SearchObject<?> o : unsortedList ) {
+			SearchResult maxObj = null;
+			for( SearchResult o : unsortedList ) {
 				if( scoreMap.get( o ) > max ) {
 					max = scoreMap.get( o );
 					maxObj = o;
@@ -272,7 +265,7 @@ public class FindContentManager {
 		return rv;
 	}
 
-	private Double score( SearchObject<?> obj, String string ) {
+	private Double score( SearchResult obj, String string ) {
 		double rv = 0;
 		if( obj.getName().equals( string ) ) {
 			rv += 2;
@@ -288,13 +281,13 @@ public class FindContentManager {
 	}
 
 	public void refresh() {
-		assert scene != null;
+		assert sceneType != null;
 		objectList.clear();
 		superTypeList.clear();
-		initialize( scene );
+		initialize( sceneType );
 	}
 
 	public boolean isInitialized() {
-		return scene != null;
+		return sceneType != null;
 	}
 }
