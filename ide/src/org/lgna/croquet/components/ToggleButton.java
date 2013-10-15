@@ -52,7 +52,15 @@ public class ToggleButton extends BooleanStateButton<javax.swing.JToggleButton> 
 
 	@Override
 	protected javax.swing.JToggleButton createAwtComponent() {
-		return new javax.swing.JToggleButton();
+		return new javax.swing.JToggleButton() {
+			@Override
+			public javax.swing.Icon getIcon() {
+				if( isIconClobbered() ) {
+					return getClobberIcon();
+				} else {
+					return super.getIcon();
+				}
+			}
+		};
 	}
-
 }

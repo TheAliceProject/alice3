@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  */
 public class ProximityEventHandler extends TransformationChangedHandler<Object, ProximityEvent> {
 
-	private ProximityEventManager proximityEventManager = new ProximityEventManager();
+	private final ProximityEventManager proximityEventManager = new ProximityEventManager();
 
 	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance ) {
 		registerIsFiringMap( pEList );
@@ -71,8 +71,8 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
+			if( !getModelList().contains( m ) ) {
+				getModelList().add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
@@ -80,7 +80,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, ProximityEvent e ) {
+	protected void fire( Object listener, ProximityEvent e ) {
 		if( listener instanceof ProximityEnterListener ) {
 			ProximityEnterListener enter = (ProximityEnterListener)listener;
 			enter.proximityEntered( (EnterProximityEvent)e );
@@ -97,11 +97,11 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 
 	protected class ProximityEventManager {
 
-		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new HashMap<SThing, CopyOnWriteArrayList<SThing>>();
-		Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = new HashMap<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>>();
-		Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = new HashMap<Object, HashMap<SThing, HashMap<SThing, Boolean>>>();
-		Map<Object, Double> distMap = new HashMap<Object, Double>();
-		Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
+		private final Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = Collections.newConcurrentHashMap();
+		private final Map<Object, Double> distMap = Collections.newConcurrentHashMap();
+		private final Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {

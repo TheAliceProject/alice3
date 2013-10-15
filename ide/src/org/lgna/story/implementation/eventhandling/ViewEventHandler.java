@@ -66,8 +66,8 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 public class ViewEventHandler extends TransformationChangedHandler<Object, ViewEvent> {
 
 	private CameraImp camera;
-	private Map<SModel, List<Object>> map = Collections.newConcurrentHashMap();
-	private Map<SModel, Boolean> wasInView = Collections.newConcurrentHashMap();
+	private final Map<SModel, List<Object>> map = Collections.newConcurrentHashMap();
+	private final Map<SModel, Boolean> wasInView = Collections.newConcurrentHashMap();
 
 	@Override
 	protected void check( SThing changedEntity ) {
@@ -120,7 +120,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, ViewEvent event ) {
+	protected void fire( Object listener, ViewEvent event ) {
 		if( listener instanceof ViewEnterListener ) {
 			ViewEnterListener intoViewEL = (ViewEnterListener)listener;
 			intoViewEL.viewEntered( (ComesIntoViewEvent)event );
@@ -134,8 +134,8 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		for( SModel m : models ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
+			if( !getModelList().contains( m ) ) {
+				getModelList().add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 				if( camera == null ) {
 					camera = ImplementationAccessor.getImplementation( m ).getScene().findFirstCamera();

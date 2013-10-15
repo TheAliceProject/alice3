@@ -116,4 +116,12 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().expandPath( path );
 	}
+
+	public void scrollPathToVisible( javax.swing.tree.TreePath treePath ) {
+		this.getAwtComponent().scrollPathToVisible( treePath );
+	}
+
+	public javax.swing.tree.TreePath getSelectionPath() {
+		return this.getAwtComponent().getSelectionPath();
+	}
 }

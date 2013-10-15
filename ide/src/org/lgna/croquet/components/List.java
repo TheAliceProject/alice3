@@ -165,6 +165,14 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
 	}
 
+	public int getSelectedIndex() {
+		return this.getAwtComponent().getSelectedIndex();
+	}
+
+	public void ensureIndexIsVisible( int index ) {
+		this.getAwtComponent().ensureIndexIsVisible( index );
+	}
+
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}

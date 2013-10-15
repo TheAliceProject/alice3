@@ -65,10 +65,13 @@ public final class GraphicsContext {
 		return rv;
 	}
 
-	private static void popTo( java.util.Stack<?> stack, int size ) {
+	private static <T> T popTo( java.util.Stack<T> stack, int size ) {
+		assert stack.size() > size;
+		T o = null;
 		while( stack.size() > size ) {
-			stack.pop();
+			o = stack.pop();
 		}
+		return o;
 	}
 
 	private class GraphicsAndStackSizes {
@@ -93,13 +96,27 @@ public final class GraphicsContext {
 		}
 
 		public void popAll() {
-			popTo( paintStack, this.paintStackSize );
-			popTo( strokeStack, this.strokeStackSize );
-			popTo( fontStack, this.fontStackSize );
-			popTo( clipStack, this.clipStackSize );
-			popTo( transformStack, this.transformStackSize );
-			popTo( antialiasingStack, this.antialiasingStackSize );
-			popTo( textAntialiasingStack, this.textAntialiasingStackSize );
+			if( paintStack.size() > this.paintStackSize ) {
+				this.graphics2d.setPaint( popTo( paintStack, this.paintStackSize ) );
+			}
+			if( strokeStack.size() > this.strokeStackSize ) {
+				this.graphics2d.setStroke( popTo( strokeStack, this.strokeStackSize ) );
+			}
+			if( fontStack.size() > this.fontStackSize ) {
+				this.graphics2d.setFont( popTo( fontStack, this.fontStackSize ) );
+			}
+			if( clipStack.size() > this.clipStackSize ) {
+				this.graphics2d.setClip( popTo( clipStack, this.clipStackSize ) );
+			}
+			if( transformStack.size() > this.transformStackSize ) {
+				this.graphics2d.setTransform( popTo( transformStack, this.transformStackSize ) );
+			}
+			if( antialiasingStack.size() > this.antialiasingStackSize ) {
+				this.graphics2d.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, popTo( antialiasingStack, this.antialiasingStackSize ) );
+			}
+			if( textAntialiasingStack.size() > this.textAntialiasingStackSize ) {
+				this.graphics2d.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, popTo( textAntialiasingStack, this.textAntialiasingStackSize ) );
+			}
 		}
 	}
 

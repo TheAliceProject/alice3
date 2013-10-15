@@ -69,8 +69,8 @@ import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
  */
 public class OcclusionHandler extends TransformationChangedHandler<Object, OcclusionEvent> {
 
-	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
-	private CameraImp camera;
+	private final OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
+	private CameraImp<?> camera;
 
 	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo ) {
 		registerIsFiringMap( occlusionEventListener );
@@ -82,8 +82,8 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 			camera.getSgComposite().addAbsoluteTransformationListener( this );
 		}
 		for( SThing m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
+			if( !getModelList().contains( m ) ) {
+				getModelList().add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
@@ -96,7 +96,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, OcclusionEvent event ) {
+	protected void fire( Object listener, OcclusionEvent event ) {
 		if( listener instanceof OcclusionStartListener ) {
 			OcclusionStartListener start = (OcclusionStartListener)listener;
 			start.occlusionStarted( (StartOcclusionEvent)event );
@@ -108,9 +108,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 
 	private class OcclusionEventHandler {
 
-		private Map<SModel, CopyOnWriteArrayList<SModel>> checkMap = new ConcurrentHashMap<SModel, CopyOnWriteArrayList<SModel>>();
-		private Map<SModel, Map<SModel, CopyOnWriteArrayList<Object>>> eventMap = new ConcurrentHashMap<SModel, Map<SModel, CopyOnWriteArrayList<Object>>>();
-		private Map<SModel, Map<SModel, Boolean>> wereOccluded = new ConcurrentHashMap<SModel, Map<SModel, Boolean>>();
+		private final Map<SModel, CopyOnWriteArrayList<SModel>> checkMap = Collections.newConcurrentHashMap();
+		private final Map<SModel, Map<SModel, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
+		private final Map<SModel, Map<SModel, Boolean>> wereOccluded = Collections.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			if( camera == null ) {
