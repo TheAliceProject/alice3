@@ -60,5 +60,6 @@ public class IsYZScaleLinkedState extends BooleanState
 
 	private IsYZScaleLinkedState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c24bc5c2-dcdb-4c4f-b759-79256d9921ce" ), true );
+		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
 	}
 }

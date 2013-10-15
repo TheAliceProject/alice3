@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -42,24 +42,43 @@
  */
 package org.alice.stageide.properties;
 
-import org.lgna.croquet.BooleanState;
-
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
+public class LinkScaleIcon implements javax.swing.Icon {
+	private static javax.swing.Icon createImageIcon( String path ) {
+		return new javax.swing.ImageIcon( LinkScaleButton.class.getResource( path ) );
 	}
 
-	public static IsXYScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
+	/*package-private*/static final javax.swing.Icon SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/scaleLinked.png" ), createImageIcon( "images/scaleUnlinked.png" ) );
+	/*package-private*/static final javax.swing.Icon SUB_SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked.png" ), createImageIcon( "images/subScaleUnlinked.png" ) );
+	/*package-private*/static final javax.swing.Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked_long.png" ), createImageIcon( "images/subScaleUnlinked_long.png" ) );
+
+	private final javax.swing.Icon selectedIcon;
+	private final javax.swing.Icon unselectedIcon;
+
+	public LinkScaleIcon( javax.swing.Icon selectedIcon, javax.swing.Icon unselectedIcon ) {
+		this.selectedIcon = selectedIcon;
+		this.unselectedIcon = unselectedIcon;
 	}
 
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+	public int getIconWidth() {
+		return Math.max( this.selectedIcon.getIconWidth(), this.unselectedIcon.getIconWidth() );
+	}
+
+	public int getIconHeight() {
+		return Math.max( this.selectedIcon.getIconHeight(), this.unselectedIcon.getIconHeight() );
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			javax.swing.Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
+			icon.paintIcon( c, g, x, y );
+		} else {
+			g.setColor( java.awt.Color.RED );
+			g.fillRect( x, y, c.getWidth(), c.getHeight() );
+		}
 	}
 }
