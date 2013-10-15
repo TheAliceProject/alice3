@@ -46,16 +46,19 @@ package org.alice.ide.croquet.edits.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade> {
+public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit {
+	private org.lgna.project.ast.ArgumentOwner argumentOwner;
 	private org.lgna.project.ast.JavaKeyedArgument keyedArgument;
 
-	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
+	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ArgumentOwner argumentOwner, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( completionStep );
+		this.argumentOwner = argumentOwner;
 		this.keyedArgument = keyedArgument;
 	}
 
 	public AddKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		this.argumentOwner = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ArgumentOwner.class ).decodeValue( binaryDecoder );
 		this.keyedArgument = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).decodeValue( binaryDecoder );
 	}
 
@@ -66,7 +69,7 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.
 	}
 
 	@Override
-	protected void postCopy( org.lgna.croquet.edits.Edit<?> result ) {
+	protected void postCopy( org.lgna.croquet.edits.Edit result ) {
 		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
 		super.postCopy( result );
 	}
@@ -74,18 +77,20 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ArgumentOwner.class ).encodeValue( binaryEncoder, this.argumentOwner );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().getArgumentListProperty().add( this.keyedArgument );
+		this.argumentOwner.getKeyedArgumentsProperty().add( this.keyedArgument );
 	}
 
 	@Override
 	protected final void undoInternal() {
-		int index = this.getModel().getArgumentListProperty().indexOf( this.keyedArgument );
-		this.getModel().getArgumentListProperty().remove( index );
+		org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty = this.argumentOwner.getKeyedArgumentsProperty();
+		int index = argumentListProperty.indexOf( this.keyedArgument );
+		argumentListProperty.remove( index );
 	}
 
 	@Override
@@ -100,24 +105,17 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
-		org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade replacement = replacementEdit.getModel();
+		retargeter.addKeyValuePair( this.argumentOwner, replacementEdit.argumentOwner );
 		retargeter.addKeyValuePair( this.keyedArgument, replacementEdit.keyedArgument );
 	}
 
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
+		this.argumentOwner = retargeter.retarget( this.argumentOwner );
 		this.keyedArgument = retargeter.retarget( this.keyedArgument );
 	}
-	//	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
-	//		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
-	//		KeyedMoreCascade replacement = replacementEdit.getModel();
-	//		retargeter.addKeyValuePair( this.argumentOwner, replacement.argumentOwner );
-	//	}
-	//	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-	//		this.argumentOwner = retargeter.retarget( this.argumentOwner );
-	//	}
 }
