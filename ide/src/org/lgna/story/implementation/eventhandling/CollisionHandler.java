@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  */
 public class CollisionHandler extends TransformationChangedHandler<Object, CollisionEvent> {
 
-	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
+	protected final CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
 	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		registerIsFiringMap( collisionListener );
@@ -72,8 +72,8 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
+			if( !getModelList().contains( m ) ) {
+				getModelList().add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
@@ -86,7 +86,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, CollisionEvent event ) {
+	protected void fire( Object listener, CollisionEvent event ) {
 		if( listener instanceof CollisionStartListener ) {
 			CollisionStartListener startCollisionEvent = (CollisionStartListener)listener;
 			startCollisionEvent.collisionStarted( (StartCollisionEvent)event );
@@ -98,10 +98,10 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 
 	private class CollisionEventHandler {
 
-		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new ConcurrentHashMap<SThing, CopyOnWriteArrayList<SThing>>();
-		Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = new ConcurrentHashMap<SThing, Map<SThing, CopyOnWriteArrayList<Object>>>();
-		Map<SThing, Map<SThing, Boolean>> wereTouchingMap = new ConcurrentHashMap<SThing, Map<SThing, Boolean>>();
-		Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, Map<SThing, Boolean>> wereTouchingMap = Collections.newConcurrentHashMap();
+		private final Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {

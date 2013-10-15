@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation.eventhandling;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SThing;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.PointOfViewEvent;
-
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
-
-	private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newConcurrentHashMap();
-
-	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
-		registerIsFiringMap( transformationlistener );
-		registerPolicyMap( transformationlistener, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( shouldListenTo );
-		for( SThing m : allObserving ) {
-			if( !getModelList().contains( m ) ) {
-				getModelList().add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-				//				collisionEventHandler.register( collisionListener, groupOne, groupTwo );
+public class InitializingIfAbsentMapHashMap<K, K2, E2> extends InitializingIfAbsentHashMap<K, java.util.Map<K2, E2>> {
+	public java.util.Map<K2, E2> getInitializingIfAbsentToHashMap( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.Map<K2, E2>>() {
+			public java.util.Map<K2, E2> initialize( K key ) {
+				return Collections.newHashMap();
 			}
-		}
-		for( SThing e : shouldListenTo ) {
-			if( checkMap.get( e ) == null ) {
-				checkMap.put( e, new LinkedList<PointOfViewChangeListener>() );
-			}
-			checkMap.get( e ).add( transformationlistener );
-		}
-	}
-
-	@Override
-	protected void check( SThing changedEntity ) {
-		for( PointOfViewChangeListener listener : checkMap.get( changedEntity ) ) {
-			fireEvent( listener, new PointOfViewEvent( changedEntity ) );
-		}
-	}
-
-	@Override
-	protected void fire( PointOfViewChangeListener listener, PointOfViewEvent event ) {
-		listener.pointOfViewChanged( event );
+		} );
 	}
 }

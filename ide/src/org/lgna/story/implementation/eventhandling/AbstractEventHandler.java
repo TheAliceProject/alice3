@@ -114,11 +114,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 		fireDequeue( listener );
 	}
 
-	private void fire( L listener, E event ) {
-		nameOfFireCall( listener, event );
-	}
-
-	protected abstract void nameOfFireCall( L listener, E event );
+	protected abstract void fire( L listener, E event );
 
 	public final void silenceListeners() {
 		shouldFire = false;
