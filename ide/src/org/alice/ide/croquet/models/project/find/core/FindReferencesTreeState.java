@@ -46,7 +46,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.alice.ide.croquet.models.project.find.croquet.FindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.codecs.DefaultItemCodec;
@@ -65,7 +65,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	private final static ItemCodec<SearchObjectNode> codec = new DefaultItemCodec<SearchObjectNode>( SearchObjectNode.class );
 
 	public FindReferencesTreeState() {
-		super( FindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, codec );
+		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, codec );
 	}
 
 	@Override

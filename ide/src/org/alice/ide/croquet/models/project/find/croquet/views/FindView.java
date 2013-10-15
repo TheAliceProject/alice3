@@ -49,7 +49,7 @@ import javax.swing.border.BevelBorder;
 
 import org.alice.ide.croquet.models.project.find.core.SearchObject;
 import org.alice.ide.croquet.models.project.find.core.SearchObjectNode;
-import org.alice.ide.croquet.models.project.find.croquet.FindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
 import org.lgna.croquet.components.BorderPanel;
@@ -88,7 +88,7 @@ public class FindView extends BorderPanel {
 		}
 	};
 
-	public FindView( FindComposite composite ) {
+	public FindView( AbstractFindComposite composite ) {
 		super( composite );
 		searchBox = composite.getSearchState().createTextField();
 		inputMap = searchBox.getAwtComponent().getInputMap();
@@ -117,8 +117,8 @@ public class FindView extends BorderPanel {
 	}
 
 	@Override
-	public FindComposite getComposite() {
-		return (FindComposite)super.getComposite();
+	public AbstractFindComposite getComposite() {
+		return (AbstractFindComposite)super.getComposite();
 	}
 
 	public void enableLeftAndRight() {

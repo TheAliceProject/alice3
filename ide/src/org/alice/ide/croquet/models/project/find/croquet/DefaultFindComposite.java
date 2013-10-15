@@ -42,31 +42,13 @@
  */
 package org.alice.ide.croquet.models.project.find.croquet;
 
-import org.lgna.project.ast.AbstractMethod;
-
 /**
  * @author Matt May
  */
-public class ReferencesComposite extends AbstractFindComposite {
+public class DefaultFindComposite extends AbstractFindComposite {
 
-	private final AbstractMethod method;
-
-	public ReferencesComposite( AbstractMethod method ) {
-		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ) );
-		assert method != null;
-		this.method = method;
+	public DefaultFindComposite() {
+		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
 	}
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		getSearchState().setValueTransactionlessly( method.getName() );
-		if( getSearchResults().getItemCount() > 0 ) {
-			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
-				if( getSearchResults().getItemAt( i ).getSearchObject().equals( method ) ) {
-					getSearchResults().setSelectedIndex( i );
-				}
-			}
-		}
-	}
 }

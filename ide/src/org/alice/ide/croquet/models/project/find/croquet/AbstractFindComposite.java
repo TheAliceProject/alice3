@@ -64,7 +64,6 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -88,23 +87,18 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class FindComposite extends FrameComposite<FindView> {
+public abstract class AbstractFindComposite extends FrameComposite<FindView> {
+	public static final Group FIND_COMPOSITE_GROUP = Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	protected final FindContentManager manager = new FindContentManager();
-	public static Group FIND_COMPOSITE_GROUP = Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 	private final StringState searchState = createStringState( createKey( "searchState" ) );
-	private final BooleanState shouldINavigate = createBooleanState( createKey( "shouldNav" ), true );
-	private boolean isActive;
-	private final FindReferencesTreeState referenceTree = new FindReferencesTreeState();
-	private final ItemCodec<SearchObject> codec1 = new DefaultItemCodec<SearchObject>( SearchObject.class );
+	private final BooleanState isNavigationEnabledState = createBooleanState( createKey( "isNavigationEnabledState" ), true );
+	private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
 	private final Map<SearchObject<?>, Map<Integer, Boolean>> expandMap = Collections.newHashMap();
+	private boolean isActive;
 
-	public FindComposite() {
-		this( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
-	}
-
-	protected FindComposite( UUID fromString ) {
-		super( fromString, IDE.INFORMATION_GROUP );
+	protected AbstractFindComposite( UUID migrationID ) {
+		super( migrationID, FIND_COMPOSITE_GROUP );
 		searchState.addValueListener( searchStateListener );
 		searchResults.addValueListener( new ValueListener<SearchObject>() {
 
@@ -112,18 +106,18 @@ public class FindComposite extends FrameComposite<FindView> {
 			}
 
 			public void changed( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
-				referenceTree.refreshWith( searchResults.getValue() );
+				referenceTreeState.refreshWith( searchResults.getValue() );
 			}
 		} );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
-		referenceTree.addValueListener( new ValueListener<SearchObjectNode>() {
+		referenceTreeState.addValueListener( new ValueListener<SearchObjectNode>() {
 
 			public void changing( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
 			}
 
 			public void changed( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
-				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
+				if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
 					if( nextValue.getValue() instanceof Expression ) {
 						IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
 						searchResults.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
@@ -143,7 +137,7 @@ public class FindComposite extends FrameComposite<FindView> {
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			data.refresh();
-			referenceTree.refreshWith( searchResults.getValue() );
+			referenceTreeState.refreshWith( searchResults.getValue() );
 			if( data.getItemCount() == 1 ) {
 				searchResults.setSelectedIndex( 0 );
 			}
@@ -165,7 +159,7 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 	};
 
-	private final RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( codec1 ) {
+	private final RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( new DefaultItemCodec<SearchObject>( SearchObject.class ) ) {
 
 		@Override
 		protected List createValues() {
@@ -233,7 +227,7 @@ public class FindComposite extends FrameComposite<FindView> {
 						if( innerMap != null ) {
 							for( Integer i : innerMap.keySet() ) {
 								if( innerMap.get( i ) ) {
-									getView().getTree().expandNode( referenceTree.selectAtCoordinates( i, -1 ) );
+									getView().getTree().expandNode( referenceTreeState.selectAtCoordinates( i, -1 ) );
 								}
 							}
 						}
@@ -241,8 +235,8 @@ public class FindComposite extends FrameComposite<FindView> {
 							getView().enableLeftAndRight();
 						}
 					}
-				} else if( selected == referenceTree ) {
-					referenceTree.moveSelectedUpOne();
+				} else if( selected == referenceTreeState ) {
+					referenceTreeState.moveSelectedUpOne();
 				}
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
 				if( selected == searchResults ) {
@@ -253,29 +247,29 @@ public class FindComposite extends FrameComposite<FindView> {
 						if( innerMap != null ) {
 							for( Integer i : innerMap.keySet() ) {
 								if( innerMap.get( i ) ) {
-									getView().getTree().expandNode( referenceTree.selectAtCoordinates( i, -1 ) );
+									getView().getTree().expandNode( referenceTreeState.selectAtCoordinates( i, -1 ) );
 								}
 							}
 						}
 					}
-				} else if( selected == referenceTree ) {
-					referenceTree.moveSelectedDownOne();
+				} else if( selected == referenceTreeState ) {
+					referenceTreeState.moveSelectedDownOne();
 				}
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
 				if( selected != searchResults ) {
 					selected = searchResults;
-					pairMap.put( searchResults.getValue(), referenceTree.getSelectedCoordinates() );
-					referenceTree.setValueTransactionlessly( null );
+					pairMap.put( searchResults.getValue(), referenceTreeState.getSelectedCoordinates() );
+					referenceTreeState.setValueTransactionlessly( null );
 				}
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
-				if( selected != referenceTree ) {
-					if( referenceTree.isEmpty() ) {
-						selected = referenceTree;
+				if( selected != referenceTreeState ) {
+					if( referenceTreeState.isEmpty() ) {
+						selected = referenceTreeState;
 						Pair<Integer, Integer> pair = pairMap.get( searchResults.getValue() );
 						if( pairMap.get( searchResults.getValue() ) != null ) {
-							referenceTree.setValueTransactionlessly( referenceTree.selectAtCoordinates( pair.fst, pair.snd ) );
+							referenceTreeState.setValueTransactionlessly( referenceTreeState.selectAtCoordinates( pair.fst, pair.snd ) );
 						} else {
-							referenceTree.setValueTransactionlessly( referenceTree.getTopValue() );
+							referenceTreeState.setValueTransactionlessly( referenceTreeState.getTopValue() );
 						}
 					}
 				}
@@ -306,10 +300,8 @@ public class FindComposite extends FrameComposite<FindView> {
 		this.isActive = true;
 		if( !manager.isInitialized() ) {
 			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
-			refresh();
-		} else {
-			refresh();
 		}
+		refresh();
 	}
 
 	@Override
@@ -328,7 +320,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	}
 
 	public FindReferencesTreeState getReferenceResults() {
-		return this.referenceTree;
+		return this.referenceTreeState;
 	}
 
 	public KeyListener getKeyListener() {

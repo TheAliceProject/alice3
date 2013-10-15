@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.ast;
 
 import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
-import org.alice.ide.croquet.models.project.find.croquet.FindComposite;
+import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringValue;
@@ -125,7 +125,7 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 		return this.bleh;
 	}
 
-	public FindComposite getSearchFrame() {
+	public AbstractFindComposite getSearchFrame() {
 		return this.searchFrame;
 	}
 

@@ -51,7 +51,7 @@ import org.lgna.project.ast.UserField;
 /**
  * @author Matt May
  */
-public class DeleteFindComposite extends FindComposite {
+public class DeleteFindComposite extends AbstractFindComposite {
 
 	private final UserField field;
 
