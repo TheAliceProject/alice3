@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import org.alice.ide.croquet.models.project.find.croquet.DefaultFindComposite;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
-	}
-
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new DefaultFindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchResult> {
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( value.getName() );
+		sb.append( " (" );
+		sb.append( value.getReferences().size() );
+		sb.append( ")" );
+		rv.setText( sb.toString() );
+		rv.setIcon( value.getIcon() );
+		return rv;
 	}
 }

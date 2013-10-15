@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,93 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
-import org.alice.ide.croquet.models.project.find.croquet.DefaultFindComposite;
+import java.util.List;
+
+import org.lgna.project.ast.MethodInvocation;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
+public class SearchTreeNode {
+
+	private final SearchTreeNode parent;
+	private final List<SearchTreeNode> children = Collections.newArrayList();
+
+	public SearchTreeNode( SearchTreeNode parent ) {
+		this.parent = parent;
 	}
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
+	public SearchTreeNode getParent() {
+		return parent;
 	}
 
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new DefaultFindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+	public List<SearchTreeNode> getChildren() {
+		return children;
+	}
+
+	public Object getValue() {
+		return null;
+	}
+
+	//	{
+	//		if( decValue != null ) {
+	//			return decValue;
+	//		} else if( exValue != null ) {
+	//			return exValue;
+	//		}
+	//		return null;
+	//	}
+
+	public boolean getIsLeaf() {
+		return this.children.size() == 0;
+	}
+
+	public boolean childrenContains( Object reference ) {
+		return getChildForReference( reference ) != null;
+	}
+
+	public void addChild( SearchTreeNode newChildNode ) {
+		this.children.add( newChildNode );
+	}
+
+	public void removeAllChildren() {
+		this.children.clear();
+	}
+
+	public SearchTreeNode getChildForReference( Object reference ) {
+		for( SearchTreeNode child : children ) {
+			if( child.getValue().equals( reference ) ) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public int getLocationAmongstSiblings() {
+		return this.getParent().getChildren().indexOf( this );
+	}
+
+	public SearchTreeNode getYoungerSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location < ( this.parent.children.size() - 1 );
+		return this.getParent().children.get( location + 1 );
+	}
+
+	public SearchTreeNode getOlderSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location > 0;
+		return this.getParent().children.get( location - 1 );
+	}
+
+	@Override
+	public String toString() {
+		if( getValue() instanceof MethodInvocation ) {
+			return ( (MethodInvocation)getValue() ).method.getValue().getName();
+		}
+		return getValue() != null ? getValue().toString() : "ROOT";
 	}
 }

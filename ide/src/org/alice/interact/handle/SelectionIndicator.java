@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 
 /**
- * @author user
+ * @author Dave Culyba
  */
 public class SelectionIndicator extends ManipulationHandle3D {
 

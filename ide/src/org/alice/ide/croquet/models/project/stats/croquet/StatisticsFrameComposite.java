@@ -40,26 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.stats.croquet;
 
-import org.alice.ide.croquet.models.project.find.croquet.DefaultFindComposite;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.TabSelectionState;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
+public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
+
+	public static final Integer TOP_SIZE = 250;
+	public static final Integer BOTTOM_SIZE = 100;
+	private TabSelectionState<SimpleTabComposite> tabState;
+
+	private StatisticsFrameComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.INFORMATION_GROUP );
 	}
 
-	public static ProjectMenuModel getInstance() {
+	private static class SingletonHolder {
+		private static StatisticsFrameComposite instance = new StatisticsFrameComposite();
+
+	}
+
+	public static StatisticsFrameComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new DefaultFindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+	@Override
+	protected StatisticsFrameView createView() {
+		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
+		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, flowControlFrequencyTab, methodTab );
+		return new StatisticsFrameView( this );
+	}
+
+	public TabSelectionState<SimpleTabComposite> getTabState() {
+		return this.tabState;
 	}
 }

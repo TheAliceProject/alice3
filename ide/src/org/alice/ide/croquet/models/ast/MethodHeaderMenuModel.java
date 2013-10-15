@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import org.alice.ide.croquet.models.project.ReferencesComposite;
+import org.alice.ide.croquet.models.project.find.croquet.ReferencesComposite;
 
 /**
  * @author Dennis Cosgrove

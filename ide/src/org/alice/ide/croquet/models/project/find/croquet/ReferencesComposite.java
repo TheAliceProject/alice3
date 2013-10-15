@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.find.croquet;
 
-import org.alice.ide.croquet.models.project.find.croquet.DefaultFindComposite;
+import org.lgna.project.ast.AbstractMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
+public class ReferencesComposite extends AbstractFindComposite {
+
+	private final AbstractMethod method;
+
+	public ReferencesComposite( AbstractMethod method ) {
+		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ) );
+		assert method != null;
+		this.method = method;
 	}
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new DefaultFindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		getSearchState().setValueTransactionlessly( method.getName() );
+		if( getSearchResults().getItemCount() > 0 ) {
+			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
+				if( getSearchResults().getItemAt( i ).getDeclaration().equals( method ) ) {
+					getSearchResults().setSelectedIndex( i );
+				}
+			}
+		}
 	}
 }

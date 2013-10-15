@@ -40,26 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.stats.croquet.views;
 
-import org.alice.ide.croquet.models.project.find.croquet.DefaultFindComposite;
+import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
+import org.lgna.croquet.components.BorderPanel;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
-	}
+public class StatisticsFrameView extends BorderPanel {
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new DefaultFindComposite().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+	public StatisticsFrameView( StatisticsFrameComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}
 }

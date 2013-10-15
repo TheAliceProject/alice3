@@ -82,6 +82,6 @@ public class DeleteFieldFrameView extends BorderPanel {
 		panel.addComponent( new Label() );
 		this.addComponent( panel, Constraint.CENTER );
 		//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
-		this.addComponent( composite.getSearchFrame().getBooleanState().createPushButton(), Constraint.PAGE_END );
+		this.addComponent( composite.getSearchFrame().getBooleanState().createToggleButton(), Constraint.PAGE_END );
 	}
 }
