@@ -62,6 +62,14 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit {
 		this.keyedArgument = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).decodeValue( binaryDecoder );
 	}
 
+	public org.lgna.project.ast.ArgumentOwner getArgumentOwner() {
+		return this.argumentOwner;
+	}
+
+	public org.lgna.project.ast.JavaKeyedArgument getKeyedArgument() {
+		return this.keyedArgument;
+	}
+
 	@Override
 	protected void preCopy() {
 		super.preCopy();
