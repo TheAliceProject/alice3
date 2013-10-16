@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.ast;
 
+import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -106,8 +109,12 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 			sb.append( " if you want to delete \"" );
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-			DeleteFieldFrameComposite dialog = DeleteFieldFrameComposite.getDialog( field );
-			dialog.getOperation().fire();
+			DeleteFieldFrameComposite dialog = new DeleteFieldFrameComposite( field );
+			CompletionStep<?> step = dialog.getOperation().fire();
+			if( step.isSuccessfullyCompleted() ) {
+				new DeleteFindComposite( field ).getBooleanState().setValueTransactionlessly( true );
+				//				Application.getActiveInstance().showMessageDialog( "show find here" );
+			}
 			return false;
 		} else {
 			return true;

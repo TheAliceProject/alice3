@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
-import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringValue;
@@ -66,7 +64,7 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	private StringValue pluralTheseReferences = createStringValue( this.createKey( "pluralTheseReferences" ) );
 	private StringValue ifYouWantToDelete = createStringValue( this.createKey( "ifYouWantToDelete" ) );
 	private PlainStringValue bleh = createStringValue( createKey( "bleh" ) );
-	private DeleteFindComposite searchFrame;
+	//	private DeleteFindComposite searchFrame;
 	private Integer refCount;
 
 	public DeleteFieldFrameComposite( UserField field ) {
@@ -75,12 +73,12 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 		java.util.List<org.lgna.project.ast.FieldAccess> references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
 		refCount = references.size();
 		buildString();
-		searchFrame = new DeleteFindComposite( field );
+		//		searchFrame = new DeleteFindComposite( field );
 	}
 
-	public static DeleteFieldFrameComposite getDialog( UserField field ) {
-		return new DeleteFieldFrameComposite( field );
-	}
+	//	public static DeleteFieldFrameComposite getDialog( UserField field ) {
+	//		return new DeleteFieldFrameComposite( field );
+	//	}
 
 	@Override
 	protected DeleteFieldFrameView createView() {
@@ -125,13 +123,13 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 		return this.bleh;
 	}
 
-	public AbstractFindComposite getSearchFrame() {
-		return this.searchFrame;
-	}
+	//	public AbstractFindComposite getSearchFrame() {
+	//		return this.searchFrame;
+	//	}
 
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		searchFrame.getBooleanState().setValueTransactionlessly( true );
+		//		searchFrame.getBooleanState().setValueTransactionlessly( true );
 		return null;
 	}
 

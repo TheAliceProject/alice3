@@ -74,6 +74,7 @@ public class DeleteFindComposite extends AbstractFindComposite {
 		}
 		assert getSearchResults().getItemCount() == 1;
 		getSearchResults().setSelectedIndex( 0 );
+		getView().getTree().expandAllRows();
 	}
 
 	@Override
