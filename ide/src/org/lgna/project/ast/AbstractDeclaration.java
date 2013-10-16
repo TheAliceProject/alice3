@@ -96,15 +96,8 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-
-	@Override
-	protected void appendRepr( StringBuilder repr, AstLocalizer localizer ) {
-		localizer.appendDeclaration( repr, this );
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendDeclaration( this );
 	}
 
 	@Override

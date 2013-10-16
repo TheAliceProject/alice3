@@ -673,24 +673,104 @@ public abstract class AbstractNode extends Element implements Node {
 		return decode( xmlDocument, projectVersion, new java.util.HashMap<Integer, AbstractDeclaration>() );
 	}
 
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.getClass().getSimpleName() );
-		return rv;
+	//	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	//		rv.append( this.getClass().getSimpleName() );
+	//		return rv;
+	//	}
+	//
+	//	public final String getRepr( java.util.Locale locale ) {
+	//		StringBuilder sb = new StringBuilder();
+	//		this.appendRepr( sb, locale );
+	//		return sb.toString();
+	//	}
+
+	public static void safeAppendRepr( AstLocalizer localizer, Node node ) {
+		if( node instanceof AbstractNode ) {
+			( (AbstractNode)node ).appendRepr( localizer );
+		} else {
+			if( node != null ) {
+				localizer.appendText( node.getRepr() );
+			} else {
+				localizer.appendNull();
+			}
+		}
 	}
 
-	public final String getRepr( java.util.Locale locale ) {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb, locale );
-		return sb.toString();
+	//protected abstract void appendRepr( AstLocalizer localizer );
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendText( this.getClass().getSimpleName() );
 	}
 
-	//	protected abstract void appendRepr( StringBuilder repr, AstLocalizer localizer );
-	protected void appendRepr( StringBuilder repr, AstLocalizer localizer ) {
-	}
+	public final String getRepr() {
+		final StringBuilder sb = new StringBuilder();
+		this.appendRepr( new AstLocalizer() {
+			public void appendDeclaration( Declaration declaration ) {
 
-	public final String getRepr( AstLocalizer localizer ) {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb, localizer );
+			}
+
+			public void appendBoolean( boolean value ) {
+				sb.append( value );
+			}
+
+			public void appendChar( char value ) {
+				sb.append( value );
+			}
+
+			public void appendInt( int value ) {
+				sb.append( value );
+			}
+
+			public void appendLong( long value ) {
+				sb.append( value );
+			}
+
+			public void appendFloat( float value ) {
+				sb.append( value );
+			}
+
+			public void appendDouble( double value ) {
+				sb.append( value );
+			}
+
+			public void appendNullLiteral() {
+				sb.append( "null" );
+			}
+
+			//			@Override
+			//			protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+			//				//todo
+			//				if( "java".equals( locale.getVariant() ) ) {
+			//					rv.append( "null" );
+			//				} else {
+			//					rv.append( "None" );
+			//				}
+			//				return rv;
+			//			}
+
+			public void appendNull() {
+				sb.append( "null" );
+			}
+
+			public void appendThis() {
+				sb.append( "this" );
+			}
+
+			public void appendSpace() {
+				sb.append( ' ' );
+			}
+
+			public void appendDot() {
+				sb.append( '.' );
+			}
+
+			public void appendText( String text ) {
+				sb.append( text );
+			}
+
+			public void appendLocalizedText( Class<? extends Node> cls, String subKey ) {
+				sb.append( subKey );
+			}
+		} );
 		return sb.toString();
 	}
 

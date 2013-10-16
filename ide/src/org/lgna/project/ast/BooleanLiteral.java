@@ -66,14 +66,8 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
-	}
-
-	@Override
-	protected void appendRepr( StringBuilder repr, AstLocalizer localizer ) {
-		localizer.appendBoolean( repr, this.value.getValue() );
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendBoolean( this.value.getValue() );
 	}
 
 	@Override

@@ -95,8 +95,7 @@ public final class LocalAccess extends Expression {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		NodeUtilities.safeAppendRepr( rv, this.local.getValue(), locale );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.local.getValue() );
 	}
 }

@@ -46,7 +46,31 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface AstLocalizer {
-	void appendDeclaration( StringBuilder sb, Declaration declaration );
+	void appendDeclaration( Declaration declaration );
 
-	void appendBoolean( StringBuilder sb, boolean value );
+	void appendThis();
+
+	void appendNull();
+
+	void appendNullLiteral();
+
+	void appendSpace();
+
+	void appendDot();
+
+	void appendChar( char value );
+
+	void appendBoolean( boolean value );
+
+	void appendInt( int value );
+
+	void appendLong( long value );
+
+	void appendFloat( float value );
+
+	void appendDouble( double value );
+
+	void appendText( String text );
+
+	void appendLocalizedText( Class<? extends Node> cls, String subKey );
 }
