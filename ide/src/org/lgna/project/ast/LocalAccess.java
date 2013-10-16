@@ -93,4 +93,9 @@ public final class LocalAccess extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( this.local.getValue().getValidName() );
 	}
+
+	@Override
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.local.getValue() );
+	}
 }

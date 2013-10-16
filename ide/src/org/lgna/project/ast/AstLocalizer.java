@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,46 +45,32 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?>> {
-	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+public interface AstLocalizer {
+	void appendDeclaration( Declaration declaration );
 
-	public TypeLiteral() {
-	}
+	void appendThis();
 
-	public TypeLiteral( AbstractType<?, ?, ?> value ) {
-		this.value.setValue( value );
-	}
+	void appendNull();
 
-	public TypeLiteral( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+	void appendNullLiteral();
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo
-		return JavaType.getInstance( value.getValue().getClass() );
-	}
+	void appendSpace();
 
-	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
-		return this.value;
-	}
+	void appendDot();
 
-	@Override
-	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness ) {
-		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
-		return this.value.valueContentEquals( otherTypeLiteral.value, strictness );
-	}
+	void appendChar( char value );
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.value.getValue() );
-		localizer.appendText( ".class" );
-	}
+	void appendBoolean( boolean value );
 
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendTypeName( this.value.getValue() );
-		generator.appendString( ".class" );
-	}
+	void appendInt( int value );
+
+	void appendLong( long value );
+
+	void appendFloat( float value );
+
+	void appendDouble( double value );
+
+	void appendText( String text );
+
+	void appendLocalizedText( Class<? extends Node> cls, String subKey );
 }

@@ -77,13 +77,6 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		return super.fillInDeclarationSet( rv, nodes );
 	}
 
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
-	}
-
 	public String getName() {
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
@@ -100,6 +93,11 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		} else {
 			throw new RuntimeException( this + " " + name );
 		}
+	}
+
+	@Override
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendDeclaration( this );
 	}
 
 	@Override
