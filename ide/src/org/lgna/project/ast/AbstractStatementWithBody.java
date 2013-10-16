@@ -68,9 +68,4 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 		}
 		return false;
 	}
-
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		return rv;
-	}
 }

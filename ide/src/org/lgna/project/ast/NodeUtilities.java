@@ -62,4 +62,13 @@ public class NodeUtilities {
 	public static void safeAppendRepr( StringBuilder sbRepr, Node node ) {
 		safeAppendRepr( sbRepr, node, javax.swing.JComponent.getDefaultLocale() );
 	}
+
+	//	public static void safeAppendRepr( StringBuilder sbRepr, Node node, AstLocalizer nodeLocalizer ) {
+	//		if( node instanceof AbstractNode ) {
+	//			( (AbstractNode)node ).appendRepr( sbRepr, nodeLocalizer );
+	//		} else {
+	//			//todo?
+	//			sbRepr.append( node );
+	//		}
+	//	}
 }

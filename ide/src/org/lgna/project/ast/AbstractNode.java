@@ -684,6 +684,16 @@ public abstract class AbstractNode extends Element implements Node {
 		return sb.toString();
 	}
 
+	//	protected abstract void appendRepr( StringBuilder repr, AstLocalizer localizer );
+	protected void appendRepr( StringBuilder repr, AstLocalizer localizer ) {
+	}
+
+	public final String getRepr( AstLocalizer localizer ) {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb, localizer );
+		return sb.toString();
+	}
+
 	protected StringBuilder appendStringDetails( StringBuilder rv ) {
 		return rv;
 	}

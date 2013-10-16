@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,39 +45,8 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
-	public edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
+public interface AstLocalizer {
+	void appendDeclaration( StringBuilder sb, Declaration declaration );
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Boolean.class );
-	}
-
-	public BooleanLiteral() {
-	}
-
-	public BooleanLiteral( Boolean value ) {
-		this.value.setValue( value );
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Boolean> getValueProperty() {
-		return this.value;
-	}
-
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
-	}
-
-	@Override
-	protected void appendRepr( StringBuilder repr, AstLocalizer localizer ) {
-		localizer.appendBoolean( repr, this.value.getValue() );
-	}
-
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendBoolean( this.value.getValue() );
-	}
+	void appendBoolean( StringBuilder sb, boolean value );
 }
