@@ -95,4 +95,10 @@ public final class ParameterAccess extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( this.parameter.getValue().getName() );
 	}
+
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+		NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
+		return rv;
+	}
 }
