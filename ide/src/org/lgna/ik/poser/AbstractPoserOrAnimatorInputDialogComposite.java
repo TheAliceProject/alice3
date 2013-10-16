@@ -143,10 +143,10 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 				if( cls.isEnum() ) {
 					arguments[ 0 ] = cls.getEnumConstants()[ 0 ];
 				} else {
-					throw new RuntimeException( "todo: " + cls.getName() );
+					arguments[ 0 ] = FieldFinder.getInstance().getResourcesForType( type ).get( 0 );
 				}
 			} else {
-				throw new RuntimeException( parameter0Type.getName() );
+				arguments[ 0 ] = FieldFinder.getInstance().getResourcesForType( type ).get( 0 );
 			}
 			break;
 		case 2:

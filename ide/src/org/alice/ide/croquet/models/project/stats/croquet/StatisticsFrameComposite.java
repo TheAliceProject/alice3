@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.project.stats.croquet;
 
-import org.lgna.croquet.BooleanState;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.TabSelectionState;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
+public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
+
+	public static final Integer TOP_SIZE = 250;
+	public static final Integer BOTTOM_SIZE = 100;
+	private TabSelectionState<SimpleTabComposite> tabState;
+
+	private StatisticsFrameComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.INFORMATION_GROUP );
 	}
 
-	public static IsXYScaleLinkedState getInstance() {
+	private static class SingletonHolder {
+		private static StatisticsFrameComposite instance = new StatisticsFrameComposite();
+
+	}
+
+	public static StatisticsFrameComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+	@Override
+	protected StatisticsFrameView createView() {
+		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
+		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, flowControlFrequencyTab, methodTab );
+		return new StatisticsFrameView( this );
+	}
+
+	public TabSelectionState<SimpleTabComposite> getTabState() {
+		return this.tabState;
 	}
 }

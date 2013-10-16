@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,26 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.project.find.croquet;
 
-import org.lgna.croquet.BooleanState;
+import java.util.List;
+
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.project.ast.UserField;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
+public class DeleteFindComposite extends AbstractFindComposite {
+
+	private final UserField field;
+
+	public DeleteFindComposite( UserField field ) {
+		super( java.util.UUID.fromString( "c95adf19-dd80-410c-b5f5-489239076f6d" ) );
+		this.field = field;
+		getSearchState().setValueTransactionlessly( field.getName() );
+		getSearchState().setEnabled( false );
+		getReferenceResults().setShowGenerated( false );
 	}
 
-	public static IsXYScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		ListSelectionState<SearchResult> searchResults = getSearchResults();
+		for( SearchResult obj : searchResults ) {
+			if( obj.getDeclaration() != field ) {
+				getSearchResults().removeItem( obj );
+			}
+		}
+		assert getSearchResults().getItemCount() == 1;
+		getSearchResults().setSelectedIndex( 0 );
 	}
 
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+	@Override
+	protected List<SearchResult> setSearchResults() {
+		return getManager().getResultsForField( field );
 	}
 }

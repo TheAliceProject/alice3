@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,26 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import org.lgna.croquet.BooleanState;
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
-	}
-
-	public static IsXYScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
+	@Override
+	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		assert value instanceof SearchTreeNode;
+		SearchTreeNode node = (SearchTreeNode)value;
+		if( node.getParent() != null ) {
+			if( node.getIsLeaf() ) {
+				Object astValue = node.getValue();
+				assert astValue != null;
+				assert astValue instanceof Expression : astValue.getClass();
+				//note: creating component every time we render.  not as cell renderers are intended.
+				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
+			} else {
+				Object astValue = node.getValue();
+				assert astValue instanceof UserMethod;
+				UserMethod uMethod = (UserMethod)astValue;
+				assert rv instanceof JLabel;
+				JLabel rvLabel = (JLabel)rv;
+				rvLabel.setText( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
+			}
+		}
+		return rv;
 	}
 }

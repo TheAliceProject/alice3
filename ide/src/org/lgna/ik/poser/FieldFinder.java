@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,26 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
+package org.lgna.ik.poser;
 
-import org.lgna.croquet.BooleanState;
+import java.util.ArrayList;
+
+import org.alice.ide.ProjectStack;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.UserField;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
+public class FieldFinder {
+
+	private FieldFinder() {
 	}
 
-	public static IsXYScaleLinkedState getInstance() {
+	private static class SingletonHolder {
+		static final FieldFinder instance = new FieldFinder();
+	}
+
+	public static FieldFinder getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+	private NamedUserType sceneType;
+	private final org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+
+	public void refreshScene() {
+		sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( ProjectStack.peekProject() );
+	}
+
+	public ArrayList<Object> getResourcesForType( NamedUserType type ) {
+		ArrayList<Object> rv = Collections.newArrayList();
+		refreshScene();
+		ArrayList<UserField> fields = sceneType.getDeclaredFields();
+		for( UserField field : fields ) {
+			if( field.getManagementLevel().isManaged() ) {
+				if( field.getValueType().isAssignableTo( type ) ) {
+					InstanceCreation creation = (InstanceCreation)field.initializer.getValue();
+					if( creation.requiredArguments.size() > 0 ) {
+						System.out.println( creation.requiredArguments.size() );
+						SimpleArgument simpleArgument = creation.requiredArguments.get( 0 );
+						System.out.println( simpleArgument.expression.getValue() );
+						Expression[] arr = new Expression[ 1 ];
+						arr[ 0 ] = simpleArgument.expression.getValue();
+						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
+						System.out.println( evaluated[ 0 ].getClass() );
+						rv.add( evaluated[ 0 ] );
+					}
+				}
+			}
+		}
+		return rv;
 	}
 }

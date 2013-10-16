@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,26 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.project.find.croquet;
 
-import org.lgna.croquet.BooleanState;
+import org.lgna.project.ast.AbstractMethod;
 
 /**
- * @author dculyba
- * 
+ * @author Matt May
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
+public class ReferencesComposite extends AbstractFindComposite {
+
+	private final AbstractMethod method;
+
+	public ReferencesComposite( AbstractMethod method ) {
+		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ) );
+		assert method != null;
+		this.method = method;
 	}
 
-	public static IsXYScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private IsXYScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		getSearchState().setValueTransactionlessly( method.getName() );
+		if( getSearchResults().getItemCount() > 0 ) {
+			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
+				if( getSearchResults().getItemAt( i ).getDeclaration().equals( method ) ) {
+					getSearchResults().setSelectedIndex( i );
+				}
+			}
+		}
 	}
 }

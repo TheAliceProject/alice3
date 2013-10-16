@@ -152,9 +152,13 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		this.depthField = new DoubleTextField( 3 );
 		this.depthField.addActionListener( this.valueChangeListener );
 
-		this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance(), IsXYScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsXYScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
-		this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance(), IsXZScaleLinkedState.class.getResource( "images/subScaleLinked_long.png" ), IsXZScaleLinkedState.class.getResource( "images/subScaleUnlinked_long.png" ) );
-		this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance(), IsYZScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsYZScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
+		//		this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance(), IsXYScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsXYScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
+		//		this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance(), IsXZScaleLinkedState.class.getResource( "images/subScaleLinked_long.png" ), IsXZScaleLinkedState.class.getResource( "images/subScaleUnlinked_long.png" ) );
+		//		this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance(), IsYZScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsYZScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
+		//		this.linkAllButton = new LinkScaleButton( IsAllScaleLinkedState.getInstance() );
+		this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance() );
+		this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance() );
+		this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance() );
 		this.linkAllButton = new LinkScaleButton( IsAllScaleLinkedState.getInstance() );
 
 		this.addComponent( this.widthLabel, new GridBagConstraints(
