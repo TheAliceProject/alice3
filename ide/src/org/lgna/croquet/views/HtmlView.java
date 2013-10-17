@@ -69,19 +69,13 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing
 		this.revalidateAndRepaint();
 	}
 
-	private class TextFromUrlWorker extends org.lgna.croquet.worker.url.TextUrlWorker {
-		public TextFromUrlWorker( java.net.URL url ) {
-			super( url );
-		}
-
-		@Override
-		protected void handleDone_onEventDispatchThread( String value ) {
-			setText( value );
-		}
-	}
-
 	public void setTextFromUrl( java.net.URL url ) {
-		TextFromUrlWorker worker = new TextFromUrlWorker( url );
+		org.lgna.croquet.worker.url.TextUrlWorker worker = new org.lgna.croquet.worker.url.TextUrlWorker( url ) {
+			@Override
+			protected void handleDone_onEventDispatchThread( String value ) {
+				setText( value );
+			}
+		};
 		worker.execute();
 	}
 
