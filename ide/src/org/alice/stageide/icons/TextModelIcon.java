@@ -65,7 +65,6 @@ public class TextModelIcon extends ShapeIcon {
 		int descent = fm.getMaxDescent();
 		int x = ( width / 2 ) - ( messageWidth / 2 );
 		int y = ( ( height / 2 ) + ( ascent / 2 ) ) - ( descent / 2 );
-		;
 
 		java.awt.font.GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
 		java.awt.Shape outline = glyphVector.getOutline( x, y );

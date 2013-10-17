@@ -85,14 +85,14 @@ public final class Size {
 	}
 
 	public Double getLeftToRight() {
-		return (double)this.internal.x;
+		return this.internal.x;
 	}
 
 	public Double getBottomToTop() {
-		return (double)this.internal.y;
+		return this.internal.y;
 	}
 
 	public Double getFrontToBack() {
-		return (double)this.internal.z;
+		return this.internal.z;
 	}
 }
