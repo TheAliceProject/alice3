@@ -83,7 +83,7 @@ public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialo
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new RenameExampleComposite().getOperation().fire();
+		new RenameExampleComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

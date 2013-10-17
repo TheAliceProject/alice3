@@ -57,7 +57,7 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 		@Override
 		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
-			return indirect.getOperation();
+			return indirect.getLaunchOperation();
 		}
 	}
 

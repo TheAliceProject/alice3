@@ -109,7 +109,7 @@ public class BlockStatementGenerator {
 									org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, userMethod.body.getValue() );
 								}
 							};
-							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit, observer );
+							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getLaunchOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit, observer );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();

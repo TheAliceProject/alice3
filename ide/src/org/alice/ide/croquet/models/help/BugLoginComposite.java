@@ -140,7 +140,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 		}
 		new org.alice.stageide.StageIDE();
 		try {
-			new BugLoginComposite().getOperation().fire();
+			new BugLoginComposite().getLaunchOperation().fire();
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

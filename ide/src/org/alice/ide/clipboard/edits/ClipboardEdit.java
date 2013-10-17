@@ -96,7 +96,7 @@ public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
 			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					composite.getOperation().fire();
+					composite.getLaunchOperation().fire();
 				}
 			} );
 		}

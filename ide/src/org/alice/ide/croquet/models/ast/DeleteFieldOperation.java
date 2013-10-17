@@ -92,7 +92,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 		final int N = references.size();
 		if( N > 0 ) {
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
-			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getOperation().fire();
+			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
 				new DeleteFindComposite( field ).getBooleanState().setValueTransactionlessly( true );
 			}

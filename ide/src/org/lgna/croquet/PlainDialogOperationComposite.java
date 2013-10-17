@@ -93,11 +93,11 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 
 	private InternalCloseOperation closeOperation = new InternalCloseOperation( this );
 
-	private final OwnedByCompositeOperation operation;
+	private final OwnedByCompositeOperation launchOperation;
 
 	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
 		super( migrationId, isModal );
-		this.operation = new OwnedByCompositeOperation( operationGroup, this );
+		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 
 	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
@@ -108,8 +108,8 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		return defaultValue;
 	}
 
-	public OwnedByCompositeOperation getOperation() {
-		return this.operation;
+	public OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
 	}
 
 	public InternalCloseOperation getCloseOperation() {
@@ -118,7 +118,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 
 	@Override
 	protected String getName() {
-		return this.getOperation().getName();
+		return this.getLaunchOperation().getName();
 	}
 
 	public String modifyNameIfNecessary( String text ) {

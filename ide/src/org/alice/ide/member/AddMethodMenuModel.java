@@ -73,7 +73,7 @@ public abstract class AddMethodMenuModel extends org.lgna.croquet.MenuModel {
 	private void appendMenuItemPrepModelsForType( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
-			models.add( this.getAddMethodComposite( namedUserType ).getOperation().getMenuItemPrepModel() );
+			models.add( this.getAddMethodComposite( namedUserType ).getLaunchOperation().getMenuItemPrepModel() );
 			appendMenuItemPrepModelsForType( models, namedUserType.superType.getValue() );
 		}
 	}

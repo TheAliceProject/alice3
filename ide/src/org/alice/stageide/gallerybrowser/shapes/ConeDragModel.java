@@ -72,7 +72,7 @@ public class ConeDragModel extends ShapeDragModel {
 
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation();
+		return org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override

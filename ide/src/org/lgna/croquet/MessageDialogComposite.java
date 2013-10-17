@@ -63,6 +63,10 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 		this.title = this.findLocalizedText( "title" );
 	}
 
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
+	}
+
 	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
@@ -85,10 +89,6 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 	}
 
 	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
-		return this.launchOperation;
 	}
 
 	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getOperation();
+	public OwnedByCompositeOperation getLaunchOperation();
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 

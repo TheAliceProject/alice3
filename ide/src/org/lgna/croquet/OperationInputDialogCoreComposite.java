@@ -47,20 +47,20 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final OwnedByCompositeOperation operation;
+	private final OwnedByCompositeOperation launchOperation;
 
 	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
-		this.operation = new OwnedByCompositeOperation( operationGroup, this );
+		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 
-	public OwnedByCompositeOperation getOperation() {
-		return this.operation;
+	public OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
 	}
 
 	@Override
 	protected String getName() {
-		return this.getOperation().getName();
+		return this.getLaunchOperation().getName();
 	}
 
 	public boolean isToolBarTextClobbered( boolean defaultValue ) {

@@ -152,8 +152,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 			renameAndReplaceToolTipText = "select resource";
 			removeToolTipText = renameAndReplaceToolTipText;
 		}
-		RenameResourceComposite.getInstance().getOperation().setEnabled( isSelected );
-		RenameResourceComposite.getInstance().getOperation().setToolTipText( renameAndReplaceToolTipText );
+		RenameResourceComposite.getInstance().getLaunchOperation().setEnabled( isSelected );
+		RenameResourceComposite.getInstance().getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
 		ReloadContentResourceOperation.getInstance().setEnabled( isSelected );
 		ReloadContentResourceOperation.getInstance().setToolTipText( renameAndReplaceToolTipText );
 
@@ -167,7 +167,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ResourceManagerComposite.getInstance().getOperation().fire();
+		ResourceManagerComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

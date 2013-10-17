@@ -67,10 +67,10 @@ public class ShowSystemPropertiesView extends org.lgna.croquet.components.FormPa
 			String propertyName = showPathPropertyComposite.getPropertyName();
 			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel(
 					new org.lgna.croquet.components.Label( propertyName + ":" ),
-					showPathPropertyComposite.getOperation().createHyperlink()
+					showPathPropertyComposite.getLaunchOperation().createHyperlink()
 					) );
 		}
 		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite.getInstance().getOperation().createHyperlink() ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite.getInstance().getLaunchOperation().createHyperlink() ) );
 	}
 }

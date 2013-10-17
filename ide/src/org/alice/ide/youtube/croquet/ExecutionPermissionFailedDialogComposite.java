@@ -130,7 +130,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new ExecutionPermissionFailedDialogComposite( new File( FFmpegProcess.getFFmpegCommand() ) ).getOperation().fire();
+		new ExecutionPermissionFailedDialogComposite( new File( FFmpegProcess.getFFmpegCommand() ) ).getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }
