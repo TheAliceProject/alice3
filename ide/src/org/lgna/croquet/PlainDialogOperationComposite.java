@@ -112,6 +112,14 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		return this.launchOperation;
 	}
 
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKey ) {
+		if( subKey != null ) {
+			throw new RuntimeException( "todo" );
+		} else {
+			return this.getLaunchOperation();
+		}
+	}
+
 	public InternalCloseOperation getCloseOperation() {
 		return this.closeOperation;
 	}

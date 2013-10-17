@@ -79,7 +79,7 @@ public abstract class AbstractElement implements Element {
 			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		}
 
-		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			binaryEncoder.encode( this.resolver );
 		}
 

@@ -48,6 +48,8 @@ package org.lgna.croquet;
 public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
 	public OwnedByCompositeOperation getLaunchOperation();
 
+	public OwnedByCompositeOperation getLaunchOperation( String subKey );
+
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	public boolean isToolBarTextClobbered( boolean defaultValue );

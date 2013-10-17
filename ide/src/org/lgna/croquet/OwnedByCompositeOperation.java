@@ -47,25 +47,41 @@ package org.lgna.croquet;
  */
 public final class OwnedByCompositeOperation extends ActionOperation {
 	public static final class Resolver extends IndirectResolver<OwnedByCompositeOperation, OperationOwningComposite<?>> {
-		private Resolver( OperationOwningComposite<?> indirect ) {
+		private final String subKey;
+
+		private Resolver( OperationOwningComposite<?> indirect, String subKey ) {
 			super( indirect );
+			this.subKey = subKey;
 		}
 
 		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
+			this.subKey = binaryDecoder.decodeString();
+		}
+
+		@Override
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			super.encode( binaryEncoder );
+			binaryEncoder.encode( this.subKey );
 		}
 
 		@Override
 		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
-			return indirect.getLaunchOperation();
+			return indirect.getLaunchOperation( this.subKey );
 		}
 	}
 
 	private final OperationOwningComposite composite;
+	private final String subKey;
 
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
+	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, String subKey ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		this.composite = composite;
+		this.subKey = subKey;
+	}
+
+	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
+		this( group, composite, null );
 	}
 
 	@Override
@@ -88,6 +104,13 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		//todo
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.subKey;
+	}
+
+	//todo: pass subKey into composite methods
 
 	@Override
 	protected String modifyNameIfNecessary( String text ) {
@@ -130,6 +153,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 	@Override
 	protected Resolver createResolver() {
-		return new Resolver( this.composite );
+		return new Resolver( this.composite, this.subKey );
 	}
 }

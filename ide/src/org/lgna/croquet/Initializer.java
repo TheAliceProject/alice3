@@ -45,64 +45,6 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final MessageType messageType;
-	private String title;
-
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKey ) {
-		if( subKey != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.getLaunchOperation();
-		}
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
-
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
-
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	}
-
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
-	}
+public interface Initializer<T> {
+	void initialize( T value );
 }
