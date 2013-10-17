@@ -58,12 +58,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 import org.alice.media.youtube.core.YouTubeEvent;
 import org.alice.media.youtube.core.YouTubeListener;
 import org.alice.media.youtube.core.YouTubeUploader;
-import org.alice.media.youtube.core.YouTubeEvent.EventType;
-import org.jdesktop.swingworker.SwingWorker;
 
 /**
  * @author David Culyba

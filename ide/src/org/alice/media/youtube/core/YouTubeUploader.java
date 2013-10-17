@@ -48,7 +48,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jdesktop.swingworker.SwingWorker;
+import javax.swing.SwingWorker;
 
 import com.google.gdata.client.youtube.YouTubeService;
 import com.google.gdata.data.extensions.Rating;
