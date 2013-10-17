@@ -101,9 +101,7 @@ public class FindContentManager {
 		for( UserMethod method : type.methods ) {
 			if( !checkContains( method ) ) {
 				objectList.add( new SearchResult( method ) );
-				if( method instanceof UserMethod ) {
-					tunnelMethod( (UserMethod)method );
-				}
+				tunnelMethod( method );
 			}
 		}
 	}

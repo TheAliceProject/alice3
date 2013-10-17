@@ -90,10 +90,8 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 			if( ce instanceof ControllerClosedEvent ) {
 				stateFailed = true;
 			}
-			if( ce instanceof ControllerEvent ) {
-				synchronized( stateLock ) {
-					stateLock.notifyAll();
-				}
+			synchronized( stateLock ) {
+				stateLock.notifyAll();
 			}
 		}
 	}

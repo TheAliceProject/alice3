@@ -82,7 +82,7 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 	}
 
 	public int getProgress() {
-		return this.getProgress();
+		return this.swingWorker.getProgress();
 	}
 
 	protected final void setProgress( int progress ) {

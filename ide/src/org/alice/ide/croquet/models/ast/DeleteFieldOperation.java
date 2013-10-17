@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.ast;
 
 import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
+import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
 import org.lgna.croquet.history.CompletionStep;
 
 /**
@@ -90,30 +91,10 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 		java.util.List<org.lgna.project.ast.FieldAccess> references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
-			StringBuffer sb = new StringBuffer();
-			sb.append( "Unable to delete property named \"" );
-			sb.append( field.name.getValue() );
-			sb.append( "\" because it has " );
-			if( N == 1 ) {
-				sb.append( "an access reference" );
-			} else {
-				sb.append( N );
-				sb.append( " access references" );
-			}
-			sb.append( " to it.\nYou must remove " );
-			if( N == 1 ) {
-				sb.append( "this reference" );
-			} else {
-				sb.append( "these references" );
-			}
-			sb.append( " if you want to delete \"" );
-			sb.append( field.name.getValue() );
-			sb.append( "\" ." );
-			DeleteFieldFrameComposite dialog = new DeleteFieldFrameComposite( field );
-			CompletionStep<?> step = dialog.getOperation().fire();
+			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
+			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
 				new DeleteFindComposite( field ).getBooleanState().setValueTransactionlessly( true );
-				//				Application.getActiveInstance().showMessageDialog( "show find here" );
 			}
 			return false;
 		} else {

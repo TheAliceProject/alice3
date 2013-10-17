@@ -249,11 +249,6 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "update:", a );
 	}
 
-	@Override
-	public void update() {
-		super.update();
-	}
-
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		//		m_distance = m_distanceRequested;
 		//		double height = getHeight( m_distance );

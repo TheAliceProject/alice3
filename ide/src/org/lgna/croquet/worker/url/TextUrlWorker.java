@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
-
-import javax.swing.Icon;
-
-import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.ImmutableTextArea;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.icon.IconFactory;
-
-import edu.cmu.cs.dennisc.math.GoldenRatio;
+package org.lgna.croquet.worker.url;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DeleteFieldFrameView extends BorderPanel {
+public abstract class TextUrlWorker extends org.lgna.croquet.worker.Worker<String> {
+	private final java.net.URL url;
 
-	private static int WIDTH = 550;
-
-	public DeleteFieldFrameView( DeleteFieldFrameComposite composite ) {
-		this.setMinimumPreferredHeight( GoldenRatio.getShorterSideLength( WIDTH ) );
-		this.setMinimumPreferredWidth( WIDTH );
-		//		System.out.println( composite.getField().getValueType() );
-		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
-		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
-		ImmutableTextArea textArea = composite.getBleh().createImmutableTextArea();
-		//		System.out.println(image);
-		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
-		//		System.out.println( composite.getField() );
-		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
-		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
-		//		System.out.println( "icon factory: " + iconFactory );
-		//		System.out.println( "icon: " + icon );
-		Label label = new Label( icon );
-		this.addComponent( label, Constraint.LINE_START );
-		GridPanel panel = GridPanel.createGridPane( 3, 1 );
-		panel.addComponent( new Label() );
-		panel.addComponent( textArea );
-		panel.addComponent( new Label() );
-		this.addComponent( panel, Constraint.CENTER );
-		//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
-		//		this.addComponent( composite.getSearchFrame().getBooleanState().createToggleButton(), Constraint.PAGE_END );
+	public TextUrlWorker( java.net.URL url ) {
+		this.url = url;
 	}
+
+	@Override
+	protected String do_onBackgroundThread() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		java.net.URLConnection urlConnection = url.openConnection();
+		try {
+			java.io.InputStream inputStream = urlConnection.getInputStream();
+			try {
+				java.io.InputStreamReader reader = new java.io.InputStreamReader( inputStream );
+				java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
+				while( true ) {
+					String inputLine = bufferedReader.readLine();
+					if( inputLine != null ) {
+						sb.append( inputLine );
+					} else {
+						break;
+					}
+				}
+				return sb.toString();
+			} finally {
+				inputStream.close();
+			}
+		} finally {
+			if( urlConnection instanceof java.net.HttpURLConnection ) {
+				//todo?
+				( (java.net.HttpURLConnection)urlConnection ).disconnect();
+			}
+		}
+	}
+
 }

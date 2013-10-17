@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThreadWithRevealingToString extends Thread {
-	public ThreadWithRevealingToString() {
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing.JEditorPane> {
+	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
+		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
+			javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
+			if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
+				java.net.URL url = e.getURL();
+				try {
+					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+				} catch( Exception exc ) {
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( url );
+				}
+			}
+		}
+	};
+
+	public String getText() {
+		return this.getText();
 	}
 
-	public ThreadWithRevealingToString( ThreadGroup threadGroup, String name ) {
-		super( threadGroup, name );
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+	public void setText( String text ) {
+		this.getAwtComponent().setText( text );
+		this.revalidateAndRepaint();
 	}
 
-	protected StringBuffer updateRepr( StringBuffer rv ) {
-		rv.append( "id=" );
-		rv.append( this.getId() );
-		//		rv.append( ";group=" );
-		//		rv.append( this.getThreadGroup() );
-		//		rv.append( ";priority=" );
-		//		rv.append( this.getPriority() );
+	public void setTextFromUrl( java.net.URL url ) {
+		org.lgna.croquet.worker.url.TextUrlWorker worker = new org.lgna.croquet.worker.url.TextUrlWorker( url ) {
+			@Override
+			protected void handleDone_onEventDispatchThread( String value ) {
+				setText( value );
+			}
+		};
+		worker.execute();
+	}
+
+	@Override
+	protected javax.swing.JEditorPane createAwtComponent() {
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane();
+		rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
+		rv.setEditable( false );
 		return rv;
 	}
 
 	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		updateRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
+	protected void handleDisplayable() {
+		this.getAwtComponent().addHyperlinkListener( this.hyperlinkListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getAwtComponent().removeHyperlinkListener( this.hyperlinkListener );
 	}
 }
