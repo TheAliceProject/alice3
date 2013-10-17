@@ -42,11 +42,19 @@
  */
 package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
+import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchResult> {
+
+	private final AbstractFindComposite composite;
+
+	public SearchResultListCellRenderer( AbstractFindComposite composite ) {
+		this.composite = composite;
+	}
+
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
 		StringBuilder sb = new StringBuilder();

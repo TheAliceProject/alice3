@@ -48,6 +48,7 @@ import java.util.UUID;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.find.core.FindContentManager;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.alice.ide.croquet.models.project.find.core.criteria.AcceptIfNotGenerated;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.FindView;
@@ -71,6 +72,9 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+
 /**
  * @author Matt May
  */
@@ -82,6 +86,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	private final BooleanState isNavigationEnabledState = createBooleanState( createKey( "isNavigationEnabledState" ), true );
 	private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
 	private boolean isActive;
+	private boolean showGenerated = false;
 
 	protected AbstractFindComposite( UUID migrationID ) {
 		super( migrationID, FIND_COMPOSITE_GROUP );
@@ -170,7 +175,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 
 	private void refresh() {
 		if( this.isActive ) {
-			manager.refresh();
+			manager.refresh( getCriteria() );
 			data.refresh();
 		}
 	}
@@ -195,7 +200,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		referenceTreeState.addValueListener( referenceTreeListener );
 		this.isActive = true;
 		if( !manager.isInitialized() ) {
-			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
+			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
 		}
 		refresh();
 	}
@@ -229,5 +234,13 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 
 	public FindContentManager getManager() {
 		return this.manager;
+	}
+
+	public List<Criterion> getCriteria() {
+		List<Criterion> rv = Collections.newArrayList();
+		if( !showGenerated ) {
+			rv.add( AcceptIfNotGenerated.getInstance() );
+		}
+		return rv;
 	}
 }

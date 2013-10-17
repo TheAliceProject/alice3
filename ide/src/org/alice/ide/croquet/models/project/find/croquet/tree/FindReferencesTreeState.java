@@ -65,7 +65,6 @@ import com.sun.tools.javac.util.Pair;
 public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTreeNode> {
 
 	private final static SearchTreeNode root = new SearchTreeNode( null );
-	private boolean showGenerated = true;
 	private final static ItemCodec<SearchTreeNode> codec = new DefaultItemCodec<SearchTreeNode>( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
@@ -119,20 +118,30 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 			List<Expression> references = searchObject.getReferences();
 			for( Expression reference : references ) {
 				UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
-				if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
-					SearchTreeNode userMethodNode = root.getChildForReference( userMethod );
-					if( userMethodNode == null ) {
-						SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, userMethod );
-						root.addChild( newChildNode );
-						newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
-					} else {
-						userMethodNode.addChild( new ExpressionSearchTreeNode( userMethodNode, reference ) );
-					}
+				SearchTreeNode userMethodNode = root.getChildForReference( userMethod );
+				if( userMethodNode == null ) {
+					SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, userMethod );
+					root.addChild( newChildNode );
+					newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
+				} else {
+					userMethodNode.addChild( new ExpressionSearchTreeNode( userMethodNode, reference ) );
 				}
 			}
 		}
 		refreshAll();
 	}
+
+	//	public List<Expression> getReferencesForSearchResult( SearchResult searchObject ) {
+	//		List<Expression> rv = Collections.newArrayList();
+	//		for( Expression reference : searchObject.getReferences() ) {
+	//			UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+	//			if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
+	//				rv.add( reference );
+	//			}
+	//		}
+	//		searchObject.setFilteredReferences( rv );
+	//		return rv;
+	//	}
 
 	public void moveSelectedUpOne() {
 		SearchTreeNode selected = this.getValue();
@@ -191,9 +200,5 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 			a = value.getParent().getLocationAmongstSiblings();
 		}
 		return new Pair<Integer, Integer>( a, b );
-	}
-
-	public void setShowGenerated( boolean showGenerated ) {
-		this.showGenerated = showGenerated;
 	}
 }

@@ -40,44 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
+package org.alice.ide.croquet.models.project.find.core.criteria;
 
-import java.util.List;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
-import org.alice.ide.croquet.models.project.find.core.SearchResult;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.project.ast.UserField;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
  * @author Matt May
  */
-public class DeleteFindComposite extends AbstractFindComposite {
+public class AcceptIfNotGenerated implements Criterion<Expression> {
 
-	private final UserField field;
+	private static class SingletonHolder {
+		public final static AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
+	}
 
-	public DeleteFindComposite( UserField field ) {
-		super( java.util.UUID.fromString( "c95adf19-dd80-410c-b5f5-489239076f6d" ) );
-		this.field = field;
-		getSearchState().setValueTransactionlessly( field.getName() );
-		getSearchState().setEnabled( false );
+	public static AcceptIfNotGenerated getInstance() {
+		return SingletonHolder.filteredInstance;
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		ListSelectionState<SearchResult> searchResults = getSearchResults();
-		for( SearchResult obj : searchResults ) {
-			if( obj.getDeclaration() != field ) {
-				getSearchResults().removeItem( obj );
-			}
-		}
-		assert getSearchResults().getItemCount() == 1;
-		getSearchResults().setSelectedIndex( 0 );
-		getView().getTree().expandAllRows();
-	}
-
-	@Override
-	protected List<SearchResult> setSearchResults() {
-		return getManager().getResultsForField( field );
+	public boolean accept( Expression e ) {
+		UserMethod userMethod = e.getFirstAncestorAssignableTo( UserMethod.class );
+		return !userMethod.getManagementLevel().isGenerated();
 	}
 }
