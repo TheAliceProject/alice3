@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 import static javax.media.opengl.GL.GL_FLOAT;
 import static javax.media.opengl.GL.GL_TRIANGLES;
 import static javax.media.opengl.GL.GL_UNSIGNED_INT;
+import static javax.media.opengl.GL2ES3.GL_MAX_ELEMENTS_INDICES;
+import static javax.media.opengl.GL2ES3.GL_MAX_ELEMENTS_VERTICES;
 import static javax.media.opengl.GL2GL3.GL_DOUBLE;
-import static javax.media.opengl.GL2GL3.GL_MAX_ELEMENTS_INDICES;
-import static javax.media.opengl.GL2GL3.GL_MAX_ELEMENTS_VERTICES;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
@@ -75,12 +75,6 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 	protected float[] normals;
 	protected float[] textureCoordinates;
 	protected Indices[] indices;
-
-	@Override
-	public void initialize( E element )
-	{
-		super.initialize( element );
-	}
 
 	@Override
 	public boolean isAlphaBlended()

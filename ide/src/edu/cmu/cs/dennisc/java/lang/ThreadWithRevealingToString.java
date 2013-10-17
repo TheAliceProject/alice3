@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.lang;
 /**
  * @author Dennis Cosgrove
  */
-public class ThreadWithRevealingToString extends Thread {
+public abstract class ThreadWithRevealingToString extends Thread {
 	public ThreadWithRevealingToString() {
 		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
 	}
