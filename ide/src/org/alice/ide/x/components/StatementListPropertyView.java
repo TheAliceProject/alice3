@@ -137,8 +137,18 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 								y = iComponent.getY();
 								y -= INTRASTICIAL_PAD;
 							}
-							int x0 = 0;
-							int x1 = INDENT;
+
+							java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+							int x0;
+							int x1;
+							if( componentOrientation.isLeftToRight() ) {
+								x0 = 0;
+								x1 = x0 + INDENT;
+							} else {
+								x0 = this.getWidth();
+								x1 = x0 - INDENT;
+							}
+
 							int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
 							int y0 = yC - INDENT;
 							int y1 = yC + INDENT;
