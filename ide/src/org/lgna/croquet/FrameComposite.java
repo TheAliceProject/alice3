@@ -43,7 +43,7 @@
 
 package org.lgna.croquet;
 
-/*package-private*/class IsShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
+/*package-private*/class IsFrameShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
 	private final FrameComposite<?> frameComposite;
 	private org.lgna.croquet.components.Frame frame;
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
@@ -63,14 +63,14 @@ package org.lgna.croquet;
 		}
 
 		public void windowClosing( java.awt.event.WindowEvent e ) {
-			IsShowingButtonModel.this.setSelected( false );
+			IsFrameShowingButtonModel.this.setSelected( false );
 		}
 
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 	};
 
-	public IsShowingButtonModel( FrameComposite<?> frameComposite ) {
+	public IsFrameShowingButtonModel( FrameComposite<?> frameComposite ) {
 		this.frameComposite = frameComposite;
 	}
 
@@ -109,26 +109,26 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractWindowComposite<V> {
-	public static final class InternalBooleanStateResolver extends IndirectResolver<InternalBooleanState, FrameComposite> {
-		private InternalBooleanStateResolver( FrameComposite indirect ) {
+	public static final class IsFrameShowingStateResolver extends IndirectResolver<IsFrameShowingState, FrameComposite> {
+		private IsFrameShowingStateResolver( FrameComposite indirect ) {
 			super( indirect );
 		}
 
-		public InternalBooleanStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public IsFrameShowingStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 
 		@Override
-		protected InternalBooleanState getDirect( FrameComposite indirect ) {
-			return indirect.booleanState;
+		protected IsFrameShowingState getDirect( FrameComposite indirect ) {
+			return indirect.isFrameShowingState;
 		}
 	}
 
-	private static final class InternalBooleanState extends BooleanState {
+	private static final class IsFrameShowingState extends BooleanState {
 		private final FrameComposite frameComposite;
 
-		public InternalBooleanState( Group group, FrameComposite frameComposite ) {
-			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false, new IsShowingButtonModel( frameComposite ) );
+		public IsFrameShowingState( Group group, FrameComposite frameComposite ) {
+			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false, new IsFrameShowingButtonModel( frameComposite ) );
 			this.frameComposite = frameComposite;
 		}
 
@@ -142,16 +142,16 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 		}
 	}
 
-	private final InternalBooleanState booleanState;
+	private final IsFrameShowingState isFrameShowingState;
 	private String title;
 
 	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
 		super( id );
-		this.booleanState = new InternalBooleanState( booleanStateGroup, this );
+		this.isFrameShowingState = new IsFrameShowingState( booleanStateGroup, this );
 	}
 
-	public BooleanState getBooleanState() {
-		return this.booleanState;
+	public BooleanState getIsFrameShowingState() {
+		return this.isFrameShowingState;
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = this.booleanState.getTrueText();
+			rv = this.isFrameShowingState.getTrueText();
 			if( rv != null ) {
 				rv = rv.replaceAll( "<[a-z]*>", "" );
 				rv = rv.replaceAll( "</[a-z]*>", "" );
