@@ -40,25 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.codecs;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
-	public static <T> DefaultItemCodec<T> createInstance( Class<T> valueClass ) {
-		return new DefaultItemCodec<T>( valueClass );
-	}
-
-	private DefaultItemCodec( Class<T> valueClass ) {
-		super( valueClass );
-	}
-
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
-
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		throw new RuntimeException( "todo" );
+public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value != null ) {
+			rv.setText( "" );
+			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
+		}
+		return rv;
 	}
 }

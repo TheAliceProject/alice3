@@ -40,25 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.codecs;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
-	public static <T> DefaultItemCodec<T> createInstance( Class<T> valueClass ) {
-		return new DefaultItemCodec<T>( valueClass );
+public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<TypeNode> {
+	private TypeNode root;
+
+	public TypeTreeState() {
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
+				null,
+				org.lgna.croquet.codecs.DefaultItemCodec.createInstance( TypeNode.class ) );
 	}
 
-	private DefaultItemCodec( Class<T> valueClass ) {
-		super( valueClass );
+	@Override
+	protected int getChildCount( TypeNode parent ) {
+		return parent.getChildCount();
 	}
 
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+	@Override
+	protected TypeNode getChild( TypeNode parent, int index ) {
+		return (TypeNode)parent.getChildAt( index );
 	}
 
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		throw new RuntimeException( "todo" );
+	@Override
+	protected int getIndexOfChild( TypeNode parent, TypeNode child ) {
+		return parent.getIndex( child );
+	}
+
+	@Override
+	protected TypeNode getRoot() {
+		return this.root;
+	}
+
+	public void setRoot( TypeNode root ) {
+		this.root = root;
+		this.refresh( this.root );
+	}
+
+	@Override
+	public boolean isLeaf( TypeNode node ) {
+		return node.isLeaf();
+	}
+
+	@Override
+	protected String getTextForNode( TypeNode node ) {
+		return node.getType().getName();
+	}
+
+	@Override
+	protected javax.swing.Icon getIconForNode( TypeNode node ) {
+		return null;
 	}
 }
