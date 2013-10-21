@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultHairHatAngora implements FemaleAdultHair, FemaleElderHair {
 	RED_PINK_HAT,
 	RED_BROWN_HAT,

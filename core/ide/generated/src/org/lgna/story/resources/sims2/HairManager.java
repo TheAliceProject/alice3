@@ -31,7 +31,7 @@ public class HairManager extends IngredientManager<Hair> {
 	}
 
 	private HairManager() {
-		this.add( MaleTeenHair.class, 
+		this.add( MaleTeenHair.class,
 				MaleTeenHairBald.class,
 				MaleTeenHairCloseCrop.class,
 				MaleTeenHairCornRows.class,
@@ -67,7 +67,7 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleTeenHairSixty.class,
 				MaleTeenHairTopHat.class
 				);
-		this.add( FemaleTeenHair.class, 
+		this.add( FemaleTeenHair.class,
 				FemaleTeenHairAcornTuck.class,
 				FemaleTeenHairBald.class,
 				FemaleTeenHairBarrette.class,
@@ -109,21 +109,21 @@ public class HairManager extends IngredientManager<Hair> {
 				FemaleTeenHairShortSlick.class,
 				FemaleTeenHairShortTuckin.class
 				);
-		this.add( FemaleToddlerHair.class, 
+		this.add( FemaleToddlerHair.class,
 				ToddlerHairBald.class,
 				ToddlerHairSwirl.class,
 				ToddlerHairPuff.class,
 				ToddlerHairPuffCurls.class,
 				ToddlerHairSimple.class
 				);
-		this.add( MaleToddlerHair.class, 
+		this.add( MaleToddlerHair.class,
 				ToddlerHairBald.class,
 				ToddlerHairSwirl.class,
 				ToddlerHairPuff.class,
 				ToddlerHairPuffCurls.class,
 				ToddlerHairSimple.class
 				);
-		this.add( FemaleChildHair.class, 
+		this.add( FemaleChildHair.class,
 				FemaleChildHairAcornTuck.class,
 				FemaleChildHairBarrette.class,
 				FemaleChildHairBraids.class,
@@ -139,7 +139,7 @@ public class HairManager extends IngredientManager<Hair> {
 				ChildHairRocker.class,
 				ChildHairShocked.class
 				);
-		this.add( MaleChildHair.class, 
+		this.add( MaleChildHair.class,
 				MaleChildHairCloseCrop.class,
 				MaleChildHairGibs.class,
 				MaleChildHairPompodore.class,
@@ -153,7 +153,7 @@ public class HairManager extends IngredientManager<Hair> {
 				ChildHairRocker.class,
 				ChildHairShocked.class
 				);
-		this.add( FemaleElderHair.class, 
+		this.add( FemaleElderHair.class,
 				FemaleAdultHairAcornTuck.class,
 				FemaleAdultHairBald.class,
 				FemaleAdultHairBarrette.class,
@@ -199,7 +199,7 @@ public class HairManager extends IngredientManager<Hair> {
 				FemaleAdultHairShortTuckin.class,
 				FemaleAdultHairHatFirefighter.class
 				);
-		this.add( MaleAdultHair.class, 
+		this.add( MaleAdultHair.class,
 				MaleAdultHairBald.class,
 				MaleAdultHairHatBeanie.class,
 				MaleAdultHairCloseCrop.class,
@@ -243,7 +243,7 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleAdultHairWill.class,
 				MaleAdultHairHatFirefighter.class
 				);
-		this.add( MaleElderHair.class, 
+		this.add( MaleElderHair.class,
 				MaleAdultHairBald.class,
 				MaleAdultHairHatBeanie.class,
 				MaleAdultHairCloseCrop.class,
@@ -287,7 +287,7 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleAdultHairWill.class,
 				MaleAdultHairHatFirefighter.class
 				);
-		this.add( FemaleAdultHair.class, 
+		this.add( FemaleAdultHair.class,
 				FemaleAdultHairAcornTuck.class,
 				FemaleAdultHairBald.class,
 				FemaleAdultHairBarrette.class,

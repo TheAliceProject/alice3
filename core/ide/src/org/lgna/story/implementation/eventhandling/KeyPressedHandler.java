@@ -66,10 +66,10 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  */
 public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
-	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
-	Object empty = new Object();
-	private Map<Object, HeldKeyPolicy> heldKeyMap = Collections.newConcurrentHashMap();
-	private Map<Object, Map<Key, Boolean>> firePolicyMap = Collections.newConcurrentHashMap();
+	private final Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
+	private final Object empty = new Object();
+	private final Map<Object, HeldKeyPolicy> heldKeyMap = Collections.newConcurrentHashMap();
+	private final Map<Object, Map<Key, Boolean>> firePolicyMap = Collections.newConcurrentHashMap();
 	private long sleepTime = 500;
 
 	public KeyPressedHandler() {
@@ -120,7 +120,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, KeyEvent event ) {
+	protected void fire( Object listener, KeyEvent event ) {
 		if( listener instanceof ArrowKeyPressListener ) {
 			ArrowKeyPressListener arrowListener = (ArrowKeyPressListener)listener;
 			arrowListener.arrowKeyPressed( new ArrowKeyEvent( event ) );

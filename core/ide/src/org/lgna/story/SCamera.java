@@ -62,6 +62,7 @@ public class SCamera extends SMovableTurnable implements MutableRider {
 
 	@MethodTemplate( )
 	public void moveAndOrientToAGoodVantagePointOf( SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

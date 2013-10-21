@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.matt.eventscript.events;
 
-
 /**
  * @author Matt May
  */

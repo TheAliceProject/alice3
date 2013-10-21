@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.personresource;
 
-
 /**
  * @author Dennis Cosgrove
  */

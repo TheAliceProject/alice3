@@ -65,8 +65,8 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
 	public static final Visual[] ALL_VISUALS = new Visual[ 0 ];
-	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
-	Object empty = new Object();
+	private final Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
+	private final Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
 		//		if( this.mouseButtonListeners.size() > 0 ) {
@@ -86,7 +86,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, MouseClickEvent event ) {
+	protected void fire( Object listener, MouseClickEvent event ) {
 		if( listener instanceof MouseClickOnObjectListener ) {
 			if( event.getModelAtMouseLocation() != null ) {
 				MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;

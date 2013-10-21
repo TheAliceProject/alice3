@@ -80,7 +80,7 @@ public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.id
 
 		try {
 			org.lgna.croquet.triggers.Trigger trigger = null;
-			composite.getOperation().fire( trigger );
+			composite.getLaunchOperation().fire( trigger );
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

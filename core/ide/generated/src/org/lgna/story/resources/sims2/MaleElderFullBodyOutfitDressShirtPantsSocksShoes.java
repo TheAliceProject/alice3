@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderFullBodyOutfitDressShirtPantsSocksShoes implements MaleElderFullBodyOutfit {
 	BLUE_SHIRT_GREY_PANTS,
 	WHITE_SHIRT_BLUE_PANTS,

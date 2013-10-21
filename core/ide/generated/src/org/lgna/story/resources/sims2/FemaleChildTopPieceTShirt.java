@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildTopPieceTShirt implements FemaleChildTopPiece {
 	AQUA_VNECK,
 	BROWN_VNECK,

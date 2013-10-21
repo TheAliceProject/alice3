@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitLongCoat implements MaleAdultFullBodyOutfit {
 	GREEN_TATTOO,
 	BLACK_AND_T;

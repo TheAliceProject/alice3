@@ -42,8 +42,6 @@
  */
 package org.lgna.story.implementation.overlay;
 
-import edu.cmu.cs.dennisc.animation.AnimationObserver;
-
 /**
  * @author dculyba
  * 

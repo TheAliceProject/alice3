@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderTopPieceSweaterVestCollarShirt implements MaleElderTopPiece {
 	DK_BLUE_SWEATER_STRIPED_OXFORD,
 	BROWN_SWEATER_BLUE_SHIRT,

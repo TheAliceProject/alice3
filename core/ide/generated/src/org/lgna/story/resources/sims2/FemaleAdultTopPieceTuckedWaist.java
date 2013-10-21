@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultTopPieceTuckedWaist implements FemaleAdultTopPiece {
 	BLACK_GOTH,
 	EARTH_SOLID,

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-
 /**
  * @author dculyba
  * 

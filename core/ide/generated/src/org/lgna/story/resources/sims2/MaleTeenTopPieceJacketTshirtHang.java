@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenTopPieceJacketTshirtHang implements MaleTeenTopPiece {
 	BLACK_WHITE,
 	BEIGE,

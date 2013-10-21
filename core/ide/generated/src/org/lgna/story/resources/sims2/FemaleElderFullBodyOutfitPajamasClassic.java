@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderFullBodyOutfitPajamasClassic implements FemaleElderFullBodyOutfit {
 	AQUA_SATIN,
 	BLACK_SATIN,

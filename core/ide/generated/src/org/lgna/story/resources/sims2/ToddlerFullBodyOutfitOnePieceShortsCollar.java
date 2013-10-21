@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum ToddlerFullBodyOutfitOnePieceShortsCollar implements MaleToddlerFullBodyOutfit, FemaleToddlerFullBodyOutfit {
 	CORD_COVERALLS;
 

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSweats implements MaleAdultFullBodyOutfit {
 	RED_RUN,
 	BLACK_SPRINT,

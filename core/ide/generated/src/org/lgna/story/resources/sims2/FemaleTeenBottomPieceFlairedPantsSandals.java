@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenBottomPieceFlairedPantsSandals implements FemaleTeenBottomPiece {
 	BLUE_JEANS_BELT_FLOWERS,
 	BLUE_JEANS_BELT,

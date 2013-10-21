@@ -51,12 +51,17 @@ public class NodeUtilities {
 	}
 
 	public static void safeAppendRepr( StringBuilder sbRepr, Node node, java.util.Locale locale ) {
-		if( node instanceof AbstractNode ) {
-			( (AbstractNode)node ).appendRepr( sbRepr, locale );
+		if( node != null ) {
+			sbRepr.append( node.getRepr() );
 		} else {
-			//todo?
-			sbRepr.append( node );
+			sbRepr.append( "null" );
 		}
+		//		if( node instanceof AbstractNode ) {
+		//			( (AbstractNode)node ).appendRepr( sbRepr, locale );
+		//		} else {
+		//			//todo?
+		//			sbRepr.append( node );
+		//		}
 	}
 
 	public static void safeAppendRepr( StringBuilder sbRepr, Node node ) {

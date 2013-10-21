@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitFirefighter implements MaleAdultFullBodyOutfit {
 	KHAKI_STYLE,
 	EURO_STYLE;

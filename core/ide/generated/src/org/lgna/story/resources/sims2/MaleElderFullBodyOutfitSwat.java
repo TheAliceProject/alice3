@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderFullBodyOutfitSwat implements MaleElderFullBodyOutfit {
 	SAND,
 	BLUE;

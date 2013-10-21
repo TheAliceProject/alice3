@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum ChildFullBodyOutfitPuffyPJ implements MaleChildFullBodyOutfit, FemaleChildFullBodyOutfit {
 	CREAM_TEDDYBEAR,
 	PINK_TEDDYBEAR,

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum ChildBottomPiecePuffyLeg implements MaleChildBottomPiece, FemaleChildBottomPiece {
 	GREEN_TEDDYBEAR,
 	PINK_TEDDYBEAR,

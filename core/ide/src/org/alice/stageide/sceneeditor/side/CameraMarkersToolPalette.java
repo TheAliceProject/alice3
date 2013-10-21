@@ -62,7 +62,7 @@ public class CameraMarkersToolPalette extends MarkersToolPalette<org.alice.stage
 
 	@Override
 	public org.lgna.croquet.Operation getAddOperation() {
-		return AddCameraMarkerFieldComposite.getInstance().getOperation();
+		return AddCameraMarkerFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override

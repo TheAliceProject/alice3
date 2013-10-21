@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.showme;
 
-
 /**
  * @author Dennis Cosgrove
  */

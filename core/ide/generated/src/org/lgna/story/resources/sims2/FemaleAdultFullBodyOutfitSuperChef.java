@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitSuperChef implements FemaleAdultFullBodyOutfit {
 	CHINA_PURPLE,
 	CHINA_YELLOW,

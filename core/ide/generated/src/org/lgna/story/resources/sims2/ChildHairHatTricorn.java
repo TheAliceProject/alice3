@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum ChildHairHatTricorn implements MaleChildHair, FemaleChildHair {
 	RED_RED_RIBBON,
 	RED_BLUE_RIBBON,

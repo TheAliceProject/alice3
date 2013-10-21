@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleToddlerFullBodyOutfitDressClosedSleeves implements FemaleToddlerFullBodyOutfit {
 	BRIGHT_ANIMALS,
 	BRIGHT_APPLE,

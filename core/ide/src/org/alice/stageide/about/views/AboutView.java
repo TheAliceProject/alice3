@@ -92,7 +92,7 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
-					rows.add( new org.lgna.croquet.components.LabeledFormRow( eulaComposite.getOperation().getSidekickLabel(), eulaComposite.getOperation().createButton() ) );
+					rows.add( new org.lgna.croquet.components.LabeledFormRow( eulaComposite.getLaunchOperation().getSidekickLabel(), eulaComposite.getLaunchOperation().createButton() ) );
 				}
 			}
 		};
@@ -106,7 +106,7 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		//		);
 		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
-		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getOperation().createHyperlink() );
+		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getLaunchOperation().createHyperlink() );
 		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
 		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );

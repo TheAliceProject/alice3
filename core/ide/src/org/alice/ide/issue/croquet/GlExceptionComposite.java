@@ -42,7 +42,6 @@
  */
 package org.alice.ide.issue.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */

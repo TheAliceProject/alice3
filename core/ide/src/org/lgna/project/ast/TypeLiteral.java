@@ -66,12 +66,6 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
-	}
-
-	@Override
 	public edu.cmu.cs.dennisc.property.InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
 		return this.value;
 	}
@@ -80,6 +74,12 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness ) {
 		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
 		return this.value.valueContentEquals( otherTypeLiteral.value, strictness );
+	}
+
+	@Override
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.value.getValue() );
+		localizer.appendText( ".class" );
 	}
 
 	@Override

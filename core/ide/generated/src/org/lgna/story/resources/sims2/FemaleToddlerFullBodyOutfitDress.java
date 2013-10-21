@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleToddlerFullBodyOutfitDress implements FemaleToddlerFullBodyOutfit {
 	BLUE_GOWN,
 	HEARTS_NDAISIES;

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderFullBodyOutfitDressLongLoose implements FemaleElderFullBodyOutfit {
 	BLACK_LINE,
 	GRAY_LINE,

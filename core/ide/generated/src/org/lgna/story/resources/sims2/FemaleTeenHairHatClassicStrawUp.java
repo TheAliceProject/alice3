@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenHairHatClassicStrawUp implements FemaleTeenHair {
 	RED_PINK_RIBBON,
 	RED_BLACK_RIBBON,

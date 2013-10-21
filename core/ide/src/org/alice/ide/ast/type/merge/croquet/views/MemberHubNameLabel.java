@@ -55,7 +55,7 @@ public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
-		public void valueChanged(org.lgna.croquet.event.ValueEvent<Boolean> e) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateText();
 		}
 	};

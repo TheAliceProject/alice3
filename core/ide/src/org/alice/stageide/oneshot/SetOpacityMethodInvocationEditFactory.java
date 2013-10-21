@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.oneshot;
 
-
 /**
  * @author Dennis Cosgrove
  */

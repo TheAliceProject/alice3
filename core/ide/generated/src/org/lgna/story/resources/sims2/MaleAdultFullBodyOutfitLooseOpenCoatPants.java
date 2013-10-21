@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitLooseOpenCoatPants implements MaleAdultFullBodyOutfit {
 	BLACK_LEATHER,
 	BROWN_LEATHER,

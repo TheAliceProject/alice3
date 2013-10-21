@@ -385,6 +385,10 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new org.lgna.croquet.components.ToggleButton( this );
 	}
 
+	public org.lgna.croquet.views.ToggleButtonLabelCombo createToggleButtonLabelCombo() {
+		return new org.lgna.croquet.views.ToggleButtonLabelCombo( this );
+	}
+
 	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );

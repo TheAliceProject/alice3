@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitSuit implements FemaleAdultFullBodyOutfit {
 	TARTEN_SKIRT_BEIGE_COAT,
 	BLACK;

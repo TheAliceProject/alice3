@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitExterminator implements FemaleAdultFullBodyOutfit {
 	BLACK_COVERALLS,
 	BEIGE_COVERALLS,

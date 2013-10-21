@@ -61,6 +61,6 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 
 	@Override
 	public org.lgna.croquet.Operation getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getOperation();
+		return org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getLaunchOperation();
 	}
 }

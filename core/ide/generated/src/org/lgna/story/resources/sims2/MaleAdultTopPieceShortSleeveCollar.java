@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultTopPieceShortSleeveCollar implements MaleAdultTopPiece {
 	WHITE_SKY_POLO,
 	GREEN_WHITE_POLO,

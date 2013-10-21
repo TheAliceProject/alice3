@@ -79,6 +79,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -89,6 +90,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setScale( Scale scale, SetScale.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( scale, 0 );
 		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -99,6 +101,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setSize( Size size, SetSize.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( size, 0 );
 		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -109,9 +112,10 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( )
 	public void setWidth( Number width, SetWidth.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( width, 0 );
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		//todo: allow for 0.0
-		this.getImplementation().animateSetWidth( EmployeesOnly.checkArgumentDoubleValuePositive( width, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
@@ -121,9 +125,10 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( )
 	public void setHeight( Number height, SetHeight.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( height, 0 );
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		//todo: allow for 0.0
-		this.getImplementation().animateSetHeight( EmployeesOnly.checkArgumentDoubleValuePositive( height, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
@@ -133,32 +138,37 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 
 	@MethodTemplate( )
 	public void setDepth( Number depth, SetDepth.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( depth, 0 );
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		//todo: allow for 0.0
-		this.getImplementation().animateSetDepth( EmployeesOnly.checkArgumentDoubleValuePositive( depth, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resize( Number factor, Resize.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
 		//todo: explain how to make things smaller 
-		this.getImplementation().animateResize( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
 		//todo: explain how to make things smaller 
-		this.getImplementation().animateResizeWidth( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
 		//todo: explain how to make things smaller 
-		this.getImplementation().animateResizeHeight( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
 		//todo: explain how to make things smaller 
-		this.getImplementation().animateResizeDepth( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

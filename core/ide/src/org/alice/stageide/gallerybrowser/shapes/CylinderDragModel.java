@@ -72,7 +72,7 @@ public class CylinderDragModel extends ShapeDragModel {
 
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation();
+		return org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override

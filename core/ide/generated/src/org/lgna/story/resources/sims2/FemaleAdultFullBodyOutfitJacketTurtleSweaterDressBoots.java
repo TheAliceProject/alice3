@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitJacketTurtleSweaterDressBoots implements FemaleAdultFullBodyOutfit {
 	BLACK_CREAM,
 	BLACK_GREY,

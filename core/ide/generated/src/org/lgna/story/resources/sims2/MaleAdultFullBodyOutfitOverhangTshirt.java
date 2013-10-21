@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOverhangTshirt implements MaleAdultFullBodyOutfit {
 	BLACK_PLUMBOB,
 	BLACK_SUN,

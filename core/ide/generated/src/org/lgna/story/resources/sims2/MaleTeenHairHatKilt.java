@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenHairHatKilt implements MaleTeenHair {
 	RED_RED_HAT,
 	RED_BROWN_HAT,

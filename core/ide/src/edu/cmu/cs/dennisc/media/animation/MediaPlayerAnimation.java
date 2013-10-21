@@ -44,7 +44,6 @@ package edu.cmu.cs.dennisc.media.animation;
 
 import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
 
-
 /**
  * @author Dennis Cosgrove
  */

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitBigShorts implements MaleChildFullBodyOutfit {
 	BLUE_HAWAIIAN_SWIMTRUNKS,
 	LEMON_LIME_SWIMTRUNKS,

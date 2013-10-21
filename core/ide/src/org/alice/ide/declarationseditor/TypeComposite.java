@@ -110,9 +110,9 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 			return true;
 		} else {
 			//todo: this should really leverage Composite.contains and create sub composites and models
-			if( ( model == org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getOperation() )
+			if( ( model == org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getLaunchOperation() )
 					||
-					( model == org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.getType() ).getOperation() ) ) {
+					( model == org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.getType() ).getLaunchOperation() ) ) {
 				return true;
 			} else {
 				//todo

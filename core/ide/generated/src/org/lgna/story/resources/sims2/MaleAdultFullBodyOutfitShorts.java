@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitShorts implements MaleAdultFullBodyOutfit {
 	BLACK_SILKY,
 	BLUE_YELLOW,

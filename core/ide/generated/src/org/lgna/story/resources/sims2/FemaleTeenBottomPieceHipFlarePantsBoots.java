@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenBottomPieceHipFlarePantsBoots implements FemaleTeenBottomPiece {
 	BLACK_STRIPES,
 	PINK_STRIPES,

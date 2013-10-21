@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenBottomPieceMiniShorts implements FemaleTeenBottomPiece {
 	BLUE_BLUE,
 	BLUE_LEOPARD,

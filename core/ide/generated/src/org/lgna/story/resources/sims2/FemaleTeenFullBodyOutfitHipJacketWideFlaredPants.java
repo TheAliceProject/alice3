@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenFullBodyOutfitHipJacketWideFlaredPants implements FemaleTeenFullBodyOutfit {
 	WHITE_BLACK_STRIPES,
 	WHITE_PINK_STRIPES,

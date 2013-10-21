@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressAboveKnee implements FemaleAdultFullBodyOutfit {
 	BN_W,
 	BN_PINK,

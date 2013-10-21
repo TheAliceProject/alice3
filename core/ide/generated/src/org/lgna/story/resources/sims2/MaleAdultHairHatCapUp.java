@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairHatCapUp implements MaleAdultHair, MaleElderHair {
 	BROWN_HAT,
 	BLUE_BROWN_HAT,

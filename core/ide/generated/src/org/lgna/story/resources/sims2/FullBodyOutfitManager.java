@@ -31,7 +31,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 	}
 
 	private FullBodyOutfitManager() {
-		this.add( FemaleElderFullBodyOutfit.class, 
+		this.add( FemaleElderFullBodyOutfit.class,
 				FemaleElderFullBodyOutfitChef.class,
 				FemaleElderFullBodyOutfitCoach.class,
 				FemaleElderFullBodyOutfitDressAboveKneeOpenSuit.class,
@@ -73,7 +73,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				FemaleElderFullBodyOutfitApron.class,
 				FemaleElderFullBodyOutfitAmbulanceDriver.class
 				);
-		this.add( MaleElderFullBodyOutfit.class, 
+		this.add( MaleElderFullBodyOutfit.class,
 				MaleElderFullBodyOutfitChef.class,
 				MaleElderFullBodyOutfitClosedCoatLongPants.class,
 				MaleElderFullBodyOutfitCoach.class,
@@ -116,7 +116,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				MaleElderFullBodyOutfitApron.class,
 				MaleElderFullBodyOutfitAmbulanceDriver.class
 				);
-		this.add( MaleTeenFullBodyOutfit.class, 
+		this.add( MaleTeenFullBodyOutfit.class,
 				MaleTeenFullBodyOutfitClosedCoatLongPants.class,
 				MaleTeenFullBodyOutfitHiphopBaggy.class,
 				MaleTeenFullBodyOutfitHipJersey.class,
@@ -153,7 +153,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				MaleTeenFullBodyOutfitApron.class,
 				MaleTeenFullBodyOutfitAmbulanceDriver.class
 				);
-		this.add( FemaleTeenFullBodyOutfit.class, 
+		this.add( FemaleTeenFullBodyOutfit.class,
 				FemaleTeenFullBodyOutfitAthleticJersey.class,
 				FemaleTeenFullBodyOutfitBlazerPleats.class,
 				FemaleTeenFullBodyOutfitCheerleader.class,
@@ -194,7 +194,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				FemaleTeenFullBodyOutfitApron.class,
 				FemaleTeenFullBodyOutfitAmbulanceDriver.class
 				);
-		this.add( FemaleToddlerFullBodyOutfit.class, 
+		this.add( FemaleToddlerFullBodyOutfit.class,
 				FemaleToddlerFullBodyOutfitDress.class,
 				FemaleToddlerFullBodyOutfitDressClosedSleeves.class,
 				FemaleToddlerFullBodyOutfitOpenCoatDressShoes.class,
@@ -207,7 +207,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
 				ToddlerFullBodyOutfitSleeper.class
 				);
-		this.add( MaleToddlerFullBodyOutfit.class, 
+		this.add( MaleToddlerFullBodyOutfit.class,
 				MaleToddlerFullBodyOutfitJacketPants.class,
 				MaleToddlerFullBodyOutfitPantsCollar.class,
 				ToddlerFullBodyOutfitDiaper.class,
@@ -216,7 +216,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
 				ToddlerFullBodyOutfitSleeper.class
 				);
-		this.add( FemaleChildFullBodyOutfit.class, 
+		this.add( FemaleChildFullBodyOutfit.class,
 				FemaleChildFullBodyOutfitBlazerPleats.class,
 				FemaleChildFullBodyOutfitCowGirlSkirt.class,
 				FemaleChildFullBodyOutfitDressAboveKneeCollar.class,
@@ -230,7 +230,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				ChildFullBodyOutfitPirate.class,
 				ChildFullBodyOutfitPuffyPJ.class
 				);
-		this.add( MaleChildFullBodyOutfit.class, 
+		this.add( MaleChildFullBodyOutfit.class,
 				MaleChildFullBodyOutfitBigShorts.class,
 				MaleChildFullBodyOutfitJacketShortsBoots.class,
 				MaleChildFullBodyOutfitLongSweaterPants.class,
@@ -244,7 +244,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				ChildFullBodyOutfitPirate.class,
 				ChildFullBodyOutfitPuffyPJ.class
 				);
-		this.add( FemaleAdultFullBodyOutfit.class, 
+		this.add( FemaleAdultFullBodyOutfit.class,
 				FemaleAdultFullBodyOutfitChef.class,
 				FemaleAdultFullBodyOutfitCoach.class,
 				FemaleAdultFullBodyOutfitDress.class,
@@ -314,7 +314,7 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				AdultFullBodyOutfitAstronaut.class,
 				FemaleAdultFullBodyOutfitAmbulanceDriver.class
 				);
-		this.add( MaleAdultFullBodyOutfit.class, 
+		this.add( MaleAdultFullBodyOutfit.class,
 				MaleAdultFullBodyOutfitChef.class,
 				MaleAdultFullBodyOutfitClosedCoatLongPants.class,
 				MaleAdultFullBodyOutfitCoach.class,

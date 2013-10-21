@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderTopPieceDressShirt implements MaleElderTopPiece {
 	BLUE,
 	BROWN,

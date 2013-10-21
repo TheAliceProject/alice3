@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitSportif implements MaleChildFullBodyOutfit {
 	BLUE_JEAN_GRAY_RED,
 	BLACK_PUNK;

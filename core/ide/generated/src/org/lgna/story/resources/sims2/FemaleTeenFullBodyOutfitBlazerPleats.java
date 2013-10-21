@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenFullBodyOutfitBlazerPleats implements FemaleTeenFullBodyOutfit {
 	PVT_SCHOOL_BLUE,
 	PVT_SCHOOL_RED,

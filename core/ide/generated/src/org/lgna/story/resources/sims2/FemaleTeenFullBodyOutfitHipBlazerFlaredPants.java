@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenFullBodyOutfitHipBlazerFlaredPants implements FemaleTeenFullBodyOutfit {
 	BLUE_NO_SHIRT_DK_BLUE_JEANS,
 	D_K_BLUE_NO_SHIRT_BLUE_JEANS,

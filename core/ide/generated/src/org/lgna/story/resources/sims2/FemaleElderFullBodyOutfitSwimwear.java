@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderFullBodyOutfitSwimwear implements FemaleElderFullBodyOutfit {
 	ANIMAL_RED_WRAP_SWIM,
 	ANIMAL_WRAP_SWIM,

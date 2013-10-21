@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderFullBodyOutfitSoldier implements FemaleElderFullBodyOutfit {
 	GREEN_CAMO_PLAIN,
 	KHAKI_CAMO_PLAIN;

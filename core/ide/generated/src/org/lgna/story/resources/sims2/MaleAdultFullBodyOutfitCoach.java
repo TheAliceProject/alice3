@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitCoach implements MaleAdultFullBodyOutfit {
 	RED_BLUE,
 	BLUE_RED;

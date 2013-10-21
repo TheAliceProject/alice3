@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitTShirtPants implements FemaleChildFullBodyOutfit {
 	PINK_SHIRT_PURPLE_PANTS,
 	WHITE_SHIRT_PINK_PANTS,

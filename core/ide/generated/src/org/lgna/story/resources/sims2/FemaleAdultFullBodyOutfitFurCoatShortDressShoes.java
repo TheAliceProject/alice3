@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitFurCoatShortDressShoes implements FemaleAdultFullBodyOutfit {
 	WHITE_FUR_BLACK;
 

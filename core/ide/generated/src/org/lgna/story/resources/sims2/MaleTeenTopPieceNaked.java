@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenTopPieceNaked implements MaleTeenTopPiece {
 	RED_TANK,
 	WHITE_TANK,

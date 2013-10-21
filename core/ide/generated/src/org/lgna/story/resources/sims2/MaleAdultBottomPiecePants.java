@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultBottomPiecePants implements MaleAdultBottomPiece {
 	KHAKI_SLACKS_BROWN,
 	BLACK_SLACKS_BOOTS,

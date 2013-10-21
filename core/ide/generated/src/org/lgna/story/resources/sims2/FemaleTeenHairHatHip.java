@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenHairHatHip implements FemaleTeenHair {
 	BLACK_PINK_HAT,
 	BLACK_BLACK_HAT,

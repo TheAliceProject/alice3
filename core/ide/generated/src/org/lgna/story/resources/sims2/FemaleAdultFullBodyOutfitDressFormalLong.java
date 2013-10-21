@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressFormalLong implements FemaleAdultFullBodyOutfit {
 	WHITE_WEDDING;
 

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderTopPieceBlouse implements FemaleElderTopPiece {
 	FRONT_BUTTON_CREAM,
 	FRONT_BUTTON_GRASS,

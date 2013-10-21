@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairCrewCut implements MaleAdultHair, MaleElderHair {
 	BLACK,
 	BLOND,

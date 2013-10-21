@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderBottomPieceShorts implements MaleElderBottomPiece {
 	BLACK_SILKY,
 	BLUE_YELLOW,

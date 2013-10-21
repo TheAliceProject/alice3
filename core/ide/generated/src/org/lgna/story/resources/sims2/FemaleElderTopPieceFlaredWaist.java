@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderTopPieceFlaredWaist implements FemaleElderTopPiece {
 	PURPLE_DOT_WRAP_SWIM,
 	ANIMAL_RED_WRAP_SWIM,

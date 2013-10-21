@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSuit implements MaleAdultFullBodyOutfit {
 	GREY_SHORT_LAPEL,
 	BLUE_PIN,

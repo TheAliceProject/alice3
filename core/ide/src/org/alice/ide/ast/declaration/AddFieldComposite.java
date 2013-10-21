@@ -118,7 +118,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+		this.getLaunchOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
 	@Override

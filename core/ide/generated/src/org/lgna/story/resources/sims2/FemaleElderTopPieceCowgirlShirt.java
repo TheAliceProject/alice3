@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleElderTopPieceCowgirlShirt implements FemaleElderTopPiece {
 	BLACK_BLUE,
 	GOLD_BLACK,

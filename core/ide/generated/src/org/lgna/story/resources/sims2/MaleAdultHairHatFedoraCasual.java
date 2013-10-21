@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairHatFedoraCasual implements MaleAdultHair, MaleElderHair {
 	BLACK_BLACK_HAT,
 	BLOND_BLACK_HAT,

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenBottomPiecePantsCuffsBoots implements MaleTeenBottomPiece {
 	BLUE_JEANS,
 	BLACK_JEANS;

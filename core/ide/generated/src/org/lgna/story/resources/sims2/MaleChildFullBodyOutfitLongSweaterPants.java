@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitLongSweaterPants implements MaleChildFullBodyOutfit {
 	COLOR_STRIPES,
 	GREEN_STRIPES,

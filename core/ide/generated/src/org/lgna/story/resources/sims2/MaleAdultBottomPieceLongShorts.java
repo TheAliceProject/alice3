@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultBottomPieceLongShorts implements MaleAdultBottomPiece {
 	BLUE_PLAID_TAN_NAVY,
 	BLUE_STRIPE_WHITE,

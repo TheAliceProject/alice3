@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenHairDreadlockShort implements MaleTeenHair {
 	RED,
 	BLACK,

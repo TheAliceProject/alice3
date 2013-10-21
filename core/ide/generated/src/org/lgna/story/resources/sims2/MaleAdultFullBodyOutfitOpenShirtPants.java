@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOpenShirtPants implements MaleAdultFullBodyOutfit {
 	KHAKI_BLACK,
 	BROWN_WHITE,

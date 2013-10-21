@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleElderFullBodyOutfitPowerSuit implements MaleElderFullBodyOutfit {
 	DK_BLUE_RED_TIE,
 	DK_BLUE_LT_BLUE_TIE,

@@ -58,14 +58,6 @@ public class EmployeesOnly {
 		jointedModel.setJointedModelResource( resource );
 	}
 
-	public static double checkArgumentDoubleValuePositive( Number value, int index ) {
-		double rv = value.doubleValue();
-		if( rv <= 0.0 ) {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "value must be > 0.0", index, value );
-		}
-		return rv;
-	}
-
 	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f color ) {
 		return color != null ? Color.createInstance( color ) : null;
 	}

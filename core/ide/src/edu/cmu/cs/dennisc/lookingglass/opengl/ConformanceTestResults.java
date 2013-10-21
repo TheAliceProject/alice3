@@ -198,7 +198,6 @@ public enum ConformanceTestResults {
 						long zBackAsLong = convertZValueToLong( zBackAsInt );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
 						float zBack = convertZValueToFloat( zBackAsLong );
-						;
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
 					}
 

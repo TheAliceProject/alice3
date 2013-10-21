@@ -76,12 +76,4 @@ public final class ForEachInArrayLoop extends AbstractForEachLoop implements Eac
 	protected org.lgna.project.ast.ExpressionProperty getArrayOrIterableProperty() {
 		return this.getArrayProperty();
 	}
-
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "for each in " );
-		NodeUtilities.safeAppendRepr( rv, this.array.getValue(), locale );
-		return super.appendRepr( rv, locale );
-	}
-
 }

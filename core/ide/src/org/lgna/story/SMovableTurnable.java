@@ -57,6 +57,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.getImplementation().animateApplyTranslation(
 				direction.createTranslation( amount.doubleValue() ),
 				AsSeenBy.getValue( details, this ).getImplementation(),
@@ -85,6 +87,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveToward( SThing target, Number amount, MoveToward.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.internalMoveToward(
 				target,
 				amount.doubleValue(),
@@ -95,6 +99,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveAwayFrom( SThing target, Number amount, MoveAwayFrom.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.internalMoveToward(
 				target,
 				-amount.doubleValue(),
@@ -105,16 +111,20 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveTo( SThing target, MoveTo.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void moveAndOrientTo( SThing target, MoveAndOrientTo.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		this.getImplementation().animateTransformation( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void place( SpatialRelation spatialRelation, SThing target, Place.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( spatialRelation, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 1 );
 		org.lgna.story.implementation.EntityImp targetImp = target != null ? target.getImplementation() : null;
 		org.lgna.story.implementation.ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
 
@@ -131,6 +141,7 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( position, 0 );
 		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
 		if( vehicle != null ) {
 			this.getImplementation().animatePositionOnly( vehicle, position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );

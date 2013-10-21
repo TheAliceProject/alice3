@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum ChildTopPieceShortSleeveCollar implements MaleChildTopPiece, FemaleChildTopPiece {
 	BLACK,
 	DKBLUE,

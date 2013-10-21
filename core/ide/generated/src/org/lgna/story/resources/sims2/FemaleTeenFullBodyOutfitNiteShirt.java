@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleTeenFullBodyOutfitNiteShirt implements FemaleTeenFullBodyOutfit {
 	PINK_HEART_SEQUIN,
 	PURPLE_HEART_SEQUIN,

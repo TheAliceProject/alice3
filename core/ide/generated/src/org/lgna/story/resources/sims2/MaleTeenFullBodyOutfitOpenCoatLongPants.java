@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenFullBodyOutfitOpenCoatLongPants implements MaleTeenFullBodyOutfit {
 	FORMAL,
 	PVT_SCHOOL,

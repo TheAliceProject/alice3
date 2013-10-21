@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultTopPieceCowboyShirt implements MaleAdultTopPiece {
 	PATTERN_RED,
 	PATTERN_BLUE,

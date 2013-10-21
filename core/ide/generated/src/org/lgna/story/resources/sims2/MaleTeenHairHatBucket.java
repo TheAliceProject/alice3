@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenHairHatBucket implements MaleTeenHair {
 	BROWN_BLACK_HAT,
 	BROWN_BLUE_HAT,

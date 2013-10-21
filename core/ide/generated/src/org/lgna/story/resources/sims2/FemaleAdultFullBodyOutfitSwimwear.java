@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitSwimwear implements FemaleAdultFullBodyOutfit {
 	AQUA_DIVING,
 	BLACK_RAINBOW_TANKINI,

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitClosedCoatLongPants implements MaleAdultFullBodyOutfit {
 	TUX_BROWN,
 	TUX_BLACK,

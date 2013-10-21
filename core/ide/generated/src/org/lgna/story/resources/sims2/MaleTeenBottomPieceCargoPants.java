@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenBottomPieceCargoPants implements MaleTeenBottomPiece {
 	GREY,
 	TAN,

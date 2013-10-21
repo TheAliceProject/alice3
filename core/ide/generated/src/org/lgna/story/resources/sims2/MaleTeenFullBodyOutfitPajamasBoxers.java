@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleTeenFullBodyOutfitPajamasBoxers implements MaleTeenFullBodyOutfit {
 	WHITE_TANK_TOP_BBALL_BOXERS,
 	GREY_TANK_TOP_POOL_BOXERS,

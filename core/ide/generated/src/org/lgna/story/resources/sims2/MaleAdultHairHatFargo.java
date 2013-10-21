@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairHatFargo implements MaleAdultHair, MaleElderHair {
 	BLACK_BLACK_HAT,
 	BLACK_GREEN_HAT,

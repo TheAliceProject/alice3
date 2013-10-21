@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
+
 public enum MaleToddlerFullBodyOutfitPantsCollar implements MaleToddlerFullBodyOutfit {
 	PLAID_BLUE_OVERALLS,
 	BROWN_BLUE,

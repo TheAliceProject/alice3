@@ -457,7 +457,7 @@ public class IconFactoryManager {
 			//pass
 		} else {
 			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getObjectMarkIconForColor( color );
-			; //todo
+			//todo
 			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
 			mapColorToObjectMarkerIconFactory.put( color, rv );
 		}
