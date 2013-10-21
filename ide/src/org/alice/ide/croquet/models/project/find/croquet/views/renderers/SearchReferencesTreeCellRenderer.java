@@ -51,6 +51,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
 
 /**
@@ -71,11 +73,17 @@ public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
 				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
 			} else {
 				Object astValue = node.getValue();
-				assert astValue instanceof UserMethod;
-				UserMethod uMethod = (UserMethod)astValue;
+				String nameValue = "";
+				if( astValue instanceof UserMethod ) {
+					nameValue = ( (UserMethod)astValue ).name.getValue();
+				} else if( astValue instanceof UserLambda ) {
+					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
+				} else {
+					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
+				}
 				assert rv instanceof JLabel;
 				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
+				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
 			}
 		}
 		return rv;
