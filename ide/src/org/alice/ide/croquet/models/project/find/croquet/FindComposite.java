@@ -43,12 +43,62 @@
 package org.alice.ide.croquet.models.project.find.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DefaultFindComposite extends AbstractFindComposite {
+public class FindComposite extends AbstractFindComposite {
+	private static class SingletonHolder {
+		private static FindComposite instance = new FindComposite();
+	}
 
-	public DefaultFindComposite() {
+	public static FindComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	//todo: listen to name changes
+	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
+		private final org.lgna.project.ast.Member member;
+
+		public FindMemberReferencesOperation( org.lgna.project.ast.Member member ) {
+			super( FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
+			this.member = member;
+		}
+
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return FindComposite.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "memberReferencesOperation";
+		}
+
+		@Override
+		protected String modifyNameIfNecessary( String text ) {
+			String rv = super.modifyNameIfNecessary( text );
+			rv = rv.replace( "</name/>", this.member.getName() );
+			return rv;
+		}
+
+		@Override
+		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			getIsFrameShowingState().setValueTransactionlessly( true );
+			String name = member.getName();
+
+			//todo: ensure member is selected
+
+			getSearchState().setValueTransactionlessly( name != null ? name : "" );
+			step.finish();
+		}
+	};
+
+	private FindComposite() {
 		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
 	}
 
+	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
+		//todo: cache
+		return new FindMemberReferencesOperation( member );
+	}
 }
