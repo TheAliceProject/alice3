@@ -172,7 +172,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ImageCaptureComposite.getInstance().getBooleanState().getSwingModel().getButtonModel().setSelected( true );
+		ImageCaptureComposite.getInstance().getIsFrameShowingState().getSwingModel().getButtonModel().setSelected( true );
 	}
 
 }

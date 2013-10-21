@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple;
+package org.alice.ide.croquet.models.project.find.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
-
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
+public class FindComposite extends AbstractFindComposite {
+	private static class SingletonHolder {
+		private static FindComposite instance = new FindComposite();
 	}
 
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	public static FindComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	//todo: listen to name changes
+	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
+		private final org.lgna.project.ast.Member member;
+
+		public FindMemberReferencesOperation( org.lgna.project.ast.Member member ) {
+			super( FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
+			this.member = member;
+		}
+
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return FindComposite.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "memberReferencesOperation";
+		}
+
+		@Override
+		protected String modifyNameIfNecessary( String text ) {
+			String rv = super.modifyNameIfNecessary( text );
+			rv = rv.replace( "</name/>", this.member.getName() );
+			return rv;
+		}
+
+		@Override
+		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			getIsFrameShowingState().setValueTransactionlessly( true );
+			String name = member.getName();
+
+			//todo: ensure member is selected
+
+			getSearchState().setValueTransactionlessly( name != null ? name : "" );
+			step.finish();
+		}
+	};
+
+	private FindComposite() {
+		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
 	}
 
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleOpenFile( e );
-		e.setHandled( true );
-	}
-
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-		e.setHandled( false ); //setting this to false does not make sense to me.  dennisc
-	}
-
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-		e.setHandled( true );
-	}
-
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
-		e.setHandled( true );
+	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
+		//todo: cache
+		return new FindMemberReferencesOperation( member );
 	}
 }
