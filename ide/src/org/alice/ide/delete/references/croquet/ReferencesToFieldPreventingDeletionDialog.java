@@ -40,12 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.delete.references.croquet;
 
-import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
-import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
-import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -54,84 +51,53 @@ import org.lgna.project.ast.UserField;
 /**
  * @author Matt May
  */
-public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite<DeleteFieldFrameView> {
+public class ReferencesToFieldPreventingDeletionDialog extends OperationInputDialogCoreComposite<org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane> {
 
-	private UserField field;
-	private StringValue unableToDelete = createStringValue( this.createKey( "unableToDelete" ) );
-	private StringValue because = createStringValue( this.createKey( "because" ) );
-	private StringValue singularAccessReference = createStringValue( this.createKey( "singularAccessReference" ) );
-	private StringValue pluralAccessReference = createStringValue( this.createKey( "pluralAccessReference" ) );
-	private StringValue mustRemove = createStringValue( this.createKey( "mustRemove" ) );
-	private StringValue singularThisReference = createStringValue( this.createKey( "singularThisReference" ) );
-	private StringValue pluralTheseReferences = createStringValue( this.createKey( "pluralTheseReferences" ) );
-	private StringValue ifYouWantToDelete = createStringValue( this.createKey( "ifYouWantToDelete" ) );
-	private PlainStringValue bleh = createStringValue( createKey( "bleh" ) );
-	private DeleteFindComposite searchFrame;
-	private Integer refCount;
+	private final UserField field;
+	private final java.util.List<org.lgna.project.ast.FieldAccess> references;
 
-	public DeleteFieldFrameComposite( UserField field ) {
+	private final StringValue singlularDescriptionText = this.createStringValue( this.createKey( "singlularDescriptionText" ) );
+	private final StringValue pluralDescriptionText = this.createStringValue( this.createKey( "pluralDescriptionText" ) );
+
+	public ReferencesToFieldPreventingDeletionDialog( UserField field, java.util.List<org.lgna.project.ast.FieldAccess> references ) {
 		super( java.util.UUID.fromString( "e6ba357c-6490-4e88-a406-ba6567a4cc71" ), null );
 		this.field = field;
-		java.util.List<org.lgna.project.ast.FieldAccess> references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
-		refCount = references.size();
-		buildString();
-		searchFrame = new DeleteFindComposite( field );
-	}
-
-	public static DeleteFieldFrameComposite getDialog( UserField field ) {
-		return new DeleteFieldFrameComposite( field );
+		this.references = references;
 	}
 
 	@Override
-	protected DeleteFieldFrameView createView() {
-		return new DeleteFieldFrameView( this );
+	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+		localizedText = super.modifyLocalizedText( element, localizedText );
+		if( element == this.pluralDescriptionText ) {
+			localizedText = localizedText.replaceAll( "</referenceCount/>", Integer.toString( this.references.size() ) );
+		}
+		if( ( element == this.singlularDescriptionText ) || ( element == this.pluralDescriptionText ) ) {
+			localizedText = localizedText.replaceAll( "</fieldName/>", this.field.getName() );
+			localizedText = localizedText.replaceAll( "\\n", "<br>" );
+			localizedText = "<html>" + localizedText + "</html>";
+		}
+		return localizedText;
+	}
+
+	@Override
+	protected org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane createView() {
+		return new org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane( this );
 	}
 
 	public UserField getField() {
 		return this.field;
 	}
 
-	public Integer getRefCount() {
-		return this.refCount;
-	}
-
-	public String buildString() {
-		initializeIfNecessary();
-		String rv = "";
-		int count = getRefCount();
-		rv += unableToDelete.getText();
-		rv += getField().name.getValue();
-		rv += because.getText();
-		if( count == 1 ) {
-			rv += singularAccessReference.getText();
+	public StringValue getAppropriateDescriptionText() {
+		if( this.references.size() == 1 ) {
+			return this.singlularDescriptionText;
 		} else {
-			rv += count + " ";
-			rv += pluralAccessReference.getText();
+			return this.pluralDescriptionText;
 		}
-		rv += " " + mustRemove.getText();
-		if( count == 1 ) {
-			rv += singularThisReference.getText();
-		} else {
-			rv += pluralTheseReferences.getText();
-		}
-		rv += " " + ifYouWantToDelete.getText();
-		rv += getField().name.getValue();
-		rv += "\" .";
-		bleh.setText( rv );
-		return rv;
-	}
-
-	public PlainStringValue getBleh() {
-		return this.bleh;
-	}
-
-	public AbstractFindComposite getSearchFrame() {
-		return this.searchFrame;
 	}
 
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		searchFrame.getBooleanState().setValueTransactionlessly( true );
 		return null;
 	}
 
@@ -139,5 +105,4 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return null;
 	}
-
 }

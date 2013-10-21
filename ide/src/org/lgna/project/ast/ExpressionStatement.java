@@ -71,9 +71,8 @@ public final class ExpressionStatement extends Statement {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.expression.getValue() );
 	}
 
 	@Override

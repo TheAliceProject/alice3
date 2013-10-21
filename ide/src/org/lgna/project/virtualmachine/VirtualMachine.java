@@ -121,17 +121,17 @@ public abstract class VirtualMachine {
 	}
 
 	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( UserInstance instance, org.lgna.project.ast.UserField field ) {
-		//		pushCurrentThread( null );
+		//pushCurrentThread( null );
+		//try {
+		this.pushBogusFrame( instance );
 		try {
-			this.pushBogusFrame( instance );
-			try {
-				return instance.createAndSetFieldInstance( this, field );
-			} finally {
-				this.popFrame();
-			}
+			return instance.createAndSetFieldInstance( this, field );
 		} finally {
-			//			popCurrentThread();
+			this.popFrame();
 		}
+		//} finally {
+		//	popCurrentThread();
+		//}
 	}
 
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( UserInstance instance, org.lgna.project.ast.UserField field, UserInstance value ) {
@@ -140,21 +140,21 @@ public abstract class VirtualMachine {
 
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, org.lgna.project.ast.Statement statement ) {
 		assert ( statement instanceof org.lgna.project.ast.ReturnStatement ) == false;
-		//		pushCurrentThread( null );
+		//pushCurrentThread( null );
+		//try {
+		this.pushBogusFrame( instance );
 		try {
-			this.pushBogusFrame( instance );
 			try {
-				try {
-					this.execute( statement );
-				} catch( ReturnException re ) {
-					throw new AssertionError();
-				}
-			} finally {
-				this.popFrame();
+				this.execute( statement );
+			} catch( ReturnException re ) {
+				throw new AssertionError();
 			}
 		} finally {
-			//			popCurrentThread();
+			this.popFrame();
 		}
+		//} finally {
+		//	popCurrentThread();
+		//}
 	}
 
 	private final java.util.Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

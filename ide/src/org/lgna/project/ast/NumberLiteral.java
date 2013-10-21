@@ -61,12 +61,6 @@ public final class NumberLiteral extends AbstractValueLiteral<Number> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
-	}
-
-	@Override
 	public edu.cmu.cs.dennisc.property.InstanceProperty<Number> getValueProperty() {
 		return this.value;
 	}

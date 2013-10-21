@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,65 +40,68 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ApplicationFrame extends javax.swing.JFrame {
-	public ApplicationFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ApplicationFrame.this.handleWindowOpened( e );
+public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing.JEditorPane> {
+	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
+		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
+			javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
+			if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
+				java.net.URL url = e.getURL();
+				try {
+					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+				} catch( Exception exc ) {
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( url );
+				}
 			}
+		}
+	};
 
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ApplicationFrame.this.handleQuit( e );
-			}
-
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
-		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
-			public void handleAbout( java.util.EventObject e ) {
-			}
-
-			public void handlePreferences( java.util.EventObject e ) {
-			}
-
-			public void handleQuit( java.util.EventObject e ) {
-				ApplicationFrame.this.handleQuit( e );
-			}
-
-			public void handleOpenFile( java.util.EventObject e ) {
-			}
-		} );
-
+	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
+		javax.swing.text.Document document = this.getAwtComponent().getDocument();
+		return (javax.swing.text.html.HTMLDocument)document;
 	}
 
-	public void maximize() {
-		this.setExtendedState( this.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	public String getText() {
+		return this.getText();
 	}
 
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+	public void setText( String text ) {
+		this.getAwtComponent().setText( text );
+		this.revalidateAndRepaint();
+	}
 
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleAbout( java.util.EventObject e );
+	public void setTextFromUrl( java.net.URL url ) {
+		org.lgna.croquet.worker.url.TextUrlWorker worker = new org.lgna.croquet.worker.url.TextUrlWorker( url ) {
+			@Override
+			protected void handleDone_onEventDispatchThread( String value ) {
+				setText( value );
+			}
+		};
+		worker.execute();
+	}
 
-	protected abstract void handlePreferences( java.util.EventObject e );
+	@Override
+	protected javax.swing.JEditorPane createAwtComponent() {
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" );
+		assert rv.getDocument() instanceof javax.swing.text.html.HTMLDocument : rv.getDocument();
+		//rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
+		rv.setEditable( false );
+		return rv;
+	}
 
-	protected abstract void handleQuit( java.util.EventObject e );
+	@Override
+	protected void handleDisplayable() {
+		this.getAwtComponent().addHyperlinkListener( this.hyperlinkListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getAwtComponent().removeHyperlinkListener( this.hyperlinkListener );
+	}
 }

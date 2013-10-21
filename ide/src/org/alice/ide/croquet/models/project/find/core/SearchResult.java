@@ -95,11 +95,6 @@ public class SearchResult {
 		return declaration.getName();
 	}
 
-	@Override
-	public String toString() {
-		return getName() + " (" + references.size() + ")";
-	}
-
 	public void addReference( Expression reference ) {
 		references.add( reference );
 	}

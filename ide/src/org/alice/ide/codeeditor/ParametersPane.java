@@ -108,7 +108,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				if( org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( method ) ) {
 					//pass
 				} else {
-					this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( method ).getOperation().createButton() );
+					this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( method ).getLaunchOperation().createButton() );
 				}
 			}
 		}

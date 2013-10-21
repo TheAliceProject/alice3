@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,105 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple5<A, B, C, D, E> {
-	public static <A, B, C, D, E> Tuple5<A, B, C, D, E> createInstance( A a, B b, C c, D d, E e ) {
-		return new Tuple5<A, B, C, D, E>( a, b, c, d, e );
-	}
+public interface AstLocalizer {
+	void appendDeclaration( Declaration declaration );
 
-	private A m_a = null;
-	private B m_b = null;
-	private C m_c = null;
-	private D m_d = null;
-	private E m_e = null;
+	void appendThis();
 
-	private Tuple5() {
-	}
+	void appendNull();
 
-	private Tuple5( A a, B b, C c, D d, E e ) {
-		set( a, b, c, d, e );
-	}
+	void appendNullLiteral();
 
-	public A getA() {
-		return m_a;
-	}
+	void appendSpace();
 
-	public void setA( A a ) {
-		m_a = a;
-	}
+	void appendDot();
 
-	public B getB() {
-		return m_b;
-	}
+	void appendChar( char value );
 
-	public void setB( B b ) {
-		m_b = b;
-	}
+	void appendBoolean( boolean value );
 
-	public C getC() {
-		return m_c;
-	}
+	void appendInt( int value );
 
-	public void setC( C c ) {
-		m_c = c;
-	}
+	void appendLong( long value );
 
-	public D getD() {
-		return m_d;
-	}
+	void appendFloat( float value );
 
-	public void setD( D d ) {
-		m_d = d;
-	}
+	void appendDouble( double value );
 
-	public E getE() {
-		return m_e;
-	}
+	void appendText( String text );
 
-	public void setE( E e ) {
-		m_e = e;
-	}
-
-	public void set( A a, B b, C c, D d, E e ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-		m_d = d;
-		m_e = e;
-	}
-
-	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple5<?, ?, ?, ?, ?> ) {
-				Tuple5<?, ?, ?, ?, ?> otherT = (Tuple5<?, ?, ?, ?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e );
-			} else {
-				return false;
-			}
-		}
-	}
-
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple5[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( ", c=" );
-		sb.append( m_c );
-		sb.append( ", d=" );
-		sb.append( m_d );
-		sb.append( ", e=" );
-		sb.append( m_e );
-		sb.append( " ]" );
-		return sb.toString();
-	}
+	void appendLocalizedText( Class<? extends Node> cls, String subKey );
 }

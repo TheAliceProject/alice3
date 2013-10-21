@@ -73,9 +73,8 @@ public final class ThisExpression extends Expression {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "this" );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendThis();
 	}
 
 	@Override

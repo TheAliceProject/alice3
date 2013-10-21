@@ -90,11 +90,6 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 		this.nebModel.setLocalTransformationForJoint( this.jointId, current );
 	}
 
-	@Override
-	public void setParent( Composite parent ) {
-		super.setParent( parent );
-	}
-
 	//	
 	//	public void setSgParent( Composite sgParent )
 	//    {

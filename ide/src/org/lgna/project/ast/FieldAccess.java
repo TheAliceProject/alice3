@@ -131,10 +131,10 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		NodeUtilities.safeAppendRepr( rv, this.field.getValue(), locale );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.expression.getValue() );
+		localizer.appendDot();
+		safeAppendRepr( localizer, this.field.getValue() );
 	}
 
 	@Override

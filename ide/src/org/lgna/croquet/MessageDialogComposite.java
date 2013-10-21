@@ -57,6 +57,18 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
 	}
 
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKey ) {
+		if( subKey != null ) {
+			throw new RuntimeException( "todo" );
+		} else {
+			return this.getLaunchOperation();
+		}
+	}
+
 	@Override
 	protected void localize() {
 		super.localize();
@@ -85,10 +97,6 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.componen
 	}
 
 	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getOperation() {
-		return this.launchOperation;
 	}
 
 	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

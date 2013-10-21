@@ -63,7 +63,7 @@ public class ToolBarUtilities {
 	}
 
 	public static void appendRunSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getOperation() );
+		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 }

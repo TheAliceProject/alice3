@@ -63,7 +63,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		public java.awt.Image getImage() {
 			return applicationContentPanelImage;
 		}
-	}.getOperation();
+	}.getLaunchOperation();
 
 	private final String description;
 
@@ -150,7 +150,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				composite.getOperation().fire();
+				composite.getLaunchOperation().fire();
 				//System.exit( 0 );
 			}
 		} );

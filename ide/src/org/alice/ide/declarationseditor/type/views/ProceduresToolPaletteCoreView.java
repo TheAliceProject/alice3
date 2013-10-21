@@ -52,7 +52,7 @@ public class ProceduresToolPaletteCoreView extends MethodsToolPaletteCoreView {
 		super( composite );
 		AbstractAnimatorInputDialogComposite<?> dialog = AbstractAnimatorInputDialogComposite.getDialogForUserType( composite.getType(), null );
 		if( dialog != null ) {
-			this.addComponent( dialog.getOperation().createButton() );
+			this.addComponent( dialog.getLaunchOperation().createButton() );
 		}
 	}
 }

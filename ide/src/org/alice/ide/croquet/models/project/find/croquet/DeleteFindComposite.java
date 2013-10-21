@@ -60,7 +60,6 @@ public class DeleteFindComposite extends AbstractFindComposite {
 		this.field = field;
 		getSearchState().setValueTransactionlessly( field.getName() );
 		getSearchState().setEnabled( false );
-		getReferenceResults().setShowGenerated( false );
 	}
 
 	@Override
@@ -74,6 +73,7 @@ public class DeleteFindComposite extends AbstractFindComposite {
 		}
 		assert getSearchResults().getItemCount() == 1;
 		getSearchResults().setSelectedIndex( 0 );
+		getView().getTree().expandAllRows();
 	}
 
 	@Override

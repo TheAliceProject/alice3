@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
-
-import javax.swing.Icon;
-
-import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.ImmutableTextArea;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.icon.IconFactory;
-
-import edu.cmu.cs.dennisc.math.GoldenRatio;
+package org.alice.ide.croquet.models.project.find.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DeleteFieldFrameView extends BorderPanel {
+public class FindComposite extends AbstractFindComposite {
+	private static class SingletonHolder {
+		private static FindComposite instance = new FindComposite();
+	}
 
-	private static int WIDTH = 550;
+	public static FindComposite getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	public DeleteFieldFrameView( DeleteFieldFrameComposite composite ) {
-		this.setMinimumPreferredHeight( GoldenRatio.getShorterSideLength( WIDTH ) );
-		this.setMinimumPreferredWidth( WIDTH );
-		//		System.out.println( composite.getField().getValueType() );
-		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
-		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
-		ImmutableTextArea textArea = composite.getBleh().createImmutableTextArea();
-		//		System.out.println(image);
-		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
-		//		System.out.println( composite.getField() );
-		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
-		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
-		//		System.out.println( "icon factory: " + iconFactory );
-		//		System.out.println( "icon: " + icon );
-		Label label = new Label( icon );
-		this.addComponent( label, Constraint.LINE_START );
-		GridPanel panel = GridPanel.createGridPane( 3, 1 );
-		panel.addComponent( new Label() );
-		panel.addComponent( textArea );
-		panel.addComponent( new Label() );
-		this.addComponent( panel, Constraint.CENTER );
-		//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
-		this.addComponent( composite.getSearchFrame().getBooleanState().createToggleButton(), Constraint.PAGE_END );
+	//todo: listen to name changes
+	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
+		private final org.lgna.project.ast.Member member;
+
+		public FindMemberReferencesOperation( org.lgna.project.ast.Member member ) {
+			super( FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
+			this.member = member;
+		}
+
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return FindComposite.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "memberReferencesOperation";
+		}
+
+		@Override
+		protected String modifyNameIfNecessary( String text ) {
+			String rv = super.modifyNameIfNecessary( text );
+			rv = rv.replace( "</name/>", this.member.getName() );
+			return rv;
+		}
+
+		@Override
+		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			getIsFrameShowingState().setValueTransactionlessly( true );
+			String name = member.getName();
+
+			//todo: ensure member is selected
+
+			getSearchState().setValueTransactionlessly( name != null ? name : "" );
+			step.finish();
+		}
+	};
+
+	private FindComposite() {
+		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
+	}
+
+	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
+		//todo: cache
+		return new FindMemberReferencesOperation( member );
 	}
 }

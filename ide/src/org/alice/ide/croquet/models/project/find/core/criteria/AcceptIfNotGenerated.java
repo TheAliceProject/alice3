@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple;
+package org.alice.ide.croquet.models.project.find.core.criteria;
+
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
+public class AcceptIfNotGenerated implements Criterion<Expression> {
 
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
+	private static class SingletonHolder {
+		public final static AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
 	}
 
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	public static AcceptIfNotGenerated getInstance() {
+		return SingletonHolder.filteredInstance;
 	}
 
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleOpenFile( e );
-		e.setHandled( true );
-	}
-
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-		e.setHandled( false ); //setting this to false does not make sense to me.  dennisc
-	}
-
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-		e.setHandled( true );
-	}
-
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
-		e.setHandled( true );
+	@Override
+	public boolean accept( Expression e ) {
+		UserMethod userMethod = e.getFirstAncestorAssignableTo( UserMethod.class );
+		return !userMethod.getManagementLevel().isGenerated();
 	}
 }

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -114,13 +113,13 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		for( org.lgna.project.ast.UserField field : this.type.fields ) {
 			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 				if( EDIT ) {
-					managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+					managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
 				} else {
 					managedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 				}
 			} else {
 				if( EDIT ) {
-					unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+					unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
 				} else {
 					unmanagedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 				}
@@ -134,8 +133,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			functionModels.add( 0, FunctionsSeparator.getInstance() );
 		}
 
-		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
-		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
+		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
+		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
 
 		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -174,7 +173,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			if( IS_SHOW_ME_HOW_PREFERRED ) {
 				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
 			} else {
-				models.add( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getOperation().getMenuItemPrepModel() );
+				models.add( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
 			}
 		}
 
@@ -187,7 +186,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			}
 			models.addAll( unmanagedFieldModels );
 		}
-		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );
+		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
 		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
 		org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver() {

@@ -59,6 +59,6 @@ public class CaptureMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				//org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
 				org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.capture.ImageCaptureComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
+				org.alice.ide.capture.ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
 	}
 }

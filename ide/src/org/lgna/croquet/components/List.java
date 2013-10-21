@@ -74,7 +74,8 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 				g2.setPaint( java.awt.Color.DARK_GRAY );
 				g2.setFont( g2.getFont().deriveFont( mapDeriveFont ) );
-				g2.drawString( text, 0, g2.getFontMetrics().getAscent() );
+				final int OFFSET = 4;
+				g2.drawString( text, OFFSET, OFFSET + g2.getFontMetrics().getAscent() );
 			}
 		}
 	}

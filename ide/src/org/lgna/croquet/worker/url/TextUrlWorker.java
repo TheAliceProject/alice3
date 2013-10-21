@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,93 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.lgna.croquet.worker.url;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple4<A, B, C, D> {
-	public static <A, B, C, D> Tuple4<A, B, C, D> createInstance( A a, B b, C c, D d ) {
-		return new Tuple4<A, B, C, D>( a, b, c, d );
-	}
+public abstract class TextUrlWorker extends org.lgna.croquet.worker.Worker<String> {
+	private final java.net.URL url;
 
-	private A m_a = null;
-	private B m_b = null;
-	private C m_c = null;
-	private D m_d = null;
-
-	private Tuple4() {
-	}
-
-	private Tuple4( A a, B b, C c, D d ) {
-		set( a, b, c, d );
-	}
-
-	public A getA() {
-		return m_a;
-	}
-
-	public void setA( A a ) {
-		m_a = a;
-	}
-
-	public B getB() {
-		return m_b;
-	}
-
-	public void setB( B b ) {
-		m_b = b;
-	}
-
-	public C getC() {
-		return m_c;
-	}
-
-	public void setC( C c ) {
-		m_c = c;
-	}
-
-	public D getD() {
-		return m_d;
-	}
-
-	public void setD( D d ) {
-		m_d = d;
-	}
-
-	public void set( A a, B b, C c, D d ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-		m_d = d;
+	public TextUrlWorker( java.net.URL url ) {
+		this.url = url;
 	}
 
 	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple4<?, ?, ?, ?> ) {
-				Tuple4<?, ?, ?, ?> otherT = (Tuple4<?, ?, ?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d );
-			} else {
-				return false;
+	protected String do_onBackgroundThread() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		java.net.URLConnection urlConnection = url.openConnection();
+		try {
+			java.io.InputStream inputStream = urlConnection.getInputStream();
+			try {
+				java.io.InputStreamReader reader = new java.io.InputStreamReader( inputStream );
+				java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
+				while( true ) {
+					String inputLine = bufferedReader.readLine();
+					if( inputLine != null ) {
+						sb.append( inputLine );
+					} else {
+						break;
+					}
+				}
+				return sb.toString();
+			} finally {
+				inputStream.close();
+			}
+		} finally {
+			if( urlConnection instanceof java.net.HttpURLConnection ) {
+				//todo?
+				( (java.net.HttpURLConnection)urlConnection ).disconnect();
 			}
 		}
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple4[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( ", c=" );
-		sb.append( m_c );
-		sb.append( ", d=" );
-		sb.append( m_d );
-		sb.append( " ]" );
-		return sb.toString();
-	}
 }

@@ -93,19 +93,6 @@ public class FindView extends BorderPanel {
 	private final ListSelectionState<SearchResult> searchResults;
 	boolean listIsSelected = true;
 
-	private final ValueListener<SearchResult> resultsListener = new ValueListener<SearchResult>() {
-		@Override
-		public void valueChanged( ValueEvent<SearchResult> e ) {
-			searchResultsList.ensureIndexIsVisible( searchResultsList.getAwtComponent().getSelectedIndex() );
-		}
-	};
-	private final ValueListener<SearchTreeNode> referencesListener = new ValueListener<SearchTreeNode>() {
-		@Override
-		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
-			referencesTreeList.getAwtComponent().scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
-		}
-	};
-
 	public FindView( AbstractFindComposite composite ) {
 		super( composite );
 		referenceResults = getComposite().getReferenceResults();
@@ -119,7 +106,6 @@ public class FindView extends BorderPanel {
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
 		searchResultsList = composite.getSearchResults().createList();
 		referencesTreeList = referenceResults.createTree();
-		referenceResults.addNewSchoolValueListener( referenceTreeListener );
 		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
@@ -127,23 +113,21 @@ public class FindView extends BorderPanel {
 		bPanel.addCenterComponent( new ScrollPane( searchResultsList ) );
 		//		bPanel.addPageEndComponent( composite.getHowToAddOperation().createButton() );
 		panel.addComponent( bPanel );
-		searchResultsList.setCellRenderer( new SearchResultListCellRenderer() );
+		searchResultsList.setCellRenderer( new SearchResultListCellRenderer( composite ) );
 		composite.getSearchResults().addNewSchoolValueListener( searchResultsValueListener );
 		referencesTreeList.setCellRenderer( new SearchReferencesTreeCellRenderer() );
 		panel.addComponent( new ScrollPane( referencesTreeList ) );
 		this.addCenterComponent( panel );
-		searchBox.addKeyListener( keyListener );
 		searchResultsList.getAwtComponent().setFocusable( false );
 		referencesTreeList.getAwtComponent().setFocusable( false );
-		referencesTreeList.getAwtComponent().addTreeExpansionListener( treeListener );
 	}
 
 	private final ValueListener<SearchResult> searchResultsValueListener = new ValueListener<SearchResult>() {
 
 		@Override
 		public void valueChanged( ValueEvent<SearchResult> e ) {
-			//			if( !listIsSelected ) {
 			listIsSelected = true;
+			searchResultsList.ensureIndexIsVisible( searchResultsList.getAwtComponent().getSelectedIndex() );
 			Map<Integer, Boolean> innerMap = searchResultToExpandParentsMap.get( searchResults.getValue() );
 			if( innerMap != null ) {
 				for( Integer i : innerMap.keySet() ) {
@@ -153,14 +137,15 @@ public class FindView extends BorderPanel {
 				}
 			}
 		}
-		//		}
 	};
+
 	private ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
 
 		@Override
 		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
 			if( e.getNextValue() != null ) {
 				searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
+				referencesTreeList.scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
 			}
 		}
 	};
@@ -213,6 +198,18 @@ public class FindView extends BorderPanel {
 		public void keyPressed( KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 
+			java.awt.ComponentOrientation componentOrientation = e.getComponent().getComponentOrientation();
+
+			final int LEADING_KEY_CODE;
+			final int TRAILING_KEY_CODE;
+			if( componentOrientation.isLeftToRight() ) {
+				LEADING_KEY_CODE = KeyEvent.VK_LEFT;
+				TRAILING_KEY_CODE = KeyEvent.VK_RIGHT;
+			} else {
+				LEADING_KEY_CODE = KeyEvent.VK_RIGHT;
+				TRAILING_KEY_CODE = KeyEvent.VK_LEFT;
+			}
+
 			if( keyCode == KeyEvent.VK_UP ) {
 				if( isListSelected() ) {
 					if( searchResults.getValue() != null ) {
@@ -242,13 +239,13 @@ public class FindView extends BorderPanel {
 					referenceResults.moveSelectedDownOne();
 					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
 				}
-			} else if( keyCode == KeyEvent.VK_LEFT ) {
+			} else if( keyCode == LEADING_KEY_CODE ) {
 				if( isTreeSelected() ) {
 					setListSelected();
 					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceTreeState.getSelectedCoordinates() );
 					referenceResults.setValueTransactionlessly( null );
 				}
-			} else if( keyCode == KeyEvent.VK_RIGHT ) {
+			} else if( keyCode == TRAILING_KEY_CODE ) {
 				if( isListSelected() ) {
 					if( referenceResults.isEmpty() ) {
 						setTreeSelected();
@@ -285,15 +282,17 @@ public class FindView extends BorderPanel {
 
 	@Override
 	protected void handleDisplayable() {
-		this.getComposite().getSearchResults().addNewSchoolValueListener( this.resultsListener );
-		this.getComposite().getReferenceResults().addNewSchoolValueListener( this.referencesListener );
+		referenceResults.addNewSchoolValueListener( referenceTreeListener );
+		searchBox.addKeyListener( keyListener );
+		referencesTreeList.getAwtComponent().addTreeExpansionListener( treeListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.getComposite().getSearchResults().removeNewSchoolValueListener( this.resultsListener );
-		this.getComposite().getReferenceResults().removeNewSchoolValueListener( this.referencesListener );
+		referenceResults.addNewSchoolValueListener( referenceTreeListener );
+		searchBox.addKeyListener( keyListener );
+		referencesTreeList.getAwtComponent().addTreeExpansionListener( treeListener );
 	}
 }

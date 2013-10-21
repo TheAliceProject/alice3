@@ -49,15 +49,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.alice.ide.croquet.models.project.find.core.astcrawler.FindCrawler;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
 import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
@@ -67,8 +65,7 @@ import org.lgna.project.ast.UserParameter;
 import org.lgna.project.ast.UserType;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
  * @author Matt May
@@ -79,34 +76,10 @@ public class FindContentManager {
 	private final List<Object> superTypeList = Collections.newArrayList();
 	private UserType sceneType;
 
-	private final Crawler crawler = new Crawler() {
-		public void visit( Crawlable crawlable ) {
-			if( crawlable instanceof MethodInvocation ) {
-				MethodInvocation methodInv = (MethodInvocation)crawlable;
-				SearchResult checkFind = checkFind( methodInv.method.getValue() );
-				if( checkFind != null ) {
-					checkFind.addReference( methodInv );
-				}
-			} else if( crawlable instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)crawlable;
-				SearchResult checkFind = checkFind( fieldAccess.field.getValue() );
-				if( checkFind != null ) {
-					checkFind.addReference( fieldAccess );
-				}
-			} else if( crawlable instanceof LocalAccess ) {
-				LocalAccess localAccess = (LocalAccess)crawlable;
-				SearchResult checkFind = checkFind( localAccess.local.getValue() );
-				if( checkFind != null ) {
-					checkFind.addReference( localAccess );
-				}
-			}
-		}
-
-	};
-
-	public void initialize( UserType sceneType ) {
+	public void initialize( UserType sceneType, List<Criterion> criteria ) {
 		this.sceneType = sceneType;
 		tunnelField( sceneType );
+		FindCrawler crawler = new FindCrawler( criteria, objectList );
 		for( SearchResult object : objectList ) {
 			if( object.getDeclaration() instanceof UserMethod ) {
 				UserMethod method = (UserMethod)object.getDeclaration();
@@ -128,9 +101,7 @@ public class FindContentManager {
 		for( UserMethod method : type.methods ) {
 			if( !checkContains( method ) ) {
 				objectList.add( new SearchResult( method ) );
-				if( method instanceof UserMethod ) {
-					tunnelMethod( (UserMethod)method );
-				}
+				tunnelMethod( method );
 			}
 		}
 	}
@@ -203,9 +174,9 @@ public class FindContentManager {
 		check = check.replaceAll( "\\{", "" );
 		check = check.replaceAll( "\\}", "" );
 		check = check.replaceAll( "\\\\", "" );
-		if( check.length() == 0 ) {
-			return rv;
-		}
+		//		if( check.length() == 0 ) {
+		//			return rv;
+		//		}
 		while( true ) {
 			try {
 				Pattern pattern = Pattern.compile( check.toLowerCase() );
@@ -281,11 +252,11 @@ public class FindContentManager {
 		return rv;
 	}
 
-	public void refresh() {
+	public void refresh( List<Criterion> criteria ) {
 		assert sceneType != null;
 		objectList.clear();
 		superTypeList.clear();
-		initialize( sceneType );
+		initialize( sceneType, criteria );
 	}
 
 	public boolean isInitialized() {

@@ -54,13 +54,13 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
 			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
 				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
+				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
 				AbstractAnimatorInputDialogComposite<?> dialog = AbstractAnimatorInputDialogComposite.getDialogForUserType( method.getDeclaringType(), method );
 				if( dialog != null ) {
-					prepModels.add( dialog.getOperation().getMenuItemPrepModel() );
+					prepModels.add( dialog.getLaunchOperation().getMenuItemPrepModel() );
 				}
 				return new MethodMenuModel( key, prepModels );
 			}

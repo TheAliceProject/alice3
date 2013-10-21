@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple.event;
+package org.alice.ide.delete.references.croquet.views;
 
-public interface ApplicationListener {
-	public void handlePreferences( java.util.EventObject e );
+import javax.swing.Icon;
 
-	public void handleAbout( java.util.EventObject e );
+import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.TrimmedIcon;
 
-	public void handleQuit( java.util.EventObject e );
-
-	public void handleOpenFile( java.util.EventObject e );
+/**
+ * @author Matt May
+ */
+public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
+	public ReferencesToFieldPreventingDeletionPane( ReferencesToFieldPreventingDeletionDialog composite ) {
+		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
+		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
+		if( icon instanceof TrimmedIcon ) {
+			TrimmedIcon trimmedIcon = (TrimmedIcon)icon;
+			icon = trimmedIcon.getImageIcon();
+		}
+		org.lgna.croquet.components.AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
+		descriptionLabel.setIcon( icon );
+		descriptionLabel.getAwtComponent().setIconTextGap( 16 );
+		this.addPageStartComponent( descriptionLabel );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
+	}
 }

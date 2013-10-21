@@ -61,9 +61,13 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		Double value = this.value.getValue();
+		if( value != null ) {
+			localizer.appendDouble( value );
+		} else {
+			localizer.appendNull();
+		}
 	}
 
 	@Override

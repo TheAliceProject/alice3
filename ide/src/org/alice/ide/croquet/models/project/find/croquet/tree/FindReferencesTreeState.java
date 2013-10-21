@@ -54,7 +54,9 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNo
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.codecs.DefaultItemCodec;
+import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
 
 import com.sun.tools.javac.util.Pair;
@@ -65,7 +67,6 @@ import com.sun.tools.javac.util.Pair;
 public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTreeNode> {
 
 	private final static SearchTreeNode root = new SearchTreeNode( null );
-	private boolean showGenerated = true;
 	private final static ItemCodec<SearchTreeNode> codec = new DefaultItemCodec<SearchTreeNode>( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
@@ -118,21 +119,39 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 		if( searchObject != null ) {
 			List<Expression> references = searchObject.getReferences();
 			for( Expression reference : references ) {
-				UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
-				if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
-					SearchTreeNode userMethodNode = root.getChildForReference( userMethod );
-					if( userMethodNode == null ) {
-						SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, userMethod );
-						root.addChild( newChildNode );
-						newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
-					} else {
-						userMethodNode.addChild( new ExpressionSearchTreeNode( userMethodNode, reference ) );
-					}
+				UserLambda lambda = reference.getFirstAncestorAssignableTo( UserLambda.class );
+				UserMethod userMethod = null;
+				if( lambda != null ) {
+					//pass
+				} else {
+					userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+				}
+				AbstractDeclaration parentObject = lambda != null ? lambda : userMethod;
+				SearchTreeNode parentNode = root.getChildForReference( parentObject );
+				assert parentObject != null : lambda + ", " + userMethod;
+				if( parentNode == null ) {
+					SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, parentObject );
+					root.addChild( newChildNode );
+					newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
+				} else {
+					parentNode.addChild( new ExpressionSearchTreeNode( parentNode, reference ) );
 				}
 			}
 		}
 		refreshAll();
 	}
+
+	//	public List<Expression> getReferencesForSearchResult( SearchResult searchObject ) {
+	//		List<Expression> rv = Collections.newArrayList();
+	//		for( Expression reference : searchObject.getReferences() ) {
+	//			UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+	//			if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
+	//				rv.add( reference );
+	//			}
+	//		}
+	//		searchObject.setFilteredReferences( rv );
+	//		return rv;
+	//	}
 
 	public void moveSelectedUpOne() {
 		SearchTreeNode selected = this.getValue();
@@ -191,9 +210,5 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 			a = value.getParent().getLocationAmongstSiblings();
 		}
 		return new Pair<Integer, Integer>( a, b );
-	}
-
-	public void setShowGenerated( boolean showGenerated ) {
-		this.showGenerated = showGenerated;
 	}
 }

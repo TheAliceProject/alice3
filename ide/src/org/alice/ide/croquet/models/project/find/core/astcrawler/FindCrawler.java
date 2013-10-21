@@ -40,15 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
+package org.alice.ide.croquet.models.project.find.core.astcrawler;
+
+import java.util.List;
+
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.MethodInvocation;
+
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
  * @author Matt May
  */
-public class DefaultFindComposite extends AbstractFindComposite {
+public class FindCrawler implements Crawler {
 
-	public DefaultFindComposite() {
-		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
+	private final List<Criterion> criteria;
+	private final List<SearchResult> results;
+
+	public FindCrawler( List<Criterion> criteria, List<SearchResult> results ) {
+		this.criteria = criteria;
+		this.results = results;
+	}
+
+	public void visit( Crawlable crawlable ) {
+		if( crawlable instanceof MethodInvocation ) {
+			MethodInvocation methodInv = (MethodInvocation)crawlable;
+			SearchResult checkFind = checkFind( methodInv.method.getValue() );
+			if( referenceIsValid( methodInv, checkFind ) ) {
+				checkFind.addReference( methodInv );
+			}
+		} else if( crawlable instanceof FieldAccess ) {
+			FieldAccess fieldAccess = (FieldAccess)crawlable;
+			SearchResult checkFind = checkFind( fieldAccess.field.getValue() );
+			if( referenceIsValid( fieldAccess, checkFind ) ) {
+				checkFind.addReference( fieldAccess );
+			}
+		} else if( crawlable instanceof LocalAccess ) {
+			LocalAccess localAccess = (LocalAccess)crawlable;
+			SearchResult checkFind = checkFind( localAccess.local.getValue() );
+			if( referenceIsValid( localAccess, checkFind ) ) {
+				checkFind.addReference( localAccess );
+			}
+		}
+	}
+
+	private boolean referenceIsValid( Expression reference, SearchResult checkFind ) {
+		boolean accepted = true;
+		if( checkFind != null ) {
+			for( Criterion<Expression> criterion : criteria ) {
+				if( !criterion.accept( reference ) ) {
+					accepted = false;
+					break;
+				}
+			}
+			return accepted;
+		} else {
+			return false;
+		}
+	}
+
+	private SearchResult checkFind( AbstractDeclaration searchObject ) {
+		for( SearchResult object : results ) {
+			if( object.getDeclaration().equals( searchObject ) ) {
+				return object;
+			}
+		}
+		return null;
 	}
 
 }

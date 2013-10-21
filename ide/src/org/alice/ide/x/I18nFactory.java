@@ -182,7 +182,7 @@ public abstract class I18nFactory {
 
 								int xC = cLast.getX() + cLast.getWidth();
 								int xD = xC + I18nFactory.this.getPixelsPerIndent();
-								;
+
 								g.drawLine( xC, yBottom, xD, yBottom );
 								g.drawLine( xD, yBottom, xD, cLast.getY() );
 

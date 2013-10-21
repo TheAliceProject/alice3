@@ -77,10 +77,13 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 		public java.awt.Insets getMargin() {
 			java.awt.Insets rv = super.getMargin();
 			if( rv != null ) {
-				rv.right += this.getArrowSize();
-				rv.right += this.getComboPad();
-				rv.right += OUTER_PAD;
-				rv.right += TRAILING_PAD;
+				java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+				int increment = this.getArrowSize() + this.getComboPad() + OUTER_PAD + TRAILING_PAD;
+				if( componentOrientation.isLeftToRight() ) {
+					rv.right += increment;
+				} else {
+					rv.left += increment;
+				}
 			}
 			return rv;
 		}
@@ -95,7 +98,26 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			int width = this.getWidth();
 			int height = this.getHeight();
-			int x = ( ( width - insets.right ) + OUTER_PAD ) - TRAILING_PAD;
+
+			java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+			int x;
+			int w;
+			int xArrow;
+			int xLine;
+			if( componentOrientation.isLeftToRight() ) {
+				x = ( width - insets.right ) - TRAILING_PAD;
+				x += OUTER_PAD;
+				w = width - x;
+				xArrow = x + this.getComboPad();
+				xLine = x;
+
+			} else {
+				xArrow = OUTER_PAD + TRAILING_PAD + this.getComboPad();
+				x = 0;
+				w = insets.left + TRAILING_PAD;
+				w -= OUTER_PAD;
+				xLine = w;
+			}
 			if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
 				javax.swing.ButtonModel buttonModel = this.getModel();
 				boolean isPressedOrSelected = buttonModel.isPressed() || buttonModel.isSelected();
@@ -111,22 +133,22 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 
 				if( isPressedOrSelected ) {
 					g2.setPaint( new java.awt.GradientPaint( width, 0, SELECTED_HIGHTLIGHT_COLOR, width, height / 6, SELECTED_COLOR ) );
-					g.fillRect( x, 0, width - x, height / 2 );
+					g.fillRect( x, 0, w, height / 2 );
 					g2.setPaint( new java.awt.GradientPaint( width, ( 5 * height ) / 6, SELECTED_COLOR, width, height, SELECTED_HIGHTLIGHT_COLOR ) );
-					g.fillRect( x, height / 2, width - x, ( height / 2 ) );
+					g.fillRect( x, height / 2, w, ( height / 2 ) );
 				} else {
 					g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
-					g.fillRect( x, 0, width - x, height );
+					g.fillRect( x, 0, w, height );
 				}
 				if( isPressedOrSelected ) {
 					g2.setPaint( SELECTED_LINE_COLOR );
 				} else {
 					g2.setPaint( LINE_COLOR );
 				}
-				g2.fillRect( x, 0, 1, height );
+				g2.fillRect( xLine, 0, 1, height );
 				g2.setClip( prevClip );
 			}
-			ARROW_ICON.paintIcon( this, g2, x + this.getComboPad(), ( height - SIZE ) / 2 );
+			ARROW_ICON.paintIcon( this, g2, xArrow, ( height - SIZE ) / 2 );
 		}
 	}
 
