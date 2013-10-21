@@ -56,14 +56,12 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
-import org.lgna.croquet.Group;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
@@ -79,7 +77,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  * @author Matt May
  */
 public abstract class AbstractFindComposite extends FrameComposite<FindView> {
-	public static final Group FIND_COMPOSITE_GROUP = Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
+	public static final org.lgna.croquet.Group FIND_COMPOSITE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	private final FindContentManager manager = new FindContentManager();
 	private final StringState searchState = createStringState( createKey( "searchState" ) );
@@ -93,11 +91,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	}
 
 	private final ValueListener<String> searchStateListener = new ValueListener<String>() {
-
-		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			data.refresh();
 			referenceTreeState.refreshWith( searchResultsState.getValue() );
 			if( data.getItemCount() == 1 ) {
@@ -112,29 +106,21 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 	};
 
-	private final State.ValueListener<org.alice.ide.ProjectDocument> projectDocumentChangeListener = new State.ValueListener<org.alice.ide.ProjectDocument>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+	private final ValueListener<org.alice.ide.ProjectDocument> projectDocumentChangeListener = new ValueListener<org.alice.ide.ProjectDocument>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
 			refresh();
 		}
 	};
-	ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
 
-		public void changing( State<SearchResult> state, SearchResult prevValue, SearchResult nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<SearchResult> state, SearchResult prevValue, SearchResult nextValue, boolean isAdjusting ) {
-			referenceTreeState.refreshWith( searchResultsState.getValue() );
+	private final ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.croquet.models.project.find.core.SearchResult> e ) {
+			referenceTreeState.refreshWith( e.getNextValue() );
 		}
 	};
-	ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
 
-		public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+	private final ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<SearchTreeNode> e ) {
+			SearchTreeNode nextValue = e.getNextValue();
 			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
 				if( nextValue.getValue() instanceof Expression ) {
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
@@ -193,11 +179,11 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		searchState.addValueListener( searchStateListener );
-		searchResultsState.addValueListener( searchResultsListener );
+		searchState.addNewSchoolValueListener( searchStateListener );
+		searchResultsState.addNewSchoolValueListener( searchResultsListener );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
-		referenceTreeState.addValueListener( referenceTreeListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectDocumentChangeListener );
+		referenceTreeState.addNewSchoolValueListener( referenceTreeListener );
 		this.isActive = true;
 		if( !manager.isInitialized() ) {
 			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
@@ -208,11 +194,11 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	@Override
 	public void handlePostDeactivation() {
 		this.isActive = false;
-		searchState.removeValueListener( searchStateListener );
-		searchResultsState.removeValueListener( searchResultsListener );
+		searchState.removeNewSchoolValueListener( searchStateListener );
+		searchResultsState.removeNewSchoolValueListener( searchResultsListener );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectDocumentChangeListener );
-		referenceTreeState.removeValueListener( referenceTreeListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().removeNewSchoolValueListener( this.projectDocumentChangeListener );
+		referenceTreeState.removeNewSchoolValueListener( referenceTreeListener );
 		super.handlePostDeactivation();
 	}
 
