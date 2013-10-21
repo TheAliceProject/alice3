@@ -65,6 +65,7 @@ public abstract class StringValue extends AbstractElement {
 	}
 
 	public String getOriginalLocalizedText() {
+		this.initializeIfNecessary();
 		return this.originalLocalizedText;
 	}
 
