@@ -97,6 +97,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 			if( data.getItemCount() == 1 ) {
 				searchResultsState.setSelectedIndex( 0 );
 			}
+			getView().revalidateAndRepaint();
 		}
 	};
 

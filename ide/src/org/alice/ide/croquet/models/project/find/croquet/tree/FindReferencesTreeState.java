@@ -54,7 +54,9 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNo
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.codecs.DefaultItemCodec;
+import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
 
 import com.sun.tools.javac.util.Pair;
@@ -117,14 +119,22 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 		if( searchObject != null ) {
 			List<Expression> references = searchObject.getReferences();
 			for( Expression reference : references ) {
-				UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
-				SearchTreeNode userMethodNode = root.getChildForReference( userMethod );
-				if( userMethodNode == null ) {
-					SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, userMethod );
+				UserLambda lambda = reference.getFirstAncestorAssignableTo( UserLambda.class );
+				UserMethod userMethod = null;
+				if( lambda != null ) {
+					//pass
+				} else {
+					userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+				}
+				AbstractDeclaration parentObject = lambda != null ? lambda : userMethod;
+				SearchTreeNode parentNode = root.getChildForReference( parentObject );
+				assert parentObject != null : lambda + ", " + userMethod;
+				if( parentNode == null ) {
+					SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, parentObject );
 					root.addChild( newChildNode );
 					newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
 				} else {
-					userMethodNode.addChild( new ExpressionSearchTreeNode( userMethodNode, reference ) );
+					parentNode.addChild( new ExpressionSearchTreeNode( parentNode, reference ) );
 				}
 			}
 		}
