@@ -43,9 +43,65 @@
 
 package org.lgna.croquet;
 
-/*package-private*/class IsFrameShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
-	private final FrameComposite<?> frameComposite;
-	private org.lgna.croquet.components.Frame frame;
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class FrameComposite<V extends org.lgna.croquet.components.Panel> extends AbstractWindowComposite<V> {
+	public static final class IsFrameShowingStateResolver extends IndirectResolver<BooleanState, FrameComposite> {
+		private IsFrameShowingStateResolver( FrameComposite indirect ) {
+			super( indirect );
+		}
+
+		public IsFrameShowingStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected BooleanState getDirect( FrameComposite indirect ) {
+			return indirect.isFrameShowingState;
+		}
+	}
+
+	protected static final class IsFrameShowingState extends BooleanState {
+		private final FrameComposite frameComposite;
+
+		public IsFrameShowingState( Group group, FrameComposite frameComposite ) {
+			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false );
+			this.frameComposite = frameComposite;
+		}
+
+		@Override
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.frameComposite.getClassUsedForLocalization();
+		}
+
+		public FrameComposite getFrameComposite() {
+			return this.frameComposite;
+		}
+
+		@Override
+		protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
+			super.fireChanged( prevValue, nextValue, isAdjusting );
+			if( nextValue ) {
+				org.lgna.croquet.components.Frame frameView = this.frameComposite.getOwnerFrameView_createIfNecessary();
+				frameView.setTitle( this.frameComposite.getFrameTitle() );
+				this.frameComposite.handlePreActivation();
+				frameView.setVisible( true );
+			} else {
+				if( this.frameComposite.ownerFrameView != null ) {
+					if( this.frameComposite.ownerFrameView.isVisible() ) {
+						this.frameComposite.handlePostDeactivation();
+						this.frameComposite.ownerFrameView.setVisible( false );
+					}
+				} else {
+					//pass
+				}
+			}
+		}
+	}
+
+	private org.lgna.croquet.components.Frame ownerFrameView;
+
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 		public void windowActivated( java.awt.event.WindowEvent e ) {
 		}
@@ -63,95 +119,31 @@ package org.lgna.croquet;
 		}
 
 		public void windowClosing( java.awt.event.WindowEvent e ) {
-			IsFrameShowingButtonModel.this.setSelected( false );
+			handleWindowClosing( e );
 		}
 
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 	};
 
-	public IsFrameShowingButtonModel( FrameComposite<?> frameComposite ) {
-		this.frameComposite = frameComposite;
-	}
-
-	private org.lgna.croquet.components.Frame getFrame() {
-		if( this.frame != null ) {
+	private org.lgna.croquet.components.Frame getOwnerFrameView_createIfNecessary() {
+		if( this.ownerFrameView != null ) {
 			//pass
 		} else {
-			this.frame = new org.lgna.croquet.components.Frame();
-			this.frame.getContentPane().addCenterComponent( this.frameComposite.getView() );
-			this.frame.setTitle( this.frameComposite.getFrameTitle() );
-			this.frameComposite.updateWindowSize( this.frame );
-			this.frame.addWindowListener( this.windowListener );
+			this.ownerFrameView = new org.lgna.croquet.components.Frame();
+			this.ownerFrameView.getContentPane().addCenterComponent( this.getView() );
+			this.updateWindowSize( this.ownerFrameView );
+			this.ownerFrameView.addWindowListener( this.windowListener );
 		}
-		return this.frame;
+		return this.ownerFrameView;
 	}
 
-	@Override
-	public void setSelected( boolean b ) {
-		super.setSelected( b );
-		if( b ) {
-			org.lgna.croquet.components.Frame frame = this.getFrame();
-			frameComposite.handlePreActivation();
-			frame.setVisible( true );
-		} else {
-			if( this.frame != null ) {
-				frameComposite.handlePostDeactivation();
-				this.frame.setVisible( false );
-			} else {
-				//pass
-			}
-		}
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractWindowComposite<V> {
-	public static final class IsFrameShowingStateResolver extends IndirectResolver<IsFrameShowingState, FrameComposite> {
-		private IsFrameShowingStateResolver( FrameComposite indirect ) {
-			super( indirect );
-		}
-
-		public IsFrameShowingStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected IsFrameShowingState getDirect( FrameComposite indirect ) {
-			return indirect.isFrameShowingState;
-		}
-	}
-
-	private static final class IsFrameShowingState extends BooleanState {
-		private final FrameComposite frameComposite;
-
-		public IsFrameShowingState( Group group, FrameComposite frameComposite ) {
-			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false, new IsFrameShowingButtonModel( frameComposite ) );
-			this.frameComposite = frameComposite;
-		}
-
-		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
-			return this.frameComposite.getClassUsedForLocalization();
-		}
-
-		public FrameComposite getFrameComposite() {
-			return this.frameComposite;
-		}
-	}
-
-	private final IsFrameShowingState isFrameShowingState;
 	private String title;
+	private final IsFrameShowingState isFrameShowingState;
 
 	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
 		super( id );
 		this.isFrameShowingState = new IsFrameShowingState( booleanStateGroup, this );
-	}
-
-	public BooleanState getIsFrameShowingState() {
-		return this.isFrameShowingState;
 	}
 
 	@Override
@@ -160,13 +152,21 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 		this.title = this.findLocalizedText( "title" );
 	}
 
+	public BooleanState getIsFrameShowingState() {
+		return this.isFrameShowingState;
+	}
+
+	protected void handleWindowClosing( java.awt.event.WindowEvent e ) {
+		this.isFrameShowingState.setValueTransactionlessly( false );
+	}
+
 	protected String getFrameTitle() {
 		this.initializeIfNecessary();
 		String rv = this.title;
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = this.isFrameShowingState.getTrueText();
+			rv = this.getIsFrameShowingState().getTrueText();
 			if( rv != null ) {
 				rv = rv.replaceAll( "<[a-z]*>", "" );
 				rv = rv.replaceAll( "</[a-z]*>", "" );
