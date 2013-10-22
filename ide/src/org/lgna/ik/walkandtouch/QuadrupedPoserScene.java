@@ -67,7 +67,7 @@ public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 	protected void initializeJointSelectionSpheresAndLimbs() {
 		JointSelectionSphere a = createJSS( model.getBackRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getBackRightKnee(), a );
-		JointSelectionSphere c = createJSS( model.getBackLeftAnkle(), b );
+		JointSelectionSphere c = createJSS( model.getBackRightAnkle(), b );
 		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
 		JointSelectionSphere d = createJSS( model.getFrontRightClavicle(), null );
 		JointSelectionSphere e = createJSS( model.getFrontRightShoulder(), d );

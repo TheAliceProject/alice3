@@ -180,7 +180,6 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	}
 
 	public Pose getPose() {
-		System.out.println( "getPose usedJoints: " + usedJoints );
 		return org.lgna.ik.poser.pose.Pose.createPoseFromT( getModel(), usedJoints.toArray( new JointId[ 0 ] ) );
 	}
 

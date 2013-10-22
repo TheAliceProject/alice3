@@ -212,8 +212,8 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
 				AbstractMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getClassForM(), "setPose", Pose.class, SetPose.Detail[].class );
 				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
-				//
-				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
+				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
+						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
 				methodInv.keyedArguments.add(
 						new org.lgna.project.ast.JavaKeyedArgument(
 								methodInv.method.getValue().getKeyedParameter(),
