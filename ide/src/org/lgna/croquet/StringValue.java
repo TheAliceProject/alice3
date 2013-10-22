@@ -46,6 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringValue extends AbstractElement {
+	private String originalLocalizedText;
 	private final javax.swing.text.AbstractDocument document;
 
 	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
@@ -55,7 +56,17 @@ public abstract class StringValue extends AbstractElement {
 
 	@Override
 	protected void localize() {
-		this.setText( this.findDefaultLocalizedText() );
+		this.originalLocalizedText = this.findDefaultLocalizedText();
+		this.setText( this.modifiedLocalizedTextIfAppropriate( this.originalLocalizedText ) );
+	}
+
+	protected String modifiedLocalizedTextIfAppropriate( String originalLocalizedText ) {
+		return originalLocalizedText;
+	}
+
+	public String getOriginalLocalizedText() {
+		this.initializeIfNecessary();
+		return this.originalLocalizedText;
 	}
 
 	public javax.swing.text.AbstractDocument getDocument() {

@@ -67,10 +67,10 @@ import com.sun.tools.javac.util.Pair;
 public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTreeNode> {
 
 	private final static SearchTreeNode root = new SearchTreeNode( null );
-	private final static ItemCodec<SearchTreeNode> codec = new DefaultItemCodec<SearchTreeNode>( SearchTreeNode.class );
+	private final static ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
-		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, codec );
+		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, SEARCH_TREE_NODE_CODEC );
 	}
 
 	@Override

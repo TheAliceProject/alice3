@@ -134,7 +134,8 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 	};
 
-	private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>( new DefaultItemCodec<SearchResult>( SearchResult.class ) ) {
+	private static final org.lgna.croquet.ItemCodec<SearchResult> SEARCH_RESULT_CODEC = DefaultItemCodec.createInstance( SearchResult.class );
+	private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>( SEARCH_RESULT_CODEC ) {
 
 		@Override
 		protected List createValues() {

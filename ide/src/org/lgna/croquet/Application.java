@@ -43,6 +43,7 @@
 
 package org.lgna.croquet;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -168,7 +169,7 @@ public abstract class Application {
 
 			application.setOpenFileHandler( new com.apple.eawt.OpenFilesHandler() {
 				public void openFiles( com.apple.eawt.AppEvent.OpenFilesEvent e ) {
-					Application.this.handleOpenFile( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+					Application.this.handleOpenFiles( e.getFiles() );
 				}
 			} );
 		}
@@ -217,7 +218,7 @@ public abstract class Application {
 
 	protected abstract Operation getPreferencesOperation();
 
-	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handleOpenFiles( java.util.List<java.io.File> files );
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 
