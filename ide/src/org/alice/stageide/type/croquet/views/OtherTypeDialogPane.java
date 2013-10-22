@@ -72,7 +72,7 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 		};
 		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
 		this.addComponent( selectionStyleState.getItemSelectedState( org.alice.stageide.type.croquet.SelectionStyle.DIRECT ).createToggleButton() );
-		this.addComponent( selectionStyleState.getItemSelectedState( org.alice.stageide.type.croquet.SelectionStyle.COMMON_ANCESTOR ).createToggleButton() );
+		this.addComponent( selectionStyleState.getItemSelectedState( org.alice.stageide.type.croquet.SelectionStyle.LOWEST_COMMON_ANCESTOR ).createToggleButton() );
 		this.addComponent( new org.lgna.croquet.components.ScrollPane( this.htmlView ), "spany 2, grow, wrap" );
 		this.addComponent( scrollPane, "grow" );
 

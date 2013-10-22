@@ -47,5 +47,5 @@ package org.alice.stageide.type.croquet;
  */
 public enum SelectionStyle {
 	DIRECT,
-	COMMON_ANCESTOR
+	LOWEST_COMMON_ANCESTOR
 }
