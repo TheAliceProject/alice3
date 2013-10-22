@@ -131,6 +131,20 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 			}
 		}
 		this.sceneFieldListData.refresh();
+
+		// handle JavaType scene fields 
+		synchronized( this.sceneFieldListData ) {
+			final int N = this.sceneFieldListData.getItemCount();
+			for( int i = 0; i < N; i++ ) {
+				org.lgna.project.ast.UserField field = this.sceneFieldListData.getItemAt( i );
+				org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
+				if( valueType instanceof org.lgna.project.ast.JavaType ) {
+					org.lgna.project.ast.JavaType javaValueType = (org.lgna.project.ast.JavaType)valueType;
+					build( javaValueType, map );
+				}
+			}
+		}
+
 		this.typeTreeState.setRoot( rootNode );
 		super.handlePreActivation();
 	}
