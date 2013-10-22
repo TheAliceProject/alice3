@@ -55,14 +55,25 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	}
 
 	private final TypeTreeState typeTreeState = new TypeTreeState();
+	private final org.lgna.croquet.ListSelectionState<SelectionStyle> selectionStyleState = this.createListSelectionStateForEnum( this.createKey( "selectionStyleState" ), SelectionStyle.class, SelectionStyle.DIRECT );
+	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
+	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 
 	private OtherTypeDialog() {
 		super( java.util.UUID.fromString( "58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41" ) );
 	}
 
+	public org.lgna.croquet.ListSelectionState<SelectionStyle> getSelectionStyleState() {
+		return this.selectionStyleState;
+	}
+
 	public org.lgna.croquet.TreeSelectionState<TypeNode> getTreeState() {
 		return this.typeTreeState;
+	}
+
+	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+		return this.sceneFieldsState;
 	}
 
 	@Override
@@ -119,6 +130,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 				build( type, map );
 			}
 		}
+		this.sceneFieldListData.refresh();
 		this.typeTreeState.setRoot( rootNode );
 		super.handlePreActivation();
 	}
@@ -139,8 +151,11 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		org.alice.ide.ProjectStack.pushProject( project );
 		org.lgna.croquet.triggers.Trigger trigger = null;
-		OtherTypeDialog.getInstance().getValueCreator().fire( trigger );
-		System.exit( 0 );
+		try {
+			OtherTypeDialog.getInstance().getValueCreator().fire( trigger );
+		} finally {
+			System.exit( 0 );
+		}
 	}
 
 }
