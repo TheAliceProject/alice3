@@ -138,8 +138,8 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
 	}
 
 	public InternalRoot<T> getRoot() {

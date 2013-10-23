@@ -70,8 +70,8 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 		return this.getAwtComponent().getCellRenderer();
 	}
 
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
+	public void setCellRenderer( javax.swing.tree.TreeCellRenderer cellRenderer ) {
+		this.getAwtComponent().setCellRenderer( cellRenderer );
 	}
 
 	public void expandEachRowOnce() {
@@ -115,5 +115,26 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 	public void expandNode( E node ) {
 		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().expandPath( path );
+	}
+
+	public void scrollPathToVisible( javax.swing.tree.TreePath treePath ) {
+		final boolean IS_ALIGN_LEFT_DESIRED = true;
+		if( IS_ALIGN_LEFT_DESIRED ) {
+			if( treePath != null ) {
+				this.getAwtComponent().makeVisible( treePath );
+				java.awt.Rectangle bounds = this.getAwtComponent().getPathBounds( treePath );
+				if( bounds != null ) {
+					bounds.width += bounds.x;
+					bounds.x = 0;
+					this.getAwtComponent().scrollRectToVisible( bounds );
+				}
+			}
+		} else {
+			this.getAwtComponent().scrollPathToVisible( treePath );
+		}
+	}
+
+	public javax.swing.tree.TreePath getSelectionPath() {
+		return this.getAwtComponent().getSelectionPath();
 	}
 }

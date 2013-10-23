@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import org.alice.ide.croquet.models.project.ReferencesComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -63,7 +62,7 @@ public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuMod
 
 	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
+				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.project.find.croquet.FindComposite.getInstance().getMemberReferencesOperationInstance( method ).getMenuItemPrepModel() );
 	}
 }

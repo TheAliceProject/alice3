@@ -684,8 +684,10 @@ public class GroundImp extends SimpleModelImp {
 
 		sgITA.vertices.setValue( VERTICES );
 		sgITA.polygonData.setValue( POLYGON_DATA );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgITA } );
-		//this.getSgPaintAppearances()[ 0 ].fillingStyle.setValue( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
+		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
+
+		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgITA } );
+		sgVisual.backFacingAppearance.setValue( sgVisual.frontFacingAppearance.getValue() );
 	}
 
 	@Override

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BoxTruck">
+    <BoundingBox>
+        <Min x="-1.2896655797958374" y="1.2307938668243423E-8" z="-2.2891733646392822"/>
+        <Max x="1.2896655797958374" y="2.8962438106536865" z="2.2891733646392822"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>van</Tag>
+        <Tag>truck</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Delivery" resourceName="DELIVERY" textureName="DELIVERY">
+        <BoundingBox>
+            <Min x="-1.2896655797958374" y="1.2307938668243423E-8" z="-2.2891733646392822"/>
+            <Max x="1.2896654605865479" y="2.340357542037964" z="2.2891733646392822"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>delivery</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Exterminator" resourceName="EXTERMINATOR" textureName="EXTERMINATOR">
+        <BoundingBox>
+            <Min x="-1.2896654605865479" y="1.2307938668243423E-8" z="-2.289173126220703"/>
+            <Max x="1.2896655797958374" y="2.8962438106536865" z="2.2891733646392822"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>bugs</Tag>
+            <Tag>insects</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="RepoMan" resourceName="REPO_MAN" textureName="REPO_MAN">
+        <BoundingBox>
+            <Min x="-1.2896655797958374" y="1.2307938668243423E-8" z="-2.2891733646392822"/>
+            <Max x="1.2896654605865479" y="2.340357542037964" z="2.2891733646392822"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -368,20 +368,20 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes( java.util.List<? super org.lgna.project.ast.JavaType> rv ) {
 		super.addSecondaryJavaTypes( rv );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBillboard.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SShape.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SSphere.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCone.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBillboard.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SShape.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SSphere.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCone.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
+		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
@@ -431,5 +431,14 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		}
 		return rv;
+	}
+
+	@Override
+	public boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType.getValue() ) {
+			return ( type.isAssignableTo( org.lgna.story.SScene.class ) == false ) && ( type.isAssignableTo( org.lgna.story.SProgram.class ) == false );
+		} else {
+			return false;
+		}
 	}
 }

@@ -47,20 +47,37 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.Panel> {
-	private final OwnedByCompositeOperation operation;
+	private final OwnedByCompositeOperation launchOperation;
+	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
+	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
-		this.operation = new OwnedByCompositeOperation( operationGroup, this );
+		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 
-	public OwnedByCompositeOperation getOperation() {
-		return this.operation;
+	public OwnedByCompositeOperation getLaunchOperation() {
+		return this.getLaunchOperation( null );
+	}
+
+	public OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKey, Initializer<? extends OperationWizardDialogCoreComposite> initializer ) {
+		assert subKey != null : initializer;
+		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKey ) == false : subKey;
+		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.launchOperation.getGroup(), this, subKey );
+		this.mapSubKeyToInitializerLaunchOperation.put( subKey, rv );
+		return rv;
+	}
+
+	public OwnedByCompositeOperation getLaunchOperation( String subKey ) {
+		if( subKey != null ) {
+			return this.mapSubKeyToInitializerLaunchOperation.get( subKey );
+		} else {
+			return this.launchOperation;
+		}
 	}
 
 	@Override
 	protected String getName() {
-		return this.getOperation().getName();
+		return this.getLaunchOperation().getName();
 	}
 
 	public boolean isToolBarTextClobbered( boolean defaultValue ) {
@@ -90,17 +107,17 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 				completionStep.finish();
 			}
 		} catch( CancelException ce ) {
-			completionStep.cancel();
+			cancel( completionStep );
 		}
 	}
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
-			java.util.Iterator<WizardPageComposite<?>> iterator = this.getWizardPageIterator();
+			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
-				WizardPageComposite<?> page = iterator.next();
+				WizardPageComposite<?, ?> page = iterator.next();
 				if( page.isAutoAdvanceDesired( completionStep ) ) {
 					//pass
 				} else {
@@ -122,10 +139,10 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 						if( isCommited ) {
 							createAndCommitEdit( completionStep );
 						} else {
-							completionStep.cancel();
+							cancel( completionStep );
 						}
 					} else {
-						completionStep.cancel();
+						cancel( completionStep );
 					}
 				}
 			}, completionStep );

@@ -53,14 +53,8 @@ public final class NullLiteral extends AbstractLiteral {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		//todo
-		if( "java".equals( locale.getVariant() ) ) {
-			rv.append( "null" );
-		} else {
-			rv.append( "None" );
-		}
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendNullLiteral();
 	}
 
 	@Override

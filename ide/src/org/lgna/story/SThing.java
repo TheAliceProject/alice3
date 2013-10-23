@@ -73,21 +73,25 @@ public abstract class SThing implements Rider {
 	}
 
 	public VantagePoint getVantagePoint( SThing entity ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
 		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public void delay( Number duration ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( duration, 0 );
 		this.getImplementation().delay( duration.doubleValue() );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public void playAudio( AudioSource audioSource ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( audioSource, 0 );
 		this.getImplementation().playAudio( audioSource );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public Boolean isCollidingWith( SThing other ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
 		return this.getImplementation().isCollidingWith( other );
 	}
 

@@ -42,11 +42,15 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.awt.Color;
+import java.net.MalformedURLException;
+
+import javax.xml.rpc.ServiceException;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
 
+import com.atlassian.jira.rpc.soap.client.RemoteException;
+import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
 import com.atlassian.jira.rpc.soap.client.RemoteUser;
 
 /**
@@ -77,25 +81,40 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
 			String username = userNameState.getValue();
+			String password = passwordState.getValue();
+			String token;
 			try {
-				String password = passwordState.getValue();
-				String token = service.login( username, password );
+				token = service.login( username, password );
+			} catch( RemoteException e ) {
+				return false;
+			} catch( java.rmi.RemoteException e ) {
+				this.setConnectionFailed( true );
+				return false;
+			}
+			this.setConnectionFailed( false );
+			try {
 				try {
 					remoteUser = service.getUser( token, username );
-					edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
-				} finally {
-					service.logout( token );
+				} catch( RemotePermissionException e ) {
+					e.printStackTrace();
+				} catch( java.rmi.RemoteException e ) {
+					e.printStackTrace();
 				}
-				return true;
-				//					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
-			} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
-				javax.swing.JOptionPane.showMessageDialog( null, rae );
-				return false;
-				//					edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
+				edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+			} finally {
+				try {
+					service.logout( token );
+				} catch( java.rmi.RemoteException e ) {
+					e.printStackTrace();
+				}
 			}
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
+			return true;
+		} catch( MalformedURLException e1 ) {
+			e1.printStackTrace();
+		} catch( ServiceException e1 ) {
+			e1.printStackTrace();
 		}
+		return false;
 	}
 
 	@Override
@@ -106,7 +125,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	@Override
 	public String updateUserNameForWelcomeString() {
-		this.getParent().getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
+		//		this.getParent().getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 		if( getRemoteUser() != null ) {
 			return getRemoteUser().getFullname();
 		} else {
@@ -121,7 +140,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 		}
 		new org.alice.stageide.StageIDE();
 		try {
-			new BugLoginComposite().getOperation().fire();
+			new BugLoginComposite().getLaunchOperation().fire();
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

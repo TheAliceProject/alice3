@@ -63,6 +63,11 @@ public class SGround extends SThing implements MutableRider, Visual {
 		SNOW( "snow" ),
 		ICE( "ice" ),
 		SWAMP( "swamp" ),
+		SWAMP_WATER( "swamp_water" ),
+		POISON_SWAMP( "swamp_poison" ),
+		JUNGLE( "jungle" ),
+		OCEAN( "ocean" ),
+		OCEAN_NIGHT( "ocean_night" ),
 		WATER( "water" ),
 		OCEAN_FLOOR( "underwater" ),
 		MOON( "moon" ),
@@ -111,6 +116,7 @@ public class SGround extends SThing implements MutableRider, Visual {
 
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

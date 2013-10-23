@@ -185,7 +185,7 @@ public class JavaConstructor extends AbstractConstructor {
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
-			return AccessLevel.get( cnstrctr.getModifiers() );
+			return AccessLevel.getValueFromModifiers( cnstrctr.getModifiers() );
 		} else {
 			return null;
 		}

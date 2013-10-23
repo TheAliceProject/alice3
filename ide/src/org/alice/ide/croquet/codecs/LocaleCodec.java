@@ -53,7 +53,7 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> 
 
 	public void appendRepresentation( StringBuilder sb, java.util.Locale value ) {
 		if( value != null ) {
-			sb.append( value.getDisplayName() );
+			sb.append( value.getDisplayName( value ) );
 		} else {
 			sb.append( value );
 		}

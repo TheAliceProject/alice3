@@ -48,6 +48,10 @@ package org.lgna.croquet;
 public abstract class PerspectiveApplication extends Application {
 	private Perspective perspective;
 
+	public static PerspectiveApplication getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), PerspectiveApplication.class );
+	}
+
 	public Perspective getPerspective() {
 		return this.perspective;
 	}

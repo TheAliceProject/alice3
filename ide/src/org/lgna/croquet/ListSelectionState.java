@@ -175,6 +175,31 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
+	private class EmptyConditionText extends PlainStringValue {
+		public EmptyConditionText() {
+			super( java.util.UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
+		}
+
+		@Override
+		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return ListSelectionState.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			StringBuilder sb = new StringBuilder();
+			String subKey = ListSelectionState.this.getSubKeyForLocalization();
+			if( subKey != null ) {
+				sb.append( subKey );
+				sb.append( "." );
+			}
+			sb.append( "emptyConditionText" );
+			return sb.toString();
+		}
+	}
+
+	private final PlainStringValue emptyConditionText = new EmptyConditionText();
+
 	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
@@ -208,6 +233,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void localize() {
 	}
 
+	public PlainStringValue getEmptyConditionText() {
+		this.emptyConditionText.initializeIfNecessary();
+		return this.emptyConditionText;
+	}
+
 	private InternalPrepModel<T> prepModel;
 
 	public synchronized InternalPrepModel<T> getPrepModel() {
@@ -220,7 +250,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo: 
 		return java.util.Collections.emptyList();
 	}
@@ -471,7 +501,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		final int N = this.getItemCount();
 		int i;
 		if( N > 0 ) {
-			i = org.lgna.common.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+			java.util.Random random = new java.util.Random();
+			i = random.nextInt( N );
 		} else {
 			i = -1;
 		}

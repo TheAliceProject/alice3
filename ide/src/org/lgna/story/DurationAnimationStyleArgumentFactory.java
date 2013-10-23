@@ -52,6 +52,7 @@ public class DurationAnimationStyleArgumentFactory {
 	}
 
 	public static Duration duration( Number duration ) {
+		org.lgna.common.LgnaIllegalKeyArgumentException.checkArgumentIsPositiveOrZero( duration, "duration" );
 		return new Duration( duration );
 	}
 

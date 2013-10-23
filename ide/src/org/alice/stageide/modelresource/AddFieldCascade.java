@@ -48,8 +48,8 @@ package org.alice.stageide.modelresource;
 public class AddFieldCascade extends org.lgna.croquet.ImmutableCascade<ResourceNode> {
 	private final org.lgna.croquet.DropSite dropSite;
 
-	public AddFieldCascade( ResourceNode resourceNode, org.lgna.croquet.DropSite dropSite ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "41c8f508-9d7a-44d2-ba52-2943029caf6f" ), ResourceNode.class, new ResourceBlank( resourceNode ) );
+	public AddFieldCascade( ResourceGalleryDragModel dragModel, org.lgna.croquet.DropSite dropSite ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "41c8f508-9d7a-44d2-ba52-2943029caf6f" ), ResourceNode.class, new ResourceBlank( dragModel ) );
 		this.dropSite = dropSite;
 	}
 

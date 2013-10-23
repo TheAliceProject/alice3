@@ -47,11 +47,9 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */
 public class TypeView<T extends org.lgna.project.ast.AbstractType<?, ?, ?>> extends org.lgna.croquet.components.ViewController<javax.swing.JLabel, org.lgna.croquet.ItemState<T>> {
-	private final org.lgna.croquet.State.ValueListener<T> valueObserver = new org.lgna.croquet.State.ValueListener<T>() {
-		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<T> valueObserver = new org.lgna.croquet.event.ValueListener<T>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<T> e ) {
+			T nextValue = e.getNextValue();
 			org.lgna.project.ast.AbstractType<?, ?, ?> type;
 			if( isArray ) {
 				type = nextValue.getArrayType();
@@ -77,12 +75,12 @@ public class TypeView<T extends org.lgna.project.ast.AbstractType<?, ?, ?>> exte
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addAndInvokeValueListener( valueObserver );
+		this.getModel().addAndInvokeNewSchoolValueListener( valueObserver );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().removeValueListener( valueObserver );
+		this.getModel().removeNewSchoolValueListener( valueObserver );
 		super.handleUndisplayable();
 	}
 }

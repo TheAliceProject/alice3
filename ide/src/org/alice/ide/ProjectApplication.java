@@ -53,7 +53,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
 	public static ProjectApplication getActiveInstance() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ProjectApplication.class );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
 	}
 
 	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;

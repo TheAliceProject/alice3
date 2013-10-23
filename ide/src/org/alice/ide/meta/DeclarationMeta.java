@@ -50,19 +50,13 @@ public class DeclarationMeta {
 		throw new AssertionError();
 	}
 
-	private static final org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
+	private static final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
 			handlePrespectiveChanged();
 		}
 	};
-	private static final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationTabListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private static final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite> e ) {
 			handleDeclarationTabChanged();
 		}
 	};
@@ -72,8 +66,8 @@ public class DeclarationMeta {
 
 	private static org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	static {
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueListener( perspectiveListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addValueListener( declarationTabListener );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().addNewSchoolValueListener( perspectiveListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( declarationTabListener );
 		prevDeclaration = getDeclaration();
 	}
 

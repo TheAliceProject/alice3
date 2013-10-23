@@ -52,14 +52,12 @@ import org.lgna.croquet.components.Label;
 public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
 
 	public void updateWelcomeString( String str ) {
-		//		usernameLabel.setForegroundColor( Color.WHITE );
 		usernameLabel.setText( welcome.getText() + str );
 	}
 
 	private StringValue welcome = createStringValue( createKey( "welcome" ) );
 	private Label usernameLabel = new Label();
 	private ActionOperation logoutOperation;
-	private LogInOutComposite parent;
 
 	public LogOutCard( ActionOperation logOutOperation ) {
 		super( java.util.UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
@@ -74,14 +72,6 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
 				this.usernameLabel,
 				this.logoutOperation.createButton() );
-	}
-
-	public void setParent( LogInOutComposite logInOutComposite ) {
-		this.parent = logInOutComposite;
-	}
-
-	public LogInOutComposite getParent() {
-		return this.parent;
 	}
 
 	public Label getUsernameLabel() {

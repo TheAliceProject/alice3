@@ -109,7 +109,7 @@ public class BlockStatementGenerator {
 									org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, userMethod.body.getValue() );
 								}
 							};
-							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit, observer );
+							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getLaunchOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit, observer );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
@@ -198,7 +198,7 @@ public class BlockStatementGenerator {
 						}
 
 						org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
-						completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
+						completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, methodInvocation, argument ) );
 					}
 				}
 				if( isReorderingDesired ) {

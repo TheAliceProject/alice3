@@ -155,6 +155,24 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
 	}
 
+	@Override
+	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit<?> edit ) {
+		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
+		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;
+			InstanceFactory nextValue = stateEdit.getNextValue();
+			if( nextValue instanceof org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory ) {
+				org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory)nextValue;
+				org.lgna.project.ast.UserField field = thisFieldAccessMethodInvocationFactory.getField();
+				org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+				org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+				cascadeRootPath.add( apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
+			}
+		} else {
+			throw new RuntimeException( edit != null ? edit.toString() : null );
+		}
+	}
+
 	//todo
 	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
 
@@ -199,7 +217,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 						filteredFields.add( field );
 					}
 				}
-				if( filteredFields.size() > 16 ) {
+				final boolean IS_COLLAPSE_DESIRED = true;
+				if( IS_COLLAPSE_DESIRED && ( filteredFields.size() > 16 ) ) {
 					org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor(
 							filteredFields,
 							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ),

@@ -78,6 +78,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -91,6 +92,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -102,6 +104,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -113,6 +116,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
 		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -125,6 +129,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( )
 	public void setFogDensity( Number density, SetFogDensity.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( density, 0 );
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -132,12 +137,14 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addMouseClickOnScreenListener( org.lgna.story.event.MouseClickOnScreenListener listener, AddMouseClickOnScreenListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addMouseClickOnObjectListener( org.lgna.story.event.MouseClickOnObjectListener listener, AddMouseClickOnObjectListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 
@@ -150,13 +157,16 @@ public abstract class SScene extends SThing {
 	//time/Scene
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addTimeListener( org.lgna.story.event.TimeListener timeListener, AddTimeListener.Detail... details ) {
-		this.getImplementation().getEventManager().addTimerEventListener( timeListener, TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details ) );
+	public void addTimeListener( org.lgna.story.event.TimeListener timeListener, Number frequency, AddTimeListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( timeListener, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( frequency, 1 );
+		this.getImplementation().getEventManager().addTimerEventListener( timeListener, frequency, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener, AddSceneActivationListener.Detail... details ) {
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( sceneActivationListener, 0 );
 		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
 
@@ -164,37 +174,40 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyListener, 0 );
 		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addArrowKeyPressListener( org.lgna.story.event.ArrowKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyPressListener, 0 );
 		this.getImplementation().getEventManager().addArrowKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addNumberKeyPressListener( org.lgna.story.event.NumberKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( keyPressListener, 0 );
 		this.getImplementation().getEventManager().addNumberKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addObjectMoverFor( SMovableTurnable entity, AddObjectMoverFor.Detail... details ) {
+	public void addObjectMoverFor( SMovableTurnable entity ) {
 		this.implementation.getEventManager().moveWithArrows( entity );
 	}
 
 	//TransformationListeners
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
-		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
+	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener pointOfViewChangeListener, SThing[] shouldListenTo ) {
+		this.getImplementation().getEventManager().addTransformationListener( pointOfViewChangeListener, shouldListenTo );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddStartCollisionListener.Detail... details ) {
+	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, SThing[] groupOne, SThing[] groupTwo ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 
@@ -209,19 +222,19 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddEndCollisionListener.Detail... details ) {
+	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, SThing[] groupOne, SThing[] groupTwo ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddEnterProximityEventListener.Detail... details ) {
+	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Number distance ) {
 		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddEnterProximityEventListener.getDist( details ));
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@AddEventListenerTemplate( )
-	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddTimeListener.Detail... details ) {
+	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, SThing[] groupOne, SThing[] groupTwo, Number distance, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileProximityListener( proximityListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance,
@@ -230,7 +243,13 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] models, AddEnterViewListener.Detail... details ) {
+	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Number distance ) {
+		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddExitProximityEventListener.getDist( details ));
+	}
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
+	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] models ) {
 		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
 	}
 
@@ -243,19 +262,13 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddExitProximityEventListener.Detail... details ) {
-		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddExitProximityEventListener.getDist( details ));
-	}
-
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] entities, AddExitViewListener.Detail... details ) {
+	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] entities ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddStartOcclusionListener.Detail... details ) {
+	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 
@@ -270,7 +283,7 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddEndOcclusionListener.Detail... details ) {
+	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 

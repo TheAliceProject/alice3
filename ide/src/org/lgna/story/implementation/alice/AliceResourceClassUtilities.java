@@ -96,6 +96,24 @@ public class AliceResourceClassUtilities {
 		}
 	}
 
+	public static Class<? extends org.lgna.story.resources.ModelResource> getResourceClassForModelClass( Class<? extends org.lgna.story.SModel> modelClass )
+	{
+		java.lang.reflect.Constructor<?>[] constructors = modelClass.getConstructors();
+		java.lang.reflect.Constructor<?> firstConstructor = ( constructors != null ) && ( constructors.length > 0 ) ? constructors[ 0 ] : null;
+		if( firstConstructor != null ) {
+			Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
+			if( ( parameterTypes != null ) ) {
+				for( Class<?> parameterType : parameterTypes ) {
+					if( ModelResource.class.isAssignableFrom( parameterType ) ) {
+						return (Class<? extends org.lgna.story.resources.ModelResource>)parameterType;
+					}
+				}
+
+			}
+		}
+		return null;
+	}
+
 	public static String getAliceMethodNameForEnum( String enumName )
 	{
 		StringBuilder sb = new StringBuilder();

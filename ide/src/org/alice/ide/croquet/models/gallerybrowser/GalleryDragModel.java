@@ -47,6 +47,12 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
+	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
+
+	protected static java.awt.Dimension getDefaultLargeIconSize() {
+		return DEFAULT_LARGE_ICON_SIZE;
+	}
+
 	public GalleryDragModel( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
@@ -59,6 +65,10 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	public abstract String getText();
 
 	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
+
+	public java.awt.Dimension getIconSize() {
+		return DEFAULT_LARGE_ICON_SIZE;
+	}
 
 	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 
@@ -90,6 +100,8 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	}
 
 	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
+
+	public abstract boolean placeOnGround();
 
 	public abstract boolean isInstanceCreator();
 }

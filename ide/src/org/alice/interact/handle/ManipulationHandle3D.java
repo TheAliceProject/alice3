@@ -421,7 +421,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public boolean isMemberOf( HandleSet set )
 	{
-		return this.handleSet.intersects( set );
+		if( set == null ) {
+			return false;
+		}
+		else {
+			return set.intersects( this.handleSet ) || this.handleSet.intersects( set );
+		}
 	}
 
 	public boolean isMemberOf( HandleSet.HandleGroup group )
@@ -776,7 +781,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedObject = this.getManipulatedObject();
-		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject );
+		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject, false );
 		if( boundingBox == null )
 		{
 			boundingBox = new AxisAlignedBox( new Point3( -1, 0, -1 ), new Point3( 1, 1, 1 ) );

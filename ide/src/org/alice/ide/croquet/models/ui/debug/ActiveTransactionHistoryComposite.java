@@ -61,7 +61,7 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 		this.initializeIfNecessary();
 		final boolean IS_SHOWING_BY_DEFAULT = false;
 		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getBooleanState().getSwingModel().getButtonModel().setSelected( true );
+			this.getIsFrameShowingState().getSwingModel().getButtonModel().setSelected( true );
 		}
 	}
 
@@ -69,8 +69,8 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	protected void localize() {
 		super.localize();
 		// do not want to bother localizers with this composite
-		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getBooleanState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
+		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
+		this.getIsFrameShowingState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
 	}
 
 	@Override

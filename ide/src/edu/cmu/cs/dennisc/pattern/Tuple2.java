@@ -45,41 +45,38 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
+//todo: make immutable, override hashCode
 public class Tuple2<A, B> {
 
 	public static <A, B> Tuple2<A, B> createInstance( A a, B b ) {
 		return new Tuple2<A, B>( a, b );
 	}
 
-	private A m_a = null;
-	private B m_b = null;
-
-	private Tuple2() {
-	}
+	private A a;
+	private B b;
 
 	private Tuple2( A a, B b ) {
-		set( a, b );
+		this.a = a;
+		this.b = b;
 	}
 
 	public A getA() {
-		return m_a;
+		return this.a;
 	}
 
+	@Deprecated
 	public void setA( A a ) {
-		m_a = a;
+		this.a = a;
 	}
 
 	public B getB() {
-		return m_b;
+		return this.b;
 	}
 
+	@Deprecated
 	public void setB( B b ) {
-		m_b = b;
-	}
-
-	public void set( A a, B b ) {
-		m_a = a;
-		m_b = b;
+		this.b = b;
 	}
 
 	@Override
@@ -89,7 +86,7 @@ public class Tuple2<A, B> {
 		} else {
 			if( other instanceof Tuple2<?, ?> ) {
 				Tuple2<?, ?> otherT = (Tuple2<?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b );
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.a, otherT.a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.b, otherT.b );
 			} else {
 				return false;
 			}
@@ -100,9 +97,9 @@ public class Tuple2<A, B> {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple2[ a=" );
-		sb.append( m_a );
+		sb.append( this.a );
 		sb.append( ", b=" );
-		sb.append( m_b );
+		sb.append( this.b );
 		sb.append( " ]" );
 		return sb.toString();
 	}

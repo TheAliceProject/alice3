@@ -52,7 +52,6 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
 	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
-	private org.lgna.croquet.components.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
@@ -64,20 +63,13 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 		this.camera.setVehicle( this.scene );
 		this.sunLight.setVehicle( this.scene );
 		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
+		this.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
 	}
 
 	private boolean isInitialized = false;
 
-	private class LookingGlassAdapter extends org.lgna.croquet.components.Component<java.awt.Component> {
-		@Override
-		protected java.awt.Component createAwtComponent() {
-			return Viewer.this.onscreenLookingGlass.getAWTComponent();
-		}
-	}
-
 	protected void initialize() {
 		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
-		this.adapter = new LookingGlassAdapter();
 	}
 
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
@@ -105,7 +97,6 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		this.addCenterComponent( this.adapter );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
@@ -114,7 +105,6 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	protected void handleUndisplayable() {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
-		this.removeComponent( this.adapter );
 		super.handleUndisplayable();
 	}
 

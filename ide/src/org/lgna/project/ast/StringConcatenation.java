@@ -85,11 +85,10 @@ public final class StringConcatenation extends Expression {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue(), locale );
-		rv.append( " + " );
-		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
-		return rv;
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.leftOperand.getValue() );
+		localizer.appendText( " + " );
+		safeAppendRepr( localizer, this.rightOperand.getValue() );
 	}
 
 	@Override

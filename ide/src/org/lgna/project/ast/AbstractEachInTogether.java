@@ -89,7 +89,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		generator.appendString( ".eachInTogether(" );
 		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
 		generator.appendString( "," );
-		if( generator.isLambaSupported() ) {
+		if( generator.isLambdaSupported() ) {
 			generator.appendString( "(" );
 			generator.appendTypeName( itemType );
 			generator.appendSpace();
@@ -107,7 +107,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 			generator.appendString( ")" );
 		}
 		this.body.getValue().appendJava( generator );
-		if( generator.isLambaSupported() ) {
+		if( generator.isLambdaSupported() ) {
 			//pass
 		} else {
 			generator.appendString( "}" );

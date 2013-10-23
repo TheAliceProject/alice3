@@ -46,6 +46,10 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
+	private static javax.swing.filechooser.FileFilter createFileFilter( boolean areDirectoriesAccepted ) {
+		return new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file", areDirectoriesAccepted, "mp3", "wav", "au" );
+	}
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -82,20 +86,14 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestDoubleState doubleState = new TestDoubleState();
 		final TestBooleanState booleanState = new TestBooleanState();
 
-		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
-			public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+		integerState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Integer>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
 		} );
-		booleanState.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "prev:", prevValue, "next:", nextValue, "isAdjusting:", isAdjusting );
+		booleanState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Boolean>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
 		} );
 
@@ -118,16 +116,13 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			}
 		}
 
-		javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFileFilter( true );
+		javax.swing.filechooser.FileFilter fileFilter = createFileFilter( true );
 		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );
-		fileSelectionState.addValueListener( new org.lgna.croquet.State.ValueListener<java.io.File>() {
-			public void changing( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue );
+		fileSelectionState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.io.File>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.io.File> e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e.getNextValue() );
 			}
 		} );
 

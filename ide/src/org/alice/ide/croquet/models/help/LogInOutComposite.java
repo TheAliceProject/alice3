@@ -45,8 +45,6 @@ package org.alice.ide.croquet.models.help;
 import java.util.UUID;
 
 import org.lgna.croquet.CardOwnerComposite;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 
 /**
  * @author Matt May
@@ -56,15 +54,10 @@ public class LogInOutComposite extends CardOwnerComposite {
 	private final LogInCard logInCard;
 	private final LogOutCard logOutCard;
 	private AbstractLoginComposite composite;
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> isLoggedInListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateLogInOutComposite();
 		}
-
 	};
 
 	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
@@ -73,13 +66,11 @@ public class LogInOutComposite extends CardOwnerComposite {
 		this.logInCard = new LogInCard( loginComposite );
 		this.logOutCard = new LogOutCard( loginComposite.getLogOutOperation() );
 
-		composite.setParent( this );
-		logOutCard.setParent( this );
-
 		this.addCard( this.logInCard );
 		this.addCard( this.logOutCard );
 
-		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
+		//todo: move to activate/deactivate
+		composite.getIsLoggedIn().addNewSchoolValueListener( isLoggedInListener );
 	}
 
 	private void updateLogInOutComposite() {
@@ -98,5 +89,27 @@ public class LogInOutComposite extends CardOwnerComposite {
 
 	public LogOutCard getLogOutCard() {
 		return this.logOutCard;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		Thread loginThread = new Thread( new Runnable() {
+
+			public void run() {
+				if( composite.getIsRememberingState().getValue() && ( composite.getUserNameState().getValue().length() > 0 ) && ( composite.getPasswordState().getValue().length() > 0 ) ) {
+					composite.isClearedForCommit();
+				}
+			}
+		} );
+		loginThread.start();
+	}
+
+	public boolean getCanConnect() {
+		return composite.getCanLogIn();
+	}
+
+	public void addListener( LogInOutListener listener ) {
+		composite.addListener( listener );
 	}
 }

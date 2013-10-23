@@ -178,12 +178,9 @@ package org.alice.ide.video.preview.views;
 		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		java.awt.Insets insets = this.getInsets();
 		try {
-			int w = this.getWidth();
-			int h = this.getHeight();
-
-			int trackWidth = w - ( HALF_THUMB_WIDTH * 2 );
+			int trackWidth = this.getWidth() - ( HALF_THUMB_WIDTH * 2 );
 			int x = HALF_THUMB_WIDTH;
-			//int y = ( h - ( TRACK_HEIGHT + THUMB_HEIGHT ) ) / 2;
+			//int y = ( this.getHeight() - ( TRACK_HEIGHT + THUMB_HEIGHT ) ) / 2;
 			int y = insets.top;
 
 			y += THUMB_HEIGHT;

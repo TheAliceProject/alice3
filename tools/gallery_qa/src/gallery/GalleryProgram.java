@@ -49,9 +49,7 @@ import java.util.logging.Level;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.State;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SFlyer;
@@ -65,14 +63,14 @@ import org.lgna.story.SQuadruped;
 import org.lgna.story.SSwimmer;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.SVehicle;
+import org.lgna.story.STransport;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.PropResource;
 import org.lgna.story.resources.QuadrupedResource;
 import org.lgna.story.resources.SwimmerResource;
-import org.lgna.story.resources.VehicleResource;
+import org.lgna.story.resources.TransportResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
 import org.lgna.story.resources.sims2.BaseSkinTone;
@@ -80,7 +78,6 @@ import org.lgna.story.resources.sims2.FullBodyOutfitManager;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.HairManager;
 import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.PersonResource;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
@@ -119,9 +116,9 @@ public class GalleryProgram extends SProgram {
 			} else if (constant instanceof SwimmerResource) {
 				SwimmerResource swimmerResource = (SwimmerResource) constant;
 				return new SSwimmer( swimmerResource );
-			} else if (constant instanceof VehicleResource) {
-				VehicleResource vehicleResource = (VehicleResource) constant;
-				return new SVehicle( vehicleResource );
+			} else if (constant instanceof TransportResource) {
+				TransportResource transportResource = (TransportResource) constant;
+				return new STransport( transportResource );
 			} else {
 				return null;
 			}

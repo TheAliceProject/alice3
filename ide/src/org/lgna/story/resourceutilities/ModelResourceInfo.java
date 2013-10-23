@@ -63,6 +63,8 @@ public class ModelResourceInfo {
 	private final String resourceName;
 	private final String modelName;
 	private final String textureName;
+	private final boolean isDeprecated;
+	private final boolean placeOnGround;
 	private final ModelResourceInfo parentInfo;
 	private final java.util.List<ModelResourceInfo> subResources = new java.util.LinkedList<ModelResourceInfo>();
 
@@ -125,6 +127,20 @@ public class ModelResourceInfo {
 				} catch( Exception e ) {
 				}
 			}
+			boolean isDeprecated = false;
+			if( resourceElement.hasAttribute( "deprecated" ) ) {
+				try {
+					isDeprecated = Boolean.parseBoolean( resourceElement.getAttribute( "deprecated" ) );
+				} catch( Exception e ) {
+				}
+			}
+			boolean placeOnGround = false;
+			if( resourceElement.hasAttribute( "placeOnGround" ) ) {
+				try {
+					placeOnGround = Boolean.parseBoolean( resourceElement.getAttribute( "placeOnGround" ) );
+				} catch( Exception e ) {
+				}
+			}
 			int creationYear = creationYearTemp;
 			LinkedList<String> tagList = new LinkedList<String>();
 			NodeList tagNodeList = resourceElement.getElementsByTagName( "Tag" );
@@ -147,14 +163,14 @@ public class ModelResourceInfo {
 			}
 			String[] themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
 
-			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName );
+			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround );
 			return resource;
 		}
 
 		return null;
 	}
 
-	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String[] themeTags, String modelName, String textureName ) {
+	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String[] themeTags, String modelName, String textureName, boolean isDeprecated, boolean placeOnGround ) {
 		this.parentInfo = parent;
 		this.resourceName = resourceName;
 		this.creator = creator;
@@ -165,6 +181,8 @@ public class ModelResourceInfo {
 		this.modelName = modelName;
 		this.groupTags = groupTags;
 		this.themeTags = themeTags;
+		this.isDeprecated = isDeprecated;
+		this.placeOnGround = placeOnGround;
 	}
 
 	private static java.util.List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
@@ -200,6 +218,20 @@ public class ModelResourceInfo {
 		} catch( Exception e ) {
 		}
 		this.creationYear = creationYearTemp;
+
+		boolean isDeprecatedTemp = false;
+		try {
+			isDeprecatedTemp = Boolean.parseBoolean( modelElement.getAttribute( "deprecated" ) );
+		} catch( Exception e ) {
+		}
+		this.isDeprecated = isDeprecatedTemp;
+
+		boolean placeOnGroundTemp = false;
+		try {
+			placeOnGroundTemp = Boolean.parseBoolean( modelElement.getAttribute( "placeOnGround" ) );
+		} catch( Exception e ) {
+		}
+		this.placeOnGround = placeOnGroundTemp;
 
 		LinkedList<String> tagList = new LinkedList<String>();
 		java.util.List<Element> tagsElementList = getImmediateChildElementsByTagName( modelElement, "Tags" );
@@ -286,6 +318,13 @@ public class ModelResourceInfo {
 			return this.parentInfo.textureName;
 		}
 		return textureName;
+	}
+
+	public boolean getPlaceOnGround() {
+		if( ( this.placeOnGround == false ) && ( parentInfo != null ) ) {
+			return this.parentInfo.placeOnGround;
+		}
+		return this.placeOnGround;
 	}
 
 	public String[] getTags() {

@@ -51,6 +51,8 @@ public class SkeletonVisual extends Visual {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
 
+	private SkeletonVisualBoundingBoxTracker tracker = null;
+
 	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
 	{
 		@Override
@@ -78,6 +80,14 @@ public class SkeletonVisual extends Visual {
 			return src;
 		}
 	};
+
+	public SkeletonVisualBoundingBoxTracker getTracker() {
+		return this.tracker;
+	}
+
+	public void setTracker( SkeletonVisualBoundingBoxTracker tracker ) {
+		this.tracker = tracker;
+	}
 
 	@Override
 	public void setParent( Composite parent ) {
@@ -121,20 +131,52 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-		if( this.weightedMeshes.getValue() != null ) {
-			for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
-			{
-				edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-				rv.union( b );
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, boolean ignoreJointOrientations ) {
+		if( !ignoreJointOrientations && ( this.tracker != null ) ) {
+			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
+		}
+		else {
+			if( this.weightedMeshes.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+			if( this.geometries.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
 			}
 		}
-		if( this.geometries.getValue() != null ) {
-			for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
-			{
-				edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-				rv.union( b );
+		if( !rv.isNaN() )
+		{
+			rv.scale( this.scale.getValue() );
+		}
+		return rv;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		if( this.tracker != null ) {
+			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
+		}
+		else {
+			if( this.weightedMeshes.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+			if( this.geometries.getValue() != null ) {
+				for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
 			}
 		}
 		if( !rv.isNaN() )

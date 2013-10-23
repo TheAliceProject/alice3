@@ -76,6 +76,15 @@ public abstract class IteratingOperation extends Operation {
 					if( ( subStep != null ) && subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
 						subSteps.add( subStep );
 					} else {
+						if( subStep != null ) {
+							if( subStep.getOwnerTransaction().isPending() ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "subStep is pending", this );
+							} else {
+								//pass
+							}
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "subStep is null", this );
+						}
 						step.cancel();
 						return;
 					}

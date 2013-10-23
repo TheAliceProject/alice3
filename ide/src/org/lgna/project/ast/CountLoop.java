@@ -90,10 +90,11 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "count " );
-		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );
-		return super.appendRepr( rv, locale );
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendLocalizedText( CountLoop.class, "count" );
+		localizer.appendSpace();
+		safeAppendRepr( localizer, this.count.getValue() );
+		super.appendRepr( localizer );
 	}
 
 	@Override

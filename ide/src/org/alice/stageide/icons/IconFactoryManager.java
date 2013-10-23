@@ -57,7 +57,11 @@ public class IconFactoryManager {
 			org.lgna.story.resources.PropResource.class,
 			org.lgna.story.resources.QuadrupedResource.class,
 			org.lgna.story.resources.SwimmerResource.class,
-			org.lgna.story.resources.MarineMammalResource.class
+			org.lgna.story.resources.MarineMammalResource.class,
+			org.lgna.story.resources.TransportResource.class,
+			org.lgna.story.resources.AutomobileResource.class,
+			org.lgna.story.resources.AircraftResource.class,
+			org.lgna.story.resources.WatercraftResource.class
 			);
 
 	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
@@ -219,6 +223,11 @@ public class IconFactoryManager {
 					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
 					int width = thumbnailMaker.getWidth();
 					int height = thumbnailMaker.getHeight();
+
+					//Used for saving out gallery thumbnails for the sims lifestages
+					//					java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
+					//					edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
+
 					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
 						return new org.lgna.croquet.icon.ImageIconFactory( image );
 					} else {
@@ -448,7 +457,7 @@ public class IconFactoryManager {
 			//pass
 		} else {
 			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getObjectMarkIconForColor( color );
-			; //todo
+			//todo
 			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
 			mapColorToObjectMarkerIconFactory.put( color, rv );
 		}

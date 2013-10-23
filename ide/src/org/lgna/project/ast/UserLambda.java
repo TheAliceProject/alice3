@@ -81,7 +81,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		AbstractType<?, ?, ?> type = generator.peekTypeForLambda();
 		AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod( type );
-		if( generator.isLambaSupported() ) {
+		if( generator.isLambdaSupported() ) {
 			generator.appendParameters( this );
 			generator.appendString( "->" );
 		} else {
@@ -91,7 +91,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda {
 			generator.appendMethodHeader( singleAbstractMethod );
 		}
 		this.body.getValue().appendJava( generator );
-		if( generator.isLambaSupported() ) {
+		if( generator.isLambdaSupported() ) {
 			//pass
 		} else {
 			generator.appendString( "}" );

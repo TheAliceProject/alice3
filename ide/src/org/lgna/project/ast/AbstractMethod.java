@@ -59,6 +59,28 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
 
 	public abstract boolean isStrictFloatingPoint();
 
+	@Override
+	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+		super.addModifiers( modifiers );
+		if( this.isFinal() ) {
+			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+		} else if( this.isAbstract() ) {
+			modifiers.add( javax.lang.model.element.Modifier.ABSTRACT );
+		}
+		if( this.isStatic() ) {
+			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+		}
+		if( this.isNative() ) {
+			modifiers.add( javax.lang.model.element.Modifier.NATIVE );
+		}
+		if( this.isSynchronized() ) {
+			modifiers.add( javax.lang.model.element.Modifier.SYNCHRONIZED );
+		}
+		if( this.isStrictFloatingPoint() ) {
+			modifiers.add( javax.lang.model.element.Modifier.STRICTFP );
+		}
+	}
+
 	public boolean isOverride() {
 		java.util.List<? extends AbstractParameter> parameters = this.getRequiredParameters();
 		final int N = parameters.size();

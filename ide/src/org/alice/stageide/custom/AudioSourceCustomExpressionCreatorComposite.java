@@ -62,19 +62,13 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
 	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
 
-	private org.lgna.croquet.State.ValueListener<Integer> startValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
-		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.event.ValueListener<Integer> startValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
 			updateStopValueIfNecessary();
 		}
 	};
-	private org.lgna.croquet.State.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
-		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.event.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Integer> e ) {
 			updateStartValueIfNecessary();
 		}
 	};
@@ -164,8 +158,8 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 
 	private AudioSourceCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) );
-		this.startMarkerState.addValueListener( this.startValueListiner );
-		this.stopMarkerState.addValueListener( this.stopValueListiner );
+		this.startMarkerState.addNewSchoolValueListener( this.startValueListiner );
+		this.stopMarkerState.addNewSchoolValueListener( this.stopValueListiner );
 	}
 
 	public AudioResourceExpressionState getAudioResourceExpressionState() {

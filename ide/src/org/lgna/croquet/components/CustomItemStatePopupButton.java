@@ -69,13 +69,13 @@ public abstract class CustomItemStatePopupButton<T> extends FauxComboBoxPopupBut
 
 	@Override
 	protected void handleDisplayable() {
-		this.getCustomItemState().addAndInvokeValueListener( valueListener );
+		this.getCustomItemState().addAndInvokeValueListener( this.valueListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.getCustomItemState().removeValueListener( valueListener );
+		this.getCustomItemState().removeValueListener( this.valueListener );
 	}
 }

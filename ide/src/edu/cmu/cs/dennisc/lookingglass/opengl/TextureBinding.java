@@ -59,7 +59,7 @@ public final class TextureBinding implements ForgettableBinding {
 					//pass
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "disposing texture id", this.texture.getTextureObject( this.gl ) );
-					this.texture.dispose( this.gl );
+					this.texture.destroy( this.gl );
 				}
 			}
 		}

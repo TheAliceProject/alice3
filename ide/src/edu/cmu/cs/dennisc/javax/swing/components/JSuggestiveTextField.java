@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
+	private edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
 
 	public JSuggestiveTextField( String text, String textForBlankCondition ) {
 		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
@@ -73,6 +74,23 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
+	}
+
+	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+		return this.foregroundCustomizer;
+	}
+
+	public void setForegroundCustomizer( edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
+		this.foregroundCustomizer = foregroundCustomizer;
+	}
+
+	@Override
+	public java.awt.Color getForeground() {
+		java.awt.Color rv = super.getForeground();
+		if( this.foregroundCustomizer != null ) {
+			rv = this.foregroundCustomizer.changeColorIfAppropriate( rv );
+		}
+		return rv;
 	}
 
 	@Override

@@ -68,7 +68,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter<SkeletonVisual> implements PropertyListener {
+public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter<SkeletonVisual> implements PropertyListener, edu.cmu.cs.dennisc.scenegraph.SkeletonVisualBoundingBoxTracker {
 
 	private static float ALPHA_TEST_THRESHOLD = .5f;
 
@@ -87,7 +87,11 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	@Override
 	public void initialize( SkeletonVisual element )
 	{
+		if( this.m_element != null ) {
+			this.m_element.setTracker( null );
+		}
 		super.initialize( element );
+		element.setTracker( this );
 		initializeDataIfNecessary();
 	}
 
@@ -245,6 +249,37 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 		}
 	}
 
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		initializeDataIfNecessary();
+		if( this.skeletonIsDirty )
+		{
+			this.processWeightedMesh();
+		}
+		int i = 0;
+		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		{
+			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
+			if( weightedMeshControls != null ) {
+				for( WeightedMeshControl wmc : weightedMeshControls )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+					edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( b, wmc.vertexBuffer );
+					rv.union( b );
+				}
+			}
+			MeshAdapter<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
+			if( meshAdapters != null )
+			{
+				for( MeshAdapter<Mesh> ma : meshAdapters )
+				{
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = ma.m_element.getAxisAlignedMinimumBoundingBox();
+					rv.union( b );
+				}
+			}
+		}
+		return rv;
+	}
+
 	@Override
 	protected void renderGeometry( RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter.RenderType renderType )
 	{
@@ -346,6 +381,19 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 		{
 			return true;
 		}
+		//Check the base adapter to see if it's set to be alpha (through a sub 1 opacity setting)
+		//If it's alpha, return false
+		if( m_frontFacingAppearanceAdapter != null ) {
+			if( m_frontFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return false;
+			}
+		}
+		if( m_backFacingAppearanceAdapter != null ) {
+			if( m_backFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return false;
+			}
+		}
+		//Check to see if there are non-alpha textures or none "all" alpha values
 		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
 		{
 			if( m_frontFacingAppearanceAdapter != null ) {

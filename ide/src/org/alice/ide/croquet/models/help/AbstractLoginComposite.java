@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
@@ -53,27 +54,40 @@ import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.preferences.PreferenceStringState;
+
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 /**
  * @author Matt May
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
+
 	private final BooleanState isRememberingState = this.createPreferenceBooleanState( this.createKey( "isRememberingState" ), false );
-	protected final StringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
-	protected final StringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
+	protected final PreferenceStringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
+	protected final PreferenceStringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
 	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
 	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
+	protected Status connectionFailedStatus = createWarningStatus( createKey( "warningConnectionFailed" ) );
+	private final BooleanState connectionFailed = this.createBooleanState( createKey( "doNotLocalize" ), false );
+	private final List<LogInOutListener> listeners = Collections.newCopyOnWriteArrayList();
+
+	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
+		super( migrationId, operationGroup );
+	}
+
 	private final ActionOperation logOutOperation = createActionOperation( createKey( "logOutOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			logout();
+			internalLogout();
 			isLoggedIn.setValueTransactionlessly( false );
+			userNameState.setValueTransactionlessly( "" );
+			passwordState.setValueTransactionlessly( "" );
 			return null;
 		}
 	} );
-	protected LogInOutComposite parent;
 
 	public StringState getUserNameState() {
 		return this.userNameState;
@@ -95,10 +109,6 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return this.isRememberingState;
 	}
 
-	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId, operationGroup );
-	}
-
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		//note: work is done in isClearedForCommit
@@ -108,12 +118,14 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	@Override
 	protected boolean isClearedForCommit() {
 		if( super.isClearedForCommit() ) {
-			boolean loginSuccess = tryToLogin();
+			boolean loginSuccess = internalLogin();
 			if( loginSuccess ) {
 				isLoggedIn.setValueTransactionlessly( true );
 				status = IS_GOOD_TO_GO_STATUS;
-			} else {
+			} else if( !connectionFailed.getValue() ) {
 				status = loginFailedStatus;
+			} else {
+				status = connectionFailedStatus;
 			}
 			refreshStatus();
 			return loginSuccess;
@@ -132,9 +144,22 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return this.status;
 	}
 
+	private final boolean internalLogin() {
+		boolean rv = tryToLogin();
+		if( rv ) {
+			fireLoggedIn();
+		}
+		return rv;
+	}
+
+	private final void internalLogout() {
+		logout();
+		fireLoggedOut();
+	}
+
 	protected abstract boolean tryToLogin();
 
-	public abstract void logout();
+	protected abstract void logout();
 
 	public final ActionOperation getLogOutOperation() {
 		return logOutOperation;
@@ -144,14 +169,27 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return "";
 	}
 
-	public void setParent( LogInOutComposite logInOutComposite ) {
-		if( this.parent != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.parent );
-		}
-		this.parent = logInOutComposite;
+	protected void setConnectionFailed( boolean isFailed ) {
+		this.connectionFailed.setValueTransactionlessly( isFailed );
 	}
 
-	public LogInOutComposite getParent() {
-		return this.parent;
+	public boolean getCanLogIn() {
+		return !connectionFailed.getValue();
+	}
+
+	private void fireLoggedIn() {
+		for( LogInOutListener listener : listeners ) {
+			listener.fireLoggedIn( this );
+		}
+	}
+
+	private void fireLoggedOut() {
+		for( LogInOutListener listener : listeners ) {
+			listener.fireLoggedOut( this );
+		}
+	}
+
+	public void addListener( LogInOutListener listener ) {
+		listeners.add( listener );
 	}
 }

@@ -93,6 +93,14 @@ public class Collections {
 		return rv;
 	}
 
+	public static <E> java.util.ArrayList<java.util.ArrayList<E>> newArrayListOfSingleArrayList( E... list0Array ) {
+		java.util.ArrayList<java.util.ArrayList<E>> rv = new java.util.ArrayList<java.util.ArrayList<E>>();
+		java.util.ArrayList<E> list0 = new java.util.ArrayList<E>();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( list0, list0Array );
+		rv.add( list0 );
+		return rv;
+	}
+
 	public static java.util.List<Byte> newList( byte[] array ) {
 		if( array != null ) {
 			java.util.ArrayList<Byte> rv = newArrayListWithInitialCapacity( array.length );
@@ -245,6 +253,10 @@ public class Collections {
 
 	public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
 		return new InitializingIfAbsentListHashMap<K, E>();
+	}
+
+	public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
+		return new InitializingIfAbsentMapHashMap<K, K2, E2>();
 	}
 
 	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {

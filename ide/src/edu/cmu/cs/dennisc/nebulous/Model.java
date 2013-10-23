@@ -32,7 +32,12 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	{
 		synchronized( renderLock )
 		{
-			render( gl, globalBrightness, renderAlpha, renderOpaque );
+			try {
+				this.render( gl, globalBrightness, renderAlpha, renderOpaque );
+			} catch( RuntimeException re ) {
+				System.err.println( this );
+				throw re;
+			}
 		}
 	}
 

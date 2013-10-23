@@ -42,7 +42,7 @@
  */
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.matt.MouseClickedHandler;
+import org.lgna.story.implementation.eventhandling.MouseClickedHandler;
 
 /**
  * @author Matt May

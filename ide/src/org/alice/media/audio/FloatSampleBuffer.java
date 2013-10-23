@@ -1,34 +1,3 @@
-package org.alice.media.audio;
-
-/*
- * FloatSampleBuffer.java
- */
-
-/*
- *  Copyright (c) 2000 by Florian Bomers <florian@bome.com>
- *
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
- */
-
-import java.util.ArrayList;
-import java.util.Random;
-
-import javax.sound.sampled.AudioFormat;
-
 /**
  * A class for small buffers of samples in linear, 32-bit
  * floating point format. All samples are normalized to the
@@ -79,6 +48,37 @@ import javax.sound.sampled.AudioFormat;
  * 
  * @author Florian Bomers
  */
+
+package org.alice.media.audio;
+
+/*
+ * FloatSampleBuffer.java
+ */
+
+/*
+ *  Copyright (c) 2000 by Florian Bomers <florian@bome.com>
+ *
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Library General Public License as published
+ *   by the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Library General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Library General Public
+ *   License along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ */
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.sound.sampled.AudioFormat;
 
 public class FloatSampleBuffer {
 

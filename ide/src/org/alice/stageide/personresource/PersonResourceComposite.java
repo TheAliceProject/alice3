@@ -239,7 +239,6 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		new org.alice.stageide.StageIDE();
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
-			//PersonResourceComposite.getInstance().getAdultValueCreator().fire();
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

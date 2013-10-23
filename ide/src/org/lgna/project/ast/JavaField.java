@@ -130,7 +130,7 @@ public class JavaField extends AbstractField {
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			return AccessLevel.get( fld.getModifiers() );
+			return AccessLevel.getValueFromModifiers( fld.getModifiers() );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
 			return AccessLevel.PRIVATE;

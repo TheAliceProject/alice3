@@ -51,11 +51,11 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
+	public static <N extends Node> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
-		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		( (AbstractNode)original ).removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
-		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
+		org.w3c.dom.Document xmlDocument = ( (AbstractNode)original ).encode( abstractDeclarations );
 		try {
 			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
@@ -65,7 +65,7 @@ public class AstUtilities {
 		}
 	}
 
-	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root ) {
+	public static <N extends Node> N createCopy( N original, NamedUserType root ) {
 		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
 	}
 
@@ -668,5 +668,23 @@ public class AstUtilities {
 		java.util.Set<UserMethod> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		addInvokedMethods( set, seed );
 		return set;
+	}
+
+	public static void fixRequiredArgumentsIfNecessary( MethodInvocation methodInvocation ) {
+		AbstractMethod method = methodInvocation.method.getValue();
+		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+
+		assert requiredParameters.size() == methodInvocation.requiredArguments.size() : method;
+
+		final int N = requiredParameters.size();
+		for( int i = 0; i < N; i++ ) {
+			SimpleArgument argumentI = methodInvocation.requiredArguments.get( i );
+			AbstractParameter parameterI = requiredParameters.get( i );
+			if( argumentI.parameter.getValue() == parameterI ) {
+				//pass
+			} else {
+				methodInvocation.requiredArguments.set( i, new SimpleArgument( parameterI, argumentI.expression.getValue() ) );
+			}
+		}
 	}
 }

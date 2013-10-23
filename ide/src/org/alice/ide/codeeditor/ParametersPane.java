@@ -99,14 +99,17 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	@Override
 	protected void addPostfixComponents() {
 		super.addPostfixComponents();
-		org.lgna.project.ast.UserCode code = getCode();
-
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isSignatureLocked( method ) ) {
-				//pass
-			} else {
-				this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( method ).getOperation().createButton() );
+		if( this.getFactory() instanceof org.alice.ide.x.PreviewAstI18nFactory ) {
+			//pass
+		} else {
+			org.lgna.project.ast.UserCode code = getCode();
+			if( code instanceof org.lgna.project.ast.UserMethod ) {
+				org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+				if( org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( method ) ) {
+					//pass
+				} else {
+					this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( method ).getLaunchOperation().createButton() );
+				}
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {

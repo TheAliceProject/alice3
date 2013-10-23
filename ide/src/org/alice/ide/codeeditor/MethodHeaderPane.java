@@ -46,8 +46,24 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( userMethod, parametersPane, isPreview );
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final org.lgna.project.ast.UserMethod userMethod;
+
+	public MethodHeaderPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod userMethod, boolean isPreview ) {
+		super( isPreview );
+		this.factory = factory;
+		this.userMethod = userMethod;
+	}
+
+	protected org.lgna.croquet.components.Label createNameLabel() {
+		return new org.alice.ide.ast.components.DeclarationNameLabel( this.userMethod );
+
+	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
 		//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
@@ -67,8 +83,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 
-		//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( userMethod );
+		org.lgna.croquet.components.Label nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( NAME_SCALE );
 		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 
@@ -106,7 +121,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 					)
 					);
 		}
-		this.addParametersPaneAndInstanceLineIfDesired();
+		if( ( this.isPreview() == false ) || ( this.userMethod.requiredParameters.size() > 0 ) ) {
+			this.addComponent( new ParametersPane( this.factory, this.userMethod ) );
+		}
 		//		if( declaringType != null ) {
 		//			//pass
 		//		} else {
@@ -120,9 +137,5 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		//				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
 		//			}
 		//		}
-	}
-
-	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview ) {
-		this( userMethod, parametersPane, isPreview, null );
 	}
 }

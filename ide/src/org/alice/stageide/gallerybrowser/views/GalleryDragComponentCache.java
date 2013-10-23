@@ -59,5 +59,4 @@ public class GalleryDragComponentCache {
 		}
 		return rv;
 	}
-
 }

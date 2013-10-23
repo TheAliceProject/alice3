@@ -132,7 +132,7 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
 				if( org.alice.ide.resource.manager.ResourceTableRowSelectionState.getInstance().getValue() != null ) {
-					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
+					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 				}
 			}
 		}
@@ -159,7 +159,7 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
 				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(),
 				new org.lgna.croquet.components.Label(),
-				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().createButton(),
+				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().createButton(),
 				org.alice.ide.resource.manager.ReloadContentResourceOperation.getInstance().createButton()
 				);
 		this.addLineEndComponent( new org.lgna.croquet.components.BorderPanel.Builder()

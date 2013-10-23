@@ -55,12 +55,20 @@ public abstract class STurnable extends SThing {
 	/* package-private */abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
 
 	public Boolean isFacing( SThing other ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
 		return this.getImplementation().isFacing( other.getImplementation() );
 	}
 
 	@MethodTemplate( )
-	public void turn( TurnDirection direction, @ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
-	Number amount, Turn.Detail... details ) {
+	public void turn(
+			TurnDirection direction,
+			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
+			Number amount,
+			Turn.Detail... details ) {
+
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
+
 		this.getImplementation().animateApplyRotationInRevolutions(
 				direction.getAxis(),
 				amount.doubleValue(),
@@ -71,8 +79,15 @@ public abstract class STurnable extends SThing {
 	}
 
 	@MethodTemplate( )
-	public void roll( RollDirection direction, @ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
-	Number amount, Roll.Detail... details ) {
+	public void roll(
+			RollDirection direction,
+			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
+			Number amount,
+			Roll.Detail... details ) {
+
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
+
 		this.getImplementation().animateApplyRotationInRevolutions(
 				direction.getAxis(),
 				amount.doubleValue(),
@@ -84,6 +99,7 @@ public abstract class STurnable extends SThing {
 
 	@MethodTemplate( )
 	public void turnToFace( SThing target, TurnToFace.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		this.getImplementation().animateOrientationOnlyToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -95,13 +111,15 @@ public abstract class STurnable extends SThing {
 
 	@MethodTemplate( )
 	public void pointAt( SThing target, PointAt.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		SThing upAsSeenBy = UpAsSeenBy.getValue( details, null );
-		this.getImplementation().animateOrientationToPointAt( EmployeesOnly.checkArgumentNotNull( target, 0 ).getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateOrientationToPointAt( org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 ).getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void orientTo( SThing target, OrientTo.Detail... details ) {
-		this.getImplementation().animateOrientationOnly( EmployeesOnly.checkArgumentNotNull( target, 0 ).getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		this.getImplementation().animateOrientationOnly( org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 ).getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
@@ -111,6 +129,7 @@ public abstract class STurnable extends SThing {
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setOrientationRelativeToVehicle( Orientation orientation, SetOrientationRelativeToVehicle.Detail... details ) {
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( orientation, 0 );
 		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
 		if( vehicle != null ) {
 			this.getImplementation().animateOrientationOnly( vehicle, orientation.getInternal(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
@@ -125,6 +144,7 @@ public abstract class STurnable extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public Double getDistanceTo( STurnable other, GetDistanceTo.Detail... details ) {
-		return this.getImplementation().getDistanceTo( EmployeesOnly.checkArgumentNotNull( other, 0 ).getImplementation() );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
+		return this.getImplementation().getDistanceTo( org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 ).getImplementation() );
 	}
 }

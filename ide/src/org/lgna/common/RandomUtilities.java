@@ -93,7 +93,7 @@ public class RandomUtilities {
 	}
 
 	public static <E extends Object> E getRandomValueFrom( E[] array ) {
-		org.lgna.story.EmployeesOnly.checkArgumentNotNull( array, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( array, 0 );
 		if( array.length > 0 ) {
 			return array[ getRandomIndex( array.length ) ];
 		} else {
@@ -103,7 +103,7 @@ public class RandomUtilities {
 	}
 
 	public static <E extends Object> E getRandomValueFrom( java.util.List<E> list ) {
-		org.lgna.story.EmployeesOnly.checkArgumentNotNull( list, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( list, 0 );
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );
 		} else {
@@ -113,7 +113,7 @@ public class RandomUtilities {
 	}
 
 	public static <E extends Enum<?>> E getRandomEnumConstant( Class<E> cls ) {
-		org.lgna.story.EmployeesOnly.checkArgumentNotNull( cls, 0 );
+		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( cls, 0 );
 		E[] enumConstants = cls.getEnumConstants();
 		assert enumConstants.length > 0 : cls;
 		int index = s_random.nextInt( enumConstants.length );
