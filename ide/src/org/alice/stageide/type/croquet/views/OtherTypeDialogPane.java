@@ -54,24 +54,27 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					descriptionLabel.getAwtComponent().scrollRectToVisible( new java.awt.Rectangle( 0, 0, 1, 1 ) );
+					javax.swing.tree.TreePath treePath = treeView.getSelectionPath();
+					if( treePath != null ) {
+						treeView.scrollPathToVisible( treePath );
+					}
 				}
 			} );
 		}
 	};
 
 	public OtherTypeDialogPane( org.alice.stageide.type.croquet.OtherTypeDialog composite ) {
-		super( composite, "fill", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]", "[grow 0, shrink 0][grow, shrink]" );
-
-		org.lgna.croquet.ListSelectionState<org.alice.stageide.type.croquet.SelectionStyle> selectionStyleState = composite.getSelectionStyleState();
+		super( composite, "fill", "[grow 0, shrink 0][grow 0, shrink 0]16[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 
 		this.treeView = composite.getTypeTreeState().createTree();
 		this.treeView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer() );
-		this.addComponent( selectionStyleState.getItemSelectedState( org.alice.stageide.type.croquet.SelectionStyle.DIRECT ).createToggleButton() );
-		this.addComponent( selectionStyleState.getItemSelectedState( org.alice.stageide.type.croquet.SelectionStyle.LOWEST_COMMON_ANCESTOR ).createToggleButton() );
+		this.addComponent( new org.lgna.croquet.components.Label( "select directly" ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "select via common ancestor" ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "available procedures, functions and properties" ), "wrap" );
 
-		this.descriptionLabel = composite.getDescriptionText().createLabel();
-		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( descriptionLabel ), "spany 2, grow, wrap" );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
 
 		org.lgna.croquet.components.ScrollPane treeScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
@@ -80,6 +83,10 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( composite.getTypeTreeState() ) );
 		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 		this.addComponent( listScrollPane, "grow" );
+
+		this.descriptionLabel = composite.getDescriptionText().createLabel();
+		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
+		this.addComponent( new org.lgna.croquet.components.ScrollPane( descriptionLabel ), "grow" );
 	}
 
 	@Override

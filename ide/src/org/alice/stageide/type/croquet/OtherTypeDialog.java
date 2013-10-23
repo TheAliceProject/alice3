@@ -56,7 +56,6 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final TypeTreeState typeTreeState = new TypeTreeState();
-	private final org.lgna.croquet.ListSelectionState<SelectionStyle> selectionStyleState = this.createListSelectionStateForEnum( this.createKey( "selectionStyleState" ), SelectionStyle.class, SelectionStyle.DIRECT );
 	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
 	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
@@ -74,9 +73,8 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	private final org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>> sceneFieldListener = new org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.List<org.lgna.project.ast.UserField>> e ) {
 			java.util.List<org.lgna.project.ast.UserField> fields = e.getNextValue();
-
+			TypeNode sharedNode = null;
 			if( fields.size() > 0 ) {
-				TypeNode sharedNode = null;
 				for( org.lgna.project.ast.UserField field : fields ) {
 					TypeNode typeNode = map.get( field.getValueType() );
 					if( sharedNode != null ) {
@@ -85,12 +83,12 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 						sharedNode = typeNode;
 					}
 				}
-				isInTheMidstOfLowestCommonAncestorSetting = true;
-				try {
-					typeTreeState.setValueTransactionlessly( sharedNode );
-				} finally {
-					isInTheMidstOfLowestCommonAncestorSetting = false;
-				}
+			}
+			isInTheMidstOfLowestCommonAncestorSetting = true;
+			try {
+				typeTreeState.setValueTransactionlessly( sharedNode );
+			} finally {
+				isInTheMidstOfLowestCommonAncestorSetting = false;
 			}
 		}
 	};
@@ -99,8 +97,9 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		super( java.util.UUID.fromString( "58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41" ) );
 	}
 
-	public org.lgna.croquet.ListSelectionState<SelectionStyle> getSelectionStyleState() {
-		return this.selectionStyleState;
+	@Override
+	protected Integer getWiderGoldenRatioSizeFromHeight() {
+		return 600;
 	}
 
 	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
@@ -315,7 +314,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		org.lgna.croquet.data.ListData<org.lgna.project.ast.UserField> data = sceneFieldsState.getData();
 
 		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
-			//pass
+			this.getView().repaint();
 		} else {
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			if( type != null ) {
