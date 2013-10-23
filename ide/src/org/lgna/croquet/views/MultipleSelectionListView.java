@@ -50,6 +50,14 @@ public class MultipleSelectionListView<T> extends org.lgna.croquet.components.Vi
 		super( state );
 	}
 
+	public javax.swing.ListCellRenderer getCellRenderer() {
+		return this.getAwtComponent().getCellRenderer();
+	}
+
+	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
+	}
+
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		org.lgna.croquet.MultipleSelectionState.SwingModel swingModel = this.getModel().getSwingModel();
