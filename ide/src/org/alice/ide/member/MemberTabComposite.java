@@ -81,7 +81,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 	}
 
-	private class InstanceFactoryListener implements org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> {
+	private class InstanceFactoryListener implements org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> {
 		private boolean isActive;
 
 		public boolean isActive() {
@@ -92,11 +92,8 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			this.isActive = isActive;
 		}
 
-		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			if( isAdjusting ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+			if( e.isAdjusting() ) {
 				//pass
 			} else {
 				if( this.isActive ) {
@@ -109,20 +106,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
 
-	private final org.lgna.croquet.State.ValueListener<String> sortListener = new org.lgna.croquet.State.ValueListener<String>() {
-		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<String> sortListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			MemberTabComposite.this.getView().refreshLater();
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationCompositeListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationCompositeListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite> e ) {
 			MemberTabComposite.this.refreshContentsLater();
 		}
 	};
@@ -142,7 +133,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	@Override
 	protected void initialize() {
 		super.initialize();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addValueListener( this.instanceFactoryListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
@@ -275,16 +266,16 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.instanceFactoryListener.setActive( true );
-		this.getSortState().addValueListener( this.sortListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addValueListener( this.declarationCompositeListener );
+		this.getSortState().addNewSchoolValueListener( this.sortListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
 		this.refreshContentsLater();
 		this.repaintTitles();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationCompositeListener );
-		this.getSortState().removeValueListener( this.sortListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
+		this.getSortState().removeNewSchoolValueListener( this.sortListener );
 		this.instanceFactoryListener.setActive( false );
 		super.handlePostDeactivation();
 	}

@@ -61,9 +61,9 @@ public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractNode node;
+	private final org.lgna.project.ast.Node node;
 
-	private CopyToClipboardOperation( org.lgna.project.ast.AbstractNode node ) {
+	private CopyToClipboardOperation( org.lgna.project.ast.Node node ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
 		this.node = node;
 	}
@@ -71,7 +71,7 @@ public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.project.ast.AbstractNode copyOfNode = org.alice.ide.IDE.getActiveInstance().createCopy( this.node );
+		org.lgna.project.ast.Node copyOfNode = org.alice.ide.IDE.getActiveInstance().createCopy( this.node );
 		Clipboard.SINGLETON.push( copyOfNode );
 		step.finish();
 	}

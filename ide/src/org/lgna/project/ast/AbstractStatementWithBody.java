@@ -70,7 +70,6 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		return rv;
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
 	}
 }

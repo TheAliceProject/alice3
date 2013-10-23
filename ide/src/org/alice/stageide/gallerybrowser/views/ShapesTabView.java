@@ -48,39 +48,6 @@ package org.alice.stageide.gallerybrowser.views;
 public class ShapesTabView extends GalleryTabView {
 	public ShapesTabView( org.alice.stageide.gallerybrowser.ShapesTab composite ) {
 		super( composite );
-		//
-		//		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0, 2 );
-		//
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
-		//
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
-		//
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
-		//
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
-		//
-		//		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
-		//		//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
-		//
-		//		for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
-		//			if( awtComponent instanceof javax.swing.JButton ) {
-		//				javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
-		//				jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		//			}
-		//		}
-		//
-		//		org.lgna.croquet.components.BorderPanel lineStartPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-		//				.pageStart( gridPanel )
-		//				.build();
-		//
-		//		this.addLineStartComponent( lineStartPanel );
-
-		//org.lgna.croquet.components.FlowPanel panel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING );
-		//org.lgna.croquet.components.LineAxisPanel panel = new org.lgna.croquet.components.LineAxisPanel();
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
 		for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : composite.getDragModels() ) {
 			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( dragModel ) );
@@ -88,8 +55,7 @@ public class ShapesTabView extends GalleryTabView {
 
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
-		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.NEVER );
+		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( panel );
 		this.addCenterComponent( scrollPane );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}

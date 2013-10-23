@@ -139,7 +139,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 			this.setToolTipText( null );
 		} else {
 			this.setToolTipText( "" );
-			org.lgna.project.ast.AbstractNode node = org.alice.ide.clipboard.Clipboard.SINGLETON.peek();
+			org.lgna.project.ast.Node node = org.alice.ide.clipboard.Clipboard.SINGLETON.peek();
 			if( node instanceof org.lgna.project.ast.Statement ) {
 				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
 				subject.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement ) );

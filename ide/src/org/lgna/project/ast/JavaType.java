@@ -422,6 +422,15 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return this.classReflectionProxy;
 	}
 
+	public boolean contentEquals( Class<?> cls ) {
+		if( this.classReflectionProxy != null ) {
+			Class<?> reification = this.classReflectionProxy.getReification();
+			return cls == reification;
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	public boolean isUserAuthored() {
 		return false;

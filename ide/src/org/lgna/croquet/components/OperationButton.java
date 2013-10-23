@@ -68,5 +68,6 @@ public abstract class OperationButton<J extends javax.swing.AbstractButton, M ex
 
 	public void setClobberText( String clobberText ) {
 		this.clobberText = clobberText;
+		this.repaint();
 	}
 }

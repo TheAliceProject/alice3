@@ -277,9 +277,10 @@ public abstract class AbstractManipulator {
 
 	public void undoRedoEndManipulation()
 	{
-		if( this.getManipulatedTransformable() != null )
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgManipulatedTransformable = this.getManipulatedTransformable();
+		if( sgManipulatedTransformable != null )
 		{
-			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+			AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
 
 			if( newTransformation.equals( originalTransformation ) )
 			{
@@ -295,19 +296,23 @@ public abstract class AbstractManipulator {
 			{
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Ending manipulation where the original transformaion is null." );
 			}
-			AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
-			org.lgna.story.SThing aliceThing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( this.getManipulatedTransformable() );
-			if( aliceThing instanceof org.lgna.story.SJoint ) {
-				org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( this.getManipulatedTransformable() );
-				org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
-				org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
-				undoOperation = new org.alice.interact.operations.PredeterminedSetLocalJointTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, getUndoRedoDescription() );
+
+			org.lgna.story.SThing aliceThing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgManipulatedTransformable );
+			if( aliceThing != null ) {
+				AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
+				if( aliceThing instanceof org.lgna.story.SJoint ) {
+					org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( this.getManipulatedTransformable() );
+					org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
+					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
+					undoOperation = new org.alice.interact.operations.PredeterminedSetLocalJointTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, getUndoRedoDescription() );
+				} else {
+					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+					undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, originalTransformation, newTransformation, getUndoRedoDescription() );
+				}
+				undoOperation.fire();
+			} else {
+				//note: currently this condition can occur for manipulations of the scene editor's orthographic camera views
 			}
-			else {
-				org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
-				undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, originalTransformation, newTransformation, getUndoRedoDescription() );
-			}
-			undoOperation.fire();
 		}
 	}
 

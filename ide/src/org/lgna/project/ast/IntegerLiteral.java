@@ -61,9 +61,13 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		Integer value = this.value.getValue();
+		if( value != null ) {
+			localizer.appendInt( value );
+		} else {
+			localizer.appendNull();
+		}
 	}
 
 	@Override

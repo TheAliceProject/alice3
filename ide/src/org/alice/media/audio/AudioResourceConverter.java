@@ -1,32 +1,3 @@
-package org.alice.media.audio;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-
-import javax.media.ControllerClosedEvent;
-import javax.media.ControllerErrorEvent;
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.DataSink;
-import javax.media.EndOfMediaEvent;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.Processor;
-import javax.media.control.TrackControl;
-import javax.media.datasink.DataSinkErrorEvent;
-import javax.media.datasink.DataSinkEvent;
-import javax.media.datasink.DataSinkListener;
-import javax.media.datasink.EndOfStreamEvent;
-import javax.media.protocol.FileTypeDescriptor;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-
-import com.sun.media.renderer.audio.device.JavaSoundOutput;
-
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
-
 /**
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
@@ -70,9 +41,37 @@ import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.alice.media.audio;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.media.ControllerClosedEvent;
+import javax.media.ControllerErrorEvent;
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.DataSink;
+import javax.media.EndOfMediaEvent;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.Processor;
+import javax.media.control.TrackControl;
+import javax.media.datasink.DataSinkErrorEvent;
+import javax.media.datasink.DataSinkEvent;
+import javax.media.datasink.DataSinkListener;
+import javax.media.datasink.EndOfStreamEvent;
+import javax.media.protocol.FileTypeDescriptor;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
+import com.sun.media.renderer.audio.device.JavaSoundOutput;
+
+import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+
 /**
- * @author dculyba
- * 
+ * @author Dave Culyba
  */
 public class AudioResourceConverter implements ControllerListener, DataSinkListener {
 
@@ -91,10 +90,8 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 			if( ce instanceof ControllerClosedEvent ) {
 				stateFailed = true;
 			}
-			if( ce instanceof ControllerEvent ) {
-				synchronized( stateLock ) {
-					stateLock.notifyAll();
-				}
+			synchronized( stateLock ) {
+				stateLock.notifyAll();
 			}
 		}
 	}

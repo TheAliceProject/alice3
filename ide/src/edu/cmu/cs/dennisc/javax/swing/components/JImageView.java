@@ -43,32 +43,40 @@
 package edu.cmu.cs.dennisc.javax.swing.components;
 
 public class JImageView extends javax.swing.JComponent {
-	private java.awt.image.BufferedImage bufferedImage;
+	private java.awt.Image image;
 
-	public java.awt.image.BufferedImage getBufferedImage() {
-		return this.bufferedImage;
+	public java.awt.Image getImage() {
+		return this.image;
 	}
 
-	public void setBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
-		this.bufferedImage = bufferedImage;
+	public void setImage( java.awt.Image image ) {
+		this.image = image;
 		this.repaint();
 	}
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
-		//super.paintComponent( g );
-		if( this.bufferedImage != null ) {
-			int imageWidth = this.bufferedImage.getWidth();
-			int imageHeight = this.bufferedImage.getHeight();
+		if( this.image != null ) {
+			int imageWidth = this.image.getWidth( this );
+			int imageHeight = this.image.getHeight( this );
 			double widthToHeightImageAspectRatio = imageWidth / (double)imageHeight;
 
 			java.awt.Dimension componentSize = this.getSize();
 			java.awt.Dimension drawSize = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
 
-			int x = ( componentSize.width - drawSize.width ) / 2;
-			int y = ( componentSize.height - drawSize.height ) / 2;
-
-			g.drawImage( this.bufferedImage, x, y, x + drawSize.width, y + drawSize.height, 0, 0, imageWidth, imageHeight, this );
+			if( ( drawSize.width == componentSize.width ) && ( drawSize.height == componentSize.height ) ) {
+				g.drawImage( this.image, 0, 0, this );
+			} else {
+				super.paintComponent( g );
+				if( ( drawSize.width > 0 ) && ( drawSize.height > 0 ) ) {
+					g.drawImage( this.image.getScaledInstance( drawSize.width, drawSize.height, java.awt.Image.SCALE_SMOOTH ), 0, 0, this );
+				}
+				//int x = ( componentSize.width - drawSize.width ) / 2;
+				//int y = ( componentSize.height - drawSize.height ) / 2;
+				//g.drawImage( this.image, x, y, x + drawSize.width, y + drawSize.height, 0, 0, imageWidth, imageHeight, this );
+			}
+		} else {
+			super.paintComponent( g );
 		}
 	}
 }

@@ -106,7 +106,7 @@ public class FFmpegProcess {
 		}
 	}
 
-	private static String getFFmpegCommand() {
+	public static String getFFmpegCommand() {
 		// Find the ffmpeg process
 		//<alice>
 		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );

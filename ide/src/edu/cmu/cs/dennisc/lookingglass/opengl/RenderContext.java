@@ -71,6 +71,20 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
  * @author Dennis Cosgrove
  */
 public class RenderContext extends Context {
+	public static interface UnusedTexturesListener {
+		public void unusedTexturesCleared( javax.media.opengl.GL gl ); //todo: rename
+	}
+
+	private static final java.util.List<UnusedTexturesListener> unusedTexturesListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	public static void addUnusedTexturesListener( UnusedTexturesListener listener ) {
+		unusedTexturesListeners.add( listener );
+	}
+
+	public static void removeUnusedTexturesListener( UnusedTexturesListener listener ) {
+		unusedTexturesListeners.add( listener );
+	}
+
 	private final java.util.Map<GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Map<TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.List<Integer> toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -494,7 +508,9 @@ public class RenderContext extends Context {
 	}
 
 	public void clearUnusedTextures() {
-		edu.cmu.cs.dennisc.nebulous.Manager.unloadUnusedNebulousTextureData( gl );
+		for( UnusedTexturesListener listener : unusedTexturesListeners ) {
+			listener.unusedTexturesCleared( gl );
+		}
 	}
 
 	//	//todo: better name

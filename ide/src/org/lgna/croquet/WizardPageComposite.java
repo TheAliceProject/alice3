@@ -46,12 +46,18 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractSeverityStatusComposite<V> {
+public abstract class WizardPageComposite<V extends org.lgna.croquet.components.View<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
+	private final O owner;
 	private String name;
 	private String title;
 
-	public WizardPageComposite( java.util.UUID id ) {
-		super( id );
+	public WizardPageComposite( java.util.UUID migrationId, O owner ) {
+		super( migrationId );
+		this.owner = owner;
+	}
+
+	public O getOwner() {
+		return this.owner;
 	}
 
 	@Override
@@ -74,6 +80,10 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	}
 
 	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
+
+	public boolean isAccountedForInPreferredSizeCalculation() {
+		return true;
+	}
 
 	protected boolean isOptional() {
 		return false;
@@ -109,4 +119,7 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 
 	public abstract void resetData();
 
+	protected void refreshOwnerStatus() {
+		this.owner.refreshStatus();
+	}
 }

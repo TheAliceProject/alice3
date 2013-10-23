@@ -48,22 +48,22 @@ package org.alice.ide.croquet.models.menubar;
 public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.GraphicsHelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
+				org.alice.ide.help.HelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.GraphicsHelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.getInstance().getOperation().getMenuItemPrepModel(),
+				org.alice.ide.warning.WarningDialogComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
 				);
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//pass
 		} else {
 			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel() );
+			list.add( org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}

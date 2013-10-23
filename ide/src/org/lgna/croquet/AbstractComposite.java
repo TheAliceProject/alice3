@@ -920,6 +920,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
+					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
 					StringValue sidekickLabel = model.peekSidekickLabel();
@@ -944,11 +945,15 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	protected String modifyLocalizedText( Element element, String localizedText ) {
+		return localizedText;
+	}
+
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
+			stringValue.setText( this.modifyLocalizedText( stringValue, this.findLocalizedText( key.getLocalizationKey() ) ) );
 		}
 		this.localizeSidekicks(
 				this.mapKeyToActionOperation,
@@ -1130,12 +1135,17 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), constants, selectionIndex, key );
+		org.lgna.croquet.codecs.EnumCodec<T> enumCodec = localizationCustomizer != null ? org.lgna.croquet.codecs.EnumCodec.createInstance( valueCls, localizationCustomizer ) : org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls );
+		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( enumCodec, constants, selectionIndex, key );
 		this.mapKeyToImmutableListSelectionState.put( key, rv );
 		return rv;
+	}
+
+	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+		return this.createListSelectionStateForEnum( key, valueCls, null, initialValue );
 	}
 
 	protected <T> RefreshableDataListSelectionState<T> createListSelectionState( Key key, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {

@@ -80,6 +80,11 @@ public enum ConformanceTestResults {
 			} else {
 				this.extensions = new String[] {};
 			}
+			final boolean IS_COLOR_FORMAT_AND_TYPE_TRACKED = false;
+			if( IS_COLOR_FORMAT_AND_TYPE_TRACKED ) {
+				int format = GetUtilities.getInteger( gl, javax.media.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_FORMAT );
+				int type = GetUtilities.getInteger( gl, javax.media.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_TYPE );
+			}
 		}
 
 		public String getVersion() {
@@ -193,7 +198,6 @@ public enum ConformanceTestResults {
 						long zBackAsLong = convertZValueToLong( zBackAsInt );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
 						float zBack = convertZValueToFloat( zBackAsLong );
-						;
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
 					}
 

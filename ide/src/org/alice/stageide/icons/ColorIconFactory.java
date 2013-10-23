@@ -55,7 +55,7 @@ public class ColorIconFactory extends org.lgna.croquet.icon.ResolutionIndependan
 
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new org.alice.ide.swing.icons.ColorIcon( this.color, size.width, size.height );
+		return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( this.color, size.width, size.height );
 	}
 
 	@Override

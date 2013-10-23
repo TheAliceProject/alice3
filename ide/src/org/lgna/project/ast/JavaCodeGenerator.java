@@ -46,18 +46,18 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 /* package-private */class JavaCodeGenerator {
-	private final boolean isLambaSupported;
+	private final boolean isLambdaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
-	/* package-private */JavaCodeGenerator( boolean isLambaSupported ) {
-		this.isLambaSupported = isLambaSupported;
+	/* package-private */JavaCodeGenerator( boolean isLambdaSupported ) {
+		this.isLambdaSupported = isLambdaSupported;
 	}
 
-	/* package-private */boolean isLambaSupported() {
-		return this.isLambaSupported;
+	/* package-private */boolean isLambdaSupported() {
+		return this.isLambdaSupported;
 	}
 
 	/* package-private */void appendBoolean( boolean b ) {

@@ -86,6 +86,8 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 
 	protected abstract void showStencil();
 
+	protected abstract void hideStencil();
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
@@ -97,7 +99,7 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 			}
 		} );
 		this.barrierAwait();
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+		this.hideStencil();
 		step.finish();
 	}
 }

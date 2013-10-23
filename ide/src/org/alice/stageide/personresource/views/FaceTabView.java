@@ -73,7 +73,7 @@ public class FaceTabView extends org.lgna.croquet.components.MigPanel {
 				org.lgna.croquet.BooleanState itemSelectedState = eyeColorState.getItemSelectedState( baseEyeColor );
 				itemSelectedState.initializeIfNecessary();
 				itemSelectedState.setTextForBothTrueAndFalse( "" );
-				itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( awtColor ) );
+				itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );
 				org.lgna.croquet.components.ToggleButton toggleButton = itemSelectedState.createToggleButton();
 				toggleButton.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 				this.addComponent( toggleButton, constraint );

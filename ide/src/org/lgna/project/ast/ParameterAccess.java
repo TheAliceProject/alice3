@@ -92,6 +92,11 @@ public final class ParameterAccess extends Expression {
 	}
 
 	@Override
+	protected void appendRepr( AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.parameter.getValue() );
+	}
+
+	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( this.parameter.getValue().getName() );
 	}

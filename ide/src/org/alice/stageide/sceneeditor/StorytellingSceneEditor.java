@@ -232,61 +232,43 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	}
 
-	private org.lgna.croquet.State.ValueListener<Boolean> showSnapGridObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			StorytellingSceneEditor.this.setShowSnapGrid( nextValue );
+	private final org.lgna.croquet.event.ValueListener<Boolean> showSnapGridListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			StorytellingSceneEditor.this.setShowSnapGrid( e.getNextValue() );
 		}
 	};
 
-	private org.lgna.croquet.State.ValueListener<Boolean> snapEnabledObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<Boolean> snapEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( SnapState.getInstance().isShowSnapGridEnabled() )
 			{
-				StorytellingSceneEditor.this.setShowSnapGrid( nextValue );
+				StorytellingSceneEditor.this.setShowSnapGrid( e.getNextValue() );
 			}
 		}
 	};
 
-	private org.lgna.croquet.State.ValueListener<Double> snapGridSpacingObserver = new org.lgna.croquet.State.ValueListener<Double>() {
-		public void changing( org.lgna.croquet.State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
-			StorytellingSceneEditor.this.setSnapGridSpacing( nextValue );
+	private final org.lgna.croquet.event.ValueListener<Double> snapGridSpacingListener = new org.lgna.croquet.event.ValueListener<Double>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Double> e ) {
+			StorytellingSceneEditor.this.setSnapGridSpacing( e.getNextValue() );
 		}
 	};
 
-	private org.lgna.croquet.State.ValueListener<UserField> cameraMarkerFieldSelectionObserver = new org.lgna.croquet.State.ValueListener<UserField>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-			StorytellingSceneEditor.this.handleCameraMarkerFieldSelection( nextValue );
+	private final org.lgna.croquet.event.ValueListener<UserField> cameraMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
+			StorytellingSceneEditor.this.handleCameraMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
-	private org.lgna.croquet.State.ValueListener<UserField> objectMarkerFieldSelectionObserver = new org.lgna.croquet.State.ValueListener<UserField>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
-			StorytellingSceneEditor.this.handleObjectMarkerFieldSelection( nextValue );
+	private final org.lgna.croquet.event.ValueListener<UserField> objectMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
+			StorytellingSceneEditor.this.handleObjectMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
-	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
-			StorytellingSceneEditor.this.setSelectedInstance( nextValue );
+			StorytellingSceneEditor.this.setSelectedInstance( e.getNextValue() );
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = false;
 		}
 	};
@@ -302,7 +284,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton();
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
@@ -316,12 +298,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private CameraMarkerTracker mainCameraViewTracker;
 	private View savedSceneEditorViewSelection = null;
 
-	private org.lgna.croquet.ListSelectionState.ValueListener<View> mainCameraViewSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener<View>() {
-		public void changing( org.lgna.croquet.State<org.alice.stageide.sceneeditor.View> state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.stageide.sceneeditor.View> state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
-			StorytellingSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( nextValue ) );
+	private org.lgna.croquet.event.ValueListener<View> mainCameraViewSelectionObserver = new org.lgna.croquet.event.ValueListener<View>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
+			StorytellingSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( e.getNextValue() ) );
 		}
 	};
 
@@ -746,11 +725,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		} else {
 
 			this.snapGrid = new SnapGrid();
-			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueListener( this.showSnapGridObserver );
-			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueListener( this.snapEnabledObserver );
-			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueListener( this.snapGridSpacingObserver );
+			SnapState.getInstance().getShowSnapGridState().addAndInvokeNewSchoolValueListener( this.showSnapGridListener );
+			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.snapEnabledListener );
+			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener( this.snapGridSpacingListener );
 
-			InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
@@ -798,8 +777,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			};
 			this.globalDragAdapter.addClickAdapter( rightClickAdapter, rightMouseAndInteractive );
 
-			SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
-			SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
+			SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener( this.cameraMarkerFieldSelectionListener );
+			SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener( this.objectMarkerFieldSelectionListener );
 			//			org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
 			//			org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
 
@@ -814,8 +793,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
 			this.mainCameraViewSelector.setRenderer( new CameraViewCellRenderer( this.mainCameraViewTracker ) );
 
-			this.mainCameraMarkerList.addAndInvokeValueListener( this.mainCameraViewTracker );
-			this.mainCameraMarkerList.addAndInvokeValueListener( this.mainCameraViewSelectionObserver );
+			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewTracker );
+			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewSelectionObserver );
 
 			this.lookingGlassPanel.addComponent( this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20 );
 
@@ -868,7 +847,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			} finally {
 				ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
 			}
-			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
+			this.getVirtualMachine().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
 			getPropertyPanel().setSceneInstance( sceneAliceInstance );
 

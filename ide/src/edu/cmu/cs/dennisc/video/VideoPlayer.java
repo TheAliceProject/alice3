@@ -46,13 +46,17 @@ package edu.cmu.cs.dennisc.video;
  * @author Dennis Cosgrove
  */
 public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
+	public java.awt.Component getVideoSurface();
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+	public edu.cmu.cs.dennisc.java.awt.Painter<VideoPlayer> getPainter();
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<VideoPlayer> painter );
 
-	public void prepareMedia( java.net.URI uri );
+	public boolean prepareMedia( java.net.URI uri );
+
+	public void parse();
+
+	public boolean isPrepared();
 
 	public boolean isPlayable();
 
@@ -63,6 +67,10 @@ public interface VideoPlayer {
 	public void pause();
 
 	public void stop();
+
+	public long getTimeInMilliseconds();
+
+	public void setTimeInMilliseconds( long timeInMilliseconds );
 
 	public float getPosition();
 

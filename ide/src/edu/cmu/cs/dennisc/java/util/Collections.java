@@ -255,6 +255,10 @@ public class Collections {
 		return new InitializingIfAbsentListHashMap<K, E>();
 	}
 
+	public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
+		return new InitializingIfAbsentMapHashMap<K, K2, E2>();
+	}
+
 	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {
 		java.util.HashMap<B, A> rv = newHashMap();
 		for( A a : map.keySet() ) {

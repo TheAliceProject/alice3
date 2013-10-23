@@ -81,6 +81,13 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	}
 
 	@Override
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendLocalizedText( AbstractForEachLoop.class, "for each in " );
+		safeAppendRepr( localizer, this.getArrayOrIterableProperty().getValue() );
+		super.appendRepr( localizer );
+	}
+
+	@Override
 	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
 		UserLocal itemValue = this.item.getValue();
 		generator.appendString( "for(" );

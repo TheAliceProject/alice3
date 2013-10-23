@@ -46,17 +46,14 @@ package org.lgna.croquet.meta;
  * @author Dennis Cosgrove
  */
 public abstract class StateTrackingMetaState<T, ST> extends MetaState<T> {
-	private final org.lgna.croquet.State.ValueListener<ST> valueListener = new org.lgna.croquet.State.ValueListener<ST>() {
-		public void changing( org.lgna.croquet.State<ST> state, ST prevValue, ST nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<ST> state, ST prevValue, ST nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<ST> valueListener = new org.lgna.croquet.event.ValueListener<ST>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<ST> e ) {
 			checkValueAndFireIfAppropriate();
 		}
 	};
 
 	public StateTrackingMetaState( org.lgna.croquet.State<ST> state ) {
 		this.setPrevValue( this.getValue() );
-		state.addValueListener( valueListener );
+		state.addNewSchoolValueListener( valueListener );
 	}
 }

@@ -69,9 +69,8 @@ public final class SuperExpression extends Expression {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "super" );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendText( "super" );
 	}
 
 	@Override

@@ -85,11 +85,11 @@ public enum HairColorName {
 	}
 
 	private HairColorName( int rgb ) {
-		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.Color( rgb ) ) );
+		this( new edu.cmu.cs.dennisc.javax.swing.icons.PaintIcon( new java.awt.Color( rgb ) ) );
 	}
 
 	private HairColorName( int rgbTop, int rgbBottom ) {
-		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.GradientPaint( 0, 0, new java.awt.Color( rgbTop ), 0, org.alice.ide.swing.icons.ColorIcon.DEFAULT_SIZE, new java.awt.Color( rgbBottom ) ) ) );
+		this( new edu.cmu.cs.dennisc.javax.swing.icons.PaintIcon( new java.awt.GradientPaint( 0, 0, new java.awt.Color( rgbTop ), 0, edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE, new java.awt.Color( rgbBottom ) ) ) );
 	}
 
 	public javax.swing.Icon getIcon() {

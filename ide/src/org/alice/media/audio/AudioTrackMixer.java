@@ -55,8 +55,7 @@ import javax.sound.sampled.AudioSystem;
  */
 
 /**
- * @author dculyba
- * 
+ * @author Dave Culyba
  */
 public class AudioTrackMixer {
 

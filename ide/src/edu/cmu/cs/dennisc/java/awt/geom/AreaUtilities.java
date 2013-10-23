@@ -96,4 +96,15 @@ public class AreaUtilities {
 			}
 		}
 	}
+
+	public static java.awt.geom.Area createSubtraction( java.awt.Shape a, java.awt.Shape b ) {
+		assert a != null;
+		java.awt.geom.Area rv = new java.awt.geom.Area( a );
+		if( b != null ) {
+			rv.subtract( new java.awt.geom.Area( b ) );
+		} else {
+			//pass
+		}
+		return rv;
+	}
 }

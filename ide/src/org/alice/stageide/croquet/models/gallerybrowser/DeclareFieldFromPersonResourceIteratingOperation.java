@@ -96,7 +96,7 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
 				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
-				return addPersonResourceManagedFieldComposite.getOperation();
+				return addPersonResourceManagedFieldComposite.getLaunchOperation();
 			} else {
 				return null;
 			}

@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.showme;
 
-import org.lgna.croquet.ChangePerspectiveStencilModel;
 
 /**
  * @author Dennis Cosgrove

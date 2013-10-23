@@ -58,7 +58,7 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 		this.javaValueType = javaValueType;
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.javaValueType );
 		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-			this.getOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
+			this.getLaunchOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 		}
 	}
 

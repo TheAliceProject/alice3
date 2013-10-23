@@ -46,12 +46,9 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
-			PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged( prevValue, nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+			PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged( e.getNextValue() );
 		}
 	};
 
@@ -86,7 +83,7 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 		this( migrationId, mapBuilder.build() );
 	}
 
-	private void handlePerspectiveChanged( org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue ) {
+	private void handlePerspectiveChanged( org.alice.ide.perspectives.ProjectPerspective nextValue ) {
 		org.lgna.croquet.Composite<?> nextCard = this.map.get( nextValue );
 		this.showCard( nextCard );
 	}
@@ -94,12 +91,12 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		PerspectiveState.getInstance().addAndInvokeValueListener( this.perspectiveListener );
+		PerspectiveState.getInstance().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		PerspectiveState.getInstance().removeValueListener( this.perspectiveListener );
+		PerspectiveState.getInstance().removeNewSchoolValueListener( this.perspectiveListener );
 		super.handlePostDeactivation();
 	}
 

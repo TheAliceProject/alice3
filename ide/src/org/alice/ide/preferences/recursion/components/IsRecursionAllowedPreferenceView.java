@@ -56,7 +56,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 
 		public RecursionAccessPanel( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
 			this.label = composite.getRecursiveButtonText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			this.button = composite.getNext().getOperation().createButton();
+			this.button = composite.getNext().getLaunchOperation().createButton();
 			org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 					);
 			this.addComponent( checkBox );
@@ -96,11 +96,9 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 			};
 		}
 
-		private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		private org.lgna.croquet.event.ValueListener<Boolean> valueObserver = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+				Boolean nextValue = e.getNextValue();
 				if( nextValue ) {
 					//pass
 				} else {
@@ -116,12 +114,12 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeValueListener( valueObserver );
+			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeNewSchoolValueListener( valueObserver );
 		}
 
 		@Override
 		protected void handleUndisplayable() {
-			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().removeValueListener( valueObserver );
+			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().removeNewSchoolValueListener( valueObserver );
 			super.handleUndisplayable();
 		}
 	}
