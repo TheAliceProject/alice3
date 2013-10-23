@@ -40,29 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
+public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final java.awt.Shape shape;
+	private final java.awt.Stroke innerStroke;
+	private final java.awt.Stroke outerStroke;
 
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+	public CheckIcon( java.awt.Dimension size ) {
+		super( size );
+		int unit = size.width;
+
+		double xA = 0.2;
+		double xC = 0.8;
+		double xB = xA + ( ( xC - xA ) * 0.3 );
+
+		double yA = 0.45;
+		double yB = xC;
+		double yC = xA;
+
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( xA * unit, yA * unit );
+		path.lineTo( xB * unit, yB * unit );
+		path.lineTo( xC * unit, yC * unit );
+		shape = path;
+		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
+	protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+		return new java.awt.Color( 0, 127, 0 );
 	}
 
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+		return java.awt.Color.WHITE;
+	}
+
+	@Override
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		g2.setStroke( outerStroke );
+		g2.setPaint( this.getOuterPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( innerStroke );
+		g2.setPaint( this.getInnerPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( prevStroke );
 	}
 }

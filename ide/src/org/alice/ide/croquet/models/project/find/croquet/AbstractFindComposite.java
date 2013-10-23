@@ -163,7 +163,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 
 	private void refresh() {
 		if( this.isActive ) {
-			manager.refresh( getCriteria() );
+			manager.refresh( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
 			data.refresh();
 		}
 	}
@@ -187,9 +187,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectDocumentChangeListener );
 		referenceTreeState.addNewSchoolValueListener( referenceTreeListener );
 		this.isActive = true;
-		if( !manager.isInitialized() ) {
-			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
-		}
+		//		manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
 		refresh();
 	}
 

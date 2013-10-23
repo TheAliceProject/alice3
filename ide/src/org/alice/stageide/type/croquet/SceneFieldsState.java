@@ -40,33 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
-
-import org.lgna.project.ast.AbstractMethod;
+package org.alice.stageide.type.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class ReferencesComposite extends AbstractFindComposite {
-
-	private final AbstractMethod method;
-
-	public ReferencesComposite( AbstractMethod method ) {
-		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ) );
-		assert method != null;
-		this.method = method;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		getSearchState().setValueTransactionlessly( method.getName() );
-		if( getSearchResults().getItemCount() > 0 ) {
-			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
-				if( getSearchResults().getItemAt( i ).getDeclaration().equals( method ) ) {
-					getSearchResults().setSelectedIndex( i );
-				}
-			}
-		}
+public final class SceneFieldsState extends org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> {
+	public SceneFieldsState( org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
 	}
 }

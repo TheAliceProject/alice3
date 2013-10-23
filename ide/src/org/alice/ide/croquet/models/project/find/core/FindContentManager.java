@@ -74,10 +74,9 @@ public class FindContentManager {
 
 	private final List<SearchResult> objectList = Collections.newArrayList();
 	private final List<Object> superTypeList = Collections.newArrayList();
-	private UserType sceneType;
 
 	public void initialize( UserType sceneType, List<Criterion> criteria ) {
-		this.sceneType = sceneType;
+		//		this.sceneType = sceneType;
 		tunnelField( sceneType );
 		FindCrawler crawler = new FindCrawler( criteria, objectList );
 		for( SearchResult object : objectList ) {
@@ -252,14 +251,13 @@ public class FindContentManager {
 		return rv;
 	}
 
-	public void refresh( List<Criterion> criteria ) {
-		assert sceneType != null;
+	public void refresh( UserType sceneType, List<Criterion> criteria ) {
 		objectList.clear();
 		superTypeList.clear();
 		initialize( sceneType, criteria );
 	}
 
-	public boolean isInitialized() {
-		return sceneType != null;
-	}
+	//	public boolean isInitialized() {
+	//		return sceneType != null;
+	//	}
 }

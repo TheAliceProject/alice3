@@ -54,15 +54,64 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return SingletonHolder.instance;
 	}
 
+	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final TypeTreeState typeTreeState = new TypeTreeState();
+	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
+	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
+	};
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+
+	private boolean isInTheMidstOfLowestCommonAncestorSetting;
+	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
+			org.alice.stageide.type.croquet.TypeNode nextValue = e.getNextValue();
+			handleTypeChange( nextValue != null ? nextValue.getType() : null );
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>> sceneFieldListener = new org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.List<org.lgna.project.ast.UserField>> e ) {
+			java.util.List<org.lgna.project.ast.UserField> fields = e.getNextValue();
+			TypeNode sharedNode = null;
+			if( fields.size() > 0 ) {
+				for( org.lgna.project.ast.UserField field : fields ) {
+					TypeNode typeNode = map.get( field.getValueType() );
+					if( sharedNode != null ) {
+						sharedNode = (TypeNode)sharedNode.getSharedAncestor( typeNode );
+					} else {
+						sharedNode = typeNode;
+					}
+				}
+			}
+			isInTheMidstOfLowestCommonAncestorSetting = true;
+			try {
+				typeTreeState.setValueTransactionlessly( sharedNode );
+			} finally {
+				isInTheMidstOfLowestCommonAncestorSetting = false;
+			}
+		}
+	};
 
 	private OtherTypeDialog() {
 		super( java.util.UUID.fromString( "58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41" ) );
 	}
 
-	public org.lgna.croquet.TreeSelectionState<TypeNode> getTreeState() {
+	@Override
+	protected Integer getWiderGoldenRatioSizeFromHeight() {
+		return 600;
+	}
+
+	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
 		return this.typeTreeState;
+	}
+
+	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+		return this.sceneFieldsState;
+	}
+
+	public org.lgna.croquet.StringValue getDescriptionText() {
+		return this.descriptionText;
 	}
 
 	@Override
@@ -111,7 +160,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class );
 		org.lgna.project.ast.JavaType filterType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
-		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		map.clear();
 		TypeNode rootNode = new TypeNode( rootType );
 		map.put( rootType, rootNode );
 		for( org.lgna.project.ast.NamedUserType type : types ) {
@@ -119,13 +168,168 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 				build( type, map );
 			}
 		}
+		this.sceneFieldListData.refresh();
+
+		// handle JavaType scene fields 
+		synchronized( this.sceneFieldListData ) {
+			final int N = this.sceneFieldListData.getItemCount();
+			for( int i = 0; i < N; i++ ) {
+				org.lgna.project.ast.UserField field = this.sceneFieldListData.getItemAt( i );
+				org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
+				if( valueType instanceof org.lgna.project.ast.JavaType ) {
+					org.lgna.project.ast.JavaType javaValueType = (org.lgna.project.ast.JavaType)valueType;
+					build( javaValueType, map );
+				}
+			}
+		}
+
 		this.typeTreeState.setRoot( rootNode );
+		this.typeTreeState.addNewSchoolValueListener( this.typeListener );
+		this.sceneFieldsState.addNewSchoolValueListener( this.sceneFieldListener );
 		super.handlePreActivation();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.sceneFieldsState.removeNewSchoolValueListener( this.sceneFieldListener );
+		this.typeTreeState.removeNewSchoolValueListener( this.typeListener );
+		super.handlePostDeactivation();
 	}
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
 		return new org.alice.stageide.type.croquet.views.OtherTypeDialogPane( this );
+	}
+
+	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
+		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+			if( method.isStatic() ) {
+				return false;
+			}
+		} else if( member instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
+			if( field.isStatic() ) {
+				return false;
+			}
+		}
+		if( member.isPublicAccess() || member.isUserAuthored() ) {
+			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
+			return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+		} else {
+			return false;
+		}
+	}
+
+	private static void appendMembers( StringBuilder sb, org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isSelected ) {
+		if( isSelected ) {
+			sb.append( "<h2>" );
+		} else {
+			sb.append( "<h2>" );
+		}
+		sb.append( "class " );
+		sb.append( type.getName() );
+		if( isSelected ) {
+			sb.append( "</h2>" );
+		} else {
+			sb.append( " <em>(inherit)</em></h2>" );
+		}
+
+		java.util.ArrayList<? extends org.lgna.project.ast.AbstractMethod> methods = type.getDeclaredMethods();
+
+		boolean isFirst = true;
+		for( org.lgna.project.ast.AbstractMethod method : methods ) {
+			if( isInclusionDesired( method ) ) {
+				if( method.isProcedure() ) {
+					if( isFirst ) {
+						sb.append( "<em>procedures</em>" );
+						sb.append( "<ul>" );
+						isFirst = false;
+					}
+					sb.append( "<li>" );
+					sb.append( method.getName() );
+					sb.append( "</li>" );
+				}
+			}
+		}
+		if( isFirst ) {
+			//pass
+		} else {
+			sb.append( "</ul>" );
+		}
+		isFirst = true;
+		for( org.lgna.project.ast.AbstractMethod method : methods ) {
+			if( isInclusionDesired( method ) ) {
+				if( method.isFunction() ) {
+					if( isFirst ) {
+						sb.append( "<em>functions</em>" );
+						sb.append( "<ul>" );
+						isFirst = false;
+					}
+					sb.append( "<li>" );
+					sb.append( method.getName() );
+					sb.append( "</li>" );
+				}
+			}
+		}
+		if( isFirst ) {
+			//pass
+		} else {
+			sb.append( "</ul>" );
+		}
+
+		isFirst = true;
+		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+			if( isInclusionDesired( field ) ) {
+				if( isFirst ) {
+					sb.append( "<em>properties</em>" );
+					sb.append( "<ul>" );
+					isFirst = false;
+				}
+				sb.append( "<li>" );
+				sb.append( field.getName() );
+				sb.append( "</li>" );
+			}
+		}
+		if( isFirst ) {
+			//pass
+		} else {
+			sb.append( "</ul>" );
+		}
+
+		if( type.isFollowToSuperClassDesired() ) {
+			appendMembers( sb, type.getSuperType(), false );
+		}
+	}
+
+	private void handleTypeChange( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		if( type != null ) {
+			appendMembers( sb, type, true );
+		}
+		sb.append( "</html>" );
+		descriptionText.setText( sb.toString() );
+
+		org.lgna.croquet.data.ListData<org.lgna.project.ast.UserField> data = sceneFieldsState.getData();
+
+		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
+			this.getView().repaint();
+		} else {
+			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			if( type != null ) {
+				synchronized( data ) {
+					final int N = data.getItemCount();
+					for( int i = 0; i < N; i++ ) {
+						org.lgna.project.ast.UserField item = data.getItemAt( i );
+						if( type.isAssignableFrom( item.getValueType() ) ) {
+							fields.add( item );
+						}
+					}
+				}
+			}
+			this.sceneFieldsState.setValue( fields );
+		}
 	}
 
 	public static void main( String[] args ) throws Exception {
@@ -139,8 +343,11 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		org.alice.ide.ProjectStack.pushProject( project );
 		org.lgna.croquet.triggers.Trigger trigger = null;
-		OtherTypeDialog.getInstance().getValueCreator().fire( trigger );
-		System.exit( 0 );
+		try {
+			OtherTypeDialog.getInstance().getValueCreator().fire( trigger );
+		} finally {
+			System.exit( 0 );
+		}
 	}
 
 }
