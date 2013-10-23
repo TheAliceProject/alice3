@@ -73,19 +73,14 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
 		this.addComponent( new org.lgna.croquet.components.ScrollPane( descriptionLabel ), "spany 2, grow, wrap" );
 
-		org.lgna.croquet.components.ScrollPane treeScrollPane = new org.lgna.croquet.components.ScrollPane( this.treeView ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		treeScrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
+		org.lgna.croquet.components.ScrollPane treeScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
 
 		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = composite.getSceneFieldsState().createMultipleSelectionListView();
 		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( composite.getTypeTreeState() ) );
 		//listView.getAwtComponent().setEnabled( false );
-		this.addComponent( listView, "grow" );
+		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
+		this.addComponent( listScrollPane, "grow" );
 	}
 
 	@Override
