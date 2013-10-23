@@ -12,7 +12,6 @@
 	<packaging>jar</packaging>
 
 	<name>util</name>
-	<url>http://www.alice.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +59,7 @@
 		</dependency>
 	</dependencies>
 
+	<!-- TODO: These repositories should also move once the above plugins are moved to new projects -->
 	<repositories>
 		<repository>
 			<id>central</id>
