@@ -192,7 +192,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 public abstract class TreeSelectionState<T> extends ItemState<T> {
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 		public SingleTreeSelectionModel() {
-			//this.setSelectionMode( javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION );
+			this.setSelectionMode( javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION );
 		}
 	}
 
