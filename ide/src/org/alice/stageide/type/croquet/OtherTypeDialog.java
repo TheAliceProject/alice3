@@ -54,6 +54,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return SingletonHolder.instance;
 	}
 
+	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final TypeTreeState typeTreeState = new TypeTreeState();
 	private final org.lgna.croquet.ListSelectionState<SelectionStyle> selectionStyleState = this.createListSelectionStateForEnum( this.createKey( "selectionStyleState" ), SelectionStyle.class, SelectionStyle.DIRECT );
 	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
@@ -62,10 +63,35 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	};
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
+	private boolean isInTheMidstOfLowestCommonAncestorSetting;
+	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
 			org.alice.stageide.type.croquet.TypeNode nextValue = e.getNextValue();
 			handleTypeChange( nextValue != null ? nextValue.getType() : null );
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>> sceneFieldListener = new org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.List<org.lgna.project.ast.UserField>> e ) {
+			java.util.List<org.lgna.project.ast.UserField> fields = e.getNextValue();
+
+			if( fields.size() > 0 ) {
+				TypeNode sharedNode = null;
+				for( org.lgna.project.ast.UserField field : fields ) {
+					TypeNode typeNode = map.get( field.getValueType() );
+					if( sharedNode != null ) {
+						sharedNode = (TypeNode)sharedNode.getSharedAncestor( typeNode );
+					} else {
+						sharedNode = typeNode;
+					}
+				}
+				isInTheMidstOfLowestCommonAncestorSetting = true;
+				try {
+					typeTreeState.setValueTransactionlessly( sharedNode );
+				} finally {
+					isInTheMidstOfLowestCommonAncestorSetting = false;
+				}
+			}
 		}
 	};
 
@@ -135,7 +161,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class );
 		org.lgna.project.ast.JavaType filterType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
-		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		map.clear();
 		TypeNode rootNode = new TypeNode( rootType );
 		map.put( rootType, rootNode );
 		for( org.lgna.project.ast.NamedUserType type : types ) {
@@ -159,13 +185,15 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		}
 
 		this.typeTreeState.setRoot( rootNode );
-		this.typeTreeState.addNewSchoolValueListener( this.valueListener );
+		this.typeTreeState.addNewSchoolValueListener( this.typeListener );
+		this.sceneFieldsState.addNewSchoolValueListener( this.sceneFieldListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.typeTreeState.removeNewSchoolValueListener( this.valueListener );
+		this.sceneFieldsState.removeNewSchoolValueListener( this.sceneFieldListener );
+		this.typeTreeState.removeNewSchoolValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}
 
@@ -286,18 +314,22 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 		org.lgna.croquet.data.ListData<org.lgna.project.ast.UserField> data = sceneFieldsState.getData();
 
-		org.lgna.croquet.MultipleSelectionState.SwingModel<org.lgna.project.ast.UserField> swingModel = sceneFieldsState.getSwingModel();
-		swingModel.getListSelectionModel().clearSelection();
-		if( type != null ) {
-			synchronized( data ) {
-				final int N = data.getItemCount();
-				for( int i = 0; i < N; i++ ) {
-					org.lgna.project.ast.UserField item = data.getItemAt( i );
-					if( type.isAssignableFrom( item.getValueType() ) ) {
-						swingModel.getListSelectionModel().addSelectionInterval( i, i );
+		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
+			//pass
+		} else {
+			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			if( type != null ) {
+				synchronized( data ) {
+					final int N = data.getItemCount();
+					for( int i = 0; i < N; i++ ) {
+						org.lgna.project.ast.UserField item = data.getItemAt( i );
+						if( type.isAssignableFrom( item.getValueType() ) ) {
+							fields.add( item );
+						}
 					}
 				}
 			}
+			this.sceneFieldsState.setValue( fields );
 		}
 	}
 

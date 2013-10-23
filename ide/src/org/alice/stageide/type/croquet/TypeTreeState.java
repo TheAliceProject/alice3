@@ -72,6 +72,11 @@ public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<Typ
 	}
 
 	@Override
+	public org.alice.stageide.type.croquet.TypeNode getParent( org.alice.stageide.type.croquet.TypeNode node ) {
+		return (org.alice.stageide.type.croquet.TypeNode)node.getParent();
+	}
+
+	@Override
 	protected TypeNode getRoot() {
 		return this.root;
 	}

@@ -84,11 +84,28 @@ public abstract class MultipleSelectionState<T> extends /*todo*/AbstractCompleti
 		}
 	}
 
+	private final java.util.List<org.lgna.croquet.event.ValueListener<java.util.List<T>>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final SwingModel<T> swingModel;
+
+	private boolean isInTheMidstOfSettingSwingValue;
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			if( isInTheMidstOfSettingSwingValue ) {
+				//pass
+			} else {
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
+					fireChanged( getValue() );
+				}
+			}
+		}
+	};
 
 	public MultipleSelectionState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
 		super( group, migrationId );
 		this.swingModel = new SwingModel<T>( data );
+		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
 	public org.lgna.croquet.data.ListData<T> getData() {
@@ -99,18 +116,75 @@ public abstract class MultipleSelectionState<T> extends /*todo*/AbstractCompleti
 		return this.swingModel;
 	}
 
-	//	public void setValue( java.util.List<T> list ) {
-	//		this.swingModel.listSelectionModel.clearSelection();
-	//		synchronized( this.swingModel.listModel.data ) {
-	//			final int N = this.swingModel.listModel.data.getItemCount();
-	//			for( int i = 0; i < N; i++ ) {
-	//				T item = this.swingModel.listModel.data.getItemAt( i );
-	//				if( list.contains( item ) ) {
-	//					this.swingModel.listSelectionModel.addSelectionInterval( i, i );
-	//				}
+	public java.util.List<T> getValue() {
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		final int N = this.swingModel.listModel.data.getItemCount();
+		for( int i = 0; i < N; i++ ) {
+			if( this.swingModel.listSelectionModel.isSelectedIndex( i ) ) {
+				rv.add( this.swingModel.listModel.data.getItemAt( i ) );
+			}
+		}
+		return rv;
+	}
+
+	public void setValue( java.util.List<T> list ) {
+		this.isInTheMidstOfSettingSwingValue = true;
+		try {
+			this.swingModel.listSelectionModel.setValueIsAdjusting( true );
+			this.swingModel.listSelectionModel.clearSelection();
+			synchronized( this.swingModel.listModel.data ) {
+				final int N = this.swingModel.listModel.data.getItemCount();
+				for( int i = 0; i < N; i++ ) {
+					T item = this.swingModel.listModel.data.getItemAt( i );
+					if( list.contains( item ) ) {
+						this.swingModel.listSelectionModel.addSelectionInterval( i, i );
+					}
+				}
+			}
+			this.swingModel.listSelectionModel.setValueIsAdjusting( false );
+		} finally {
+			this.isInTheMidstOfSettingSwingValue = false;
+		}
+	}
+
+	public void addNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+		if( this.newSchoolValueListeners.contains( valueListener ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
+		}
+		this.newSchoolValueListeners.add( valueListener );
+	}
+
+	public void addAndInvokeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+		this.addNewSchoolValueListener( valueListener );
+		org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( this.getValue() );
+		valueListener.valueChanged( e );
+	}
+
+	public void removeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+		if( this.newSchoolValueListeners.contains( valueListener ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
+		}
+		this.newSchoolValueListeners.remove( valueListener );
+	}
+
+	//	private void fireChanged( java.util.List<T> prevValue, java.util.List<T> nextValue, IsAdjusting isAdjusting ) {
+	//		if( this.newSchoolValueListeners.size() > 0 ) {
+	//			org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( prevValue, nextValue, isAdjusting.getValue() );
+	//			for( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener : this.newSchoolValueListeners ) {
+	//				valueListener.valueChanged( e );
 	//			}
 	//		}
 	//	}
+	private void fireChanged( java.util.List<T> nextValue ) {
+		if( this.newSchoolValueListeners.size() > 0 ) {
+			org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( nextValue );
+			for( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener : this.newSchoolValueListeners ) {
+				valueListener.valueChanged( e );
+			}
+		}
+	}
 
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		return java.util.Collections.emptyList();

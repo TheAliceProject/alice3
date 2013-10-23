@@ -78,7 +78,6 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 
 		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = composite.getSceneFieldsState().createMultipleSelectionListView();
 		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( composite.getTypeTreeState() ) );
-		//listView.getAwtComponent().setEnabled( false );
 		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 		this.addComponent( listScrollPane, "grow" );
 	}
