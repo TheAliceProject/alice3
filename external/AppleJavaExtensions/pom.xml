@@ -8,6 +8,10 @@
 	<packaging>jar</packaging>
 
 	<name>AppleJavaExtensions</name>
+	<url>https://developer.apple.com/legacy/library/samplecode/AppleJavaExtensions/Introduction/Intro.html</url>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=AppleJavaExtensions.jar -DrepositoryId=org.alice.external -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/external -->
 
 	<build>
 		<extensions>
@@ -18,9 +22,6 @@
 			</extension>
 		</extensions>
 	</build>
-	
-	<!-- Deploy Command -->
-	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=AppleJavaExtensions.jar -DrepositoryId=org.alice.external -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/external -->
 
 </project>
 
