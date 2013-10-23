@@ -31,4 +31,12 @@
 		<module>util</module>
 	</modules>
 
+	<repositories>
+		<repository>
+			<id>external</id>
+			<name>Alice External Repository</name>
+			<url>http://dev.lookingglass.wustl.edu/current/public/maven/external</url>
+		</repository>
+	</repositories>
+
 </project>
