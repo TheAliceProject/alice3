@@ -72,15 +72,6 @@ public class SearchTreeNode {
 		return null;
 	}
 
-	//	{
-	//		if( decValue != null ) {
-	//			return decValue;
-	//		} else if( exValue != null ) {
-	//			return exValue;
-	//		}
-	//		return null;
-	//	}
-
 	public boolean getIsLeaf() {
 		return this.children.size() == 0;
 	}

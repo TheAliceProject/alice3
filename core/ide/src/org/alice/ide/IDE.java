@@ -42,6 +42,7 @@
  */
 package org.alice.ide;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -424,7 +425,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void handleOpenFiles( java.util.List<java.io.File> files ) {
 	}
 
 	protected void preservePreferences() {

@@ -71,7 +71,12 @@ public class JZoomView extends javax.swing.JComponent {
 		int xCenter = SIZE.width / 2;
 		int yCenter = SIZE.height / 2;
 		g2.translate( xCenter * 0.25, yCenter * 0.25 );
-		awtComponent.print( g2 );
+		final boolean IS_PRINT_GOOD_TO_GO_GL = false;
+		if( IS_PRINT_GOOD_TO_GO_GL ) {
+			awtComponent.print( g2 );
+		} else {
+			awtComponent.paint( g2 );
+		}
 		g2.setTransform( m );
 	}
 

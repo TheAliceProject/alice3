@@ -40,52 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
-
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
+public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.UserField> {
+	private static final java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.EXTRA_SMALL.getSize();
+	private static final javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final javax.swing.Icon UNSELECTED_CHECK_ICON = org.alice.ide.icons.CheckIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final javax.swing.Icon SELECTED_CHECK_ICON = new org.alice.ide.icons.CheckIcon( ICON_SIZE ) {
+		@Override
+		protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+			return java.awt.Color.WHITE;
+		}
+
+		@Override
+		protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+			return java.awt.Color.BLACK;
+		}
+	};
+
+	private final org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState;
+
+	public FieldCellRenderer( org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
+		this.typeState = typeState;
+	}
+
 	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
+		if( value != null ) {
+			rv.setText( value.getName() );
+		}
+		javax.swing.Icon icon = EMPTY_ICON;
+		if( value != null ) {
+			org.alice.stageide.type.croquet.TypeNode typeNode = this.typeState.getValue();
+			if( typeNode != null ) {
+				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
+					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
 				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
 			}
 		}
+		rv.setIcon( icon );
 		return rv;
 	}
 }
