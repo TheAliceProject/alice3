@@ -40,48 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views.renderers;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.UserField> {
-	private static final java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.EXTRA_SMALL.getSize();
-	private static final javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon UNSELECTED_CHECK_ICON = org.alice.ide.icons.CheckIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon SELECTED_CHECK_ICON = new org.alice.ide.icons.CheckIcon( ICON_SIZE ) {
-		@Override
-		protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
-			return java.awt.Color.WHITE;
-		}
+public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final java.awt.Shape shape;
+	private final java.awt.Stroke innerStroke;
+	private final java.awt.Stroke outerStroke;
 
-		@Override
-		protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
-			return java.awt.Color.BLACK;
-		}
-	};
+	public CheckIcon( java.awt.Dimension size ) {
+		super( size );
+		int unit = size.width;
 
-	private final org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState;
+		double xA = 0.2;
+		double xC = 0.8;
+		double xB = xA + ( ( xC - xA ) * 0.3 );
 
-	public FieldCellRenderer( org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
-		this.typeState = typeState;
+		double yA = 0.45;
+		double yB = xC;
+		double yC = xA;
+
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( xA * unit, yA * unit );
+		path.lineTo( xB * unit, yB * unit );
+		path.lineTo( xC * unit, yC * unit );
+		shape = path;
+		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	}
+
+	protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+		return new java.awt.Color( 0, 127, 0 );
+	}
+
+	protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+		return java.awt.Color.WHITE;
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-		}
-		javax.swing.Icon icon = EMPTY_ICON;
-		if( value != null ) {
-			org.alice.stageide.type.croquet.TypeNode typeNode = this.typeState.getValue();
-			if( typeNode != null ) {
-				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
-					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
-				}
-			}
-		}
-		rv.setIcon( icon );
-		return rv;
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		g2.setStroke( outerStroke );
+		g2.setPaint( this.getOuterPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( innerStroke );
+		g2.setPaint( this.getInnerPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( prevStroke );
 	}
 }

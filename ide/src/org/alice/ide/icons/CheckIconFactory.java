@@ -40,48 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views.renderers;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.UserField> {
-	private static final java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.EXTRA_SMALL.getSize();
-	private static final javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon UNSELECTED_CHECK_ICON = org.alice.ide.icons.CheckIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon SELECTED_CHECK_ICON = new org.alice.ide.icons.CheckIcon( ICON_SIZE ) {
-		@Override
-		protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
-			return java.awt.Color.WHITE;
-		}
+public class CheckIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static CheckIconFactory instance = new CheckIconFactory();
+	}
 
-		@Override
-		protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
-			return java.awt.Color.BLACK;
-		}
-	};
+	public static CheckIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	private final org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState;
-
-	public FieldCellRenderer( org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
-		this.typeState = typeState;
+	private CheckIconFactory() {
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-		}
-		javax.swing.Icon icon = EMPTY_ICON;
-		if( value != null ) {
-			org.alice.stageide.type.croquet.TypeNode typeNode = this.typeState.getValue();
-			if( typeNode != null ) {
-				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
-					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
-				}
-			}
-		}
-		rv.setIcon( icon );
-		return rv;
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new CheckIcon( size );
 	}
 }
