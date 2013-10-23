@@ -20,15 +20,15 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
-		<!--<dependency>
-			<groupId>com.apple</groupId>
-			<artifactId>AppleJavaExtensions</artifactId>
-			<version>1.6</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.alice.external</groupId>
 			<artifactId>wrapped_flow_layout</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.apple</groupId>
+			<artifactId>AppleJavaExtensions</artifactId>
+			<version>1.6</version>
 		</dependency>
 
 		<dependency>
