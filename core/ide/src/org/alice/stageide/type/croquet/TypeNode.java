@@ -40,52 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
-
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+package org.alice.stageide.type.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
-	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
-				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
-			}
-		}
-		return rv;
+public class TypeNode extends javax.swing.tree.DefaultMutableTreeNode {
+	//	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	//
+	//	public static TypeNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	//		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode>() {
+	//			public TypeNode initialize( org.lgna.project.ast.AbstractType<?, ?, ?> key ) {
+	//				return new TypeNode( key );
+	//			}
+	//		} );
+	//	}
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	public TypeNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		this.type = type;
+	}
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+		return this.type;
 	}
 }

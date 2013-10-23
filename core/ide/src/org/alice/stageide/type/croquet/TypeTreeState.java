@@ -40,52 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
-
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+package org.alice.stageide.type.croquet;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
+public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<TypeNode> {
+	private TypeNode root;
+
+	public TypeTreeState() {
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
+				null,
+				org.lgna.croquet.codecs.DefaultItemCodec.createInstance( TypeNode.class ) );
+	}
+
 	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
-				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
-			}
-		}
-		return rv;
+	protected int getChildCount( TypeNode parent ) {
+		return parent.getChildCount();
+	}
+
+	@Override
+	protected TypeNode getChild( TypeNode parent, int index ) {
+		return (TypeNode)parent.getChildAt( index );
+	}
+
+	@Override
+	protected int getIndexOfChild( TypeNode parent, TypeNode child ) {
+		return parent.getIndex( child );
+	}
+
+	@Override
+	public org.alice.stageide.type.croquet.TypeNode getParent( org.alice.stageide.type.croquet.TypeNode node ) {
+		return (org.alice.stageide.type.croquet.TypeNode)node.getParent();
+	}
+
+	@Override
+	protected TypeNode getRoot() {
+		return this.root;
+	}
+
+	public void setRoot( TypeNode root ) {
+		this.root = root;
+		this.refresh( this.root );
+	}
+
+	@Override
+	public boolean isLeaf( TypeNode node ) {
+		return node.isLeaf();
+	}
+
+	@Override
+	protected String getTextForNode( TypeNode node ) {
+		return node.getType().getName();
+	}
+
+	@Override
+	protected javax.swing.Icon getIconForNode( TypeNode node ) {
+		return null;
 	}
 }

@@ -40,52 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
-
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+package org.alice.stageide.type.croquet.data;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
+public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.project.ast.UserField> {
+	public SceneFieldListData() {
+		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
+	}
+
 	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
+	protected java.util.List<org.lgna.project.ast.UserField> createValues() {
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+		if( sceneType != null ) {
+			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.UserField field : sceneType.getDeclaredFields() ) {
+				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) ) {
+					if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
+						rv.add( field );
+					}
 				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
 			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
 		}
-		return rv;
 	}
 }

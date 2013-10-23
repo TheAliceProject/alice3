@@ -40,52 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
-
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+package org.alice.ide.icons;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
+public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final java.awt.Shape shape;
+	private final java.awt.Stroke innerStroke;
+	private final java.awt.Stroke outerStroke;
+
+	public CheckIcon( java.awt.Dimension size ) {
+		super( size );
+		int unit = size.width;
+
+		double xA = 0.2;
+		double xC = 0.8;
+		double xB = xA + ( ( xC - xA ) * 0.3 );
+
+		double yA = 0.45;
+		double yB = xC;
+		double yC = xA;
+
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( xA * unit, yA * unit );
+		path.lineTo( xB * unit, yB * unit );
+		path.lineTo( xC * unit, yC * unit );
+		shape = path;
+		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+	}
+
+	protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+		return new java.awt.Color( 0, 127, 0 );
+	}
+
+	protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+		return java.awt.Color.WHITE;
+	}
+
 	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
-				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
-			}
-		}
-		return rv;
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		g2.setStroke( outerStroke );
+		g2.setPaint( this.getOuterPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( innerStroke );
+		g2.setPaint( this.getInnerPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( prevStroke );
 	}
 }
