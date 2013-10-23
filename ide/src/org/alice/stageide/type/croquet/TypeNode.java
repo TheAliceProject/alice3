@@ -40,29 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
+public class TypeNode extends javax.swing.tree.DefaultMutableTreeNode {
+	//	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	//
+	//	public static TypeNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	//		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode>() {
+	//			public TypeNode initialize( org.lgna.project.ast.AbstractType<?, ?, ?> key ) {
+	//				return new TypeNode( key );
+	//			}
+	//		} );
+	//	}
 
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	public TypeNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		this.type = type;
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
-	}
-
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+		return this.type;
 	}
 }

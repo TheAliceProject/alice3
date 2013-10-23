@@ -40,29 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
-
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+public class CheckIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static CheckIconFactory instance = new CheckIconFactory();
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
+	public static CheckIconFactory getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	private CheckIconFactory() {
+	}
+
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new CheckIcon( size );
 	}
 }

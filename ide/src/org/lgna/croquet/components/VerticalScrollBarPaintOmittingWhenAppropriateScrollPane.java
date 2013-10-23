@@ -40,29 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
-
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+public class VerticalScrollBarPaintOmittingWhenAppropriateScrollPane extends ScrollPane {
+	public VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( Component<?> view ) {
+		super( view );
+		this.setVerticalScrollbarPolicy( VerticalScrollbarPolicy.ALWAYS );
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
-	}
-
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	@Override
+	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
 	}
 }

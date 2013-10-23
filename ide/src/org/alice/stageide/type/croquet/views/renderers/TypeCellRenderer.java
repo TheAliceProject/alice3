@@ -40,29 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
-
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
-	}
-
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
-	}
-
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value != null ) {
+			rv.setText( "" );
+			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
+		}
 		return rv;
 	}
 }

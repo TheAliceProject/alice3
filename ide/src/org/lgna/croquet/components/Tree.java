@@ -70,8 +70,8 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 		return this.getAwtComponent().getCellRenderer();
 	}
 
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
+	public void setCellRenderer( javax.swing.tree.TreeCellRenderer cellRenderer ) {
+		this.getAwtComponent().setCellRenderer( cellRenderer );
 	}
 
 	public void expandEachRowOnce() {

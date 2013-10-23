@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.declaration;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.AbstractType> {
-	private static class SingletonHolder {
-		private static TypeBlank instance = new TypeBlank();
+public class MultipleSelectionListView<T> extends org.lgna.croquet.components.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionState<T>> {
+	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionState<T> state ) {
+		super( state );
 	}
 
-	public static TypeBlank getInstance() {
-		return SingletonHolder.instance;
+	public javax.swing.ListCellRenderer getCellRenderer() {
+		return this.getAwtComponent().getCellRenderer();
 	}
 
-	private TypeBlank() {
-		super( java.util.UUID.fromString( "524081bf-4026-481a-b602-f13eac149ced" ) );
+	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
-		java.util.List<org.lgna.project.ast.JavaType> javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes();
-		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
-			children.add( TypeFillIn.getInstance( javaType ) );
-		}
-
-		children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		children.add( MyTypesMenuModel.getInstance() );
-
-		children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		children.add( OtherTypesMenuModel.getInstance() );
+	protected javax.swing.JList createAwtComponent() {
+		org.lgna.croquet.MultipleSelectionState.SwingModel swingModel = this.getModel().getSwingModel();
+		javax.swing.JList rv = new javax.swing.JList( swingModel.getListModel() );
+		rv.setSelectionModel( swingModel.getListSelectionModel() );
+		return rv;
 	}
+
 }

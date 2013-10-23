@@ -40,29 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.type.croquet.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
-
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.project.ast.UserField> {
+	public SceneFieldListData() {
+		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
-	}
-
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	@Override
+	protected java.util.List<org.lgna.project.ast.UserField> createValues() {
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+		if( sceneType != null ) {
+			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.UserField field : sceneType.getDeclaredFields() ) {
+				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) ) {
+					if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
+						rv.add( field );
+					}
+				}
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }

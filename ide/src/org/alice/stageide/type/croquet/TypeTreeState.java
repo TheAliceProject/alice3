@@ -40,29 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
+public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<TypeNode> {
+	private TypeNode root;
 
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+	public TypeTreeState() {
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
+				null,
+				org.lgna.croquet.codecs.DefaultItemCodec.createInstance( TypeNode.class ) );
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
+	@Override
+	protected int getChildCount( TypeNode parent ) {
+		return parent.getChildCount();
 	}
 
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
+	@Override
+	protected TypeNode getChild( TypeNode parent, int index ) {
+		return (TypeNode)parent.getChildAt( index );
+	}
+
+	@Override
+	protected int getIndexOfChild( TypeNode parent, TypeNode child ) {
+		return parent.getIndex( child );
+	}
+
+	@Override
+	public org.alice.stageide.type.croquet.TypeNode getParent( org.alice.stageide.type.croquet.TypeNode node ) {
+		return (org.alice.stageide.type.croquet.TypeNode)node.getParent();
+	}
+
+	@Override
+	protected TypeNode getRoot() {
+		return this.root;
+	}
+
+	public void setRoot( TypeNode root ) {
+		this.root = root;
+		this.refresh( this.root );
+	}
+
+	@Override
+	public boolean isLeaf( TypeNode node ) {
+		return node.isLeaf();
+	}
+
+	@Override
+	protected String getTextForNode( TypeNode node ) {
+		return node.getType().getName();
+	}
+
+	@Override
+	protected javax.swing.Icon getIconForNode( TypeNode node ) {
+		return null;
 	}
 }

@@ -161,6 +161,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
 			appendBlankChildren( blankChildren, programType, root );
 
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator().getFillIn() );
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass

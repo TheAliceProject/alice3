@@ -40,29 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
+public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.UserField> {
+	private static final java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.EXTRA_SMALL.getSize();
+	private static final javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final javax.swing.Icon UNSELECTED_CHECK_ICON = org.alice.ide.icons.CheckIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final javax.swing.Icon SELECTED_CHECK_ICON = new org.alice.ide.icons.CheckIcon( ICON_SIZE ) {
+		@Override
+		protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+			return java.awt.Color.WHITE;
+		}
 
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+		@Override
+		protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+			return java.awt.Color.BLACK;
+		}
+	};
+
+	private final org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState;
+
+	public FieldCellRenderer( org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
+		this.typeState = typeState;
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
-	}
-
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
+		if( value != null ) {
+			rv.setText( value.getName() );
+		}
+		javax.swing.Icon icon = EMPTY_ICON;
+		if( value != null ) {
+			org.alice.stageide.type.croquet.TypeNode typeNode = this.typeState.getValue();
+			if( typeNode != null ) {
+				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
+					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
+				}
+			}
+		}
+		rv.setIcon( icon );
 		return rv;
 	}
 }
