@@ -61,11 +61,8 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "\"" );
-		rv.append( this.value.getValue() );
-		rv.append( "\"" );
-		return rv;
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendText( this.value.getValue() );
 	}
 
 	@Override

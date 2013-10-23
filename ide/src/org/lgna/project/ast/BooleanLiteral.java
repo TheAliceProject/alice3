@@ -61,14 +61,13 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( this.value.getValue() );
-		return rv;
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Boolean> getValueProperty() {
+		return this.value;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Boolean> getValueProperty() {
-		return this.value;
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendBoolean( this.value.getValue() );
 	}
 
 	@Override

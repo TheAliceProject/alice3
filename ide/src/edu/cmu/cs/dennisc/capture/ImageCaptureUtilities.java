@@ -141,7 +141,12 @@ public class ImageCaptureUtilities {
 				g2.translate( -bounds.x, -bounds.y );
 			}
 
-			awtComponent.print( g );
+			final boolean IS_PRINT_GOOD_TO_GO_GL = false;
+			if( IS_PRINT_GOOD_TO_GO_GL ) {
+				awtComponent.print( g2 );
+			} else {
+				awtComponent.paint( g2 );
+			}
 
 			g2.setTransform( prevTrans );
 			g.dispose();

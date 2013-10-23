@@ -56,10 +56,18 @@ class SuggestiveTextUtilities {
 				g.setFont( font );
 				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 				java.awt.FontMetrics fm = g.getFontMetrics();
-				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-				//int y = textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent();
-				int y = textComponent.getInsets().top + fm.getAscent();
-				g.drawString( textForBlankCondition, textComponent.getInsets().left, y );
+				java.awt.Insets insets = textComponent.getInsets();
+				java.awt.ComponentOrientation componentOrientation = textComponent.getComponentOrientation();
+				int x;
+				if( componentOrientation.isLeftToRight() ) {
+					x = insets.left;
+				} else {
+					x = textComponent.getWidth() - insets.right;
+					java.awt.geom.Rectangle2D bounds = fm.getStringBounds( textForBlankCondition, g );
+					x -= (int)( Math.ceil( bounds.getWidth() ) );
+				}
+				int y = insets.top + fm.getAscent();
+				g.drawString( textForBlankCondition, x, y );
 			}
 		}
 	}

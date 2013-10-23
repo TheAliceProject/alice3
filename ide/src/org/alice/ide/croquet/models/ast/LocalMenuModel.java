@@ -61,6 +61,6 @@ public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 
 	private LocalMenuModel( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				org.alice.ide.ast.rename.RenameLocalComposite.getInstance( local ).getOperation().getMenuItemPrepModel() );
+				org.alice.ide.ast.rename.RenameLocalComposite.getInstance( local ).getLaunchOperation().getMenuItemPrepModel() );
 	}
 }

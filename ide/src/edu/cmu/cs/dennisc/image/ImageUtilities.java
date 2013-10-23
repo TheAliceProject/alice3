@@ -242,7 +242,6 @@ public class ImageUtilities {
 
 	private static short getShort( byte[] array, int offset ) {
 		int low = 0xFF & array[ offset + 0 ];
-		;
 		int high = 0xFF & array[ offset + 1 ];
 		high <<= 8;
 		return (short)( low | high );
@@ -262,7 +261,6 @@ public class ImageUtilities {
 			b = 0xFF & array[ offset++ ];
 			g = 0xFF & array[ offset++ ];
 			r = 0xFF & array[ offset++ ];
-			;
 			if( bytesPerPixel == 4 ) {
 				a = 0xFF & array[ offset++ ];
 			}

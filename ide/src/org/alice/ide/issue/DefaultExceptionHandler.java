@@ -67,7 +67,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	protected boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
-			new LgnaExceptionComposite( thread, lgnare ).getOperation().fire();
+			new LgnaExceptionComposite( thread, lgnare ).getLaunchOperation().fire();
 			return true;
 		} else {
 			return false;

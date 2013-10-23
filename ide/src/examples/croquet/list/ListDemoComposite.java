@@ -77,7 +77,7 @@ public final class ListDemoComposite extends org.lgna.croquet.OperationInputDial
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new ListDemoComposite().getOperation().fire();
+		new ListDemoComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

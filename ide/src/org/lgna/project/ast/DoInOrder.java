@@ -55,9 +55,9 @@ public final class DoInOrder extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do in order" );
-		return super.appendRepr( rv, locale );
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendLocalizedText( DoInOrder.class, "do in order" );
+		super.appendRepr( localizer );
 	}
 
 	@Override

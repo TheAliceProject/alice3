@@ -55,11 +55,6 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 		super( binaryDecoder, step );
 	}
 
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-	}
-
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
 		org.lgna.croquet.history.CompletionStep<?> step = this.getCompletionStep();
 		if( step != null ) {

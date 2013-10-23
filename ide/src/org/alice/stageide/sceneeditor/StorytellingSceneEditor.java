@@ -284,7 +284,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton();
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;

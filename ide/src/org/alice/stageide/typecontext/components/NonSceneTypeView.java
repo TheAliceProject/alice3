@@ -127,7 +127,7 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
 		this.setNorthWestComponent( new SelectedTypeView() );
-		this.setNorthEastComponent( org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton() );
+		this.setNorthEastComponent( org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton() );
 
 		org.lgna.croquet.Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
 		returnToSceneTypeOperation.initializeIfNecessary();

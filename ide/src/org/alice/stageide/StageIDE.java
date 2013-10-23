@@ -299,7 +299,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
+		return org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation();
 	}
 
 	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public final class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Boolean, String> {
+public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, String> {
 	private final WorkerListener workerListener;
 	private final ReportGenerator issueReportGenerator;
 	private final ReportSubmissionConfiguration reportSubmissionConfiguration;

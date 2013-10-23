@@ -69,7 +69,7 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  We do not know which web page to send you to.", sbDescription.toString() );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					composite.getOperation().fire();
+					composite.getLaunchOperation().fire();
 				}
 			} );
 		}

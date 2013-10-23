@@ -59,7 +59,7 @@ public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.c
 		return new org.lgna.croquet.components.FlowPanel(
 				this,
 				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
-				loginComposite.getOperation().createButton() );
+				loginComposite.getLaunchOperation().createButton() );
 	}
 
 	public void setParent( LogInOutComposite logInOutComposite ) {

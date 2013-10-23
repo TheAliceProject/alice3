@@ -159,7 +159,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( textField );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.components.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getOperation().createHyperlink();
+			org.lgna.croquet.components.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getLaunchOperation().createHyperlink();
 			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
@@ -191,7 +191,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getOperation().createHyperlink();
+			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getLaunchOperation().createHyperlink();
 			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 

@@ -95,7 +95,7 @@ public final class NumberDemoComposite extends org.lgna.croquet.OperationInputDi
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new NumberDemoComposite().getOperation().fire();
+		new NumberDemoComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }
