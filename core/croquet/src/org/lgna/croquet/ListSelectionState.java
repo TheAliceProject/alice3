@@ -204,6 +204,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
 		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
+		this.swingModel.listSelectionModel.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
