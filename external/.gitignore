@@ -1,3 +1,4 @@
 *
+!*/
 !*.pom
-!/wrapped_flow_layout
+!/wrapped_flow_layout/**/*
