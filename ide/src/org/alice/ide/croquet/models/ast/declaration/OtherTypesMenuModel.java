@@ -46,6 +46,8 @@ package org.alice.ide.croquet.models.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.AbstractType> {
+	private static final boolean IS_SCENE_TYPE_DESIRED = false;
+
 	private static class SingletonHolder {
 		private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
 	}
@@ -58,15 +60,44 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.l
 		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
 	}
 
+	private org.lgna.project.ast.NamedUserType getSceneType() {
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		if( project != null ) {
+			return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+		} else {
+			return null;
+		}
+	}
+
 	public boolean isEmpty() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() == 0;
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0 ) {
+			return false;
+		} else {
+			if( IS_SCENE_TYPE_DESIRED ) {
+				return this.getSceneType() == null;
+			} else {
+				return true;
+			}
+		}
 	}
 
 	@Override
 	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+		if( IS_SCENE_TYPE_DESIRED ) {
+			org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
+			if( sceneType != null ) {
+				blankChildren.add( TypeFillIn.getInstance( sceneType ) );
+				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			}
+		}
+
 		java.util.List<org.lgna.project.ast.JavaType> otherTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
 		for( org.lgna.project.ast.JavaType otherType : otherTypes ) {
-			blankChildren.add( TypeFillIn.getInstance( otherType ) );
+			if( otherType != null ) {
+				blankChildren.add( TypeFillIn.getInstance( otherType ) );
+			} else {
+				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			}
 		}
 	}
 }
