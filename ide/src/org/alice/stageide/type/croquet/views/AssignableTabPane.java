@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.components;
+package org.alice.stageide.type.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-		if( jScrollBar != null ) {
-			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
-		} else {
-			return false;
-		}
-	}
+public class AssignableTabPane extends org.lgna.croquet.components.BorderPanel {
+	public AssignableTabPane( org.alice.stageide.type.croquet.AssignableTab tab ) {
+		super( tab, 4, 4 );
+		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
+		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( tab.getTypeTreeState() ) );
+		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 
-	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
-		public PaintOmittingJScrollBar( int orientation ) {
-			super( orientation );
-		}
+		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
+		listScrollPane.setBackgroundColor( color );
+		this.setBackgroundColor( color );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
-				super.paint( g );
-			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
-				java.awt.Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
-				if( component != null ) {
-					//pass
-				} else {
-					component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
-				}
-				g2.setPaint( component.getBackground() );
-				g2.fill( clip );
-			}
-		}
-	}
-
-	protected boolean isPaintRequiredIfOtherRequiresIt() {
-		return true;
-	}
-
-	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
-			return this.getVerticalScrollBar();
-		} else {
-			return this.getHorizontalScrollBar();
-		}
+		this.addPageStartComponent( new org.lgna.croquet.components.Label( "<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>" ) );
+		this.addCenterComponent( listScrollPane );
 	}
 }

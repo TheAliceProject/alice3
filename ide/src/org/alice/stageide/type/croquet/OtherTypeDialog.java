@@ -55,11 +55,16 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	}
 
 	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final AssignableTab assignableTab = new AssignableTab( this );
+	private final ContainsTab containsTab = new ContainsTab();
+
+	private final org.lgna.croquet.TabSelectionState tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
 	private final TypeTreeState typeTreeState = new TypeTreeState();
-	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
-	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
 	};
+	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
+	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 
 	private boolean isInTheMidstOfLowestCommonAncestorSetting;
@@ -102,12 +107,16 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return 600;
 	}
 
-	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
-		return this.typeTreeState;
+	public org.lgna.croquet.TabSelectionState getTabState() {
+		return this.tabState;
 	}
 
 	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
 		return this.sceneFieldsState;
+	}
+
+	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+		return this.typeTreeState;
 	}
 
 	public org.lgna.croquet.StringValue getDescriptionText() {
@@ -185,7 +194,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		}
 
 		this.typeTreeState.setRoot( rootNode );
-		this.typeTreeState.addNewSchoolValueListener( this.typeListener );
+		this.typeTreeState.addAndInvokeNewSchoolValueListener( this.typeListener );
 		this.sceneFieldsState.addNewSchoolValueListener( this.sceneFieldListener );
 		super.handlePreActivation();
 	}
@@ -306,9 +315,13 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	private void handleTypeChange( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
+		sb.append( "<body bgcolor=\"#FFFFFF\">" );
 		if( type != null ) {
 			appendMembers( sb, type, true );
+		} else {
+			sb.append( "<em>no class selected</em>" );
 		}
+		sb.append( "</body>" );
 		sb.append( "</html>" );
 		descriptionText.setText( sb.toString() );
 

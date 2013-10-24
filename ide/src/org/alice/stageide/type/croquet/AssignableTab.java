@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.components;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-		if( jScrollBar != null ) {
-			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
-		} else {
-			return false;
-		}
+public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.components.Panel> {
+	private final OtherTypeDialog dialog;
+
+	public AssignableTab( OtherTypeDialog dialog ) {
+		super( java.util.UUID.fromString( "4e81305b-226b-411c-b99f-6d2a877bd6f8" ), IsCloseable.FALSE );
+		this.dialog = dialog;
 	}
 
-	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
-		public PaintOmittingJScrollBar( int orientation ) {
-			super( orientation );
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
-				super.paint( g );
-			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
-				java.awt.Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
-				if( component != null ) {
-					//pass
-				} else {
-					component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
-				}
-				g2.setPaint( component.getBackground() );
-				g2.fill( clip );
-			}
-		}
+	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+		return this.dialog.getSceneFieldsState();
 	}
 
-	protected boolean isPaintRequiredIfOtherRequiresIt() {
-		return true;
+	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+		return this.dialog.getTypeTreeState();
 	}
 
-	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
-			return this.getVerticalScrollBar();
-		} else {
-			return this.getHorizontalScrollBar();
-		}
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new org.alice.stageide.type.croquet.views.AssignableTabPane( this );
 	}
 }
