@@ -10,10 +10,6 @@
 	<name>Alice</name>
 	<url>http://www.alice.org/</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -34,6 +30,9 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+				</excludes>
 			</resource>
 
 			<!-- We only allow properties files in the java source directories. All 
