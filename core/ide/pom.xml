@@ -106,6 +106,15 @@
 				</executions>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/generated/resources</directory>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 	<profiles>
