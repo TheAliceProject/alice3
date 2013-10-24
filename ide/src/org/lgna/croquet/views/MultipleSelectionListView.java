@@ -40,44 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
-
-import java.util.List;
-
-import org.alice.ide.croquet.models.project.find.core.SearchResult;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.project.ast.UserField;
+package org.lgna.croquet.views;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DeleteFindComposite extends AbstractFindComposite {
+public class MultipleSelectionListView<T> extends org.lgna.croquet.components.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionState<T>> {
+	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionState<T> state ) {
+		super( state );
+	}
 
-	private final UserField field;
+	public javax.swing.ListCellRenderer getCellRenderer() {
+		return this.getAwtComponent().getCellRenderer();
+	}
 
-	public DeleteFindComposite( UserField field ) {
-		super( java.util.UUID.fromString( "c95adf19-dd80-410c-b5f5-489239076f6d" ) );
-		this.field = field;
-		getSearchState().setValueTransactionlessly( field.getName() );
-		getSearchState().setEnabled( false );
+	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		ListSelectionState<SearchResult> searchResults = getSearchResults();
-		for( SearchResult obj : searchResults ) {
-			if( obj.getDeclaration() != field ) {
-				getSearchResults().removeItem( obj );
-			}
-		}
-		assert getSearchResults().getItemCount() == 1;
-		getSearchResults().setSelectedIndex( 0 );
-		getView().getTree().expandAllRows();
+	protected javax.swing.JList createAwtComponent() {
+		org.lgna.croquet.MultipleSelectionState.SwingModel swingModel = this.getModel().getSwingModel();
+		javax.swing.JList rv = new javax.swing.JList( swingModel.getListModel() );
+		rv.setSelectionModel( swingModel.getListSelectionModel() );
+		return rv;
 	}
 
-	@Override
-	protected List<SearchResult> setSearchResults() {
-		return getManager().getResultsForField( field );
-	}
 }

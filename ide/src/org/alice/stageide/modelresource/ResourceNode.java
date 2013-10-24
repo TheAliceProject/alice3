@@ -114,7 +114,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, true );
-			return addResourceKeyManagedFieldComposite.getOperation();
+			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		} else if( this.resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
 			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );

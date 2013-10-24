@@ -360,7 +360,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	public void setImageClearShapesAndShowFrame( java.awt.Image image ) {
 		this.clearShapes();
 		this.imageHolder.setValue( image );
-		this.getBooleanState().setValueTransactionlessly( true );
+		this.getIsFrameShowingState().setValueTransactionlessly( true );
 		org.lgna.croquet.components.AbstractWindow<?> window = this.getView().getRoot();
 		if( window != null ) {
 			this.getView().revalidateAndRepaint();

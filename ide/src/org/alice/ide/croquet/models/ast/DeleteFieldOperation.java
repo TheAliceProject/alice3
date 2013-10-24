@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import org.alice.ide.croquet.models.project.find.croquet.DeleteFindComposite;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
 import org.lgna.croquet.history.CompletionStep;
 
@@ -92,9 +91,9 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 		final int N = references.size();
 		if( N > 0 ) {
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
-			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getOperation().fire();
+			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
-				new DeleteFindComposite( field ).getBooleanState().setValueTransactionlessly( true );
+				org.alice.ide.croquet.models.project.find.croquet.FindComposite.getInstance().getMemberReferencesOperationInstance( field ).fire();
 			}
 			return false;
 		} else {

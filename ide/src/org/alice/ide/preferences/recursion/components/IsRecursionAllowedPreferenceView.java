@@ -56,7 +56,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 
 		public RecursionAccessPanel( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
 			this.label = composite.getRecursiveButtonText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			this.button = composite.getNext().getOperation().createButton();
+			this.button = composite.getNext().getLaunchOperation().createButton();
 			org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 					);
 			this.addComponent( checkBox );

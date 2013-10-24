@@ -106,7 +106,7 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 	private org.lgna.croquet.Operation getAddResourceKeyManagedFieldCompositeOperation( org.alice.stageide.modelresource.EnumConstantResourceKey enumConstantResourceKey ) {
 		org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
 		addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, false );
-		return addResourceKeyManagedFieldComposite.getOperation();
+		return addResourceKeyManagedFieldComposite.getLaunchOperation();
 	}
 
 	private org.lgna.croquet.Operation getMergeTypeOperation() {
@@ -126,7 +126,7 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 			org.lgna.project.ast.NamedUserType srcType = importedRootType;
 			org.lgna.project.ast.NamedUserType dstType = org.alice.ide.ast.type.merge.core.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
 			org.alice.ide.ast.type.croquet.ImportTypeWizard wizard = new org.alice.ide.ast.type.croquet.ImportTypeWizard( this.uri, importedRootType, importedResources, srcType, dstType );
-			return wizard.getOperation();
+			return wizard.getLaunchOperation();
 		} else {
 			return null;
 		}

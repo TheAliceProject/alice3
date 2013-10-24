@@ -40,33 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
-
-import org.lgna.project.ast.AbstractMethod;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class ReferencesComposite extends AbstractFindComposite {
-
-	private final AbstractMethod method;
-
-	public ReferencesComposite( AbstractMethod method ) {
-		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ) );
-		assert method != null;
-		this.method = method;
-	}
-
+public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		getSearchState().setValueTransactionlessly( method.getName() );
-		if( getSearchResults().getItemCount() > 0 ) {
-			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
-				if( getSearchResults().getItemAt( i ).getDeclaration().equals( method ) ) {
-					getSearchResults().setSelectedIndex( i );
-				}
-			}
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value != null ) {
+			rv.setText( "" );
+			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
 		}
+		return rv;
 	}
 }

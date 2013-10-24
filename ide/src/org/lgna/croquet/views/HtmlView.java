@@ -60,6 +60,11 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing
 		}
 	};
 
+	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
+		javax.swing.text.Document document = this.getAwtComponent().getDocument();
+		return (javax.swing.text.html.HTMLDocument)document;
+	}
+
 	public String getText() {
 		return this.getText();
 	}
@@ -81,8 +86,9 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing
 
 	@Override
 	protected javax.swing.JEditorPane createAwtComponent() {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane();
-		rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" );
+		assert rv.getDocument() instanceof javax.swing.text.html.HTMLDocument : rv.getDocument();
+		//rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
 		rv.setEditable( false );
 		return rv;
 	}

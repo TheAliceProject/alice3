@@ -42,7 +42,12 @@
  */
 package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Dennis Cosgrove
@@ -58,12 +63,52 @@ public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
+		sb.append( "<HTML>" );
+		String finalValue = getNameString( value.getName(), composite.getSearchState().getValue() );
+		sb.append( finalValue );
 		sb.append( " (" );
 		sb.append( value.getReferences().size() );
 		sb.append( ")" );
+		sb.append( "</HTML>" );
 		rv.setText( sb.toString() );
 		rv.setIcon( value.getIcon() );
+		return rv;
+	}
+
+	private String getNameString( String name, String value ) {
+		String rv = name;
+		String unparsed = value.toLowerCase();
+		ArrayList<String> list = Collections.newArrayList();
+		while( true ) {
+			if( unparsed.length() == 0 ) {
+				break;
+			} else if( unparsed.contains( "*" ) ) {
+				int starIndex = unparsed.indexOf( "*" );
+				if( starIndex != unparsed.length() ) {
+					list.add( unparsed.substring( 0, starIndex ) );
+					unparsed = unparsed.substring( starIndex + 1 );
+				}
+			} else {
+				list.add( unparsed );
+				break;
+			}
+		}
+		String temp = name.toLowerCase();
+		Stack<Integer> stack = new Stack<Integer>();
+		int itr = 0;
+		for( String str : list ) {
+			int start = temp.indexOf( str );
+			stack.push( itr + start );
+			stack.push( itr + start + str.length() );
+			itr = itr + start + str.length();
+			temp = temp.substring( itr );
+		}
+		while( !stack.isEmpty() ) {
+			Integer index = stack.pop();
+			rv = rv.substring( 0, index ) + "</strong>" + rv.substring( index );
+			index = stack.pop();
+			rv = rv.substring( 0, index ) + "<strong>" + rv.substring( index );
+		}
 		return rv;
 	}
 }

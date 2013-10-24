@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
-
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
-	}
-
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleOpenFile( e );
-		e.setHandled( true );
-	}
-
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-		e.setHandled( false ); //setting this to false does not make sense to me.  dennisc
-	}
-
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-		e.setHandled( true );
-	}
-
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
-		e.setHandled( true );
+public final class SceneFieldsState extends org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> {
+	public SceneFieldsState( org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
 	}
 }

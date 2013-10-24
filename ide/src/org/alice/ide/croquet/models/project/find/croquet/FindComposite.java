@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,81 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.alice.ide.croquet.models.project.find.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple3<A, B, C> {
-	public static <A, B, C> Tuple3<A, B, C> createInstance( A a, B b, C c ) {
-		return new Tuple3<A, B, C>( a, b, c );
+public class FindComposite extends AbstractFindComposite {
+	private static class SingletonHolder {
+		private static FindComposite instance = new FindComposite();
 	}
 
-	private A m_a = null;
-	private B m_b = null;
-	private C m_c = null;
-
-	private Tuple3() {
+	public static FindComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	private Tuple3( A a, B b, C c ) {
-		set( a, b, c );
-	}
+	//todo: listen to name changes
+	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
+		private final org.lgna.project.ast.Member member;
 
-	public A getA() {
-		return m_a;
-	}
-
-	public void setA( A a ) {
-		m_a = a;
-	}
-
-	public B getB() {
-		return m_b;
-	}
-
-	public void setB( B b ) {
-		m_b = b;
-	}
-
-	public C getC() {
-		return m_c;
-	}
-
-	public void setC( C c ) {
-		m_c = c;
-	}
-
-	public void set( A a, B b, C c ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-	}
-
-	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple3<?, ?, ?> ) {
-				Tuple3<?, ?, ?> otherT = (Tuple3<?, ?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c );
-			} else {
-				return false;
-			}
+		public FindMemberReferencesOperation( org.lgna.project.ast.Member member ) {
+			super( FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
+			this.member = member;
 		}
+
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return FindComposite.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "memberReferencesOperation";
+		}
+
+		@Override
+		protected String modifyNameIfNecessary( String text ) {
+			String rv = super.modifyNameIfNecessary( text );
+			rv = rv.replace( "</name/>", this.member.getName() );
+			return rv;
+		}
+
+		@Override
+		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			getIsFrameShowingState().setValueTransactionlessly( true );
+			String name = member.getName();
+
+			//todo: ensure member is selected
+
+			getSearchState().setValueTransactionlessly( name != null ? name : "" );
+			step.finish();
+		}
+	};
+
+	private FindComposite() {
+		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple3[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( ", c=" );
-		sb.append( m_c );
-		sb.append( " ]" );
-		return sb.toString();
+	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
+		//todo: cache
+		return new FindMemberReferencesOperation( member );
 	}
 }

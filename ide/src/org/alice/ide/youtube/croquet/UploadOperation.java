@@ -80,12 +80,12 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( fileKnownToBeNotExecuable != null ) {
 			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
-			composite.getOperation().fire();
+			composite.getLaunchOperation().fire();
 		} else {
 			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
 			wizard.setProject( ProjectStack.peekProject() );
 			try {
-				wizard.getOperation().fire();
+				wizard.getLaunchOperation().fire();
 			} finally {
 				wizard.setProject( null );
 			}
@@ -110,13 +110,13 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 
 	private Model getExecutionPermissionModel( File file ) {
 		ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( file );
-		return composite.getOperation();
+		return composite.getLaunchOperation();
 	}
 
 	private Model getWizardModel() {
 		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
 		wizard.setProject( ProjectStack.peekProject() );
-		return wizard.getOperation();
+		return wizard.getLaunchOperation();
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class ObjectMarkersToolPalette extends MarkersToolPalette<org.alice.stage
 
 	@Override
 	public org.lgna.croquet.Operation getAddOperation() {
-		return AddObjectMarkerFieldComposite.getInstance().getOperation();
+		return AddObjectMarkerFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override

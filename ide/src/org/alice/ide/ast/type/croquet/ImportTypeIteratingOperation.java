@@ -42,7 +42,6 @@
  */
 package org.alice.ide.ast.type.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -88,7 +87,7 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 						}
 					}
 					if( srcType != null ) {
-						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getOperation();
+						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
 						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Cannot find class " + this.dstType.getName() + " in " + file );
 						return null;

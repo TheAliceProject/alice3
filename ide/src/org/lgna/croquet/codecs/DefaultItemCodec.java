@@ -50,7 +50,7 @@ public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
 		return new DefaultItemCodec<T>( valueClass );
 	}
 
-	public DefaultItemCodec( Class<T> valueClass ) {
+	private DefaultItemCodec( Class<T> valueClass ) {
 		super( valueClass );
 	}
 

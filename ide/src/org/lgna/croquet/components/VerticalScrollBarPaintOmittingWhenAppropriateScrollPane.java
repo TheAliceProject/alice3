@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple.event;
+package org.lgna.croquet.components;
 
-public interface ApplicationListener {
-	public void handlePreferences( java.util.EventObject e );
+/**
+ * @author Dennis Cosgrove
+ */
+public class VerticalScrollBarPaintOmittingWhenAppropriateScrollPane extends ScrollPane {
+	public VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( Component<?> view ) {
+		super( view );
+		this.setVerticalScrollbarPolicy( VerticalScrollbarPolicy.ALWAYS );
+	}
 
-	public void handleAbout( java.util.EventObject e );
-
-	public void handleQuit( java.util.EventObject e );
-
-	public void handleOpenFile( java.util.EventObject e );
+	@Override
+	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+	}
 }

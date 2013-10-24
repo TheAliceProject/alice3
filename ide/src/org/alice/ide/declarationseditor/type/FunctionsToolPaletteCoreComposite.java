@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  */
 public class FunctionsToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
 	public FunctionsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "47e05482-b982-4dd6-a49a-7ec62cf783c6" ), FunctionsComposite.getInstance( type ), org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
+		super( java.util.UUID.fromString( "47e05482-b982-4dd6-a49a-7ec62cf783c6" ), FunctionsComposite.getInstance( type ), org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getLaunchOperation() );
 	}
 
 	@Override

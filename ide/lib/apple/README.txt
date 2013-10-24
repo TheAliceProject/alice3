@@ -1,7 +1,6 @@
 AppleJavaExtensions
-v 1.2
 
-This is a pluggable jar of stub classes representing the new Apple eAWT and eIO APIs for Java 1.4 on Mac OS X.  The purpose of these stubs is to allow for compilation of eAWT- or eIO-referencing code on platforms other than Mac OS X.  The jar file is enclosed in a zip archive for easy expansion on other platforms.  
+This is a pluggable jar of stub classes representing the new Apple eAWT and eIO APIs for Java on Mac OS X.  The purpose of these stubs is to allow for compilation of eAWT- or eIO-referencing code on platforms other than Mac OS X.  The jar file is enclosed in a zip archive for easy expansion on other platforms.  
 
 These stubs are not intended for the runtime classpath on non-Mac platforms.  Please see the OSXAdapter sample for how to write cross-platform code that uses eAWT.
 
@@ -43,4 +42,4 @@ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
 STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
-Copyright © 2003-2006 Apple Computer, Inc., All Rights Reserved
+Copyright © 2003-2010 Apple Inc., All Rights Reserved

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.apple;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AppleUtilities {
-	public static void addApplicationListener( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//jython's class loader necessitates this reflection
-			java.lang.reflect.Constructor<?> constructor = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( edu.cmu.cs.dennisc.apple.Adapter.class, edu.cmu.cs.dennisc.apple.event.ApplicationListener.class );
-			com.apple.eawt.ApplicationListener adapter = (com.apple.eawt.ApplicationListener)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor, listener );
-
-			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
-			application.addApplicationListener( adapter );
-		}
-	}
+public interface Initializer<T> {
+	void initialize( T value );
 }

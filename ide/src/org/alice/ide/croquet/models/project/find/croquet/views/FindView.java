@@ -58,6 +58,7 @@ import javax.swing.tree.TreePath;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
+import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState.TwoDimensionalTreeCoordinate;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
@@ -70,8 +71,6 @@ import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-
-import com.sun.tools.javac.util.Pair;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
@@ -88,7 +87,7 @@ public class FindView extends BorderPanel {
 	private final Tree<SearchTreeNode> referencesTreeList;
 	private final List<SearchResult> searchResultsList;
 	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Collections.newHashMap();
-	private final Map<SearchResult, Pair<Integer, Integer>> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
+	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
 	private final FindReferencesTreeState referenceResults;
 	private final ListSelectionState<SearchResult> searchResults;
 	boolean listIsSelected = true;
@@ -145,7 +144,7 @@ public class FindView extends BorderPanel {
 		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
 			if( e.getNextValue() != null ) {
 				searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
-				referencesTreeList.getAwtComponent().scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
+				referencesTreeList.scrollPathToVisible( referencesTreeList.getAwtComponent().getSelectionPath() );
 			}
 		}
 	};
@@ -198,6 +197,18 @@ public class FindView extends BorderPanel {
 		public void keyPressed( KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 
+			java.awt.ComponentOrientation componentOrientation = e.getComponent().getComponentOrientation();
+
+			final int LEADING_KEY_CODE;
+			final int TRAILING_KEY_CODE;
+			if( componentOrientation.isLeftToRight() ) {
+				LEADING_KEY_CODE = KeyEvent.VK_LEFT;
+				TRAILING_KEY_CODE = KeyEvent.VK_RIGHT;
+			} else {
+				LEADING_KEY_CODE = KeyEvent.VK_RIGHT;
+				TRAILING_KEY_CODE = KeyEvent.VK_LEFT;
+			}
+
 			if( keyCode == KeyEvent.VK_UP ) {
 				if( isListSelected() ) {
 					if( searchResults.getValue() != null ) {
@@ -227,19 +238,19 @@ public class FindView extends BorderPanel {
 					referenceResults.moveSelectedDownOne();
 					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceResults.getSelectedCoordinates() );
 				}
-			} else if( keyCode == KeyEvent.VK_LEFT ) {
+			} else if( keyCode == LEADING_KEY_CODE ) {
 				if( isTreeSelected() ) {
 					setListSelected();
 					//					searchResultToLastTreeCoordinatesMap.put( searchResults.getValue(), referenceTreeState.getSelectedCoordinates() );
 					referenceResults.setValueTransactionlessly( null );
 				}
-			} else if( keyCode == KeyEvent.VK_RIGHT ) {
+			} else if( keyCode == TRAILING_KEY_CODE ) {
 				if( isListSelected() ) {
 					if( referenceResults.isEmpty() ) {
 						setTreeSelected();
-						Pair<Integer, Integer> pair = searchResultToLastTreeCoordinatesMap.get( searchResults.getValue() );
+						TwoDimensionalTreeCoordinate pair = searchResultToLastTreeCoordinatesMap.get( searchResults.getValue() );
 						if( pair != null ) {
-							referenceResults.setValueTransactionlessly( referenceResults.selectAtCoordinates( pair.fst, pair.snd ) );
+							referenceResults.setValueTransactionlessly( referenceResults.selectAtCoordinates( pair.getA(), pair.getB() ) );
 						} else {
 							referenceResults.setValueTransactionlessly( referenceResults.getTopValue() );
 						}

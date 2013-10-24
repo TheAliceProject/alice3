@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,93 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple4<A, B, C, D> {
-	public static <A, B, C, D> Tuple4<A, B, C, D> createInstance( A a, B b, C c, D d ) {
-		return new Tuple4<A, B, C, D>( a, b, c, d );
+public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final java.awt.Shape shape;
+	private final java.awt.Stroke innerStroke;
+	private final java.awt.Stroke outerStroke;
+
+	public CheckIcon( java.awt.Dimension size ) {
+		super( size );
+		int unit = size.width;
+
+		double xA = 0.2;
+		double xC = 0.8;
+		double xB = xA + ( ( xC - xA ) * 0.3 );
+
+		double yA = 0.45;
+		double yB = xC;
+		double yC = xA;
+
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( xA * unit, yA * unit );
+		path.lineTo( xB * unit, yB * unit );
+		path.lineTo( xC * unit, yC * unit );
+		shape = path;
+		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	}
 
-	private A m_a = null;
-	private B m_b = null;
-	private C m_c = null;
-	private D m_d = null;
-
-	private Tuple4() {
+	protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
+		return new java.awt.Color( 0, 127, 0 );
 	}
 
-	private Tuple4( A a, B b, C c, D d ) {
-		set( a, b, c, d );
-	}
-
-	public A getA() {
-		return m_a;
-	}
-
-	public void setA( A a ) {
-		m_a = a;
-	}
-
-	public B getB() {
-		return m_b;
-	}
-
-	public void setB( B b ) {
-		m_b = b;
-	}
-
-	public C getC() {
-		return m_c;
-	}
-
-	public void setC( C c ) {
-		m_c = c;
-	}
-
-	public D getD() {
-		return m_d;
-	}
-
-	public void setD( D d ) {
-		m_d = d;
-	}
-
-	public void set( A a, B b, C c, D d ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-		m_d = d;
+	protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
+		return java.awt.Color.WHITE;
 	}
 
 	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple4<?, ?, ?, ?> ) {
-				Tuple4<?, ?, ?, ?> otherT = (Tuple4<?, ?, ?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d );
-			} else {
-				return false;
-			}
-		}
-	}
-
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple4[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( ", c=" );
-		sb.append( m_c );
-		sb.append( ", d=" );
-		sb.append( m_d );
-		sb.append( " ]" );
-		return sb.toString();
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		g2.setStroke( outerStroke );
+		g2.setPaint( this.getOuterPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( innerStroke );
+		g2.setPaint( this.getInnerPaint( c ) );
+		g2.draw( shape );
+		g2.setStroke( prevStroke );
 	}
 }

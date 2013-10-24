@@ -40,15 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
+package org.alice.ide.projecturi;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DefaultFindComposite extends AbstractFindComposite {
-
-	public DefaultFindComposite() {
-		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
+public class StartersTab extends DirectoryUriListTab {
+	private static java.io.File getDefaultDirectory() {
+		java.io.File rv = new java.io.File( org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory().getParentFile(), "Starters" );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( new java.io.File( rv, "unused" ) );
+		return rv;
 	}
 
+	public StartersTab() {
+		super( java.util.UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ), getDefaultDirectory() );
+	}
 }

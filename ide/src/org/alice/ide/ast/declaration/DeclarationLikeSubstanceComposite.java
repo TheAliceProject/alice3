@@ -141,7 +141,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
-				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || ( type != programType ) ) {
+				final boolean IS_PROGRAM_TYPE_EVER_A_GOOD_IDEA_TO_INCLUDE = false;
+				boolean isProgramTypeIncluded = IS_PROGRAM_TYPE_EVER_A_GOOD_IDEA_TO_INCLUDE && org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+				if( isProgramTypeIncluded || ( type != programType ) ) {
 					blankChildren.add( this.getFillInFor( type ) );
 				}
 			}
@@ -157,10 +159,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 
-			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-			edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
-			appendBlankChildren( blankChildren, programType, root );
+			//org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+			//edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
+			//appendBlankChildren( blankChildren, programType, root );
 
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator().getFillIn() );
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass

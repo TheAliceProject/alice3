@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,117 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple6<A, B, C, D, E, F> {
-	public static <A, B, C, D, E, F> Tuple6<A, B, C, D, E, F> createInstance( A a, B b, C c, D d, E e, F f ) {
-		return new Tuple6<A, B, C, D, E, F>( a, b, c, d, e, f );
-	}
+public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<TypeNode> {
+	private TypeNode root;
 
-	private A m_a = null;
-	private B m_b = null;
-	private C m_c = null;
-	private D m_d = null;
-	private E m_e = null;
-	private F m_f = null;
-
-	private Tuple6() {
-	}
-
-	private Tuple6( A a, B b, C c, D d, E e, F f ) {
-		set( a, b, c, d, e, f );
-	}
-
-	public A getA() {
-		return m_a;
-	}
-
-	public void setA( A a ) {
-		m_a = a;
-	}
-
-	public B getB() {
-		return m_b;
-	}
-
-	public void setB( B b ) {
-		m_b = b;
-	}
-
-	public C getC() {
-		return m_c;
-	}
-
-	public void setC( C c ) {
-		m_c = c;
-	}
-
-	public D getD() {
-		return m_d;
-	}
-
-	public void setD( D d ) {
-		m_d = d;
-	}
-
-	public E getE() {
-		return m_e;
-	}
-
-	public void setE( E e ) {
-		m_e = e;
-	}
-
-	public F getF() {
-		return m_f;
-	}
-
-	public void setF( F f ) {
-		m_f = f;
-	}
-
-	public void set( A a, B b, C c, D d, E e, F f ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-		m_d = d;
-		m_e = e;
-		m_f = f;
+	public TypeTreeState() {
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
+				null,
+				org.lgna.croquet.codecs.DefaultItemCodec.createInstance( TypeNode.class ) );
 	}
 
 	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple6<?, ?, ?, ?, ?, ?> ) {
-				Tuple6<?, ?, ?, ?, ?, ?> otherT = (Tuple6<?, ?, ?, ?, ?, ?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_f, otherT.m_f );
-			} else {
-				return false;
-			}
-		}
+	protected int getChildCount( TypeNode parent ) {
+		return parent.getChildCount();
 	}
 
 	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple7[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( ", c=" );
-		sb.append( m_c );
-		sb.append( ", d=" );
-		sb.append( m_d );
-		sb.append( ", e=" );
-		sb.append( m_e );
-		sb.append( ", f=" );
-		sb.append( m_f );
-		sb.append( " ]" );
-		return sb.toString();
+	protected TypeNode getChild( TypeNode parent, int index ) {
+		return (TypeNode)parent.getChildAt( index );
+	}
+
+	@Override
+	protected int getIndexOfChild( TypeNode parent, TypeNode child ) {
+		return parent.getIndex( child );
+	}
+
+	@Override
+	public org.alice.stageide.type.croquet.TypeNode getParent( org.alice.stageide.type.croquet.TypeNode node ) {
+		return (org.alice.stageide.type.croquet.TypeNode)node.getParent();
+	}
+
+	@Override
+	protected TypeNode getRoot() {
+		return this.root;
+	}
+
+	public void setRoot( TypeNode root ) {
+		this.root = root;
+		this.refresh( this.root );
+	}
+
+	@Override
+	public boolean isLeaf( TypeNode node ) {
+		return node.isLeaf();
+	}
+
+	@Override
+	protected String getTextForNode( TypeNode node ) {
+		return node.getType().getName();
+	}
+
+	@Override
+	protected javax.swing.Icon getIconForNode( TypeNode node ) {
+		return null;
 	}
 }

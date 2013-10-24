@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.declaration;
+package org.alice.stageide.type.croquet.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MyTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.AbstractType> {
-	private static class SingletonHolder {
-		private static MyTypesMenuModel instance = new MyTypesMenuModel();
-	}
-
-	public static MyTypesMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private MyTypesMenuModel() {
-		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ) );
-	}
-
-	private java.util.List<org.lgna.croquet.CascadeBlankChild> addTypeFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
-		if( type != null ) {
-			rv.add( TypeFillIn.getInstance( node.getValue() ) );
-		}
-		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
-			addTypeFillIns( rv, child );
-		}
-		return rv;
+public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.project.ast.UserField> {
+	public SceneFieldListData() {
+		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
-		addTypeFillIns( blankChildren, root );
+	protected java.util.List<org.lgna.project.ast.UserField> createValues() {
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+		if( sceneType != null ) {
+			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+			final boolean IS_SCENE_FIELD_DESIRED = true;
+			if( IS_SCENE_FIELD_DESIRED ) {
+				org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+				org.lgna.project.ast.UserField sceneField = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( programType );
+				rv.add( sceneField );
+			}
+
+			for( org.lgna.project.ast.UserField field : sceneType.getDeclaredFields() ) {
+				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) ) {
+					if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
+						rv.add( field );
+					}
+				}
+			}
+
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }

@@ -111,7 +111,7 @@ public class ImportTypeWizard extends org.lgna.croquet.OperationWizardDialogCore
 			dstType.name.setValue( importedRootType.getName() );
 		}
 		ImportTypeWizard wizard = new ImportTypeWizard( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
-		wizard.getOperation().fire();
+		wizard.getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

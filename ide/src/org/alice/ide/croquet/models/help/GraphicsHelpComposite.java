@@ -65,7 +65,7 @@ public class GraphicsHelpComposite extends org.lgna.croquet.PlainDialogOperation
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		GraphicsHelpComposite.getInstance().getOperation().fire();
+		GraphicsHelpComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

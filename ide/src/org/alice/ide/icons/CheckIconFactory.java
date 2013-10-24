@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,65 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ApplicationFrame extends javax.swing.JFrame {
-	public ApplicationFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ApplicationFrame.this.handleWindowOpened( e );
-			}
-
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ApplicationFrame.this.handleQuit( e );
-			}
-
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
-		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
-			public void handleAbout( java.util.EventObject e ) {
-			}
-
-			public void handlePreferences( java.util.EventObject e ) {
-			}
-
-			public void handleQuit( java.util.EventObject e ) {
-				ApplicationFrame.this.handleQuit( e );
-			}
-
-			public void handleOpenFile( java.util.EventObject e ) {
-			}
-		} );
-
+public class CheckIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static CheckIconFactory instance = new CheckIconFactory();
 	}
 
-	public void maximize() {
-		this.setExtendedState( this.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	public static CheckIconFactory getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+	private CheckIconFactory() {
+	}
 
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleAbout( java.util.EventObject e );
-
-	protected abstract void handlePreferences( java.util.EventObject e );
-
-	protected abstract void handleQuit( java.util.EventObject e );
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new CheckIcon( size );
+	}
 }

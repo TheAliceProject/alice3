@@ -65,7 +65,7 @@ public class SuggestImprovementComposite extends ReportIssueComposite {
 		}
 		new org.alice.stageide.StageIDE();
 		try {
-			SuggestImprovementComposite.getInstance().getOperation().fire();
+			SuggestImprovementComposite.getInstance().getLaunchOperation().fire();
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}
