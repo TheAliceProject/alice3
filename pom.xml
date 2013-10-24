@@ -44,4 +44,22 @@
 		</repository>
 	</repositories>
 
+	<!-- jogamp developer builds -->
+	<profiles>
+		<profile>
+			<id>jogamp</id>
+			<repositories>
+				<repository>
+					<id>jogamp-remote</id>
+					<name>jogamp test mirror</name>
+					<url>http://www.jogamp.org/deployment/maven/</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+	<!-- <activeProfiles> -->
+	<!-- <activeProfile>jogamp</activeProfile> -->
+	<!-- </activeProfiles> -->
+
 </project>
