@@ -33,7 +33,12 @@
 
 	<repositories>
 		<repository>
-			<id>external</id>
+			<id>org.alice</id>
+			<name>Alice Repository</name>
+			<url>http://dev.lookingglass.wustl.edu/public/maven2/alice</url>
+		</repository>
+		<repository>
+			<id>org.alice.external</id>
 			<name>Alice External Repository</name>
 			<url>http://dev.lookingglass.wustl.edu/public/maven2/external</url>
 		</repository>

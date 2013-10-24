@@ -11,7 +11,7 @@
 	<artifactId>croquet</artifactId>
 	<packaging>jar</packaging>
 
-	<name>croquet</name>
+	<name>Croquet</name>
 
 	<dependencies>
 		<dependency>

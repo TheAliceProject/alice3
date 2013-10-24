@@ -1,4 +1,3 @@
-/.project
-/.settings
-/src
-/target
+*
+!*.pom
+!/wrapped_flow_layout
