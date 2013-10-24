@@ -83,7 +83,6 @@
 		</dependency>
 	</dependencies>
 
-	<!-- TODO: We need to rethink these extra source directories -->
 	<build>
 		<plugins>
 			<plugin>
