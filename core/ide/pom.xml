@@ -58,6 +58,11 @@
 			<systemPath>${tools.jar}</systemPath>
 		</dependency>
 		<dependency>
+			<groupId>uk.co.mmscomputing</groupId>
+			<artifactId>mmsc</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>javamp3</artifactId>
 			<version>1.0</version>
