@@ -159,7 +159,8 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class );
-		org.lgna.project.ast.JavaType filterType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
+		final boolean IS_SCENE_TYPE_DESIRED = true;
+		org.lgna.project.ast.JavaType filterType = IS_SCENE_TYPE_DESIRED ? rootType : org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		map.clear();
 		TypeNode rootNode = new TypeNode( rootType );
 		map.put( rootType, rootNode );

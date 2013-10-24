@@ -56,6 +56,14 @@ public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListDat
 		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		if( sceneType != null ) {
 			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+			final boolean IS_SCENE_FIELD_DESIRED = true;
+			if( IS_SCENE_FIELD_DESIRED ) {
+				org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+				org.lgna.project.ast.UserField sceneField = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( programType );
+				rv.add( sceneField );
+			}
+
 			for( org.lgna.project.ast.UserField field : sceneType.getDeclaredFields() ) {
 				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) ) {
 					if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
@@ -63,6 +71,7 @@ public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListDat
 					}
 				}
 			}
+
 			return rv;
 		} else {
 			return java.util.Collections.emptyList();

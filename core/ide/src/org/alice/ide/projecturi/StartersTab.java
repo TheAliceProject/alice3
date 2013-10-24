@@ -40,44 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.find.croquet;
-
-import java.util.List;
-
-import org.alice.ide.croquet.models.project.find.core.SearchResult;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.project.ast.UserField;
+package org.alice.ide.projecturi;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class DeleteFindComposite extends AbstractFindComposite {
-
-	private final UserField field;
-
-	public DeleteFindComposite( UserField field ) {
-		super( java.util.UUID.fromString( "c95adf19-dd80-410c-b5f5-489239076f6d" ) );
-		this.field = field;
-		getSearchState().setValueTransactionlessly( field.getName() );
-		getSearchState().setEnabled( false );
+public class StartersTab extends DirectoryUriListTab {
+	private static java.io.File getDefaultDirectory() {
+		java.io.File rv = new java.io.File( org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory().getParentFile(), "Starters" );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( new java.io.File( rv, "unused" ) );
+		return rv;
 	}
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		ListSelectionState<SearchResult> searchResults = getSearchResults();
-		for( SearchResult obj : searchResults ) {
-			if( obj.getDeclaration() != field ) {
-				getSearchResults().removeItem( obj );
-			}
-		}
-		assert getSearchResults().getItemCount() == 1;
-		getSearchResults().setSelectedIndex( 0 );
-		getView().getTree().expandAllRows();
-	}
-
-	@Override
-	protected List<SearchResult> setSearchResults() {
-		return getManager().getResultsForField( field );
+	public StartersTab() {
+		super( java.util.UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ), getDefaultDirectory() );
 	}
 }

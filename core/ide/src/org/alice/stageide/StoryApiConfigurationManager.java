@@ -367,7 +367,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes( java.util.List<? super org.lgna.project.ast.JavaType> rv ) {
 		super.addSecondaryJavaTypes( rv );
+
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
+		rv.add( null );
 		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
 		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
 		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
@@ -384,6 +386,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
+		rv.add( null );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );

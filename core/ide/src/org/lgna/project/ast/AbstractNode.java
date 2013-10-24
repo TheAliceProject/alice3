@@ -705,7 +705,12 @@ public abstract class AbstractNode extends Element implements Node {
 		final StringBuilder sb = new StringBuilder();
 		this.appendRepr( new AstLocalizer() {
 			public void appendDeclaration( Declaration declaration ) {
-
+				String name = declaration.getName();
+				if( name != null ) {
+					sb.append( name );
+				} else {
+					//todo: constructor?
+				}
 			}
 
 			public void appendBoolean( boolean value ) {
