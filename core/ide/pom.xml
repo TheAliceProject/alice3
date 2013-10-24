@@ -99,7 +99,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>${basedir}/src/generated/java</source>
+								<source>src/generated/java</source>
 							</sources>
 						</configuration>
 					</execution>

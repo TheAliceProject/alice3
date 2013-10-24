@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>alice</name>
+	<name>Alice</name>
 	<url>http://www.alice.org/</url>
 
 	<properties>
@@ -22,9 +22,29 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
+
+					<!-- Only include Java source files in the compilation. -->
+					<includes>
+						<include>**/*.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+
+			<!-- We only allow properties files in the java source directories. All 
+				other resource should go in the src/main/resources directory. -->
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<modules>
