@@ -66,6 +66,6 @@ public final class ImageResourceImporter extends org.lgna.croquet.importer.Impor
 
 	@Override
 	protected org.lgna.common.resources.ImageResource createFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
+		return org.lgna.story.implementation.ImageFactory.createImageResource( file );
 	}
 }

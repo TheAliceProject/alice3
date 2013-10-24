@@ -66,8 +66,13 @@ public class DiscDragModel extends ShapeDragModel {
 	}
 
 	@Override
+	public boolean placeOnGround() {
+		return true;
+	}
+
+	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation();
+		return org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override

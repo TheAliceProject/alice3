@@ -52,10 +52,10 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 		super( migrationId, details );
 		// <kjh/> Should we use meta-context factories instead?
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
+			this.getLaunchOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
 		} else {
-			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
+			this.getLaunchOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.getLaunchOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 		this.declaringType = declaringType;
 	}
@@ -63,7 +63,7 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	@Override
 	protected void localize() {
 		super.localize();
-		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+		this.getLaunchOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
 	@Override

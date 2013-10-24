@@ -58,7 +58,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
 	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model ) {
 		this( model, false );
-		;
 	}
 
 	@Override

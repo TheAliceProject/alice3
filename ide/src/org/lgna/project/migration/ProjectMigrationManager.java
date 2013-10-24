@@ -5066,6 +5066,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
 					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
 
+					//added for older projects
+					//todo: do others require this?
+					"name=\"org.lgna.story.resources.prop.UFOResource",
+					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+					//
+
 					"name=\"org.lgna.story.resources.prop.PirateShipResource",
 					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
 
@@ -5125,11 +5131,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "SHARP_BEND", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "SHARP_BEND_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
+					//note: possible duplicate
 					createMoreSpecificFieldPattern( "BOW1_RIVERBANK3", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "BOW1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
 
 					createMoreSpecificFieldPattern( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					//
 
 					createMoreSpecificFieldPattern( "WOODEN_BOAT", "org.lgna.story.resources.aircraft.WoodenBoatResource" ),
 					createMoreSpecificFieldReplacement( "WOODEN_BOAT", "org.lgna.story.resources.watercraft.WoodenBoatResource" ),
@@ -5162,11 +5170,15 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			}
 		} catch( ClassNotFoundException cnfe ) {
 			// perhaps in netbeans plugin
-			return null;
+			return new NoOpAstMigrationStandIn( minimumVersion, maximumVersion );
 		}
 	}
 
 	private final AstMigration[] astMigrations = {
+			new NoOpAstMigrationStandIn(
+					new org.lgna.project.Version( "3.1.0.0.0" ),
+					new org.lgna.project.Version( "3.1.38.0.0" )
+			),
 			createNotSupportedInPlugInMigration(
 					"org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration",
 					new org.lgna.project.Version( "3.1.38.0.0" ),
@@ -5180,6 +5192,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"org.lgna.project.migration.notsupportedinplugin.EventAstMigration",
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.70.0.0" )
+			),
+			new RemoveGetMySceneMethodFromProgramTypeAstMigration(
+					new org.lgna.project.Version( "3.1.70.0.0" ),
+					new org.lgna.project.Version( "3.1.72.0.0" )
 			)
 	};
 

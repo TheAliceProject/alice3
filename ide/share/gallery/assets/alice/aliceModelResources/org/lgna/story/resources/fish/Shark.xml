@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Shark">
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Shark" placeOnGround="TRUE">
     <BoundingBox>
-        <Min x="-0.734713077545166" y="-1.266856074333191" z="-2.1548819541931152"/>
-        <Max x="0.734713077545166" y="1.5239741802215576" z="4.251455307006836"/>
+        <Min x="-0.734713077545166" y="-1.359799861907959" z="-2.2052836418151855"/>
+        <Max x="0.734713077545166" y="1.4310302734375" z="4.201054096221924"/>
     </BoundingBox>
     <Tags>
         <Tag>underwater</Tag>

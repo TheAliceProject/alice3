@@ -46,11 +46,49 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public class LgnaIllegalArgumentException extends LgnaRuntimeException {
-	public static <T> T checkArgumentNotNull( T value, int index ) {
+	//todo: remove return value?
+	public static <T> T checkArgumentIsNotNull( T value, int index ) {
 		if( value != null ) {
 			return value;
 		} else {
-			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
+			throw new LgnaIllegalArgumentException( "argument must not be null", index, value );
+		}
+	}
+
+	public static Number checkArgumentIsNumber( Number value, int index ) {
+		checkArgumentIsNotNull( value, index );
+		if( Double.isNaN( value.doubleValue() ) == false ) {
+			return value;
+		} else {
+			throw new LgnaIllegalArgumentException( "argument must be a number", index, value );
+		}
+	}
+
+	public static Number checkArgumentIsPositive( Number value, int index ) {
+		checkArgumentIsNumber( value, index );
+		if( value.doubleValue() > 0.0 ) {
+			return value;
+		} else {
+			throw new LgnaIllegalArgumentException( "argument must be positive", index, value );
+		}
+	}
+
+	public static Number checkArgumentIsPositiveOrZero( Number value, int index ) {
+		checkArgumentIsNumber( value, index );
+		if( value.doubleValue() >= 0.0 ) {
+			return value;
+		} else {
+			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
+		}
+	}
+
+	public static Number checkArgumentIsBetween0and1( Number value, int index ) {
+		checkArgumentIsNumber( value, index );
+		double d = value.doubleValue();
+		if( ( 0.0 <= d ) && ( d <= 1.0 ) ) {
+			return value;
+		} else {
+			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
 		}
 	}
 

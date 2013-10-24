@@ -230,7 +230,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
 		org.lgna.project.ast.Statement statement = this.getStatement();
 		sbTitle.append( "insert " );
-		sbTitle.append( statement.getRepr( org.lgna.croquet.Application.getLocale() ) );
+		sbTitle.append( statement.getRepr() );
 	}
 
 	//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {

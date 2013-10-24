@@ -141,7 +141,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
-				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || ( type != programType ) ) {
+				final boolean IS_PROGRAM_TYPE_EVER_A_GOOD_IDEA_TO_INCLUDE = false;
+				boolean isProgramTypeIncluded = IS_PROGRAM_TYPE_EVER_A_GOOD_IDEA_TO_INCLUDE && org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+				if( isProgramTypeIncluded || ( type != programType ) ) {
 					blankChildren.add( this.getFillInFor( type ) );
 				}
 			}
@@ -157,10 +159,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 
-			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-			edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
-			appendBlankChildren( blankChildren, programType, root );
+			//org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+			//edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
+			//appendBlankChildren( blankChildren, programType, root );
 
+			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator().getFillIn() );
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass
@@ -474,12 +478,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
@@ -559,7 +560,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		this.mapTypeToInitializer.clear();
 
 		if( this.isInitializerEditable() ) {
-			this.initializerState.addValueListener( this.initializerListener );
+			this.initializerState.addNewSchoolValueListener( this.initializerListener );
 		}
 		this.getView().handleInitializerChanged( this.getInitializer() );
 		super.handlePreShowDialog( step );
@@ -569,7 +570,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		if( this.isInitializerEditable() ) {
-			this.initializerState.removeValueListener( this.initializerListener );
+			this.initializerState.removeNewSchoolValueListener( this.initializerListener );
 		}
 		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {

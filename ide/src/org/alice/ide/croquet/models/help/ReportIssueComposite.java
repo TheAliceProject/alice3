@@ -46,9 +46,8 @@ import java.awt.Color;
 
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.event.ValueListener;
 
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 
@@ -67,11 +66,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
-
-		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
 		}
 
@@ -176,13 +171,13 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.attachmentState.setValueTransactionlessly( null );
 		this.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 
-		this.summaryState.addAndInvokeValueListener( this.adapter );
+		this.summaryState.addAndInvokeNewSchoolValueListener( this.adapter );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		this.summaryState.removeValueListener( this.adapter );
+		this.summaryState.removeNewSchoolValueListener( this.adapter );
 	}
 }

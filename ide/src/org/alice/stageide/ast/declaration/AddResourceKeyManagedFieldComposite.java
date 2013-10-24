@@ -63,16 +63,14 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
 	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+	private boolean isChangeResourceAllowed;
 
 	private AddResourceKeyManagedFieldComposite() {
 		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
@@ -80,11 +78,12 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
 				.build() );
-		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
+		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
 		this.initialInstanceCreation = resourceKey != null ? resourceKey.createInstanceCreation() : null;
+		this.isChangeResourceAllowed = isChangeResourceAllowed;
 	}
 
 	@Override
@@ -151,7 +150,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 				blankChildren.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
 				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+			if( isChangeResourceAllowed ) {
+				blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+			}
 		}
 	}
 

@@ -200,7 +200,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	protected Object evaluateExpression( org.lgna.project.ast.Expression expression )
 	{
-		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
 		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 		assert values.length == 1;
 		return values[ 0 ];

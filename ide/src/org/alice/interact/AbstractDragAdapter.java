@@ -138,12 +138,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	public ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void changing( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
-			AbstractDragAdapter.this.setInteractionState( nextValue );
+	protected final org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.HandleStyle> e ) {
+			setInteractionState( e.getNextValue() );
 		}
 	};
 

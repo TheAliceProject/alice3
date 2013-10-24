@@ -137,6 +137,10 @@ public class ImagesToWebmEncoder {
 		this.frameCount++;
 		try {
 			java.io.OutputStream ffmpegStdOut = this.ffmpegProcess.getProcessOutputStream();
+			if( ffmpegStdOut == null )
+			{
+				return;
+			}
 			synchronized( ffmpegStdOut ) {
 				javax.imageio.ImageIO.write( frame, "ppm", ffmpegStdOut );
 				ffmpegStdOut.flush();

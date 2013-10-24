@@ -73,29 +73,6 @@ public class Joint extends Transformable implements ModelJoint
 
 	private SkeletonVisual parentVisual = null;
 
-	//    public static void printJointHierarchy(Joint s, String indent)
-	//    {
-	//        System.out.println(indent+s.getName()+" : "+s.getAbsoluteTransformation().translation.x+", "+s.getAbsoluteTransformation().translation.y+", "+s.getAbsoluteTransformation().translation.z);
-	//        for (int i=0; i<s.getComponentCount(); i++)
-	//        {
-	//            if (s.getComponentAt(i) instanceof Joint)
-	//            {
-	//            	printJointHierarchy((Joint)s.getComponentAt(i), indent+"  ");
-	//            }
-	//        }
-	//    }
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.cmu.cs.dennisc.scenegraph.Transformable#touchLocalTransformation(edu.cmu.cs.dennisc.math.AffineMatrix4x4)
-	 */
-	@Override
-	protected void touchLocalTransformation(
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		super.touchLocalTransformation( m );
-	}
-
 	private Joint getJoint( Composite c, String jointID )
 	{
 		if( c == null )

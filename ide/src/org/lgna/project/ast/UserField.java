@@ -166,4 +166,10 @@ public final class UserField extends AbstractField implements UserMember {
 		generator.appendExpression( this.initializer.getValue() );
 		generator.appendSemicolon();
 	}
+
+	public String generateJavaCode( boolean isLambdaSupported ) {
+		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
+		this.appendJava( generator );
+		return generator.getText();
+	}
 }

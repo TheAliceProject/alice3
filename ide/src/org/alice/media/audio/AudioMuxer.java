@@ -43,8 +43,8 @@
 package org.alice.media.audio;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lgna.common.resources.AudioResource;
 
@@ -55,10 +55,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class AudioMuxer {
 
-	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
-
-	public AudioMuxer() {
-	}
+	private final List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
 
 	public void addAudioStream( ScheduledAudioStream audio ) {
 		scheduledStreams.add( audio );
@@ -73,7 +70,7 @@ public class AudioMuxer {
 	}
 
 	private void convertAudioStreamsToWav() {
-		HashMap<AudioResource, AudioResource> wavResouces = Collections.newHashMap();
+		Map<AudioResource, AudioResource> wavResouces = Collections.newHashMap();
 		for( ScheduledAudioStream stream : this.scheduledStreams ) {
 			if( !wavResouces.containsKey( stream.getAudioResource() ) ) {
 				AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary( stream.getAudioResource() );

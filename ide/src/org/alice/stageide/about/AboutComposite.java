@@ -70,7 +70,7 @@ public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationC
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		AboutComposite.getInstance().getOperation().fire();
+		AboutComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

@@ -55,9 +55,9 @@ public final class DoTogether extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do together" );
-		return super.appendRepr( rv, locale );
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		localizer.appendLocalizedText( DoTogether.class, "do together" );
+		super.appendRepr( localizer );
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 		String prefix = "";
 		for( Statement statement : this.body.getValue().statements ) {
 			generator.appendString( prefix );
-			if( generator.isLambaSupported() ) {
+			if( generator.isLambdaSupported() ) {
 				generator.appendString( "()-> {" );
 			} else {
 				generator.appendString( "new Runnable() { public void run() {" );
@@ -77,7 +77,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 				statement = doInOrder.body.getValue();
 			}
 			statement.appendJava( generator );
-			if( generator.isLambaSupported() ) {
+			if( generator.isLambdaSupported() ) {
 				generator.appendString( "}" );
 			} else {
 				generator.appendString( "}}" );

@@ -43,6 +43,7 @@
 
 package org.lgna.croquet;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -141,29 +142,37 @@ public abstract class Application {
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 		} );
-		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
-			public void handleAbout( java.util.EventObject e ) {
-				Operation aboutOperation = Application.this.getAboutOperation();
-				if( aboutOperation != null ) {
-					aboutOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
+			application.setAboutHandler( new com.apple.eawt.AboutHandler() {
+				public void handleAbout( com.apple.eawt.AppEvent.AboutEvent e ) {
+					Operation aboutOperation = Application.this.getAboutOperation();
+					if( aboutOperation != null ) {
+						aboutOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+					}
 				}
-			}
-
-			public void handlePreferences( java.util.EventObject e ) {
-				Operation preferencesOperation = Application.this.getPreferencesOperation();
-				if( preferencesOperation != null ) {
-					preferencesOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+			} );
+			application.setPreferencesHandler( new com.apple.eawt.PreferencesHandler() {
+				public void handlePreferences( com.apple.eawt.AppEvent.PreferencesEvent e ) {
+					Operation preferencesOperation = Application.this.getPreferencesOperation();
+					if( preferencesOperation != null ) {
+						preferencesOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+					}
 				}
-			}
+			} );
+			application.setQuitHandler( new com.apple.eawt.QuitHandler() {
+				public void handleQuitRequestWith( com.apple.eawt.AppEvent.QuitEvent e, com.apple.eawt.QuitResponse quitResponse ) {
+					Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+				}
+			} );
 
-			public void handleQuit( java.util.EventObject e ) {
-				Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
-			}
-
-			public void handleOpenFile( java.util.EventObject e ) {
-				Application.this.handleOpenFile( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
-			}
-		} );
+			application.setOpenFileHandler( new com.apple.eawt.OpenFilesHandler() {
+				public void openFiles( com.apple.eawt.AppEvent.OpenFilesEvent e ) {
+					Application.this.handleOpenFiles( e.getFiles() );
+				}
+			} );
+		}
 		//this.frame.pack();
 	}
 
@@ -209,11 +218,11 @@ public abstract class Application {
 
 	protected abstract Operation getPreferencesOperation();
 
-	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handleOpenFiles( java.util.List<java.io.File> files );
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 
-	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
+	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof org.lgna.croquet.components.Component<?> ) {

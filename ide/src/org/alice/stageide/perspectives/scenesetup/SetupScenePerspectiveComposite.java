@@ -76,4 +76,8 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SimpleCompo
 	protected org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView createView() {
 		return new org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView( this );
 	}
+
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+		return this.galleryComposite.getDragModelForCls( cls );
+	}
 }

@@ -81,7 +81,7 @@ public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	protected void popAndAdd() {
-		org.lgna.project.ast.AbstractNode node = org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
+		org.lgna.project.ast.Node node = org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
 		if( node == this.statement ) {
 			this.blockStatementIndexPair.getBlockStatement().statements.add( this.blockStatementIndexPair.getIndex(), this.statement );
 		} else {
@@ -96,7 +96,7 @@ public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
 			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					composite.getOperation().fire();
+					composite.getLaunchOperation().fire();
 				}
 			} );
 		}

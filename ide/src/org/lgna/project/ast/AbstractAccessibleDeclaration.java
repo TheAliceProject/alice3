@@ -64,4 +64,8 @@ public abstract class AbstractAccessibleDeclaration extends AbstractDeclaration 
 	public boolean isPackageAccess() {
 		return getAccessLevel() == AccessLevel.PACKAGE;
 	}
+
+	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+		this.getAccessLevel().addModifiers( modifiers );
+	}
 }

@@ -60,6 +60,8 @@ public interface MediaListener {
 
 	public void positionChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, float position );
 
+	public void lengthChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, long lengthInMsec );
+
 	public void finished( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
 	public void stopped( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );

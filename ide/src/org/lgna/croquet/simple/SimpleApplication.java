@@ -68,7 +68,7 @@ public class SimpleApplication extends org.lgna.croquet.Application {
 	}
 
 	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void handleOpenFiles( java.util.List<java.io.File> files ) {
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class SimpleApplication extends org.lgna.croquet.Application {
 	}
 
 	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		System.exit( 0 );
 	}
 

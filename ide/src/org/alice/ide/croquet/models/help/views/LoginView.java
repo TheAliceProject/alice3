@@ -45,21 +45,17 @@ package org.alice.ide.croquet.models.help.views;
 import java.util.List;
 
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.components.FormPanel;
 import org.lgna.croquet.components.LabeledFormRow;
+import org.lgna.croquet.event.ValueListener;
 
 /**
  * @author Matt May
  */
 public class LoginView extends FormPanel {
 	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			passwordField.setExposed( nextValue );
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			passwordField.setExposed( e.getNextValue() );
 		}
 	};
 	private final org.lgna.croquet.components.TextField userNameField;
@@ -85,7 +81,7 @@ public class LoginView extends FormPanel {
 	@Override
 	protected void handleDisplayable() {
 		AbstractLoginComposite bugLoginComposite = (AbstractLoginComposite)this.getComposite();
-		bugLoginComposite.getDisplayPasswordValue().addAndInvokeValueListener( this.isPasswordExposedListener );
+		bugLoginComposite.getDisplayPasswordValue().addAndInvokeNewSchoolValueListener( this.isPasswordExposedListener );
 		this.userNameField.requestFocus();
 		super.handleDisplayable();
 	}
@@ -94,6 +90,6 @@ public class LoginView extends FormPanel {
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
 		AbstractLoginComposite loginComposite = (AbstractLoginComposite)this.getComposite();
-		loginComposite.getDisplayPasswordValue().removeValueListener( this.isPasswordExposedListener );
+		loginComposite.getDisplayPasswordValue().removeNewSchoolValueListener( this.isPasswordExposedListener );
 	}
 }

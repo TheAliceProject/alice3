@@ -102,6 +102,29 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 		this.getAwtComponent().setTitle( title );
 	}
 
+	public boolean isUndecorated() {
+		return this.getAwtComponent().isUndecorated();
+	}
+
+	public void setUndecorated( boolean isUndecorated ) {
+		if( isUndecorated != this.isUndecorated() ) {
+			if( this.getAwtComponent().isDisplayable() ) {
+				final java.awt.Container contentPane = this.getAwtComponent().getContentPane();
+				this.getAwtComponent().dispose();
+				this.getAwtComponent().setUndecorated( this.getAwtComponent().isUndecorated() == false );
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						getAwtComponent().setContentPane( contentPane );
+						pack();
+						setVisible( true );
+					}
+				} );
+			} else {
+				this.getAwtComponent().setUndecorated( isUndecorated );
+			}
+		}
+	}
+
 	public void maximize() {
 		this.getAwtComponent().setExtendedState( this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}

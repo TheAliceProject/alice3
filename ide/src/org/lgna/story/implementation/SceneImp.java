@@ -82,9 +82,9 @@ public class SceneImp extends EntityImp {
 	private ProgramImp program;
 	private final org.lgna.story.SScene abstraction;
 	private float fogDensityValue = 0;
-	private final edu.cmu.cs.dennisc.matt.EventManager eventManager;
+	private final org.lgna.story.implementation.eventhandling.EventManager eventManager;
 
-	public edu.cmu.cs.dennisc.matt.EventManager getEventManager() {
+	public org.lgna.story.implementation.eventhandling.EventManager getEventManager() {
 		return this.eventManager;
 	}
 
@@ -162,8 +162,8 @@ public class SceneImp extends EntityImp {
 	}
 
 	public SceneImp( org.lgna.story.SScene abstraction ) {
-		eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
-		eventManager.setScene();
+		eventManager = new org.lgna.story.implementation.eventhandling.EventManager( this );
+		eventManager.initialize();
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue( this.sgBackground.color.getValue() );
@@ -224,14 +224,18 @@ public class SceneImp extends EntityImp {
 			//pass
 		} else {
 			org.lgna.story.EmployeesOnly.invokeHandleActiveChanged( this.getAbstraction(), isActive, activationCount );
-			this.fireSceneActivationListeners();
 		}
+		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		if( isActive ) {
 			this.addCamerasTo( programImp );
+			if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
+				//pass
+			} else {
+				this.fireSceneActivationListeners();
+			}
 		} else {
 			this.removeCamerasFrom( programImp );
 		}
-		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 	}
 
 	private int activeCount;
@@ -367,7 +371,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.matt.EventScript getTranscript() {
+	public edu.cmu.cs.dennisc.matt.eventscript.EventScript getTranscript() {
 		return eventManager.getScript();
 	}
 }

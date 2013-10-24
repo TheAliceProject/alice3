@@ -46,7 +46,7 @@ public abstract class ProgressDialog extends javax.swing.JDialog {
 	private javax.swing.JTextArea textArea = new javax.swing.JTextArea();
 	private javax.swing.JProgressBar progressBar = new javax.swing.JProgressBar();
 
-	protected abstract class Worker extends org.jdesktop.swingworker.SwingWorker<Boolean, String> {
+	protected abstract class Worker extends javax.swing.SwingWorker<Boolean, String> {
 		protected void setPortionCompleted( double portionCompleted ) {
 			this.setProgress( (int)( 100 * portionCompleted ) );
 		}
@@ -67,7 +67,7 @@ public abstract class ProgressDialog extends javax.swing.JDialog {
 			if( "progress".equals( propertyName ) ) {
 				ProgressDialog.this.handleProgressChange( (Integer)propertyValue );
 			} else if( "state".equals( propertyName ) ) {
-				ProgressDialog.this.handleStateChange( (Worker)e.getSource(), (org.jdesktop.swingworker.SwingWorker.StateValue)propertyValue );
+				ProgressDialog.this.handleStateChange( (Worker)e.getSource(), (javax.swing.SwingWorker.StateValue)propertyValue );
 			} else {
 				System.out.println( propertyName + " " + propertyValue );
 			}
@@ -128,8 +128,8 @@ public abstract class ProgressDialog extends javax.swing.JDialog {
 		this.progressBar.setValue( progress );
 	}
 
-	protected void handleStateChange( Worker worker, org.jdesktop.swingworker.SwingWorker.StateValue state ) {
-		if( org.jdesktop.swingworker.SwingWorker.StateValue.DONE.equals( state ) ) {
+	protected void handleStateChange( Worker worker, javax.swing.SwingWorker.StateValue state ) {
+		if( javax.swing.SwingWorker.StateValue.DONE.equals( state ) ) {
 			try {
 				worker.removePropertyChangeListener( this.propertyChangeListener );
 				Boolean result = worker.get();

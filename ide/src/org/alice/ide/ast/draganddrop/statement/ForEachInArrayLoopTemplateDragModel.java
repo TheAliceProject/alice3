@@ -61,6 +61,6 @@ public class ForEachInArrayLoopTemplateDragModel extends PotentiallyEnvelopingSt
 
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getOperation();
+		return org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
 	}
 }

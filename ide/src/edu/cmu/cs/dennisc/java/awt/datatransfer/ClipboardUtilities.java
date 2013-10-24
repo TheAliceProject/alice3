@@ -58,7 +58,18 @@ public class ClipboardUtilities {
 	}
 
 	public static void setClipboardContents( java.awt.Image image ) {
+		setClipboardContents( image, null );
+	}
+
+	public static void setClipboardContents( java.awt.Image image, Integer dpi ) {
 		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new TransferableImage( image ), new DoNothingOnLostOwnershipClipboardOwner() );
+		clipboard.setContents( new TransferableImageWithDpi( image, dpi ), new DoNothingOnLostOwnershipClipboardOwner() );
+	}
+
+	public static void main( String[] args ) throws Exception {
+		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+		java.awt.datatransfer.DataFlavor[] dataFlavors = clipboard.getAvailableDataFlavors();
+		Object data = clipboard.getData( dataFlavors[ 0 ] );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dataFlavors[ 0 ], data );
 	}
 }

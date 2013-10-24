@@ -64,7 +64,7 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 		super.setValue( value );
 		if( this.instance != null )
 		{
-			this.instance.setFrontPaint( value );
+			this.instance.paint.setValue( value );
 		}
 	}
 
@@ -79,7 +79,7 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 	{
 		if( this.instance != null )
 		{
-			return this.instance.getFrontPaint();
+			return this.instance.paint.getValue();
 		}
 		return null;
 	}

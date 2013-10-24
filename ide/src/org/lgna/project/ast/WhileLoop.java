@@ -72,10 +72,11 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "while " );
-		NodeUtilities.safeAppendRepr( rv, this.conditional.getValue(), locale );
-		return super.appendRepr( rv, locale );
+	protected void appendRepr( AstLocalizer localizer ) {
+		localizer.appendLocalizedText( WhileLoop.class, "while" );
+		localizer.appendSpace();
+		safeAppendRepr( localizer, this.conditional.getValue() );
+		super.appendRepr( localizer );
 	}
 
 	@Override

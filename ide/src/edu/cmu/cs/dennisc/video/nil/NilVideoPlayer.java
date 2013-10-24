@@ -48,10 +48,12 @@ package edu.cmu.cs.dennisc.video.nil;
 public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
 	private java.net.URI uri;
-	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+	private edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter;
+	private long timeInMilliseconds;
 	private float position;
 	private boolean isMuted;
 	private float volume;
+	private boolean isPrepared;
 
 	public java.awt.Canvas getVideoSurface() {
 		return this.nilVideoCanvas;
@@ -61,16 +63,25 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return new java.awt.Dimension( 0, 0 );
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
+	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
 		this.painter = painter;
 	}
 
-	public void prepareMedia( java.net.URI uri ) {
+	public boolean prepareMedia( java.net.URI uri ) {
 		this.uri = uri;
+		this.isPrepared = true; //?
+		return this.isPrepared;
+	}
+
+	public boolean isPrepared() {
+		return this.isPrepared;
+	}
+
+	public void parse() {
 	}
 
 	public boolean isPlayable() {
@@ -88,6 +99,14 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public void stop() {
+	}
+
+	public long getTimeInMilliseconds() {
+		return this.timeInMilliseconds;
+	}
+
+	public void setTimeInMilliseconds( long timeInMilliseconds ) {
+		this.timeInMilliseconds = timeInMilliseconds;
 	}
 
 	public float getPosition() {

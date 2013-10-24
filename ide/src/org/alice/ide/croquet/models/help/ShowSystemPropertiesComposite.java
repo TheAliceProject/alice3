@@ -65,7 +65,7 @@ public class ShowSystemPropertiesComposite extends org.lgna.croquet.PlainDialogO
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		ShowSystemPropertiesComposite.getInstance().getOperation().fire();
+		ShowSystemPropertiesComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

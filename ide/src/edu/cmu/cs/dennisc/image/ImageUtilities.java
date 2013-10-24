@@ -191,16 +191,16 @@ public class ImageUtilities {
 				}
 				return rv;
 			} catch( java.io.FileNotFoundException fnfe ) {
-				throw new RuntimeException( fnfe );
+				throw new RuntimeException( url.toString(), fnfe );
 			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
+				throw new RuntimeException( url.toString(), ioe );
 			}
 		} else {
 			throw new RuntimeException( "Could not find codec for extension: " + extension );
 		}
 	}
 
-	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream ) {
+	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream ) throws java.io.IOException {
 		return read( codecName, inputStream, null );
 	}
 
@@ -242,7 +242,6 @@ public class ImageUtilities {
 
 	private static short getShort( byte[] array, int offset ) {
 		int low = 0xFF & array[ offset + 0 ];
-		;
 		int high = 0xFF & array[ offset + 1 ];
 		high <<= 8;
 		return (short)( low | high );
@@ -262,7 +261,6 @@ public class ImageUtilities {
 			b = 0xFF & array[ offset++ ];
 			g = 0xFF & array[ offset++ ];
 			r = 0xFF & array[ offset++ ];
-			;
 			if( bytesPerPixel == 4 ) {
 				a = 0xFF & array[ offset++ ];
 			}
@@ -356,23 +354,19 @@ public class ImageUtilities {
 		return bufferedImage;
 	}
 
-	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream, javax.imageio.ImageReadParam imageReadParam ) {
-		try {
-			java.io.BufferedInputStream bufferedInputStream;
-			if( inputStream instanceof java.io.BufferedInputStream ) {
-				bufferedInputStream = (java.io.BufferedInputStream)inputStream;
-			} else {
-				bufferedInputStream = new java.io.BufferedInputStream( inputStream );
-			}
-			if( codecName.equals( TGA_CODEC_NAME ) ) {
-				return readTGA( bufferedInputStream );
-				//			} else if (codecName.equals(TIFF_CODEC_NAME)) {
-				//				return readTIFF(bufferedInputStream, null);
-			} else {
-				return javax.imageio.ImageIO.read( bufferedInputStream );
-			}
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
+	public static java.awt.image.BufferedImage read( String codecName, java.io.InputStream inputStream, javax.imageio.ImageReadParam imageReadParam ) throws java.io.IOException {
+		java.io.BufferedInputStream bufferedInputStream;
+		if( inputStream instanceof java.io.BufferedInputStream ) {
+			bufferedInputStream = (java.io.BufferedInputStream)inputStream;
+		} else {
+			bufferedInputStream = new java.io.BufferedInputStream( inputStream );
+		}
+		if( codecName.equals( TGA_CODEC_NAME ) ) {
+			return readTGA( bufferedInputStream );
+			//			} else if (codecName.equals(TIFF_CODEC_NAME)) {
+			//				return readTIFF(bufferedInputStream, null);
+		} else {
+			return javax.imageio.ImageIO.read( bufferedInputStream );
 		}
 	}
 
@@ -559,7 +553,7 @@ public class ImageUtilities {
 		return bi;
 	}
 
-	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter, float alpha ) {
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter<Void> painter, float alpha ) {
 		int width = getWidth( image );
 		int height = getHeight( image );
 		java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
@@ -568,7 +562,7 @@ public class ImageUtilities {
 
 		java.awt.image.BufferedImage alphaImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
 		java.awt.Graphics2D ag2 = alphaImage.createGraphics();
-		painter.paint( ag2, width, height );
+		painter.paint( ag2, null, width, height );
 		ag2.dispose();
 
 		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.DST_IN, alpha ) );
@@ -577,7 +571,7 @@ public class ImageUtilities {
 		return rv;
 	}
 
-	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter<Void> painter ) {
 		return createAlphaMaskedImage( image, painter, 1.0f );
 	}
 }

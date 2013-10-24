@@ -64,8 +64,8 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 		String constraint;
 		if( resource instanceof org.lgna.common.resources.ImageResource ) {
 			org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
-			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
-			imageView.setBufferedImage( bufferedImage );
+			java.awt.image.BufferedImage bufferedImage = org.lgna.story.implementation.ImageFactory.getBufferedImage( imageResource );
+			imageView.setImage( bufferedImage );
 			awtComponent = imageView.getAwtComponent();
 			constraint = java.awt.BorderLayout.CENTER;
 		} else if( resource instanceof org.lgna.common.resources.AudioResource ) {

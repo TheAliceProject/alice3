@@ -216,7 +216,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
 				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
 				java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
-				rv.setIcon( new org.alice.ide.swing.icons.ColorIcon( awtColor ) );
+				rv.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );
 				return rv;
 			}
 		}
@@ -299,7 +299,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
+		return org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation();
 	}
 
 	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {

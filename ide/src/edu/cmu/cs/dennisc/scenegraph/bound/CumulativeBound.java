@@ -70,6 +70,11 @@ public class CumulativeBound {
 		this.addBoundingBox( box, trans );
 	}
 
+	public void addSkeletonVisual( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean ignoreJointOrientations ) {
+		edu.cmu.cs.dennisc.math.AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox(), ignoreJointOrientations );
+		this.addBoundingBox( box, trans );
+	}
+
 	public void addOrigin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		addPoint( edu.cmu.cs.dennisc.math.Point3.createZero(), trans );
 	}

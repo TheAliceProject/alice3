@@ -114,8 +114,8 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		return this.isStrictFloatingPoint.getValue();
 	}
 
-	public String generateJavaCode( boolean isLambaSupported ) {
-		JavaCodeGenerator generator = new JavaCodeGenerator( isLambaSupported );
+	public String generateJavaCode( boolean isLambdaSupported ) {
+		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
 
 		generator.appendString( "class " );
 		generator.appendTypeName( this );

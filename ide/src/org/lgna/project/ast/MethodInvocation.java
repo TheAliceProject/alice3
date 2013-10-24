@@ -161,19 +161,16 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		//		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
-		//		rv.append( "." );
-		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
-		rv.append( "(" );
+	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+		safeAppendRepr( localizer, this.method.getValue() );
+		localizer.appendText( "(" );
 		String separator = "";
 		for( AbstractArgument argument : this.requiredArguments ) {
-			rv.append( separator );
-			NodeUtilities.safeAppendRepr( rv, argument, locale );
+			localizer.appendText( separator );
+			safeAppendRepr( localizer, argument );
 			separator = ", ";
 		}
-		rv.append( ")" );
-		return rv;
+		localizer.appendText( ")" );
 	}
 
 	@Override

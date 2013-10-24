@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.history;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class UiHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
@@ -63,6 +63,6 @@ public class UiHistoryComposite extends HistoryComposite {
 	protected void localize() {
 		super.localize();
 		// do not want to bother localizers with this composite
-		this.getBooleanState().setTextForBothTrueAndFalse( "UI History" );
+		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "UI History" );
 	}
 }

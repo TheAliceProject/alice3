@@ -65,7 +65,7 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperatio
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		WarningDialogComposite.getInstance().getOperation().fire();
+		WarningDialogComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }
