@@ -6,6 +6,7 @@
 		<groupId>org.alice.external</groupId>
 		<artifactId>external</artifactId>
 		<version>1.0</version>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>wrapped_flow_layout</artifactId>

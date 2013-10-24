@@ -28,7 +28,9 @@
 	</build>
 
 	<modules>
-		<module>util</module>
+		<module>core/util</module>
+		<module>core/croquet</module>
+		<module>core/ide</module>
 	</modules>
 
 	<repositories>
