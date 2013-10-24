@@ -194,8 +194,8 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addObjectMoverFor( SMovableTurnable entity ) {
-		this.implementation.getEventManager().moveWithArrows( entity );
+	public void addObjectMoverFor( SMovableTurnable thing ) {
+		this.implementation.getEventManager().moveWithArrows( thing );
 	}
 
 	//TransformationListeners
@@ -252,21 +252,21 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] models ) {
-		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
+	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] set ) {
+		this.implementation.getEventManager().addComesIntoViewEventListener( listener, set );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@AddEventListenerTemplate( )
-	public void addWhileInViewListener( org.lgna.story.event.WhileInViewListener listener, SModel[] models, AddTimeListener.Detail... details ) {
-		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
+	public void addWhileInViewListener( org.lgna.story.event.WhileInViewListener listener, SModel[] set, AddTimeListener.Detail... details ) {
+		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( set ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] entities ) {
-		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
+	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] set ) {
+		this.implementation.getEventManager().addLeavesViewEventListener( listener, set );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
