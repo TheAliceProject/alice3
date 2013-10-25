@@ -55,15 +55,16 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	}
 
 	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final AssignableTab assignableTab = new AssignableTab( this );
-	private final ContainsTab containsTab = new ContainsTab();
 
-	private final org.lgna.croquet.TabSelectionState tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
 	private final TypeTreeState typeTreeState = new TypeTreeState();
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
 	};
 	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
 	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+
+	private final AssignableTab assignableTab = new AssignableTab( this );
+	private final ContainsTab containsTab = new ContainsTab( this );
+	private final org.lgna.croquet.TabSelectionState tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 
@@ -196,11 +197,14 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		this.typeTreeState.setRoot( rootNode );
 		this.typeTreeState.addAndInvokeNewSchoolValueListener( this.typeListener );
 		this.sceneFieldsState.addNewSchoolValueListener( this.sceneFieldListener );
+
+		this.containsTab.getMemberListData().connect( rootNode );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		this.containsTab.getMemberListData().disconnect();
 		this.sceneFieldsState.removeNewSchoolValueListener( this.sceneFieldListener );
 		this.typeTreeState.removeNewSchoolValueListener( this.typeListener );
 		super.handlePostDeactivation();
@@ -346,6 +350,10 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		}
 	}
 
+	public TypeNode getTypeNodeFor( org.lgna.project.ast.AbstractType<?, ?, ?> nextValue ) {
+		return nextValue != null ? map.get( nextValue ) : null;
+	}
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -363,5 +371,4 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 			System.exit( 0 );
 		}
 	}
-
 }

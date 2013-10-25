@@ -40,34 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views;
+package org.alice.stageide.type.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.TextField filterTextField;
-
-	public ContainsTabPane( org.alice.stageide.type.croquet.ContainsTab tab ) {
-		super( tab, 4, 4 );
-		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
-		this.setBackgroundColor( color );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-
-		this.filterTextField = tab.getFilterState().createTextField();
-		this.filterTextField.enableSelectAllWhenFocusGained();
-
-		org.lgna.croquet.components.List<org.lgna.project.ast.Member> listView = tab.getMemberListState().createList();
-		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
-		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
-
-		this.addPageStartComponent( this.filterTextField );
-		this.addCenterComponent( listScrollPane );
-	}
-
+public class MemberCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.Member> {
 	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		this.filterTextField.requestFocusLater();
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.Member value, int index, boolean isSelected, boolean cellHasFocus ) {
+		if( value != null ) {
+			rv.setText( value.getName() );
+			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getDeclaringType() ) );
+			rv.setIconTextGap( 16 );
+			rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		}
+		return rv;
 	}
 }
