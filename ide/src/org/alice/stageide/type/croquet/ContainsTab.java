@@ -53,7 +53,9 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Member> e ) {
 			org.lgna.project.ast.Member nextValue = e.getNextValue();
-			dialog.getTypeTreeState().setValueTransactionlessly( dialog.getTypeNodeFor( nextValue != null ? nextValue.getDeclaringType() : null ) );
+			if( nextValue != null ) {
+				dialog.getTypeTreeState().setValueTransactionlessly( dialog.getTypeNodeFor( nextValue.getDeclaringType() ) );
+			}
 		}
 	};
 
@@ -88,13 +90,13 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 
 	@Override
 	public void handlePreActivation() {
-		super.handlePreActivation();
 		this.memberListState.addAndInvokeNewSchoolValueListener( this.memberListener );
+		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.memberListState.removeNewSchoolValueListener( this.memberListener );
 		super.handlePostDeactivation();
+		this.memberListState.removeNewSchoolValueListener( this.memberListener );
 	}
 }

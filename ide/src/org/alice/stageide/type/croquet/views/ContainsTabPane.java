@@ -47,6 +47,26 @@ package org.alice.stageide.type.croquet.views;
  */
 public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.TextField filterTextField;
+	private final org.lgna.croquet.components.List<org.lgna.project.ast.Member> listView;
+
+	private final java.awt.event.FocusListener focusListener = new java.awt.event.FocusListener() {
+		public void focusGained( java.awt.event.FocusEvent e ) {
+		}
+
+		public void focusLost( java.awt.event.FocusEvent e ) {
+			getComposite().getMemberListState().clearSelection();
+		}
+	};
+
+	private final java.awt.event.ActionListener downAction = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
+			if( state.getItemCount() > 0 ) {
+				state.setSelectedIndex( 0 );
+			}
+			listView.requestFocusLater();
+		}
+	};
 
 	public ContainsTabPane( org.alice.stageide.type.croquet.ContainsTab tab ) {
 		super( tab, 4, 4 );
@@ -57,17 +77,31 @@ public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
 		this.filterTextField = tab.getFilterState().createTextField();
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
-		org.lgna.croquet.components.List<org.lgna.project.ast.Member> listView = tab.getMemberListState().createList();
-		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
-		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
+		this.filterTextField.registerKeyboardAction( this.downAction, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
+		this.listView = tab.getMemberListState().createList();
+		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
+		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
 
 		this.addPageStartComponent( this.filterTextField );
 		this.addCenterComponent( listScrollPane );
 	}
 
 	@Override
+	public org.alice.stageide.type.croquet.ContainsTab getComposite() {
+		return (org.alice.stageide.type.croquet.ContainsTab)super.getComposite();
+	}
+
+	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		this.filterTextField.requestFocusLater();
+		this.listView.getAwtComponent().addFocusListener( this.focusListener );
+
+	}
+
+	@Override
+	public void handleCompositePostDeactivation() {
+		this.listView.getAwtComponent().removeFocusListener( this.focusListener );
+		super.handleCompositePostDeactivation();
 	}
 }
