@@ -42,7 +42,7 @@
  */
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.matt.ProximityDistance;
+import org.alice.stageide.apis.story.event.ProximityDistance;
 
 /**
  * @author Matt May

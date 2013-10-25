@@ -5140,10 +5140,22 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version( "3.1.82.0.0" ),
 					new org.lgna.project.Version( "3.1.83.0.0" ),
+
 					"org.lgna.story.event.ComesIntoViewEvent",
 					"org.lgna.story.event.EnterViewEvent",
+
 					"org.lgna.story.event.LeavesViewEvent",
-					"org.lgna.story.event.ExitViewEvent"
+					"org.lgna.story.event.ExitViewEvent",
+
+					"getForegroundMovable",
+					"getForegroundModel",
+
+					"getBackgroundMovable",
+					"getBackgroundModel",
+
+					"edu.cmu.cs.dennisc.matt.EndOcclusionEvent",
+					"org.lgna.story.event.EndOcclusionEvent"
+
 			)
 
 			//			, EventAstMigration.getTextMigration() 
