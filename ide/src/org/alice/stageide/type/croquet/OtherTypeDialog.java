@@ -331,8 +331,9 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 		org.lgna.croquet.data.ListData<org.lgna.project.ast.UserField> data = sceneFieldsState.getData();
 
+		this.getView().repaint();
 		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
-			this.getView().repaint();
+			//
 		} else {
 			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			if( type != null ) {
