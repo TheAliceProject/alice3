@@ -68,6 +68,21 @@ public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
 		}
 	};
 
+	private final java.awt.event.ActionListener prevUpAction;
+	private final java.awt.event.ActionListener upAction = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
+			if( state.getSelectedIndex() == 0 ) {
+				state.clearSelection();
+				filterTextField.requestFocusLater();
+			} else {
+				if( prevUpAction != null ) {
+					prevUpAction.actionPerformed( e );
+				}
+			}
+		}
+	};
+
 	public ContainsTabPane( org.alice.stageide.type.croquet.ContainsTab tab ) {
 		super( tab, "fill", "[grow,shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
@@ -77,7 +92,6 @@ public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
 		this.filterTextField = tab.getFilterState().createTextField();
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
-		this.filterTextField.registerKeyboardAction( this.downAction, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
 		this.listView = tab.getMemberListState().createList();
 		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
 		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
@@ -85,6 +99,12 @@ public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( new org.lgna.croquet.components.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
 		this.addComponent( this.filterTextField, "growx, wrap" );
 		this.addComponent( listScrollPane, "grow" );
+
+		this.filterTextField.registerKeyboardAction( this.downAction, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
+
+		javax.swing.KeyStroke upKeyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_UP, 0 );
+		this.prevUpAction = this.listView.getAwtComponent().getActionForKeyStroke( upKeyStroke );
+		this.listView.registerKeyboardAction( this.upAction, upKeyStroke, Condition.WHEN_FOCUSED );
 	}
 
 	@Override
