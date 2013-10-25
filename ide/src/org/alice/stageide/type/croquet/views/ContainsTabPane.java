@@ -45,7 +45,7 @@ package org.alice.stageide.type.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
+public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.TextField filterTextField;
 	private final org.lgna.croquet.components.List<org.lgna.project.ast.Member> listView;
 
@@ -69,7 +69,7 @@ public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
 	};
 
 	public ContainsTabPane( org.alice.stageide.type.croquet.ContainsTab tab ) {
-		super( tab, 4, 4 );
+		super( tab, "fill", "[grow,shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
 		this.setBackgroundColor( color );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -82,8 +82,9 @@ public class ContainsTabPane extends org.lgna.croquet.components.BorderPanel {
 		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
 		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
 
-		this.addPageStartComponent( this.filterTextField );
-		this.addCenterComponent( listScrollPane );
+		this.addComponent( new org.lgna.croquet.components.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
+		this.addComponent( this.filterTextField, "growx, wrap" );
+		this.addComponent( listScrollPane, "grow" );
 	}
 
 	@Override
