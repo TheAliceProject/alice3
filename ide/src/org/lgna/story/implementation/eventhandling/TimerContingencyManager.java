@@ -50,11 +50,11 @@ import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.ComesIntoViewEvent;
+import org.lgna.story.event.EnterViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.ExitViewEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.ProximityEnterListener;
@@ -113,7 +113,7 @@ public class TimerContingencyManager {
 
 	private ViewExitListener newExitViewAdapter( final WhileInViewListener listener ) {
 		return new ViewExitListener() {
-			public void leftView( LeavesViewEvent e ) {
+			public void viewExited( ExitViewEvent e ) {
 				timer.deactivate( listener );
 			}
 		};
@@ -121,7 +121,7 @@ public class TimerContingencyManager {
 
 	private ViewEnterListener newEnterViewAdapter( final WhileInViewListener listener ) {
 		return new ViewEnterListener() {
-			public void viewEntered( ComesIntoViewEvent e ) {
+			public void viewEntered( EnterViewEvent e ) {
 				timer.activate( listener );
 			}
 		};

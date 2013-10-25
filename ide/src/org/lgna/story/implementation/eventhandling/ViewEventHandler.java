@@ -51,8 +51,8 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
-import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.EnterViewEvent;
+import org.lgna.story.event.ExitViewEvent;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewExitListener;
@@ -83,7 +83,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 			for( SModel model : map.keySet() ) {
 				for( Object listener : map.get( model ) ) {
 					if( check( listener, model ) ) {
-						ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( model ) : new LeavesViewEvent( model );
+						ViewEvent event = listener instanceof ViewEnterListener ? new EnterViewEvent( model ) : new ExitViewEvent( model );
 						fireEvent( listener, event );
 					}
 				}
@@ -92,7 +92,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 		} else {
 			for( Object listener : map.get( changedEntity ) ) {
 				if( check( listener, changedEntity ) ) {
-					ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( (SModel)changedEntity ) : new LeavesViewEvent( (SModel)changedEntity );
+					ViewEvent event = listener instanceof ViewEnterListener ? new EnterViewEvent( (SModel)changedEntity ) : new ExitViewEvent( (SModel)changedEntity );
 					fireEvent( listener, event );
 				}
 			}
@@ -123,10 +123,10 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 	protected void fire( Object listener, ViewEvent event ) {
 		if( listener instanceof ViewEnterListener ) {
 			ViewEnterListener intoViewEL = (ViewEnterListener)listener;
-			intoViewEL.viewEntered( (ComesIntoViewEvent)event );
+			intoViewEL.viewEntered( (EnterViewEvent)event );
 		} else if( listener instanceof ViewExitListener ) {
 			ViewExitListener outOfViewEL = (ViewExitListener)listener;
-			outOfViewEL.leftView( (LeavesViewEvent)event );
+			outOfViewEL.viewExited( (ExitViewEvent)event );
 		}
 	}
 

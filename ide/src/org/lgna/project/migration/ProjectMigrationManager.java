@@ -5135,6 +5135,15 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					"name=\"org.lgna.story.resources.aircraft.SailboatResource",
 					"name=\"org.lgna.story.resources.watercraft.SailboatResource"
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.82.0.0" ),
+					new org.lgna.project.Version( "3.1.83.0.0" ),
+					"org.lgna.story.event.ComesIntoViewEvent",
+					"org.lgna.story.event.EnterViewEvent",
+					"org.lgna.story.event.LeavesViewEvent",
+					"org.lgna.story.event.ExitViewEvent"
 			)
 
 			//			, EventAstMigration.getTextMigration() 
