@@ -40,46 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views.renderers;
+package org.alice.stageide.type.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
-	//private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
-	private boolean isAssignableFrom;
+public class AssignableTabPane extends org.lgna.croquet.components.BorderPanel {
+	public AssignableTabPane( org.alice.stageide.type.croquet.AssignableTab tab ) {
+		super( tab, 4, 4 );
+		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
+		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( tab.getTypeTreeState() ) );
+		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 
-	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value != null ) {
-			rv.setText( " " );
-			rv.setIconTextGap( 8 );
-			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
-			this.isAssignableFrom = false;
-			if( sel ) {
-				//pass
-			} else {
-				javax.swing.tree.TreePath path = tree.getSelectionPath();
-				if( path != null ) {
-					Object lastPathComponent = path.getLastPathComponent();
-					if( lastPathComponent instanceof org.alice.stageide.type.croquet.TypeNode ) {
-						org.alice.stageide.type.croquet.TypeNode selectedTypeNode = (org.alice.stageide.type.croquet.TypeNode)lastPathComponent;
-						if( value.getType().isAssignableFrom( selectedTypeNode.getType() ) ) {
-							this.isAssignableFrom = true;
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
+		listScrollPane.setBackgroundColor( color );
+		this.setBackgroundColor( color );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		if( this.isAssignableFrom ) {
-			g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
-			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-		}
-		super.paint( g );
+		this.addPageStartComponent( new org.lgna.croquet.components.Label( "<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>" ) );
+		this.addCenterComponent( listScrollPane );
 	}
 }
