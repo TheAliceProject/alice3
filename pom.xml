@@ -22,12 +22,16 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
-
 					<!-- Only include Java source files in the compilation. -->
 					<includes>
 						<include>**/*.java</include>
 					</includes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.zanata</groupId>
