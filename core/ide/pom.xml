@@ -103,18 +103,27 @@
 							</sources>
 						</configuration>
 					</execution>
+
+					<execution>
+						<id>add-resource</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/generated/resources</directory>
+									<excludes>
+										<exclude>**/*.gitkeep</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
-
-		<resources>
-			<resource>
-				<directory>src/generated/resources</directory>
-				<excludes>
-					<exclude>**/*.gitkeep</exclude>
-				</excludes>
-			</resource>
-		</resources>
 	</build>
 
 	<profiles>
