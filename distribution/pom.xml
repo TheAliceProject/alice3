@@ -38,7 +38,7 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>src/assemble/distribution.xml</descriptor>
+								<descriptor>src/assembly/distribution.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
