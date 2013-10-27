@@ -29,6 +29,11 @@
 					</includes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.zanata</groupId>
+				<artifactId>zanata-maven-plugin</artifactId>
+				<version>3.1.2</version>
+			</plugin>
 		</plugins>
 
 		<resources>
@@ -54,6 +59,7 @@
 		<module>core/util</module>
 		<module>core/croquet</module>
 		<module>core/ide</module>
+		<module>distribution</module>
 	</modules>
 
 	<repositories>

@@ -9,14 +9,56 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>distribution-parent</artifactId>
+	<artifactId>distribution</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Alice Distribution</name>
+	<name>Distribution</name>
 	<url>http://www.alice.org/</url>
 
-	<modules>
-	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>ide</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>distribution-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assemble/distribution.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.8</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
 
