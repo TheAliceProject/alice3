@@ -58,6 +58,7 @@ import javax.swing.tree.TreePath;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
+import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState.TwoDimensionalTreeCoordinate;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
@@ -70,8 +71,6 @@ import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-
-import com.sun.tools.javac.util.Pair;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
@@ -88,7 +87,7 @@ public class FindView extends BorderPanel {
 	private final Tree<SearchTreeNode> referencesTreeList;
 	private final List<SearchResult> searchResultsList;
 	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Collections.newHashMap();
-	private final Map<SearchResult, Pair<Integer, Integer>> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
+	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
 	private final FindReferencesTreeState referenceResults;
 	private final ListSelectionState<SearchResult> searchResults;
 	boolean listIsSelected = true;
@@ -249,9 +248,9 @@ public class FindView extends BorderPanel {
 				if( isListSelected() ) {
 					if( referenceResults.isEmpty() ) {
 						setTreeSelected();
-						Pair<Integer, Integer> pair = searchResultToLastTreeCoordinatesMap.get( searchResults.getValue() );
+						TwoDimensionalTreeCoordinate pair = searchResultToLastTreeCoordinatesMap.get( searchResults.getValue() );
 						if( pair != null ) {
-							referenceResults.setValueTransactionlessly( referenceResults.selectAtCoordinates( pair.fst, pair.snd ) );
+							referenceResults.setValueTransactionlessly( referenceResults.selectAtCoordinates( pair.getA(), pair.getB() ) );
 						} else {
 							referenceResults.setValueTransactionlessly( referenceResults.getTopValue() );
 						}

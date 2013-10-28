@@ -60,7 +60,6 @@ import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.story.resources.BasicResource;
-import org.lgna.story.resourceutilities.ModelResourceExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
@@ -505,7 +504,7 @@ public class AliceResourceUtilties {
 	}
 
 	private static java.net.URL getThumbnailURLInternalFromFilename( Class<?> modelResource, String thumbnailFilename ) {
-		return getAliceResource( modelResource, ModelResourceExporter.getResourceSubDirWithSeparator( modelResource.getSimpleName() ) + thumbnailFilename );
+		return getAliceResource( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( modelResource.getSimpleName() ) + thumbnailFilename );
 	}
 
 	public static URL getTextureURL( Object resource )
@@ -515,7 +514,7 @@ public class AliceResourceUtilties {
 
 	public static URL getTextureURL( Class<?> resourceClass, String visualResourceFileName )
 	{
-		return getAliceResource( resourceClass, ModelResourceExporter.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
+		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
 	public static URL getVisualURL( Object resource )
@@ -525,7 +524,7 @@ public class AliceResourceUtilties {
 
 	public static URL getVisualURL( Class<?> resourceClass, String visualResourceFileName )
 	{
-		return getAliceResource( resourceClass, ModelResourceExporter.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
+		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual( Object resource )
@@ -782,7 +781,7 @@ public class AliceResourceUtilties {
 				String name = getName( modelResource );
 				try {
 					//xml files are not referenced off the 
-					InputStream is = getAliceResourceAsStream( modelResource, ModelResourceExporter.getResourceSubDirWithSeparator( "" ) + name + ".xml" );
+					InputStream is = getAliceResourceAsStream( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" ) + name + ".xml" );
 					if( is != null ) {
 						Document doc = XMLUtilities.read( is );
 						parentInfo = new ModelResourceInfo( doc );
