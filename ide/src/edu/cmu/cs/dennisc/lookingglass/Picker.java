@@ -47,9 +47,6 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface Picker {
-	public static final boolean SUB_ELEMENT_IS_REQUIRED = true;
-	public static final boolean SUB_ELEMENT_IS_NOT_REQUIRED = false;
-
 	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
 
 	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
