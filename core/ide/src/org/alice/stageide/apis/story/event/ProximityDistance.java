@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.apis.story.event;
 
-package edu.cmu.cs.dennisc.matt;
-
-import org.lgna.story.event.OcclusionEvent;
+import org.lgna.story.AddEnterProximityEventListener;
+import org.lgna.story.AddExitProximityEventListener;
 
 /**
  * @author Matt May
  */
-public class EndOcclusionEvent extends OcclusionEvent {
+public class ProximityDistance implements
+		AddEnterProximityEventListener.Detail,
+		AddExitProximityEventListener.Detail {
 
-	public EndOcclusionEvent( org.lgna.story.SMovableTurnable foreground, org.lgna.story.SMovableTurnable background ) {
-		super( foreground, background );
+	private Double dist;
+
+	public ProximityDistance( Double dist ) {
+		this.dist = dist;
+	}
+
+	public Double getDist() {
+		return this.dist;
 	}
 
 }

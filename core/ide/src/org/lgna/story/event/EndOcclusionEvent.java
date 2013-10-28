@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.AddEnterProximityEventListener;
-import org.lgna.story.AddExitProximityEventListener;
+package org.lgna.story.event;
+
+import org.lgna.story.event.OcclusionEvent;
 
 /**
  * @author Matt May
  */
-public class ProximityDistance implements
-		AddEnterProximityEventListener.Detail,
-		AddExitProximityEventListener.Detail {
+public class EndOcclusionEvent extends OcclusionEvent {
 
-	private Double dist;
-
-	public ProximityDistance( Double dist ) {
-		this.dist = dist;
-	}
-
-	public Double getDist() {
-		return this.dist;
+	public EndOcclusionEvent( org.lgna.story.SModel foreground, org.lgna.story.SModel background ) {
+		super( foreground, background );
 	}
 
 }
