@@ -59,8 +59,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
 
-import com.sun.tools.javac.util.Pair;
-
 /**
  * @author Matt May
  */
@@ -198,7 +196,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 		return root.getChildren().get( 0 );
 	}
 
-	public Pair<Integer, Integer> getSelectedCoordinates() {
+	public TwoDimensionalTreeCoordinate getSelectedCoordinates() {
 		int a;
 		int b;
 		SearchTreeNode value = this.getValue();
@@ -209,6 +207,24 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTree
 			b = value.getLocationAmongstSiblings();
 			a = value.getParent().getLocationAmongstSiblings();
 		}
-		return new Pair<Integer, Integer>( a, b );
+		return new TwoDimensionalTreeCoordinate( a, b );
+	}
+
+	public class TwoDimensionalTreeCoordinate {
+		private final int a;
+		private final int b;
+
+		public TwoDimensionalTreeCoordinate( int a, int b ) {
+			this.a = a;
+			this.b = b;
+		}
+
+		public int getA() {
+			return a;
+		}
+
+		public int getB() {
+			return b;
+		}
 	}
 }

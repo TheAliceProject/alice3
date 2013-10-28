@@ -494,14 +494,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawString( String text, float x, float y ) {
-		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( this.font );
+		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		//todo?
 		if( referencedObject == null ) {
 			remember( this.font );
 			referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		}
 		assert referencedObject != null;
-		com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = referencedObject.getObject();
+		com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = referencedObject.getObject().getTextRenderer( this.font, this.renderContext.gl );
 		glTextRenderer.beginRendering( this.width, this.height );
 		if( this.paint instanceof java.awt.Color ) {
 			java.awt.Color color = (java.awt.Color)this.paint;
@@ -931,8 +931,8 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	// edu.cmu.cs.dennisc.lookingglass.Graphics2D
 
-	class ReferencedObject<E extends Object> {
-		private E object;
+	private static final class ReferencedObject<E> {
+		private final E object;
 		private int referenceCount;
 
 		public ReferencedObject( E object, int referenceCount ) {
@@ -957,8 +957,38 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		}
 	}
 
-	private java.util.Map<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>> activeFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>>();
-	private java.util.Map<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>> forgottenFontToTextRendererMap = new java.util.HashMap<java.awt.Font, ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>>();
+	private static final class TextRendererHolder {
+		private com.jogamp.opengl.util.awt.TextRenderer textRenderer;
+		private javax.media.opengl.GL gl;
+
+		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, javax.media.opengl.GL gl ) {
+			if( this.textRenderer != null ) {
+				if( this.gl == gl ) {
+					//pass
+				} else {
+					this.textRenderer.dispose();
+					this.textRenderer = null;
+				}
+			}
+			if( this.textRenderer != null ) {
+				//pass
+			} else {
+				this.textRenderer = new com.jogamp.opengl.util.awt.TextRenderer( font );
+			}
+			return this.textRenderer;
+		}
+
+		public void dispose() {
+			if( this.textRenderer != null ) {
+				this.textRenderer.dispose();
+			}
+			this.textRenderer = null;
+			this.gl = null;
+		}
+	}
+
+	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> activeFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> forgottenFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	@Override
 	public boolean isRemembered( java.awt.Font font ) {
@@ -967,7 +997,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void remember( java.awt.Font font ) {
-		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		if( referencedObject != null ) {
 			//pass
 		} else {
@@ -975,8 +1005,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			if( referencedObject != null ) {
 				this.forgottenFontToTextRendererMap.remove( font );
 			} else {
-				com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = new com.jogamp.opengl.util.awt.TextRenderer( font );
-				referencedObject = new ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer>( glTextRenderer, 0 );
+				referencedObject = new ReferencedObject<TextRendererHolder>( new TextRendererHolder(), 0 );
 			}
 			this.activeFontToTextRendererMap.put( font, referencedObject );
 		}
@@ -985,17 +1014,17 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font ) {
-		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
-		java.awt.geom.Rectangle2D bounds = referencedObject.getObject().getBounds( text );
+		java.awt.geom.Rectangle2D bounds = referencedObject.getObject().getTextRenderer( font, this.renderContext.gl ).getBounds( text );
 		assert bounds != null;
 		return bounds;
 	}
 
 	@Override
 	public void forget( java.awt.Font font ) {
-		ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.activeFontToTextRendererMap.get( font );
+		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
 		referencedObject.removeReference();
@@ -1011,7 +1040,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	public void disposeForgottenFonts() {
 		synchronized( this.forgottenFontToTextRendererMap ) {
 			for( java.awt.Font font : this.forgottenFontToTextRendererMap.keySet() ) {
-				ReferencedObject<com.jogamp.opengl.util.awt.TextRenderer> referencedObject = this.forgottenFontToTextRendererMap.get( font );
+				ReferencedObject<TextRendererHolder> referencedObject = this.forgottenFontToTextRendererMap.get( font );
 				referencedObject.getObject().dispose();
 			}
 			this.forgottenFontToTextRendererMap.clear();
