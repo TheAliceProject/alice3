@@ -2,6 +2,6 @@ package org.lgna.story.event;
 
 public interface ViewExitListener {
 
-	public void leftView( LeavesViewEvent e );
+	public void viewExited( ExitViewEvent e );
 
 }
