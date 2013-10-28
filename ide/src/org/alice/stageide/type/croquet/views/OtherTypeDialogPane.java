@@ -64,29 +64,36 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 	};
 
 	public OtherTypeDialogPane( org.alice.stageide.type.croquet.OtherTypeDialog composite ) {
-		super( composite, "fill", "[grow 0, shrink 0][grow 0, shrink 0]16[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
+		super( composite, "fill", "[grow 0, shrink 0]16[grow 0, shrink 0]4[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 
 		this.treeView = composite.getTypeTreeState().createTree();
 		this.treeView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer() );
-		this.addComponent( new org.lgna.croquet.components.Label( "select directly" ) );
-		this.addComponent( new org.lgna.croquet.components.Label( "select via common ancestor" ) );
-		this.addComponent( new org.lgna.croquet.components.Label( "available procedures, functions and properties" ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( "Filtering", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "Selection", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "Available Procedures, Functions, and Properties", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 
 		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
 		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
 		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
 
+		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
+		this.addComponent( tabbedPane, "grow" );
+
 		org.lgna.croquet.components.ScrollPane treeScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
 
-		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = composite.getSceneFieldsState().createMultipleSelectionListView();
-		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( composite.getTypeTreeState() ) );
-		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
-		this.addComponent( listScrollPane, "grow" );
-
 		this.descriptionLabel = composite.getDescriptionText().createLabel();
+		this.descriptionLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( descriptionLabel ), "grow" );
+		org.lgna.croquet.components.ScrollPane descriptionScrollPane = new org.lgna.croquet.components.ScrollPane( descriptionLabel );
+		this.descriptionLabel.setBackgroundColor( java.awt.Color.WHITE );
+		descriptionScrollPane.setBackgroundColor( java.awt.Color.WHITE );
+		this.addComponent( descriptionScrollPane, "grow" );
+
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor();
+		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 1.1 );
+		this.setBackgroundColor( color );
+		tabbedPane.setBackgroundColor( color );
 	}
 
 	@Override
