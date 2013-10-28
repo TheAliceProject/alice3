@@ -40,46 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views.renderers;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
-	//private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
-	private boolean isAssignableFrom;
+public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.components.Panel> {
+	private final OtherTypeDialog dialog;
 
-	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value != null ) {
-			rv.setText( " " );
-			rv.setIconTextGap( 8 );
-			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
-			this.isAssignableFrom = false;
-			if( sel ) {
-				//pass
-			} else {
-				javax.swing.tree.TreePath path = tree.getSelectionPath();
-				if( path != null ) {
-					Object lastPathComponent = path.getLastPathComponent();
-					if( lastPathComponent instanceof org.alice.stageide.type.croquet.TypeNode ) {
-						org.alice.stageide.type.croquet.TypeNode selectedTypeNode = (org.alice.stageide.type.croquet.TypeNode)lastPathComponent;
-						if( value.getType().isAssignableFrom( selectedTypeNode.getType() ) ) {
-							this.isAssignableFrom = true;
-						}
-					}
-				}
-			}
-		}
-		return rv;
+	public AssignableTab( OtherTypeDialog dialog ) {
+		super( java.util.UUID.fromString( "4e81305b-226b-411c-b99f-6d2a877bd6f8" ), IsCloseable.FALSE );
+		this.dialog = dialog;
+	}
+
+	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+		return this.dialog.getSceneFieldsState();
+	}
+
+	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+		return this.dialog.getTypeTreeState();
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		if( this.isAssignableFrom ) {
-			g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
-			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-		}
-		super.paint( g );
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new org.alice.stageide.type.croquet.views.AssignableTabPane( this );
 	}
 }

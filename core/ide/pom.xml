@@ -129,8 +129,9 @@
 	</build>
 
 	<profiles>
+		<!-- Find the tools.jar -->
 		<profile>
-			<id>default-profile</id>
+			<id>jdk-tools</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<file>
@@ -142,7 +143,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>mac-profile</id>
+			<id>jdk-tools-mac</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 				<os>
@@ -152,6 +153,32 @@
 			<properties>
 				<tools.jar>${java.home}/../Classes/classes.jar</tools.jar>
 			</properties>
+		</profile>
+
+		<!-- Non-free sims libraries/models -->
+		<profile>
+			<id>non-free</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+			</dependencies>
+		</profile>
+
+		<!-- jogamp developer builds -->
+		<profile>
+			<id>jogamp</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>jogamp-remote</id>
+					<name>jogamp test mirror</name>
+					<url>http://www.jogamp.org/deployment/maven/</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
 		</profile>
 	</profiles>
 

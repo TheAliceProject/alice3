@@ -67,7 +67,13 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
 			} else {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.Shape clip = g.getClip();
-				g2.setPaint( ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
+				java.awt.Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
+				if( component != null ) {
+					//pass
+				} else {
+					component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
+				}
+				g2.setPaint( component.getBackground() );
 				g2.fill( clip );
 			}
 		}

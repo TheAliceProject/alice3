@@ -40,46 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.type.croquet.views.renderers;
+package org.alice.stageide.type.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
-	//private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
-	private boolean isAssignableFrom;
+public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.components.Panel> {
+	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
+	private final org.alice.stageide.type.croquet.data.MemberListData memberListData = new org.alice.stageide.type.croquet.data.MemberListData( this.filterState );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> memberListState = this.createListSelectionState( this.createKey( "memberListState" ), this.memberListData, -1 );
 
-	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value != null ) {
-			rv.setText( " " );
-			rv.setIconTextGap( 8 );
-			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
-			this.isAssignableFrom = false;
-			if( sel ) {
-				//pass
-			} else {
-				javax.swing.tree.TreePath path = tree.getSelectionPath();
-				if( path != null ) {
-					Object lastPathComponent = path.getLastPathComponent();
-					if( lastPathComponent instanceof org.alice.stageide.type.croquet.TypeNode ) {
-						org.alice.stageide.type.croquet.TypeNode selectedTypeNode = (org.alice.stageide.type.croquet.TypeNode)lastPathComponent;
-						if( value.getType().isAssignableFrom( selectedTypeNode.getType() ) ) {
-							this.isAssignableFrom = true;
-						}
-					}
-				}
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Member> e ) {
+			org.lgna.project.ast.Member nextValue = e.getNextValue();
+			if( nextValue != null ) {
+				dialog.getTypeTreeState().setValueTransactionlessly( dialog.getTypeNodeFor( nextValue.getDeclaringType() ) );
 			}
 		}
-		return rv;
+	};
+
+	private final OtherTypeDialog dialog;
+
+	public ContainsTab( OtherTypeDialog dialog ) {
+		super( java.util.UUID.fromString( "f002ad52-4053-4f30-8460-752ad7394044" ), IsCloseable.FALSE );
+		this.dialog = dialog;
+	}
+
+	public org.lgna.croquet.StringState getFilterState() {
+		return this.filterState;
+	}
+
+	public org.alice.stageide.type.croquet.data.MemberListData getMemberListData() {
+		return this.memberListData;
+	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> getMemberListState() {
+		return this.memberListState;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		if( this.isAssignableFrom ) {
-			g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
-			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-		}
-		super.paint( g );
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new org.alice.stageide.type.croquet.views.ContainsTabPane( this );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		this.memberListState.addAndInvokeNewSchoolValueListener( this.memberListener );
+		super.handlePreActivation();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		this.memberListState.removeNewSchoolValueListener( this.memberListener );
 	}
 }
