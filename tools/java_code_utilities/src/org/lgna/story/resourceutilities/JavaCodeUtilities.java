@@ -49,7 +49,7 @@ import java.io.PrintWriter;
 
 import org.lgna.project.License;
 
-//note: requires tools.jar in classpath
+//note: requires tools.jar (from the jdk) in classpath
 
 /**
  * @author Alice Build
