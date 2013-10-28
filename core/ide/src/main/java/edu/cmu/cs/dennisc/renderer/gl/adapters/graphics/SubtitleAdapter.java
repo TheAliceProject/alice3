@@ -40,18 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.renderer.gl.adapters.graphics;
 
-package edu.cmu.cs.dennisc.lookingglass;
-
-/**
- * @author Dennis Cosgrove
- */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+public class SubtitleAdapter extends TitleAdapter<edu.cmu.cs.dennisc.scenegraph.graphics.Subtitle> {
+	@Override
+	protected java.awt.geom.Rectangle2D.Float getFillBounds( java.awt.geom.Rectangle2D.Float rv, java.awt.Rectangle actualViewport, java.awt.geom.Dimension2D multilineTextSize ) {
+		rv.setFrame( actualViewport );
+		rv.height = (float)multilineTextSize.getHeight() + VERTICAL_MARGIN_TIMES_2;
+		rv.y = actualViewport.height - rv.height;
+		return rv;
+	}
 }

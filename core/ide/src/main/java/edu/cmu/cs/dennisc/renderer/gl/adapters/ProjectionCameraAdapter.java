@@ -41,17 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class ProjectionCameraAdapter extends AbstractCameraAdapter<edu.cmu.cs.dennisc.scenegraph.ProjectionCamera> {
+	private double[] m_projection = new double[ 16 ];
+	private java.nio.DoubleBuffer m_projectionBuffer = java.nio.DoubleBuffer.wrap( m_projection );
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
+		throw new RuntimeException( "TODO" );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
+		throw new RuntimeException( "todo" );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
+		//todo
+		return rv;
+	}
+
+	@Override
+	protected void setupProjection( Context context, java.awt.Rectangle actualViewport ) {
+		context.gl.glLoadMatrixd( m_projectionBuffer );
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.projection ) {
+			m_element.projection.getValue().getAsColumnMajorArray16( m_projection );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

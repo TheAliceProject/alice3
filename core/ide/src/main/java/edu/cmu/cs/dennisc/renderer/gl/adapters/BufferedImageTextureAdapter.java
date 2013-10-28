@@ -41,17 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class BufferedImageTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
+	@Override
+	public java.awt.Graphics2D createGraphics() {
+		throw new RuntimeException( "TODO" );
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
+		throw new RuntimeException( "TODO" );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public java.awt.Image getImage() {
+		throw new RuntimeException( "TODO" );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+		return newTextureData( gl, m_element.getBufferedImage(), m_element.isMipMappingDesired() );
+	}
+	//	
+	//	@Override
+	//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	//		if( property == m_texture.bufferedImage ) {
+	//			setDirty( true );
+	//		} else {
+	//			super.propertyChanged( property );
+	//		}
+	//	}
 }

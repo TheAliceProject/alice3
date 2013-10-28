@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.resourceutilities;
 
-package edu.cmu.cs.dennisc.lookingglass;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.lgna.project.License;
+
+//note: requires tools.jar (from the jdk) in classpath
 
 /**
- * @author Dennis Cosgrove
+ * @author Alice Build
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class JavaCodeUtilities {
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	private static String COPYRIGHT_COMMENT = null;
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public static final String LINE_RETURN = "\r\n";
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static String getCopyrightComment( String lineEnding )
+	{
+		if( COPYRIGHT_COMMENT == null )
+		{
+			String copyright = License.TEXT.replace( "\r\n", lineEnding + " * " );
+			COPYRIGHT_COMMENT = "/*" + lineEnding + "* " + copyright + lineEnding + " */" + lineEnding;
+		}
+		return COPYRIGHT_COMMENT;
+	}
+
+	public static String getCopyrightComment()
+	{
+		return getCopyrightComment( LINE_RETURN );
+	}
+
+	public static String getDirectoryStringForPackage( String packageString )
+	{
+		StringBuilder sb = new StringBuilder();
+		String[] splitString = packageString.split( "\\." );
+		for( String s : splitString )
+		{
+			sb.append( s );
+			sb.append( File.separator );
+		}
+		return sb.toString();
+	}
+
+	public static void compileJavaFile( File javaFile ) throws IOException
+	{
+		String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.6", "-classpath", System.getProperty( "java.class.path" ) };
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintWriter pw = new PrintWriter( baos );
+		int status = com.sun.tools.javac.Main.compile( args, pw );
+
+		String compileOutput = baos.toString( "UTF-8" );
+		if( status != 0 )
+		{
+			throw new IOException( "Java code for " + javaFile.getName() + " failed to compile: " + compileOutput );
+		}
+	}
+
 }

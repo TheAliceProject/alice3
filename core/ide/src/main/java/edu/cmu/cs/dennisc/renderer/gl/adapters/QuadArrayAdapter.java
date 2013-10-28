@@ -41,17 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.GL2.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class QuadArrayAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.QuadArray> {
+	@Override
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
+		renderPrimative( rc, GL_QUADS );
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
+		pickPrimative( pc, GL_QUADS );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+		//todo
+		rv.setNaN();
+		return rv;
+	}
 }

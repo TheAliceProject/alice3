@@ -41,17 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends AbstractCameraAdapter<E> {
+	private float m_near;
+	private float m_far;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far );
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	protected void setupProjection( Context context, java.awt.Rectangle actualViewport ) {
+		setupProjection( context, actualViewport, m_near, m_far );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.nearClippingPlaneDistance ) {
+			m_near = m_element.nearClippingPlaneDistance.getValue().floatValue();
+		} else if( property == m_element.farClippingPlaneDistance ) {
+			m_far = m_element.farClippingPlaneDistance.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

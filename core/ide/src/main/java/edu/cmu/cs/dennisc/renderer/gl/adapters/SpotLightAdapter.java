@@ -41,17 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class SpotLightAdapter extends PointLightAdapter<edu.cmu.cs.dennisc.scenegraph.SpotLight> {
+	private float m_outerBeamAngleInDegrees;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected float[] getSpotDirection( float[] rv ) {
+		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		rv[ 0 ] = (float)db.get( 8 );
+		rv[ 1 ] = (float)db.get( 9 );
+		rv[ 2 ] = (float)db.get( 10 );
+		return rv;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	//todo?
+	//protected float getSpotExponent() {
+	//    return ???;
+	//}
+	@Override
+	protected float getSpotCutoff() {
+		return m_outerBeamAngleInDegrees;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.innerBeamAngle ) {
+		} else if( property == m_element.outerBeamAngle ) {
+			m_outerBeamAngleInDegrees = (float)m_element.outerBeamAngle.getValue().getAsDegrees();
+		} else if( property == m_element.falloff ) {
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

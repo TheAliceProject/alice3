@@ -40,63 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.resourceutilities;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import org.lgna.project.License;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
- * @author Alice Build
+ * @author Dennis Cosgrove
  */
-public class JavaCodeUtilities {
+public class GlColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
+	private final Object imageLock = "imageLock";
+	private java.awt.image.BufferedImage image;
+	private boolean isRightSideUp;
 
-	private static String COPYRIGHT_COMMENT = null;
+	public Object getImageLock() {
+		return this.imageLock;
+	}
 
-	public static final String LINE_RETURN = "\r\n";
-
-	public static String getCopyrightComment( String lineEnding )
-	{
-		if( COPYRIGHT_COMMENT == null )
-		{
-			String copyright = License.TEXT.replace( "\r\n", lineEnding + " * " );
-			COPYRIGHT_COMMENT = "/*" + lineEnding + "* " + copyright + lineEnding + " */" + lineEnding;
+	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height, boolean isAlphaChannelDesired ) {
+		int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_3BYTE_BGR : java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		if( this.image != null ) {
+			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
+				//pass
+			} else {
+				this.image = null;
+			}
 		}
-		return COPYRIGHT_COMMENT;
-	}
-
-	public static String getCopyrightComment()
-	{
-		return getCopyrightComment( LINE_RETURN );
-	}
-
-	public static String getDirectoryStringForPackage( String packageString )
-	{
-		StringBuilder sb = new StringBuilder();
-		String[] splitString = packageString.split( "\\." );
-		for( String s : splitString )
-		{
-			sb.append( s );
-			sb.append( File.separator );
+		if( this.image != null ) {
+			//pass
+		} else {
+			this.image = new java.awt.image.BufferedImage( width, height, imageType );
 		}
-		return sb.toString();
+		return this.image;
 	}
 
-	public static void compileJavaFile( File javaFile ) throws IOException
-	{
-		String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.6", "-classpath", System.getProperty( "java.class.path" ) };
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter pw = new PrintWriter( baos );
-		int status = com.sun.tools.javac.Main.compile( args, pw );
-
-		String compileOutput = baos.toString( "UTF-8" );
-		if( status != 0 )
-		{
-			throw new IOException( "Java code for " + javaFile.getName() + " failed to compile: " + compileOutput );
-		}
+	/*package-private*/void releaseImage( boolean isRightSideUp ) {
+		this.isRightSideUp = true;
 	}
 
+	public java.awt.image.BufferedImage getImage() {
+		return this.image;
+	}
+
+	public boolean isRightSideUp() {
+		return this.isRightSideUp;
+	}
 }

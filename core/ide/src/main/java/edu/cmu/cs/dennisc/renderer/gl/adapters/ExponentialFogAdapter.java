@@ -41,17 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.GL2ES1.GL_EXP;
+import static javax.media.opengl.GL2ES1.GL_FOG_DENSITY;
+import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class ExponentialFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegraph.ExponentialFog> {
+	private float m_density;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void setup( RenderContext rc ) {
+		super.setup( rc );
+		rc.gl.glFogi( GL_FOG_MODE, GL_EXP );
+		rc.gl.glFogf( GL_FOG_DENSITY, m_density );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.density ) {
+			m_density = m_element.density.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

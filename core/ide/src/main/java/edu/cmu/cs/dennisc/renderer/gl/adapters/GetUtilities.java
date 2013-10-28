@@ -40,18 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
-package edu.cmu.cs.dennisc.lookingglass;
+import static javax.media.opengl.GL.GL_FALSE;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class GetUtilities {
+	public static boolean getBoolean( javax.media.opengl.GL gl, int which ) {
+		byte[] tmp = new byte[ 1 ];
+		gl.glGetBooleanv( which, tmp, 0 );
+		return tmp[ 0 ] != GL_FALSE;
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static int getInteger( javax.media.opengl.GL gl, int which ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetIntegerv( which, tmp, 0 );
+		return tmp[ 0 ];
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public static float getFloat( javax.media.opengl.GL gl, int which ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetFloatv( which, tmp, 0 );
+		return tmp[ 0 ];
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
+		double[] tmp = new double[ 1 ];
+		gl.glGetDoublev( which, tmp, 0 );
+		return tmp[ 0 ];
+	}
+
+	public static int getTexParameterInteger( javax.media.opengl.GL gl, int target, int name ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetTexParameteriv( target, name, tmp, 0 );
+		return tmp[ 0 ];
+	}
+
+	public static float getTexParameterFloat( javax.media.opengl.GL gl, int target, int name ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetTexParameterfv( target, name, tmp, 0 );
+		return tmp[ 0 ];
+	}
 }

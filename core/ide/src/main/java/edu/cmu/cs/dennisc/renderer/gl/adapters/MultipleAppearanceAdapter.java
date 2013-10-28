@@ -41,17 +41,79 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.dennisc.scenegraph.MultipleAppearance> {
+	private TexturedAppearanceAdapter[] m_singleAppearanceAdapters;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public boolean isActuallyShowing() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isActuallyShowing() ) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public boolean isAlphaBlended() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isAlphaBlended() ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isAllAlphaBlended() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( !sao.isAllAlphaBlended()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isEthereal() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isEthereal() ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void setPipelineState( RenderContext rc, int face ) {
+		rc.setMultipleAppearance( face, this );
+	}
+
+	public void setPipelineState( RenderContext rc, int face, int index ) {
+		m_singleAppearanceAdapters[ index ].setPipelineState( rc, face );
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.singleAppearances ) {
+			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( m_element.singleAppearances.getValue(), TexturedAppearanceAdapter.class );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

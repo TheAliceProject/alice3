@@ -41,17 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public abstract class FogAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Fog> extends AffectorAdapter<E> {
+	private float[] m_color = new float[ 4 ];
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void setup( RenderContext rc ) {
+		rc.setIsFogEnabled( true );
+		rc.setFogColor( m_color );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.color ) {
+			m_element.color.getValue().getAsArray( m_color );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

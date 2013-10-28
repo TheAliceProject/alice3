@@ -41,17 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class GhostAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.scenegraph.Ghost> {
+	private float m_opacity = Float.NaN;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+		rc.pushGlobalOpacity();
+		rc.multiplyGlobalOpacity( m_opacity );
+		try {
+			super.renderGhost( rc, root );
+		} finally {
+			rc.popGlobalOpacity();
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public void renderOpaque( RenderContext rc ) {
+		//pass
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.opacity ) {
+			m_opacity = m_element.opacity.getValue();
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

@@ -40,18 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class JointAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.scenegraph.Joint> {
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.jointID ) {
+			//pass
+		} else if( property == m_element.isFreeInX ) {
+			//pass
+		} else if( property == m_element.isFreeInY ) {
+			//pass
+		} else if( property == m_element.isFreeInZ ) {
+			//pass
+		} else if( property == m_element.boundingBox ) {
+			//pass
+		} else if( property == m_element.oStiffness ) {
+			//pass
+		} else if( property == m_element.oBoneOrientation ) {
+			//pass
+		} else if( property == m_element.oPreferedAngles ) {
+			//pass
+		} else if( property == m_element.oLocalRotationAxis ) {
+			//pass
+		} else if( property == m_element.oMinimumDampRange ) {
+			//pass
+		} else if( property == m_element.oMaximumDampRange ) {
+			//pass
+		} else if( property == m_element.oMinimumDampStrength ) {
+			//pass
+		} else if( property == m_element.oMaximumDampStrength ) {
+			//pass
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

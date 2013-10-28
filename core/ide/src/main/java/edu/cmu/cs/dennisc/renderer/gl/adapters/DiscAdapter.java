@@ -41,17 +41,74 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc> {
+	//todo: add scenegraph hint
+	private static final int SLICE_COUNT = 50;
+	private static final int LOOP_COUNT = 1;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	private void glDisc( Context c ) {
+		double innerRadius = m_element.innerRadius.getValue();
+		double outerRadius = m_element.outerRadius.getValue();
+		c.gl.glPushMatrix();
+		try {
+			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = m_element.axis.getValue();
+			if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.X ) {
+				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
+			} else if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.Y ) {
+				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
+			}
+			if( m_element.isFrontFaceVisible.getValue() ) {
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+			if( m_element.isBackFaceVisible.getValue() ) {
+				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+		} finally {
+			c.gl.glPopMatrix();
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
+		glDisc( rc );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
+		int name;
+		if( isSubElementRequired ) {
+			name = 0;
+		} else {
+			name = -1;
+		}
+		pc.gl.glPushName( name );
+		glDisc( pc );
+		pc.gl.glPopName();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, 0, 1, 0 );
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.innerRadius ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.outerRadius ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isFrontFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isBackFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

@@ -40,18 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class ScalableAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph.Scalable> {
+	private double x;
+	private double y;
+	private double z;
+	private boolean isIdentity = true;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void renderOpaque( RenderContext rc ) {
+		if( this.isIdentity ) {
+			super.renderOpaque( rc );
+		} else {
+			rc.gl.glPushMatrix();
+			rc.incrementScaledCount();
+			try {
+				rc.gl.glScaled( this.x, this.y, this.z );
+				super.renderOpaque( rc );
+			} finally {
+				rc.decrementScaledCount();
+				rc.gl.glPopMatrix();
+			}
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+		if( this.isIdentity ) {
+			super.renderGhost( rc, root );
+		} else {
+			rc.gl.glPushMatrix();
+			rc.incrementScaledCount();
+			try {
+				rc.gl.glScaled( this.x, this.y, this.z );
+				super.renderGhost( rc, root );
+			} finally {
+				rc.decrementScaledCount();
+				rc.gl.glPopMatrix();
+			}
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void pick( PickContext pc, PickParameters pickParameters ) {
+		if( this.isIdentity ) {
+			super.pick( pc, pickParameters );
+		} else {
+			pc.gl.glPushMatrix();
+			pc.incrementScaledCount();
+			try {
+				pc.gl.glScaled( this.x, this.y, this.z );
+				super.pick( pc, pickParameters );
+			} finally {
+				pc.decrementScaledCount();
+				pc.gl.glPopMatrix();
+			}
+		}
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.scale ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
+			this.isIdentity = ( scale.x == 1.0 ) && ( scale.y == 1.0 ) && ( scale.z == 1.0 );
+			this.x = scale.x;
+			this.y = scale.y;
+			this.z = scale.z;
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

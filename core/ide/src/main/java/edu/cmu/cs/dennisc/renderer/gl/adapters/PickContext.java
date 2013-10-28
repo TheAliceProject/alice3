@@ -41,17 +41,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class PickContext extends Context {
+	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
+		synchronized( m_pickNameMap ) {
+			int name = m_pickNameMap.size();
+			m_pickNameMap.put( new Integer( name ), visualAdapter );
+			return name;
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
+		synchronized( m_pickNameMap ) {
+			return m_pickNameMap.get( name );
+		}
+	}
+
+	@Override
+	protected void enableNormalize() {
+	}
+
+	@Override
+	protected void disableNormalize() {
+	}
+
+	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
+	}
+
+	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
+		gl.glMatrixMode( GL_MODELVIEW );
+		synchronized( cameraAdapter ) {
+			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+		}
+		m_pickNameMap.clear();
+		sceneAdapter.pick( this, pickParameters );
+	}
+
+	@Override
+	protected void handleGLChange() {
+	}
+
+	//todo: remove?
+	@Override
+	public void setAppearanceIndex( int index ) {
+	}
 }

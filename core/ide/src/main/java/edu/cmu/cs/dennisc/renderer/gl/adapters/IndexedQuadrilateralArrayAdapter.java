@@ -41,17 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.GL2.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class IndexedQuadrilateralArrayAdapter extends IndexedPolygonArrayAdapter<edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray> {
+	@Override
+	protected int getMode() {
+		return GL_QUADS;
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected int getIndicesPerPolygon() {
+		return 4;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	protected void renderPolygon( RenderContext rc, int[] polygonData, int i ) {
+		rc.renderVertex( accessVertexAt( polygonData[ i ] ) );
+		rc.renderVertex( accessVertexAt( polygonData[ i + 1 ] ) );
+		rc.renderVertex( accessVertexAt( polygonData[ i + 2 ] ) );
+		rc.renderVertex( accessVertexAt( polygonData[ i + 3 ] ) );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void pickPolygon( PickContext pc, int[] polygonData, int i ) {
+		pc.pickVertex( accessVertexAt( polygonData[ i ] ) );
+		pc.pickVertex( accessVertexAt( polygonData[ i + 1 ] ) );
+		pc.pickVertex( accessVertexAt( polygonData[ i + 2 ] ) );
+		pc.pickVertex( accessVertexAt( polygonData[ i + 3 ] ) );
+	}
 }

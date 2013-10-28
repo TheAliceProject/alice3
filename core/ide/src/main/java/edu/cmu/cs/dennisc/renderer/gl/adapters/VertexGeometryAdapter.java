@@ -41,17 +41,75 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GeometryAdapter<E> {
+	private boolean m_isAlphaBlended;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	//    private boolean m_isVertexColored;
+	private void updateVertices() {
+		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = m_sgE;
+		//	    int vertexCount = vg.getVertexCount();
+		//	    if( vertexCount != m_vertices.length ) {
+		//	        m_vertices = vg.getVertices();
+		//	    } else {
+		//	        m_vertices = vg.getVertices( m_vertices );
+		//	    }
+		setIsGeometryChanged( true );
+		m_isAlphaBlended = false;
+		//	    m_isVertexColored = false;
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : m_element.vertices.getValue() ) {
+			if( v.diffuseColor.isNaN() == false ) {
+				//m_isVertexColored = true;
+				if( v.diffuseColor.alpha < 1.0f ) {
+					m_isAlphaBlended = true;
+					break;
+				}
+			}
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public boolean isAlphaBlended() {
+		return m_isAlphaBlended;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	//    public boolean isVertexColored() {
+	//    	return m_isVertexColored;
+	//    }
+
+	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
+		return m_element.vertices.getValue()[ index ];
+	}
+
+	public void renderPrimative( RenderContext rc, int mode ) {
+		rc.gl.glBegin( mode );
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+			rc.renderVertex( vertex );
+		}
+		rc.gl.glEnd();
+	}
+
+	public void pickPrimative( PickContext pc, int mode ) {
+		pc.gl.glPushName( -1 );
+		pc.gl.glBegin( mode );
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+			pc.pickVertex( vertex );
+		}
+		pc.gl.glEnd();
+		pc.gl.glPopName();
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.vertices ) {
+			updateVertices();
+			setIsGeometryChanged( true );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

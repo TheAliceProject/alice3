@@ -41,17 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+public abstract class AppearanceAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Appearance > extends ElementAdapter< E > {    
+    public abstract boolean isActuallyShowing();
+    public abstract boolean isAlphaBlended();
+    public abstract boolean isAllAlphaBlended();
+    public abstract void setPipelineState( RenderContext rc, int face );
+	public abstract boolean isEthereal();
 }

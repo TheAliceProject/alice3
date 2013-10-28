@@ -41,17 +41,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractElement> {
+	protected E m_element;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public void handleReleased() {
+		if( m_element == null )
+		{
+			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
+		}
+		AdapterFactory.forget( m_element );
+		ChangeHandler.removeListenersAndObservers( m_element );
+		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + m_element.hashCode() + " : " + this + "->" + m_element );
+		m_element = null;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
+		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
+		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractElement ) {
+			edu.cmu.cs.dennisc.pattern.AbstractElement element = (edu.cmu.cs.dennisc.pattern.AbstractElement)releasable;
+			AbstractElementAdapter elementAdapter = AdapterFactory.getAdapterForElement( element );
+			if( elementAdapter != null ) {
+				elementAdapter.handleReleased();
+			}
+		} else {
+			throw new Error( "this should never occur" );
+		}
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public void initialize( E element ) {
+		m_element = element;
+	}
+
+	@Override
+	public String toString() {
+		if( m_element != null ) {
+			return getClass().getName() + " " + m_element.toString();
+		} else {
+			return super.toString();
+		}
+	}
 }

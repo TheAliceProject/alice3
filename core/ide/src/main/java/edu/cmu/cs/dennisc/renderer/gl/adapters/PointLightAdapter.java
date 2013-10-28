@@ -41,17 +41,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class PointLightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends LightAdapter<E> {
+	private float m_constant;
+	private float m_linear;
+	private float m_quadratic;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected float[] getPosition( float[] rv ) {
+		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		rv[ 0 ] = (float)db.get( 12 );
+		rv[ 1 ] = (float)db.get( 13 );
+		rv[ 2 ] = (float)db.get( 14 );
+		rv[ 3 ] = 1.0f;
+		return rv;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	protected float getConstantAttenuation() {
+		return m_constant;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected float getLinearAttenuation() {
+		return m_linear;
+	}
+
+	@Override
+	protected float getQuadraticAttenuation() {
+		return m_quadratic;
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.constantAttenuation ) {
+			m_constant = m_element.constantAttenuation.getValue().floatValue();
+		} else if( property == m_element.linearAttenuation ) {
+			m_linear = m_element.linearAttenuation.getValue().floatValue();
+		} else if( property == m_element.quadraticAttenuation ) {
+			m_quadratic = m_element.quadraticAttenuation.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

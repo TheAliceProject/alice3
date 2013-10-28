@@ -89,20 +89,6 @@ public class ModelResourceExporter {
 
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 
-	public static final String RESOURCE_SUB_DIR = "";
-
-	public static String getResourceSubDirWithSeparator( String className ) {
-		className = AliceResourceClassUtilities.getAliceClassName( className );
-		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase() + "/" : "";
-
-		if( ( RESOURCE_SUB_DIR == null ) || ( RESOURCE_SUB_DIR.length() == 0 ) ) {
-			return classDir;
-		}
-		else {
-			return RESOURCE_SUB_DIR + "/" + classDir;
-		}
-	}
-
 	private class NamedFile
 	{
 		public String name;
@@ -1174,7 +1160,7 @@ public class ModelResourceExporter {
 		if( !root.endsWith( "/" ) && !root.endsWith( "\\" ) ) {
 			root += "/";
 		}
-		String resourceDirectory = root + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( "" );
+		String resourceDirectory = root + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + org.lgna.story.implementation.alice.ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" );
 		File xmlFile = new File( resourceDirectory, this.className + ".xml" );
 		return xmlFile;
 	}
@@ -1250,7 +1236,7 @@ public class ModelResourceExporter {
 		if( !rootPath.endsWith( "/" ) && !rootPath.endsWith( "\\" ) ) {
 			rootPath += "/";
 		}
-		String resourceDirectory = rootPath + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( this.className );
+		String resourceDirectory = rootPath + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + org.lgna.story.implementation.alice.ModelResourceIoUtilities.getResourceSubDirWithSeparator( this.className );
 		return resourceDirectory + thumbnailName;
 	}
 

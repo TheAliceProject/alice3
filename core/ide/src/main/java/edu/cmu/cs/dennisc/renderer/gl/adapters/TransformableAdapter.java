@@ -41,17 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class TransformableAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends AbstractTransformableAdapter<E> {
+	private double[] m_localTransformation = new double[ 16 ];
+	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public double[] accessLocalTransformation() {
+		return m_localTransformation;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	@Override
+	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
+		return m_localTransformationBuffer;
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.localTransformation ) {
+			m_element.localTransformation.getValue().getAsColumnMajorArray16( m_localTransformation );
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

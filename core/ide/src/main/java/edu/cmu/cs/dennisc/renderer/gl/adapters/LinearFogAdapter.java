@@ -41,17 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass;
+package edu.cmu.cs.dennisc.renderer.gl.adapters;
+
+import static javax.media.opengl.GL.GL_LINEAR;
+import static javax.media.opengl.GL2ES1.GL_FOG_END;
+import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
+import static javax.media.opengl.GL2ES1.GL_FOG_START;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class LinearFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegraph.LinearFog> {
+	private float m_near;
+	private float m_far;
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	public void setup( RenderContext rc ) {
+		super.setup( rc );
+		rc.gl.glFogi( GL_FOG_MODE, GL_LINEAR );
+		rc.gl.glFogf( GL_FOG_START, m_near );
+		rc.gl.glFogf( GL_FOG_END, m_far );
+	}
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.nearDistance ) {
+			m_near = m_element.nearDistance.getValue().floatValue();
+		} else if( property == m_element.farDistance ) {
+			m_far = m_element.farDistance.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
+		}
+	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story.implementation.alice;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Picker {
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+public class ModelResourceIoUtilities {
+	private ModelResourceIoUtilities() {
+		throw new AssertionError();
+	}
 
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public static final String RESOURCE_SUB_DIR = "";
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public static String getResourceSubDirWithSeparator( String className ) {
+		className = AliceResourceClassUtilities.getAliceClassName( className );
+		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase() + "/" : "";
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+		if( ( RESOURCE_SUB_DIR == null ) || ( RESOURCE_SUB_DIR.length() == 0 ) ) {
+			return classDir;
+		}
+		else {
+			return RESOURCE_SUB_DIR + "/" + classDir;
+		}
+	}
 }
