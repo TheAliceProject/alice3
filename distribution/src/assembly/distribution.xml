@@ -13,10 +13,6 @@
 		<dependencySet>
 			<outputDirectory>lib</outputDirectory>
 		</dependencySet>
-		<dependencySet>
-			<scope>system</scope>
-			<outputDirectory>lib</outputDirectory>
-		</dependencySet>
 	</dependencySets>
 
 </assembly>
