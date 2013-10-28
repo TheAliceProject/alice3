@@ -32,9 +32,11 @@
 					<compilerId>eclipse</compilerId>
 					<source>1.6</source>
 					<target>1.6</target>
-					<optimize>true</optimize>
+					<!-- <optimize>true</optimize> -->
 					<encoding>UTF-8</encoding>
-					<!-- Only include Java source files in the compilation. -->
+					<compilerArguments>
+						<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
+					</compilerArguments>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
