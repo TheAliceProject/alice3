@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.alice</groupId>
-	<artifactId>alice-parent</artifactId>
+	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
