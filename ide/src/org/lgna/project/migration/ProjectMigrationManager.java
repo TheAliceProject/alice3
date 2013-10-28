@@ -2767,7 +2767,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.marinemammal.DolphinResource" ),
 
 					createMoreSpecificFieldPattern( "CAVE", "org.lgna.story.resources.prop.CaveResource" ),
-					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
 
 					createMoreSpecificFieldPattern( "MAGIC_WAND", "org.lgna.story.resources.prop.MagicWandResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.MagicWandResource" ),
@@ -2869,7 +2869,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.flyer.ToucanResource" ),
 
 					createMoreSpecificFieldPattern( "ICE_FLOE", "org.lgna.story.resources.prop.IceFloeResource" ),
-					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.IceFloeResource" ),
+					createMoreSpecificFieldReplacement( "ICE_FLOE1", "org.lgna.story.resources.prop.IceFloeResource" ),
 
 					createMoreSpecificFieldPattern( "COLA_BOTTLE", "org.lgna.story.resources.prop.ColaBottleResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.ColaBottleResource" ),
@@ -2989,7 +2989,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.ShrineLanternResource" ),
 
 					createMoreSpecificFieldPattern( "PIRATE_SHIP", "org.lgna.story.resources.prop.PirateShipResource" ),
-					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.PirateShipResource" ),
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.PirateShipPropResource" ),
 
 					createMoreSpecificFieldPattern( "TEA_TABLE", "org.lgna.story.resources.prop.TeaTableResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TeaTableResource" ),
@@ -4528,8 +4528,14 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
 					createMoreSpecificFieldReplacement( "DESERT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
 
+					createMoreSpecificFieldPattern( "CANYON_SPIRES", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+					createMoreSpecificFieldReplacement( "DESERT", "org.lgna.story.resources.prop.CanyonSpiresResource" ),
+
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CliffWallResource" ),
-					createMoreSpecificFieldReplacement( "DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
+
+					createMoreSpecificFieldPattern( "CLIFF_WALL", "org.lgna.story.resources.prop.CliffWallResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT_DESERT", "org.lgna.story.resources.prop.CliffWallResource" ),
 
 					createMoreSpecificFieldPattern( "PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_PURPLE", "org.lgna.story.resources.quadruped.DragonResource" ),
@@ -5046,7 +5052,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "STANDARDBLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitMailDelivery" ),
 					createMoreSpecificFieldReplacement( "BLUE", "org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitDeliveryPerson" ),
 					createMoreSpecificFieldPattern( "STANDARDBLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitMailDelivery" ),
-					createMoreSpecificFieldReplacement( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" ),
+					createMoreSpecificFieldReplacement( "BLUE", "org.lgna.story.resources.sims2.MaleAdultFullBodyOutfitDeliveryPerson" )
+
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.68.0.0" ),
+					new org.lgna.project.Version( "3.1.69.0.0" ),
 
 					"name=\"org.lgna.story.resources.prop.HelicopterResource",
 					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
@@ -5067,12 +5079,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
 
 					"name=\"org.lgna.story.resources.prop.SubmarineResource",
-					"name=\"org.lgna.story.resources.prop.SubmarinePropResource"
-			),
-
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.68.0.0" ),
-					new org.lgna.project.Version( "3.1.69.0.0" ),
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
@@ -5123,6 +5130,14 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createMoreSpecificFieldPattern( "SHARP_BEND", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "SHARP_BEND_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					//note: possible duplicate
+					createMoreSpecificFieldPattern( "BOW1_RIVERBANK3", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "BOW1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+
+					createMoreSpecificFieldPattern( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					createMoreSpecificFieldReplacement( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
+					//
 
 					createMoreSpecificFieldPattern( "WOODEN_BOAT", "org.lgna.story.resources.aircraft.WoodenBoatResource" ),
 					createMoreSpecificFieldReplacement( "WOODEN_BOAT", "org.lgna.story.resources.watercraft.WoodenBoatResource" ),
