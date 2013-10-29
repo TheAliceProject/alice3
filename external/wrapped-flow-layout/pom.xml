@@ -9,10 +9,9 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>wrapped_flow_layout</artifactId>
+	<artifactId>wrapped-flow-layout</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>wrapped_flow_layout</name>
-
 </project>
+

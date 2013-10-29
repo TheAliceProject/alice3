@@ -30,7 +30,7 @@
 
 		<dependency>
 			<groupId>org.alice.external</groupId>
-			<artifactId>wrapped_flow_layout</artifactId>
+			<artifactId>wrapped-flow-layout</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>

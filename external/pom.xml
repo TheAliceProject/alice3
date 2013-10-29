@@ -37,7 +37,7 @@
 	</build>
 
 	<modules>
-		<module>wrapped_flow_layout</module>
+		<module>wrapped-flow-layout</module>
 	</modules>
 
 </project>
