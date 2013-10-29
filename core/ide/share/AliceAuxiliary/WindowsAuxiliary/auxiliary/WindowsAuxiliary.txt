@@ -1,1 +1,0 @@
-Windows no longer requires auxiliary files.
