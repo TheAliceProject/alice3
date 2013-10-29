@@ -1,3 +1,4 @@
+package org.lgna.croquet.tools;
 
 public class UUIDGenerator {
 	private static void setClipboardContents( String s ) {
@@ -6,7 +7,7 @@ public class UUIDGenerator {
 		clipboard.setContents( stringSelection, null );
 	}
 
-	public static void main(String[] args) {
+	public static void main( String[] args ) {
 		String s = "java.util.UUID.fromString( \"" + java.util.UUID.randomUUID().toString() + "\" )";
 		setClipboardContents( s );
 		StringBuilder sb = new StringBuilder();
