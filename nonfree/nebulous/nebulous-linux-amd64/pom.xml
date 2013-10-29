@@ -10,9 +10,10 @@
 	</parent>
 
 	<artifactId>nebulous-linux-amd64</artifactId>
-	<packaging>zip</packaging>
+	<packaging>pom</packaging>
 
-	<name>Nebulous (amd64)</name>
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
 
 </project>
 
