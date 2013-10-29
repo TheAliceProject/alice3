@@ -50,7 +50,7 @@ import org.alice.media.audio.ScheduledAudioStream;
 
 import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
-import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
+import edu.wustl.lookingglass.media.ImagesToWebmEncoder;
 
 /**
  * @author Matt May

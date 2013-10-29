@@ -58,7 +58,7 @@ import org.lgna.croquet.history.CompletionStep;
 
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.wustl.cse.lookingglass.media.FFmpegProcess;
+import edu.wustl.lookingglass.media.FFmpegProcess;
 
 /**
  * @author Matt May

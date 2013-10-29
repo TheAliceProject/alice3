@@ -44,7 +44,7 @@ package org.alice.media.audio;
 
 import javax.sound.sampled.AudioFormat;
 
-import edu.wustl.cse.lookingglass.media.FFmpegProcessException;
+import edu.wustl.lookingglass.media.FFmpegProcessException;
 
 /**
  * @author Matt May
@@ -61,7 +61,7 @@ public class AudioToWavConverter {
 		try {
 			java.io.File outputFile = java.io.File.createTempFile( "project-sample", ".wav" );
 			outputFile.deleteOnExit();
-			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
+			edu.wustl.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
 			ffmpegProcess.start();
 			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
 			ffmpegProcess.getProcessOutputStream().flush();

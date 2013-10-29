@@ -41,24 +41,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media;
+package edu.wustl.lookingglass.media;
 
 /**
  * @author Kyle J. Harms
  */
-public class FFmpegProcessException extends RuntimeException {
+public interface MediaEncoderListener {
+	public void encodingStarted( boolean success );
 
-	private static final long serialVersionUID = -1149452336821467247L;
+	public void encodingFinished( boolean success );
 
-	public FFmpegProcessException( Exception e ) {
-		super( e );
-	}
-
-	public FFmpegProcessException( String output, String error ) {
-		super( output + "\n\n" + error );
-	}
-
-	public FFmpegProcessException( Exception e, String output, String error ) {
-		super( output + "\n\n" + error, e );
-	}
+	public void frameUpdate( int frameCount, java.awt.image.BufferedImage frame );
 }

@@ -41,7 +41,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media;
+package edu.wustl.lookingglass.media;
 
 /**
  * @author Kyle J. Harms
@@ -192,7 +192,7 @@ public class ImagesToWebmEncoder {
 			try {
 				muxVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
 				muxVideoFile.deleteOnExit();
-				edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", muxVideoFile.getAbsolutePath() );
+				edu.wustl.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", muxVideoFile.getAbsolutePath() );
 				ffmpegProcess.start();
 				this.audioMuxer.mixAudioStreams( ffmpegProcess.getProcessOutputStream(), getLength() );
 				ffmpegProcess.getProcessOutputStream().flush();

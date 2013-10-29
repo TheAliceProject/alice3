@@ -41,47 +41,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media;
+package edu.wustl.lookingglass.media;
 
 /**
  * @author Kyle J. Harms
  */
-public class FFmpegImageExtractor {
+public class FFmpegProcessException extends RuntimeException {
 
-	public static void getFrameAt( final String videoPath, final float frameTimeSeconds, final java.io.File snapshotFile ) {
-		// https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
-		final Float GOP_SEEK = 10.0f * 2.0f; // GOP is typically 10 seconds, so let's double it.
-		Float fastSeek = frameTimeSeconds - GOP_SEEK;
-		Float accurateSeek = GOP_SEEK;
-		if( fastSeek < 0.0f ) {
-			fastSeek = 0.0f;
-			accurateSeek = frameTimeSeconds;
-		}
-		// Sometimes VLCJ returns negative values for position due to being stopped. Just correct for it.
-		if( accurateSeek < 0.0f ) {
-			accurateSeek = 0.0f;
-		}
+	private static final long serialVersionUID = -1149452336821467247L;
 
-		edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
-		ffmpegProcess.start();
-		int status = ffmpegProcess.stop();
-		if( status != 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
-			throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
-		}
+	public FFmpegProcessException( Exception e ) {
+		super( e );
 	}
 
-	public static java.awt.Image getFrameAt( final String mrl, final float seconds ) {
-		java.awt.Image snapshot = null;
-		try {
-			java.io.File snapshotFile = java.io.File.createTempFile( "snapshot", ".png" );
-			snapshotFile.deleteOnExit();
-			getFrameAt( mrl, seconds, snapshotFile );
-			snapshot = javax.imageio.ImageIO.read( snapshotFile );
-			snapshotFile.delete();
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( e );
-		}
-		return snapshot;
+	public FFmpegProcessException( String output, String error ) {
+		super( output + "\n\n" + error );
+	}
+
+	public FFmpegProcessException( Exception e, String output, String error ) {
+		super( output + "\n\n" + error, e );
 	}
 }

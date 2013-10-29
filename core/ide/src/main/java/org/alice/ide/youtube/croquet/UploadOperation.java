@@ -55,7 +55,7 @@ import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
-import edu.wustl.cse.lookingglass.media.FFmpegProcess;
+import edu.wustl.lookingglass.media.FFmpegProcess;
 
 /**
  * @author Matt May

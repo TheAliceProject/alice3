@@ -474,7 +474,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			try {
 				float seconds = this.getTimeInSeconds();
-				edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
+				edu.wustl.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
 				return true;
 			} catch( Exception e ) {
 				return false;
@@ -488,7 +488,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	public java.awt.Image getSnapshot() {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			float seconds = this.getTimeInSeconds();
-			return edu.wustl.cse.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+			return edu.wustl.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 		} else {
 			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			return mediaPlayer.getSnapshot();

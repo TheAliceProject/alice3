@@ -41,7 +41,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.wustl.cse.lookingglass.media;
+package edu.wustl.lookingglass.media;
 
 /**
  * @author Kyle J. Harms
@@ -109,7 +109,7 @@ public class FFmpegProcess {
 	public static String getFFmpegCommand() {
 		// Find the ffmpeg process
 		//<alice>
-		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
+		//String nativePath = edu.wustl.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
 		String nativePath = getFFmpegPath();
 		//</alice>
 		if( nativePath == null ) {
