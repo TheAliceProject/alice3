@@ -5153,7 +5153,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			),
 
 			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.84.0.0" ),
+					new org.lgna.project.Version( "3.1.70.0.0" ),
 					new org.lgna.project.Version( "3.1.85.0.0" ),
 
 					"org.lgna.story.event.ComesIntoViewEvent",
