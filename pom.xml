@@ -18,8 +18,10 @@
 		<module>core/util</module>
 		<module>core/croquet</module>
 		<module>core/ide</module>
-		<module>alice/alice-ide</module>
 		<module>distribution</module>
+
+		<!-- All Alice Modules go here -->
+		<module>alice/alice-ide</module>
 	</modules>
 
 	<build>
