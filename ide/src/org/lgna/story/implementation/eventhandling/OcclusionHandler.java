@@ -51,8 +51,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
+import org.lgna.story.event.EndOcclusionEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionStartListener;
@@ -62,7 +62,6 @@ import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 /**
  * @author Matt May
@@ -124,13 +123,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 					for( SModel m : checkMap.get( t ) ) {
 						for( Object occList : eventMap.get( t ).get( m ) ) {
 							if( check( occList, t, m ) ) {
-								CopyOnWriteArrayList<SMovableTurnable> models = new CopyOnWriteArrayList<SMovableTurnable>();
+								CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
 								if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( t ) ) ) {
-									models.add( (SMovableTurnable)m );
-									models.add( (SMovableTurnable)t );
+									models.add( m );
+									models.add( t );
 								} else {
-									models.add( (SMovableTurnable)t );
-									models.add( (SMovableTurnable)m );
+									models.add( t );
+									models.add( m );
 								}
 								if( occList instanceof OcclusionStartListener ) {
 									fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );
@@ -150,13 +149,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 				for( SModel m : checkMap.get( changedEntity ) ) {
 					for( Object occList : eventMap.get( changedEntity ).get( m ) ) {
 						if( check( occList, (SModel)changedEntity, m ) ) {
-							CopyOnWriteArrayList<SMovableTurnable> models = new CopyOnWriteArrayList<SMovableTurnable>();
+							CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
 							if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( changedEntity ) ) ) {
-								models.add( (SMovableTurnable)m );
-								models.add( (SMovableTurnable)changedEntity );
+								models.add( m );
+								models.add( (SModel)changedEntity );
 							} else {
-								models.add( (SMovableTurnable)changedEntity );
-								models.add( (SMovableTurnable)m );
+								models.add( (SModel)changedEntity );
+								models.add( m );
 							}
 							if( occList instanceof OcclusionStartListener ) {
 								fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );

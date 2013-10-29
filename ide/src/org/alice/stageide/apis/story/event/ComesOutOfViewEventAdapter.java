@@ -45,7 +45,7 @@ package org.alice.stageide.apis.story.event;
 import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.ExitViewEvent;
 import org.lgna.story.event.ViewExitListener;
 
 /**
@@ -57,7 +57,7 @@ public class ComesOutOfViewEventAdapter extends AbstractAdapter implements ViewE
 		super( context, lambda, userInstance );
 	}
 
-	public void leftView( LeavesViewEvent e ) {
+	public void viewExited( ExitViewEvent e ) {
 		invokeEntryPoint( e );
 	}
 }
