@@ -1,1 +1,0 @@
-A license agreement has been made between Carnegie Mellon University and Caprica Software Limited for the use of VLCJ in Alice and Looking Glass.

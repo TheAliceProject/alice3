@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.sun</groupId>
+	<artifactId>javamp3</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>JMF MP3 Plugin</name>
+	<url>http://www.oracle.com/technetwork/java/javase/download-137625.html</url>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=javamp3.jar -DrepositoryId=org.alice.external -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/external -->
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
+	</build>
+
+</project>
+

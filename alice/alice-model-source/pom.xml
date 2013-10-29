@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.alice</groupId>
+	<artifactId>alice-model-source</artifactId>
+	<version>2013.08.08</version>
+	<packaging>jar</packaging>
+
+	<name>Alice Model Source</name>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=aliceModelSource.jar -DrepositoryId=org.alice -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/alice -->
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
+	</build>
+
+</project>
+
