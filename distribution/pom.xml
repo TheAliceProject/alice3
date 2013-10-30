@@ -17,12 +17,26 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>ide</artifactId>
+			<artifactId>alice-ide</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
-	<!-- TODO: rename the distro folder artifact -->
+	<properties>
+		<project.distribution.directory>${project.build.directory}/${project.artifactId}-${project.version}</project.distribution.directory>
+		<project.distribution.platform.directory>${project.distribution.directory}/platform</project.distribution.platform.directory>
+
+		<platform.win32.label>win32</platform.win32.label>
+		<platform.win64.label>win64</platform.win64.label>
+		<platform.macosx.label>macosx</platform.macosx.label>
+		<platform.linux-i586.label>linux-i586</platform.linux-i586.label>
+		<platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
+
+		<platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
+		<platform.libvlc.label>libvlc</platform.libvlc.label>
+		<platform.nebulous.label>nebulous</platform.nebulous.label>
+		<platform.jogl.label>jogl</platform.jogl.label>
+	</properties>
 
 	<build>
 		<plugins>
@@ -32,17 +46,31 @@
 				<version>2.4</version>
 				<executions>
 					<execution>
-						<id>distribution-assembly</id>
+						<id>distribution-lib</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
 							<descriptors>
-								<descriptor>${project.basedir}/src/main/resources/assemblies/distribution.xml</descriptor>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/distribution-lib.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
+					<!-- <execution> -->
+					<!-- <id>distribution-platform</id> -->
+					<!-- <phase>package</phase> -->
+					<!-- <goals> -->
+					<!-- <goal>single</goal> -->
+					<!-- </goals> -->
+					<!-- <configuration> -->
+					<!-- <appendAssemblyId>false</appendAssemblyId> -->
+					<!-- <descriptors> -->
+					<!-- <descriptor>${project.basedir}/src/main/resources/assemblies/distribution-platform.xml</descriptor> -->
+					<!-- </descriptors> -->
+					<!-- </configuration> -->
+					<!-- </execution> -->
 				</executions>
 			</plugin>
 			<plugin>
@@ -51,13 +79,54 @@
 				<version>2.8</version>
 				<executions>
 					<execution>
-						<id>build-classpath</id>
+						<id>distribution-classpath</id>
 						<phase>package</phase>
 						<goals>
 							<goal>build-classpath</goal>
 						</goals>
 						<configuration>
 							<!-- TODO: configure the plugin here -->
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>distribution-platform</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<!-- linux-amd64 -->
+								<artifactItem>
+									<groupId>org.jogamp.jogl</groupId>
+									<artifactId>jogl-all</artifactId>
+									<version>${jogl.version}</version>
+									<classifier>natives-linux-amd64</classifier>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jogamp.gluegen</groupId>
+									<artifactId>gluegen-rt</artifactId>
+									<version>${jogl.version}</version>
+									<classifier>natives-linux-amd64</classifier>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.alice.nonfree</groupId>
+									<artifactId>nebulous</artifactId>
+									<version>${nebulous.version}</version>
+									<classifier>linux-amd64</classifier>
+									<type>zip</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
+								</artifactItem>
+
+
+
+							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>
