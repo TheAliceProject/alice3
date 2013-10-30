@@ -12,6 +12,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<alice.gallery.version>2013.08.08</alice.gallery.version>
+		<jogl.version>2.1.1</jogl.version>
+		<nebulous.version>1.0.0-SNAPSHOT</nebulous.version>
 	</properties>
 
 	<modules>

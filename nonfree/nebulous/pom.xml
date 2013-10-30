@@ -2,6 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.alice</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../../</relativePath>
+	</parent>
+
 	<groupId>org.alice.nonfree</groupId>
 	<artifactId>nebulous</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,20 +22,65 @@
 		</repository>
 	</distributionManagement>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<modules>
-		<module>nebulous-linux-amd64</module>
-		<module>nebulous-linux-i586</module>
-		<module>nebulous-macosx</module>
-		<module>nebulous-win64</module>
-		<module>nebulous-win32</module>
-	</modules>
-
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>linux-amd64</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-amd64.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>linux-i586</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-i586.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>macosx</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/macosx.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>win32</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/win32.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>win64</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/win64.xml</descriptor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
@@ -43,38 +95,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>package-nebulous</id>
-			<activation>
-				<file>
-					<exists>src/main/resources/assemblies/bin.xml</exists>
-				</file>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>2.4</version>
-						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/bin.xml</descriptor>
-							<finalName>${project.artifactId}-${project.version}</finalName>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->

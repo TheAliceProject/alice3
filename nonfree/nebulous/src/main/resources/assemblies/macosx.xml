@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 
-	<id>native</id>
+	<id>macosx</id>
 	<formats>
 		<format>zip</format>
 	</formats>
@@ -11,11 +11,8 @@
 
 	<fileSets>
 		<fileSet>
-			<directory>${project.basedir}</directory>
+			<directory>natives/macosx</directory>
 			<outputDirectory></outputDirectory>
-			<includes>
-				<include>jni_nebulous.dll</include>
-			</includes>
 		</fileSet>
 	</fileSets>
 
