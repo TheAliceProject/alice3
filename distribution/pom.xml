@@ -39,6 +39,8 @@
 	</properties>
 
 	<build>
+
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -79,17 +81,6 @@
 				<version>2.8</version>
 				<executions>
 					<execution>
-						<id>distribution-classpath</id>
-						<phase>package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<!-- TODO: configure the plugin here -->
-						</configuration>
-					</execution>
-
-					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>
 						<goals>
@@ -124,14 +115,85 @@
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 
+								<!-- linux-i586 -->
+								<artifactItem>
+									<groupId>org.jogamp.jogl</groupId>
+									<artifactId>jogl-all</artifactId>
+									<version>${jogl.version}</version>
+									<classifier>natives-linux-i586</classifier>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jogamp.gluegen</groupId>
+									<artifactId>gluegen-rt</artifactId>
+									<version>${jogl.version}</version>
+									<classifier>natives-linux-i586</classifier>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.alice.nonfree</groupId>
+									<artifactId>nebulous</artifactId>
+									<version>${nebulous.version}</version>
+									<classifier>linux-i586</classifier>
+									<type>zip</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
+								</artifactItem>
+
 
 
 							</artifactItems>
 						</configuration>
 					</execution>
+					<execution>
+						<id>distribution-classpath</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<!-- TODO: configure the plugin here -->
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
+		<!-- <pluginManagement> -->
+		<!-- <plugins> -->
+		<!-- This plugin's configuration is used to store Eclipse m2e settings 
+			<!-- only. It has no influence on the Maven build itself. -->
+		-->
+		<!-- <plugin> -->
+		<!-- <groupId>org.eclipse.m2e</groupId> -->
+		<!-- <artifactId>lifecycle-mapping</artifactId> -->
+		<!-- <version>1.0.0</version> -->
+		<!-- <configuration> -->
+		<!-- <lifecycleMappingMetadata> -->
+		<!-- <pluginExecutions> -->
+		<!-- <pluginExecution> -->
+		<!-- <pluginExecutionFilter> -->
+		<!-- <groupId>org.apache.maven.plugins</groupId> -->
+		<!-- <artifactId>maven-assembly-plugin</artifactId> -->
+		<!-- <versionRange>[,)</versionRange> -->
+		<!-- <goals> -->
+		<!-- <goal>copy-dependencies</goal> -->
+		<!-- <goal>unpack</goal> -->
+		<!-- </goals> -->
+		<!-- </pluginExecutionFilter> -->
+		<!-- <action> -->
+		<!-- <execute > -->
+		<!-- <runOnIncremental>true</runOnIncremental> -->
+		<!-- </execute > -->
+		<!-- </action> -->
+		<!-- </pluginExecution> -->
+		<!-- </pluginExecutions> -->
+		<!-- </lifecycleMappingMetadata> -->
+		<!-- </configuration> -->
+		<!-- </plugin> -->
+		<!-- </plugins> -->
+		<!-- </pluginManagement> -->
 	</build>
 
 </project>
