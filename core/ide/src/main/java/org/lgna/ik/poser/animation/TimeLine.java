@@ -53,8 +53,6 @@ import org.lgna.ik.poser.pose.builder.PoseBuilder;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.resources.JointId;
 
-import com.sun.tools.javac.util.Pair;
-
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.Orientation;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
@@ -286,18 +284,18 @@ public class TimeLine {
 		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
 		Pose<?> init = getInitPoseIfNecessary( key1, key2 );
 		Pose<?> pose2 = key2.getPoseActual();
-		Map<JointId, Pair<Orientation, Orientation>> map = Collections.newInitializingIfAbsentHashMap();
+		Map<JointId, BeginAndEndOrientationPair> map = Collections.newInitializingIfAbsentHashMap();
 		for( JointId key : usedIds ) {
-			map.put( key, new Pair<Orientation, Orientation>( lgnaOrientationForId( key, init ), null ) );
+			map.put( key, new BeginAndEndOrientationPair( lgnaOrientationForId( key, init ), null ) );
 		}
 		for( JointId key : usedIds ) {
-			Pair<Orientation, Orientation> pair = map.get( key );
+			BeginAndEndOrientationPair pair = map.get( key );
 			if( pair != null ) {
-				assert pair.fst != null;
-				assert pair.snd == null;
-				map.put( key, new Pair<Orientation, Orientation>( pair.fst, lgnaOrientationForId( key, pose2 ) ) );
+				assert pair.getStartOrientation() != null;
+				assert pair.getEndOrientation() == null;
+				map.put( key, new BeginAndEndOrientationPair( pair.getStartOrientation(), lgnaOrientationForId( key, pose2 ) ) );
 			} else {
-				map.put( key, new Pair<Orientation, Orientation>( null, lgnaOrientationForId( key, pose2 ) ) );
+				map.put( key, new BeginAndEndOrientationPair( null, lgnaOrientationForId( key, pose2 ) ) );
 				throw new RuntimeException( "UNHANDLED: " + key );
 			}
 		}
@@ -306,7 +304,7 @@ public class TimeLine {
 		double k = ( targetTime - prevTime ) / ( key2.getEventTime() - prevTime );
 		List<JointKey> builderList = Collections.newArrayList();
 		for( JointId joint : map.keySet() ) {
-			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).fst.createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).snd.createOrthogonalMatrix3x3() ), k );
+			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).getStartOrientation().createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).getEndOrientation().createOrthogonalMatrix3x3() ), k );
 			builderList.add( new JointKey( rightAnkleUnitQuaternion.createOrthogonalMatrix3x3(), joint ) );
 		}
 		PoseBuilder<?> builder = init.getBuilder();
@@ -466,5 +464,23 @@ public class TimeLine {
 
 	public void setInitialPose( Pose<?> pose ) {
 		this.initialPose = pose;
+	}
+
+	private class BeginAndEndOrientationPair {
+		private final Orientation startOrientation;
+		private final Orientation endOrientation;
+
+		public BeginAndEndOrientationPair( Orientation startOrientation, Orientation endOrientation ) {
+			this.startOrientation = startOrientation;
+			this.endOrientation = endOrientation;
+		}
+
+		public Orientation getStartOrientation() {
+			return this.startOrientation;
+		}
+
+		public Orientation getEndOrientation() {
+			return this.endOrientation;
+		}
 	}
 }
