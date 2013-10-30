@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.app.ApplicationRoot;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -191,6 +193,18 @@ public class SystemUtilities {
 		return true;
 	}
 
+	public static void loadLibrary( String libDirectoryName, String libName ) {
+		java.io.File directory = new java.io.File( ApplicationRoot.getDefaultinstance().getArchitectureSpecificDirectory(), libDirectoryName );
+		java.io.File file = new java.io.File( directory, System.mapLibraryName( libName ) );
+		if( file.exists() ) {
+			System.load( file.getAbsolutePath() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find:", file );
+			edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( libName );
+		}
+	}
+
+	@Deprecated
 	public static void loadPlatformSpecific( String libraryName ) {
 		String postfix;
 		StringBuilder sb = new StringBuilder();
