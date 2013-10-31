@@ -22,7 +22,7 @@
 		<module>core/util</module>
 		<module>core/croquet</module>
 		<module>core/ide</module>
-		<module>core/application</module>
+		<module>core/resources</module>
 		<module>distribution</module>
 
 		<!-- All Alice Modules go here -->

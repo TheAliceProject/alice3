@@ -9,20 +9,20 @@
 		<relativePath>../../</relativePath>
 	</parent>
 
-	<artifactId>application</artifactId>
+	<artifactId>resources</artifactId>
 	<!-- Note: The packaging should really be pom; jar is wrong. -->
 	<!-- m2eclipse won't build the platform directory needed without this hack. -->
 	<packaging>jar</packaging>
 
-	<name>Application</name>
+	<name>Resources</name>
 
 	<!-- TODO: gallery and sound-gallery need to become their own artifacts 
 		which we extract during resource-generation. -->
 
 	<properties>
-		<project.distribution.directory>${project.build.directory}/distribution</project.distribution.directory>
-		<project.distribution.application.directory>${project.distribution.directory}/application</project.distribution.application.directory>
-		<project.distribution.platform.directory>${project.distribution.directory}/platform</project.distribution.platform.directory>
+		<project.resources.directory>${project.build.directory}/distribution</project.resources.directory>
+		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
+		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 
 		<platform.win32.label>win32</platform.win32.label>
 		<platform.win64.label>win64</platform.win64.label>
@@ -49,7 +49,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.distribution.application.directory}</outputDirectory>
+							<outputDirectory>${project.resources.application.directory}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.basedir}/src/application/resources</directory>
@@ -78,14 +78,14 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-amd64</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.jogamp.gluegen</groupId>
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-amd64</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
@@ -93,7 +93,7 @@
 									<version>${nebulous.version}</version>
 									<classifier>linux-amd64</classifier>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 
 								<!-- linux-i586 -->
@@ -102,14 +102,14 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-i586</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.jogamp.gluegen</groupId>
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-i586</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
@@ -117,7 +117,7 @@
 									<version>${nebulous.version}</version>
 									<classifier>linux-i586</classifier>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 
 								<!-- macosx -->
@@ -126,14 +126,14 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.jogamp.gluegen</groupId>
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
@@ -141,21 +141,21 @@
 									<version>${nebulous.version}</version>
 									<classifier>macosx</classifier>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-macosx</artifactId>
 									<version>2.0.7</version>
 									<type>tar.gz</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.libvlc.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.ffmpeg</groupId>
 									<artifactId>ffmpeg-macosx</artifactId>
 									<version>1.2.1</version>
 									<type>tar.gz</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.ffmpeg.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 
 								<!-- win32 -->
@@ -164,14 +164,14 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-i586</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.jogamp.gluegen</groupId>
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-i586</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
@@ -179,21 +179,21 @@
 									<version>${nebulous.version}</version>
 									<classifier>win32</classifier>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win32</artifactId>
 									<version>2.0.8</version>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.libvlc.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.ffmpeg</groupId>
 									<artifactId>ffmpeg-win32</artifactId>
 									<version>1.2</version>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.ffmpeg.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 
 								<!-- win64 -->
@@ -202,14 +202,14 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.jogamp.gluegen</groupId>
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
@@ -217,21 +217,21 @@
 									<version>${nebulous.version}</version>
 									<classifier>win64</classifier>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win64</artifactId>
 									<version>2.0.8</version>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.libvlc.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.ffmpeg</groupId>
 									<artifactId>ffmpeg-win64</artifactId>
 									<version>1.2</version>
 									<type>zip</type>
-									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.ffmpeg.label}</outputDirectory>
+									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
