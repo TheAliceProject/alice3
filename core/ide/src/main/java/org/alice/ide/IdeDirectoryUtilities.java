@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class IdeDirectoryUtilities {
-	private static final String SOUND_GALLERY_NAME = "soundGallery";
+	private static final String SOUND_GALLERY_NAME = "sound-gallery";
 
 	private IdeDirectoryUtilities() {
 		throw new AssertionError();

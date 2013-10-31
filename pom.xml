@@ -22,7 +22,7 @@
 		<module>core/util</module>
 		<module>core/croquet</module>
 		<module>core/ide</module>
-		<module>distribution</module>
+		<module>core/application</module>
 
 		<!-- All Alice Modules go here -->
 		<module>alice/alice-ide</module>
@@ -38,7 +38,6 @@
 					<compilerId>eclipse</compilerId>
 					<source>1.6</source>
 					<target>1.6</target>
-					<!-- <optimize>true</optimize> -->
 					<encoding>UTF-8</encoding>
 					<compilerArguments>
 						<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>

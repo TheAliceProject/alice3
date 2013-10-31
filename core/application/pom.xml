@@ -6,16 +6,18 @@
 		<groupId>org.alice</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+		<relativePath>../../</relativePath>
 	</parent>
 
-	<artifactId>distribution</artifactId>
-	<!-- Note: This should really be pom; jar is wrong for this project. -->
-	<!-- m2eclipse won't build the platform directory needed to launch without 
-		this hack. -->
+	<artifactId>application</artifactId>
+	<!-- Note: The packaging should really be pom; jar is wrong. -->
+	<!-- m2eclipse won't build the platform directory needed without this hack. -->
 	<packaging>jar</packaging>
 
-	<name>Distribution</name>
+	<name>Application</name>
+
+	<!-- TODO: gallery and sound-gallery need to become their own artifacts 
+		which we extract during resource-generation. -->
 
 	<dependencies>
 		<dependency>
@@ -23,17 +25,12 @@
 			<artifactId>alice-ide</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.alice</groupId> -->
-		<!-- <artifactId>application-resources</artifactId> -->
-		<!-- <version>0.0.1-SNAPSHOT</version> -->
-		<!-- </dependency> -->
 	</dependencies>
 
 	<properties>
-		<project.distribution.directory>${project.build.directory}/${project.artifactId}</project.distribution.directory>
-		<project.distribution.lib.directory>${project.distribution.directory}/lib</project.distribution.lib.directory>
+		<project.distribution.directory>${project.build.directory}/distribution</project.distribution.directory>
 		<project.distribution.application.directory>${project.distribution.directory}/application</project.distribution.application.directory>
+		<project.distribution.lib.directory>${project.distribution.directory}/lib</project.distribution.lib.directory>
 		<project.distribution.platform.directory>${project.distribution.directory}/platform</project.distribution.platform.directory>
 
 		<platform.win32.label>win32</platform.win32.label>
@@ -51,6 +48,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>distribution-application</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.distribution.application.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/application/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.8</version>
@@ -65,23 +83,6 @@
 							<outputDirectory>${project.distribution.lib.directory}</outputDirectory>
 						</configuration>
 					</execution>
-					<!-- <execution> -->
-					<!-- <id>distribution-application</id> -->
-					<!-- <phase>generate-resources</phase> -->
-					<!-- <goals> -->
-					<!-- <goal>unpack</goal> -->
-					<!-- </goals> -->
-					<!-- <configuration> -->
-					<!-- <artifactItems> -->
-					<!-- <artifactItem> -->
-					<!-- <groupId>org.alice</groupId> -->
-					<!-- <artifactId>application-resources</artifactId> -->
-					<!-- <version>1.0.0-SNAPSHOT</version> -->
-					<!-- <outputDirectory>${project.distribution.application.directory}</outputDirectory> -->
-					<!-- </artifactItem> -->
-					<!-- </artifactItems> -->
-					<!-- </configuration> -->
-					<!-- </execution> -->
 					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>
@@ -317,7 +318,10 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute />
+										<execute>
+											<runOnIncremental>true</runOnIncremental>
+											<runOnConfiguration>true</runOnConfiguration>
+										</execute>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
