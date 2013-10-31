@@ -72,7 +72,7 @@ public class FFmpegProcess {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			return null;
 		} else {
-			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
+			String installPath = System.getProperty( "org.alice.ide.rootDirectory" );
 			if( installPath != null ) {
 				//pass
 			} else {

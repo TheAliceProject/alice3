@@ -40,58 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IdeDirectoryUtilities {
-	private static final String SOUND_GALLERY_NAME = "sound-gallery";
-
-	private IdeDirectoryUtilities() {
-		throw new AssertionError();
-	}
-
-	private static java.io.File getDirectoryFromProperty( String propertyName ) {
-		String path = System.getProperty( propertyName );
-		if( path != null ) {
-			java.io.File file = new java.io.File( path );
-			if( file.isDirectory() ) {
-				return file;
-			}
-		}
-		return null;
-	}
-
-	public static java.io.File getInstallDirectory() {
-		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.rootDirectory" );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = getDirectoryFromProperty( "user.dir" );
-		}
-		return rv;
-	}
-
-	private static java.io.File getFallbackDirectory() {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-	}
-
-	public static java.io.File getSoundGalleryDirectory() {
-		try {
-			java.io.File installDirectory = getInstallDirectory();
-			if( installDirectory != null ) {
-				java.io.File soundGalleryDirectory = new java.io.File( installDirectory, SOUND_GALLERY_NAME );
-				if( soundGalleryDirectory.isDirectory() ) {
-					return soundGalleryDirectory;
-				} else {
-					throw new RuntimeException(); //fallback
-				}
-			} else {
-				throw new NullPointerException(); //fallback
-			}
-		} catch( Throwable t ) {
-			return getFallbackDirectory();
-		}
-	}
+public enum LoadLibraryReportStyle {
+	EXCEPTION,
+	SEVERE,
+	SILENT
 }

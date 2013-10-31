@@ -87,8 +87,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 					private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
+						edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.SILENT : edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION;
 						try {
-							edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "jogl", libraryName );
+							edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "jogl", libraryName, loadLibraryReportStyle );
 						} catch( UnsatisfiedLinkError ule ) {
 							String message = ule.getMessage();
 							if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
@@ -136,7 +137,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() && edu.cmu.cs.dennisc.java.lang.SystemUtilities.is64Bit() ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "jogl", "gluegen-rt" );
+					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "jogl", "gluegen-rt", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
 					// TODO: jogl2
 					//					com.sun.gluegen.runtime.NativeLibLoader.disableLoading();
 				}
