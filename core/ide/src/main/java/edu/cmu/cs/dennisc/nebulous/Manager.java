@@ -83,7 +83,7 @@ public class Manager {
 				}
 				if( isLicenseAccepted ) {
 					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "nebulous", "jni_nebulous" );
+					edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "nebulous", "jni_nebulous", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
 					for( java.io.File directory : Manager.getPendingBundles() ) {
 						Manager.addBundlePath( directory.getAbsolutePath() );
 					}

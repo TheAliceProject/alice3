@@ -49,52 +49,58 @@ public class ApplicationRoot {
 	private static final String DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY = "org.alice.ide.rootDirectory";
 	private static final String DEFAULT_APPLICATION_NAME = "Alice";
 
-	private static final ApplicationRoot defaultInstance = new ApplicationRoot( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY, DEFAULT_APPLICATION_NAME );
+	private static java.io.File rootDirectory;
 
-	public static ApplicationRoot getDefaultinstance() {
-		return defaultInstance;
-	}
-
-	private final java.io.File rootDirectory;
-
-	//todo: make public?
-	private ApplicationRoot( String rootDirectorySystemProperty, String applicationName ) {
-		String rootDirectoryPath = System.getProperty( rootDirectorySystemProperty );
-		//todo: fallback to System.getProperty( "user.dir" ) ???
-		if( rootDirectoryPath != null ) {
-			this.rootDirectory = new java.io.File( rootDirectoryPath );
-			if( this.rootDirectory.exists() ) {
-				//pass
+	public static void initializeIfNecessary() {
+		if( rootDirectory != null ) {
+			//pass
+		} else {
+			String rootDirectoryPath = System.getProperty( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
+			//todo: fallback to System.getProperty( "user.dir" ) ???
+			if( rootDirectoryPath != null ) {
+				rootDirectory = new java.io.File( rootDirectoryPath );
+				if( rootDirectory.exists() ) {
+					//pass
+				} else {
+					StringBuilder sb = new StringBuilder();
+					sb.append( "system property: " );
+					sb.append( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
+					sb.append( " is incorrectly set.\n" );
+					sb.append( rootDirectory );
+					sb.append( " does not exist.\n" );
+					sb.append( DEFAULT_APPLICATION_NAME );
+					sb.append( " will not work until this is addressed." );
+					javax.swing.JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", javax.swing.JOptionPane.ERROR_MESSAGE );
+					System.exit( -1 );
+				}
 			} else {
 				StringBuilder sb = new StringBuilder();
 				sb.append( "system property: " );
-				sb.append( rootDirectorySystemProperty );
-				sb.append( " is incorrectly set.\n" );
-				sb.append( this.rootDirectory );
-				sb.append( " does not exist.\n" );
-				sb.append( applicationName );
+				sb.append( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
+				sb.append( " is not set.\n" );
+				sb.append( DEFAULT_APPLICATION_NAME );
 				sb.append( " will not work until this is addressed." );
 				javax.swing.JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", javax.swing.JOptionPane.ERROR_MESSAGE );
+				rootDirectory = null;
 				System.exit( -1 );
 			}
-		} else {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "system property: " );
-			sb.append( rootDirectorySystemProperty );
-			sb.append( " is not set.\n" );
-			sb.append( applicationName );
-			sb.append( " will not work until this is addressed." );
-			javax.swing.JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", javax.swing.JOptionPane.ERROR_MESSAGE );
-			this.rootDirectory = null;
-			System.exit( -1 );
 		}
 	}
 
-	public java.io.File getPlatformDirectory() {
-		return new java.io.File( this.rootDirectory, "platform" );
+	private ApplicationRoot() {
+		throw new AssertionError();
 	}
 
-	public java.io.File getArchitectureSpecificDirectory() {
+	public static java.io.File getRootDirectory() {
+		initializeIfNecessary();
+		return rootDirectory;
+	}
+
+	public static java.io.File getPlatformDirectory() {
+		return new java.io.File( getRootDirectory(), "platform" );
+	}
+
+	public static java.io.File getArchitectureSpecificDirectory() {
 		StringBuilder sb = new StringBuilder();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			sb.append( "macosx-universal" );
@@ -129,7 +135,7 @@ public class ApplicationRoot {
 		return new java.io.File( getPlatformDirectory(), sb.toString() );
 	}
 
-	//	public java.io.File getCommand( String subPath ) {
+	//	public static java.io.File getCommand( String subPath ) {
 	//		StringBuilder sb = new StringBuilder();
 	//		sb.append( subPath );
 	//		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {

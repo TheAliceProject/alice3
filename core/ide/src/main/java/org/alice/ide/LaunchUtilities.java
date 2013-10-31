@@ -46,45 +46,6 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class LaunchUtilities {
-	private static java.io.File getInstallDirectory() {
-		String installDir = System.getProperty( "org.alice.ide.IDE.install.dir" );
-		if( installDir != null ) {
-			java.io.File rv = new java.io.File( installDir );
-			if( rv.exists() && rv.isDirectory() ) {
-				return rv;
-			}
-		} else {
-			StringBuffer sb = new StringBuffer();
-			sb.append( "-Dorg.alice.ide.IDE.install.dir=\"" );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				sb.append( "/Program Files" );
-			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				sb.append( "/Applications" );
-			} else {
-				sb.append( System.getProperty( "user.home" ) );
-			}
-			sb.append( "/Alice3Beta\"" );
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( sb.toString() );
-			System.out.println( "The text below has been copied to the clipboard for your convenience." );
-			System.out.println( sb );
-		}
-		String userDir = System.getProperty( "user.dir" );
-		if( userDir != null ) {
-			java.io.File rv = new java.io.File( userDir );
-			for( String childName : new String[] { "application", "ext", "gallery", "lib" } ) {
-				java.io.File childFile = new java.io.File( rv, childName );
-				if( childFile.exists() && childFile.isDirectory() ) {
-					//pass
-				} else {
-					return null;
-				}
-			}
-			System.setProperty( "org.alice.ide.IDE.install.dir", userDir );
-			return rv;
-		}
-		return null;
-	}
-
 	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
