@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>distribution</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<name>Distribution</name>
 
@@ -39,8 +39,6 @@
 	</properties>
 
 	<build>
-
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -160,39 +158,50 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<!-- <pluginManagement> -->
-		<!-- <plugins> -->
-		<!-- This plugin's configuration is used to store Eclipse m2e settings -->
-			<!-- only. It has no influence on the Maven build itself. -->
-		<!-- <plugin> -->
-		<!-- <groupId>org.eclipse.m2e</groupId> -->
-		<!-- <artifactId>lifecycle-mapping</artifactId> -->
-		<!-- <version>1.0.0</version> -->
-		<!-- <configuration> -->
-		<!-- <lifecycleMappingMetadata> -->
-		<!-- <pluginExecutions> -->
-		<!-- <pluginExecution> -->
-		<!-- <pluginExecutionFilter> -->
-		<!-- <groupId>org.apache.maven.plugins</groupId> -->
-		<!-- <artifactId>maven-assembly-plugin</artifactId> -->
-		<!-- <versionRange>[,)</versionRange> -->
-		<!-- <goals> -->
-		<!-- <goal>copy-dependencies</goal> -->
-		<!-- <goal>unpack</goal> -->
-		<!-- </goals> -->
-		<!-- </pluginExecutionFilter> -->
-		<!-- <action> -->
-		<!-- <execute > -->
-		<!-- <runOnIncremental>true</runOnIncremental> -->
-		<!-- </execute > -->
-		<!-- </action> -->
-		<!-- </pluginExecution> -->
-		<!-- </pluginExecutions> -->
-		<!-- </lifecycleMappingMetadata> -->
-		<!-- </configuration> -->
-		<!-- </plugin> -->
-		<!-- </plugins> -->
-		<!-- </pluginManagement> -->
+
+		<pluginManagement>
+			<plugins>
+				<!-- Tell Eclipse to generate the resources in this pom -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+											<goal>unpack</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-clean-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
+										<goals>
+											<goal>clean</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>
