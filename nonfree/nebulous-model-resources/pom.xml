@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.alice</groupId>
-	<artifactId>alice-model-source</artifactId>
+	<groupId>org.alice.nonfree</groupId>
+	<artifactId>nebulous-model-resources</artifactId>
 	<version>2013.08.08</version>
 	<packaging>pom</packaging>
 
-	<name>Alice Model Source</name>
+	<name>Nebulous Model Resources</name>
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->
@@ -36,8 +36,8 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.artifactId}-${project.version}.jar</file>
-									<type>jar</type>
+									<file>${project.artifactId}-${project.version}.zip</file>
+									<type>zip</type>
 								</artifact>
 							</artifacts>
 						</configuration>

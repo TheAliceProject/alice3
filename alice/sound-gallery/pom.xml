@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.alice</groupId>
-	<artifactId>alice-model-source</artifactId>
+	<artifactId>sound-gallery</artifactId>
 	<version>2013.08.08</version>
 	<packaging>pom</packaging>
 
-	<name>Alice Model Source</name>
+	<name>Sound Gallery</name>
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->
@@ -36,8 +36,8 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.artifactId}-${project.version}.jar</file>
-									<type>jar</type>
+									<file>${project.artifactId}-${project.version}.zip</file>
+									<type>zip</type>
 								</artifact>
 							</artifacts>
 						</configuration>

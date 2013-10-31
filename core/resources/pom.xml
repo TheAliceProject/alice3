@@ -22,6 +22,8 @@
 	<properties>
 		<project.resources.directory>${project.build.directory}/distribution</project.resources.directory>
 		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
+		<project.resources.gallery.directory>${project.resources.application.directory}/gallery</project.resources.gallery.directory>
+		<project.resources.sound-gallery.directory>${project.resources.application.directory}/sound-gallery</project.resources.sound-gallery.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 
 		<platform.win32.label>win32</platform.win32.label>
@@ -64,6 +66,38 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.8</version>
 				<executions>
+					<execution>
+						<id>distribution-gallery</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.alice</groupId>
+									<artifactId>alice-model-resources</artifactId>
+									<version>${alice.gallery.version}</version>
+									<type>zip</type>
+									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.alice.nonfree</groupId>
+									<artifactId>nebulous-model-resources</artifactId>
+									<version>${alice.gallery.version}</version>
+									<type>zip</type>
+									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.alice</groupId>
+									<artifactId>sound-gallery</artifactId>
+									<version>${alice.gallery.version}</version>
+									<type>zip</type>
+									<outputDirectory>${project.resources.sound-gallery.directory}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
 					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>
@@ -286,6 +320,20 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<!-- Non-free sims libraries/models -->
+		<profile>
+			<id>non-free</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<!-- TODO: add the sims and nebulous stuff here. -->
+			</dependencies>
+		</profile>
+
+	</profiles>
 
 </project>
 

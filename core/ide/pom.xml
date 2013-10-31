@@ -129,17 +129,6 @@
 	</build>
 
 	<profiles>
-		<!-- Non-free sims libraries/models -->
-		<profile>
-			<id>non-free</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<dependencies>
-				<!-- TODO: add the sims and nebulous stuff here. -->
-			</dependencies>
-		</profile>
-
 		<!-- jogamp developer builds -->
 		<profile>
 			<id>jogamp</id>
