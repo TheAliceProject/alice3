@@ -55,7 +55,7 @@
 							<finalName>${project.artifactId}</finalName>
 							<appendAssemblyId>false</appendAssemblyId>
 							<descriptors>
-								<descriptor>${project.basedir}/src/main/resources/assemblies/distribution-lib.xml</descriptor>
+								<descriptor>${project.basedir}/src/main/assemblies/distribution-lib.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
