@@ -10,6 +10,9 @@
 	</parent>
 
 	<artifactId>distribution</artifactId>
+	<!-- Note: This should really be pom; jar is wrong for this project. -->
+	<!-- m2eclipse won't build the platform directory needed to launch without 
+		this hack. -->
 	<packaging>jar</packaging>
 
 	<name>Distribution</name>
@@ -24,6 +27,7 @@
 
 	<properties>
 		<project.distribution.directory>${project.build.directory}/${project.artifactId}</project.distribution.directory>
+		<project.distribution.lib.directory>${project.distribution.directory}/lib</project.distribution.lib.directory>
 		<project.distribution.platform.directory>${project.distribution.directory}/platform</project.distribution.platform.directory>
 
 		<platform.win32.label>win32</platform.win32.label>
@@ -42,30 +46,19 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
 				<executions>
 					<execution>
 						<id>distribution-lib</id>
 						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<finalName>${project.artifactId}</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-							<descriptors>
-								<descriptor>${project.basedir}/src/main/assemblies/distribution-lib.xml</descriptor>
-							</descriptors>
+							<outputDirectory>${project.distribution.lib.directory}</outputDirectory>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
-				<executions>
 					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>
@@ -80,7 +73,6 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-amd64</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -88,7 +80,6 @@
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-amd64</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -97,7 +88,6 @@
 									<version>${nebulous.version}</version>
 									<classifier>linux-amd64</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 
@@ -107,7 +97,6 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-i586</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -115,7 +104,6 @@
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-linux-i586</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -124,7 +112,6 @@
 									<version>${nebulous.version}</version>
 									<classifier>linux-i586</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 
@@ -134,7 +121,6 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -142,7 +128,6 @@
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -151,7 +136,6 @@
 									<version>${nebulous.version}</version>
 									<classifier>macosx</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -159,7 +143,6 @@
 									<artifactId>libvlc-macosx</artifactId>
 									<version>2.0.7</version>
 									<type>tar.gz</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -167,7 +150,6 @@
 									<artifactId>ffmpeg-macosx</artifactId>
 									<version>1.2.1</version>
 									<type>tar.gz</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.macosx.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 
@@ -177,7 +159,6 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-i586</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -185,7 +166,6 @@
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-i586</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -194,7 +174,6 @@
 									<version>${nebulous.version}</version>
 									<classifier>win32</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -202,7 +181,6 @@
 									<artifactId>libvlc-win32</artifactId>
 									<version>2.0.8</version>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -210,7 +188,6 @@
 									<artifactId>ffmpeg-win32</artifactId>
 									<version>1.2</version>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win32.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 
@@ -220,7 +197,6 @@
 									<artifactId>jogl-all</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -228,7 +204,6 @@
 									<artifactId>gluegen-rt</artifactId>
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -237,7 +212,6 @@
 									<version>${nebulous.version}</version>
 									<classifier>win64</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -245,7 +219,6 @@
 									<artifactId>libvlc-win64</artifactId>
 									<version>2.0.8</version>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -253,7 +226,6 @@
 									<artifactId>ffmpeg-win64</artifactId>
 									<version>1.2</version>
 									<type>zip</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${project.distribution.platform.directory}/${platform.win64.label}/${platform.ffmpeg.label}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
@@ -287,7 +259,7 @@
 									<pluginExecutionFilter>
 										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.0,)</versionRange>
+										<versionRange>[2.8,)</versionRange>
 										<goals>
 											<goal>copy-dependencies</goal>
 											<goal>unpack</goal>
