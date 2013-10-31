@@ -23,6 +23,7 @@
 		<module>core/croquet</module>
 		<module>core/ide</module>
 		<module>core/application</module>
+		<module>distribution</module>
 
 		<!-- All Alice Modules go here -->
 		<module>alice/alice-ide</module>
