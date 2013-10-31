@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Teapot">
+    <BoundingBox>
+        <Min x="-0.22031325101852417" y="2.48149037361145E-4" z="-0.3961816728115082"/>
+        <Max x="0.22046028077602386" y="0.40929660201072693" z="0.31143710017204285"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>tea</Tag>
+        <Tag>pot</Tag>
+        <Tag>pitcher</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland:tea set</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Teapot" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

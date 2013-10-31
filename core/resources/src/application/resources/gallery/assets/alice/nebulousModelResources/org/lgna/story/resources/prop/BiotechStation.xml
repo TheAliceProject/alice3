@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BiotechStation">
+    <BoundingBox>
+        <Min x="-1.2513420581817627" y="0.0" z="-0.859035849571228"/>
+        <Max x="1.2513420581817627" y="2.4635565280914307" z="0.8590359091758728"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>biotech</Tag>
+        <Tag>science</Tag>
+        <Tag>lab</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BiotechStation" resourceName="BIOTECH_STATION" textureName="BIOTECH_STATION"/>
+</AliceModel>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Pig">
+    <BoundingBox>
+        <Min x="-0.4853139817714691" y="-1.3796408893540502E-4" z="-0.22973573207855225"/>
+        <Max x="0.4598255753517151" y="1.1724663972854614" z="0.19367177784442902"/>
+    </BoundingBox>
+    <Tags/>
+    <GroupTags/>
+    <ThemeTags/>
+    <Resource modelName="Pig" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

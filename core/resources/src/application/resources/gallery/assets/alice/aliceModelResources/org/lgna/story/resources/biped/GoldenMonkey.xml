@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="GoldenMonkey">
+    <BoundingBox>
+        <Min x="-0.31255507469177246" y="-0.002044392516836524" z="-0.17168088257312775"/>
+        <Max x="0.3159804344177246" y="1.0457607507705688" z="0.8875528573989868"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>monkey</Tag>
+        <Tag>jungle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GoldenMonkey" resourceName="GOLD" textureName="GOLD"/>
+    <Resource modelName="GoldenMonkey" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="GoldenMonkey" resourceName="BLACK" textureName="BLACK"/>
+    <Resource modelName="GoldenMonkey" resourceName="SNOW" textureName="SNOW"/>
+</AliceModel>

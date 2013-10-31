@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Staff">
+    <BoundingBox>
+        <Min x="-0.022741811349987984" y="0.0" z="-0.022741813212633133"/>
+        <Max x="0.022741811349987984" y="1.5710954666137695" z="0.022741813212633133"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>staff</Tag>
+        <Tag>cane. stick</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Staff" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

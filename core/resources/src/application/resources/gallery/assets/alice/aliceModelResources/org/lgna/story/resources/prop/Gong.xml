@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Gong">
+    <BoundingBox>
+        <Min x="-0.3272363245487213" y="-0.009665874764323235" z="-1.1167761087417603"/>
+        <Max x="0.3408856987953186" y="1.6539279222488403" z="1.1132502555847168"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>instrument</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Gong" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

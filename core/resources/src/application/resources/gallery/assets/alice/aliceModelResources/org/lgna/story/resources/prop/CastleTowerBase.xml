@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="CastleTowerBase">
+    <BoundingBox>
+        <Min x="-1.9110281467437744" y="0.0" z="-2.8998782634735107"/>
+        <Max x="1.4256954193115234" y="1.969643473625183" z="1.2595242261886597"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>castle</Tag>
+        <Tag>tower</Tag>
+        <Tag>base</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:castle</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy:castle</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CastleTowerBase" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

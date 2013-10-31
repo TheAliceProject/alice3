@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Mango">
+    <BoundingBox>
+        <Min x="-0.08808711171150208" y="-0.0026727127842605114" z="-0.09302447736263275"/>
+        <Max x="0.08159484714269638" y="0.24058957397937775" z="0.09192550182342529"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>fruit</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon:mangotree</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Mango" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

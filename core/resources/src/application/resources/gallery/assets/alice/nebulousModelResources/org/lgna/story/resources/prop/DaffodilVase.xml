@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="DaffodilVase">
+    <BoundingBox>
+        <Min x="-0.07831798493862152" y="0.0" z="-0.06388989090919495"/>
+        <Max x="0.07831798493862152" y="0.4972826838493347" z="0.06388989090919495"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="DaffodilVase" resourceName="DAFFODIL_VASE" textureName="DAFFODIL_VASE"/>
+</AliceModel>

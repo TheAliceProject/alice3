@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Falcon">
+    <BoundingBox>
+        <Min x="-0.18088588118553162" y="-0.0038761617615818977" z="-0.22061192989349365"/>
+        <Max x="0.1666172444820404" y="0.45630934834480286" z="0.39191392064094543"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+        <Tag>hawk</Tag>
+        <Tag>raptor</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Falcon" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

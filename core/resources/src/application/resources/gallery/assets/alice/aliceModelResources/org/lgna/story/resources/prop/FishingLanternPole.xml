@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingLanternPole">
+    <BoundingBox>
+        <Min x="-0.0269040297716856" y="-0.21101966500282288" z="-0.22053787112236023"/>
+        <Max x="0.0269040297716856" y="0.8229419589042664" z="0.2205377221107483"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+        <Tag>lamp</Tag>
+        <Tag>light</Tag>
+        <Tag>post</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingLanternPole" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

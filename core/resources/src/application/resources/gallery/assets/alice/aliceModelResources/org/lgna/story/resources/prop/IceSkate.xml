@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="IceSkate">
+    <BoundingBox>
+        <Min x="-0.07089533656835556" y="-0.06896233558654785" z="-0.06479524821043015"/>
+        <Max x="0.06817106157541275" y="0.15872757136821747" z="0.21607448160648346"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>shoe</Tag>
+        <Tag>clothing</Tag>
+        <Tag>sport</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Left" resourceName="LEFT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07089533656835556" y="-0.06896233558654785" z="-0.06479524821043015"/>
+            <Max x="0.05096772685647011" y="0.15872757136821747" z="0.21607448160648346"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Right" resourceName="RIGHT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.05369200557470322" y="-0.06896233558654785" z="-0.06479524821043015"/>
+            <Max x="0.06817106157541275" y="0.15872757136821747" z="0.21607448160648346"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

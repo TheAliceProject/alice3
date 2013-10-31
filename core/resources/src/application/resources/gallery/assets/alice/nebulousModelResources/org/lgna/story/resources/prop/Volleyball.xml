@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Volleyball">
+    <BoundingBox>
+        <Min x="-0.08106125146150589" y="0.0" z="-0.08106125146150589"/>
+        <Max x="0.08106125146150589" y="0.1621224731206894" z="0.08106125146150589"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>ball</Tag>
+        <Tag>sport</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:yard</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:yard</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Volleyball" resourceName="VOLLEYBALL" textureName="VOLLEYBALL"/>
+</AliceModel>

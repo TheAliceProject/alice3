@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Television">
+    <BoundingBox>
+        <Min x="-0.825831413269043" y="0.0" z="-0.316249817609787"/>
+        <Max x="0.825831413269043" y="1.1626907587051392" z="0.316249817609787"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>tv</Tag>
+        <Tag>television</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:living room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:living room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Fancy" resourceName="FANCY" textureName="FANCY">
+        <BoundingBox>
+            <Min x="-0.7934360504150391" y="0.0" z="-0.21798034012317657"/>
+            <Max x="0.7934360504150391" y="1.1626907587051392" z="0.21798034012317657"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC" textureName="BASIC">
+        <BoundingBox>
+            <Min x="-0.3605665862560272" y="0.0" z="-0.316249817609787"/>
+            <Max x="0.3605665862560272" y="1.1007760763168335" z="0.316249817609787"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WallMounted" resourceName="WALL_MOUNTED" textureName="WALL_MOUNTED">
+        <BoundingBox>
+            <Min x="-0.825831413269043" y="0.0" z="-0.02634289115667343"/>
+            <Max x="0.825831413269043" y="0.818613588809967" z="0.026342928409576416"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

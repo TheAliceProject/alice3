@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Hare">
+    <BoundingBox>
+        <Min x="-0.36379772424697876" y="-0.003173928242176771" z="-0.2740497887134552"/>
+        <Max x="0.3792206346988678" y="1.819868803024292" z="0.3583954870700836"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>rabbit</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hare" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

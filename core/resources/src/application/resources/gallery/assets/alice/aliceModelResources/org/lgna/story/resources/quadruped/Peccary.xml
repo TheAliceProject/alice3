@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Peccary">
+    <BoundingBox>
+        <Min x="-0.405057430267334" y="-0.0028956292662769556" z="-0.8676207661628723"/>
+        <Max x="0.405057430267334" y="1.1048842668533325" z="0.6422395706176758"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>pig</Tag>
+        <Tag>hog</Tag>
+        <Tag>warthog</Tag>
+        <Tag>boar</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Peccary" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

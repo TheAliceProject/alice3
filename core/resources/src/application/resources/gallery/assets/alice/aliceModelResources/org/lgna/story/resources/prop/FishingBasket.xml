@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingBasket">
+    <BoundingBox>
+        <Min x="-0.380346417427063" y="-1.5258788721439487E-7" z="-0.3789009749889374"/>
+        <Max x="0.3697420060634613" y="0.45765960216522217" z="0.3789007365703583"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>basket</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingBasket" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

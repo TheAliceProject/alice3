@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Armoire">
+    <BoundingBox>
+        <Min x="-0.9136401414871216" y="0.0" z="-0.41253772377967834"/>
+        <Max x="0.9136401414871216" y="2.6823506355285645" z="0.41253772377967834"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>armoire</Tag>
+        <Tag>closet</Tag>
+        <Tag>furniture</Tag>
+        <Tag>bedroom</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bedroom</ThemeTag>
+        <ThemeTag>household:furniture</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Loft" resourceName="LOFT_RED_FINISH_BLACK_TRIM" textureName="RED_FINISH_BLACK_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_RED_FINISH_DARK_HONEY_TRIM" textureName="RED_FINISH_DARK_HONEY_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD_BLACK_TRIM" textureName="DARK_WOOD_BLACK_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_DARK_WOOD_DARK_HONEY_TRIM" textureName="DARK_WOOD_DARK_HONEY_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_OAK_BLACK_TRIM" textureName="OAK_BLACK_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_OAK_DARK_HONEY_TRIM" textureName="OAK_DARK_HONEY_TRIM">
+        <BoundingBox>
+            <Min x="-0.9136401414871216" y="0.0" z="-0.38826003670692444"/>
+            <Max x="0.9136401414871216" y="2.291996955871582" z="0.38826003670692444"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>loft</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.7422192096710205" y="0.0" z="-0.41253772377967834"/>
+            <Max x="0.7422192096710205" y="2.4076168537139893" z="0.41253772377967834"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>quaint</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.7422192096710205" y="0.0" z="-0.41253772377967834"/>
+            <Max x="0.7422192096710205" y="2.4076168537139893" z="0.41253772377967834"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>quaint</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.7422192096710205" y="0.0" z="-0.41253772377967834"/>
+            <Max x="0.7422192096710205" y="2.4076168537139893" z="0.41253772377967834"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>quaint</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_LEAVES" textureName="LEAVES">
+        <BoundingBox>
+            <Min x="-0.7422192096710205" y="0.0" z="-0.41253772377967834"/>
+            <Max x="0.7422192096710205" y="2.4076168537139893" z="0.41253772377967834"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>quaint</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_ROSES" textureName="ROSES">
+        <BoundingBox>
+            <Min x="-0.7422192096710205" y="0.0" z="-0.41253772377967834"/>
+            <Max x="0.7422192096710205" y="2.4076168537139893" z="0.41253772377967834"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>quaint</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_DRAGON" textureName="DRAGON">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_GREEN_FLORAL" textureName="GREEN_FLORAL">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_LATTICE" textureName="LATTICE">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_LION" textureName="LION">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_SIMPLE_FLORAL" textureName="SIMPLE_FLORAL">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_STORY" textureName="STORY">
+        <BoundingBox>
+            <Min x="-0.6322420239448547" y="0.0" z="-0.36283573508262634"/>
+            <Max x="0.6322420239448547" y="2.1482019424438477" z="0.36283573508262634"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>asian</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_REDWOOD" textureName="REDWOOD">
+        <BoundingBox>
+            <Min x="-0.7585404515266418" y="0.0" z="-0.3915196359157562"/>
+            <Max x="0.7585403919219971" y="2.6823506355285645" z="0.3915196359157562"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>colonial</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_DARK_WOOD" textureName="DARK_WOOD">
+        <BoundingBox>
+            <Min x="-0.7585404515266418" y="0.0" z="-0.3915196359157562"/>
+            <Max x="0.7585403919219971" y="2.6823506355285645" z="0.3915196359157562"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>colonial</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_LIGHT_WOOD" textureName="LIGHT_WOOD">
+        <BoundingBox>
+            <Min x="-0.7585404515266418" y="0.0" z="-0.3915196359157562"/>
+            <Max x="0.7585403919219971" y="2.6823506355285645" z="0.3915196359157562"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>colonial</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Moroccan" resourceName="MOROCCAN_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.6953675746917725" y="0.0" z="-0.4021730124950409"/>
+            <Max x="0.6953675746917725" y="2.264106035232544" z="0.4021730124950409"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>moroccan</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Moroccan" resourceName="MOROCCAN_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.6953675746917725" y="0.0" z="-0.4021730124950409"/>
+            <Max x="0.6953675746917725" y="2.264106035232544" z="0.4021730124950409"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>moroccan</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Moroccan" resourceName="MOROCCAN_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.6953675746917725" y="0.0" z="-0.4021730124950409"/>
+            <Max x="0.6953675746917725" y="2.264106035232544" z="0.4021730124950409"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>moroccan</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

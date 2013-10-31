@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Teacup">
+    <BoundingBox>
+        <Min x="-0.10234836488962173" y="6.441271398216486E-4" z="-0.10759644210338593"/>
+        <Max x="0.10234609991312027" y="0.13852547109127045" z="0.15301254391670227"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>cup</Tag>
+        <Tag>tea</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland:tea set</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Teacup" resourceName="CHESHIRE_CAT" textureName="CHESHIRE_CAT"/>
+    <Resource modelName="Teacup" resourceName="MAD_HATTER" textureName="MAD_HATTER"/>
+    <Resource modelName="Teacup" resourceName="MARCH_HARE" textureName="MARCH_HARE"/>
+    <Resource modelName="Teacup" resourceName="PLAYING_CARD" textureName="PLAYING_CARD"/>
+    <Resource modelName="Teacup" resourceName="QUEEN_OF_HEARTS" textureName="QUEEN_OF_HEARTS"/>
+    <Resource modelName="Teacup" resourceName="WHITE_RABBIT" textureName="WHITE_RABBIT"/>
+</AliceModel>

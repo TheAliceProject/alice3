@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="JapaneseCypress">
+    <BoundingBox>
+        <Min x="-2.382000207901001" y="-0.0160200297832489" z="-0.75384521484375"/>
+        <Max x="2.294160842895508" y="4.087526321411133" z="1.267223596572876"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="JapaneseCypress" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

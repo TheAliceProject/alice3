@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Caiman">
+    <BoundingBox>
+        <Min x="-0.6374425888061523" y="-0.007369242142885923" z="-1.5024349689483643"/>
+        <Max x="0.6374425888061523" y="0.9295142889022827" z="3.035393714904785"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>river</Tag>
+        <Tag>alligator</Tag>
+        <Tag>crocodile</Tag>
+        <Tag>reptile</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Caiman" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

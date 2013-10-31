@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="BigBadWolf">
+    <BoundingBox>
+        <Min x="-0.4196416735649109" y="0.0012373427161946893" z="-0.8043656945228577"/>
+        <Max x="0.420415997505188" y="1.6622627973556519" z="0.5318676233291626"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wolf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BigBadWolf" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

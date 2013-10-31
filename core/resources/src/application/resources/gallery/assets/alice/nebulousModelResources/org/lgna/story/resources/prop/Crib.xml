@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Crib">
+    <BoundingBox>
+        <Min x="-0.6513413190841675" y="0.0" z="-0.3802316188812256"/>
+        <Max x="0.6513413190841675" y="1.0213103294372559" z="0.3802316188812256"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>crib</Tag>
+        <Tag>baby</Tag>
+        <Tag>toddler</Tag>
+        <Tag>bed</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bedroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bedroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Crib" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="Crib" resourceName="PINK" textureName="PINK"/>
+    <Resource modelName="Crib" resourceName="YELLOW" textureName="YELLOW"/>
+    <Resource modelName="Crib" resourceName="CAMO" textureName="CAMO"/>
+    <Resource modelName="Crib" resourceName="ORANGE_CAMO" textureName="ORANGE_CAMO"/>
+    <Resource modelName="Crib" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

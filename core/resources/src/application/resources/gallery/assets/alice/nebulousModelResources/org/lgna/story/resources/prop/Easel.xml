@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Easel">
+    <BoundingBox>
+        <Min x="-0.26696887612342834" y="0.0" z="-0.3656730055809021"/>
+        <Max x="0.26696887612342834" y="2.2485504150390625" z="0.3656730055809021"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>painting</Tag>
+        <Tag>art</Tag>
+        <Tag>stand</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Easel" resourceName="EASEL" textureName="EASEL"/>
+</AliceModel>

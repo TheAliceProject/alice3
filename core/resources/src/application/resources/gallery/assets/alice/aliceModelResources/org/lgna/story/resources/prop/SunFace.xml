@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="SunFace">
+    <BoundingBox>
+        <Min x="-1.6014307737350464" y="-1.5318323373794556" z="-1.0166817903518677"/>
+        <Max x="1.6014307737350464" y="1.7051246166229248" z="0.8971097469329834"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>sun</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SunFace" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

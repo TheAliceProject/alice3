@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingNet">
+    <BoundingBox>
+        <Min x="-0.6123939752578735" y="-2.237319858977571E-4" z="-0.6053900122642517"/>
+        <Max x="0.6123940348625183" y="0.9091851711273193" z="0.6053900122642517"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+        <Tag>net</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingNet" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

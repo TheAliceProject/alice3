@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="John DeRiggi" name="Plateau">
+    <BoundingBox>
+        <Min x="-0.948185920715332" y="0.0026398501358926296" z="-0.8068328499794006"/>
+        <Max x="0.9881019592285156" y="2.544382333755493" z="0.8345588445663452"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>rock</Tag>
+        <Tag>cliff</Tag>
+        <Tag>mars</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tall" resourceName="TALL_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.7728546261787415" y="0.0026398501358926296" z="-0.6390718221664429"/>
+            <Max x="0.8814802169799805" y="2.544382333755493" z="0.6121779680252075"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.7728546261787415" y="0.0026398501358926296" z="-0.6390718221664429"/>
+            <Max x="0.8814802169799805" y="2.544382333755493" z="0.6121779680252075"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.7728546261787415" y="0.0026398501358926296" z="-0.6390718221664429"/>
+            <Max x="0.8814802169799805" y="2.544382333755493" z="0.6121779680252075"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.948185920715332" y="0.03743810951709747" z="-0.8068328499794006"/>
+            <Max x="0.9881019592285156" y="1.9616962671279907" z="0.8345588445663452"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.948185920715332" y="0.03743810951709747" z="-0.8068328499794006"/>
+            <Max x="0.9881019592285156" y="1.9616962671279907" z="0.8345588445663452"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.948185920715332" y="0.03743810951709747" z="-0.8068328499794006"/>
+            <Max x="0.9881019592285156" y="1.9616962671279907" z="0.8345588445663452"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

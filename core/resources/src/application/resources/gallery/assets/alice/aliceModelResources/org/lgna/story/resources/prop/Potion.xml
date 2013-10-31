@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Potion">
+    <BoundingBox>
+        <Min x="-0.09487941116094589" y="-3.3353001344949007E-4" z="-0.10845930129289627"/>
+        <Max x="0.09307250380516052" y="0.3847641348838806" z="0.11764577031135559"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>potion</Tag>
+        <Tag>ingredient</Tag>
+        <Tag>spell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Eyeballs" resourceName="EYEBALLS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08031682670116425" y="0.0" z="-0.08031682670116425"/>
+            <Max x="0.08031682670116425" y="0.21232783794403076" z="0.08031682670116425"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Yellow" resourceName="YELLOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0579412505030632" y="0.0" z="-0.0579412505030632"/>
+            <Max x="0.0579412505030632" y="0.21513614058494568" z="0.0579412505030632"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Green" resourceName="GREEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0579412505030632" y="0.0" z="-0.0579412505030632"/>
+            <Max x="0.0579412505030632" y="0.21513614058494568" z="0.0579412505030632"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Puce" resourceName="PUCE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07167816907167435" y="0.0" z="-0.07167816907167435"/>
+            <Max x="0.07167816907167435" y="0.2502042055130005" z="0.07167816907167435"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Jade" resourceName="JADE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08843731135129929" y="0.0" z="-0.08843731135129929"/>
+            <Max x="0.08843731135129929" y="0.3847641348838806" z="0.08843731135129929"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Orange" resourceName="ORANGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07012012600898743" y="-1.192092824453539E-8" z="-0.06748154759407043"/>
+            <Max x="0.07152092456817627" y="0.26876410841941833" z="0.06734368205070496"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Red" resourceName="RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.09307250380516052" y="0.0" z="-0.09307250380516052"/>
+            <Max x="0.09307250380516052" y="0.21513614058494568" z="0.09307250380516052"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ruby" resourceName="RUBY" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07679491490125656" y="0.0" z="-0.07679491490125656"/>
+            <Max x="0.07679491490125656" y="0.3154693841934204" z="0.11764577031135559"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SpringGreen" resourceName="SPRING_GREEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07679491490125656" y="0.0" z="-0.10845930129289627"/>
+            <Max x="0.07679491490125656" y="0.3154693841934204" z="0.11015895009040833"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SmallPuce" resourceName="SMALL_PUCE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.09487941116094589" y="0.0" z="-0.09559796750545502"/>
+            <Max x="0.09307250380516052" y="0.2502042055130005" z="0.09559796750545502"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Pink" resourceName="PINK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.09051450341939926" y="0.0" z="-0.09252652525901794"/>
+            <Max x="0.0916464701294899" y="0.26469138264656067" z="0.09215456247329712"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blue" resourceName="BLUE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08155584335327148" y="0.0" z="-0.08155584335327148"/>
+            <Max x="0.08155584335327148" y="0.21232783794403076" z="0.08155584335327148"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crimson" resourceName="CRIMSON" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0523376502096653" y="0.0" z="-0.07914794981479645"/>
+            <Max x="0.0523376502096653" y="0.2665606439113617" z="0.07914794981479645"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fuchsia" resourceName="FUCHSIA" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0744902566075325" y="-3.3353001344949007E-4" z="-0.07468052953481674"/>
+            <Max x="0.07238148152828217" y="0.3156294822692871" z="0.07218781858682632"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Sapphire" resourceName="SAPPHIRE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08651018887758255" y="-1.5276999329216778E-4" z="-0.08161990344524384"/>
+            <Max x="0.0849035382270813" y="0.24260744452476501" z="0.07950257509946823"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="PineGreen" resourceName="PINE_GREEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0788179486989975" y="0.0" z="-0.07940693199634552"/>
+            <Max x="0.07739532738924026" y="0.24260744452476501" z="0.07950257509946823"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

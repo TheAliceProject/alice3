@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="WonderlandBush">
+    <BoundingBox>
+        <Min x="-0.35690683126449585" y="-0.031929321587085724" z="-0.3596276640892029"/>
+        <Max x="0.37638533115386963" y="0.829685628414154" z="0.3999728560447693"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>hedge</Tag>
+        <Tag>bush</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bush1" resourceName="BUSH1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.35690683126449585" y="-0.01374282781034708" z="-0.3429584503173828"/>
+            <Max x="0.35237982869148254" y="0.829685628414154" z="0.23618483543395996"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bush2" resourceName="BUSH2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.21000823378562927" y="-0.02182711474597454" z="-0.3333207964897156"/>
+            <Max x="0.34295958280563354" y="0.6848590970039368" z="0.28325337171554565"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bush3" resourceName="BUSH3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.34586212038993835" y="-0.031929321587085724" z="-0.3596276640892029"/>
+            <Max x="0.37638533115386963" y="0.6915762424468994" z="0.3999728560447693"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bush4" resourceName="BUSH4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2261418253183365" y="-0.027609100565314293" z="-0.24725493788719177"/>
+            <Max x="0.2262076884508133" y="0.5834404230117798" z="0.20513153076171875"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

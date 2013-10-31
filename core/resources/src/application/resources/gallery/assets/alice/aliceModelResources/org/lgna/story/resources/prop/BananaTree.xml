@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="BananaTree">
+    <BoundingBox>
+        <Min x="-1.1295524835586548" y="-0.003663073992356658" z="-1.0243178606033325"/>
+        <Max x="1.105332612991333" y="2.3656938076019287" z="1.0070687532424927"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>fruit</Tag>
+        <Tag>plantain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon:bananatree</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BananaTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

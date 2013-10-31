@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="StoneBridge">
+    <BoundingBox>
+        <Min x="-1.5166058540344238" y="0.0" z="-0.691739559173584"/>
+        <Max x="1.5166056156158447" y="0.8426601886749268" z="0.691739559173584"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>bridge</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="StoneBridge" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

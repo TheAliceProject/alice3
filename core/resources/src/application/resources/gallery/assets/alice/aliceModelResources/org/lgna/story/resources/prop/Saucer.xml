@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Saucer">
+    <BoundingBox>
+        <Min x="-0.1510433852672577" y="1.5980600437615067E-5" z="-0.1409633308649063"/>
+        <Max x="0.15104341506958008" y="0.046989552676677704" z="0.1409633308649063"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+        <Tag>saucer</Tag>
+        <Tag>tea</Tag>
+        <Tag>plate</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland:tea set</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Saucer" resourceName="CHESHIRE_CAT" textureName="CHESHIRE_CAT"/>
+    <Resource modelName="Saucer" resourceName="MAD_HATTER" textureName="MAD_HATTER"/>
+    <Resource modelName="Saucer" resourceName="MARCH_HARE" textureName="MARCH_HARE"/>
+    <Resource modelName="Saucer" resourceName="PLAYING_CARD" textureName="PLAYING_CARD"/>
+    <Resource modelName="Saucer" resourceName="QUEEN_OF_HEARTS" textureName="QUEEN_OF_HEARTS"/>
+    <Resource modelName="Saucer" resourceName="WHITE_RABBIT" textureName="WHITE_RABBIT"/>
+</AliceModel>

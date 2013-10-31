@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Iceberg">
+    <BoundingBox>
+        <Min x="-1.9220685958862305" y="-1.5258788721439487E-7" z="-1.6280381679534912"/>
+        <Max x="1.589150309562683" y="3.0771563053131104" z="2.289742946624756"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>iceberg</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Iceberg" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>
