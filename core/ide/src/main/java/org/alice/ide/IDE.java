@@ -42,7 +42,6 @@
  */
 package org.alice.ide;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -580,15 +579,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-
-	public java.util.Set<org.lgna.common.Resource> getResources() {
-		org.lgna.project.Project project = this.getProject();
-		if( project != null ) {
-			return project.getResources();
-		} else {
-			return null;
-		}
-	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
 	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;

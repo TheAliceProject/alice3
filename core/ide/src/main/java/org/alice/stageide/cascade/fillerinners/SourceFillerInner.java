@@ -61,19 +61,22 @@ public abstract class SourceFillerInner<R extends org.lgna.common.Resource> exte
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.Set<org.lgna.common.Resource> resources = ide.getResources();
-		if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
-			int prevRvSize = items.size();
-			synchronized( resources ) {
-				for( org.lgna.common.Resource resource : resources ) {
-					if( this.resourceCls.isAssignableFrom( resource.getClass() ) ) {
-						R r = (R)resource;
-						items.add( this.getResourceFillIn( r ) );
+		org.lgna.project.Project project = ide.getProject();
+		if( project != null ) {
+			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+			if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
+				int prevRvSize = items.size();
+				synchronized( resources ) {
+					for( org.lgna.common.Resource resource : resources ) {
+						if( this.resourceCls.isAssignableFrom( resource.getClass() ) ) {
+							R r = (R)resource;
+							items.add( this.getResourceFillIn( r ) );
+						}
 					}
 				}
-			}
-			if( prevRvSize < items.size() ) {
-				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				if( prevRvSize < items.size() ) {
+					items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				}
 			}
 		}
 		items.add( this.getImportFillIn() );
