@@ -103,28 +103,25 @@ public class ApplicationRoot {
 	public static java.io.File getArchitectureSpecificDirectory() {
 		StringBuilder sb = new StringBuilder();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			sb.append( "macosx-universal" );
+			sb.append( "macosx" );
 		} else {
 			Integer bitCount = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBitCount();
 			if( bitCount != null ) {
-				String bitCountText;
-				switch( bitCount ) {
-				case 32:
-					bitCountText = "i586/";
-					break;
-				case 64:
-					bitCountText = "amd64/";
-					break;
-				default:
-					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-				}
-
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-					sb.append( "windows-" );
-					sb.append( bitCountText );
+					sb.append( "win" );
+					sb.append( bitCount );
 				} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 					sb.append( "linux-" );
-					sb.append( bitCountText );
+					switch( bitCount ) {
+					case 32:
+						sb.append( "i586/" );
+						break;
+					case 64:
+						sb.append( "amd64/" );
+						break;
+					default:
+						throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+					}
 				} else {
 					throw new RuntimeException( System.getProperty( "os.name" ) );
 				}
@@ -134,7 +131,6 @@ public class ApplicationRoot {
 		}
 		return new java.io.File( getPlatformDirectory(), sb.toString() );
 	}
-
 	//	public static java.io.File getCommand( String subPath ) {
 	//		StringBuilder sb = new StringBuilder();
 	//		sb.append( subPath );

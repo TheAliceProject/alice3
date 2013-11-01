@@ -94,16 +94,16 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 
 	private java.io.File getFFmpegFileIfNotExecutable() {
 		java.io.File fileKnownToBeNotExecuable;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			fileKnownToBeNotExecuable = null;
-		} else {
-			String command = FFmpegProcess.getFFmpegCommand();
+		if( FFmpegProcess.isArchitectureSpecificCommandAbsolute() ) {
+			String command = FFmpegProcess.getArchitectureSpecificCommand();
 			java.io.File file = new java.io.File( command );
 			if( file.exists() ) {
 				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
 			} else {
 				fileKnownToBeNotExecuable = null;
 			}
+		} else {
+			fileKnownToBeNotExecuable = null;
 		}
 		return fileKnownToBeNotExecuable;
 	}
