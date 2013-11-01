@@ -333,15 +333,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 
-	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
-		rv.append( "Please Submit Bug Report: " );
-		this.updateTitlePrefix( rv );
-		return rv;
-	}
-
 	private String getBugReportSubmissionTitle() {
 		StringBuffer sb = new StringBuffer();
-		updateBugReportSubmissionTitle( sb );
+		sb.append( "Please Submit Bug Report: " );
+		sb.append( getApplicationName() );
 		return sb.toString();
 	}
 

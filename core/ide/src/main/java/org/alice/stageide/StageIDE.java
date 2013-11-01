@@ -71,6 +71,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		} );
 	}
 
+	@Override
+	protected org.alice.ide.frametitle.IdeFrameTitleGenerator createFrameTitleGenerator() {
+		return new org.alice.ide.frametitle.AliceIdeFrameTitleGenerator();
+	}
+
 	@Deprecated
 	public org.lgna.project.ast.UserField getSceneField() {
 		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( this.getProgramType() );

@@ -262,36 +262,17 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
-		rv.append( getApplicationName() );
-		rv.append( " " );
-		rv.append( getVersionAdornment() );
-		rv.append( " " );
-		return rv;
-	}
+	private org.alice.ide.frametitle.IdeFrameTitleGenerator frameTitleGenerator;
 
-	protected StringBuffer updateTitle( StringBuffer rv ) {
-		this.updateTitlePrefix( rv );
-		java.net.URI uri = this.getUri();
-		if( uri != null ) {
-			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-			if( file != null ) {
-				rv.append( file );
-			}
-			rv.append( " " );
-		}
-		if( this.isProjectUpToDateWithFile() ) {
-			//pass
-		} else {
-			rv.append( "*" );
-		}
-		return rv;
-	}
+	protected abstract org.alice.ide.frametitle.IdeFrameTitleGenerator createFrameTitleGenerator();
 
 	protected final void updateTitle() {
-		StringBuffer sb = new StringBuffer();
-		this.updateTitle( sb );
-		this.getFrame().setTitle( sb.toString() );
+		if( frameTitleGenerator != null ) {
+			//pass
+		} else {
+			this.frameTitleGenerator = this.createFrameTitleGenerator();
+		}
+		this.getFrame().setTitle( this.frameTitleGenerator.generateTitle( this.getUri(), this.isProjectUpToDateWithFile() ) );
 	}
 
 	@Override
@@ -416,10 +397,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();
 	}
-
-	//	public final void saveProjectTo( String path ) throws java.io.IOException {
-	//		saveProjectTo( new java.io.File( path ) );
-	//	}
 
 	public java.io.File getMyProjectsDirectory() {
 		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
