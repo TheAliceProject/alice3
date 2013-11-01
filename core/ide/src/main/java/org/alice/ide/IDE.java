@@ -74,7 +74,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
-		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Please Submit Bug Report: " );
+		sb.append( getApplicationName() );
+		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
@@ -332,13 +335,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
-
-	private String getBugReportSubmissionTitle() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Please Submit Bug Report: " );
-		sb.append( getApplicationName() );
-		return sb.toString();
-	}
 
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if( this.potentialDropReceptorsStencil == null ) {

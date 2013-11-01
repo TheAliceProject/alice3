@@ -52,7 +52,7 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 	}
 
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
-		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
+		return org.alice.ide.croquet.models.AliceMenuBar.getInstance();
 	}
 
 	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();
