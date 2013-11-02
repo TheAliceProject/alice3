@@ -132,7 +132,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
 				this.rgbs = new int[ width * height ];
 			}
 
-			java.nio.ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].getSize() );
+			java.nio.ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].size() );
 			java.nio.IntBuffer intBuffer = byteBuffer.asIntBuffer();
 			intBuffer.get( this.rgbs, 0, bufferFormat.getHeight() * bufferFormat.getWidth() );
 
