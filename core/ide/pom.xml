@@ -42,7 +42,7 @@
 			<version>${alice.gallery.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.alice</groupId>
+			<groupId>org.alice.nonfree</groupId>
 			<artifactId>nebulous-model-source</artifactId>
 			<version>${alice.gallery.version}</version>
 		</dependency>
@@ -81,6 +81,13 @@
 			<groupId>com.google.gdata</groupId>
 			<artifactId>core</artifactId>
 			<version>1.47.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.sun.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.0.9</version>
 		</dependency>
 	</dependencies>
 
