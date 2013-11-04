@@ -195,7 +195,16 @@ public class SystemUtilities {
 
 	public static void loadLibrary( String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle ) {
 		java.io.File directory = new java.io.File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
-		java.io.File file = new java.io.File( directory, System.mapLibraryName( libraryName ) );
+		String filename = System.mapLibraryName( libraryName );
+		if( isMac() ) {
+			//todo
+			final String DYLIB_EXT = "dylib";
+			if( filename.endsWith( DYLIB_EXT ) ) {
+				final String JNILIB_EXT = "jnilib";
+				filename = filename.substring( 0, filename.length() - DYLIB_EXT.length() ) + JNILIB_EXT;
+			}
+		}
+		java.io.File file = new java.io.File( directory, filename );
 		if( file.exists() ) {
 			System.load( file.getAbsolutePath() );
 		} else {
