@@ -25,7 +25,7 @@ begin
   WORKING_DIR = ARGV[0]
   SETTINGS_DIR = ARGV[1]
 
-  SETTING_FILES = [ "org.eclipse.jdt.core.prefs", "org.eclipse.jdt.ui.prefs", "org.eclipse.mylyn.tasks.ui.prefs", "org.eclipse.mylyn.team.ui.prefs" ]
+  SETTING_FILES = [ "org.eclipse.jdt.core.prefs", "org.eclipse.jdt.ui.prefs" ]
 
   process_dir( WORKING_DIR )
 end
