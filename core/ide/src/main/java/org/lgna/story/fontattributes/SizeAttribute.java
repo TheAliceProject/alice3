@@ -41,23 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SizeValue implements SizeAttribute {
-	private Float m_value;
-
-	public SizeValue( Float value ) {
-		m_value = value;
-	}
-
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.SIZE;
-	}
-
-	public Float getValue() {
-		return m_value;
-	}
+public interface SizeAttribute extends Attribute<Float> {
 }

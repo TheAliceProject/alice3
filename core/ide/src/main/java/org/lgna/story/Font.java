@@ -43,15 +43,15 @@
 
 package org.lgna.story;
 
-import org.lgna.story.font.Attribute;
-import org.lgna.story.font.FamilyAttribute;
-import org.lgna.story.font.FamilyConstant;
-import org.lgna.story.font.PostureAttribute;
-import org.lgna.story.font.PostureConstant;
-import org.lgna.story.font.SizeAttribute;
-import org.lgna.story.font.SizeValue;
-import org.lgna.story.font.WeightAttribute;
-import org.lgna.story.font.WeightConstant;
+import org.lgna.story.fontattributes.Attribute;
+import org.lgna.story.fontattributes.FamilyAttribute;
+import org.lgna.story.fontattributes.FamilyConstant;
+import org.lgna.story.fontattributes.PostureAttribute;
+import org.lgna.story.fontattributes.PostureConstant;
+import org.lgna.story.fontattributes.SizeAttribute;
+import org.lgna.story.fontattributes.SizeValue;
+import org.lgna.story.fontattributes.WeightAttribute;
+import org.lgna.story.fontattributes.WeightConstant;
 
 /**
  * @author Dennis Cosgrove

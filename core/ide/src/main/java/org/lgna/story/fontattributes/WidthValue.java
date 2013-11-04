@@ -41,20 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PostureValue implements PostureAttribute {
+public class WidthValue implements WidthAttribute {
 	private Float m_value;
 
-	public PostureValue( Float value ) {
+	public WidthValue( Float value ) {
 		m_value = value;
 	}
 
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.POSTURE;
+		return java.awt.font.TextAttribute.WIDTH;
 	}
 
 	public Float getValue() {

@@ -41,23 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WeightValue implements WeightAttribute {
-	private Float m_value;
-
-	public WeightValue( Float value ) {
-		m_value = value;
-	}
-
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WEIGHT;
-	}
-
-	public Float getValue() {
-		return m_value;
-	}
+public interface WidthAttribute extends Attribute<Float> {
 }

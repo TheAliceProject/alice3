@@ -41,10 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface PostureAttribute extends Attribute<Float> {
+public enum FamilyConstant implements FamilyAttribute {
+	SERIF( "Serif" ),
+	SANS_SERIF( "SansSerif" );
+	private String m_value;
+
+	private FamilyConstant( String value ) {
+		m_value = value;
+	}
+
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.FAMILY;
+	}
+
+	public String getValue() {
+		return m_value;
+	}
 }

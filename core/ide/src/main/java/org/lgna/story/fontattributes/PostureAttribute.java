@@ -41,13 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Attribute<E> {
-	public java.awt.font.TextAttribute getKey();
-
-	public E getValue();
+public interface PostureAttribute extends Attribute<Float> {
 }

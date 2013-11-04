@@ -41,10 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface WeightAttribute extends Attribute<Float> {
+public interface FamilyAttribute extends Attribute<String> {
 }

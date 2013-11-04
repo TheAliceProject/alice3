@@ -41,23 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WidthValue implements WidthAttribute {
-	private Float m_value;
+public interface Attribute<E> {
+	public java.awt.font.TextAttribute getKey();
 
-	public WidthValue( Float value ) {
-		m_value = value;
-	}
-
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WIDTH;
-	}
-
-	public Float getValue() {
-		return m_value;
-	}
+	public E getValue();
 }

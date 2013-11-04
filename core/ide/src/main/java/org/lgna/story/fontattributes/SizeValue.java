@@ -41,22 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum PostureConstant implements PostureAttribute {
-	REGULAR( java.awt.font.TextAttribute.POSTURE_REGULAR ),
-	OBLIQUE( java.awt.font.TextAttribute.POSTURE_OBLIQUE );
+public class SizeValue implements SizeAttribute {
 	private Float m_value;
 
-	private PostureConstant( Float value ) {
+	public SizeValue( Float value ) {
 		m_value = value;
 	}
 
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.POSTURE;
+		return java.awt.font.TextAttribute.SIZE;
 	}
 
 	public Float getValue() {

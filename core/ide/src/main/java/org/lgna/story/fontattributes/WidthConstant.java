@@ -41,23 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FamilyValue implements FamilyAttribute {
-	private String m_value;
+public enum WidthConstant implements WidthAttribute {
+	CONDENSED( java.awt.font.TextAttribute.WIDTH_CONDENSED ),
+	SEMI_CONDENSED( java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED ),
+	REGULAR( java.awt.font.TextAttribute.WIDTH_REGULAR ),
+	SEMI_EXTENDED( java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED ),
+	EXTENDED( java.awt.font.TextAttribute.WIDTH_EXTENDED );
+	private Float m_value;
 
-	public FamilyValue( String value ) {
+	private WidthConstant( Float value ) {
 		m_value = value;
 	}
 
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.FAMILY;
+		return java.awt.font.TextAttribute.WIDTH;
 	}
 
-	public String getValue() {
+	public Float getValue() {
 		return m_value;
 	}
 }

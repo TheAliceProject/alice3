@@ -41,33 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.font;
+package org.lgna.story.fontattributes;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum WeightConstant implements WeightAttribute {
-	EXTRA_LIGHT( java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT ),
-	LIGHT( java.awt.font.TextAttribute.WEIGHT_LIGHT ),
-	DEMILIGHT( java.awt.font.TextAttribute.WEIGHT_DEMILIGHT ),
-	REGULAR( java.awt.font.TextAttribute.WEIGHT_REGULAR ),
-	SEMIBOLD(
-			java.awt.font.TextAttribute.WEIGHT_SEMIBOLD ),
-	MEDIUM( java.awt.font.TextAttribute.WEIGHT_MEDIUM ),
-	DEMIBOLD( java.awt.font.TextAttribute.WEIGHT_DEMIBOLD ),
-	BOLD( java.awt.font.TextAttribute.WEIGHT_BOLD ),
-	HEAVY(
-			java.awt.font.TextAttribute.WEIGHT_HEAVY ),
-	EXTRABOLD( java.awt.font.TextAttribute.WEIGHT_EXTRABOLD ),
-	ULTRABOLD( java.awt.font.TextAttribute.WEIGHT_ULTRABOLD );
+public class PostureValue implements PostureAttribute {
 	private Float m_value;
 
-	private WeightConstant( Float value ) {
+	public PostureValue( Float value ) {
 		m_value = value;
 	}
 
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WEIGHT;
+		return java.awt.font.TextAttribute.POSTURE;
 	}
 
 	public Float getValue() {
