@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
+public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
@@ -72,12 +72,12 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 				} else {
 					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
 				}
-				AbstractTabbedPane.this.handleValueChanged( card );
+				TabbedPane.this.handleValueChanged( card );
 			}
 		}
 	};
 
-	public AbstractTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
+	public TabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 

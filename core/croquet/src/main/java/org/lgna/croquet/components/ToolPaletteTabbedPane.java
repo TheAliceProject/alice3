@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends TabbedPane<E> {
 
 	private static class AccordionLayoutManager implements java.awt.LayoutManager {
 		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();

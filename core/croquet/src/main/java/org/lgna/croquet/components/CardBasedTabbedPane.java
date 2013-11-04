@@ -47,7 +47,7 @@ import org.lgna.croquet.TabSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends TabbedPane<E> {
 	private static final class FolderTabbedPaneCardOwner extends org.lgna.croquet.CardOwnerComposite {
 		public FolderTabbedPaneCardOwner() {
 			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
@@ -56,7 +56,7 @@ public abstract class AbstractFolderTabbedPane<E extends org.lgna.croquet.TabCom
 
 	private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
 
-	public AbstractFolderTabbedPane( TabSelectionState<E> model ) {
+	public CardBasedTabbedPane( TabSelectionState<E> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
 			if( card != null ) {

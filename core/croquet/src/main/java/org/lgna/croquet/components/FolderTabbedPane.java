@@ -52,7 +52,7 @@ import org.lgna.croquet.TabSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractFolderTabbedPane<E> {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends CardBasedTabbedPane<E> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 

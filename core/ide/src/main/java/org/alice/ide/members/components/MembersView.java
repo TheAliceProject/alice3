@@ -212,7 +212,7 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		//		this.addPageStartComponent( instancePanel );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		this.addPageStartComponent( instanceFactoryPopupButton );
-		org.lgna.croquet.components.AbstractTabbedPane<?> tabbedPane;
+		org.lgna.croquet.components.TabbedPane<?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			tabbedPane = composite.getTabState().createFolderTabbedPane();
 		} else {
