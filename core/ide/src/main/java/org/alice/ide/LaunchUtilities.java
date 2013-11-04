@@ -49,7 +49,7 @@ public class LaunchUtilities {
 	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
-	private static void preLaunch( final java.awt.Window splashScreen ) {
+	private static void preLaunch() {
 		if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
 			final Object macMenuBarUI;
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -78,30 +78,10 @@ public class LaunchUtilities {
 		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
-		if( splashScreen != null ) {
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.LaunchUtilities.isSupressionOfSplashScreenDesired" ) ) {
-				//pass
-			} else {
-				try {
-					javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
-						public void run() {
-							splashScreen.setVisible( true );
-							splashScreen.toBack();
-							splashScreen.repaint();
-						}
-					} );
-				} catch( InterruptedException ie ) {
-					ie.printStackTrace();
-				} catch( java.lang.reflect.InvocationTargetException ite ) {
-					ite.printStackTrace();
-				}
-			}
-		}
-
 		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
 	}
 
-	private static Runnable createRunnable( final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
+	private static Runnable createRunnable( final String[] args, final boolean isVisible ) {
 		return new Runnable() {
 			public void run() {
 				IDE ide = IDE.getActiveInstance();
@@ -146,7 +126,6 @@ public class LaunchUtilities {
 				if( isMaximizationDesired ) {
 					ide.getFrame().maximize();
 				}
-				ide.setSplashScreen( splashScreen );
 				ide.initialize( args );
 				ide.getFrame().setVisible( isVisible );
 
@@ -157,25 +136,24 @@ public class LaunchUtilities {
 		};
 	}
 
-	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
-		preLaunch( splashScreen );
+	public static void launch( final Class<? extends IDE> cls, final String[] args ) {
+		preLaunch();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				//				CreateIdeOperation createIdeOperation = CreateIdeOperation.getInstance( cls );
 				//				createIdeOperation.fire();
 				IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
-				Runnable runnable = createRunnable( splashScreen, args, true );
+				Runnable runnable = createRunnable( args, true );
 				runnable.run();
 			}
 		} );
 	}
 
-	public static <I extends IDE> I launchAndWait( final Class<I> cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
-		preLaunch( splashScreen );
+	public static <I extends IDE> I launchAndWait( final Class<I> cls, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+		preLaunch();
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
-		Runnable runnable = createRunnable( splashScreen, args, isVisible );
+		Runnable runnable = createRunnable( args, isVisible );
 		javax.swing.SwingUtilities.invokeAndWait( runnable );
 		return cls.cast( IDE.getActiveInstance() );
 	}
-
 }
