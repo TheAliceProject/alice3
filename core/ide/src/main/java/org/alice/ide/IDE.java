@@ -42,7 +42,6 @@
  */
 package org.alice.ide;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -75,7 +74,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
-		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Please Submit Bug Report: " );
+		sb.append( getApplicationName() );
+		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
@@ -334,18 +336,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 
-	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
-		rv.append( "Please Submit Bug Report: " );
-		this.updateTitlePrefix( rv );
-		return rv;
-	}
-
-	private String getBugReportSubmissionTitle() {
-		StringBuffer sb = new StringBuffer();
-		updateBugReportSubmissionTitle( sb );
-		return sb.toString();
-	}
-
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if( this.potentialDropReceptorsStencil == null ) {
 			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
@@ -580,15 +570,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-
-	public java.util.Set<org.lgna.common.Resource> getResources() {
-		org.lgna.project.Project project = this.getProject();
-		if( project != null ) {
-			return project.getResources();
-		} else {
-			return null;
-		}
-	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
 	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;

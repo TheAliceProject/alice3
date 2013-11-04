@@ -1,1 +1,0 @@
-Linux users must already have a JRE installed to run Alice.

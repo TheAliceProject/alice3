@@ -57,16 +57,19 @@ public abstract class ResourceFillerInner<R extends org.lgna.common.Resource> ex
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.Set<org.lgna.common.Resource> resources = ide.getResources();
-		if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
-			synchronized( resources ) {
-				for( org.lgna.common.Resource resource : resources ) {
-					if( this.getType().isAssignableFrom( resource.getClass() ) ) {
-						items.add( this.getResourceExpressionFillIn( (R)resource ) );
+		org.lgna.project.Project project = ide.getProject();
+		if( project != null ) {
+			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+			if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
+				synchronized( resources ) {
+					for( org.lgna.common.Resource resource : resources ) {
+						if( this.getType().isAssignableFrom( resource.getClass() ) ) {
+							items.add( this.getResourceExpressionFillIn( (R)resource ) );
+						}
 					}
 				}
+				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 		items.add( this.getImportNewResourceFillIn() );
 	}

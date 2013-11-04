@@ -7,6 +7,11 @@ BASE.*
 *.DS_Store
 .*.swp
 hs_*.log
+
+# m2eclipse
+/.classpath
+/.project
+/.settings
 /target
 
 # Ignore these projects from Looking Glass so that people don't add these files to the Alice repository by mistake.

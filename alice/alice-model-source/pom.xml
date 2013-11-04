@@ -5,21 +5,58 @@
 	<groupId>org.alice</groupId>
 	<artifactId>alice-model-source</artifactId>
 	<version>2013.08.08</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<name>Alice Model Source</name>
 
 	<!-- Deploy Command -->
-	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=aliceModelSource.jar -DrepositoryId=org.alice -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/alice -->
+	<!-- mvn deploy -->
+
+	<distributionManagement>
+		<repository>
+			<id>org.alice</id>
+			<name>Alice Repository</name>
+			<url>scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/alice</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>1.0</version>
-			</extension>
-		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.artifactId}-${project.version}.jar</file>
+									<type>jar</type>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh</artifactId>
+						<version>1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

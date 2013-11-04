@@ -51,6 +51,7 @@ public class VideoUtilities {
 		try {
 			rv = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
 		} catch( Throwable t ) {
+			t.printStackTrace();
 			rv = null;
 		}
 		if( rv != null ) {

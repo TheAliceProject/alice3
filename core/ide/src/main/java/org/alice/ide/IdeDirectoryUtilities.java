@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class IdeDirectoryUtilities {
-	private static final String SOUND_GALLERY_NAME = "soundGallery";
+	private static final String SOUND_GALLERY_NAME = "sound-gallery";
 
 	private IdeDirectoryUtilities() {
 		throw new AssertionError();
@@ -64,7 +64,7 @@ public class IdeDirectoryUtilities {
 	}
 
 	public static java.io.File getInstallDirectory() {
-		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.IDE.install.dir" );
+		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.rootDirectory" );
 		if( rv != null ) {
 			//pass
 		} else {

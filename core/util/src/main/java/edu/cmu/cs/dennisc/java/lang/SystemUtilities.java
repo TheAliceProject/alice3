@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.app.ApplicationRoot;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -191,57 +193,70 @@ public class SystemUtilities {
 		return true;
 	}
 
-	public static void loadPlatformSpecific( String libraryName ) {
-		String postfix;
-		StringBuilder sb = new StringBuilder();
-		if( isMac() ) {
-			sb.append( "macosx-universal/lib" );
-			postfix = ".jnilib";
+	public static void loadLibrary( String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle ) {
+		java.io.File directory = new java.io.File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
+		java.io.File file = new java.io.File( directory, System.mapLibraryName( libraryName ) );
+		if( file.exists() ) {
+			System.load( file.getAbsolutePath() );
 		} else {
-			Integer bitCount = getBitCount();
-			if( bitCount != null ) {
-				String bitCountText;
-				switch( bitCount ) {
-				case 32:
-					bitCountText = "i586/";
-					break;
-				case 64:
-					bitCountText = "amd64/";
-					break;
-				default:
-					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-				}
-
-				if( isWindows() ) {
-					sb.append( "windows-" );
-					sb.append( bitCountText );
-					postfix = ".dll";
-				} else if( isLinux() ) {
-					sb.append( "linux-" );
-					sb.append( bitCountText );
-					sb.append( "lib" );
-					postfix = ".so";
-				} else {
-					throw new RuntimeException( System.getProperty( "os.name" ) );
-				}
-			} else {
-				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-			}
+			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find:", file );
+			//			edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( libName );
+			System.loadLibrary( libraryName );
 		}
-		sb.append( libraryName );
-		sb.append( postfix );
-		String subpath = sb.toString();
-		String[] libraryDirectoryPaths = getLibraryPath();
-		for( String libraryDirectoryPath : libraryDirectoryPaths ) {
-			java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
-			java.io.File file = new java.io.File( libraryDirectory, subpath );
-			if( file.exists() ) {
-				System.load( file.getAbsolutePath() );
-				return;
-			}
-		}
-		System.loadLibrary( libraryName );
 	}
+
+	//	@Deprecated
+	//	public static void loadPlatformSpecific( String libraryName ) {
+	//		String postfix;
+	//		StringBuilder sb = new StringBuilder();
+	//		if( isMac() ) {
+	//			sb.append( "macosx-universal/lib" );
+	//			postfix = ".jnilib";
+	//		} else {
+	//			Integer bitCount = getBitCount();
+	//			if( bitCount != null ) {
+	//				String bitCountText;
+	//				switch( bitCount ) {
+	//				case 32:
+	//					bitCountText = "i586/";
+	//					break;
+	//				case 64:
+	//					bitCountText = "amd64/";
+	//					break;
+	//				default:
+	//					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+	//				}
+	//
+	//				if( isWindows() ) {
+	//					sb.append( "windows-" );
+	//					sb.append( bitCountText );
+	//					postfix = ".dll";
+	//				} else if( isLinux() ) {
+	//					sb.append( "linux-" );
+	//					sb.append( bitCountText );
+	//					sb.append( "lib" );
+	//					postfix = ".so";
+	//				} else {
+	//					throw new RuntimeException( System.getProperty( "os.name" ) );
+	//				}
+	//			} else {
+	//				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+	//			}
+	//		}
+	//		sb.append( libraryName );
+	//		sb.append( postfix );
+	//		String subpath = sb.toString();
+	//		String[] libraryDirectoryPaths = getLibraryPath();
+	//		for( String libraryDirectoryPath : libraryDirectoryPaths ) {
+	//			java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
+	//			java.io.File file = new java.io.File( libraryDirectory, subpath );
+	//			if( file.exists() ) {
+	//				System.load( file.getAbsolutePath() );
+	//				return;
+	//			}
+	//		}
+	//		System.loadLibrary( libraryName );
+	//	}
 
 	public static boolean areIconsDisplayedInMenus() {
 		return true;

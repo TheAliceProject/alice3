@@ -46,18 +46,10 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	private static class SingletonHolder {
-		private static MenuBarComposite instance = new MenuBarComposite();
-	}
-
-	public static MenuBarComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private MenuBarComposite() {
+public abstract class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
+	public MenuBarComposite( org.lgna.croquet.Operation... uploadOperations ) {
 		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addItem( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
+		this.addItem( new org.alice.ide.croquet.models.menubar.FileMenuModel( uploadOperations ) );
 		this.addItem( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
 		this.addItem( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
 		this.addItem( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );

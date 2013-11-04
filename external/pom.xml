@@ -36,8 +36,4 @@
 		</plugins>
 	</build>
 
-	<modules>
-		<module>wrapped-flow-layout</module>
-	</modules>
-
 </project>

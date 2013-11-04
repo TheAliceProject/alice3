@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
+	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels( org.lgna.croquet.Operation... uploadOperations ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
 				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
@@ -56,14 +56,18 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				//				org.alice.media.ExportToYouTubeWizardDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				new org.alice.ide.youtube.croquet.UploadOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance(),
-				CaptureMenuModel.getInstance()
+				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel()
 				);
+
+		if( uploadOperations.length > 0 ) {
+			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
+			for( org.lgna.croquet.Operation operation : uploadOperations ) {
+				list.add( operation.getMenuItemPrepModel() );
+			}
+		}
+		list.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		list.add( PrintMenuModel.getInstance() );
+		list.add( CaptureMenuModel.getInstance() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//pass
 		} else {
@@ -73,15 +77,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 
-	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
-	}
-
-	public static FileMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+	public FileMenuModel( org.lgna.croquet.Operation... uploadOperations ) {
+		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels( uploadOperations ) );
 	}
 }

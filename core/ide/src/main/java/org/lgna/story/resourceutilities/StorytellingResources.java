@@ -62,7 +62,7 @@ public class StorytellingResources {
 	}
 
 	public static File getGalleryRootDirectory() {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "share/gallery" } );
+		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.rootDirectory", "user.dir" }, new String[] { "application/gallery" } );
 		if( ( rootGallery != null ) && rootGallery.exists() ) {
 			return rootGallery;
 		}
@@ -114,9 +114,18 @@ public class StorytellingResources {
 		return null;
 	}
 
+	private static String getPreference( String key, String def ) {
+		final boolean IS_IGNORING_PREFERENCES = false;
+		if( IS_IGNORING_PREFERENCES ) {
+			return null;
+		} else {
+			java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+			return rv.get( key, def );
+		}
+	}
+
 	private File getNebulousDirFromGalleryPref() {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		String dir = getPreference( GALLERY_DIRECTORY_PREF_KEY, "" );
 		if( ( dir != null ) && ( dir.length() > 0 ) ) {
 			return new File( dir, NEBULOUS_RESOURCE_INSTALL_PATH );
 		}
@@ -124,8 +133,7 @@ public class StorytellingResources {
 	}
 
 	private File getAliceDirFromGalleryPref() {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		String dir = getPreference( GALLERY_DIRECTORY_PREF_KEY, "" );
 		if( ( dir != null ) && ( dir.length() > 0 ) ) {
 			return new File( dir, ALICE_RESOURCE_INSTALL_PATH );
 		}
@@ -138,8 +146,7 @@ public class StorytellingResources {
 	}
 
 	public File getNebulousDirFromPref() {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-		String dir = rv.get( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		String dir = getPreference( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		if( ( dir != null ) && ( dir.length() > 0 ) ) {
 			return new File( dir );
 		}
@@ -158,8 +165,7 @@ public class StorytellingResources {
 	}
 
 	public File getAliceDirFromPref() {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-		String dir = rv.get( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		String dir = getPreference( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		if( ( dir != null ) && ( dir.length() > 0 ) ) {
 			return new File( dir );
 		}
@@ -174,8 +180,7 @@ public class StorytellingResources {
 	}
 
 	public File getGalleryDirFromPref() {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		String dir = getPreference( GALLERY_DIRECTORY_PREF_KEY, "" );
 		if( ( dir != null ) && ( dir.length() > 0 ) ) {
 			return new File( dir );
 		}

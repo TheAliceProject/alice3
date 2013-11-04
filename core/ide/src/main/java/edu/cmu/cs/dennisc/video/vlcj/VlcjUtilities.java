@@ -54,17 +54,38 @@ public class VlcjUtilities {
 			//pass
 		} else {
 			isInitializationAttempted = true;
-			try {
-				uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
-				if( nativeDiscovery.discover() ) {
-					//pass
+			String vlcLibraryName = uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName();
+			boolean isWorthAttemptingToLoad;
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+				isWorthAttemptingToLoad = true;
+			} else {
+				java.io.File archDirectory = edu.cmu.cs.dennisc.app.ApplicationRoot.getArchitectureSpecificDirectory();
+				java.io.File vlcDirectory = new java.io.File( archDirectory, "libvlc" );
+				java.io.File toBeSearchedDirectory;
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+					toBeSearchedDirectory = new java.io.File( vlcDirectory, "lib" );
 				} else {
-					System.err.println( "vlcj native discovery failed" );
+					toBeSearchedDirectory = vlcDirectory;
 				}
-				com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
-				isInitialized = true;
-			} catch( UnsatisfiedLinkError ule ) {
-				ule.printStackTrace();
+				if( toBeSearchedDirectory.exists() ) {
+					com.sun.jna.NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
+					isWorthAttemptingToLoad = true;
+				} else {
+					isWorthAttemptingToLoad = false;
+				}
+			}
+
+			if( isWorthAttemptingToLoad ) {
+				try {
+					com.sun.jna.Native.loadLibrary( vlcLibraryName, uk.co.caprica.vlcj.binding.LibVlc.class );
+					isInitialized = true;
+				} catch( UnsatisfiedLinkError ule ) {
+					//uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+					//isWorthAttemptingToLoad = nativeDiscovery.discover();
+					ule.printStackTrace();
+				}
+			} else {
+				System.err.println( "failed to discover vlc" );
 			}
 		}
 	}
