@@ -57,8 +57,7 @@ public class VlcjUtilities {
 			String vlcLibraryName = uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName();
 			boolean isWorthAttemptingToLoad;
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-				uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
-				isWorthAttemptingToLoad = nativeDiscovery.discover();
+				isWorthAttemptingToLoad = true;
 			} else {
 				java.io.File archDirectory = edu.cmu.cs.dennisc.app.ApplicationRoot.getArchitectureSpecificDirectory();
 				java.io.File vlcDirectory = new java.io.File( archDirectory, "libvlc" );
@@ -70,8 +69,6 @@ public class VlcjUtilities {
 				}
 				if( toBeSearchedDirectory.exists() ) {
 					com.sun.jna.NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
-					//java.io.File pluginsDirectory = new java.io.File( vlcDirectory, "plugins" );
-					//com.sun.jna.NativeLibrary.addSearchPath( vlcLibraryName, pluginsDirectory.getAbsolutePath() );
 					isWorthAttemptingToLoad = true;
 				} else {
 					isWorthAttemptingToLoad = false;
@@ -83,6 +80,8 @@ public class VlcjUtilities {
 					com.sun.jna.Native.loadLibrary( vlcLibraryName, uk.co.caprica.vlcj.binding.LibVlc.class );
 					isInitialized = true;
 				} catch( UnsatisfiedLinkError ule ) {
+					//uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+					//isWorthAttemptingToLoad = nativeDiscovery.discover();
 					ule.printStackTrace();
 				}
 			} else {
