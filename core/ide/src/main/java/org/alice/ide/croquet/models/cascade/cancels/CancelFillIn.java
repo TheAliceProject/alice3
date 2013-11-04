@@ -60,12 +60,12 @@ public abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel<F> 
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
 		return this.menuItemText;
 	}
 }

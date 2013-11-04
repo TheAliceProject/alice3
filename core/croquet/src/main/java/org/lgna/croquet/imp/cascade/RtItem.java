@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 import org.lgna.croquet.AbstractCascadeMenuModel;
 import org.lgna.croquet.CascadeBlank;
@@ -55,7 +55,7 @@ import org.lgna.croquet.CascadeSeparator;
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croquet.cascade.AbstractItemNode<F, B, M>> extends RtNode<M, C> {
+abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croquet.imp.cascade.AbstractItemNode<F, B, M>> extends RtNode<M, C> {
 	private final RtBlank<B>[] rtBlanks;
 	private final CascadeBlankChild<F> owner;
 	private final int index;
@@ -96,7 +96,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		return this.rtBlanks.length;
 	}
 
-	public org.lgna.croquet.cascade.BlankNode<B> getBlankStepAt( int i ) {
+	public org.lgna.croquet.imp.cascade.BlankNode<B> getBlankStepAt( int i ) {
 		return this.rtBlanks[ i ].getNode();
 	}
 
@@ -277,7 +277,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 	}
 }
 
-abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends org.lgna.croquet.cascade.BlankOwnerNode<F, B, M>> extends RtItem<F, B, M, C> {
+abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends org.lgna.croquet.imp.cascade.BlankOwnerNode<F, B, M>> extends RtItem<F, B, M, C> {
 	public RtBlankOwner( M element, C step, CascadeBlankChild<F> owner, int index ) {
 		super( element, step, owner, index );
 		this.getNode().setRtBlankOwner( this );
@@ -289,7 +289,7 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends o
 	}
 }
 
-class RtFillIn<F, B> extends RtBlankOwner<F, B, CascadeFillIn<F, B>, org.lgna.croquet.cascade.FillInNode<F, B>> {
+class RtFillIn<F, B> extends RtBlankOwner<F, B, CascadeFillIn<F, B>, org.lgna.croquet.imp.cascade.FillInNode<F, B>> {
 	public RtFillIn( CascadeFillIn<F, B> element, CascadeBlankChild<F> owner, int index ) {
 		super( element, FillInNode.createInstance( element ), owner, index );
 	}
@@ -299,13 +299,13 @@ class RtFillIn<F, B> extends RtBlankOwner<F, B, CascadeFillIn<F, B>, org.lgna.cr
 	}
 }
 
-class RtMenu<F, B> extends RtBlankOwner<F, B, AbstractCascadeMenuModel<F, B>, org.lgna.croquet.cascade.MenuNode<F, B>> {
+class RtMenu<F, B> extends RtBlankOwner<F, B, AbstractCascadeMenuModel<F, B>, org.lgna.croquet.imp.cascade.MenuNode<F, B>> {
 	public RtMenu( AbstractCascadeMenuModel<F, B> element, CascadeBlankChild<F> owner, int index ) {
 		super( element, MenuNode.createInstance( element ), owner, index );
 	}
 }
 
-class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.cascade.SeparatorNode> {
+class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.imp.cascade.SeparatorNode> {
 	public RtSeparator( CascadeSeparator element, CascadeBlankChild<Void> owner, int index ) {
 		super( element, SeparatorNode.createInstance( element ), owner, index );
 	}
@@ -333,7 +333,7 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.
 	}
 }
 
-class RtCancel<F> extends RtItem<F, Void, CascadeCancel<F>, org.lgna.croquet.cascade.CancelNode<F>> {
+class RtCancel<F> extends RtItem<F, Void, CascadeCancel<F>, org.lgna.croquet.imp.cascade.CancelNode<F>> {
 	public RtCancel( CascadeCancel<F> element, CascadeBlankChild<F> owner, int index ) {
 		super( element, CancelNode.createInstance( element ), owner, index );
 	}

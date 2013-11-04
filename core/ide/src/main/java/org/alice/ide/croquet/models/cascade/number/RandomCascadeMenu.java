@@ -60,7 +60,7 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
 		blankChildren.add( NextDouble01FillIn.getInstance() );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextDoubleInRange", Number.class, Number.class ) );
 	}

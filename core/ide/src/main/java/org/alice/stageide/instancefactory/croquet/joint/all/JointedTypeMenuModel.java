@@ -61,7 +61,7 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 	protected abstract JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index );
 
 	@Override
-	protected final void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
+	protected final void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
 		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
 		org.alice.stageide.cascade.JointedModelTypeSeparator separator = org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( info.getType() );
 		org.lgna.croquet.CascadeBlankChild child;

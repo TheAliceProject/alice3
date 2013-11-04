@@ -108,7 +108,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.Cascade<T>> rtRoot ) {
+		public org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, org.lgna.croquet.Cascade<T>> rtRoot ) {
 			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
 			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
 			try {
@@ -284,7 +284,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final org.lgna.croquet.cascade.RtRoot<T, Cascade<T>> rtRoot = new org.lgna.croquet.cascade.RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
+			final org.lgna.croquet.imp.cascade.RtRoot<T, Cascade<T>> rtRoot = new org.lgna.croquet.imp.cascade.RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {

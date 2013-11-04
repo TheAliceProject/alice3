@@ -41,31 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CancelNode<F> extends AbstractItemNode<F, Void, org.lgna.croquet.CascadeCancel<F>> {
-	public static <F> CancelNode<F> createInstance( org.lgna.croquet.CascadeCancel<F> model ) {
-		return new CancelNode<F>( model );
+public class MenuNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.AbstractCascadeMenuModel<F, B>> {
+	public static <F, B> MenuNode<F, B> createInstance( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
+		return new MenuNode<F, B>( model );
 	}
 
-	private CancelNode( org.lgna.croquet.CascadeCancel<F> model ) {
+	private MenuNode( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
 		super( model );
 	}
 
-	public CancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	public int getBlankStepCount() {
-		return 0;
-	}
-
-	@Override
-	public BlankNode<Void> getBlankStepAt( int index ) {
-		throw new AssertionError();
 	}
 }

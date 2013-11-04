@@ -73,12 +73,12 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.pr
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.LocalAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.local.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node ) {
+	public org.lgna.project.ast.LocalAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node ) {
 		return this.transientValue;
 	}
 

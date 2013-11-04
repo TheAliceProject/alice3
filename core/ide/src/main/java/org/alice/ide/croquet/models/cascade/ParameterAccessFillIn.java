@@ -73,12 +73,12 @@ public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.ParameterAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.parameter.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node ) {
+	public org.lgna.project.ast.ParameterAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node ) {
 		return this.transientValue;
 	}
 

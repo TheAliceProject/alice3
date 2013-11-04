@@ -257,7 +257,7 @@ public abstract class ExpressionCascadeManager {
 		this.appendFillInAndPossiblyPartFillIns( blankChildren, desiredType, expression, expression.getType() );
 	}
 
-	private void appendExpressionBonusFillInsForType( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private void appendExpressionBonusFillInsForType( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		org.lgna.project.ast.Expression prevExpression = this.safePeekContext().getPreviousExpression();
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.safePeekContext().getBlockStatementIndexPair();
 		java.util.List<org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn> arrayLengthFillIns;
@@ -344,7 +344,7 @@ public abstract class ExpressionCascadeManager {
 		return null;
 	}
 
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> addCustomFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> step, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> addCustomFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> step, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return rv;
 	}
 
@@ -364,7 +364,7 @@ public abstract class ExpressionCascadeManager {
 		return false;
 	}
 
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<?> details ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<?> details ) {
 		if( type != null ) {
 			boolean isRoot = blankNode.isTop();
 

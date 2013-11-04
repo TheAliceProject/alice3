@@ -70,17 +70,17 @@ public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
 		return this.method.getName();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
 		return null;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.lgna.project.ast.AbstractParameter parameter = this.method.getRequiredParameters().get( 0 );
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, parameter.getValueType(), parameter.getDetails() );
 	}

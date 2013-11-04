@@ -82,7 +82,7 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.l
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 		if( IS_SCENE_TYPE_DESIRED ) {
 			org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
 			if( sceneType != null ) {

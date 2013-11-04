@@ -59,7 +59,7 @@ public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.i
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode step ) {
 		return null;
 	}
 }

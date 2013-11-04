@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 import org.lgna.croquet.AbstractCascadeMenuModel;
 import org.lgna.croquet.CascadeBlank;
@@ -55,7 +55,7 @@ import org.lgna.croquet.CascadeUnfilledInCancel;
 /**
  * @author Dennis Cosgrove
  */
-class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.cascade.BlankNode<B>> {
+class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.BlankNode<B>> {
 	public static class ItemChildrenAndComboOffsetsPair {
 		private final RtItem[] rtItems;
 		private final java.util.List<Integer> comboOffsets;
@@ -98,7 +98,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.cascade.BlankN
 		return this.isAutomaticallyDetermined;
 	}
 
-	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInNode() {
+	public org.lgna.croquet.imp.cascade.AbstractItemNode getSelectedFillInNode() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getNode();
 		} else {

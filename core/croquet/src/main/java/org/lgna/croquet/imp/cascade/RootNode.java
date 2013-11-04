@@ -41,17 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ItemNode<F, B> {
-	public int getBlankStepCount();
+public class RootNode<T, M extends org.lgna.croquet.CompletionModel> extends BlankOwnerNode<T[], T, org.lgna.croquet.CascadeRoot<T, M>> {
+	public static <T, M extends org.lgna.croquet.CompletionModel> RootNode<T, M> createInstance( org.lgna.croquet.CascadeRoot<T, M> model ) {
+		return new RootNode<T, M>( model );
+	}
 
-	public BlankNode<B> getBlankStepAt( int index );
+	private RootNode( org.lgna.croquet.CascadeRoot<T, M> model ) {
+		super( model );
+	}
 
-	public F getTransientValue();
-
-	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory );
+	public RootNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
 }

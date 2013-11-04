@@ -60,7 +60,7 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		children.add( CountSeparator.getInstance() );
 		super.updateChildren( children, blankNode );
 	}

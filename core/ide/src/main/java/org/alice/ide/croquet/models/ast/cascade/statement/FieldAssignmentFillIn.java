@@ -77,7 +77,7 @@ public final class FieldAssignmentFillIn extends org.alice.ide.croquet.models.ca
 	}
 
 	@Override
-	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
+	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
 	}
 }

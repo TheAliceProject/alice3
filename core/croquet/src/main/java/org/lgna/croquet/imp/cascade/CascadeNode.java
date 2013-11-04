@@ -41,21 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.AbstractCascadeMenuModel<F, B>> {
-	public static <F, B> MenuNode<F, B> createInstance( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
-		return new MenuNode<F, B>( model );
+public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends org.lgna.croquet.Element> extends org.lgna.croquet.history.TransactionNode<P> {
+	private final org.lgna.croquet.resolvers.Resolver<E> elementResolver;
+
+	public CascadeNode( P parent, E element ) {
+		super( parent );
+		if( element != null ) {
+			this.elementResolver = element.getResolver();
+		} else {
+			this.elementResolver = null;
+		}
 	}
 
-	private MenuNode( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
-		super( model );
-	}
-
-	public MenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CascadeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.elementResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.elementResolver );
+	}
+
+	public E getElement() {
+		return this.elementResolver != null ? this.elementResolver.getResolved() : null;
+	}
+
+	@Override
+	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "?" );
 	}
 }

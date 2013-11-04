@@ -106,7 +106,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> step ) {
+	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> step ) {
 		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
@@ -136,12 +136,12 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	public final org.alice.ide.instancefactory.InstanceFactory getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node ) {
+	public final org.alice.ide.instancefactory.InstanceFactory getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node ) {
 		return this.value;
 	}
 
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.value;
 	}
 

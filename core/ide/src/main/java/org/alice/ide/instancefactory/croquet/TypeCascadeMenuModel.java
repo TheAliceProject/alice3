@@ -62,12 +62,12 @@ public class TypeCascadeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> node ) {
 		return org.alice.ide.common.TypeIcon.getInstance( this.typeNode.getDeclaration() );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
 		for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : this.typeNode.getFieldNodes() ) {
 			blankChildren.add( InstanceFactoryState.createFillInMenuComboIfNecessaryForField( this.apiConfigurationManager, fieldNode.getDeclaration() ) );
 		}

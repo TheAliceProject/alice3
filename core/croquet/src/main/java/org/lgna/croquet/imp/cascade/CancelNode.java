@@ -41,29 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemNode<F, B, M extends org.lgna.croquet.CascadeItem<F, B>> extends CascadeNode<BlankNode<?>, M> implements ItemNode<F, B> {
-	public AbstractItemNode( M model ) {
-		super( null, model );
+public class CancelNode<F> extends AbstractItemNode<F, Void, org.lgna.croquet.CascadeCancel<F>> {
+	public static <F> CancelNode<F> createInstance( org.lgna.croquet.CascadeCancel<F> model ) {
+		return new CancelNode<F>( model );
 	}
 
-	public AbstractItemNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private CancelNode( org.lgna.croquet.CascadeCancel<F> model ) {
+		super( model );
+	}
+
+	public CancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
-	public abstract int getBlankStepCount();
-
-	public abstract BlankNode<B> getBlankStepAt( int index );
-
-	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return this.getElement().createValue( this, transactionHistory );
+	@Override
+	public int getBlankStepCount() {
+		return 0;
 	}
 
-	public F getTransientValue() {
-		return this.getElement().getTransientValue( this );
+	@Override
+	public BlankNode<Void> getBlankStepAt( int index ) {
+		throw new AssertionError();
 	}
 }

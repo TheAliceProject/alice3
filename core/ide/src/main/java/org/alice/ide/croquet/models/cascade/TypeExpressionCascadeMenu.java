@@ -70,7 +70,7 @@ public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.l
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.valueType, this.details );
@@ -78,7 +78,7 @@ public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.l
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> node ) {
 		return org.alice.ide.common.TypeIcon.getInstance( this.valueType );
 	}
 

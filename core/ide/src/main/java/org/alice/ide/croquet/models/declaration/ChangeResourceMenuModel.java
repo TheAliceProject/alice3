@@ -65,7 +65,7 @@ public class ChangeResourceMenuModel extends org.lgna.croquet.AbstractCascadeMen
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
 		org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		for( org.alice.stageide.modelresource.ResourceNode child : root.getNodeChildren() ) {
 			org.lgna.croquet.CascadeBlankChild blankChild = child.getAddFieldBlankChild();

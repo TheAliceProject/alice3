@@ -62,20 +62,20 @@ public abstract class OneShotJavaMethodInvocationFillIn extends org.lgna.croquet
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
 		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( new org.lgna.project.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
 	}
 
 	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
 
 	@Override
-	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public MethodInvocationEditFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, transactionHistory, org.lgna.project.ast.Expression.class );
 		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
 	}
 
 	@Override
-	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
+	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
 		return null;
 	}
 

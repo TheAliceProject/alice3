@@ -113,7 +113,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		@Override
 		protected org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger ) {
 			this.prologue( trigger );
-			final org.lgna.croquet.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
+			final org.lgna.croquet.imp.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.imp.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step<?> rv;
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				rv = rtRoot.complete( new org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger( trigger ) );
@@ -211,12 +211,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super T[], T> step ) {
+	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
 		return null;
 	}
 
 	@Override
-	public final T[] createValue( org.lgna.croquet.cascade.ItemNode<? super T[], T> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final T[] createValue( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -224,7 +224,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final T[] getTransientValue( org.lgna.croquet.cascade.ItemNode<? super T[], T> step ) {
+	public final T[] getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -232,12 +232,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super T[], T> step ) {
+	public final String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
 		return this.text;
 	}
 
 	@Override
-	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super T[], T> step ) {
+	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
 		return null;
 	}
 
@@ -253,7 +253,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, CM> rtRoot );
+	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, CM> rtRoot );
 
 	public final void handleCancel( org.lgna.croquet.history.CompletionStep<CM> completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {

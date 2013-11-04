@@ -69,7 +69,7 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 	}
 
 	@Override
-	public org.lgna.project.ast.LogicalComplement getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.LogicalComplement, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.LogicalComplement getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LogicalComplement, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

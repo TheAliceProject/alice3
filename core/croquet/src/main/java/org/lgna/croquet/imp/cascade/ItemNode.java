@@ -41,31 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SeparatorNode extends AbstractItemNode<Void, Void, org.lgna.croquet.CascadeSeparator> {
-	public static SeparatorNode createInstance( org.lgna.croquet.CascadeSeparator model ) {
-		return new SeparatorNode( model );
-	}
+public interface ItemNode<F, B> {
+	public int getBlankStepCount();
 
-	private SeparatorNode( org.lgna.croquet.CascadeSeparator model ) {
-		super( model );
-	}
+	public BlankNode<B> getBlankStepAt( int index );
 
-	public SeparatorNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+	public F getTransientValue();
 
-	@Override
-	public int getBlankStepCount() {
-		return 0;
-	}
-
-	@Override
-	public BlankNode<Void> getBlankStepAt( int index ) {
-		throw new AssertionError();
-	}
+	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory );
 }

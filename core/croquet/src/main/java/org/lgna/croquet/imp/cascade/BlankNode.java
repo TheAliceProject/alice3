@@ -41,33 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.cascade;
+package org.lgna.croquet.imp.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlankOwnerNode<F, B, M extends org.lgna.croquet.CascadeBlankOwner<F, B>> extends AbstractItemNode<F, B, M> {
-	public BlankOwnerNode( M model ) {
-		super( model );
+public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, org.lgna.croquet.CascadeItem<B, ?>>, org.lgna.croquet.CascadeBlank<B>> {
+	public static <B> BlankNode<B> createInstance( org.lgna.croquet.CascadeBlank<B> model ) {
+		return new BlankNode<B>( model );
 	}
 
-	public BlankOwnerNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	private BlankNode( org.lgna.croquet.CascadeBlank<B> model ) {
+		super( null, model );
+	}
+
+	private RtBlank<B> rtBlank;
+
+	public BlankNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
-	private RtBlankOwner<F, B, M, ?> rtBlankOwner;
-
-	/* private-private */void setRtBlankOwner( RtBlankOwner<F, B, M, ?> rtBlankOwner ) {
-		this.rtBlankOwner = rtBlankOwner;
+	/* package-private */void setRtBlank( RtBlank<B> rtBlank ) {
+		this.rtBlank = rtBlank;
 	}
 
-	@Override
-	public int getBlankStepCount() {
-		return this.rtBlankOwner.getBlankStepCount();
+	public boolean isTop() {
+		return this.rtBlank.getParent() instanceof RtRoot;
 	}
 
-	@Override
-	public BlankNode<B> getBlankStepAt( int i ) {
-		return this.rtBlankOwner.getBlankStepAt( i );
+	public AbstractItemNode getSelectedFillInContext() {
+		return this.rtBlank.getSelectedFillInNode();
 	}
 }

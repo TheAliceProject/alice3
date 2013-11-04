@@ -65,7 +65,7 @@ public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	@Override
-	public org.lgna.project.ast.ArrayAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayAccess, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.ArrayAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ArrayAccess, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

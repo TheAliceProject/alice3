@@ -7,7 +7,7 @@ import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
-import org.lgna.croquet.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;

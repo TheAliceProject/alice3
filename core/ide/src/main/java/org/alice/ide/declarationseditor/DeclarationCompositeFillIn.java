@@ -67,22 +67,22 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
@@ -96,7 +96,7 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;

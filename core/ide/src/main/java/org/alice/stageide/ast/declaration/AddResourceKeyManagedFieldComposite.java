@@ -142,7 +142,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 			this.pushedContext = null;
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.Expression initializer = getInitializer();
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;

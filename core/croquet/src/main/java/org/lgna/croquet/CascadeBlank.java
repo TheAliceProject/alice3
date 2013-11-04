@@ -55,13 +55,13 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 	protected void localize() {
 	}
 
-	protected abstract void updateChildren( java.util.List<CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+	protected abstract void updateChildren( java.util.List<CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode );
 
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
 		return ( child instanceof CascadeLineSeparator ) || ( ( child instanceof CascadeLabelSeparator ) && ( ( (CascadeLabelSeparator)child ).isValid() == false ) );
 	}
 
-	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
+	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.imp.cascade.BlankNode<B> blankNode ) {
 		java.util.List<CascadeBlankChild> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( children, blankNode );
 		for( CascadeBlankChild child : children ) {

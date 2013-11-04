@@ -60,7 +60,7 @@ public class CascadeLineSeparator extends CascadeSeparator {
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super Void, Void> step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> step ) {
 		return null;
 	}
 }

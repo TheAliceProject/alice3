@@ -51,7 +51,7 @@ public class GalleryResourceUtilities {
 		throw new AssertionError();
 	}
 
-	public static <B> void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static <B> void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		Iterable<org.lgna.project.ast.AbstractDeclaration> declarations = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
 		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
 			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {

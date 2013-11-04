@@ -75,7 +75,7 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 	}
 
 	@Override
-	public org.lgna.project.ast.RelationalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.RelationalInfixExpression, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.RelationalInfixExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.RelationalInfixExpression, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

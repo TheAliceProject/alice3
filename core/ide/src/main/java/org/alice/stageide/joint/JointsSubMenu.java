@@ -65,7 +65,7 @@ public abstract class JointsSubMenu<FB> extends org.lgna.croquet.CascadeMenuMode
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<FB> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<FB> blankNode ) {
 		for( org.lgna.croquet.CascadeFillIn<FB, ?> fillIn : this.fillIns ) {
 			blankChildren.add( fillIn );
 		}

@@ -47,11 +47,11 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuItem extends ViewController<javax.swing.JMenuItem, org.lgna.croquet.CascadeItem<?, ?>> {
-	private final org.lgna.croquet.cascade.RtRoot<?, ?> rtRoot;
+	private final org.lgna.croquet.imp.cascade.RtRoot<?, ?> rtRoot;
 	private boolean isIconSet;
 	private javax.swing.Icon setIcon;
 
-	public CascadeMenuItem( org.lgna.croquet.CascadeItem<?, ?> model, org.lgna.croquet.cascade.RtRoot<?, ?> rtRoot ) {
+	public CascadeMenuItem( org.lgna.croquet.CascadeItem<?, ?> model, org.lgna.croquet.imp.cascade.RtRoot<?, ?> rtRoot ) {
 		super( model );
 		this.rtRoot = rtRoot;
 	}

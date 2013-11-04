@@ -1,7 +1,7 @@
 package org.alice.ide.declarationseditor.events;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddTimeListener;

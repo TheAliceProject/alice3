@@ -86,12 +86,12 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.l
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node ) {
+	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node ) {
 		return this.transientValue;
 	}
 

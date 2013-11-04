@@ -137,7 +137,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			return null;
 		}
 
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.AbstractParameter parameter = this.setter.getRequiredParameters().get( 0 );
 			org.lgna.project.ast.AbstractType<?, ?, ?> valueType = parameter.getValueType();
 			org.lgna.project.annotations.ValueDetails<?> valueDetails = parameter.getDetails();

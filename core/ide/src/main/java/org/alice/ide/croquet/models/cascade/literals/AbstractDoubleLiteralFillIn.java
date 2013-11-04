@@ -55,12 +55,12 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 	}
 
 	@Override
-	public org.lgna.project.ast.DoubleLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node ) {
+	public org.lgna.project.ast.DoubleLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.DoubleLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.DoubleLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.DoubleLiteral( this.transientValue.value.getValue() );
 	}
 

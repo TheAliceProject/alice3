@@ -89,7 +89,7 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

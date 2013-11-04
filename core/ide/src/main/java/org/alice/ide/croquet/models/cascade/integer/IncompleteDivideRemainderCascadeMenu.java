@@ -60,7 +60,7 @@ public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
 		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
 			blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
