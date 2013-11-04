@@ -49,7 +49,7 @@ public class FieldPreviewPane extends MemberPreviewPane<org.lgna.project.ast.Use
 	public FieldPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
 		super( fieldHub, isAlphaDesiredWhenSelectionIsRequired );
 		org.lgna.project.ast.UserField field = fieldHub.getMember();
-		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 		this.addComponent( new FieldHubDeclarationView( fieldHub ), "wrap" );
 		this.setBackgroundColor( theme.getFieldColor() );
 	}

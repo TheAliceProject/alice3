@@ -48,6 +48,6 @@ package org.alice.ide.ast.declaration.views;
 public class AddProcedureView extends AddMethodView {
 	public AddProcedureView( org.alice.ide.ast.declaration.AddProcedureComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

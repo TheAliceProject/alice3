@@ -53,7 +53,7 @@ public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> e
 		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
 		this.factory = factory;
 		this.expression = expression;
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( expression ) );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( expression ) );
 	}
 
 	public E getExpression() {

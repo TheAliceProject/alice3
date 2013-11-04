@@ -90,7 +90,7 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 		descriptionScrollPane.setBackgroundColor( java.awt.Color.WHITE );
 		this.addComponent( descriptionScrollPane, "grow" );
 
-		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor();
+		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor();
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 1.1 );
 		this.setBackgroundColor( color );
 		tabbedPane.setBackgroundColor( color );

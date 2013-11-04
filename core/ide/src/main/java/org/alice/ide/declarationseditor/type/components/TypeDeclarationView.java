@@ -50,7 +50,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 	public TypeDeclarationView( org.alice.ide.declarationseditor.TypeComposite composite ) {
 		super( composite );
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)composite.getDeclaration();
-		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 		this.setBackgroundColor( theme.getMutedTypeColor() );
 
 		org.lgna.croquet.components.ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();

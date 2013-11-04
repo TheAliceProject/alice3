@@ -51,7 +51,7 @@ public class MethodPreviewPane extends MemberPreviewPane<org.lgna.project.ast.Us
 		org.lgna.project.ast.UserMethod method = methodHub.getMember();
 		this.addComponent( new MethodHubHeaderView( methodHub ), "wrap" );
 		this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
-		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 		this.setBackgroundColor( method.isProcedure() ? theme.getProcedureColor() : theme.getFunctionColor() );
 	}
 }

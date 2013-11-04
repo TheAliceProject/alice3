@@ -48,6 +48,6 @@ package org.alice.ide.ast.declaration.views;
 public class AddFunctionView extends AddMethodView {
 	public AddFunctionView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFunctionColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

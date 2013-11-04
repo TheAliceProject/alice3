@@ -49,7 +49,7 @@ package org.alice.ide.declarationseditor.type.components;
 public abstract class FieldList extends MemberList<org.lgna.project.ast.UserField> {
 	public FieldList( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model, org.lgna.croquet.Operation operation ) {
 		super( model, operation );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	@Override

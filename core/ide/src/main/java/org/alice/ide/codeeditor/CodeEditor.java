@@ -144,7 +144,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
+		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
 		//color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
 
