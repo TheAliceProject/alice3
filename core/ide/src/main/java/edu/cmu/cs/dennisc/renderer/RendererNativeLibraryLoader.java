@@ -108,7 +108,7 @@ public class RendererNativeLibraryLoader {
 					}
 				} );
 
-				edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
+				edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
 				timer.start();
 				javax.media.opengl.GLProfile.initSingleton();
 				timer.stopAndPrintResults();

@@ -40,65 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video.vlcj;
+package edu.cmu.cs.dennisc.timing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VlcjUtilities {
-	private static boolean isInitializationAttempted = false;
-	private static boolean isInitialized = false;
+/*package-private*/class Mark {
+	private final Object object;
+	private final long time;
 
-	private static void initializeIfNecessary() {
-		if( isInitializationAttempted ) {
-			//pass
-		} else {
-			isInitializationAttempted = true;
-			edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize vlcj" );
-			timer.start();
-			String vlcLibraryName = uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName();
-			boolean isWorthAttemptingToLoad;
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-				isWorthAttemptingToLoad = true;
-			} else {
-				java.io.File archDirectory = edu.cmu.cs.dennisc.app.ApplicationRoot.getArchitectureSpecificDirectory();
-				java.io.File vlcDirectory = new java.io.File( archDirectory, "libvlc" );
-				java.io.File toBeSearchedDirectory;
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-					toBeSearchedDirectory = new java.io.File( vlcDirectory, "lib" );
-				} else {
-					toBeSearchedDirectory = vlcDirectory;
-				}
-				if( toBeSearchedDirectory.exists() ) {
-					com.sun.jna.NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
-					isWorthAttemptingToLoad = true;
-				} else {
-					isWorthAttemptingToLoad = false;
-				}
-			}
-
-			if( isWorthAttemptingToLoad ) {
-				try {
-					com.sun.jna.Native.loadLibrary( vlcLibraryName, uk.co.caprica.vlcj.binding.LibVlc.class );
-					isInitialized = true;
-				} catch( UnsatisfiedLinkError ule ) {
-					//uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
-					//isWorthAttemptingToLoad = nativeDiscovery.discover();
-					ule.printStackTrace();
-				}
-			} else {
-				System.err.println( "failed to discover vlc" );
-			}
-			timer.stopAndPrintResults();
-		}
+	public Mark( Object object ) {
+		this.object = object;
+		this.time = System.currentTimeMillis();
 	}
 
-	public static edu.cmu.cs.dennisc.video.VideoPlayer createVideoPlayer() {
-		initializeIfNecessary();
-		if( isInitialized ) {
-			return new VlcjVideoPlayer();
-		} else {
-			return null;
-		}
+	public Object getObject() {
+		return this.object;
+	}
+
+	public long getTime() {
+		return this.time;
 	}
 }
