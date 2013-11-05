@@ -29,6 +29,10 @@
 		<module>alice/alice-ide</module>
 	</modules>
 
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
 	<build>
 		<plugins>
 			<plugin>
