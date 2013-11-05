@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceMenuBar extends MenuBarComposite {
-	public AliceMenuBar( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
-		super( perspectiveState, uploadOperations );
+public class AliceIde extends org.alice.stageide.StageIDE {
+	public AliceIde() {
+		super( new org.alice.ide.youtube.croquet.UploadOperation() );
 	}
 }

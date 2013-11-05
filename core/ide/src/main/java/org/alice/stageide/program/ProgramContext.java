@@ -121,7 +121,7 @@ public abstract class ProgramContext {
 
 	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().disableRendering( rendering );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().disableRendering( rendering );
 	}
 
 	public void setActiveScene() {
@@ -144,7 +144,7 @@ public abstract class ProgramContext {
 		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( false );
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {
-			org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
+			org.alice.ide.IDE.getActiveInstance().getPerspectiveState().enableRendering();
 			this.rendering = null;
 		}
 	}

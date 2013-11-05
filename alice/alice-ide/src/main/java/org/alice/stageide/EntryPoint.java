@@ -84,7 +84,6 @@ public class EntryPoint {
 		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				StageIDE ide = new StageIDE();
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
 				int xLocation = 0;
@@ -116,6 +115,8 @@ public class EntryPoint {
 						}
 					}
 				}
+
+				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
 				if( file != null ) {
 					if( file.exists() ) {
 						ide.loadProjectFrom( file );
@@ -131,10 +132,10 @@ public class EntryPoint {
 				}
 				ide.initialize( args );
 				ide.getFrame().setVisible( true );
-
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
-					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
-				}
+				//
+				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
+				//					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+				//				}
 			}
 		} );
 	}

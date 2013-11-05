@@ -71,9 +71,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
+	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
 
-	public IDE() {
+	private final org.alice.stageide.perspectives.CodePerspective codePerspective;
+	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
+
+	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
+
+	public IDE( org.lgna.croquet.Operation... uploadOperations ) {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Please Submit Bug Report: " );
 		sb.append( getApplicationName() );
@@ -87,6 +92,25 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
+
+		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
+		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, uploadOperations );
+		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( aliceMenuBar );
+		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( aliceMenuBar );
+		this.perspectiveState.addItem( this.codePerspective );
+		this.perspectiveState.addItem( this.setupScenePerspective );
+	}
+
+	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
+		return this.codePerspective;
+	}
+
+	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
+		return this.setupScenePerspective;
+	}
+
+	public final org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
+		return this.perspectiveState;
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
@@ -154,8 +178,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
-
-	public abstract org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> getPerspectiveState();
 
 	public abstract org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
@@ -365,12 +387,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
-		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? org.alice.stageide.perspectives.SetupScenePerspective.getInstance() : org.alice.stageide.perspectives.CodePerspective.getInstance();
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( defaultPerspective );
+		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? this.setupScenePerspective : this.codePerspective;
+		this.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
-			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
+			this.setPerspective( this.getPerspectiveState().getValue() );
 		}
 	}
 

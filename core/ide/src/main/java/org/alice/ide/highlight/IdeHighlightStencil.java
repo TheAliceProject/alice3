@@ -169,7 +169,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	}
 
 	private org.lgna.croquet.components.TrackableShape getRenderWindow() {
-		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue();
+		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getRenderWindow();
 		} else {

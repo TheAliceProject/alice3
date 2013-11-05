@@ -47,21 +47,13 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class PerspectiveState extends org.lgna.croquet.MutableDataListSelectionState<org.alice.ide.perspectives.ProjectPerspective> {
-	private static class SingletonHolder {
-		private static PerspectiveState instance = new PerspectiveState();
-	}
-
-	public static PerspectiveState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private PerspectiveState() {
+	public PerspectiveState( org.alice.ide.perspectives.ProjectPerspective... perspectives ) {
 		super(
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
 				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
 				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
 				0,
-				org.alice.stageide.perspectives.CodePerspective.getInstance(), SetupScenePerspective.getInstance() );
+				perspectives );
 	}
 
 	private java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();

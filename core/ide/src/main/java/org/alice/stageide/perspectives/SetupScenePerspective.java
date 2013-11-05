@@ -47,18 +47,10 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
-	}
-
-	public static SetupScenePerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> sceneTypeMetaState;
 
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+	public SetupScenePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), menuBar );
 		this.sceneTypeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, org.alice.ide.ProjectDocument>( org.alice.ide.project.ProjectDocumentState.getInstance() ) {
 			@Override
 			public org.lgna.project.ast.NamedUserType getValue() {

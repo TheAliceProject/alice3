@@ -55,7 +55,7 @@ public abstract class ChangePerspectiveStencilModel extends IdeStencil {
 
 	@Override
 	protected final void showStencil() {
-		final org.alice.stageide.perspectives.PerspectiveState perspectiveState = org.alice.stageide.perspectives.PerspectiveState.getInstance();
+		final org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState = org.alice.ide.IDE.getActiveInstance().getPerspectiveState();
 		org.lgna.croquet.Operation operation = perspectiveState.getItemSelectionOperation( this.perspective );
 		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( operation, this.getText() );
 		new Thread() {

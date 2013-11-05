@@ -215,14 +215,14 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		super.handlePreShowDialog( completionStep );
 	}
 
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		super.handleFinally( step, dialog );
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().enableRendering();
 	}
 
 	@Override
@@ -237,6 +237,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		}
 
 		new org.alice.stageide.StageIDE();
+
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
 		} catch( org.lgna.croquet.CancelException ce ) {
