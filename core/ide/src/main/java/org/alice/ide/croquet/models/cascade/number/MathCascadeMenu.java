@@ -60,7 +60,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
 		org.lgna.project.ast.Expression prevExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 		if( prevExpression != null ) {
 			if( prevExpression.getType().isAssignableTo( Number.class ) ) {

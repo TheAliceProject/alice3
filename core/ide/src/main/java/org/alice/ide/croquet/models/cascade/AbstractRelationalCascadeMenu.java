@@ -55,7 +55,7 @@ public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMen
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
 		for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
 			blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.cls, operator ) );
 		}

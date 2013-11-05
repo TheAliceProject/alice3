@@ -47,6 +47,6 @@ package org.alice.ide.ast.type.merge.croquet.views;
  */
 public class FieldsView extends MembersView {
 	public FieldsView( org.alice.ide.ast.type.merge.croquet.FieldsToolPalette composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
+		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 }

@@ -391,21 +391,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	protected abstract void promptForLicenseAgreements();
 
-	private java.awt.Window splashScreen;
-
-	public java.awt.Window getSplashScreen() {
-		return this.splashScreen;
-	}
-
-	public void setSplashScreen( java.awt.Window splashScreen ) {
-		this.splashScreen = splashScreen;
-	}
-
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-		if( this.splashScreen != null ) {
-			this.splashScreen.setVisible( false );
-		}
 		if( this.getUri() != null ) {
 			//pass
 		} else {

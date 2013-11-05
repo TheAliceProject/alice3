@@ -78,7 +78,7 @@ public class AddMembersPane extends org.lgna.croquet.components.MigPanel {
 			this.addComponent( composite.getRejectAllDifferentImplementationsOperation().createButton() );
 		}
 
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor() );
 		panel.setBackgroundColor( this.getBackgroundColor() );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		this.setMinimumPreferredWidth( 800 );

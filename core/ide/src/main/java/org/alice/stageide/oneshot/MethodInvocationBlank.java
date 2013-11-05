@@ -70,7 +70,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<MethodInvocationEditFactory> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<MethodInvocationEditFactory> blankNode ) {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );

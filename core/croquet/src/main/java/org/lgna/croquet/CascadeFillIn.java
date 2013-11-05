@@ -55,13 +55,13 @@ public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
 	private static enum BlankActor {
 		CREATE_VALUES() {
 			@Override
-			public <F> F act( org.lgna.croquet.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			public <F> F act( org.lgna.croquet.imp.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 				return itemNode.createValue( transactionHistory );
 			}
 		},
 		GET_TRANSIENT_VALUES() {
 			@Override
-			public <F> F act( org.lgna.croquet.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			public <F> F act( org.lgna.croquet.imp.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 				assert transactionHistory == null : transactionHistory;
 				if( itemNode != null ) {
 					return itemNode.getTransientValue();
@@ -70,15 +70,15 @@ public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
 				}
 			}
 		};
-		public abstract <F> F act( org.lgna.croquet.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory );
+		public abstract <F> F act( org.lgna.croquet.imp.cascade.ItemNode<F, ?> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory );
 	}
 
-	private B[] runBlanks( org.lgna.croquet.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory, BlankActor blankActor, Class<B> cls ) {
+	private B[] runBlanks( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory, BlankActor blankActor, Class<B> cls ) {
 		java.util.List<? extends CascadeBlank<B>> blanks = this.getBlanks();
 		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( cls, blanks.size() );
 		for( int i = 0; i < rv.length; i++ ) {
-			org.lgna.croquet.cascade.BlankNode<B> blankStep = itemNode.getBlankStepAt( i );
-			org.lgna.croquet.cascade.AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
+			org.lgna.croquet.imp.cascade.BlankNode<B> blankStep = itemNode.getBlankStepAt( i );
+			org.lgna.croquet.imp.cascade.AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
 			rv[ i ] = blankActor.act( selectedFillInContext, transactionHistory );
 			//			if( rv[ i ] == null ) {
 			//				if( this.cls == org.lgna.project.ast.Expression.class ) {
@@ -99,11 +99,11 @@ public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
 		return false;
 	}
 
-	protected B[] createFromBlanks( org.lgna.croquet.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory, Class<B> cls ) {
+	protected B[] createFromBlanks( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory, Class<B> cls ) {
 		return runBlanks( itemNode, transactionHistory, BlankActor.CREATE_VALUES, cls );
 	}
 
-	protected B[] getTransientFromBlanks( org.lgna.croquet.cascade.ItemNode<? super F, B> itemNode, Class<B> cls ) {
+	protected B[] getTransientFromBlanks( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode, Class<B> cls ) {
 		return runBlanks( itemNode, null, BlankActor.GET_TRANSIENT_VALUES, cls );
 	}
 }

@@ -60,7 +60,7 @@ public class TrigonometryCascadeMenu extends org.alice.ide.croquet.models.cascad
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "sin", Double.TYPE ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "cos", Double.TYPE ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "tan", Double.TYPE ) );

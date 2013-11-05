@@ -61,12 +61,12 @@ public class ThisExpressionFillIn extends org.alice.ide.croquet.models.cascade.E
 	}
 
 	@Override
-	public org.lgna.project.ast.ThisExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node ) {
+	public org.lgna.project.ast.ThisExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.ThisExpression createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.ThisExpression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.ThisExpression();
 	}
 

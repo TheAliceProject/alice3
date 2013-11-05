@@ -48,7 +48,7 @@ package org.alice.ide.ast.type.preview.croquet.views;
 public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
 		super( page, "fillx", "", "[grow 0][grow]" );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getTypeColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor() );
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fillx, insets 0" );
 
-		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 
 		java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
 		if( procedureHubs.size() > 0 ) {

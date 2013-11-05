@@ -70,12 +70,12 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 	}
 
 	@Override
-	public org.lgna.project.ast.StringLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node ) {
+	public org.lgna.project.ast.StringLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.StringLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.StringLiteral( this.transientValue.value.getValue() );
 	}
 

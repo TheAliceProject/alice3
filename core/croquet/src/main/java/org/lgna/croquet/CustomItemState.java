@@ -108,7 +108,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
+		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
 			try {
 				//todo: investigate
 				org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();

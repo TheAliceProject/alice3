@@ -177,7 +177,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<InstanceFactory> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.meta.DeclarationMeta.getDeclaration();

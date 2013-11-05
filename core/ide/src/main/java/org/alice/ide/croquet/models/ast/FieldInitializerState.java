@@ -78,7 +78,7 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.field.getValueType(), null );
 	}
 }

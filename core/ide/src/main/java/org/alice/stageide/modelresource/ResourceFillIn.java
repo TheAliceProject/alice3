@@ -54,27 +54,27 @@ public class ResourceFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<Reso
 	}
 
 	@Override
-	public ResourceNode getTransientValue( org.lgna.croquet.cascade.ItemNode<? super ResourceNode, Void> node ) {
+	public ResourceNode getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super ResourceNode, Void> node ) {
 		return this.resourceNode;
 	}
 
 	@Override
-	public ResourceNode createValue( org.lgna.croquet.cascade.ItemNode<? super ResourceNode, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public ResourceNode createValue( org.lgna.croquet.imp.cascade.ItemNode<? super ResourceNode, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.resourceNode;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super ResourceNode, Void> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super ResourceNode, Void> node ) {
 		throw new Error();
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, Void> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, Void> node ) {
 		return this.resourceNode.getText();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, Void> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, Void> node ) {
 		org.lgna.croquet.icon.IconFactory iconFactory = this.resourceNode.getIconFactory();
 		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
 	}

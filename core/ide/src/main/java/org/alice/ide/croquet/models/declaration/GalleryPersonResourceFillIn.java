@@ -68,12 +68,12 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
 		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.TypeExpression( this.type );
 		//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
 		//		if( subStep.isValueCommitted() ) {
@@ -98,7 +98,7 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> step ) {
+	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> step ) {
 		return null;
 	}
 }

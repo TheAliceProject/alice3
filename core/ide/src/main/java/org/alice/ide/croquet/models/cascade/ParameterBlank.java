@@ -69,7 +69,7 @@ public class ParameterBlank extends ExpressionBlank {
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
 		org.lgna.project.ast.AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {

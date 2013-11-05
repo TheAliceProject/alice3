@@ -47,6 +47,6 @@ package org.alice.ide.ast.type.merge.croquet.views;
  */
 public class FunctionsView extends MethodsView {
 	public FunctionsView( org.alice.ide.ast.type.merge.croquet.FunctionsToolPalette composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFunctionColor() );
+		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

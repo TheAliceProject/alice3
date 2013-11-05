@@ -49,7 +49,7 @@ public class TypeBorder implements javax.swing.border.Border {
 	private static final int X_INSET = 8;
 	private static final int Y_INSET = 2;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static java.awt.Color FILL_COLOR = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
+	private static java.awt.Color FILL_COLOR = org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
 	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
 	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
 

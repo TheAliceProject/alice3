@@ -640,7 +640,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	protected static interface CascadeCustomizer<T> {
-		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
 
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
 	}
@@ -675,7 +675,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.util.List<CascadeBlankChild> updateBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+		protected java.util.List<CascadeBlankChild> updateBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( rv, blankNode );
 			return rv;
 		}
@@ -691,7 +691,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	protected static interface ItemStateCustomizer<T> {
 		public CascadeFillIn<T, ?> getFillInFor( T value );
 
-		public void appendBlankChildren( java.util.List<CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+		public void appendBlankChildren( java.util.List<CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
 
 		public void prologue( org.lgna.croquet.triggers.Trigger trigger );
 
@@ -741,7 +741,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+		protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( blankChildren, blankNode );
 		}
 

@@ -71,22 +71,22 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFi
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue.getKeyMethod().getName();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return null;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class );
 		org.lgna.project.ast.JavaMethod keyMethod = this.transientValue.getKeyMethod();
 		return new org.lgna.project.ast.JavaKeyedArgument(
@@ -96,7 +96,7 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFi
 	}
 
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
 	}
 

@@ -48,7 +48,7 @@ package org.alice.ide.ast.declaration.views;
 public class InsertStatementView extends DeclarationLikeSubstanceView {
 	public InsertStatementView( org.alice.ide.ast.declaration.InsertStatementComposite<?> composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
 	}
 
 	@Override

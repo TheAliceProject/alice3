@@ -54,6 +54,8 @@ public class VlcjUtilities {
 			//pass
 		} else {
 			isInitializationAttempted = true;
+			edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize vlcj" );
+			timer.start();
 			String vlcLibraryName = uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName();
 			boolean isWorthAttemptingToLoad;
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
@@ -87,6 +89,7 @@ public class VlcjUtilities {
 			} else {
 				System.err.println( "failed to discover vlc" );
 			}
+			timer.stopAndPrintResults();
 		}
 	}
 

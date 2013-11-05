@@ -60,12 +60,12 @@ public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cas
 	}
 
 	@Override
-	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 
 	@Override
-	public org.lgna.project.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node ) {
+	public org.lgna.project.ast.ArrayLength getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node ) {
 		if( this.transientValue != null ) {
 			//pass
 		} else {

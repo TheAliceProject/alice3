@@ -60,7 +60,7 @@ public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.Ex
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "exp", Double.TYPE ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "log", Double.TYPE ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );

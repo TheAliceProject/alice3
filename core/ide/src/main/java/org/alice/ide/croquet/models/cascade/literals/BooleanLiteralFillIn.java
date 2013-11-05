@@ -66,12 +66,12 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 	}
 
 	@Override
-	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.BooleanLiteral( this.transientValue.value.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node ) {
+	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node ) {
 		return this.transientValue;
 	}
 

@@ -77,17 +77,17 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.type;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
+	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
 		return this.type;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
 		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			StringBuilder sb = new StringBuilder();
@@ -101,7 +101,7 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
 		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			return super.getMenuItemIcon( node );
@@ -117,7 +117,7 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
 		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
 	}
 }

@@ -134,7 +134,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	{
 		super();
 		this.morePropertiesPanel = new GridBagPanel();
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 

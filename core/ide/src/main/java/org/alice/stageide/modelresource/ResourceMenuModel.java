@@ -54,24 +54,24 @@ public class ResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<Resourc
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<ResourceNode> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<ResourceNode> blankNode ) {
 		for( ResourceNode child : resourceNode.getNodeChildren() ) {
 			blankChildren.add( child.getAddFieldBlankChild() );
 		}
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> itemNode ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> itemNode ) {
 		throw new Error();
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
 		return this.resourceNode.getText();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
 		org.lgna.croquet.icon.IconFactory iconFactory = this.resourceNode.getIconFactory();
 		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
 	}

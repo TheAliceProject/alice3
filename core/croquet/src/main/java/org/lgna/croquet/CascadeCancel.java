@@ -52,12 +52,12 @@ public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
 	}
 
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		throw new CancelException( this.getMenuItemText( node ) );
 	}
 
 	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node ) {
+	public final F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node ) {
 		return null;
 	}
 

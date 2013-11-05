@@ -60,7 +60,7 @@ public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.casca
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );

@@ -152,7 +152,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 			project = org.lgna.project.io.IoUtilities.readProject( projectFile );
 			org.alice.ide.ProjectStack.pushProject( project );
 		} else {
-			org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, null, args, false );
+			org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, args, false );
 			project = org.alice.stageide.StageIDE.getActiveInstance().getProject();
 		}
 

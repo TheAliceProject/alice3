@@ -23,12 +23,12 @@ public abstract class SourceFillIn<T extends org.lgna.common.Resource> extends o
 	}
 
 	@Override
-	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 
 	@Override
-	public final org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node ) {
+	public final org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node ) {
 		return this.transientValue;
 	}
 }

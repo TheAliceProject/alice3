@@ -53,7 +53,7 @@ public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInterna
 	protected abstract java.util.List<DeclarationComposite> getList( DeclarationCompositeHistory declarationCompositeHistory );
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.ide.declarationseditor.DeclarationComposite> blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.alice.ide.declarationseditor.DeclarationComposite> blankNode ) {
 		for( DeclarationComposite declarationComposite : this.getList( DeclarationCompositeHistory.getInstance() ) ) {
 			rv.add( DeclarationCompositeFillIn.getInstance( declarationComposite ) );
 		}

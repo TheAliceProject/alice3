@@ -106,12 +106,12 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
 			return new javax.swing.JLabel( this.text );
 		}
 
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		public final F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 			org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
 			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {
@@ -122,7 +122,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		public F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node ) {
+		public F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node ) {
 			return null;
 		}
 	}

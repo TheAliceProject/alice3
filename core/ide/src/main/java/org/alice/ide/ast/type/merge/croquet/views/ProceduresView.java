@@ -47,6 +47,6 @@ package org.alice.ide.ast.type.merge.croquet.views;
  */
 public class ProceduresView extends MethodsView {
 	public ProceduresView( org.alice.ide.ast.type.merge.croquet.ProceduresToolPalette composite ) {
-		super( composite, org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

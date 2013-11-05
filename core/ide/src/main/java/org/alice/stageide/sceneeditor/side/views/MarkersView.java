@@ -214,7 +214,7 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
 		this.addPageEndComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
 				composite.getAddOperation().createButton() ) );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
 
 	private void unselectMarker() {

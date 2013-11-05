@@ -63,7 +63,7 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
 		org.lgna.project.ast.JavaType RANDOM_UTILITIES_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.common.RandomUtilities.class );
 		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( RANDOM_UTILITIES_TYPE );
@@ -71,7 +71,7 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node ) {
 		return this.transientValue;
 	}
 }

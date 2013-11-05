@@ -47,7 +47,7 @@ class TreeNodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static <T> void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode, TreeSelectionState<T> model, T node ) {
+	public static <T> void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode, TreeSelectionState<T> model, T node ) {
 		for( T childNode : model.getChildren( node ) ) {
 			CascadeBlankChild<T> child = model.getBlankChildFor( childNode );
 			if( child != null ) {
@@ -79,27 +79,27 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	}
 
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
+	public T getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node ) {
 		return this.node;
 	}
 
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode<? super T, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public T createValue( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node ) {
 		return this.model.getTextForNode( this.node );
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node ) {
 		return this.model.getIconForNode( this.node );
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node ) {
 		throw new AssertionError();
 	}
 
@@ -135,7 +135,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel<T> {
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 		TreeNodeUtilities.updateBlankChildren( blankChildren, blankNode, this.model, this.node );
 	}
 
@@ -152,7 +152,7 @@ class TreeBlank<T> extends CascadeBlank<T> {
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 		TreeNodeUtilities.updateBlankChildren( children, blankNode, this.model, this.node );
 	}
 }

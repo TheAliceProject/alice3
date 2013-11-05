@@ -73,7 +73,7 @@ public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.l
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		GalleryResourceUtilities.updateChildren( blankChildren, blankNode, this.type );
 	}
 }

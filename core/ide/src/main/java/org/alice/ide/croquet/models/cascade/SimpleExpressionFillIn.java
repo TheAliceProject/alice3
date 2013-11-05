@@ -58,17 +58,17 @@ public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> e
 	}
 
 	@Override
-	public E createValue( org.lgna.croquet.cascade.ItemNode<? super E, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public E createValue( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public E getTransientValue( org.lgna.croquet.cascade.ItemNode<? super E, Void> node ) {
+	public E getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.cascade.ItemNode<? super E, java.lang.Void> step ) {
+	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super E, java.lang.Void> step ) {
 		if( this.isLeadingIconDesired ) {
 			if( this.transientValue instanceof org.lgna.project.ast.FieldAccess ) {
 				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue;

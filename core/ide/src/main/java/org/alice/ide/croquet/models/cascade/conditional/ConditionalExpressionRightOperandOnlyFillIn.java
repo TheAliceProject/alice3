@@ -84,7 +84,7 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 	}
 
 	@Override
-	public org.lgna.project.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

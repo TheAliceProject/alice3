@@ -77,7 +77,7 @@ public class KeyedBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.a
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.JavaKeyedArgument> blankNode ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.JavaKeyedArgument> blankNode ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
 		org.lgna.project.ast.AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {

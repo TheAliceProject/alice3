@@ -59,7 +59,7 @@ public class StringComparisonCascadeMenu extends org.alice.ide.croquet.models.ca
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> step ) {
+	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> step ) {
 		//rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
 		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );

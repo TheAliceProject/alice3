@@ -59,12 +59,12 @@ public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression
 		this.text = this.findDefaultLocalizedText();
 	}
 
-	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.cascade.ItemNode<? super F, B> step ) {
+	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> step ) {
 		return null;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, B> step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> step ) {
 		org.lgna.project.ast.Expression expression = this.getTransientValue( step );
 
 		javax.swing.Icon leadingIcon = this.getLeadingIcon( step );

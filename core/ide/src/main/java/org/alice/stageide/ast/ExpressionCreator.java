@@ -116,7 +116,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
 	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) throws CannotCreateExpressionException {
 		Class<?> cls = org.lgna.story.Font.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.font.Attribute[].class );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.fontattributes.Attribute[].class );
 		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor,
 				this.createExpression( font.getFamily() ),
 				this.createExpression( font.getWeight() ),

@@ -53,7 +53,7 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
 		super( composite );
 
-		final org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		final org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 		final java.awt.Color color = theme.getPrimaryBackgroundColor();
 
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {

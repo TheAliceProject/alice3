@@ -50,7 +50,7 @@ class MethodPane extends org.lgna.croquet.components.BorderPanel {
 		this.addCenterComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ) );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		if( isJava ) {
 			this.addComponent( new org.lgna.croquet.components.Label( "}" ) );
 		}
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
+		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
 	}
 
 	@Override

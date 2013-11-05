@@ -59,7 +59,7 @@ public abstract class AbstractInstanceCreationFillIn extends org.alice.ide.croqu
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

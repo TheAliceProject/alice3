@@ -71,7 +71,7 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 	}
 
 	@Override
-	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringConcatenation, org.lgna.project.ast.Expression> step ) {
+	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.StringConcatenation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

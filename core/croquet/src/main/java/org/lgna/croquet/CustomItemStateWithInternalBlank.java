@@ -53,7 +53,7 @@ public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemStat
 		}
 
 		@Override
-		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 			CustomItemStateWithInternalBlank.this.updateBlankChildren( children, blankNode );
 		}
 	}
@@ -69,5 +69,5 @@ public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemStat
 		return this.blanks;
 	}
 
-	protected abstract void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+	protected abstract void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
 }

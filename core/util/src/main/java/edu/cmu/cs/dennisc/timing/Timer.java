@@ -47,27 +47,36 @@ package edu.cmu.cs.dennisc.timing;
  * @author Dennis Cosgrove
  */
 public class Timer {
+	private final String description;
+	private final java.util.List<Mark> marks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private long tStart;
-	private java.util.List<edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long>> marks = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long>>();
+
+	public Timer( String description ) {
+		this.description = description;
+	}
 
 	public void start() {
 		this.tStart = System.currentTimeMillis();
+		this.marks.clear();
 	}
 
-	public void mark( Object text ) {
-		long tMark = System.currentTimeMillis();
-		this.marks.add( edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( text, tMark ) );
+	public void mark( Object o ) {
+		this.marks.add( new Mark( o ) );
 	}
 
 	public void stopAndPrintResults() {
 		long tPrev = this.tStart;
 		long tStop = System.currentTimeMillis();
-		for( edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long> mark : this.marks ) {
-			long tMark = mark.getB();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "...", tMark - tPrev, mark.getA() );
-			tPrev = tMark;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "timer:", this.description );
+		if( this.marks.size() > 0 ) {
+			for( Mark mark : this.marks ) {
+				long tMark = mark.getTime();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "...", tMark - tPrev, mark.getObject() );
+				tPrev = tMark;
+			}
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "... ", tStop - tPrev, "end" );
 		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "... ", tStop - tPrev, "end" );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "total:", tStop - this.tStart );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "total:", ( tStop - this.tStart ), "msec" );
+		this.marks.clear();
 	}
 }

@@ -60,7 +60,7 @@ public class TypeUnsetBlank extends org.alice.ide.croquet.models.cascade.Express
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
 		//note: not invoking super
 		children.add( org.alice.ide.croquet.models.cascade.cancels.TypeUnsetCancelFillIn.getInstance() );
 	}

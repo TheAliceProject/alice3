@@ -61,12 +61,12 @@ public class NullLiteralFillIn extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	@Override
-	public org.lgna.project.ast.NullLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node ) {
+	public org.lgna.project.ast.NullLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.NullLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.NullLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.NullLiteral();
 	}
 
