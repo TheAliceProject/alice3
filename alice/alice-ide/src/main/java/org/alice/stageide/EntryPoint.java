@@ -42,8 +42,6 @@
  */
 package org.alice.stageide;
 
-import org.alice.ide.IDE;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +49,10 @@ public class EntryPoint {
 	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
-	private static void preLaunch() {
+	public static void main( final String[] args ) {
+		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
+		System.out.println( "version: " + text );
+
 		if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
 			final Object macMenuBarUI;
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -81,12 +82,9 @@ public class EntryPoint {
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
 		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
-	}
-
-	private static Runnable createRunnable( final String[] args, final boolean isVisible ) {
-		return new Runnable() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				IDE ide = IDE.getActiveInstance();
+				StageIDE ide = new StageIDE();
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
 				int xLocation = 0;
@@ -94,16 +92,12 @@ public class EntryPoint {
 				int width = DEFAULT_WIDTH;
 				int height = DEFAULT_HEIGHT;
 				boolean isMaximizationDesired = true;
+				java.io.File file = null;
 				if( args.length > 0 ) {
 					if( "null".equalsIgnoreCase( args[ 0 ] ) ) {
 						//pass
 					} else {
-						java.io.File file = new java.io.File( args[ 0 ] );
-						if( file.exists() ) {
-							ide.loadProjectFrom( file );
-						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
-						}
+						file = new java.io.File( args[ 0 ] );
 					}
 					if( args.length > 2 ) {
 						try {
@@ -122,6 +116,13 @@ public class EntryPoint {
 						}
 					}
 				}
+				if( file != null ) {
+					if( file.exists() ) {
+						ide.loadProjectFrom( file );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
+					}
+				}
 				ide.getFrame().setLocation( xLocation, yLocation );
 				ide.getFrame().setSize( width, height );
 
@@ -129,26 +130,11 @@ public class EntryPoint {
 					ide.getFrame().maximize();
 				}
 				ide.initialize( args );
-				ide.getFrame().setVisible( isVisible );
+				ide.getFrame().setVisible( true );
 
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
 					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
 				}
-			}
-		};
-	}
-
-	public static void main( final String[] args ) {
-		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
-		System.out.println( "version: " + text );
-		preLaunch();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				//				CreateIdeOperation createIdeOperation = CreateIdeOperation.getInstance( cls );
-				//				createIdeOperation.fire();
-				IDE ide = new StageIDE();
-				Runnable runnable = createRunnable( args, true );
-				runnable.run();
 			}
 		} );
 	}
