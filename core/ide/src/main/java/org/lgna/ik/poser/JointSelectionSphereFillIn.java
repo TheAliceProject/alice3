@@ -48,8 +48,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.cascade.ItemNode;
 import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
