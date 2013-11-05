@@ -105,11 +105,6 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>edu.wustl.lookingglass</id>
-			<name>Looking Glass Repository</name>
-			<url>http://dev.lookingglass.wustl.edu/public/maven2/lookingglass</url>
-		</pluginRepository>
-		<pluginRepository>
 			<id>org.alice</id>
 			<name>Alice Repository</name>
 			<url>http://dev.lookingglass.wustl.edu/public/maven2/alice</url>
