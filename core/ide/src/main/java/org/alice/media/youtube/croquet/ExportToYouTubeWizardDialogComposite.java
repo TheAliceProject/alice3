@@ -144,17 +144,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
 
-		final boolean IS_SIMPLE_APPLICATION_SUFFICIENT = true;
-		final org.lgna.project.Project project;
-		if( IS_SIMPLE_APPLICATION_SUFFICIENT ) {
-			new org.lgna.croquet.simple.SimpleApplication();
-			File projectFile = new File( args[ 0 ] );
-			project = org.lgna.project.io.IoUtilities.readProject( projectFile );
-			org.alice.ide.ProjectStack.pushProject( project );
-		} else {
-			org.alice.ide.LaunchUtilities.launchAndWait( org.alice.stageide.StageIDE.class, args, false );
-			project = org.alice.stageide.StageIDE.getActiveInstance().getProject();
-		}
+		new org.lgna.croquet.simple.SimpleApplication();
+		File projectFile = new File( args[ 0 ] );
+		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( projectFile );
+		org.alice.ide.ProjectStack.pushProject( project );
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {

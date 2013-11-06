@@ -55,7 +55,8 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
-	public StageIDE() {
+	public StageIDE( org.lgna.croquet.Operation... uploadOperations ) {
+		super( uploadOperations );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
@@ -274,11 +275,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
-	}
-
-	@Override
-	public org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> getPerspectiveState() {
-		return org.alice.stageide.perspectives.PerspectiveState.getInstance();
 	}
 
 	//	@Override

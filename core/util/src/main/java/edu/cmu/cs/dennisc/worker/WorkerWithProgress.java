@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package edu.cmu.cs.dennisc.worker;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private final org.lgna.croquet.Operation[] uploadOperations;
+public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
+	protected class InternalSwingWorkerWithProgress extends InternalSwingWorker {
+		private void DEEMED_ACCEPTABLE_ACCESS_publish( V... chunks ) {
+			this.publish( chunks );
+		}
 
-	public FileMenuModel( org.lgna.croquet.Operation... uploadOperations ) {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
-		this.uploadOperations = uploadOperations;
-	}
+		private void DEEMED_ACCEPTABLE_ACCESS_setProgress( int progress ) {
+			this.setProgress( progress );
+		}
 
-	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel()
-				);
-
-		if( this.uploadOperations.length > 0 ) {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			for( org.lgna.croquet.Operation operation : uploadOperations ) {
-				list.add( operation.getMenuItemPrepModel() );
+		@Override
+		protected void process( java.util.List<V> chunks ) {
+			super.process( chunks );
+			if( this.isCancelled() ) {
+				//pass
+			} else {
+				WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
 			}
 		}
-		list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		list.add( PrintMenuModel.getInstance() );
-		list.add( CaptureMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
+
+	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
+
+	@Override
+	protected final javax.swing.SwingWorker<T, V> getSwingWorker() {
+		return this.swingWorker;
+	}
+
+	protected final void publish( V... chunks ) {
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled. omitting publish:", java.util.Arrays.toString( chunks ) );
+		} else {
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
+		}
+	}
+
+	public int getProgress() {
+		return this.swingWorker.getProgress();
+	}
+
+	protected final void setProgress( int progress ) {
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled.  omitting setProgress:", progress );
+		} else {
+			assert progress >= 0 : progress;
+			assert progress <= 100 : progress;
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
+		}
+	}
+
+	protected abstract void handleProcess_onEventDispatchThread( java.util.List<V> chunks );
 }

@@ -86,7 +86,7 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId, false );
 		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
-		org.alice.stageide.perspectives.SetupScenePerspective.getInstance().getSceneTypeMetaState().addAndInvokeValueListener( this.sceneTypeListener );
+		org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective().getSceneTypeMetaState().addAndInvokeValueListener( this.sceneTypeListener );
 	}
 
 	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();

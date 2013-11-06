@@ -75,7 +75,7 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing
 	}
 
 	public void setTextFromUrl( java.net.URL url ) {
-		org.lgna.croquet.worker.url.TextUrlWorker worker = new org.lgna.croquet.worker.url.TextUrlWorker( url ) {
+		edu.cmu.cs.dennisc.worker.url.TextUrlWorker worker = new edu.cmu.cs.dennisc.worker.url.TextUrlWorker( url ) {
 			@Override
 			protected void handleDone_onEventDispatchThread( String value ) {
 				setText( value );

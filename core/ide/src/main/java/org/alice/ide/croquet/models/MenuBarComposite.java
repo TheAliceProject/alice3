@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public abstract class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	public MenuBarComposite( org.lgna.croquet.Operation... uploadOperations ) {
+	public MenuBarComposite( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
 		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
 		this.addItem( new org.alice.ide.croquet.models.menubar.FileMenuModel( uploadOperations ) );
 		this.addItem( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
 		this.addItem( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
 		this.addItem( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
+		this.addItem( new org.alice.ide.croquet.models.menubar.WindowMenuModel( perspectiveState ) );
 		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 		//this.addItem( org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel() );
 	}

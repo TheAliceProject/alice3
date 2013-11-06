@@ -66,8 +66,8 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 
 		public java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> build() {
 			java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> rv = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			rv.put( CodePerspective.getInstance(), this.codePerspecitiveCard );
-			rv.put( CodePerspective.getInstance(), this.setupScenePerspecitiveCard );
+			rv.put( org.alice.ide.IDE.getActiveInstance().getCodePerspective(), this.codePerspecitiveCard );
+			rv.put( org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective(), this.setupScenePerspecitiveCard );
 			return rv;
 		}
 	}
@@ -91,12 +91,12 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		PerspectiveState.getInstance().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		PerspectiveState.getInstance().removeNewSchoolValueListener( this.perspectiveListener );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().removeNewSchoolValueListener( this.perspectiveListener );
 		super.handlePostDeactivation();
 	}
 

@@ -40,16 +40,76 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.worker;
+package edu.cmu.cs.dennisc.worker;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Worker<T> extends AbstractWorker<T, Void> {
-	private final InternalSwingWorker swingWorker = new InternalSwingWorker();
+public abstract class AbstractWorker<T, V> {
+	protected class InternalSwingWorker extends javax.swing.SwingWorker<T, V> {
+		@Override
+		protected final T doInBackground() throws Exception {
+			return AbstractWorker.this.do_onBackgroundThread();
+		}
 
-	@Override
-	protected javax.swing.SwingWorker<T, java.lang.Void> getSwingWorker() {
-		return this.swingWorker;
+		@Override
+		protected final void done() {
+			super.done();
+			if( this.isCancelled() ) {
+				//pass
+			} else {
+				T value;
+				try {
+					value = this.get();
+				} catch( InterruptedException ie ) {
+					throw new RuntimeException( ie );
+				} catch( java.util.concurrent.ExecutionException ee ) {
+					throw new RuntimeException( ee );
+				}
+				AbstractWorker.this.handleDone_onEventDispatchThread( value );
+			}
+		}
+	}
+
+	protected abstract javax.swing.SwingWorker<T, V> getSwingWorker();
+
+	public final void addPropertyChangeListener( java.beans.PropertyChangeListener listener ) {
+		this.getSwingWorker().addPropertyChangeListener( listener );
+	}
+
+	public final void removePropertyChangeListener( java.beans.PropertyChangeListener listener ) {
+		this.getSwingWorker().removePropertyChangeListener( listener );
+	}
+
+	protected abstract T do_onBackgroundThread() throws Exception;
+
+	protected abstract void handleDone_onEventDispatchThread( T value );
+
+	public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, java.util.concurrent.ExecutionException {
+		return this.getSwingWorker().get();
+	}
+
+	public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut( int timeout, java.util.concurrent.TimeUnit timeUnit ) throws InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException {
+		return this.getSwingWorker().get( timeout, timeUnit );
+	}
+
+	public final javax.swing.SwingWorker.StateValue getState() {
+		return this.getSwingWorker().getState();
+	}
+
+	public final boolean isDone() {
+		return this.getSwingWorker().isDone();
+	}
+
+	public final boolean isCancelled() {
+		return this.getSwingWorker().isCancelled();
+	}
+
+	public final boolean cancel( boolean mayInterruptIfRunning ) {
+		return this.getSwingWorker().cancel( mayInterruptIfRunning );
+	}
+
+	public final void execute() {
+		this.getSwingWorker().execute();
 	}
 }

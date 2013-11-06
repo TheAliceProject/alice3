@@ -45,8 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedMenuModel extends MenuModel {
-	private StandardMenuItemPrepModel[] models;
+public abstract class PredeterminedMenuModel extends StaticMenuModel {
+	private final StandardMenuItemPrepModel[] models;
 
 	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
 		super( individualId );
@@ -57,24 +57,8 @@ public abstract class PredeterminedMenuModel extends MenuModel {
 		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( models, StandardMenuItemPrepModel.class ) );
 	}
 
-	public Model[] getModels() {
+	@Override
+	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
 		return this.models;
-	}
-
-	private void updateMenuItemContainer( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.models );
-	}
-
-	@Override
-	public final org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = super.createMenu();
-		this.updateMenuItemContainer( rv );
-		return rv;
-	}
-
-	@Override
-	public final void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		this.updateMenuItemContainer( popupMenu );
 	}
 }

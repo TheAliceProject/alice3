@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private final org.lgna.croquet.Operation[] uploadOperations;
+public abstract class StaticMenuModel extends MenuModel {
+	private StandardMenuItemPrepModel[] models;
 
-	public FileMenuModel( org.lgna.croquet.Operation... uploadOperations ) {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
-		this.uploadOperations = uploadOperations;
+	public StaticMenuModel( java.util.UUID individualId ) {
+		super( individualId );
+	}
+
+	protected abstract StandardMenuItemPrepModel[] createModels();
+
+	private StandardMenuItemPrepModel[] getModels() {
+		if( this.models != null ) {
+			//pass
+		} else {
+			this.models = this.createModels();
+			assert this.models != null : this;
+		}
+		return this.models;
+	}
+
+	private void updateMenuItemContainer( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel()
-				);
-
-		if( this.uploadOperations.length > 0 ) {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			for( org.lgna.croquet.Operation operation : uploadOperations ) {
-				list.add( operation.getMenuItemPrepModel() );
-			}
-		}
-		list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		list.add( PrintMenuModel.getInstance() );
-		list.add( CaptureMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
+	public final org.lgna.croquet.components.Menu createMenu() {
+		org.lgna.croquet.components.Menu rv = super.createMenu();
+		this.updateMenuItemContainer( rv );
+		return rv;
 	}
+
+	@Override
+	public final void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		this.updateMenuItemContainer( popupMenu );
+	}
+
 }

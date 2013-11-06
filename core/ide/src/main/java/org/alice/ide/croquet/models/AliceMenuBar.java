@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public class AliceMenuBar extends MenuBarComposite {
-	private static class SingletonHolder {
-		private static AliceMenuBar instance = new AliceMenuBar();
-	}
-
-	public static AliceMenuBar getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private AliceMenuBar() {
-		super( new org.alice.ide.youtube.croquet.UploadOperation() );
+	public AliceMenuBar( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
+		super( perspectiveState, uploadOperations );
 	}
 }
