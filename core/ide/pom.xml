@@ -75,13 +75,6 @@
 			<artifactId>javamp3</artifactId>
 			<version>1.0</version>
 		</dependency>
-
-		<!-- TODO: Remove this youtube stuff... -->
-		<dependency>
-			<groupId>com.google.gdata</groupId>
-			<artifactId>core</artifactId>
-			<version>1.47.1</version>
-		</dependency>
 	</dependencies>
 
 	<build>
