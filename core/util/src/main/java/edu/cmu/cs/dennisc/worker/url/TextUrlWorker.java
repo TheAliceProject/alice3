@@ -40,60 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.worker;
+package edu.cmu.cs.dennisc.worker.url;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
-	protected class InternalSwingWorkerWithProgress extends InternalSwingWorker {
-		private void DEEMED_ACCEPTABLE_ACCESS_publish( V... chunks ) {
-			this.publish( chunks );
-		}
+public abstract class TextUrlWorker extends edu.cmu.cs.dennisc.worker.Worker<String> {
+	private final java.net.URL url;
 
-		private void DEEMED_ACCEPTABLE_ACCESS_setProgress( int progress ) {
-			this.setProgress( progress );
-		}
+	public TextUrlWorker( java.net.URL url ) {
+		this.url = url;
+	}
 
-		@Override
-		protected void process( java.util.List<V> chunks ) {
-			super.process( chunks );
-			if( this.isCancelled() ) {
-				//pass
-			} else {
-				WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
+	@Override
+	protected String do_onBackgroundThread() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		java.net.URLConnection urlConnection = url.openConnection();
+		try {
+			java.io.InputStream inputStream = urlConnection.getInputStream();
+			try {
+				java.io.InputStreamReader reader = new java.io.InputStreamReader( inputStream );
+				java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
+				while( true ) {
+					String inputLine = bufferedReader.readLine();
+					if( inputLine != null ) {
+						sb.append( inputLine );
+					} else {
+						break;
+					}
+				}
+				return sb.toString();
+			} finally {
+				inputStream.close();
+			}
+		} finally {
+			if( urlConnection instanceof java.net.HttpURLConnection ) {
+				//todo?
+				( (java.net.HttpURLConnection)urlConnection ).disconnect();
 			}
 		}
 	}
 
-	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
-
-	@Override
-	protected final javax.swing.SwingWorker<T, V> getSwingWorker() {
-		return this.swingWorker;
-	}
-
-	protected final void publish( V... chunks ) {
-		if( this.isCancelled() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled. omitting publish:", java.util.Arrays.toString( chunks ) );
-		} else {
-			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
-		}
-	}
-
-	public int getProgress() {
-		return this.swingWorker.getProgress();
-	}
-
-	protected final void setProgress( int progress ) {
-		if( this.isCancelled() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled.  omitting setProgress:", progress );
-		} else {
-			assert progress >= 0 : progress;
-			assert progress <= 100 : progress;
-			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
-		}
-	}
-
-	protected abstract void handleProcess_onEventDispatchThread( java.util.List<V> chunks );
 }

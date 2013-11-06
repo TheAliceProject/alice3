@@ -40,45 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.worker.url;
+package edu.cmu.cs.dennisc.worker;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextUrlWorker extends org.lgna.croquet.worker.Worker<String> {
-	private final java.net.URL url;
-
-	public TextUrlWorker( java.net.URL url ) {
-		this.url = url;
-	}
+public abstract class Worker<T> extends AbstractWorker<T, Void> {
+	private final InternalSwingWorker swingWorker = new InternalSwingWorker();
 
 	@Override
-	protected String do_onBackgroundThread() throws Exception {
-		StringBuilder sb = new StringBuilder();
-		java.net.URLConnection urlConnection = url.openConnection();
-		try {
-			java.io.InputStream inputStream = urlConnection.getInputStream();
-			try {
-				java.io.InputStreamReader reader = new java.io.InputStreamReader( inputStream );
-				java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
-				while( true ) {
-					String inputLine = bufferedReader.readLine();
-					if( inputLine != null ) {
-						sb.append( inputLine );
-					} else {
-						break;
-					}
-				}
-				return sb.toString();
-			} finally {
-				inputStream.close();
-			}
-		} finally {
-			if( urlConnection instanceof java.net.HttpURLConnection ) {
-				//todo?
-				( (java.net.HttpURLConnection)urlConnection ).disconnect();
-			}
-		}
+	protected javax.swing.SwingWorker<T, java.lang.Void> getSwingWorker() {
+		return this.swingWorker;
 	}
-
 }

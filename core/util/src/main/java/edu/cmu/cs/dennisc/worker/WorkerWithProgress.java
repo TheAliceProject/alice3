@@ -40,76 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.worker;
+package edu.cmu.cs.dennisc.worker;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractWorker<T, V> {
-	protected class InternalSwingWorker extends javax.swing.SwingWorker<T, V> {
-		@Override
-		protected final T doInBackground() throws Exception {
-			return AbstractWorker.this.do_onBackgroundThread();
+public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
+	protected class InternalSwingWorkerWithProgress extends InternalSwingWorker {
+		private void DEEMED_ACCEPTABLE_ACCESS_publish( V... chunks ) {
+			this.publish( chunks );
+		}
+
+		private void DEEMED_ACCEPTABLE_ACCESS_setProgress( int progress ) {
+			this.setProgress( progress );
 		}
 
 		@Override
-		protected final void done() {
-			super.done();
+		protected void process( java.util.List<V> chunks ) {
+			super.process( chunks );
 			if( this.isCancelled() ) {
 				//pass
 			} else {
-				T value;
-				try {
-					value = this.get();
-				} catch( InterruptedException ie ) {
-					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.ExecutionException ee ) {
-					throw new RuntimeException( ee );
-				}
-				AbstractWorker.this.handleDone_onEventDispatchThread( value );
+				WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
 			}
 		}
 	}
 
-	protected abstract javax.swing.SwingWorker<T, V> getSwingWorker();
+	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
 
-	public final void addPropertyChangeListener( java.beans.PropertyChangeListener listener ) {
-		this.getSwingWorker().addPropertyChangeListener( listener );
+	@Override
+	protected final javax.swing.SwingWorker<T, V> getSwingWorker() {
+		return this.swingWorker;
 	}
 
-	public final void removePropertyChangeListener( java.beans.PropertyChangeListener listener ) {
-		this.getSwingWorker().removePropertyChangeListener( listener );
+	protected final void publish( V... chunks ) {
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled. omitting publish:", java.util.Arrays.toString( chunks ) );
+		} else {
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
+		}
 	}
 
-	protected abstract T do_onBackgroundThread() throws Exception;
-
-	protected abstract void handleDone_onEventDispatchThread( T value );
-
-	public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, java.util.concurrent.ExecutionException {
-		return this.getSwingWorker().get();
+	public int getProgress() {
+		return this.swingWorker.getProgress();
 	}
 
-	public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut( int timeout, java.util.concurrent.TimeUnit timeUnit ) throws InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException {
-		return this.getSwingWorker().get( timeout, timeUnit );
+	protected final void setProgress( int progress ) {
+		if( this.isCancelled() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled.  omitting setProgress:", progress );
+		} else {
+			assert progress >= 0 : progress;
+			assert progress <= 100 : progress;
+			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
+		}
 	}
 
-	public final javax.swing.SwingWorker.StateValue getState() {
-		return this.getSwingWorker().getState();
-	}
-
-	public final boolean isDone() {
-		return this.getSwingWorker().isDone();
-	}
-
-	public final boolean isCancelled() {
-		return this.getSwingWorker().isCancelled();
-	}
-
-	public final boolean cancel( boolean mayInterruptIfRunning ) {
-		return this.getSwingWorker().cancel( mayInterruptIfRunning );
-	}
-
-	public final void execute() {
-		this.getSwingWorker().execute();
-	}
+	protected abstract void handleProcess_onEventDispatchThread( java.util.List<V> chunks );
 }
