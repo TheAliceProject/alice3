@@ -76,64 +76,100 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		final java.net.URI uriA;
-		final java.net.URI uriB;
-		if( args.length > 0 ) {
-			uriA = new java.net.URI( args[ 0 ] );
-			uriB = new java.net.URI( args[ 1 ] );
-		} else {
-			java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				directory = directory.getParentFile();
-			}
-			java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
-			java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
-			uriA = fileA.toURI();
-			uriB = fileB.toURI();
-		}
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-
-				final VideoComposite videoComposite = new VideoComposite();
-				videoComposite.getView().setUri( uriA );
-				app.getFrame().setMainComposite( videoComposite );
-
-				javax.swing.Action action = new javax.swing.AbstractAction() {
-					public void actionPerformed( java.awt.event.ActionEvent e ) {
-						videoComposite.getView().setUri( uriB );
+		final boolean IS_SECURE_URL_TEST_DESIRED = true;
+		if( IS_SECURE_URL_TEST_DESIRED ) {
+			final boolean IS_NATIVE_DISCOVERY_DESIRED = false;
+			if( IS_NATIVE_DISCOVERY_DESIRED ) {
+				uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+				if( nativeDiscovery.discover() ) {
+					//pass
+				} else {
+					System.err.println( "vlcj native discovery failed" );
+				}
+			} else {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is64Bit() ) {
+						com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC" );
+					} else {
+						throw new RuntimeException();
 					}
-				};
-				action.putValue( javax.swing.Action.NAME, "set second video" );
-				app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
-
-				app.getFrame().pack();
-				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-				app.getFrame().setVisible( true );
-
-				final boolean IS_SNAPSHOT_TEST = false;
-				if( IS_SNAPSHOT_TEST ) {
-					new Thread() {
-						@Override
-						public void run() {
-							float tPrev = Float.NaN;
-							while( true ) {
-								float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
-								if( tCurr != tPrev ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
-									tPrev = tCurr;
-									videoComposite.getView().getVideoPlayer().writeSnapshot( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/vlc/" + tCurr + ".png" ) );
-								}
-								edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
-							}
-						}
-					}.start();
+				} else {
+					throw new RuntimeException();
 				}
 			}
-		} );
+			com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
+
+			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = new edu.cmu.cs.dennisc.video.vlcj.VlcjVideoPlayer();
+
+			javax.swing.JFrame frame = new javax.swing.JFrame( "vlcj Tutorial" );
+			frame.setLocation( 100, 100 );
+			frame.setSize( 1050, 600 );
+			frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+			frame.getContentPane().add( videoPlayer.getVideoSurface(), java.awt.BorderLayout.CENTER );
+			frame.setVisible( true );
+
+			final java.net.URL SECURE_URL = new java.net.URL( "https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625" );
+			videoPlayer.prepareMedia( SECURE_URL.toURI() );
+			videoPlayer.playResume();
+		} else {
+			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+			if( lookAndFeelInfo != null ) {
+				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+			}
+			final java.net.URI uriA;
+			final java.net.URI uriB;
+			if( args.length > 0 ) {
+				uriA = new java.net.URI( args[ 0 ] );
+				uriB = new java.net.URI( args[ 1 ] );
+			} else {
+				java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					directory = directory.getParentFile();
+				}
+				java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
+				java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
+				uriA = fileA.toURI();
+				uriB = fileB.toURI();
+			}
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+
+					final VideoComposite videoComposite = new VideoComposite();
+					videoComposite.getView().setUri( uriA );
+					app.getFrame().setMainComposite( videoComposite );
+
+					javax.swing.Action action = new javax.swing.AbstractAction() {
+						public void actionPerformed( java.awt.event.ActionEvent e ) {
+							videoComposite.getView().setUri( uriB );
+						}
+					};
+					action.putValue( javax.swing.Action.NAME, "set second video" );
+					app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
+
+					app.getFrame().pack();
+					app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+					app.getFrame().setVisible( true );
+
+					final boolean IS_SNAPSHOT_TEST = false;
+					if( IS_SNAPSHOT_TEST ) {
+						new Thread() {
+							@Override
+							public void run() {
+								float tPrev = Float.NaN;
+								while( true ) {
+									float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
+									if( tCurr != tPrev ) {
+										edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tCurr );
+										tPrev = tCurr;
+									}
+									edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+								}
+							}
+						}.start();
+					}
+				}
+			} );
+		}
 	}
 }
