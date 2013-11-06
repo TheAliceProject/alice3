@@ -76,30 +76,36 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public static void main( String[] args ) throws Exception {
-		final boolean IS_SECURE_URL_TEST_DESIRED = true;
-		if( IS_SECURE_URL_TEST_DESIRED ) {
-			final boolean IS_NATIVE_DISCOVERY_DESIRED = false;
-			if( IS_NATIVE_DISCOVERY_DESIRED ) {
-				uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
-				if( nativeDiscovery.discover() ) {
-					//pass
-				} else {
-					System.err.println( "vlcj native discovery failed" );
-				}
+		final java.net.URL SECURE_URL = new java.net.URL( "https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625" );
+		final boolean IS_SIMPLE_TEST_DESIRED = false;
+		if( IS_SIMPLE_TEST_DESIRED ) {
+			final boolean IS_APPLICATION_ROOT_DESIRED = true;
+			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
+			if( IS_APPLICATION_ROOT_DESIRED ) {
+				videoPlayer = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
 			} else {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is64Bit() ) {
-						com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC" );
+				final boolean IS_NATIVE_DISCOVERY_DESIRED = false;
+				if( IS_NATIVE_DISCOVERY_DESIRED ) {
+					uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+					if( nativeDiscovery.discover() ) {
+						//pass
+					} else {
+						System.err.println( "vlcj native discovery failed" );
+					}
+				} else {
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+						if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is64Bit() ) {
+							com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC" );
+						} else {
+							throw new RuntimeException();
+						}
 					} else {
 						throw new RuntimeException();
 					}
-				} else {
-					throw new RuntimeException();
 				}
+				com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
+				videoPlayer = new edu.cmu.cs.dennisc.video.vlcj.VlcjVideoPlayer();
 			}
-			com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
-
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = new edu.cmu.cs.dennisc.video.vlcj.VlcjVideoPlayer();
 
 			javax.swing.JFrame frame = new javax.swing.JFrame( "vlcj Tutorial" );
 			frame.setLocation( 100, 100 );
@@ -108,7 +114,6 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 			frame.getContentPane().add( videoPlayer.getVideoSurface(), java.awt.BorderLayout.CENTER );
 			frame.setVisible( true );
 
-			final java.net.URL SECURE_URL = new java.net.URL( "https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625" );
 			videoPlayer.prepareMedia( SECURE_URL.toURI() );
 			videoPlayer.playResume();
 		} else {
@@ -126,9 +131,14 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 					directory = directory.getParentFile();
 				}
-				java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
 				java.io.File fileB = new java.io.File( directory, "Videos/b.webm" );
-				uriA = fileA.toURI();
+				final boolean IS_SECURE_URL_TEST_DESIRED = true;
+				if( IS_SECURE_URL_TEST_DESIRED ) {
+					uriA = SECURE_URL.toURI();
+				} else {
+					java.io.File fileA = new java.io.File( directory, "Videos/c.webm" );
+					uriA = fileA.toURI();
+				}
 				uriB = fileB.toURI();
 			}
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
