@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PredeterminedMenuModel extends StaticMenuModel {
-	private StandardMenuItemPrepModel[] models;
+	private final StandardMenuItemPrepModel[] models;
 
 	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
 		super( individualId );
