@@ -113,6 +113,30 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.perspectiveState;
 	}
 
+	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
+		return this.getPerspectiveState().getItemSelectionOperation( this.getCodePerspective() );
+	}
+
+	public org.lgna.croquet.Operation getSetToSetupScenePerspectiveOperation() {
+		return this.getPerspectiveState().getItemSelectionOperation( this.getSetupScenePerspective() );
+	}
+
+	public void setToCodePerspectiveTransactionlessly() {
+		this.getPerspectiveState().setValueTransactionlessly( this.getCodePerspective() );
+	}
+
+	public void setToSetupScenePerspectiveTransactionlessly() {
+		this.getPerspectiveState().setValueTransactionlessly( this.getSetupScenePerspective() );
+	}
+
+	public boolean isInCodePerspective() {
+		return this.getPerspectiveState().getValue() == this.getCodePerspective();
+	}
+
+	public boolean isInSetupScenePerspective() {
+		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
+	}
+
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 
 	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );

@@ -81,7 +81,7 @@ public class MetaDeclarationFauxState {
 
 	public org.lgna.project.ast.AbstractDeclaration getValue() {
 		IDE ide = IDE.getActiveInstance();
-		if( ide.getPerspectiveState().getValue() == ide.getSetupScenePerspective() ) {
+		if( ide.isInSetupScenePerspective() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
 			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
