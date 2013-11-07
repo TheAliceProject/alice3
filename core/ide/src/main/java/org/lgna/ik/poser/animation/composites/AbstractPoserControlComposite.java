@@ -42,14 +42,19 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.alice.stageide.type.croquet.TypeTreeState;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
+import org.lgna.croquet.codecs.DefaultItemCodec;
+import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
@@ -77,6 +82,14 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final TypeTreeState typeTreeState = new TypeTreeState();
+	private final ListSelectionState<Object> resourceList = createListSelectionState( createKey( "chooseResource" ), new RefreshableListData( DefaultItemCodec.createInstance( Object.class ) ) {
+
+		@Override
+		protected List createValues() {
+			return parent.getResourceList();
+		}
+	}, -1 );
 	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
 	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
@@ -190,5 +203,13 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public BooleanState getJointRotationHandleVisibilityState() {
 		return jointRotationHandleVisibilityState;
+	}
+
+	public ListSelectionState<Object> getResourceList() {
+		return this.resourceList;
+	}
+
+	public TypeTreeState getTypeTreeState() {
+		return this.typeTreeState;
 	}
 }

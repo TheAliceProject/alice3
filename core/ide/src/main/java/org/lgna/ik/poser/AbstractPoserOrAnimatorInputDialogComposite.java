@@ -83,6 +83,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	private UserType<?> userType;
 	private T controlComposite;
 	private final List<JointId> usedJoints = Collections.newArrayList();
+	private List<Object> resourceList;
 
 	private final SplitComposite splitComposite;
 
@@ -137,16 +138,17 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		case 1:
 			UserParameter constructorParameter0 = userConstructor.requiredParameters.get( 0 );
 			AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
+			resourceList = FieldFinder.getInstance().getResourcesForType( type );
 			if( parameter0Type instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)parameter0Type;
 				Class<?> cls = javaType.getClassReflectionProxy().getReification();
 				if( cls.isEnum() ) {
 					arguments[ 0 ] = cls.getEnumConstants()[ 0 ];
 				} else {
-					arguments[ 0 ] = FieldFinder.getInstance().getResourcesForType( type ).get( 0 );
+					arguments[ 0 ] = resourceList.get( 0 );
 				}
 			} else {
-				arguments[ 0 ] = FieldFinder.getInstance().getResourcesForType( type ).get( 0 );
+				arguments[ 0 ] = resourceList.get( 0 );
 			}
 			break;
 		case 2:
@@ -223,5 +225,9 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 	public List<JointId> getUsedJoints() {
 		return this.usedJoints;
+	}
+
+	public List<Object> getResourceList() {
+		return this.resourceList;
 	}
 }

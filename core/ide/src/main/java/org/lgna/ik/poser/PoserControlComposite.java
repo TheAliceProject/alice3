@@ -58,7 +58,7 @@ import org.lgna.project.ast.UserField;
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
-	StringState nameState = createStringState( createKey( "poseName" ) );
+	private final StringState nameState = createStringState( createKey( "poseName" ) );
 
 	public PoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent ) {
 		super( parent,
@@ -88,5 +88,4 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 	public AbstractPoserOrAnimatorInputDialogComposite getParent() {
 		return parent;
 	}
-
 }

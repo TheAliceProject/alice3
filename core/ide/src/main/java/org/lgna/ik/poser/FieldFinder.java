@@ -45,8 +45,10 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 
 import org.alice.ide.ProjectStack;
+import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserField;
@@ -85,13 +87,19 @@ public class FieldFinder {
 				if( field.getValueType().isAssignableTo( type ) ) {
 					InstanceCreation creation = (InstanceCreation)field.initializer.getValue();
 					if( creation.requiredArguments.size() > 0 ) {
-						System.out.println( creation.requiredArguments.size() );
 						SimpleArgument simpleArgument = creation.requiredArguments.get( 0 );
-						System.out.println( simpleArgument.expression.getValue() );
 						Expression[] arr = new Expression[ 1 ];
 						arr[ 0 ] = simpleArgument.expression.getValue();
 						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
-						System.out.println( evaluated[ 0 ].getClass() );
+						rv.add( evaluated[ 0 ] );
+					} else {
+						NamedUserConstructor constructor = (NamedUserConstructor)creation.constructor.getValue();
+						ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+						SimpleArgument simpleArgument = constructorInvocationStatement.requiredArguments.get( 0 );
+
+						Expression[] arr = new Expression[ 1 ];
+						arr[ 0 ] = simpleArgument.expression.getValue();
+						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
 						rv.add( evaluated[ 0 ] );
 					}
 				}

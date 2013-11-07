@@ -93,7 +93,7 @@ import org.lgna.story.SetPose;
  */
 public class AnimatorControlComposite<M extends SJointedModel> extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	private static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
+	public static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 	private StringState nameState = createStringState( createKey( "nameState" ) );
 	private TimeLineComposite tlComposite = new TimeLineComposite();
 	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
