@@ -49,8 +49,8 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 	public static final String APPLICATION_NAME = "Alice";
 	public static final String SUBMIT_ACTION_NAME = "submit bug report";
 
-	private static final String CONTRACTED_TEXT = "Can you provide insight into this problem?";
-	private static final String EXPANDED_TEXT = "Please provide insight: V";
+	private static final String CONTRACTED_TEXT = "Can you provide insight?";
+	private static final String EXPANDED_TEXT = "Please provide any insight you have below:";
 
 	private class SubmitAction extends javax.swing.AbstractAction {
 		public SubmitAction() {
@@ -97,6 +97,10 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
 
 		toggleButton.addChangeListener( this.changeListener );
+
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( submitButton, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( submitButton, 1.6f );
+		this.getRootPane().setDefaultButton( submitButton );
 
 		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
