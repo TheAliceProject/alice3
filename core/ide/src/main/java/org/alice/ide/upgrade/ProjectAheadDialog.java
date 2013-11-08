@@ -77,10 +77,7 @@ public class ProjectAheadDialog extends org.lgna.croquet.OperationInputDialogCor
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		new org.lgna.croquet.simple.SimpleApplication();
 		new ProjectAheadDialog( new org.lgna.project.Version( "3.1.112358.0.0" ) ).getLaunchOperation().fire();
 		System.exit( 0 );
