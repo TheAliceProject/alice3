@@ -46,51 +46,79 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public class JInsightPane extends javax.swing.JPanel {
-	private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
+	//private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
 	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
-	private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
-	private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
-	private final javax.swing.text.Document summaryDocument;
-	private final javax.swing.text.Document descriptionDocument;
-	private final javax.swing.text.Document stepsDocument;
-	private final javax.swing.text.Document reportedByDocument;
-	private final javax.swing.text.Document emailDocument;
+	private static final String NAME_SUGGESTIVE_TEXT = "(optional)";//"please fill in your name (optional)";
+	private static final String EMAIL_SUGGESTIVE_TEXT = "(optional)";//"please fill in your e-mail address (optional)";
 
-	private boolean isExpanded;
+	private static javax.swing.text.JTextComponent createTextArea( String text, String suggestiveText ) {
+		javax.swing.JTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( text, suggestiveText );
+		rv.setLineWrap( true );
+		rv.setWrapStyleWord( true );
+		return rv;
+	}
+
+	private static javax.swing.JScrollPane createScrollPane( javax.swing.text.JTextComponent view ) {
+		javax.swing.JScrollPane rv = new javax.swing.JScrollPane( view, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
+			}
+		};
+		return rv;
+	}
 
 	public JInsightPane() {
-		javax.swing.JTextField summaryTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", SUMMARY_SUGGESTIVE_TEXT );
-		javax.swing.JTextArea descriptionTextArea = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
-		javax.swing.JTextArea stepsTextArea = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
-		javax.swing.JTextField reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
-		javax.swing.JTextField emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
+		//javax.swing.JTextField summaryTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", SUMMARY_SUGGESTIVE_TEXT );
+		this.descriptionTextArea = createTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
+		javax.swing.text.JTextComponent stepsTextArea = createTextArea( "", STEPS_SUGGESTIVE_TEXT );
+		javax.swing.text.JTextComponent reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
+		javax.swing.text.JTextComponent emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
 
-		this.summaryDocument = summaryTextField.getDocument();
+		//this.summaryDocument = summaryTextField.getDocument();
 		this.descriptionDocument = descriptionTextArea.getDocument();
 		this.stepsDocument = stepsTextArea.getDocument();
 		this.reportedByDocument = reportedByTextField.getDocument();
 		this.emailDocument = emailAddressTextField.getDocument();
 
-		javax.swing.border.Border border = summaryTextField.getBorder();
-		descriptionTextArea.setBorder( border );
-		stepsTextArea.setBorder( border );
-
-		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow 0][grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0]" ) );
-		this.add( new javax.swing.JLabel( "summary:" ) );
-		this.add( summaryTextField, "growx, wrap" );
-		this.add( new javax.swing.JLabel( "description:" ) );
-		this.add( descriptionTextArea, "grow, wrap" );
-		this.add( new javax.swing.JLabel( "steps:" ) );
-		this.add( stepsTextArea, "grow, wrap" );
-		this.add( new javax.swing.JLabel( "exception:" ) );
-		this.add( new JExceptionSubPane(), "wrap" );
-		this.add( new javax.swing.JLabel( "environment:" ) );
-		this.add( new JEnvironmentSubPane(), "wrap" );
+		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0][grow 0]" ) );
+		//this.add( new javax.swing.JLabel( "summary:" ) );
+		//this.add( summaryTextField, "growx, wrap" );
+		this.add( new javax.swing.JLabel( "description:" ), "aligny top, gaptop 8" );
+		this.add( createScrollPane( descriptionTextArea ), "grow, wrap" );
+		this.add( new javax.swing.JLabel( "steps:" ), "aligny top, gaptop 8" );
+		this.add( createScrollPane( stepsTextArea ), "grow, wrap" );
 		this.add( new javax.swing.JLabel( "reported by:" ) );
 		this.add( reportedByTextField, "growx, wrap" );
 		this.add( new javax.swing.JLabel( "e-mail address:" ) );
 		this.add( emailAddressTextField, "growx, wrap" );
+		this.add( new javax.swing.JSeparator( javax.swing.SwingConstants.HORIZONTAL ), "growx, span 2, wrap" );
+		this.add( new javax.swing.JLabel( "exception:" ) );
+		this.add( new JExceptionSubPane(), "wrap" );
+		this.add( new javax.swing.JLabel( "environment:" ) );
+		this.add( new JEnvironmentSubPane(), "wrap" );
+	}
+
+	public edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
+		edu.cmu.cs.dennisc.issue.Issue.Builder rv = new edu.cmu.cs.dennisc.issue.Issue.Builder();
+		rv.type( edu.cmu.cs.dennisc.issue.IssueType.BUG );
+		//		if( this.summaryDocument.getLength() > 0 ) {
+		//			rv.summary( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.summaryDocument ) );
+		//		}
+		if( this.descriptionDocument.getLength() > 0 ) {
+			rv.description( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.descriptionDocument ) );
+		}
+		if( this.stepsDocument.getLength() > 0 ) {
+			rv.steps( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.stepsDocument ) );
+		}
+		if( this.reportedByDocument.getLength() > 0 ) {
+			rv.reportedBy( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.reportedByDocument ) );
+		}
+		if( this.emailDocument.getLength() > 0 ) {
+			rv.emailAddress( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.emailDocument ) );
+		}
+		return rv;
 	}
 
 	public boolean isExpanded() {
@@ -99,6 +127,7 @@ public class JInsightPane extends javax.swing.JPanel {
 
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
+		this.descriptionTextArea.requestFocus();
 		this.revalidate();
 		this.repaint();
 	}
@@ -111,4 +140,13 @@ public class JInsightPane extends javax.swing.JPanel {
 			return new java.awt.Dimension( 0, 0 );
 		}
 	}
+
+	//private final javax.swing.text.Document summaryDocument;
+	private final javax.swing.text.JTextComponent descriptionTextArea;
+	private final javax.swing.text.Document descriptionDocument;
+	private final javax.swing.text.Document stepsDocument;
+	private final javax.swing.text.Document reportedByDocument;
+	private final javax.swing.text.Document emailDocument;
+
+	private boolean isExpanded;
 }

@@ -47,6 +47,11 @@ package edu.cmu.cs.dennisc.issue;
  */
 public class Issue {
 	public static class Builder {
+		public Builder type( IssueType type ) {
+			this.type = type;
+			return this;
+		}
+
 		public Builder summary( String summary ) {
 			this.summary = summary;
 			return this;
@@ -96,6 +101,7 @@ public class Issue {
 			return new Issue( this );
 		}
 
+		private IssueType type;
 		private String summary;
 		private String description;
 		private String steps;
@@ -109,6 +115,7 @@ public class Issue {
 	}
 
 	private Issue( Builder builder ) {
+		this.type = builder.type;
 		this.summary = builder.summary;
 		this.description = builder.description;
 		this.steps = builder.steps;
@@ -118,6 +125,10 @@ public class Issue {
 		this.reportedBy = builder.reportedBy;
 		this.emailAddress = builder.emailAddress;
 		this.attachments = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( builder.attachments, Attachment.class );
+	}
+
+	public IssueType getType() {
+		return this.type;
 	}
 
 	public String getSummary() {
@@ -156,6 +167,7 @@ public class Issue {
 		return this.attachments;
 	}
 
+	private final IssueType type;
 	private final String summary;
 	private final String description;
 	private final String steps;

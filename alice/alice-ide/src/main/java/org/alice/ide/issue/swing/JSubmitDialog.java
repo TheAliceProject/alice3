@@ -96,15 +96,29 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		this.setTitle( sbTitle.toString() );
 		this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
 
-		toggleButton.addChangeListener( this.changeListener );
+		this.toggleButton.addChangeListener( this.changeListener );
 
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( submitButton, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( submitButton, 1.6f );
 		this.getRootPane().setDefaultButton( submitButton );
 
-		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
+		this.toggleButton.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon( 12 ) {
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+				javax.swing.ButtonModel buttonModel = button.getModel();
+				Heading heading = buttonModel.isSelected() ? Heading.SOUTH : Heading.EAST;
+				java.awt.Shape shape = this.createPath( x, y, heading );
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.fill( shape );
+			}
+		} );
+		this.toggleButton.setIconTextGap( 12 );
+		this.toggleButton.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		this.toggleButton.setFocusable( false );
+		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = true;
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
-			toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
+			this.toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
 		}
 	}
 
