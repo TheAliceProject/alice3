@@ -104,6 +104,7 @@ public class JInsightPane extends javax.swing.JPanel {
 		rv.steps( this.stepsTextArea.getText() );
 		rv.reportedBy( this.reportedByTextField.getText() );
 		rv.emailAddress( this.emailAddressTextField.getText() );
+		rv.threadAndThrowable( this.exceptionSubPane.getThread(), this.exceptionSubPane.getThrowable() );
 		return rv;
 	}
 

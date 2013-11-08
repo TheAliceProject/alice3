@@ -72,7 +72,8 @@ public class Issue {
 			return this;
 		}
 
-		public Builder throwable( Throwable throwable ) {
+		public Builder threadAndThrowable( Thread thread, Throwable throwable ) {
+			this.thread = thread;
 			this.throwable = throwable;
 			return this;
 		}
@@ -106,6 +107,7 @@ public class Issue {
 		private String description;
 		private String steps;
 		private String environment;
+		private Thread thread;
 		private Throwable throwable;
 		private String version;
 		private String reportedBy;
@@ -120,6 +122,7 @@ public class Issue {
 		this.description = builder.description;
 		this.steps = builder.steps;
 		this.environment = builder.environment;
+		this.thread = builder.thread;
 		this.throwable = builder.throwable;
 		this.version = builder.version;
 		this.reportedBy = builder.reportedBy;
@@ -147,6 +150,10 @@ public class Issue {
 		return this.environment;
 	}
 
+	public Thread getThread() {
+		return this.thread;
+	}
+
 	public Throwable getThrowable() {
 		return this.throwable;
 	}
@@ -172,6 +179,7 @@ public class Issue {
 	private final String description;
 	private final String steps;
 	private final String environment;
+	private final Thread thread;
 	private final Throwable throwable;
 	private final String version;
 	private final String reportedBy;
