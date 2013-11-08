@@ -48,8 +48,8 @@ package org.alice.ide.issue.swing;
 public class JAliceSubmitDialog extends JSubmitDialog {
 	private static final javax.swing.ImageIcon LOGO_ICON = new javax.swing.ImageIcon( JAliceSubmitDialog.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
 
-	public JAliceSubmitDialog() {
-		super( new JStandardHeaderPane( LOGO_ICON ) );
+	public JAliceSubmitDialog( Thread thread, Throwable throwable ) {
+		super( thread, throwable, new JStandardHeaderPane( LOGO_ICON ) );
 	}
 
 	@Override

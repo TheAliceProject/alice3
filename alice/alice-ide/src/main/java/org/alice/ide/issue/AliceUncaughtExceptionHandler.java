@@ -46,10 +46,9 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class AliceUncaughtExceptionHandler extends AbstractUncaughtExceptionHandler {
-
 	@Override
-	protected java.awt.Window createSubmitDialog() {
-		return new org.alice.ide.issue.swing.JAliceSubmitDialog();
+	protected java.awt.Window createSubmitDialog( Thread thread, Throwable throwable ) {
+		return new org.alice.ide.issue.swing.JAliceSubmitDialog( thread, throwable );
 	}
 
 	public static void main( String[] args ) throws Exception {

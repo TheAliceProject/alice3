@@ -46,11 +46,11 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUncaughtExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
-	protected abstract java.awt.Window createSubmitDialog();
+	protected abstract java.awt.Window createSubmitDialog( Thread thread, Throwable throwable );
 
 	public final void uncaughtException( Thread t, Throwable e ) {
 		e.printStackTrace();
-		java.awt.Window dialog = this.createSubmitDialog();
+		java.awt.Window dialog = this.createSubmitDialog( t, e );
 		dialog.pack();
 		dialog.setVisible( true );
 	}

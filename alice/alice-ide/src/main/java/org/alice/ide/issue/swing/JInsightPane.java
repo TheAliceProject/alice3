@@ -69,18 +69,13 @@ public class JInsightPane extends javax.swing.JPanel {
 		return rv;
 	}
 
-	public JInsightPane() {
+	public JInsightPane( Thread thread, Throwable throwable ) {
 		//javax.swing.JTextField summaryTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", SUMMARY_SUGGESTIVE_TEXT );
+		this.exceptionSubPane = new JExceptionSubPane( thread, throwable );
 		this.descriptionTextArea = createTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
-		javax.swing.text.JTextComponent stepsTextArea = createTextArea( "", STEPS_SUGGESTIVE_TEXT );
-		javax.swing.text.JTextComponent reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
-		javax.swing.text.JTextComponent emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
-
-		//this.summaryDocument = summaryTextField.getDocument();
-		this.descriptionDocument = descriptionTextArea.getDocument();
-		this.stepsDocument = stepsTextArea.getDocument();
-		this.reportedByDocument = reportedByTextField.getDocument();
-		this.emailDocument = emailAddressTextField.getDocument();
+		this.stepsTextArea = createTextArea( "", STEPS_SUGGESTIVE_TEXT );
+		this.reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
+		this.emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
 
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0][grow 0]" ) );
 		//this.add( new javax.swing.JLabel( "summary:" ) );
@@ -95,29 +90,18 @@ public class JInsightPane extends javax.swing.JPanel {
 		this.add( emailAddressTextField, "growx, wrap" );
 		this.add( new javax.swing.JSeparator( javax.swing.SwingConstants.HORIZONTAL ), "growx, span 2, wrap" );
 		this.add( new javax.swing.JLabel( "exception:" ) );
-		this.add( new JExceptionSubPane(), "wrap" );
+		this.add( this.exceptionSubPane, "wrap" );
 		this.add( new javax.swing.JLabel( "environment:" ) );
-		this.add( new JEnvironmentSubPane(), "wrap" );
+		this.add( this.environmentSubPane, "wrap" );
 	}
 
 	public edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
 		edu.cmu.cs.dennisc.issue.Issue.Builder rv = new edu.cmu.cs.dennisc.issue.Issue.Builder();
 		rv.type( edu.cmu.cs.dennisc.issue.IssueType.BUG );
-		//		if( this.summaryDocument.getLength() > 0 ) {
-		//			rv.summary( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.summaryDocument ) );
-		//		}
-		if( this.descriptionDocument.getLength() > 0 ) {
-			rv.description( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.descriptionDocument ) );
-		}
-		if( this.stepsDocument.getLength() > 0 ) {
-			rv.steps( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.stepsDocument ) );
-		}
-		if( this.reportedByDocument.getLength() > 0 ) {
-			rv.reportedBy( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.reportedByDocument ) );
-		}
-		if( this.emailDocument.getLength() > 0 ) {
-			rv.emailAddress( edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( this.emailDocument ) );
-		}
+		rv.description( this.descriptionTextArea.getText() );
+		rv.steps( this.stepsTextArea.getText() );
+		rv.reportedBy( this.reportedByTextField.getText() );
+		rv.emailAddress( this.emailAddressTextField.getText() );
 		return rv;
 	}
 
@@ -141,12 +125,12 @@ public class JInsightPane extends javax.swing.JPanel {
 		}
 	}
 
-	//private final javax.swing.text.Document summaryDocument;
 	private final javax.swing.text.JTextComponent descriptionTextArea;
-	private final javax.swing.text.Document descriptionDocument;
-	private final javax.swing.text.Document stepsDocument;
-	private final javax.swing.text.Document reportedByDocument;
-	private final javax.swing.text.Document emailDocument;
+	private final javax.swing.text.JTextComponent stepsTextArea;
+	private final javax.swing.text.JTextComponent reportedByTextField;
+	private final javax.swing.text.JTextComponent emailAddressTextField;
 
+	private final JExceptionSubPane exceptionSubPane;
+	private final JEnvironmentSubPane environmentSubPane = new JEnvironmentSubPane();
 	private boolean isExpanded;
 }

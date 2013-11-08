@@ -46,18 +46,10 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public class JExceptionSubPane extends javax.swing.JPanel {
-	private Thread thread;
-	private Throwable throwable;
+	private final Thread thread;
+	private final Throwable throwable;
 
-	protected Thread getThread() {
-		return this.thread;
-	}
-
-	protected Throwable getThrowable() {
-		return this.throwable;
-	}
-
-	public void setThreadAndThrowable( final Thread thread, final Throwable throwable ) {
+	public JExceptionSubPane( final Thread thread, final Throwable throwable ) {
 		assert thread != null;
 		assert throwable != null;
 		this.thread = thread;
@@ -93,5 +85,13 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 			this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
 		}
 		this.add( vcShowStackTrace );
+	}
+
+	public Thread getThread() {
+		return this.thread;
+	}
+
+	public Throwable getThrowable() {
+		return this.throwable;
 	}
 }

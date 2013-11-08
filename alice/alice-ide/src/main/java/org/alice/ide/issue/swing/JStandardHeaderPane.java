@@ -50,13 +50,13 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
-		sbHeader.append( "An exception has been caught" );
 
 		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
-			sbHeader.append( " during the running of your program.<p>" );
+			sbHeader.append( "An exception has been caught during the running of your program.<p>" );
 			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
 			sbHeader.append( JSubmitDialog.APPLICATION_NAME );
 		} else {
+			sbHeader.append( "A bug has been found" );
 		}
 		sbHeader.append( "</h1>" );
 		sbHeader.append( "<p>Please accept our apologies and press the <em>\"" );

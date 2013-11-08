@@ -49,8 +49,8 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 	public static final String APPLICATION_NAME = "Alice";
 	public static final String SUBMIT_ACTION_NAME = "submit bug report";
 
-	private static final String CONTRACTED_TEXT = "Can you provide insight?";
-	private static final String EXPANDED_TEXT = "Please provide any insight you have below:";
+	private static final String CONTRACTED_TEXT = "Provide details";
+	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
 
 	private class SubmitAction extends javax.swing.AbstractAction {
 		public SubmitAction() {
@@ -67,7 +67,8 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 
 	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
 
-	public JSubmitDialog( javax.swing.JPanel headerPane ) {
+	public JSubmitDialog( Thread thread, Throwable throwable, javax.swing.JPanel headerPane ) {
+		this.insightPane = new JInsightPane( thread, throwable );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		SubmitAction submitAction = new SubmitAction();
 		javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
@@ -124,7 +125,7 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 
 	protected abstract void submit();
 
-	private final JInsightPane insightPane = new JInsightPane();
+	private final JInsightPane insightPane;
 
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
