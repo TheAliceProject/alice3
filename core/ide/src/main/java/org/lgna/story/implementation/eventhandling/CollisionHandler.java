@@ -143,7 +143,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		}
 
 		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
-			listenerToGroupAMap.put( collisionListener, groupTwo );
+			listenerToGroupAMap.put( collisionListener, groupOne );
 			for( SThing m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
 
