@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.alice</groupId>
 			<artifactId>resources</artifactId>
-			<version>2013.10.18-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Gallery/Models -->
