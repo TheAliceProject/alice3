@@ -67,10 +67,7 @@ public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.id
 	//		super.handlePostDeactivation();
 	//	}
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		//ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );

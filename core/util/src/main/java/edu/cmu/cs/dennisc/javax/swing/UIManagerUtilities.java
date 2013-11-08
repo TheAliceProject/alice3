@@ -58,4 +58,19 @@ public class UIManagerUtilities {
 	public static void setDefaultFont( java.awt.Font font ) {
 		setDefaultFontResource( new javax.swing.plaf.FontUIResource( font ) );
 	}
+
+	public static boolean setLookAndFeel( String plafName ) {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( plafName );
+		if( lookAndFeelInfo != null ) {
+			try {
+				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+				return true;
+			} catch( Exception e ) {
+				e.printStackTrace();
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }

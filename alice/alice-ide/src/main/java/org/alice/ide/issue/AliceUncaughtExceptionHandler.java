@@ -53,6 +53,7 @@ public class AliceUncaughtExceptionHandler extends AbstractUncaughtExceptionHand
 	}
 
 	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
 		throw new Exception( "hello" );
 	}
