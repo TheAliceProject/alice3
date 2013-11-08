@@ -45,14 +45,36 @@ package org.alice.ide.issue.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class JAliceSubmitDialog extends JSubmitDialog {
-	private static final javax.swing.ImageIcon LOGO_ICON = new javax.swing.ImageIcon( JAliceSubmitDialog.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
+public class JStandardHeaderPane extends javax.swing.JPanel {
+	public JStandardHeaderPane( javax.swing.Icon logoIcon ) {
+		StringBuilder sbHeader = new StringBuilder();
+		sbHeader.append( "<html>" );
+		sbHeader.append( "<h1>" );
+		sbHeader.append( "An exception has been caught" );
 
-	public JAliceSubmitDialog() {
-		super( new JStandardHeaderPane( LOGO_ICON ) );
-	}
+		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
+			sbHeader.append( " during the running of your program.<p>" );
+			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
+			sbHeader.append( JSubmitDialog.APPLICATION_NAME );
+		} else {
+		}
+		sbHeader.append( "</h1>" );
+		sbHeader.append( "<p>Please accept our apologies and press the <em>\"" );
+		sbHeader.append( JSubmitDialog.SUBMIT_ACTION_NAME );
+		sbHeader.append( "\"</em> button.<p>" );
+		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
+		//sbHeader.append( "<p><p><p>Note:" );
+		sbHeader.append( "</html>" );
+		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
+		headerLabel.setForeground( java.awt.Color.WHITE );
+		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-	@Override
-	protected void submit() {
+		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
+
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( logoLabel, java.awt.BorderLayout.LINE_START );
+		this.add( headerLabel, java.awt.BorderLayout.CENTER );
+		this.setBackground( java.awt.Color.DARK_GRAY );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
 	}
 }

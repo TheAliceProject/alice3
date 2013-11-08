@@ -46,14 +46,16 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public abstract class JSubmitDialog extends javax.swing.JFrame {
+	public static final String APPLICATION_NAME = "Alice";
+	public static final String SUBMIT_ACTION_NAME = "submit bug report";
+
+	private static final String CONTRACTED_TEXT = "Can you provide insight into this problem?";
+	private static final String EXPANDED_TEXT = "Please provide insight: V";
+
 	private class SubmitAction extends javax.swing.AbstractAction {
 		public SubmitAction() {
-			super( "submit bug report" );
+			super( SUBMIT_ACTION_NAME );
 		}
-
-		//public void setAwtWindow( java.awt.Window awtWindow ) {
-		//	this.awtWindow = awtWindow;
-		//}
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			//		protected abstract IssueWorker createIssueWorker( Thread t, Throwable e );
@@ -61,83 +63,60 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 			//		worker.execute();
 			submit();
 		}
-
-		//private java.awt.Window awtWindow;
 	}
 
-	private final javax.swing.text.Document summaryDocument;
-	private final javax.swing.text.Document descriptionDocument;
-	private final javax.swing.text.Document stepsDocument;
+	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
 
-	public JSubmitDialog( String applicationName, javax.swing.Icon logoIcon ) {
-		this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
-		StringBuilder sbTitle = new StringBuilder();
-		sbTitle.append( "Please Submit Bug Report: " );
-		sbTitle.append( applicationName );
-		this.setTitle( sbTitle.toString() );
-
+	public JSubmitDialog( javax.swing.JPanel headerPane ) {
+		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		SubmitAction submitAction = new SubmitAction();
-
-		StringBuilder sbHeader = new StringBuilder();
-		sbHeader.append( "<html>" );
-		sbHeader.append( "An exception has been caught" );
-
-		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
-			sbHeader.append( " during the running of your program.<p>" );
-			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
-			sbHeader.append( applicationName );
-			sbHeader.append( ".<p>" );
-		} else {
-			sbHeader.append( ".<p>" );
-		}
-		sbHeader.append( "<p>Please accept our apologies and press the \"" );
-		sbHeader.append( submitAction.getValue( javax.swing.Action.NAME ) );
-		sbHeader.append( "\" button.<p>" );
-		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
-		sbHeader.append( "</html>" );
-		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
-		headerLabel.setForeground( java.awt.Color.WHITE );
-
-		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
 		javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
 
-		javax.swing.JPanel headerPanel = new javax.swing.JPanel();
-		headerPanel.setLayout( new java.awt.BorderLayout() );
-		headerPanel.add( logoLabel, java.awt.BorderLayout.LINE_START );
-		headerPanel.add( headerLabel, java.awt.BorderLayout.CENTER );
-		headerPanel.setBackground( java.awt.Color.DARK_GRAY );
+		javax.swing.JPanel insightHeaderPanel = new javax.swing.JPanel();
+		insightHeaderPanel.setLayout( new java.awt.BorderLayout() );
+		insightHeaderPanel.add( toggleButton, java.awt.BorderLayout.LINE_START );
 
-		this.setLayout( new java.awt.BorderLayout() );
+		javax.swing.JPanel mainPanel = new javax.swing.JPanel();
+		mainPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		mainPanel.setLayout( new java.awt.BorderLayout() );
+		mainPanel.add( insightHeaderPanel, java.awt.BorderLayout.PAGE_START );
+		mainPanel.add( insightPane, java.awt.BorderLayout.CENTER );
 
-		javax.swing.JTextField summaryTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField();
-		javax.swing.JTextArea descriptionTextArea = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
-		javax.swing.JTextArea stepsTextArea = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
+		javax.swing.JPanel submitPanel = new javax.swing.JPanel();
+		submitPanel.setLayout( new java.awt.FlowLayout() );
+		submitPanel.add( submitButton );
 
-		this.summaryDocument = summaryTextField.getDocument();
-		this.descriptionDocument = descriptionTextArea.getDocument();
-		this.stepsDocument = stepsTextArea.getDocument();
+		this.getContentPane().add( headerPane, java.awt.BorderLayout.PAGE_START );
+		this.getContentPane().add( mainPanel, java.awt.BorderLayout.CENTER );
+		this.getContentPane().add( submitPanel, java.awt.BorderLayout.PAGE_END );
 
-		javax.swing.JPanel panel = new javax.swing.JPanel();
-		panel.setLayout( new net.miginfocom.swing.MigLayout( "fill", "[align right, grow 0][]" ) );
-		panel.add( new javax.swing.JLabel( "summary:" ) );
-		panel.add( summaryTextField, "grow, wrap" );
-		panel.add( new javax.swing.JLabel( "description:" ) );
-		panel.add( descriptionTextArea, "grow, wrap" );
-		panel.add( new javax.swing.JLabel( "steps:" ) );
-		panel.add( stepsTextArea, "grow, wrap" );
-		panel.add( new javax.swing.JLabel( "exception:" ) );
-		panel.add( new JExceptionSubPane(), "wrap" );
-		panel.add( new javax.swing.JLabel( "environment:" ) );
-		panel.add( new JEnvironmentSubPane(), "wrap" );
+		StringBuilder sbTitle = new StringBuilder();
+		sbTitle.append( "Please Submit Bug Report: " );
+		sbTitle.append( APPLICATION_NAME );
+		this.setTitle( sbTitle.toString() );
+		this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
 
-		javax.swing.JPanel panelA = new javax.swing.JPanel();
-		panelA.setLayout( new java.awt.BorderLayout() );
-		panelA.add( panel, java.awt.BorderLayout.CENTER );
-		panelA.add( submitButton, java.awt.BorderLayout.PAGE_END );
+		toggleButton.addChangeListener( this.changeListener );
 
-		this.getContentPane().add( headerPanel, java.awt.BorderLayout.PAGE_START );
-		this.getContentPane().add( panelA, java.awt.BorderLayout.PAGE_END );
+		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
+		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
+			toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
+		}
 	}
 
 	protected abstract void submit();
+
+	private final JInsightPane insightPane = new JInsightPane();
+
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			Object src = e.getSource();
+			if( src instanceof javax.swing.JToggleButton ) {
+				javax.swing.JToggleButton button = (javax.swing.JToggleButton)src;
+				insightPane.setExpanded( button.isSelected() );
+				toggleButton.setText( button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT );
+				pack();
+			}
+		}
+	};
 }
