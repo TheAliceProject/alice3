@@ -40,58 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.swing;
+package edu.cmu.cs.dennisc.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class JEnvironmentSubPane extends javax.swing.JPanel {
-	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
-		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
+public class IssueUtilities {
+	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "java.version", "os.name", "os.arch" ) );
+
+	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
+		return systemPropertiesForEnnvironmentField;
 	}
 
-	private class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
-		public ShowAllSystemPropertiesAction() {
-			super( "show all system properties..." );
+	public static final String getEnvironmentLongDescription() {
+		StringBuilder sb = new StringBuilder();
+		String intersticial = "";
+		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+			sb.append( intersticial );
+			sb.append( propertyName );
+			sb.append( ": " );
+			sb.append( System.getProperty( propertyName ) );
+			intersticial = "\n";
 		}
-
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "<body>" );
-			for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
-				sb.append( "<strong> " );
-				sb.append( property.getKey() );
-				sb.append( ":</strong> " );
-				sb.append( property.getValue() );
-				sb.append( "<br>" );
-			}
-			sb.append( "</body>" );
-			sb.append( "</html>" );
-			javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane();
-			editorPane.setEditable( false );
-			editorPane.setContentType( "text/html" );
-			editorPane.setText( sb.toString() );
-			javax.swing.JOptionPane.showMessageDialog( JEnvironmentSubPane.this, new javax.swing.JScrollPane( editorPane ) {
-				@Override
-				public java.awt.Dimension getPreferredSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
-					rv.width = Math.min( rv.width, 640 );
-					rv.height = Math.min( rv.height, 480 );
-					return rv;
-				}
-			}, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
-		}
+		return sb.toString();
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new ShowAllSystemPropertiesAction() );
-
-	public JEnvironmentSubPane( java.util.List<String> systemPropertyNames ) {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		for( String propertyName : systemPropertyNames ) {
-			this.add( createSystemPropertyLabel( propertyName ) );
+	public static final String getEnvironmentShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		String intersticial = "";
+		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+			sb.append( intersticial );
+			sb.append( System.getProperty( propertyName ) );
+			intersticial = ";";
 		}
-		this.add( this.vcShowAllSystemProperties );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( ";" );
+			sb.append( System.getProperty( "os.version" ) );
+		}
+		return sb.toString();
 	}
 }

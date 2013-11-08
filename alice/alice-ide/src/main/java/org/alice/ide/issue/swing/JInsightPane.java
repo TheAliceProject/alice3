@@ -77,21 +77,23 @@ public class JInsightPane extends javax.swing.JPanel {
 		this.reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
 		this.emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
 
+		String textAreaConstraint = "aligny top, gaptop 8";
+		String panelConstraint = "aligny top";
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0][grow 0]" ) );
 		//this.add( new javax.swing.JLabel( "summary:" ) );
 		//this.add( summaryTextField, "growx, wrap" );
-		this.add( new javax.swing.JLabel( "description:" ), "aligny top, gaptop 8" );
+		this.add( new javax.swing.JLabel( "description:" ), textAreaConstraint );
 		this.add( createScrollPane( descriptionTextArea ), "grow, wrap" );
-		this.add( new javax.swing.JLabel( "steps:" ), "aligny top, gaptop 8" );
+		this.add( new javax.swing.JLabel( "steps:" ), textAreaConstraint );
 		this.add( createScrollPane( stepsTextArea ), "grow, wrap" );
 		this.add( new javax.swing.JLabel( "reported by:" ) );
 		this.add( reportedByTextField, "growx, wrap" );
 		this.add( new javax.swing.JLabel( "e-mail address:" ) );
 		this.add( emailAddressTextField, "growx, wrap" );
 		this.add( new javax.swing.JSeparator( javax.swing.SwingConstants.HORIZONTAL ), "growx, span 2, wrap" );
-		this.add( new javax.swing.JLabel( "exception:" ) );
+		this.add( new javax.swing.JLabel( "exception:" ), panelConstraint );
 		this.add( this.exceptionSubPane, "wrap" );
-		this.add( new javax.swing.JLabel( "environment:" ) );
+		this.add( new javax.swing.JLabel( "environment:" ), panelConstraint );
 		this.add( this.environmentSubPane, "wrap" );
 	}
 
@@ -131,6 +133,6 @@ public class JInsightPane extends javax.swing.JPanel {
 	private final javax.swing.text.JTextComponent emailAddressTextField;
 
 	private final JExceptionSubPane exceptionSubPane;
-	private final JEnvironmentSubPane environmentSubPane = new JEnvironmentSubPane();
+	private final JEnvironmentSubPane environmentSubPane = new JEnvironmentSubPane( edu.cmu.cs.dennisc.issue.IssueUtilities.getSystemPropertiesForEnvironmentField() );
 	private boolean isExpanded;
 }
