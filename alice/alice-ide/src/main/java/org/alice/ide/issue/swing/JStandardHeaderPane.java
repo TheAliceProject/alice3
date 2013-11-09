@@ -65,16 +65,27 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
 		//sbHeader.append( "<p><p><p>Note:" );
 		sbHeader.append( "</html>" );
+
+		StringBuilder sbBottom = new StringBuilder();
+		sbBottom.append( "<html>" );
+		sbBottom.append( "Note: it is possible that this bug has already been fixed.<br>" );
+		sbBottom.append( "Check <a href=\"" );
+		sbBottom.append( "\">a</a> for the latest release" );
+		sbBottom.append( "</html>" );
+
+		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
+
 		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
 		headerLabel.setForeground( java.awt.Color.WHITE );
 		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
+		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sbBottom.toString() );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( logoLabel, java.awt.BorderLayout.LINE_START );
-		this.add( headerLabel, java.awt.BorderLayout.CENTER );
+		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
+		this.add( logoLabel, "spany 2" );
+		this.add( headerLabel, "wrap" );
+		this.add( browserView, "aligny bottom" );
 		this.setBackground( java.awt.Color.DARK_GRAY );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
+		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
 	}
 }
