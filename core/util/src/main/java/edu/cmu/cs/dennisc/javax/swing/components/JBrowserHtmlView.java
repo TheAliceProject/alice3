@@ -46,6 +46,14 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  * @author Dennis Cosgrove
  */
 public class JBrowserHtmlView extends JHtmlView {
+	public JBrowserHtmlView( String text ) {
+		super( text );
+	}
+
+	public JBrowserHtmlView() {
+		this( "" );
+	}
+
 	protected void handleBrowseException( Exception e, java.net.URL url ) {
 		e.printStackTrace();
 		javax.swing.JOptionPane.showMessageDialog( this, "unable to browse: " + url, "error", javax.swing.JOptionPane.ERROR_MESSAGE );

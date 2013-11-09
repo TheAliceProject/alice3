@@ -46,16 +46,14 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  * @author Dennis Cosgrove
  */
 public abstract class JHtmlView extends javax.swing.JEditorPane {
-	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
-		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-			handleHyperlinkUpdate( e );
-		}
-	};
-
-	public JHtmlView() {
-		super( "text/html", "" );
+	public JHtmlView( String text ) {
+		super( "text/html", text );
 		assert this.getDocument() instanceof javax.swing.text.html.HTMLDocument : this.getDocument();
 		this.setEditable( false );
+	}
+
+	public JHtmlView() {
+		this( "" );
 	}
 
 	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
@@ -86,4 +84,10 @@ public abstract class JHtmlView extends javax.swing.JEditorPane {
 		super.removeNotify();
 		this.removeHyperlinkListener( this.hyperlinkListener );
 	}
+
+	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
+		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
+			handleHyperlinkUpdate( e );
+		}
+	};
 }
