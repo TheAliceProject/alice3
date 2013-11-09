@@ -40,68 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.views;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing.JEditorPane> {
-	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
-		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-			javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
-			if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
-				java.net.URL url = e.getURL();
-				try {
-					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-				} catch( Exception exc ) {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( url );
-				}
+public class JBrowserHtmlView extends JHtmlView {
+	protected void handleBrowseException( Exception e, java.net.URL url ) {
+		e.printStackTrace();
+		javax.swing.JOptionPane.showMessageDialog( this, "unable to browse: " + url, "error", javax.swing.JOptionPane.ERROR_MESSAGE );
+	}
+
+	@Override
+	protected void handleHyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
+		javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
+		if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
+			java.net.URL url = e.getURL();
+			try {
+				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+			} catch( Exception exc ) {
+				this.handleBrowseException( exc, url );
 			}
 		}
-	};
-
-	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
-		javax.swing.text.Document document = this.getAwtComponent().getDocument();
-		return (javax.swing.text.html.HTMLDocument)document;
-	}
-
-	public String getText() {
-		return this.getAwtComponent().getText();
-	}
-
-	public void setText( String text ) {
-		this.getAwtComponent().setText( text );
-		this.revalidateAndRepaint();
-	}
-
-	public void setTextFromUrl( java.net.URL url ) {
-		edu.cmu.cs.dennisc.worker.url.TextUrlWorker worker = new edu.cmu.cs.dennisc.worker.url.TextUrlWorker( url ) {
-			@Override
-			protected void handleDone_onEventDispatchThread( String value ) {
-				setText( value );
-			}
-		};
-		worker.execute();
-	}
-
-	@Override
-	protected javax.swing.JEditorPane createAwtComponent() {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" );
-		assert rv.getDocument() instanceof javax.swing.text.html.HTMLDocument : rv.getDocument();
-		//rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
-		rv.setEditable( false );
-		return rv;
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		this.getAwtComponent().addHyperlinkListener( this.hyperlinkListener );
-		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getAwtComponent().removeHyperlinkListener( this.hyperlinkListener );
 	}
 }

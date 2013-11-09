@@ -40,41 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.views;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing.JEditorPane> {
+public abstract class JHtmlView extends javax.swing.JEditorPane {
 	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
 		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-			javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
-			if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
-				java.net.URL url = e.getURL();
-				try {
-					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-				} catch( Exception exc ) {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( url );
-				}
-			}
+			handleHyperlinkUpdate( e );
 		}
 	};
 
+	public JHtmlView() {
+		super( "text/html", "" );
+		assert this.getDocument() instanceof javax.swing.text.html.HTMLDocument : this.getDocument();
+		this.setEditable( false );
+	}
+
 	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
-		javax.swing.text.Document document = this.getAwtComponent().getDocument();
+		javax.swing.text.Document document = this.getDocument();
 		return (javax.swing.text.html.HTMLDocument)document;
 	}
 
-	public String getText() {
-		return this.getAwtComponent().getText();
-	}
-
-	public void setText( String text ) {
-		this.getAwtComponent().setText( text );
-		this.revalidateAndRepaint();
-	}
-
-	public void setTextFromUrl( java.net.URL url ) {
+	public void setTextFromUrlLater( java.net.URL url ) {
 		edu.cmu.cs.dennisc.worker.url.TextUrlWorker worker = new edu.cmu.cs.dennisc.worker.url.TextUrlWorker( url ) {
 			@Override
 			protected void handleDone_onEventDispatchThread( String value ) {
@@ -84,24 +73,17 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing
 		worker.execute();
 	}
 
+	protected abstract void handleHyperlinkUpdate( javax.swing.event.HyperlinkEvent e );
+
 	@Override
-	protected javax.swing.JEditorPane createAwtComponent() {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" );
-		assert rv.getDocument() instanceof javax.swing.text.html.HTMLDocument : rv.getDocument();
-		//rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
-		rv.setEditable( false );
-		return rv;
+	public void addNotify() {
+		this.addHyperlinkListener( this.hyperlinkListener );
+		super.addNotify();
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		this.getAwtComponent().addHyperlinkListener( this.hyperlinkListener );
-		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getAwtComponent().removeHyperlinkListener( this.hyperlinkListener );
+	public void removeNotify() {
+		super.removeNotify();
+		this.removeHyperlinkListener( this.hyperlinkListener );
 	}
 }
