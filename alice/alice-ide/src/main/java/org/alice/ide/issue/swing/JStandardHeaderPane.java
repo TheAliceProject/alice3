@@ -46,7 +46,7 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public class JStandardHeaderPane extends javax.swing.JPanel {
-	public JStandardHeaderPane( javax.swing.Icon logoIcon ) {
+	public JStandardHeaderPane( String url, javax.swing.Icon logoIcon ) {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
@@ -66,12 +66,22 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		//sbHeader.append( "<p><p><p>Note:" );
 		sbHeader.append( "</html>" );
 
+		java.awt.Color backgroundColor = java.awt.Color.DARK_GRAY;
 		StringBuilder sbBottom = new StringBuilder();
 		sbBottom.append( "<html>" );
+		sbBottom.append( "<body bgcolor=\"#" );
+		sbBottom.append( Integer.toHexString( backgroundColor.getRGB() & 0xFFFFFF ) );
+		sbBottom.append( "\" text=\"#FFFFFF\">" );
 		sbBottom.append( "Note: it is possible that this bug has already been fixed.<br>" );
 		sbBottom.append( "Check <a href=\"" );
-		sbBottom.append( "\">a</a> for the latest release" );
+		sbBottom.append( url );
+		sbBottom.append( "\">" );
+		sbBottom.append( url );
+		sbBottom.append( "</a> for the latest release." );
+		sbBottom.append( "</body>" );
 		sbBottom.append( "</html>" );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbBottom.toString() );
 
 		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
 
@@ -80,7 +90,8 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
 		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sbBottom.toString() );
-
+		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:white}" );
+		browserView.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
 		this.add( logoLabel, "spany 2" );
 		this.add( headerLabel, "wrap" );
