@@ -76,9 +76,10 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 				paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
 			}
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			g2.setPaint( paint );
 			g2.fill( shape );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 		}
 
 		@Override

@@ -69,6 +69,7 @@ public class EntryPoint {
 				javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 			}
 		}
+		javax.swing.UIManager.put( "ScrollBar.width", 11 );
 
 		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
