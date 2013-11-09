@@ -40,72 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.components;
+package edu.cmu.cs.dennisc.java.net;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JHtmlView extends javax.swing.JEditorPane {
-	public JHtmlView( String text ) {
-		super( "text/html", text );
-		assert this.getDocument() instanceof javax.swing.text.html.HTMLDocument : this.getDocument();
-		this.setEditable( false );
+public class UrlUtilities {
+	private UrlUtilities() {
+		throw new AssertionError();
 	}
 
-	public JHtmlView() {
-		this( "" );
-	}
-
-	private java.util.Dictionary<java.net.URL, java.awt.Image> getImageCache() {
-		final String IMAGE_CACHE_PROPERTY_NAME = "imageCache";
-		javax.swing.text.Document document = this.getDocument();
-		java.util.Dictionary<java.net.URL, java.awt.Image> imageCache = (java.util.Dictionary<java.net.URL, java.awt.Image>)document.getProperty( IMAGE_CACHE_PROPERTY_NAME );
-		if( imageCache != null ) {
-			//pass
-		} else {
-			imageCache = new java.util.Hashtable<java.net.URL, java.awt.Image>();
-			document.putProperty( IMAGE_CACHE_PROPERTY_NAME, imageCache );
+	public static java.net.URL createUrl( String spec ) {
+		try {
+			return new java.net.URL( spec );
+		} catch( java.net.MalformedURLException murle ) {
+			throw new RuntimeException( spec, murle );
 		}
-		return imageCache;
 	}
-
-	public void addImageToCache( java.net.URL url, java.awt.Image image ) {
-		java.util.Dictionary<java.net.URL, java.awt.Image> imageCache = this.getImageCache();
-		imageCache.put( url, image );
-	}
-
-	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
-		javax.swing.text.Document document = this.getDocument();
-		return (javax.swing.text.html.HTMLDocument)document;
-	}
-
-	public void setTextFromUrlLater( java.net.URL url ) {
-		edu.cmu.cs.dennisc.worker.url.TextUrlWorker worker = new edu.cmu.cs.dennisc.worker.url.TextUrlWorker( url ) {
-			@Override
-			protected void handleDone_onEventDispatchThread( String value ) {
-				setText( value );
-			}
-		};
-		worker.execute();
-	}
-
-	protected abstract void handleHyperlinkUpdate( javax.swing.event.HyperlinkEvent e );
-
-	@Override
-	public void addNotify() {
-		this.addHyperlinkListener( this.hyperlinkListener );
-		super.addNotify();
-	}
-
-	@Override
-	public void removeNotify() {
-		super.removeNotify();
-		this.removeHyperlinkListener( this.hyperlinkListener );
-	}
-
-	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
-		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-			handleHyperlinkUpdate( e );
-		}
-	};
 }

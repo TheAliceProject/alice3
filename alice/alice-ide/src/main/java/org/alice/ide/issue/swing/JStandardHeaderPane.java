@@ -50,7 +50,6 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
-
 		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
 			sbHeader.append( "An exception has been caught during the running of your program.<p>" );
 			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
@@ -66,12 +65,20 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		//sbHeader.append( "<p><p><p>Note:" );
 		sbHeader.append( "</html>" );
 
+		String bookmarkImageUrlSpec = "http://bookmark";
+
 		java.awt.Color backgroundColor = java.awt.Color.DARK_GRAY;
+		java.awt.Color foregroundColor = java.awt.Color.WHITE;
 		StringBuilder sbBottom = new StringBuilder();
 		sbBottom.append( "<html>" );
-		sbBottom.append( "<body bgcolor=\"#" );
-		sbBottom.append( Integer.toHexString( backgroundColor.getRGB() & 0xFFFFFF ) );
-		sbBottom.append( "\" text=\"#FFFFFF\">" );
+		sbBottom.append( "<body bgcolor=\"" );
+		sbBottom.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( backgroundColor ) );
+		sbBottom.append( "\" text=\"" );
+		sbBottom.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( foregroundColor ) );
+		sbBottom.append( "\">" );
+		sbBottom.append( "<img src=\"" );
+		sbBottom.append( bookmarkImageUrlSpec );
+		sbBottom.append( "\">" );
 		sbBottom.append( "Note: it is possible that this bug has already been fixed.<br>" );
 		sbBottom.append( "Check <a href=\"" );
 		sbBottom.append( url );
@@ -86,14 +93,16 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
 
 		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
-		headerLabel.setForeground( java.awt.Color.WHITE );
+		headerLabel.setForeground( foregroundColor );
 		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sbBottom.toString() );
-		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:white}" );
+		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
+		browserView.setText( sbBottom.toString() );
+		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( foregroundColor ) + "}" );
 		browserView.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
 		this.add( logoLabel, "spany 2" );
+		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
 		this.add( headerLabel, "wrap" );
 		this.add( browserView, "aligny bottom" );
 		this.setBackground( java.awt.Color.DARK_GRAY );

@@ -62,6 +62,10 @@ public class HtmlView extends org.lgna.croquet.components.JComponent<edu.cmu.cs.
 		this.getAwtComponent().setTextFromUrlLater( url );
 	}
 
+	public void addImageToCache( java.net.URL url, java.awt.Image image ) {
+		this.getAwtComponent().addImageToCache( url, image );
+	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView createAwtComponent() {
 		return new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
