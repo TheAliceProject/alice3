@@ -65,8 +65,6 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		//sbHeader.append( "<p><p><p>Note:" );
 		sbHeader.append( "</html>" );
 
-		String bookmarkImageUrlSpec = "http://bookmark";
-
 		java.awt.Color backgroundColor = java.awt.Color.DARK_GRAY;
 		java.awt.Color foregroundColor = java.awt.Color.WHITE;
 		StringBuilder sbBottom = new StringBuilder();
@@ -76,15 +74,12 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		sbBottom.append( "\" text=\"" );
 		sbBottom.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( foregroundColor ) );
 		sbBottom.append( "\">" );
-		sbBottom.append( "<img src=\"" );
-		sbBottom.append( bookmarkImageUrlSpec );
-		sbBottom.append( "\">" );
-		sbBottom.append( "Note: it is possible that this bug has already been fixed.<br>" );
-		sbBottom.append( "Check <a href=\"" );
+		sbBottom.append( "Note: it is possible that this bug has already been fixed.<p>" );
+		sbBottom.append( "To download the latest release go to: <a href=\"" );
 		sbBottom.append( url );
 		sbBottom.append( "\">" );
 		sbBottom.append( url );
-		sbBottom.append( "</a> for the latest release." );
+		sbBottom.append( "</a> [web]." );
 		sbBottom.append( "</body>" );
 		sbBottom.append( "</html>" );
 
@@ -96,15 +91,16 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		headerLabel.setForeground( foregroundColor );
 		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
+		java.awt.Color linkColor = new java.awt.Color( 191, 191, 255 );
 		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
 		browserView.setText( sbBottom.toString() );
-		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( foregroundColor ) + "}" );
+		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( linkColor ) + "}" );
 		browserView.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
 		this.add( logoLabel, "spany 2" );
 		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
 		this.add( headerLabel, "wrap" );
-		this.add( browserView, "aligny bottom" );
+		this.add( browserView, "aligny bottom, gap bottom 8" );
 		this.setBackground( java.awt.Color.DARK_GRAY );
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
 	}

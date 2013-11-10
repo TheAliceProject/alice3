@@ -46,7 +46,7 @@ package org.alice.ide.issue.croquet.views;
  * @author Dennis Cosgrove
  */
 public class GlExceptionView extends org.lgna.croquet.components.MigPanel {
-	private static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
+	public static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
 
 	public GlExceptionView( org.alice.ide.issue.croquet.GlExceptionComposite composite ) {
 		super( composite, "", "", "[top][top]" );

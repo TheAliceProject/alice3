@@ -46,5 +46,117 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public class JGraphicsHeaderPane extends javax.swing.JPanel {
+	private static String getRendererSearchTerm( String renderer ) {
+		if( renderer.toLowerCase().contains( "geforce" ) ) {
+			return "GeForce";
+		} else {
+			return renderer;
+		}
+	}
 
+	public JGraphicsHeaderPane() {
+
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
+		sbSearchGraphicsDriverUrlSpec.append( "http://www.google.com/search?q=+graphics+driver" );
+		if( sharedDetails != null ) {
+			String renderer = sharedDetails.getRenderer();
+			if( renderer != null ) {
+				renderer = getRendererSearchTerm( renderer );
+				sbSearchGraphicsDriverUrlSpec.append( "+" );
+				sbSearchGraphicsDriverUrlSpec.append( renderer.replaceAll( " ", "+" ) );
+			}
+		}
+		String searchGraphicsDriverUrlSpec = sbSearchGraphicsDriverUrlSpec.toString();
+
+		StringBuilder sbGraphicsHelpUrlSpec = new StringBuilder();
+		sbGraphicsHelpUrlSpec.append( "http://help.alice.org/w/page/" );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			sbGraphicsHelpUrlSpec.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sbGraphicsHelpUrlSpec.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			sbGraphicsHelpUrlSpec.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
+		} else {
+			sbGraphicsHelpUrlSpec.append( "54959364/Updating%20Video%20Drivers" );
+		}
+		String graphicsHelpUrlSpec = sbGraphicsHelpUrlSpec.toString();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "<h1>" );
+		sb.append( JSubmitDialog.APPLICATION_NAME );
+		sb.append( " has encountered a graphics problem" );
+		sb.append( "</h1>" );
+		sb.append( "<h2>" );
+		sb.append( "The most common way to fix graphics problems is to update your video driver." );
+		sb.append( "</h2>" );
+		sb.append( "<h3>" );
+		sb.append( "Where to go for help:" );
+		sb.append( "</h3>" );
+		sb.append( "<a href=\"" );
+		sb.append( searchGraphicsDriverUrlSpec );
+		sb.append( "\">" );
+		sb.append( searchGraphicsDriverUrlSpec );
+		sb.append( "</a> [web]<br>" );
+		sb.append( "<a href=\"" );
+		sb.append( graphicsHelpUrlSpec );
+		sb.append( "\">" );
+		sb.append( graphicsHelpUrlSpec );
+		sb.append( "</a> [web]<br>" );
+		sb.append( "<h3>" );
+		sb.append( "About your computer:" );
+		sb.append( "</h3>" );
+		sb.append( "Graphics information: <strong>" );
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "unknown" );
+		}
+		sb.append( "</strong><br>" );
+		sb.append( "System information: <strong>" );
+		sb.append( System.getProperty( "os.name" ) );
+		sb.append( " " );
+		sb.append( System.getProperty( "sun.arch.data.model" ) );
+		sb.append( "-bit</strong><p>" );
+		sb.append( "FYI: " );
+		if( pickDetails != null ) {
+			if( pickDetails.isPickFunctioningCorrectly() ) {
+				sb.append( "Clicking into the scene appears to be functioning correctly" );
+				if( pickDetails.isPickActuallyHardwareAccelerated() ) {
+					sb.append( " in hardware" );
+				} else {
+					sb.append( " in software (updating your video drivers might help)" );
+					if( pickDetails.isReportingPickCanBeHardwareAccelerated() ) {
+						sb.append( "(video card reports hardware support but fails)" );
+					}
+				}
+			} else {
+				sb.append( "Clicking into the scene appears to be suboptimal (updating your video drivers might help)" );
+			}
+		} else {
+			sb.append( "There is no information on clicking into the scene" );
+		}
+		sb.append( "." );
+		sb.append( "</html>" );
+
+		this.setLayout( new net.miginfocom.swing.MigLayout( "fill", "[grow 0][grow 0][grow]" ) );
+		this.add( new javax.swing.JLabel( org.alice.ide.issue.croquet.views.GlExceptionView.ICON ) );
+		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top" );
+		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sb.toString() ), "grow, wrap" );
+
+		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>submit bug report</em>\" button.<html>" ), "span 3" );
+		this.setBackground( java.awt.Color.WHITE );
+
+		//		this.add( new org.lgna.croquet.components.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		//		this.addComponent( new org.alice.ide.croquet.models.help.views.GraphicsHelpView(), "wrap" );
+		//		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+		//				new org.lgna.croquet.components.Label( "If you have updated your video drivers and the problem still persists please " ),
+		//				new org.lgna.croquet.components.Label( "submit a bug report", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+		//				new org.lgna.croquet.components.Label( "." )
+		//				), "wrap, span 2" );
+		//
+		//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+	}
 }

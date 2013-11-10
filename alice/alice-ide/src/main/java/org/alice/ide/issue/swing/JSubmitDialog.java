@@ -117,7 +117,7 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		this.toggleButton.setIconTextGap( 12 );
 		this.toggleButton.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		this.toggleButton.setFocusable( false );
-		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = true;
+		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
 			this.toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
 		}
