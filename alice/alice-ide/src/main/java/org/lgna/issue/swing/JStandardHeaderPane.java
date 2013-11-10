@@ -46,20 +46,22 @@ package org.lgna.issue.swing;
  * @author Dennis Cosgrove
  */
 public class JStandardHeaderPane extends javax.swing.JPanel {
-	public JStandardHeaderPane( String url, javax.swing.Icon logoIcon ) {
+	private static final javax.swing.ImageIcon LOGO_ICON = new javax.swing.ImageIcon( JStandardHeaderPane.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
+
+	public JStandardHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config, String submitActionName ) {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
 		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
 			sbHeader.append( "An exception has been caught during the running of your program.<p>" );
 			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
-			sbHeader.append( JSubmitDialog.APPLICATION_NAME );
+			sbHeader.append( config.getApplicationName() );
 		} else {
 			sbHeader.append( "A bug has been found" );
 		}
 		sbHeader.append( "</h1>" );
 		sbHeader.append( "<p>Please accept our apologies and press the <em>\"" );
-		sbHeader.append( JSubmitDialog.SUBMIT_ACTION_NAME );
+		sbHeader.append( submitActionName );
 		sbHeader.append( "\"</em> button.<p>" );
 		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
 		//sbHeader.append( "<p><p><p>Note:" );
@@ -76,16 +78,16 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		sbBottom.append( "\">" );
 		sbBottom.append( "Note: it is possible that this bug has already been fixed.<p>" );
 		sbBottom.append( "To download the latest release go to: <a href=\"" );
-		sbBottom.append( url );
+		sbBottom.append( config.getDownloadUrlSpec() );
 		sbBottom.append( "\">" );
-		sbBottom.append( url );
+		sbBottom.append( config.getDownloadUrlText() );
 		sbBottom.append( "</a> [web]." );
 		sbBottom.append( "</body>" );
 		sbBottom.append( "</html>" );
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbBottom.toString() );
 
-		javax.swing.JLabel logoLabel = new javax.swing.JLabel( logoIcon );
+		javax.swing.JLabel logoLabel = new javax.swing.JLabel( LOGO_ICON );
 
 		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
 		headerLabel.setForeground( foregroundColor );
@@ -97,9 +99,9 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( linkColor ) + "}" );
 		browserView.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
-		this.add( logoLabel, "spany 2" );
 		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
-		this.add( headerLabel, "wrap" );
+		this.add( headerLabel );
+		this.add( logoLabel, "spany 2, wrap" );
 		this.add( browserView, "aligny bottom, gap bottom 8" );
 		this.setBackground( java.awt.Color.DARK_GRAY );
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );

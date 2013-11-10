@@ -54,8 +54,7 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		}
 	}
 
-	public JGraphicsHeaderPane() {
-
+	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config, String submitActionName ) {
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
 		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
@@ -86,7 +85,7 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
-		sb.append( JSubmitDialog.APPLICATION_NAME );
+		sb.append( config.getApplicationName() );
 		sb.append( " has encountered a graphics problem" );
 		sb.append( "</h1>" );
 		sb.append( "<h2>" );
@@ -142,11 +141,11 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		sb.append( "</html>" );
 
 		this.setLayout( new net.miginfocom.swing.MigLayout( "fill", "[grow 0][grow 0][grow]" ) );
-		this.add( new javax.swing.JLabel( org.alice.ide.issue.croquet.views.GlExceptionView.ICON ) );
 		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top" );
-		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sb.toString() ), "grow, wrap" );
+		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sb.toString() ), "grow" );
+		this.add( new javax.swing.JLabel( org.alice.ide.issue.croquet.views.GlExceptionView.ICON ), "wrap" );
 
-		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>submit bug report</em>\" button.<html>" ), "span 3" );
+		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>" + submitActionName + "</em>\" button.<html>" ), "span 3" );
 		this.setBackground( java.awt.Color.WHITE );
 
 		//		this.add( new org.lgna.croquet.components.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );

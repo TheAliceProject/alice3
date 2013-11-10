@@ -40,19 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.swing;
-
-import org.lgna.issue.swing.JSubmitDialog;
+package org.lgna.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JAliceSubmitDialog extends JSubmitDialog {
-	public JAliceSubmitDialog( Thread thread, Throwable throwable ) {
-		super( thread, throwable, new org.alice.ide.issue.AliceIdeIssueConfiguration() );
-	}
+public interface ApplicationIssueConfiguration {
+	public String getApplicationName();
 
-	@Override
-	protected void submit() {
-	}
+	public String getDownloadUrlSpec();
+
+	public String getDownloadUrlText();
 }
