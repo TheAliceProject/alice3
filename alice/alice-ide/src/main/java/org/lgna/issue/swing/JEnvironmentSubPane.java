@@ -40,58 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.swing;
+package org.lgna.issue.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JExceptionSubPane extends javax.swing.JPanel {
-	private final Thread thread;
-	private final Throwable throwable;
+/*package-private*/class JEnvironmentSubPane extends javax.swing.JPanel {
+	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
+		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
+	}
 
-	public JExceptionSubPane( final Thread thread, final Throwable throwable ) {
-		assert thread != null;
-		assert throwable != null;
-		this.thread = thread;
-		this.throwable = throwable;
-		this.removeAll();
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+	private class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
+		public ShowAllSystemPropertiesAction() {
+			super( "show all system properties..." );
+		}
+
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
+			StringBuilder sb = new StringBuilder();
+			sb.append( "<html>" );
+			sb.append( "<body>" );
+			for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
+				sb.append( "<strong> " );
+				sb.append( property.getKey() );
+				sb.append( ":</strong> " );
+				sb.append( property.getValue() );
+				sb.append( "<br>" );
 			}
-		} );
-
-		StringBuffer sb = new StringBuffer();
-		sb.append( throwable.getClass().getSimpleName() );
-		String message = throwable.getLocalizedMessage();
-		if( ( message != null ) && ( message.length() > 0 ) ) {
-			sb.append( "[" );
-			sb.append( message );
-			sb.append( "]" );
+			sb.append( "</body>" );
+			sb.append( "</html>" );
+			javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane();
+			editorPane.setEditable( false );
+			editorPane.setContentType( "text/html" );
+			editorPane.setText( sb.toString() );
+			javax.swing.JOptionPane.showMessageDialog( JEnvironmentSubPane.this, new javax.swing.JScrollPane( editorPane ) {
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					java.awt.Dimension rv = super.getPreferredSize();
+					rv.width = Math.min( rv.width, 640 );
+					rv.height = Math.min( rv.height, 480 );
+					return rv;
+				}
+			}, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 		}
-		sb.append( " in " );
-		sb.append( thread.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( thread.getName() );
-		sb.append( "]" );
-
-		this.add( new javax.swing.JLabel( sb.toString() ) );
-		StackTraceElement[] elements = throwable.getStackTrace();
-		if( elements.length > 0 ) {
-			StackTraceElement e0 = elements[ 0 ];
-			this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
-			this.add( new javax.swing.JLabel( "method: " + e0.getMethodName() ) );
-			this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
-		}
-		this.add( vcShowStackTrace );
 	}
 
-	public Thread getThread() {
-		return this.thread;
-	}
+	private edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new ShowAllSystemPropertiesAction() );
 
-	public Throwable getThrowable() {
-		return this.throwable;
+	public JEnvironmentSubPane( java.util.List<String> systemPropertyNames ) {
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+		for( String propertyName : systemPropertyNames ) {
+			this.add( createSystemPropertyLabel( propertyName ) );
+		}
+		this.add( this.vcShowAllSystemProperties );
 	}
 }

@@ -40,24 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.lgna.issue.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractUncaughtExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
-	protected abstract java.awt.Window createSubmitDialog( Thread thread, Throwable throwable );
-
-	public final void uncaughtException( final Thread t, final Throwable e ) {
-		e.printStackTrace();
-		final java.awt.Window dialog = this.createSubmitDialog( t, e );
-		dialog.pack();
-		//todo
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				dialog.pack();
-			}
-		} );
-		dialog.setVisible( true );
-	}
+public class JProgressDialog extends javax.swing.JDialog {
 }

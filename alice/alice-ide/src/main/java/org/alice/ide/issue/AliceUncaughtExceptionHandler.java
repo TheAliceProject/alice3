@@ -42,6 +42,8 @@
  */
 package org.alice.ide.issue;
 
+import org.lgna.issue.AbstractUncaughtExceptionHandler;
+
 /**
  * @author Dennis Cosgrove
  */

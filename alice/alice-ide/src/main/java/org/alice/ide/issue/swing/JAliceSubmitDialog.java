@@ -42,6 +42,10 @@
  */
 package org.alice.ide.issue.swing;
 
+import org.lgna.issue.swing.JGraphicsHeaderPane;
+import org.lgna.issue.swing.JStandardHeaderPane;
+import org.lgna.issue.swing.JSubmitDialog;
+
 /**
  * @author Dennis Cosgrove
  */
