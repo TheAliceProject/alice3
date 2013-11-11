@@ -57,16 +57,16 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		}
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			//		protected abstract IssueWorker createIssueWorker( Thread t, Throwable e );
-			//		IssueWorker worker = this.createIssueWorker( t, e );
-			//		worker.execute();
 			submit();
 		}
 	}
 
 	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
 
+	private final org.lgna.issue.ApplicationIssueConfiguration config;
+
 	public JSubmitDialog( Thread thread, Throwable throwable, org.lgna.issue.ApplicationIssueConfiguration config ) {
+		this.config = config;
 		this.insightPane = new JInsightPane( thread, throwable );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		SubmitAction submitAction = new SubmitAction();
@@ -125,6 +125,10 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
 			this.toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
 		}
+	}
+
+	protected org.lgna.issue.ApplicationIssueConfiguration getConfig() {
+		return this.config;
 	}
 
 	protected abstract void submit();

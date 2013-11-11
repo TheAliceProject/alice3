@@ -55,8 +55,13 @@ public class AliceUncaughtExceptionHandler extends AbstractUncaughtExceptionHand
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+
+		final boolean IS_TESTING_GL = false;
 		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
-		//throw new javax.media.opengl.GLException( "render" );
-		throw new Exception( "hello" );
+		if( IS_TESTING_GL ) {
+			throw new javax.media.opengl.GLException( "render" );
+		} else {
+			throw new Exception( "hello" );
+		}
 	}
 }

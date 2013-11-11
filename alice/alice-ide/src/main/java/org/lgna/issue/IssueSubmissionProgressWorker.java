@@ -40,22 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.lgna.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Void, String> {
+public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Boolean, String> {
+	private static final String START_MESSAGE = "START_MESSAGE";
+	private static final String END_MESSAGE = "END_MESSAGE";
+
+	public IssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitDialog ownerDialog ) {
+		this.ownerDialog = ownerDialog;
+	}
+
+	protected abstract Boolean doInternal_onBackgroundThread() throws java.lang.Exception;
+
 	@Override
-	protected Void do_onBackgroundThread() throws Exception {
-		return null;
+	protected final Boolean do_onBackgroundThread() throws java.lang.Exception {
+		this.publish( START_MESSAGE );
+		boolean rv = this.doInternal_onBackgroundThread();
+		this.publish( END_MESSAGE );
+		return rv;
 	}
 
 	@Override
-	protected void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+		for( String message : chunks ) {
+			if( START_MESSAGE.equals( message ) ) {
+				this.progressDialog.pack();
+				this.progressDialog.setVisible( true );
+			} else if( END_MESSAGE.equals( message ) ) {
+				this.progressDialog.setVisible( false );
+			} else {
+				this.progressDialog.addMessage( message );
+			}
+		}
 	}
 
 	@Override
-	protected void handleDone_onEventDispatchThread( Void value ) {
+	protected final void handleDone_onEventDispatchThread( Boolean value ) {
+		if( this.progressDialog.isBackgrounded() || ( this.ownerDialog.isVisible() == false ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "issue submission result:", value );
+		} else {
+			if( value ) {
+				javax.swing.JOptionPane.showMessageDialog( this.ownerDialog, "Your bug report has been successfully submitted.  Thank you." );
+			} else {
+				javax.swing.JOptionPane.showMessageDialog( this.ownerDialog, "Your bug report FAILED to submit.  Thank you for trying." );
+			}
+			this.ownerDialog.setVisible( false );
+		}
 	}
+
+	public void hideOwnerDialog() {
+		this.ownerDialog.setVisible( false );
+	}
+
+	private final org.lgna.issue.swing.JSubmitDialog ownerDialog;
+	private final org.lgna.issue.swing.JProgressDialog progressDialog = new org.lgna.issue.swing.JProgressDialog( this );
 }

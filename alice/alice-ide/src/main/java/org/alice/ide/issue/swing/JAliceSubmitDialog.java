@@ -42,17 +42,22 @@
  */
 package org.alice.ide.issue.swing;
 
-import org.lgna.issue.swing.JSubmitDialog;
-
 /**
  * @author Dennis Cosgrove
  */
-public class JAliceSubmitDialog extends JSubmitDialog {
+public class JAliceSubmitDialog extends org.lgna.issue.swing.JSubmitDialog {
 	public JAliceSubmitDialog( Thread thread, Throwable throwable ) {
 		super( thread, throwable, new org.alice.ide.issue.AliceIdeIssueConfiguration() );
 	}
 
 	@Override
 	protected void submit() {
+		org.lgna.issue.ApplicationIssueConfiguration config = getConfig();
+		int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+		if( option == javax.swing.JOptionPane.CANCEL_OPTION ) {
+			//pass
+		} else {
+			new org.alice.ide.issue.AliceIssueSubmissionProgressWorker( this, option == javax.swing.JOptionPane.YES_OPTION ).execute();
+		}
 	}
 }

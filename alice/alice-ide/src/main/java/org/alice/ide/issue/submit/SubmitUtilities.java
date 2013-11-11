@@ -40,11 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.alice.ide.issue.submit;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AliceIssueWorker extends IssueWorker {
+public class SubmitUtilities {
 
 }

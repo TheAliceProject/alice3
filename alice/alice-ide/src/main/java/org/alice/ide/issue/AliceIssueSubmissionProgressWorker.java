@@ -40,29 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DocumentUtilities {
-	private DocumentUtilities() {
-		throw new AssertionError();
+public class AliceIssueSubmissionProgressWorker extends org.lgna.issue.IssueSubmissionProgressWorker {
+	private final boolean isProjectAttachmentDesired;
+
+	public AliceIssueSubmissionProgressWorker( org.alice.ide.issue.swing.JAliceSubmitDialog owner, boolean isProjectAttachmentDesired ) {
+		super( owner );
+		this.isProjectAttachmentDesired = isProjectAttachmentDesired;
 	}
 
-	public static String getText( javax.swing.text.Document document ) {
-		try {
-			return document.getText( 0, document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
+	@Override
+	protected Boolean doInternal_onBackgroundThread() throws java.lang.Exception {
+		this.publish( "attach project: " + this.isProjectAttachmentDesired );
+		for( int i = 0; i < 20; i++ ) {
+			this.publish( Integer.toString( i ) );
+			Thread.sleep( 200 );
 		}
-	}
-
-	public static void appendString( javax.swing.text.Document document, String s ) {
-		try {
-			document.insertString( document.getLength(), s, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
+		return true;
 	}
 }
