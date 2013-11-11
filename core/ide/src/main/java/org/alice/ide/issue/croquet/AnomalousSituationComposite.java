@@ -95,8 +95,8 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getReportType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
+	protected edu.cmu.cs.dennisc.issue.IssueType getReportType() {
+		return edu.cmu.cs.dennisc.issue.IssueType.BUG;
 	}
 
 	@Override

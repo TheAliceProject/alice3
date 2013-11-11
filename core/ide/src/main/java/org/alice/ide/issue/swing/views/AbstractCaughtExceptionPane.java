@@ -241,8 +241,8 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
+	protected edu.cmu.cs.dennisc.issue.IssueType getIssueType() {
+		return edu.cmu.cs.dennisc.issue.IssueType.BUG;
 	}
 
 	@Override

@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.jira;
  * @author Dennis Cosgrove
  */
 public class JIRAUtilities {
-	public static int getType( edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
-		if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG ) {
+	public static int getType( edu.cmu.cs.dennisc.issue.IssueType type ) {
+		if( type == edu.cmu.cs.dennisc.issue.IssueType.BUG ) {
 			return 1;
-		} else if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE ) {
+		} else if( type == edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE ) {
 			return 2;
-		} else if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT ) {
+		} else if( type == edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT ) {
 			return 4;
 		} else {
 			throw new RuntimeException();

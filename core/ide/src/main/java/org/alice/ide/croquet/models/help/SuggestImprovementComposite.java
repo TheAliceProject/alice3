@@ -55,7 +55,7 @@ public class SuggestImprovementComposite extends ReportIssueComposite {
 	}
 
 	private SuggestImprovementComposite() {
-		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT );
+		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT );
 	}
 
 	public static void main( String[] args ) throws Exception {

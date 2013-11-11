@@ -55,6 +55,6 @@ public class RequestNewFeatureComposite extends ReportIssueComposite {
 	}
 
 	private RequestNewFeatureComposite() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE );
+		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ), edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE );
 	}
 }
