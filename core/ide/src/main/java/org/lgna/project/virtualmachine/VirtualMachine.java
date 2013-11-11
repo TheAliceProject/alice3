@@ -1070,17 +1070,24 @@ public abstract class VirtualMachine {
 		} finally {
 			this.popLocal( item );
 		}
-
 	}
 
 	protected void executeForEachInArrayLoop( org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop ) throws ReturnException {
 		Object[] array = this.evaluate( forEachInArrayLoop.array.getValue(), Object[].class );
-		excecuteForEachLoop( forEachInArrayLoop, array );
+		if( array != null ) {
+			excecuteForEachLoop( forEachInArrayLoop, array );
+		} else {
+			throw new LgnaVmNullPointerException( "for each array is null", this );
+		}
 	}
 
 	protected void executeForEachInIterableLoop( org.lgna.project.ast.ForEachInIterableLoop forEachInIterableLoop ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getValue(), Iterable.class );
-		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
+		if( iterable != null ) {
+			excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
+		} else {
+			throw new LgnaVmNullPointerException( "for each iterable is null", this );
+		}
 	}
 
 	private void excecuteForEachTogether( org.lgna.project.ast.AbstractEachInTogether forEachInTogether, final Object[] array ) throws ReturnException {
@@ -1122,12 +1129,20 @@ public abstract class VirtualMachine {
 
 	protected void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether ) throws ReturnException {
 		Object[] array = this.evaluate( eachInArrayTogether.array.getValue(), Object[].class );
-		excecuteForEachTogether( eachInArrayTogether, array );
+		if( array != null ) {
+			excecuteForEachTogether( eachInArrayTogether, array );
+		} else {
+			throw new LgnaVmNullPointerException( "each in together array is null", this );
+		}
 	}
 
 	protected void executeEachInIterableTogether( org.lgna.project.ast.EachInIterableTogether eachInIterableTogether ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
-		excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
+		if( iterable != null ) {
+			excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
+		} else {
+			throw new LgnaVmNullPointerException( "each in together iterable is null", this );
+		}
 	}
 
 	protected void executeReturnStatement( org.lgna.project.ast.ReturnStatement returnStatement ) throws ReturnException {
