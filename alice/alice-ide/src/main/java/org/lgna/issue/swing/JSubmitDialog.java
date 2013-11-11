@@ -131,6 +131,10 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		return this.config;
 	}
 
+	public edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
+		return this.insightPane.createIssueBuilder();
+	}
+
 	protected abstract void submit();
 
 	private final JInsightPane insightPane;

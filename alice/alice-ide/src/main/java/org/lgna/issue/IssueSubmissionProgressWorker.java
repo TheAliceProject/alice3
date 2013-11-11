@@ -53,12 +53,13 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 		this.ownerDialog = ownerDialog;
 	}
 
-	protected abstract Boolean doInternal_onBackgroundThread() throws java.lang.Exception;
+	protected abstract Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws java.lang.Exception;
 
 	@Override
 	protected final Boolean do_onBackgroundThread() throws java.lang.Exception {
 		this.publish( START_MESSAGE );
-		boolean rv = this.doInternal_onBackgroundThread();
+		edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder = this.ownerDialog.createIssueBuilder();
+		boolean rv = this.doInternal_onBackgroundThread( issueBuilder );
 		this.publish( END_MESSAGE );
 		return rv;
 	}
