@@ -66,27 +66,27 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  */
 public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
-	private final Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
+	private final Map<Object, CopyOnWriteArrayList<Object>> keyToListenersMap = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
 	private final Object empty = new Object();
 	private final Map<Object, HeldKeyPolicy> heldKeyMap = Collections.newConcurrentHashMap();
 	private final Map<Object, Map<Key, Boolean>> firePolicyMap = Collections.newConcurrentHashMap();
 	private long sleepTime = 500;
 
 	public KeyPressedHandler() {
-		map.put( empty, new CopyOnWriteArrayList<Object>() );
+		keyToListenersMap.put( empty, new CopyOnWriteArrayList<Object>() );
 	}
 
 	private void internalAddListener( Object keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		heldKeyMap.put( keyList, heldKeyPolicy );
 		firePolicyMap.put( keyList, new ConcurrentHashMap<Key, Boolean>() );
 		if( validKeys == null ) {
-			map.get( empty ).add( keyList );
+			keyToListenersMap.get( empty ).add( keyList );
 		} else {
 			for( Key k : validKeys ) {
-				if( map.get( k ) == null ) {
-					map.put( k, new CopyOnWriteArrayList<Object>() );
+				if( keyToListenersMap.get( k ) == null ) {
+					keyToListenersMap.put( k, new CopyOnWriteArrayList<Object>() );
 				}
-				map.get( k ).add( keyList );
+				keyToListenersMap.get( k ).add( keyList );
 			}
 		}
 		registerIsFiringMap( keyList );
@@ -108,12 +108,12 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	public void fireAllTargeted( KeyEvent e ) {
 		if( shouldFire ) {
 			Key key = e.getKey();
-			if( map.get( key ) != null ) {
-				for( Object listener : map.get( key ) ) {
+			if( keyToListenersMap.get( key ) != null ) {
+				for( Object listener : keyToListenersMap.get( key ) ) {
 					fireEvent( listener, e );
 				}
 			}
-			for( Object listener : map.get( empty ) ) {
+			for( Object listener : keyToListenersMap.get( empty ) ) {
 				fireEvent( listener, e );
 			}
 		}
@@ -136,8 +136,8 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	public void handleKeyPress( final KeyEvent event ) {
 		if( shouldFire ) {
 			final Key key = event.getKey();
-			if( map.get( key ) != null ) {
-				for( final Object listener : map.get( key ) ) {
+			if( keyToListenersMap.get( key ) != null ) {
+				for( final Object listener : keyToListenersMap.get( key ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
@@ -165,7 +165,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 					}
 				}
 			} else {
-				for( final Object listener : map.get( empty ) ) {
+				for( final Object listener : keyToListenersMap.get( empty ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							System.out.println( "FIRE_ONCE_ON_PRESS" );
@@ -200,10 +200,11 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	public void handleKeyRelease( KeyEvent event ) {
 		if( shouldFire ) {
 			Key key = event.getKey();
-			if( map.get( key ) != null ) {
-				for( Object listener : map.get( key ) ) {
+			if( keyToListenersMap.get( key ) != null ) {
+				for( Object listener : keyToListenersMap.get( key ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( firePolicyMap.get( listener ).get( key ) ) {
+						//this entry should not really be null unless the key was pressed while the window didn't have focus and was released after it gained focus
+						if( ( firePolicyMap.get( listener ).get( key ) != null ) && firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, false );
 						}
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
@@ -213,9 +214,9 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 					}
 				}
 			} else {
-				for( Object listener : map.get( empty ) ) {
+				for( Object listener : keyToListenersMap.get( empty ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( firePolicyMap.get( listener ).get( key ) ) {
+						if( ( firePolicyMap.get( listener ).get( key ) != null ) && firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, false );
 						}
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
