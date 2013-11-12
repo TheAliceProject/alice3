@@ -40,17 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.focuswindow.views;
+package focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleMainPane extends org.lgna.croquet.components.MigPanel {
-	public ExampleMainPane( examples.croquet.focuswindow.ExampleMainComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getQuestionState().createCheckBox() );
-		org.lgna.croquet.components.Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
-		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
-		this.addComponent( hyperlink );
+public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( this.createKey( "questionState" ), true );
+
+	public ExampleMainComposite() {
+		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
+	}
+
+	public ExampleFocusWindowComposite getFocusWindow() {
+		return this.focusWindow;
+	}
+
+	public org.lgna.croquet.BooleanState getQuestionState() {
+		return this.questionState;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return new focuswindow.views.ExampleMainPane( this );
+	}
+
+	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		app.getFrame().setMainComposite( new ExampleMainComposite() );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
 	}
 }

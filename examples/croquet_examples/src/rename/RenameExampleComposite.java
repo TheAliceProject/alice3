@@ -40,34 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.focuswindow;
+package rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowComposite extends org.lgna.croquet.FocusWindowComposite {
-	private final org.lgna.croquet.PlainStringValue headerText = this.createStringValue( this.createKey( "headerText" ) );
-	private final org.lgna.croquet.PlainStringValue infoText = this.createStringValue( this.createKey( "infoText" ) );
+public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<rename.views.RenameExampleView> {
+	private static final String INITIAL_VALUE = "fred";
 
-	public ExampleFocusWindowComposite() {
-		super( java.util.UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), INITIAL_VALUE );
+
+	public RenameExampleComposite() {
+		super( java.util.UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeaderText() {
-		return this.headerText;
-	}
-
-	public org.lgna.croquet.PlainStringValue getInfoText() {
-		return this.infoText;
+	public org.lgna.croquet.StringState getNameState() {
+		return this.nameState;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected rename.views.RenameExampleView createView() {
+		return new rename.views.RenameExampleView( this );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new examples.croquet.focuswindow.views.ExampleFocusWindowPane( this );
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.nameState.setValueTransactionlessly( INITIAL_VALUE );
+		this.nameState.selectAll();
+		this.nameState.requestFocus();
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		new RenameExampleComposite().getLaunchOperation().fire();
+		System.exit( 0 );
 	}
 }

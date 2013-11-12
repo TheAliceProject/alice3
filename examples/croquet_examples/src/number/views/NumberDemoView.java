@@ -40,21 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.list;
+package number.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ZodiacSign {
-	ARIES,
-	TAURUS,
-	GEMINI,
-	CANCER,
-	LEO,
-	VIRGO,
-	LIBRA,
-	SCORPIO,
-	SAGITARIUS,
-	CAPRICORN,
-	AQUARIUS
+public class NumberDemoView extends org.lgna.croquet.components.MigPanel {
+	public NumberDemoView( number.NumberDemoComposite composite ) {
+		this.addComponent( composite.getWaterTempFahrenheitState().getSidekickLabel().createLabel() );
+		this.addComponent( composite.getWaterTempFahrenheitState().createSlider() );
+	}
 }

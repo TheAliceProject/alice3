@@ -40,15 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.list.views;
+package list.views;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ListDemoView extends org.lgna.croquet.components.BorderPanel {
-	public ListDemoView( examples.croquet.list.ListDemoComposite composite ) {
+	public ListDemoView( list.ListDemoComposite composite ) {
 		super( composite );
-		org.lgna.croquet.ListSelectionState<examples.croquet.list.ZodiacSign> zodiacState = composite.getZodiacState();
+		org.lgna.croquet.ListSelectionState<list.ZodiacSign> zodiacState = composite.getZodiacState();
 		this.addCenterComponent( zodiacState.createList() );
 		this.addPageStartComponent( zodiacState.createHorizontalDefaultRadioButtons() );
 		this.addLineStartComponent( zodiacState.createVerticalDefaultRadioButtons() );

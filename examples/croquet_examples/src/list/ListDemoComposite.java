@@ -40,20 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.rename.views;
+package list;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleView extends org.lgna.croquet.components.FormPanel {
-	public RenameExampleView( examples.croquet.rename.RenameExampleComposite composite ) {
-		super( composite );
+public final class ListDemoComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<list.views.ListDemoView> {
+	private final org.lgna.croquet.ListSelectionState<ZodiacSign> zodiacState = this.createListSelectionStateForEnum( this.createKey( "zodiacState" ), ZodiacSign.class, ZodiacSign.TAURUS );
+
+	public ListDemoComposite() {
+		super( java.util.UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+	}
+
+	public org.lgna.croquet.ListSelectionState<ZodiacSign> getZodiacState() {
+		return this.zodiacState;
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-		examples.croquet.rename.RenameExampleComposite composite = (examples.croquet.rename.RenameExampleComposite)this.getComposite();
-		org.lgna.croquet.StringState nameState = composite.getNameState();
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
+	protected list.views.ListDemoView createView() {
+		return new list.views.ListDemoView( this );
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
+
+	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		new ListDemoComposite().getLaunchOperation().fire();
+		System.exit( 0 );
 	}
 }

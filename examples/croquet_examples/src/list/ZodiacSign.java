@@ -40,18 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.focuswindow.views;
+package list;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowPane extends org.lgna.croquet.components.MigPanel {
-	public ExampleFocusWindowPane( examples.croquet.focuswindow.ExampleFocusWindowComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getHeaderText().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
-		this.addComponent( composite.getInfoText().createLabel() );
-		this.setBackgroundColor( new java.awt.Color( 221, 221, 191 ) );
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 1, 1, 1, 1, java.awt.Color.BLACK ) );
-	}
+public enum ZodiacSign {
+	ARIES,
+	TAURUS,
+	GEMINI,
+	CANCER,
+	LEO,
+	VIRGO,
+	LIBRA,
+	SCORPIO,
+	SAGITARIUS,
+	CAPRICORN,
+	AQUARIUS
 }

@@ -40,14 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.number.views;
+package rename.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NumberDemoView extends org.lgna.croquet.components.MigPanel {
-	public NumberDemoView( examples.croquet.number.NumberDemoComposite composite ) {
-		this.addComponent( composite.getWaterTempFahrenheitState().getSidekickLabel().createLabel() );
-		this.addComponent( composite.getWaterTempFahrenheitState().createSlider() );
+public class RenameExampleView extends org.lgna.croquet.components.FormPanel {
+	public RenameExampleView( rename.RenameExampleComposite composite ) {
+		super( composite );
+	}
+
+	@Override
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+		rename.RenameExampleComposite composite = (rename.RenameExampleComposite)this.getComposite();
+		org.lgna.croquet.StringState nameState = composite.getNameState();
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
 	}
 }
