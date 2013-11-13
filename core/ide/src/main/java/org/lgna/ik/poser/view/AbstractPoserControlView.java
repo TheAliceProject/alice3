@@ -89,6 +89,7 @@ public class AbstractPoserControlView extends MigPanel {
 		this.addComponent( poserControlComposite.getJointRotationHandleVisibilityState().createCheckBox(), "wrap" );
 		this.addComponent( poserControlComposite.getResourceList().getSidekickLabel().createLabel() );
 		this.addComponent( poserControlComposite.getResourceList().getPrepModel().createComboBox(), "wrap" );
-		this.addComponent( poserControlComposite.getTypeTreeState().createTree() );
+		this.addComponent( poserControlComposite.getTypeSelectionState().getSidekickLabel().createLabel() );
+		this.addComponent( poserControlComposite.getTypeSelectionState().createDropDown() );
 	}
 }

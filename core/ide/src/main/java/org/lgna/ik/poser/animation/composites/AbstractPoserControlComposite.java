@@ -45,7 +45,7 @@ package org.lgna.ik.poser.animation.composites;
 import java.util.List;
 import java.util.UUID;
 
-import org.alice.stageide.type.croquet.TypeTreeState;
+import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -56,8 +56,10 @@ import org.lgna.croquet.StringValue;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
+import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControllerAdapter;
@@ -67,6 +69,10 @@ import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SQuadruped;
 
 /**
  * @author Matt May
@@ -81,8 +87,8 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
 	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
+	private final StringValue typeSelectionLabel = this.createStringValue( createKey( "typeSelectionLabel" ) );
 	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	private final TypeTreeState typeTreeState = new TypeTreeState();
 	private final ListSelectionState<Object> resourceList = createListSelectionState( createKey( "chooseResource" ), new RefreshableListData( DefaultItemCodec.createInstance( Object.class ) ) {
 
 		@Override
@@ -93,6 +99,8 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
 	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
+	private final TypeNode typeSelectionRoot;
+	private final TypeNodeSelectionState typeSelectionState;
 
 	public AbstractPoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent, UUID uid ) {
 		super( uid );
@@ -109,6 +117,43 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		adapter = new PoserControllerAdapter( this );
 		parent.setAdapter( adapter );
+		typeSelectionRoot = initializeRootTypeNode();
+		TypeNode initialValue = getInitialValue( typeSelectionRoot );
+		typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
+		typeSelectionState.addNewSchoolValueListener( typeChangedListener );
+	}
+
+	private org.lgna.croquet.event.ValueListener<TypeNode> typeChangedListener = new org.lgna.croquet.event.ValueListener<TypeNode>() {
+
+		public void valueChanged( ValueEvent<TypeNode> e ) {
+			//			parent.setType( e.getNextValue().getType() );
+		}
+	};
+
+	private TypeNode initializeRootTypeNode() {
+		SJointedModel model = parent.getModel();
+		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
+		if( model instanceof SBiped ) {
+			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
+		} else if( model instanceof SQuadruped ) {
+			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SQuadruped.class );
+		} else if( model instanceof SFlyer ) {
+			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
+		}
+		return FieldFinder.populateList( rootType );
+	}
+
+	private TypeNode getInitialValue( TypeNode root ) {
+		if( root.getType().equals( parent.getDeclaringType() ) ) {
+			return root;
+		}
+		for( int i = 0; i != root.getChildCount(); ++i ) {
+			TypeNode child = getInitialValue( (TypeNode)root.getChildAt( i ) );
+			if( child != null ) {
+				return child;
+			}
+		}
+		return null;
 	}
 
 	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
@@ -119,6 +164,16 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		}
 
 	} );
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+	};
+
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+	}
 
 	public BooleanState getIsUsingIK() {
 		return this.isUsingIK;
@@ -209,7 +264,11 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return this.resourceList;
 	}
 
-	public TypeTreeState getTypeTreeState() {
-		return this.typeTreeState;
+	public TypeNodeSelectionState getTypeSelectionState() {
+		return this.typeSelectionState;
+	}
+
+	public StringValue getTypeSelectionLabel() {
+		return this.typeSelectionLabel;
 	}
 }

@@ -45,6 +45,8 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 
 import org.alice.ide.ProjectStack;
+import org.alice.stageide.type.croquet.TypeNode;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.InstanceCreation;
@@ -106,5 +108,33 @@ public class FieldFinder {
 			}
 		}
 		return rv;
+	}
+
+	public static TypeNode populateList( AbstractType rootType ) {
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
+		TypeNode rootNode = new TypeNode( rootType );
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			if( type.isAssignableTo( rootType ) ) {
+				TypeNode newNode = new TypeNode( type );
+				insert( newNode, rootNode );
+			}
+		}
+		return rootNode;
+	}
+
+	private static void insert( TypeNode newNode, TypeNode rootNode ) {
+		for( int i = 0; i != rootNode.getChildCount(); ++i ) {
+			TypeNode child = (TypeNode)rootNode.getChildAt( i );
+			if( child.getType().isAssignableTo( newNode.getType() ) ) {
+				rootNode.add( newNode );
+				newNode.add( child );
+			} else if( newNode.getType().isAssignableTo( child.getType() ) ) {
+				insert( newNode, child );
+			}
+		}
+		if( newNode.getParent() == null ) {
+			rootNode.add( newNode );
+		}
 	}
 }
