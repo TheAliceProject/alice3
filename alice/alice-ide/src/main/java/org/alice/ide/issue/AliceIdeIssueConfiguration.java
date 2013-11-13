@@ -45,7 +45,7 @@ package org.alice.ide.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIdeIssueConfiguration implements org.lgna.issue.ApplicationIssueConfiguration {
+public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
 	public String getApplicationName() {
 		return "Alice";
 	}

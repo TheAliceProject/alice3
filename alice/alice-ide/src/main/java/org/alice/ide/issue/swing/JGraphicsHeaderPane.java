@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.issue.swing;
+package org.alice.ide.issue.swing;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +54,7 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		}
 	}
 
-	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config, String submitActionName ) {
+	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
 		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
@@ -145,7 +145,7 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sb.toString() ), "grow" );
 		this.add( new javax.swing.JLabel( org.alice.ide.issue.croquet.views.GlExceptionView.ICON ), "wrap" );
 
-		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>" + submitActionName + "</em>\" button.<html>" ), "span 3" );
+		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>" + config.getSubmitActionName() + "</em>\" button.<html>" ), "span 3" );
 		this.setBackground( java.awt.Color.WHITE );
 
 		//		this.add( new org.lgna.croquet.components.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );

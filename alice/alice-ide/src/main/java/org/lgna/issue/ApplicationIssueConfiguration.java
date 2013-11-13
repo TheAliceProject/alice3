@@ -51,4 +51,8 @@ public interface ApplicationIssueConfiguration {
 	public String getDownloadUrlSpec();
 
 	public String getDownloadUrlText();
+
+	public String getSubmitActionName();
+
+	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable throwable );
 }

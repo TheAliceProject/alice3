@@ -42,26 +42,17 @@
  */
 package org.alice.ide.issue;
 
-import org.lgna.issue.AbstractUncaughtExceptionHandler;
-
 /**
  * @author Dennis Cosgrove
  */
-public class AliceUncaughtExceptionHandler extends AbstractUncaughtExceptionHandler {
-	@Override
-	protected java.awt.Window createSubmitDialog( Thread thread, Throwable throwable ) {
-		return new org.alice.ide.issue.swing.JAliceSubmitDialog( thread, throwable );
+public abstract class IdeIssueConfiguration implements org.lgna.issue.ApplicationIssueConfiguration {
+	public java.lang.String getSubmitActionName() {
+		return "submit bug report";
 	}
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-
-		final boolean IS_TESTING_GL = true;
-		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
-		if( IS_TESTING_GL ) {
-			throw new javax.media.opengl.GLException( "render" );
-		} else {
-			throw new Exception( "hello" );
-		}
+	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable throwable ) {
+		return throwable instanceof javax.media.opengl.GLException
+				? new org.alice.ide.issue.swing.JGraphicsHeaderPane( this )
+				: new org.alice.ide.issue.swing.JStandardHeaderPane( this );
 	}
 }

@@ -46,20 +46,8 @@ package org.lgna.issue.swing;
  * @author Dennis Cosgrove
  */
 public abstract class JSubmitDialog extends javax.swing.JFrame {
-	private static final String SUBMIT_ACTION_NAME = "submit bug report";
-
 	private static final String CONTRACTED_TEXT = "Provide details";
 	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
-
-	private class SubmitAction extends javax.swing.AbstractAction {
-		public SubmitAction() {
-			super( SUBMIT_ACTION_NAME );
-		}
-
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			submit();
-		}
-	}
 
 	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
 
@@ -69,13 +57,14 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		this.config = config;
 		this.insightPane = new JInsightPane( thread, throwable );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
-		SubmitAction submitAction = new SubmitAction();
+		javax.swing.Action submitAction = new javax.swing.AbstractAction( config.getSubmitActionName() ) {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				submit();
+			}
+		};
 		javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
 
-		String submitActionName = (String)submitAction.getValue( javax.swing.Action.NAME );
-		javax.swing.JPanel headerPane = throwable instanceof javax.media.opengl.GLException
-				? new JGraphicsHeaderPane( config, submitActionName )
-				: new JStandardHeaderPane( config, submitActionName );
+		javax.swing.JPanel headerPane = config.createHeaderPane( thread, throwable );
 
 		javax.swing.JPanel insightHeaderPanel = new javax.swing.JPanel();
 		insightHeaderPanel.setLayout( new java.awt.BorderLayout() );

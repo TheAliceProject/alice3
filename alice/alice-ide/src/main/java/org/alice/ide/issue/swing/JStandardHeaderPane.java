@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.issue.swing;
+package org.alice.ide.issue.swing;
 
 /**
  * @author Dennis Cosgrove
@@ -48,7 +48,7 @@ package org.lgna.issue.swing;
 public class JStandardHeaderPane extends javax.swing.JPanel {
 	private static final javax.swing.ImageIcon LOGO_ICON = new javax.swing.ImageIcon( JStandardHeaderPane.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
 
-	public JStandardHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config, String submitActionName ) {
+	public JStandardHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
@@ -61,7 +61,7 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		}
 		sbHeader.append( "</h1>" );
 		sbHeader.append( "<p>Please accept our apologies and press the <em>\"" );
-		sbHeader.append( submitActionName );
+		sbHeader.append( config.getSubmitActionName() );
 		sbHeader.append( "\"</em> button.<p>" );
 		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
 		//sbHeader.append( "<p><p><p>Note:" );
