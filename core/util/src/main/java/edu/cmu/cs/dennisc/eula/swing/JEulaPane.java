@@ -45,39 +45,12 @@ package edu.cmu.cs.dennisc.eula.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class JEulaDialog extends javax.swing.JDialog {
-	public static class Builder {
-		public Builder owner( java.awt.Frame owner ) {
-			this.owner = owner;
-			return this;
-		}
-
-		public Builder title( String title ) {
-			this.title = title;
-			return this;
-		}
-
-		public Builder eulaText( String eulaText ) {
-			this.eulaText = eulaText;
-			return this;
-		}
-
-		public JEulaDialog build() {
-			return new JEulaDialog( this );
-		}
-
-		private java.awt.Frame owner;
-		private String title;
-		private String eulaText;
-	};
-
-	private JEulaDialog( Builder builder ) {
-		super( builder.owner, builder.title, true );
-
+public class JEulaPane extends javax.swing.JPanel {
+	public JEulaPane( String eulaText ) {
 		javax.swing.JLabel headerLabel = new javax.swing.JLabel( "<html>Please read the following license agreement carefully.</html>" );
 
 		javax.swing.JTextArea textArea = new javax.swing.JTextArea();
-		textArea.setText( builder.eulaText );
+		textArea.setText( eulaText );
 		textArea.setEditable( false );
 		textArea.setLineWrap( true );
 		textArea.setWrapStyleWord( true );
@@ -109,12 +82,6 @@ public class JEulaDialog extends javax.swing.JDialog {
 		mainPanel.add( reject );
 		mainPanel.add( javax.swing.Box.createVerticalStrut( 8 ) );
 
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				scrollPane.getVerticalScrollBar().setValue( 0 );
-			}
-		} );
-
 		String okButtonText = javax.swing.UIManager.getString( "OptionPane.okButtonText" );
 		String cancelButtonText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText" );
 		if( ( okButtonText != null ) && ( okButtonText.length() > 0 ) ) {
@@ -130,14 +97,12 @@ public class JEulaDialog extends javax.swing.JDialog {
 
 		this.okButton = new javax.swing.JButton( new javax.swing.AbstractAction( okButtonText ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				isCommitted = true;
-				setVisible( false );
+				handleOkOrCancel( true );
 			}
 		} );
 		javax.swing.JButton cancelButton = new javax.swing.JButton( new javax.swing.AbstractAction( cancelButtonText ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				isCommitted = false;
-				setVisible( false );
+				handleOkOrCancel( false );
 			}
 		} );
 
@@ -154,10 +119,28 @@ public class JEulaDialog extends javax.swing.JDialog {
 		}
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( controlPanel.getComponentOrientation().isLeftToRight() );
 
-		this.getContentPane().add( headerLabel, java.awt.BorderLayout.PAGE_START );
-		this.getContentPane().add( mainPanel, java.awt.BorderLayout.CENTER );
-		this.getContentPane().add( controlPanel, java.awt.BorderLayout.PAGE_END );
-		this.getRootPane().setDefaultButton( okButton );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( headerLabel, java.awt.BorderLayout.PAGE_START );
+		this.add( mainPanel, java.awt.BorderLayout.CENTER );
+		this.add( controlPanel, java.awt.BorderLayout.PAGE_END );
+
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				scrollPane.getVerticalScrollBar().setValue( 0 );
+			}
+		} );
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.getRootPane().setDefaultButton( this.okButton );
+	}
+
+	private void handleOkOrCancel( boolean isCommitted ) {
+		this.isCommitted = isCommitted;
+		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
 	}
 
 	public boolean isAccepted() {
@@ -182,11 +165,12 @@ public class JEulaDialog extends javax.swing.JDialog {
 				//				//javax.swing.JComponent.setDefaultLocale( locale );
 				//				//javax.swing.JOptionPane.showConfirmDialog( null, "hello", "title", javax.swing.JOptionPane.OK_CANCEL_OPTION );
 				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				JEulaDialog dialog = new JEulaDialog.Builder().eulaText( "eula" ).title( "title" ).build();
-				dialog.setComponentOrientation( java.awt.ComponentOrientation.RIGHT_TO_LEFT );
+				JEulaPane eulaPane = new JEulaPane( "eulaText" );
+				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder().isModal( true ).title( "title" ).build();
+				dialog.getContentPane().add( eulaPane, java.awt.BorderLayout.CENTER );
 				dialog.pack();
 				dialog.setVisible( true );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dialog.isAccepted() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( eulaPane.isAccepted() );
 				System.exit( 0 );
 			}
 		} );

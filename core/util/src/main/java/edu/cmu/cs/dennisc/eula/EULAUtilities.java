@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.eula;
 
+import edu.cmu.cs.dennisc.eula.swing.JEulaPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -72,10 +74,18 @@ public class EULAUtilities {
 		if( isLicenseAccepted ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.ui.eula.EULAPane pane = new edu.cmu.cs.dennisc.ui.eula.EULAPane( license );
+			JEulaPane eulaPane = new JEulaPane( license );
 			java.awt.Component owner = null;
 			while( true ) {
-				isLicenseAccepted = pane.showInJDialog( owner, title ) == Boolean.TRUE;
+				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+						.owner( owner )
+						.isModal( true )
+						.title( title )
+						.build();
+				dialog.getContentPane().add( eulaPane, java.awt.BorderLayout.CENTER );
+				dialog.pack();
+				dialog.setVisible( true );
+				isLicenseAccepted = eulaPane.isAccepted();
 				if( isLicenseAccepted ) {
 					break;
 				} else {
