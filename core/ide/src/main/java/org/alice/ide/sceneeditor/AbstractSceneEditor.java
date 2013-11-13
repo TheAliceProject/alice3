@@ -86,7 +86,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			org.alice.ide.perspectives.ProjectPerspective prevValue = e.getPreviousValue();
 			org.alice.ide.perspectives.ProjectPerspective nextValue = e.getNextValue();
 			if( prevValue != nextValue ) {
-				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective() );
 			}
 		}
 	};
@@ -129,7 +129,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	protected void initializeObservers() {
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	protected void setInitialCodeStateForField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement code ) {

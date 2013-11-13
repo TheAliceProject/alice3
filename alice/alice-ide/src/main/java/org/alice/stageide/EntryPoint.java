@@ -46,9 +46,97 @@ package org.alice.stageide;
  * @author Dennis Cosgrove
  */
 public class EntryPoint {
+	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
+	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
+
 	public static void main( final String[] args ) {
 		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
-		org.alice.ide.LaunchUtilities.launch( StageIDE.class, args );
+
+		if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
+			final Object macMenuBarUI;
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "apple.laf.useScreenMenuBar" ) ) {
+					macMenuBarUI = javax.swing.UIManager.get( MENU_BAR_UI_NAME );
+				} else {
+					macMenuBarUI = null;
+				}
+			} else {
+				macMenuBarUI = null;
+			}
+			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( NIMBUS_LOOK_AND_FEEL_NAME );
+			if( lookAndFeelInfo != null ) {
+				try {
+					javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+					//					edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
+			}
+			if( macMenuBarUI != null ) {
+				javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
+			}
+		}
+
+		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
+		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				final int DEFAULT_WIDTH = 1000;
+				final int DEFAULT_HEIGHT = 740;
+				int xLocation = 0;
+				int yLocation = 0;
+				int width = DEFAULT_WIDTH;
+				int height = DEFAULT_HEIGHT;
+				boolean isMaximizationDesired = true;
+				java.io.File file = null;
+				if( args.length > 0 ) {
+					if( "null".equalsIgnoreCase( args[ 0 ] ) ) {
+						//pass
+					} else {
+						file = new java.io.File( args[ 0 ] );
+					}
+					if( args.length > 2 ) {
+						try {
+							xLocation = Integer.parseInt( args[ 1 ] );
+							yLocation = Integer.parseInt( args[ 2 ] );
+							if( args.length > 4 ) {
+								width = Integer.parseInt( args[ 3 ] );
+								height = Integer.parseInt( args[ 4 ] );
+							}
+							isMaximizationDesired = false;
+						} catch( NumberFormatException nfe ) {
+							xLocation = 0;
+							yLocation = 0;
+							width = DEFAULT_WIDTH;
+							height = DEFAULT_HEIGHT;
+						}
+					}
+				}
+
+				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
+				if( file != null ) {
+					if( file.exists() ) {
+						ide.loadProjectFrom( file );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
+					}
+				}
+				ide.getFrame().setLocation( xLocation, yLocation );
+				ide.getFrame().setSize( width, height );
+
+				if( isMaximizationDesired ) {
+					ide.getFrame().maximize();
+				}
+				ide.initialize( args );
+				ide.getFrame().setVisible( true );
+				//
+				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
+				//					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+				//				}
+			}
+		} );
 	}
 }

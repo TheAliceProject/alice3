@@ -29,6 +29,10 @@
 		<module>alice/alice-ide</module>
 	</modules>
 
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -98,5 +102,18 @@
 			<url>http://dev.lookingglass.wustl.edu/public/maven2/external</url>
 		</repository>
 	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>org.alice</id>
+			<name>Alice Repository</name>
+			<url>http://dev.lookingglass.wustl.edu/public/maven2/alice</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>org.alice.external</id>
+			<name>Alice External Repository</name>
+			<url>http://dev.lookingglass.wustl.edu/public/maven2/external</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>

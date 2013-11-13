@@ -84,77 +84,9 @@ public class FFmpegProcess {
 	private StringBuilder processError;
 
 	public FFmpegProcess( String... args ) {
-		//		String[] commandArgs = new String[ args.length + 1 ];
-		//		commandArgs[ 0 ] = getFFmpegCommand();
-		//		for( int i = 1; i < commandArgs.length; i++ ) {
-		//			commandArgs[ i ] = args[ i - 1 ];
-		//		}
 		this.commandArgs = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( String.class, getArchitectureSpecificCommand(), args );
 		this.processBuilder = new ProcessBuilder( this.commandArgs );
 	}
-
-	//	// <alice/>
-	//	private static String getFFmpegPath() {
-	//		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-	//			return null;
-	//		} else {
-	//			String installPath = System.getProperty( "org.alice.ide.rootDirectory" );
-	//			if( installPath != null ) {
-	//				//pass
-	//			} else {
-	//				installPath = System.getProperty( "user.dir" );
-	//			}
-	//			if( installPath != null ) {
-	//				java.io.File installDir = new java.io.File( installPath );
-	//				if( installDir.exists() ) {
-	//					java.io.File ffmpegFile = new java.io.File( installDir, "ext/ffmpeg" );
-	//					if( ffmpegFile.exists() ) {
-	//						//pass
-	//					} else {
-	//						ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
-	//					}
-	//					StringBuilder sb = new StringBuilder();
-	//					sb.append( ffmpegFile.getAbsolutePath() );
-	//					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-	//						sb.append( "/windows" );
-	//					} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-	//						sb.append( "/macosx" );
-	//					} else {
-	//						throw new RuntimeException();
-	//					}
-	//					return sb.toString();
-	//				} else {
-	//					throw new RuntimeException( "install directory does not exist" );
-	//				}
-	//			} else {
-	//				throw new RuntimeException( "install path is null" );
-	//			}
-	//		}
-	//	}
-	//
-	//	public static String getFFmpegCommand() {
-	//		// Find the ffmpeg process
-	//		//<alice>
-	//		//String nativePath = edu.wustl.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
-	//		String nativePath = getFFmpegPath();
-	//		//</alice>
-	//		if( nativePath == null ) {
-	//			// Hope it's on the system path
-	//			// TODO: give a warning to these users that they need to have ffmpeg installed.
-	//			return FFMPEG_COMMAND;
-	//		} else {
-	//			String ext = "";
-	//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-	//				ext = ".exe";
-	//			}
-	//			nativePath = nativePath + "/bin/ffmpeg" + ext;
-	//			if( !( new java.io.File( nativePath ) ).exists() ) {
-	//				return FFMPEG_COMMAND;
-	//			} else {
-	//				return nativePath;
-	//			}
-	//		}
-	//	}
 
 	public synchronized Process start() throws FFmpegProcessException {
 		try {

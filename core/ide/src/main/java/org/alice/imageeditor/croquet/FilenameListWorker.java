@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class FilenameListWorker extends org.lgna.croquet.worker.WorkerWithProgress<java.io.File[], java.io.File> {
+/* package-private */class FilenameListWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<java.io.File[], java.io.File> {
 	private static final java.io.FileFilter PNG_FILE_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createFileWithExtensionFilter( ".png" );
 	private static final java.io.FileFilter DIRECTORY_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createDirectoryFilter();
 

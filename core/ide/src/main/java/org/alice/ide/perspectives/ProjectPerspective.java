@@ -47,12 +47,15 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	public ProjectPerspective( java.util.UUID id ) {
+	private final org.alice.ide.croquet.models.MenuBarComposite menuBar;
+
+	public ProjectPerspective( java.util.UUID id, org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
 		super( id );
+		this.menuBar = menuBar;
 	}
 
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
-		return org.alice.ide.croquet.models.AliceMenuBar.getInstance();
+		return this.menuBar;
 	}
 
 	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();

@@ -47,16 +47,8 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class CodePerspective extends AbstractCodePerspective {
-	private static class SingletonHolder {
-		private static CodePerspective instance = new CodePerspective();
-	}
-
-	public static CodePerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ) );
+	public CodePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
+		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), menuBar );
 	}
 
 	public org.lgna.croquet.Composite<?> getMainComposite() {
