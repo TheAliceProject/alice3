@@ -65,10 +65,10 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 		if( application.isProjectUpToDateWithFile() ) {
 			//pass
 		} else {
-			org.lgna.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
-			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
+			edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
+			if( option == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.YES ) {
 				models.add( SaveProjectOperation.getInstance() );
-			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
+			} else if( option == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.NO ) {
 				//pass
 			} else {
 				isPostClearanceModelDesired = false;

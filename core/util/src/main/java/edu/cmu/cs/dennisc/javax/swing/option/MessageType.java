@@ -41,22 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.option;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum YesNoOption {
-	YES( javax.swing.JOptionPane.YES_OPTION ),
-	NO( javax.swing.JOptionPane.NO_OPTION );
+public enum MessageType {
+	ERROR( javax.swing.JOptionPane.ERROR_MESSAGE ),
+	INFORMATION( javax.swing.JOptionPane.INFORMATION_MESSAGE ),
+	WARNING( javax.swing.JOptionPane.WARNING_MESSAGE ),
+	QUESTION( javax.swing.JOptionPane.QUESTION_MESSAGE ),
+	PLAIN( javax.swing.JOptionPane.PLAIN_MESSAGE );
 	private final int internal;
 
-	YesNoOption( int internal ) {
+	MessageType( int internal ) {
 		this.internal = internal;
 	}
 
-	public static YesNoOption getInstance( int internal ) {
-		for( YesNoOption value : YesNoOption.values() ) {
+	/* package-private */int getInternal() {
+		return this.internal;
+	}
+
+	public static MessageType getInstance( int internal ) {
+		for( MessageType value : MessageType.values() ) {
 			if( value.internal == internal ) {
 				return value;
 			}

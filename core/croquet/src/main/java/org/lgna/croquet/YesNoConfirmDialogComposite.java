@@ -42,6 +42,9 @@
  */
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoOption;
+
 /**
  * @author Dennis Cosgrove
  */

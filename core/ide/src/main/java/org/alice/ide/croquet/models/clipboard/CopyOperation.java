@@ -66,7 +66,6 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		} else {
 			modifierText = "<b>Control</b>";
 		}
-		String title = "Copy coming soon";
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>Selection is not yet implemented.  Copy is limited to:<br>" );
 		sb.append( "<ol><li> dragging statements to and from the clipboard in the top right corner with the " );
@@ -75,6 +74,12 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		sb.append( "<li> dragging statements with the " );
 		sb.append( modifierText );
 		sb.append( " key pressed within the code editor.</li></ol></html>" );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), title, org.lgna.croquet.MessageType.INFORMATION );
+
+		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
+				.message( sb.toString() )
+				.title( "Copy coming soon" )
+				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
+				.build()
+				.show();
 	}
 }

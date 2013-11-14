@@ -64,7 +64,7 @@ public abstract class FileDialogOperation extends Operation {
 				this.handleFile( file );
 				step.finish();
 			} catch( java.io.IOException ioe ) {
-				Application.getActiveInstance().showMessageDialog( ioe.getMessage(), this.getName(), MessageType.ERROR );
+				Application.getActiveInstance().showMessageDialog( ioe.getMessage(), this.getName(), org.lgna.croquet.MessageType.ERROR );
 				step.cancel();
 			} catch( CancelException ce ) {
 				step.cancel();

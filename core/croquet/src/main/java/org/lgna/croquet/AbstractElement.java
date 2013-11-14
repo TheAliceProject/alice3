@@ -108,14 +108,19 @@ public abstract class AbstractElement implements Element {
 					} else {
 						String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
 						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
-						String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";
-						Application.getActiveInstance().showMessageDialog( message );
+						new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
+								.message( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." )
+								.build()
+								.show();
 					}
 				} else {
 					mapMigrationIdToCls.put( migrationId, this.getClass() );
 				}
 			} else {
-				Application.getActiveInstance().showMessageDialog( "migrationId is null for " + this + " " + this.getClass() );
+				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
+						.message( "migrationId is null for " + this + " " + this.getClass() )
+						.build()
+						.show();
 			}
 		}
 	}

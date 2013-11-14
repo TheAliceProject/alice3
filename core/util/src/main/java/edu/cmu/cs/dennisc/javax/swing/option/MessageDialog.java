@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,46 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package edu.cmu.cs.dennisc.javax.swing.option;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class RevertProjectOperation extends UriActionOperation {
-	private static class SingletonHolder {
-		private static RevertProjectOperation instance = new RevertProjectOperation();
-	}
-
-	public static RevertProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RevertProjectOperation() {
-		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
-	}
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
-		edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", org.lgna.croquet.MessageType.WARNING );
-		if( yesNoCancelOption == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.YES ) {
-			java.net.URI uri = application.getUri();
-			if( uri != null ) {
-				org.alice.ide.uricontent.UriProjectLoader loader = org.alice.ide.uricontent.UriProjectLoader.createInstance( uri );
-				if( loader != null ) {
-					application.loadProjectFrom( loader );
-					step.finish();
-				} else {
-					application.showMessageDialog( "todo: revert loader null " + uri );
-					step.cancel();
-				}
-			} else {
-				application.showMessageDialog( "todo: revert uri == null" );
-				step.cancel();
-			}
-		} else {
-			step.cancel();
+public class MessageDialog {
+	public static class Builder {
+		public Builder parentComponent( java.awt.Component parentComponent ) {
+			this.parentComponent = parentComponent;
+			return this;
 		}
+
+		public Builder message( String message ) {
+			this.message = message;
+			return this;
+		}
+
+		public Builder message( java.awt.Component message ) {
+			this.message = message;
+			return this;
+		}
+
+		public Builder title( String title ) {
+			this.title = title;
+			return this;
+		}
+
+		public Builder messageType( MessageType messageType ) {
+			this.messageType = messageType;
+			return this;
+		}
+
+		public Builder icon( javax.swing.Icon icon ) {
+			this.icon = icon;
+			return this;
+		}
+
+		public MessageDialog build() {
+			return new MessageDialog( this );
+		}
+
+		private java.awt.Component parentComponent;
+		private Object message;
+		private String title;
+		private MessageType messageType;
+		private javax.swing.Icon icon;
 	}
+
+	private MessageDialog( Builder builder ) {
+		this.parentComponent = builder.parentComponent;
+		this.message = builder.message;
+		this.title = builder.title;
+		this.messageType = builder.messageType;
+		this.icon = builder.icon;
+	}
+
+	public void show() {
+		javax.swing.JOptionPane.showMessageDialog( parentComponent, message, title, messageType.getInternal(), icon );
+	}
+
+	private final java.awt.Component parentComponent;
+	private final Object message;
+	private final String title;
+	private final MessageType messageType;
+	private final javax.swing.Icon icon;
 }

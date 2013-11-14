@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.option;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum OkCancelOption {
-	OK( javax.swing.JOptionPane.OK_OPTION ),
-	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
-	private final int internal;
-
-	OkCancelOption( int internal ) {
-		this.internal = internal;
-	}
-
-	public static OkCancelOption getInstance( int internal ) {
-		for( OkCancelOption value : OkCancelOption.values() ) {
-			if( value.internal == internal ) {
-				return value;
-			}
+public class YesNoDialog {
+	public static class Builder {
+		public Builder parentComponent( java.awt.Component parentComponent ) {
+			this.parentComponent = parentComponent;
+			return this;
 		}
-		return null;
+
+		public Builder message( String message ) {
+			this.message = message;
+			return this;
+		}
+
+		public Builder message( java.awt.Component message ) {
+			this.message = message;
+			return this;
+		}
+
+		public Builder title( String title ) {
+			this.title = title;
+			return this;
+		}
+
+		public Builder messageType( MessageType messageType ) {
+			this.messageType = messageType;
+			return this;
+		}
+
+		public Builder icon( javax.swing.Icon icon ) {
+			this.icon = icon;
+			return this;
+		}
+
+		public YesNoDialog build() {
+			return new YesNoDialog( this );
+		}
+
+		private java.awt.Component parentComponent;
+		private Object message;
+		private String title;
+		private MessageType messageType;
+		private javax.swing.Icon icon;
 	}
+
+	private YesNoDialog( Builder builder ) {
+		this.parentComponent = builder.parentComponent;
+		this.message = builder.message;
+		this.title = builder.title;
+		this.messageType = builder.messageType;
+		this.icon = builder.icon;
+	}
+
+	public YesNoOption show() {
+		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.parentComponent, this.message, this.title, javax.swing.JOptionPane.YES_NO_OPTION, this.messageType.getInternal(), this.icon ) );
+	}
+
+	private final java.awt.Component parentComponent;
+	private final Object message;
+	private final String title;
+	private final MessageType messageType;
+	private final javax.swing.Icon icon;
 }

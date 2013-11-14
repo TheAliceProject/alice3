@@ -40,46 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+
+package edu.cmu.cs.dennisc.javax.swing.option;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RevertProjectOperation extends UriActionOperation {
-	private static class SingletonHolder {
-		private static RevertProjectOperation instance = new RevertProjectOperation();
+public enum YesNoOption {
+	YES( javax.swing.JOptionPane.YES_OPTION ),
+	NO( javax.swing.JOptionPane.NO_OPTION );
+	private final int internal;
+
+	YesNoOption( int internal ) {
+		this.internal = internal;
 	}
 
-	public static RevertProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RevertProjectOperation() {
-		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
-	}
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
-		edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", org.lgna.croquet.MessageType.WARNING );
-		if( yesNoCancelOption == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.YES ) {
-			java.net.URI uri = application.getUri();
-			if( uri != null ) {
-				org.alice.ide.uricontent.UriProjectLoader loader = org.alice.ide.uricontent.UriProjectLoader.createInstance( uri );
-				if( loader != null ) {
-					application.loadProjectFrom( loader );
-					step.finish();
-				} else {
-					application.showMessageDialog( "todo: revert loader null " + uri );
-					step.cancel();
-				}
-			} else {
-				application.showMessageDialog( "todo: revert uri == null" );
-				step.cancel();
+	public static YesNoOption getInstance( int internal ) {
+		for( YesNoOption value : YesNoOption.values() ) {
+			if( value.internal == internal ) {
+				return value;
 			}
-		} else {
-			step.cancel();
 		}
+		return null;
 	}
 }

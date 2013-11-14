@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption;
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoOption;
 
 /**
  * @author Dennis Cosgrove

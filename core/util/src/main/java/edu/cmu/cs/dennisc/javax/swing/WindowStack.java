@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum YesNoCancelOption {
-	YES( javax.swing.JOptionPane.YES_OPTION ),
-	NO( javax.swing.JOptionPane.NO_OPTION ),
-	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
-	private final int internal;
-
-	YesNoCancelOption( int internal ) {
-		this.internal = internal;
+public class WindowStack {
+	private WindowStack() {
+		throw new AssertionError();
 	}
 
-	public static YesNoCancelOption getInstance( int internal ) {
-		for( YesNoCancelOption value : YesNoCancelOption.values() ) {
-			if( value.internal == internal ) {
-				return value;
-			}
+	private static final javax.swing.JFrame rootFrame = new javax.swing.JFrame();
+	private static final java.util.Stack<java.awt.Window> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	public static javax.swing.JFrame getRootFrame() {
+		return rootFrame;
+	}
+
+	public static void push( java.awt.Window window ) {
+		stack.push( window );
+	}
+
+	public static java.awt.Window peek() {
+		if( stack.size() > 0 ) {
+			return stack.peek();
+		} else {
+			return rootFrame;
 		}
-		return null;
+	}
+
+	public static java.awt.Window pop() {
+		return stack.pop();
 	}
 }

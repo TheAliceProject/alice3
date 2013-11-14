@@ -51,7 +51,6 @@ import org.alice.ide.youtube.croquet.views.ExecutionPermissionFailedDialogView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
-import org.lgna.croquet.MessageType;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -71,7 +70,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	private final File ffmpegFile;
 
 	public ExecutionPermissionFailedDialogComposite( File f ) {
-		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
+		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), org.lgna.croquet.MessageType.ERROR );
 		this.ffmpegFile = f;
 	}
 
