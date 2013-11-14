@@ -75,7 +75,12 @@ public class EULAUtilities {
 			//pass
 		} else {
 			JEulaPane eulaPane = new JEulaPane( license );
-			java.awt.Component owner = null;
+			java.awt.Component owner = edu.cmu.cs.dennisc.javax.swing.WindowStack.peek();
+			//			if( owner.isVisible() ) {
+			//				//pass
+			//			} else {
+			//				owner.setVisible( true );
+			//			}
 			while( true ) {
 				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
 						.owner( owner )
