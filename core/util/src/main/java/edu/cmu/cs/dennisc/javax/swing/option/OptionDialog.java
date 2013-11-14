@@ -45,65 +45,18 @@ package edu.cmu.cs.dennisc.javax.swing.option;
 /**
  * @author Dennis Cosgrove
  */
-public class YesNoDialog extends OptionDialog {
-	public static class Builder {
-		public Builder( String message ) {
-			this.message = message;
-		}
-
-		public Builder( java.awt.Component message ) {
-			this.message = message;
-		}
-
-		public Builder parentComponent( java.awt.Component parentComponent ) {
-			this.parentComponent = parentComponent;
-			return this;
-		}
-
-		public Builder title( String title ) {
-			this.title = title;
-			return this;
-		}
-
-		public Builder messageType( MessageType messageType ) {
-			this.messageType = messageType;
-			return this;
-		}
-
-		public Builder icon( javax.swing.Icon icon ) {
-			this.icon = icon;
-			return this;
-		}
-
-		private YesNoDialog build() {
-			return new YesNoDialog( this );
-		}
-
-		public YesNoResult buildAndShow() {
-			return this.build().show();
-		}
-
-		private java.awt.Component parentComponent;
-		private Object message;
-		private String title;
-		private MessageType messageType = MessageType.QUESTION;
-		private javax.swing.Icon icon;
+public abstract class OptionDialog {
+	public OptionDialog( java.awt.Component parentComponent ) {
+		this.parentComponent = parentComponent;
 	}
 
-	private YesNoDialog( Builder builder ) {
-		super( builder.parentComponent );
-		this.message = builder.message;
-		this.title = builder.title;
-		this.messageType = builder.messageType;
-		this.icon = builder.icon;
+	protected java.awt.Component getParentComponent() {
+		if( this.parentComponent != null ) {
+			return this.parentComponent;
+		} else {
+			return edu.cmu.cs.dennisc.javax.swing.WindowStack.peek();
+		}
 	}
 
-	public YesNoResult show() {
-		return YesNoResult.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, javax.swing.JOptionPane.YES_NO_OPTION, this.messageType.getInternal(), this.icon ) );
-	}
-
-	private final Object message;
-	private final String title;
-	private final MessageType messageType;
-	private final javax.swing.Icon icon;
+	private final java.awt.Component parentComponent;
 }

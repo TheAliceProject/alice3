@@ -42,10 +42,11 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public class YesNoCancelDialog {
+public class YesNoCancelDialog extends OptionDialog {
 	public static class Builder {
 		public Builder( String message ) {
 			this.message = message;
@@ -91,7 +92,7 @@ public class YesNoCancelDialog {
 	}
 
 	private YesNoCancelDialog( Builder builder ) {
-		this.parentComponent = builder.parentComponent;
+		super( builder.parentComponent );
 		this.message = builder.message;
 		this.title = builder.title;
 		this.messageType = builder.messageType;
@@ -99,10 +100,9 @@ public class YesNoCancelDialog {
 	}
 
 	public YesNoCancelResult show() {
-		return YesNoCancelResult.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.parentComponent, this.message, this.title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, this.messageType.getInternal(), this.icon ) );
+		return YesNoCancelResult.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, this.messageType.getInternal(), this.icon ) );
 	}
 
-	private final java.awt.Component parentComponent;
 	private final Object message;
 	private final String title;
 	private final MessageType messageType;

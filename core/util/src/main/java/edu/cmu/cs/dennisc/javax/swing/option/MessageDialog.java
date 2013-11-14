@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.javax.swing.option;
 /**
  * @author Dennis Cosgrove
  */
-public class MessageDialog {
+public class MessageDialog extends OptionDialog {
 	public static class Builder {
 		public Builder( String message ) {
 			this.message = message;
@@ -91,7 +91,7 @@ public class MessageDialog {
 	}
 
 	private MessageDialog( Builder builder ) {
-		this.parentComponent = builder.parentComponent;
+		super( builder.parentComponent );
 		this.message = builder.message;
 		this.title = builder.title;
 		this.messageType = builder.messageType;
@@ -99,10 +99,9 @@ public class MessageDialog {
 	}
 
 	public void show() {
-		javax.swing.JOptionPane.showMessageDialog( parentComponent, message, title, messageType.getInternal(), icon );
+		javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), message, title, messageType.getInternal(), icon );
 	}
 
-	private final java.awt.Component parentComponent;
 	private final Object message;
 	private final String title;
 	private final MessageType messageType;

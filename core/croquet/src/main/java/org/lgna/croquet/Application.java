@@ -66,7 +66,7 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
+	private final org.lgna.croquet.components.Frame frame = org.lgna.croquet.components.Frame.getApplicationRootFrame();
 	private final java.util.Stack<org.lgna.croquet.components.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow<?>[] { this.frame } );
 
 	public Application() {
