@@ -60,11 +60,8 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
-				.message( "Selection is not yet implemented.  Cut is limited to dragging statements to the clipboard in the top right corner." )
+		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Selection is not yet implemented.  Cut is limited to dragging statements to the clipboard in the top right corner." )
 				.title( "Cut coming soon" )
-				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
-				.build()
-				.show();
+				.buildAndShow();
 	}
 }

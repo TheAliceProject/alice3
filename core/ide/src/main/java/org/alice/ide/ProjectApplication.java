@@ -133,7 +133,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
 		sb.append( message );
-		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+				.title( "Cannot read file" )
+				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+				.buildAndShow();
 	}
 
 	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
@@ -333,7 +336,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 		}
 		if( sb.length() > 0 ) {
-			this.showMessageDialog( sb.toString(), "A Problem With Your Project Has Been Fixed", org.lgna.croquet.MessageType.WARNING );
+			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+					.title( "A Problem With Your Project Has Been Fixed" )
+					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
+					.buildAndShow();
 		}
 		org.lgna.project.ProgramTypeUtilities.sanityCheckAllTypes( project );
 		this.setDocument( new ProjectDocument( project ) );

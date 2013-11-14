@@ -129,7 +129,8 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot export file: " + exportFile );
+					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "cannot export file: " + exportFile )
+							.buildAndShow();
 				}
 			}
 			return null;

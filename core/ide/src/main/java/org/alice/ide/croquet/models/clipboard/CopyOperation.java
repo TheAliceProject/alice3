@@ -75,11 +75,8 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		sb.append( modifierText );
 		sb.append( " key pressed within the code editor.</li></ol></html>" );
 
-		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
-				.message( sb.toString() )
+		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
 				.title( "Copy coming soon" )
-				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
-				.build()
-				.show();
+				.buildAndShow();
 	}
 }

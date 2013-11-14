@@ -80,12 +80,10 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 					this.save( application, fileNext );
 				} catch( java.io.IOException ioe ) {
 					isExceptionRaised = true;
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder()
-							.message( ioe.getMessage() )
+					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( ioe.getMessage() )
 							.title( "Unable to save file" )
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-							.build()
-							.show();
+							.buildAndShow();
 				}
 				if( isExceptionRaised ) {
 					//pass

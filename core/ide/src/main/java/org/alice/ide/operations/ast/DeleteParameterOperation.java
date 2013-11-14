@@ -89,7 +89,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
+				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+						.buildAndShow();
 				step.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {

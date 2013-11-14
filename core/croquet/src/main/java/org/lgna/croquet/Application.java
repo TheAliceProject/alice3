@@ -226,24 +226,24 @@ public abstract class Application {
 
 	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
-	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		if( message instanceof org.lgna.croquet.components.Component<?> ) {
-			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
-		}
-		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
-	}
-
-	public void showMessageDialog( Object message, String title, MessageType messageType ) {
-		showMessageDialog( message, title, messageType, null );
-	}
-
-	public void showMessageDialog( Object message, String title ) {
-		showMessageDialog( message, title, MessageType.QUESTION );
-	}
-
-	public void showMessageDialog( Object message ) {
-		showMessageDialog( message, null );
-	}
+	//	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+	//		if( message instanceof org.lgna.croquet.components.Component<?> ) {
+	//			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
+	//		}
+	//		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
+	//	}
+	//
+	//	public void showMessageDialog( Object message, String title, MessageType messageType ) {
+	//		showMessageDialog( message, title, messageType, null );
+	//	}
+	//
+	//	public void showMessageDialog( Object message, String title ) {
+	//		showMessageDialog( message, title, MessageType.QUESTION );
+	//	}
+	//
+	//	public void showMessageDialog( Object message ) {
+	//		showMessageDialog( message, null );
+	//	}
 
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );

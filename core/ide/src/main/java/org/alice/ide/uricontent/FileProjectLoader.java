@@ -67,9 +67,15 @@ public class FileProjectLoader extends UriProjectLoader {
 		if( file.exists() ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2w" ) ) {
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Alice3 does not load Alice2 worlds" )
+						.title( "Cannot read file" )
+						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.buildAndShow();
 			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
+						.title( "Incorrect File Type" )
+						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.buildAndShow();
 			} else {
 				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;

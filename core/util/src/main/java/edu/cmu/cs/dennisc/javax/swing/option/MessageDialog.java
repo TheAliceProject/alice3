@@ -42,24 +42,21 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.option;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class MessageDialog {
 	public static class Builder {
+		public Builder( String message ) {
+			this.message = message;
+		}
+
+		public Builder( java.awt.Component message ) {
+			this.message = message;
+		}
+
 		public Builder parentComponent( java.awt.Component parentComponent ) {
 			this.parentComponent = parentComponent;
-			return this;
-		}
-
-		public Builder message( String message ) {
-			this.message = message;
-			return this;
-		}
-
-		public Builder message( java.awt.Component message ) {
-			this.message = message;
 			return this;
 		}
 
@@ -78,14 +75,18 @@ public class MessageDialog {
 			return this;
 		}
 
-		public MessageDialog build() {
+		private MessageDialog build() {
 			return new MessageDialog( this );
+		}
+
+		public void buildAndShow() {
+			this.build().show();
 		}
 
 		private java.awt.Component parentComponent;
 		private Object message;
 		private String title;
-		private MessageType messageType;
+		private MessageType messageType = MessageType.INFORMATION;
 		private javax.swing.Icon icon;
 	}
 
