@@ -70,7 +70,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	private final File ffmpegFile;
 
 	public ExecutionPermissionFailedDialogComposite( File f ) {
-		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), org.lgna.croquet.MessageType.ERROR );
+		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR );
 		this.ffmpegFile = f;
 	}
 

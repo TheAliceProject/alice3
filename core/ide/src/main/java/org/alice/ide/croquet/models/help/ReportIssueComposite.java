@@ -147,11 +147,13 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		if( this.attachmentState.getValue() != null ) {
 			rv = true;
 		} else {
-			edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption option = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( "Is your current project relevant to this issue report?", "Attach current project?", org.lgna.croquet.MessageType.QUESTION );
-			if( option == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.YES ) {
+			edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( "Is your current project relevant to this issue report?" )
+					.title( "Attach current project?" )
+					.buildAndShow();
+			if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
 				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 				rv = true;
-			} else if( option == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelOption.NO ) {
+			} else if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.NO ) {
 				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.NO );
 				rv = true;
 			} else {

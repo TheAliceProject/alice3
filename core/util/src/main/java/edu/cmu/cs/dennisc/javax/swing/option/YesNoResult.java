@@ -46,18 +46,17 @@ package edu.cmu.cs.dennisc.javax.swing.option;
 /**
  * @author Dennis Cosgrove
  */
-public enum YesNoCancelOption {
+public enum YesNoResult {
 	YES( javax.swing.JOptionPane.YES_OPTION ),
-	NO( javax.swing.JOptionPane.NO_OPTION ),
-	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
+	NO( javax.swing.JOptionPane.NO_OPTION );
 	private final int internal;
 
-	YesNoCancelOption( int internal ) {
+	YesNoResult( int internal ) {
 		this.internal = internal;
 	}
 
-	public static YesNoCancelOption getInstance( int internal ) {
-		for( YesNoCancelOption value : YesNoCancelOption.values() ) {
+	/*package-private*/static YesNoResult getInstance( int internal ) {
+		for( YesNoResult value : YesNoResult.values() ) {
 			if( value.internal == internal ) {
 				return value;
 			}

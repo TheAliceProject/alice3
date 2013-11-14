@@ -58,16 +58,17 @@ public enum MessageType {
 		this.internal = internal;
 	}
 
-	/* package-private */int getInternal() {
+	//todo: reduce accessibility
+	public int getInternal() {
 		return this.internal;
 	}
 
-	public static MessageType getInstance( int internal ) {
-		for( MessageType value : MessageType.values() ) {
-			if( value.internal == internal ) {
-				return value;
-			}
-		}
-		return null;
-	}
+	//	/*package-private*/static MessageType getInstance( int internal ) {
+	//		for( MessageType value : MessageType.values() ) {
+	//			if( value.internal == internal ) {
+	//				return value;
+	//			}
+	//		}
+	//		return null;
+	//	}
 }
