@@ -78,6 +78,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
 
+	private java.io.File projectFileToLoadOnWindowOpened;
+
 	public IDE( org.lgna.croquet.Operation... uploadOperations ) {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Please Submit Bug Report: " );
@@ -90,9 +92,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}
 		} );
-
-		this.promptForLicenseAgreements();
-
 		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
 		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, uploadOperations );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( aliceMenuBar );
@@ -440,8 +439,22 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	protected abstract void promptForLicenseAgreements();
 
+	public java.io.File getProjectFileToLoadOnWindowOpened() {
+		return this.projectFileToLoadOnWindowOpened;
+	}
+
+	public void setProjectFileToLoadOnWindowOpened( java.io.File projectFileToLoadOnWindowOpened ) {
+		this.projectFileToLoadOnWindowOpened = projectFileToLoadOnWindowOpened;
+	}
+
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		this.promptForLicenseAgreements();
+		if( this.projectFileToLoadOnWindowOpened != null ) {
+			this.loadProjectFrom( this.projectFileToLoadOnWindowOpened );
+			this.projectFileToLoadOnWindowOpened = null;
+		}
+
 		if( this.getUri() != null ) {
 			//pass
 		} else {
