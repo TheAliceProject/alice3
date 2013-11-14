@@ -54,7 +54,7 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
 		}
 	}
 
-	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
+	protected class PaintOmittingJScrollBar extends JViewBasedBackgroundColorScrollBar {
 		public PaintOmittingJScrollBar( int orientation ) {
 			super( orientation );
 		}

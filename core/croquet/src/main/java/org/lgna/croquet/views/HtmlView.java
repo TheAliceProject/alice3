@@ -45,63 +45,29 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlView extends org.lgna.croquet.components.JComponent<javax.swing.JEditorPane> {
-	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
-		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-			javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
-			if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
-				java.net.URL url = e.getURL();
-				try {
-					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-				} catch( Exception exc ) {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( url );
-				}
-			}
-		}
-	};
-
+public class HtmlView extends org.lgna.croquet.components.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView> {
 	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
-		javax.swing.text.Document document = this.getAwtComponent().getDocument();
-		return (javax.swing.text.html.HTMLDocument)document;
+		return this.getAwtComponent().getHtmlDocument();
 	}
 
 	public String getText() {
-		return this.getText();
+		return this.getAwtComponent().getText();
 	}
 
 	public void setText( String text ) {
 		this.getAwtComponent().setText( text );
-		this.revalidateAndRepaint();
 	}
 
-	public void setTextFromUrl( java.net.URL url ) {
-		edu.cmu.cs.dennisc.worker.url.TextUrlWorker worker = new edu.cmu.cs.dennisc.worker.url.TextUrlWorker( url ) {
-			@Override
-			protected void handleDone_onEventDispatchThread( String value ) {
-				setText( value );
-			}
-		};
-		worker.execute();
+	public void setTextFromUrlLater( java.net.URL url ) {
+		this.getAwtComponent().setTextFromUrlLater( url );
+	}
+
+	public void addImageToCache( java.net.URL url, java.awt.Image image ) {
+		this.getAwtComponent().addImageToCache( url, image );
 	}
 
 	@Override
-	protected javax.swing.JEditorPane createAwtComponent() {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" );
-		assert rv.getDocument() instanceof javax.swing.text.html.HTMLDocument : rv.getDocument();
-		//rv.setEditorKit( javax.swing.JEditorPane.createEditorKitForContentType( "text/html" ) );
-		rv.setEditable( false );
-		return rv;
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		this.getAwtComponent().addHyperlinkListener( this.hyperlinkListener );
-		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getAwtComponent().removeHyperlinkListener( this.hyperlinkListener );
+	protected edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView createAwtComponent() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
 	}
 }

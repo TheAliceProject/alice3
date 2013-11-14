@@ -76,6 +76,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		final java.net.URL SECURE_URL = new java.net.URL( "https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625" );
 		final boolean IS_SIMPLE_TEST_DESIRED = false;
 		if( IS_SIMPLE_TEST_DESIRED ) {
@@ -117,10 +118,6 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 			videoPlayer.prepareMedia( SECURE_URL.toURI() );
 			videoPlayer.playResume();
 		} else {
-			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-			if( lookAndFeelInfo != null ) {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-			}
 			final java.net.URI uriA;
 			final java.net.URI uriB;
 			if( args.length > 0 ) {

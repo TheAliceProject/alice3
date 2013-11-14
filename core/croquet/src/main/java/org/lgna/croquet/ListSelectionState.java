@@ -543,7 +543,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
-	public static final class InternalMenuModelResolver<T> extends IndirectResolver<InternalMenuModel<T>, ListSelectionState<T>> {
+	public static final class InternalMenuModelResolver<T> extends IndirectResolver<MenuModel, ListSelectionState<T>> {
 		private InternalMenuModelResolver( ListSelectionState<T> indirect ) {
 			super( indirect );
 		}
@@ -553,7 +553,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected InternalMenuModel<T> getDirect( ListSelectionState<T> indirect ) {
+		protected MenuModel getDirect( ListSelectionState<T> indirect ) {
 			return indirect.getMenuModel();
 		}
 	}
@@ -610,7 +610,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	private InternalMenuModel<T> menuModel;
 
-	public synchronized InternalMenuModel<T> getMenuModel() {
+	public synchronized MenuModel getMenuModel() {
 		if( this.menuModel != null ) {
 			//pass
 		} else {

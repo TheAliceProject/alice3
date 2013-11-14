@@ -108,7 +108,8 @@ public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.projec
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+					.buildAndShow();
 			return false;
 		} else {
 			return true;

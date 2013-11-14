@@ -55,14 +55,11 @@ public class SuggestImprovementComposite extends ReportIssueComposite {
 	}
 
 	private SuggestImprovementComposite() {
-		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT );
+		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		new org.alice.stageide.StageIDE();
 		try {
 			SuggestImprovementComposite.getInstance().getLaunchOperation().fire();

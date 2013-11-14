@@ -46,12 +46,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final MessageType messageType;
+	private final edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType;
 	private String title;
 
 	private final OwnedByCompositeOperation launchOperation;
 
-	public MessageDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
+	public MessageDialogComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType ) {
 		super( migrationId );
 		this.messageType = messageType;
 		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );

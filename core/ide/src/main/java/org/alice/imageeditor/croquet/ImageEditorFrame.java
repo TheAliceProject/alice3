@@ -74,13 +74,16 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 						if( file.isDirectory() ) {
 							rootDirectoryState.setValueTransactionlessly( file.getAbsolutePath() );
 						} else {
-							org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "file is not a directory" );
+							new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is not a directory" )
+									.buildAndShow();
 						}
 					} else {
-						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "file is does not exist" );
+						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file does not exist" )
+								.buildAndShow();
 					}
 				} else {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "file is null" );
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is null" )
+							.buildAndShow();
 				}
 				return null;
 			} else {
@@ -464,10 +467,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
 		//final javax.swing.ImageIcon icon = new javax.swing.ImageIcon( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );
 		final java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );

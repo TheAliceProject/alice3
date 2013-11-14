@@ -64,19 +64,12 @@ public class EntryPoint {
 			} else {
 				macMenuBarUI = null;
 			}
-			javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( NIMBUS_LOOK_AND_FEEL_NAME );
-			if( lookAndFeelInfo != null ) {
-				try {
-					javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-					//					edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-				} catch( Throwable t ) {
-					t.printStackTrace();
-				}
-			}
+			edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( NIMBUS_LOOK_AND_FEEL_NAME );
 			if( macMenuBarUI != null ) {
 				javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 			}
 		}
+		javax.swing.UIManager.put( "ScrollBar.width", 11 );
 
 		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );

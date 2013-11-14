@@ -71,9 +71,18 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 		}
 	}
 
-	public Frame() {
-		super( new javax.swing.JFrame() );
+	private static final Frame applicationRootFrame = new Frame( edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame() );
 
+	public static Frame getApplicationRootFrame() {
+		return applicationRootFrame;
+	}
+
+	public Frame() {
+		this( new javax.swing.JFrame() );
+	}
+
+	private Frame( javax.swing.JFrame jFrame ) {
+		super( jFrame );
 	}
 
 	@Override

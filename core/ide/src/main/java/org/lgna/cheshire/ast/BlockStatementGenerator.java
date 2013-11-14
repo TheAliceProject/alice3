@@ -135,7 +135,10 @@ public class BlockStatementGenerator {
 							templateComposite = membersComposite.getFunctionTabComposite();
 						}
 					} else {
-						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle expression " + expression );
+						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: handle expression " + expression )
+								.title( "Unable to save file" )
+								.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+								.buildAndShow();
 						statementGenerator = null;
 					}
 				} else {

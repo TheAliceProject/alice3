@@ -115,7 +115,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getReportType();
+	protected abstract edu.cmu.cs.dennisc.issue.IssueType getReportType();
 
 	protected abstract String getSummaryText();
 

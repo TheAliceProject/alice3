@@ -34,6 +34,11 @@
 			<artifactId>croquet</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>resources</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- Gallery/Models -->
 		<dependency>
@@ -79,13 +84,6 @@
 			<groupId>gov.nist.math.jama</groupId>
 			<artifactId>gov.nist.math.jama</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-
-		<!-- TODO: Remove this youtube stuff... -->
-		<dependency>
-			<groupId>com.google.gdata</groupId>
-			<artifactId>core</artifactId>
-			<version>1.47.1</version>
 		</dependency>
 	</dependencies>
 

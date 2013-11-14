@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -67,7 +66,7 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
+	private final org.lgna.croquet.components.Frame frame = org.lgna.croquet.components.Frame.getApplicationRootFrame();
 	private final java.util.Stack<org.lgna.croquet.components.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow<?>[] { this.frame } );
 
 	public Application() {
@@ -224,87 +223,87 @@ public abstract class Application {
 
 	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
-	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		if( message instanceof org.lgna.croquet.components.Component<?> ) {
-			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
-		}
-		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
-	}
+	//	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+	//		if( message instanceof org.lgna.croquet.components.Component<?> ) {
+	//			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
+	//		}
+	//		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
+	//	}
+	//
+	//	public void showMessageDialog( Object message, String title, MessageType messageType ) {
+	//		showMessageDialog( message, title, messageType, null );
+	//	}
+	//
+	//	public void showMessageDialog( Object message, String title ) {
+	//		showMessageDialog( message, title, MessageType.QUESTION );
+	//	}
+	//
+	//	public void showMessageDialog( Object message ) {
+	//		showMessageDialog( message, null );
+	//	}
 
-	public void showMessageDialog( Object message, String title, MessageType messageType ) {
-		showMessageDialog( message, title, messageType, null );
-	}
+	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+	//		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );
+	//	}
+	//
+	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
+	//		return showYesNoCancelConfirmDialog( message, title, messageType, null );
+	//	}
+	//
+	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title ) {
+	//		return showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
+	//	}
+	//
+	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message ) {
+	//		return showYesNoCancelConfirmDialog( message, null );
+	//	}
 
-	public void showMessageDialog( Object message, String title ) {
-		showMessageDialog( message, title, MessageType.QUESTION );
-	}
+	//	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+	//		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon ) );
+	//	}
+	//
+	//	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
+	//		return showYesNoConfirmDialog( message, title, messageType, null );
+	//	}
+	//
+	//	public YesNoOption showYesNoConfirmDialog( Object message, String title ) {
+	//		return showYesNoConfirmDialog( message, title, MessageType.QUESTION );
+	//	}
+	//
+	//	public YesNoOption showYesNoConfirmDialog( Object message ) {
+	//		return showYesNoConfirmDialog( message, null );
+	//	}
 
-	public void showMessageDialog( Object message ) {
-		showMessageDialog( message, null );
-	}
-
-	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );
-	}
-
-	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
-		return showYesNoCancelConfirmDialog( message, title, messageType, null );
-	}
-
-	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title ) {
-		return showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
-	}
-
-	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message ) {
-		return showYesNoCancelConfirmDialog( message, null );
-	}
-
-	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon ) );
-	}
-
-	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
-		return showYesNoConfirmDialog( message, title, messageType, null );
-	}
-
-	public YesNoOption showYesNoConfirmDialog( Object message, String title ) {
-		return showYesNoConfirmDialog( message, title, MessageType.QUESTION );
-	}
-
-	public YesNoOption showYesNoConfirmDialog( Object message ) {
-		return showYesNoConfirmDialog( message, null );
-	}
-
-	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
-		Object[] options = { optionA, optionB };
-		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon, options, initialValue );
-		switch( result ) {
-		case javax.swing.JOptionPane.YES_OPTION:
-			return options[ 0 ];
-		case javax.swing.JOptionPane.NO_OPTION:
-			return options[ 1 ];
-		default:
-			return null;
-		}
-	}
-
-	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
-		Object[] options = { optionA, optionB, optionC };
-		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon, options, initialValue );
-		switch( result ) {
-		case javax.swing.JOptionPane.YES_OPTION:
-			return options[ 0 ];
-		case javax.swing.JOptionPane.NO_OPTION:
-			return options[ 1 ];
-		case javax.swing.JOptionPane.CANCEL_OPTION:
-			return options[ 2 ];
-		default:
-			return null;
-		}
-
-	}
+	//	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
+	//		Object[] options = { optionA, optionB };
+	//		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
+	//		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon, options, initialValue );
+	//		switch( result ) {
+	//		case javax.swing.JOptionPane.YES_OPTION:
+	//			return options[ 0 ];
+	//		case javax.swing.JOptionPane.NO_OPTION:
+	//			return options[ 1 ];
+	//		default:
+	//			return null;
+	//		}
+	//	}
+	//
+	//	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
+	//		Object[] options = { optionA, optionB, optionC };
+	//		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
+	//		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon, options, initialValue );
+	//		switch( result ) {
+	//		case javax.swing.JOptionPane.YES_OPTION:
+	//			return options[ 0 ];
+	//		case javax.swing.JOptionPane.NO_OPTION:
+	//			return options[ 1 ];
+	//		case javax.swing.JOptionPane.CANCEL_OPTION:
+	//			return options[ 2 ];
+	//		default:
+	//			return null;
+	//		}
+	//
+	//	}
 
 	@Deprecated
 	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {

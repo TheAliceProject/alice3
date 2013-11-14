@@ -49,16 +49,14 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueListener;
 
-import edu.cmu.cs.dennisc.jira.JIRAReport;
-
 /**
  * @author Matt May
  */
 public abstract class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
 	private final ListSelectionState<BugSubmitVisibility> visibilityState = createListSelectionStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
 
-	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue;
-	private final ListSelectionState<JIRAReport.Type> reportTypeState;
+	private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
+	private final ListSelectionState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
 	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
@@ -72,10 +70,10 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 
 	};
 
-	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue ) {
+	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
+		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
 		this.registerSubComposite( logInOutComposite );
 		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 	}
@@ -95,11 +93,11 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getReportType() {
+	protected edu.cmu.cs.dennisc.issue.IssueType getReportType() {
 		return this.reportTypeState.getValue();
 	}
 
-	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getReportTypeState() {
+	public ListSelectionState<edu.cmu.cs.dennisc.issue.IssueType> getReportTypeState() {
 		return this.reportTypeState;
 	}
 
@@ -149,11 +147,13 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		if( this.attachmentState.getValue() != null ) {
 			rv = true;
 		} else {
-			org.lgna.croquet.YesNoCancelOption option = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( "Is your current project relevant to this issue report?", "Attach current project?", org.lgna.croquet.MessageType.QUESTION );
-			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
+			edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( "Is your current project relevant to this issue report?" )
+					.title( "Attach current project?" )
+					.buildAndShow();
+			if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
 				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 				rv = true;
-			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
+			} else if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.NO ) {
 				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.NO );
 				rv = true;
 			} else {

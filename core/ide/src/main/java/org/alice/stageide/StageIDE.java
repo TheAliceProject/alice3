@@ -138,7 +138,8 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.nebulous.License.TEXT,
 					"The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			this.showMessageDialog( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." );
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." )
+					.buildAndShow();
 			System.exit( -1 );
 		}
 	}

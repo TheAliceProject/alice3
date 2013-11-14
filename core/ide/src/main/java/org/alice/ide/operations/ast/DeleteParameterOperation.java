@@ -89,7 +89,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+						.buildAndShow();
 				step.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
@@ -117,8 +118,10 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					org.lgna.croquet.YesNoCancelOption result = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( sb.toString(), "Delete Parameter" );
-					if( result == org.lgna.croquet.YesNoCancelOption.YES ) {
+					edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( sb.toString() )
+							.title( "Delete Parameter" )
+							.buildAndShow();
+					if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
 						//pass
 					} else {
 						step.cancel();

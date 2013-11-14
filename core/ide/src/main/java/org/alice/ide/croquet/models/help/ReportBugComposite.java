@@ -55,6 +55,6 @@ public class ReportBugComposite extends ReportIssueComposite {
 	}
 
 	private ReportBugComposite() {
-		super( java.util.UUID.fromString( "616fa02a-f9f4-4b94-ae69-1da9f8beb515" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
+		super( java.util.UUID.fromString( "616fa02a-f9f4-4b94-ae69-1da9f8beb515" ), edu.cmu.cs.dennisc.issue.IssueType.BUG );
 	}
 }

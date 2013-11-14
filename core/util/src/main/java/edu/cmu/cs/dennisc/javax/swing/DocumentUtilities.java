@@ -57,4 +57,12 @@ public class DocumentUtilities {
 			throw new RuntimeException( ble );
 		}
 	}
+
+	public static void appendString( javax.swing.text.Document document, String s ) {
+		try {
+			document.insertString( document.getLength(), s, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
 }

@@ -60,7 +60,8 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
 			} catch( Exception e ) {
 				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." )
+						.buildAndShow();
 			}
 		} else {
 			StringBuilder sbDescription = new StringBuilder();

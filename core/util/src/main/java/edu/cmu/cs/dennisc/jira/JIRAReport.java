@@ -47,14 +47,8 @@ package edu.cmu.cs.dennisc.jira;
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
-	public enum Type {
-		BUG,
-		NEW_FEATURE,
-		IMPROVEMENT
-	}
-
 	private String projectKey;
-	private Type type;
+	private edu.cmu.cs.dennisc.issue.IssueType type;
 	private String summary;
 	private String description;
 	private String steps;
@@ -72,11 +66,11 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 		this.projectKey = projectKey;
 	}
 
-	public Type getType() {
+	public edu.cmu.cs.dennisc.issue.IssueType getType() {
 		return this.type;
 	}
 
-	public void setType( Type type ) {
+	public void setType( edu.cmu.cs.dennisc.issue.IssueType type ) {
 		this.type = type;
 	}
 

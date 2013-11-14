@@ -209,10 +209,24 @@ public class Decoder {
 		return createClassReflectionProxy( clsName );
 	}
 
+	private final java.util.Map<Integer, Integer> EPIC_HACK_mapArrayTypeKeyToLeafTypeKey = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "dimensionCount" );
 		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlLeafType, "node" );
+
+		org.w3c.dom.Node xmlLeafTypeFirstChild = xmlLeafType.getFirstChild();
+		if( xmlLeafTypeFirstChild instanceof org.w3c.dom.Element ) {
+			org.w3c.dom.Element xmlLeafTypeFirstChildElement = (org.w3c.dom.Element)xmlLeafTypeFirstChild;
+			if( xmlLeafTypeFirstChildElement.hasAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ) ) {
+				int arrayTypeUniqueKey = getUniqueKey( xmlElement );
+				int leafTypeUniqueKey = getUniqueKey( xmlLeafTypeFirstChildElement );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( arrayTypeUniqueKey, leafTypeUniqueKey );
+				EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.put( arrayTypeUniqueKey, leafTypeUniqueKey );
+			}
+		}
+
 		NamedUserType leafType = (NamedUserType)decode( xmlLeafTypeNode, map );
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
 		return UserArrayType.getInstance( leafType, dimensionCount );
@@ -373,7 +387,23 @@ public class Decoder {
 		} else {
 			int key = getUniqueKey( xmlElement );
 			rv = map.get( key );
-			assert rv != null : key;
+			if( rv != null ) {
+				//pass
+			} else {
+				if( EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.containsKey( key ) ) {
+					int leafTypeKey = EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.get( key );
+					AbstractDeclaration leafDeclaration = map.get( leafTypeKey );
+					if( leafDeclaration instanceof UserType<?> ) {
+						UserType<?> leafType = (UserType<?>)leafDeclaration;
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( leafTypeKey, leafType );
+						rv = leafType.getArrayType();
+					} else {
+						assert false : leafDeclaration;
+					}
+				} else {
+					assert false : key;
+				}
+			}
 		}
 		return rv;
 	}

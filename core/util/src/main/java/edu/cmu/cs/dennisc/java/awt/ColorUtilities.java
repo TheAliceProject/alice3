@@ -126,4 +126,11 @@ public class ColorUtilities {
 			return s_hsbBuffer[ 2 ];
 		}
 	}
+
+	public static String toHashText( java.awt.Color color ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "#" );
+		sb.append( Integer.toHexString( color.getRGB() & 0xFFFFFF ) );
+		return sb.toString();
+	}
 }

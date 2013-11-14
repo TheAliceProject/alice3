@@ -62,8 +62,11 @@ public class RevertProjectOperation extends UriActionOperation {
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
-		org.lgna.croquet.YesNoCancelOption yesNoCancelOption = application.showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", org.lgna.croquet.MessageType.WARNING );
-		if( yesNoCancelOption == org.lgna.croquet.YesNoCancelOption.YES ) {
+		edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?" )
+				.title( "Revert?" )
+				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
+				.buildAndShow();
+		if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
 			java.net.URI uri = application.getUri();
 			if( uri != null ) {
 				org.alice.ide.uricontent.UriProjectLoader loader = org.alice.ide.uricontent.UriProjectLoader.createInstance( uri );
@@ -71,11 +74,13 @@ public class RevertProjectOperation extends UriActionOperation {
 					application.loadProjectFrom( loader );
 					step.finish();
 				} else {
-					application.showMessageDialog( "todo: revert loader null " + uri );
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert loader == null " + uri )
+							.buildAndShow();
 					step.cancel();
 				}
 			} else {
-				application.showMessageDialog( "todo: revert uri == null" );
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert uri == null" )
+						.buildAndShow();
 				step.cancel();
 			}
 		} else {

@@ -231,10 +231,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
 		new org.alice.stageide.StageIDE();
 

@@ -176,7 +176,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	protected abstract String getJIRAProjectKey();
 
-	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType();
+	protected abstract edu.cmu.cs.dennisc.issue.IssueType getIssueType();
 
 	protected String getSummaryText() {
 		return this.textSummary.getText();
@@ -225,7 +225,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
 		rv.setProjectKey( this.getJIRAProjectKey() );
-		rv.setType( this.getJIRAType() );
+		rv.setType( this.getIssueType() );
 		rv.setSummary( this.getSummaryText() );
 		rv.setDescription( this.getDescriptionText() );
 		rv.setEnvironment( this.getEnvironmentText() );

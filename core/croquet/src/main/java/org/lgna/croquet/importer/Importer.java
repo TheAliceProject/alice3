@@ -75,7 +75,10 @@ public abstract class Importer<T> {
 					StringBuilder sb = new StringBuilder();
 					sb.append( "Unable to import: " );
 					sb.append( file.getAbsolutePath() );
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Exception Thrown", org.lgna.croquet.MessageType.ERROR );
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+							.title( "Exception Thrown" )
+							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+							.buildAndShow();
 					return null;
 				}
 			} else {
@@ -90,7 +93,10 @@ public abstract class Importer<T> {
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+						.title( "Content Type Not Supported" )
+						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.buildAndShow();
 				return null;
 			}
 		} else {
