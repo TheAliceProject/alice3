@@ -64,7 +64,7 @@ public abstract class FileDialogOperation extends Operation {
 				this.handleFile( file );
 				step.finish();
 			} catch( java.io.IOException ioe ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( ioe.getMessage() )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( ioe.getMessage() )
 						.title( this.getName() )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();

@@ -67,12 +67,12 @@ public class FileProjectLoader extends UriProjectLoader {
 		if( file.exists() ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2w" ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Alice3 does not load Alice2 worlds" )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
 						.title( "Cannot read file" )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();
 			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
 						.title( "Incorrect File Type" )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();

@@ -71,7 +71,7 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 		if( printable != null ) {
 			return printable;
 		} else {
-			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Print not supported for " + declarationComposite )
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Print not supported for " + declarationComposite )
 					.title( "Print not supported" )
 					.buildAndShow();
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", declarationComposite );

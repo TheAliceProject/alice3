@@ -288,7 +288,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 									sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
 								}
 								sb.append( "</html>" );
-								new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+								new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 										.title( "Recursion is disabled." )
 										.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
 										.buildAndShow();

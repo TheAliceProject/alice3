@@ -87,7 +87,7 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 						rv = null;
 					}
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Please select a file" )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Please select a file" )
 							.buildAndShow();
 					throw new org.lgna.croquet.CancelException();
 				}

@@ -74,12 +74,12 @@ public class RevertProjectOperation extends UriActionOperation {
 					application.loadProjectFrom( loader );
 					step.finish();
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "todo: revert loader == null " + uri )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert loader == null " + uri )
 							.buildAndShow();
 					step.cancel();
 				}
 			} else {
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "todo: revert uri == null" )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert uri == null" )
 						.buildAndShow();
 				step.cancel();
 			}

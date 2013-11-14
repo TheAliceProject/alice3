@@ -74,15 +74,15 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 						if( file.isDirectory() ) {
 							rootDirectoryState.setValueTransactionlessly( file.getAbsolutePath() );
 						} else {
-							new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "file is not a directory" )
+							new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is not a directory" )
 									.buildAndShow();
 						}
 					} else {
-						new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "file does not exist" )
+						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file does not exist" )
 								.buildAndShow();
 					}
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "file is null" )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is null" )
 							.buildAndShow();
 				}
 				return null;

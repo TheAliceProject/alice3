@@ -89,14 +89,14 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 					if( srcType != null ) {
 						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
-						new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
+						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
 								.buildAndShow();
 						return null;
 					}
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "version not supported " + vnse.getVersion() )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "version not supported " + vnse.getVersion() )
 							.buildAndShow();
 				}
 				return null;

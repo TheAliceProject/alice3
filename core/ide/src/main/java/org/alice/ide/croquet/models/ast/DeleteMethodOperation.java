@@ -108,7 +108,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.projec
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 					.buildAndShow();
 			return false;
 		} else {

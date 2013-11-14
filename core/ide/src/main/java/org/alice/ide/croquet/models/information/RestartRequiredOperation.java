@@ -62,7 +62,7 @@ public class RestartRequiredOperation extends org.alice.ide.operations.Inconsequ
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Exiting and restarting Alice is required." )
+		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Exiting and restarting Alice is required." )
 				.title( "Restart Is Required" )
 				.icon( TWEEDLEDUM_AND_TWEEDLEDEE_ICON )
 				.buildAndShow();

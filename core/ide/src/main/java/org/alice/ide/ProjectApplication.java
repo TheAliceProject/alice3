@@ -133,7 +133,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
 		sb.append( message );
-		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 				.title( "Cannot read file" )
 				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 				.buildAndShow();
@@ -336,7 +336,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 		}
 		if( sb.length() > 0 ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 					.title( "A Problem With Your Project Has Been Fixed" )
 					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
 					.buildAndShow();

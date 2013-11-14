@@ -75,7 +75,7 @@ public abstract class Importer<T> {
 					StringBuilder sb = new StringBuilder();
 					sb.append( "Unable to import: " );
 					sb.append( file.getAbsolutePath() );
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 							.title( "Exception Thrown" )
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 							.buildAndShow();
@@ -93,7 +93,7 @@ public abstract class Importer<T> {
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 						.title( "Content Type Not Supported" )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();

@@ -75,7 +75,7 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 		sb.append( ".\n\nLook for files with an " );
 		sb.append( org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
-		new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 				.title( "Cannot read file" )
 				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 				.buildAndShow();
@@ -85,12 +85,12 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 	protected org.lgna.project.ast.NamedUserType internalGetValueFrom( java.io.File file ) {
 		String lcName = file.getName().toLowerCase();
 		if( lcName.endsWith( ".a2c" ) ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( "Alice3 does not load Alice2 characters" )
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 characters" )
 					.title( "Incorrect File Type" )
 					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 					.buildAndShow();
 		} else if( lcName.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension." )
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension." )
 					.title( "Incorrect File Type" )
 					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 					.buildAndShow();

@@ -89,7 +89,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( sb.toString() )
+				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
 						.buildAndShow();
 				step.cancel();
 			} else {

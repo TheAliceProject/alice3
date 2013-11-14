@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.clipboard;
+package edu.cmu.cs.dennisc.javax.swing.option;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PasteOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static PasteOperation instance = new PasteOperation();
+public class OkCancelDialog extends OptionDialog {
+	public static class Builder {
+		public Builder( String message ) {
+			this.message = message;
+		}
+
+		public Builder( java.awt.Component message ) {
+			this.message = message;
+		}
+
+		public Builder parentComponent( java.awt.Component parentComponent ) {
+			this.parentComponent = parentComponent;
+			return this;
+		}
+
+		public Builder title( String title ) {
+			this.title = title;
+			return this;
+		}
+
+		public Builder messageType( MessageType messageType ) {
+			this.messageType = messageType;
+			return this;
+		}
+
+		public Builder icon( javax.swing.Icon icon ) {
+			this.icon = icon;
+			return this;
+		}
+
+		private OkCancelDialog build() {
+			return new OkCancelDialog( this );
+		}
+
+		public OkCancelResult buildAndShow() {
+			return this.build().show();
+		}
+
+		private java.awt.Component parentComponent;
+		private Object message;
+		private String title;
+		private MessageType messageType = MessageType.QUESTION;
+		private javax.swing.Icon icon;
 	}
 
-	public static PasteOperation getInstance() {
-		return SingletonHolder.instance;
+	private OkCancelDialog( Builder builder ) {
+		super( builder.parentComponent );
+		this.message = builder.message;
+		this.title = builder.title;
+		this.messageType = builder.messageType;
+		this.icon = builder.icon;
 	}
 
-	private PasteOperation() {
-		super( java.util.UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
+	public OkCancelResult show() {
+		return OkCancelResult.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, javax.swing.JOptionPane.OK_CANCEL_OPTION, this.messageType.getInternal(), this.icon ) );
 	}
 
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Insertion is not yet implemented.  Paste is limited to dragging statements from the clipboard in the top right corner." )
-				.title( "Paste coming soon" )
-				.buildAndShow();
-	}
+	private final Object message;
+	private final String title;
+	private final MessageType messageType;
+	private final javax.swing.Icon icon;
 }

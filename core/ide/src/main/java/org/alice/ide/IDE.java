@@ -319,7 +319,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
-					new edu.cmu.cs.dennisc.javax.swing.option.MessageDialog.Builder( message )
+					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )
 							.title( "Unable to Recover" )
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 							.buildAndShow();
