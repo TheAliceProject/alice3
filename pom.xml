@@ -14,10 +14,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<alice.gallery.version>2013.08.08</alice.gallery.version>
 		<jogl.version>2.1.1</jogl.version>
+		<alice.gallery.version>2013.08.08</alice.gallery.version>
 		<nebulous.version>2013.08.20</nebulous.version>
 
+		<java.version>1.6</java.version>
 		<aspectj.version>1.7.3</aspectj.version>
 	</properties>
 
@@ -47,34 +48,13 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.5</version>
-				<configuration>
-					<complianceLevel>1.6</complianceLevel>
-					<source>${maven.compiler.source}</source>
-					<target>1.6</target>
-					<outxml>true</outxml>
-					<verbose>true</verbose>
-					<showWeaveInfo>true</showWeaveInfo>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
 					<compilerId>eclipse</compilerId>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<encoding>UTF-8</encoding>
 					<compilerArguments>
 						<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
@@ -91,6 +71,25 @@
 						<version>2.3</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<complianceLevel>${java.version}</complianceLevel>
+					<outxml>true</outxml>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
