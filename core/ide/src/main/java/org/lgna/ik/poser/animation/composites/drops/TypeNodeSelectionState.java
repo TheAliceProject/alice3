@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animation.composites;
+package org.lgna.ik.poser.animation.composites.drops;
 
 import java.util.List;
 import java.util.Map;

@@ -40,27 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.animation.composites;
+package org.lgna.ik.poser.animation.composites.drops;
 
-import org.alice.stageide.type.croquet.TypeNode;
-import org.lgna.croquet.State;
-import org.lgna.croquet.components.ItemDropDown;
+import java.util.List;
+import java.util.UUID;
+
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.CustomTreeSelectionState;
 
 /**
  * @author Matt May
  */
-public class TypeNodeDropDown extends ItemDropDown<TypeNode, TypeNodeSelectionState> {
+public class CustomItemStateFromTreeState<A> extends CustomItemState<A> {
 
-	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
+	private CustomTreeSelectionState<A> state;
 
-	public TypeNodeDropDown( TypeNodeSelectionState model ) {
-		super( model );
-		this.setMainComponent( this.mainComponent );
+	public CustomItemStateFromTreeState( CustomTreeSelectionState<A> state, UUID id ) {
+		super( state.getGroup(), id, state.getValue(), state.getItemCodec() );
+		this.state = state;
 	}
 
 	@Override
-	protected void handleChanged( State<TypeNode> state, TypeNode prevValue, TypeNode nextValue, boolean isAdjusting ) {
-		this.mainComponent.setText( nextValue.getType().getName() );
-		revalidateAndRepaint();
+	protected A getSwingValue() {
+		return state.getValue();
+	}
+
+	@Override
+	protected void setSwingValue( A nextValue ) {
+		state.setValueTransactionlessly( nextValue );
+	}
+
+	@Override
+	protected List<? extends CascadeBlank<A>> getBlanks() {
+		A node = state.getTreeModel().getRoot();
+		Cascade<A> cascade = state.getCascadeFor( node );
+		List<? extends CascadeBlank<A>> blanks = cascade.getRoot().getBlanks();
+		return blanks;
 	}
 }

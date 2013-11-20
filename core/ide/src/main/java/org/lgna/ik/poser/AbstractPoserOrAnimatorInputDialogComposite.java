@@ -57,7 +57,6 @@ import org.lgna.ik.walkandtouch.AbstractPoserScene;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.project.ast.UserType;
 import org.lgna.story.Duration;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SCamera;
@@ -66,6 +65,7 @@ import org.lgna.story.StraightenOutJoints;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
 import test.ik.croquet.SceneComposite;
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -77,13 +77,13 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 	private IkPoser poser;
 
-	private final SCamera camera = new SCamera();
-	private final M model;
+	private SCamera camera = new SCamera();
+	private M model;
 	private final AbstractPoserScene scene;
-	private UserType<?> userType;
+	private NamedUserType userType;
 	private T controlComposite;
 	private final List<JointId> usedJoints = Collections.newArrayList();
-	private List<Object> resourceList;
+	private List<JointedModelResource> resourceList = Collections.newArrayList();
 
 	private final SplitComposite splitComposite;
 
@@ -96,9 +96,8 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 
 	protected AbstractPoserOrAnimatorInputDialogComposite( NamedUserType userType, UUID uuid ) {
 		super( uuid, IDE.PROJECT_GROUP );
-		model = createInstanceFromType( userType );
+		setType( userType );
 		this.scene = initScene();
-		this.userType = userType;
 		this.poser = new IkPoser();
 		controlComposite = this.createControlComposite();
 		sceneComposite = new SceneComposite();
@@ -125,8 +124,16 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		initializeTest();
 	}
 
-	private M createInstanceFromType( NamedUserType type ) {
+	private M createInstanceFromTypeTwo( NamedUserType type ) {
+		resourceList.clear();
+		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+		resourceList = FieldFinder.getInstance().getResourcesForType( type );
 
+		return null;
+	}
+
+	private M createInstanceFromType( NamedUserType type ) {
+		resourceList.clear();
 		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
 		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
@@ -193,7 +200,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		}
 	}
 
-	public UserType<?> getDeclaringType() {
+	public NamedUserType getDeclaringType() {
 		return userType;
 	}
 
@@ -227,7 +234,15 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		return this.usedJoints;
 	}
 
-	public List<Object> getResourceList() {
+	public List<JointedModelResource> getResourceList() {
 		return this.resourceList;
+	}
+
+	public void setType( NamedUserType type ) {
+		this.userType = type;
+		this.model = createInstanceFromType( type );
+		if( this.scene != null ) {
+			scene.setNewModel( model );
+		}
 	}
 }

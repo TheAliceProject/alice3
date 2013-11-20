@@ -42,19 +42,25 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
+import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.ResourceNodeTreeSelectionState;
+import org.alice.stageide.modelresource.RootResourceKey;
+import org.alice.stageide.modelresource.UpdatableRootResourceNodeTreeSelectionState;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.Model;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.codecs.DefaultItemCodec;
-import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.history.CompletionStep;
@@ -63,16 +69,25 @@ import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControllerAdapter;
+import org.lgna.ik.poser.animation.composites.drops.TypeNodeSelectionState;
 import org.lgna.ik.poser.view.AbstractPoserControlView;
 import org.lgna.ik.walkandtouch.AbstractPoserScene;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointedModelResource;
+
+import edu.cmu.cs.dennisc.property.Property;
 
 /**
  * @author Matt May
@@ -89,13 +104,8 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private final StringValue typeSelectionLabel = this.createStringValue( createKey( "typeSelectionLabel" ) );
 	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
-	private final ListSelectionState<Object> resourceList = createListSelectionState( createKey( "chooseResource" ), new RefreshableListData( DefaultItemCodec.createInstance( Object.class ) ) {
-
-		@Override
-		protected List createValues() {
-			return parent.getResourceList();
-		}
-	}, -1 );
+	private final UpdatableRootResourceNodeTreeSelectionState resourceTree;
+	//			createListSelectionState( createKey( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
 	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
 	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
@@ -121,12 +131,26 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		TypeNode initialValue = getInitialValue( typeSelectionRoot );
 		typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
 		typeSelectionState.addNewSchoolValueListener( typeChangedListener );
+		//		resourceList.addNewSchoolValueListener( resourceChangeListener );
+		System.out.println( "TYPE: " + typeSelectionState.getValue().getType() );
+		ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
+		System.out.println( "root? " + updateRoot );
+		resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
+
 	}
+
+	private org.lgna.croquet.event.ValueListener<JointedModelResource> resourceChangeListener = new org.lgna.croquet.event.ValueListener<JointedModelResource>() {
+
+		public void valueChanged( ValueEvent<JointedModelResource> e ) {
+			( (JointedModelImp)ImplementationAccessor.getImplementation( parent.getModel() ) ).setNewResource( e.getNextValue() );
+		}
+	};
 
 	private org.lgna.croquet.event.ValueListener<TypeNode> typeChangedListener = new org.lgna.croquet.event.ValueListener<TypeNode>() {
 
 		public void valueChanged( ValueEvent<TypeNode> e ) {
-			//			parent.setType( e.getNextValue().getType() );
+			NamedUserType type = (NamedUserType)e.getNextValue().getType();
+			parent.setType( type );
 		}
 	};
 
@@ -140,7 +164,9 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		} else if( model instanceof SFlyer ) {
 			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
 		}
-		return FieldFinder.populateList( rootType );
+		TypeNode javaRoot = FieldFinder.populateList( rootType );
+		assert !javaRoot.isLeaf();
+		return (TypeNode)javaRoot.getChildAt( 0 );
 	}
 
 	private TypeNode getInitialValue( TypeNode root ) {
@@ -248,6 +274,57 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		}
 	}
 
+	private ResourceNode updateRoot( ResourceNode node ) {
+		ResourceNode rv = null;
+		if( node instanceof ClassHierarchyBasedResourceNode ) {
+			ClassHierarchyBasedResourceNode chbrNode = (ClassHierarchyBasedResourceNode)node;
+			for( Model o : chbrNode.getChildren() ) {
+				System.out.println( "child " + o.getClass() );
+			}
+		}
+		node.getChildren();
+		ResourceKey resourceKey = node.getResourceKey();
+		if( resourceKey instanceof RootResourceKey ) {
+			for( ResourceNode child : node.getNodeChildren() ) {
+				rv = updateRoot( child );
+				if( rv != null ) {
+					return rv;
+				}
+			}
+		} else if( resourceKey instanceof ClassResourceKey ) {
+			JavaType resourceType = ( (ClassResourceKey)resourceKey ).getType();
+
+			System.out.println( "OUT: " + resourceType );
+			AbstractType<?, ?, ?> type = typeSelectionState.getValue().getType();
+			System.out.println( "type: " + type );
+			System.out.println( type + " is assignable to " + resourceType );
+			System.out.println( type.isAssignableTo( resourceType ) );
+			for( Property<?> o : resourceType.getProperties() ) {
+				System.out.println( o.getName() + ": " + o );
+			}
+			System.out.println( type.getPropertyNamed( "superType" ) );
+			if( type.isAssignableTo( resourceType ) ) {
+				System.out.println( "IN: " + resourceType );
+				for( ResourceNode child : node.getNodeChildren() ) {
+					System.out.println( "check? " + child );
+					rv = updateRoot( child );
+					if( rv != null ) {
+						System.out.println( "tunnel: " + rv );
+						return rv;
+					}
+				}
+				return node;
+			}
+		} else if( resourceKey instanceof EnumConstantResourceKey ) {
+			//do nothing leafs
+			return null;
+		} else {
+			System.out.println( " ERROR: " + resourceKey.getClass() );
+		}
+		System.out.println( "OUCH" );
+		return node;
+	}
+
 	public UserType<?> getDeclaringType() {
 		return parent.getDeclaringType();
 	}
@@ -260,8 +337,11 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return jointRotationHandleVisibilityState;
 	}
 
-	public ListSelectionState<Object> getResourceList() {
-		return this.resourceList;
+	public ResourceNodeTreeSelectionState getResourceList() {
+		return this.resourceTree;
+	}
+
+	private void updateResourceRoot() {
 	}
 
 	public TypeNodeSelectionState getTypeSelectionState() {

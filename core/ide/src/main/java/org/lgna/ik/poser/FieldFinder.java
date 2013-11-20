@@ -54,6 +54,7 @@ import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.resources.JointedModelResource;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -80,8 +81,8 @@ public class FieldFinder {
 		sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( ProjectStack.peekProject() );
 	}
 
-	public ArrayList<Object> getResourcesForType( NamedUserType type ) {
-		ArrayList<Object> rv = Collections.newArrayList();
+	public ArrayList<JointedModelResource> getResourcesForType( NamedUserType type ) {
+		ArrayList<JointedModelResource> rv = Collections.newArrayList();
 		refreshScene();
 		ArrayList<UserField> fields = sceneType.getDeclaredFields();
 		for( UserField field : fields ) {
@@ -93,7 +94,6 @@ public class FieldFinder {
 						Expression[] arr = new Expression[ 1 ];
 						arr[ 0 ] = simpleArgument.expression.getValue();
 						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
-						rv.add( evaluated[ 0 ] );
 					} else {
 						NamedUserConstructor constructor = (NamedUserConstructor)creation.constructor.getValue();
 						ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
@@ -102,7 +102,9 @@ public class FieldFinder {
 						Expression[] arr = new Expression[ 1 ];
 						arr[ 0 ] = simpleArgument.expression.getValue();
 						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
-						rv.add( evaluated[ 0 ] );
+						Object resource = evaluated[ 0 ];
+						assert resource instanceof JointedModelResource : resource;
+						rv.add( (JointedModelResource)resource );
 					}
 				}
 			}
@@ -110,7 +112,7 @@ public class FieldFinder {
 		return rv;
 	}
 
-	public static TypeNode populateList( AbstractType rootType ) {
+	public static TypeNode populateList( AbstractType<?, ?, ?> rootType ) {
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		TypeNode rootNode = new TypeNode( rootType );

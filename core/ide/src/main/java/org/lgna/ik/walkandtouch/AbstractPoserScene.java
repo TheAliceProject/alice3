@@ -56,6 +56,7 @@ import org.lgna.ik.poser.PoserControllerAdapter;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.Duration;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
@@ -64,6 +65,7 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
+import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
@@ -78,7 +80,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	private final SSun sun = new SSun();
 	private final SGround snow = new SGround();
 	public final SCamera camera;
-	public final T model;
+	public T model;
 	protected ArrayList<JointSelectionSphere> jssArr;
 	protected final ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
@@ -253,5 +255,15 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		} else {
 			dragListeners.add( sphereDragListener );
 		}
+	}
+
+	public void setNewModel( T model ) {
+		this.model.setVehicle( null );
+		this.model = model;
+		this.model.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
+		model.setVehicle( this );
+		poserAnimatorDragAdapter.setTarget( model );
+		initializeJointSelectionSpheresAndLimbs();
+		initializeLimbAnchors();
 	}
 }
