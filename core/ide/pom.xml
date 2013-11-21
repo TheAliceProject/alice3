@@ -41,6 +41,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>scenegraph</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>resources</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -55,18 +60,6 @@
 			<groupId>org.alice.nonfree</groupId>
 			<artifactId>nebulous-model-source</artifactId>
 			<version>${alice.gallery.version}</version>
-		</dependency>
-
-		<!-- JOGL -->
-		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
 		</dependency>
 
 		<!-- External -->
