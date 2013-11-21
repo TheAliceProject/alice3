@@ -46,8 +46,8 @@ package org.alice.imageeditor.croquet.views;
  * @author Dennis Cosgrove
  */
 public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
-	private final org.alice.ide.croquet.ImageView toBeReplacedImageView = new org.alice.ide.croquet.ImageView();
-	private final org.alice.ide.croquet.ImageView nextImageView = new org.alice.ide.croquet.ImageView();
+	private final ImageView toBeReplacedImageView = new ImageView();
+	private final ImageView nextImageView = new ImageView();
 	private final org.lgna.croquet.components.Label toBeReplacedHeaderLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label toBeReplacedDetailsLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label nextDetailsLabel = new org.lgna.croquet.components.Label();

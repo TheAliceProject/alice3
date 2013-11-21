@@ -21,6 +21,7 @@
 	<modules>
 		<module>core/util</module>
 		<module>core/croquet</module>
+		<module>core/imageEditor</module>
 		<module>core/ide</module>
 		<module>core/resources</module>
 		<module>distribution</module>
