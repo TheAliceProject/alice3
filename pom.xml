@@ -23,6 +23,7 @@
 		<module>core/croquet</module>
 		<module>core/scenegraph</module>
 		<module>core/imageEditor</module>
+		<module>core/issueReporting</module>
 		<module>core/ide</module>
 		<module>core/resources</module>
 		<module>distribution</module>
