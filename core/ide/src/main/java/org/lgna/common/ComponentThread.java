@@ -61,7 +61,7 @@ public final class ComponentThread extends Thread {
 
 	@Override
 	public void run() {
-		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
+		org.lgna.common.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
 	}
 
 	@Override
