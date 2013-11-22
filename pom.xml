@@ -30,7 +30,7 @@
 
 		<!-- All Alice Modules go here -->
 		<module>alice/alice-ide</module>
-  </modules>
+	</modules>
 
 	<prerequisites>
 		<maven>3.0</maven>
