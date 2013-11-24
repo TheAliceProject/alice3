@@ -41,48 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.alice.ide.properties.adapter.croquet;
 
-public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
-{
-	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
-	protected P value;
-	protected P originalValue;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-	public SetValueOperation( AbstractPropertyAdapter<P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualUUID );
+public abstract class PropertyValueOperation<P> extends org.lgna.croquet.ActionOperation {
+	private final AbstractPropertyAdapter<P, ?> propertyAdapter;
+	private final P nextValue;
+
+	public PropertyValueOperation( java.util.UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
 		this.propertyAdapter = propertyAdapter;
-		this.value = value;
-		this.setName( name );
-	}
-
-	public void setValue( P value )
-	{
-		this.value = value;
+		this.nextValue = nextValue;
 	}
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo )
-			{
-				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.value );
-			}
-
-			@Override
-			protected final void undoInternal()
-			{
-				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
-			}
-
-			@Override
-			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription() );
-			}
-		} );
+		step.commitAndInvokeDo( new org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit<P>( step, this.propertyAdapter, this.nextValue ) );
 	}
-
 }
