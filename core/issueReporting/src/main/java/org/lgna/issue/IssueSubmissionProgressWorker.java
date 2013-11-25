@@ -68,19 +68,24 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
 		for( String message : chunks ) {
 			if( START_MESSAGE.equals( message ) ) {
-				this.progressDialog.pack();
-				this.progressDialog.setVisible( true );
+				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+						.owner( this.owner )
+						.title( "Uploading Bug Report" )
+						.build();
+				dialog.add( this.progressPane, java.awt.BorderLayout.CENTER );
+				dialog.pack();
+				dialog.setVisible( true );
 			} else if( END_MESSAGE.equals( message ) ) {
-				this.progressDialog.setVisible( false );
+				javax.swing.SwingUtilities.getRoot( this.progressPane ).setVisible( false );
 			} else {
-				this.progressDialog.addMessage( message );
+				this.progressPane.addMessage( message );
 			}
 		}
 	}
 
 	@Override
 	protected final void handleDone_onEventDispatchThread( Boolean value ) {
-		if( this.progressDialog.isBackgrounded() || ( javax.swing.SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
+		if( this.progressPane.isBackgrounded() || ( javax.swing.SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "issue submission result:", value );
 		} else {
 			if( value ) {
@@ -97,5 +102,5 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 	}
 
 	private final org.lgna.issue.swing.JSubmitPane owner;
-	private final org.lgna.issue.swing.JProgressDialog progressDialog = new org.lgna.issue.swing.JProgressDialog( this );
+	private final org.lgna.issue.swing.JProgressPane progressPane = new org.lgna.issue.swing.JProgressPane( this );
 }

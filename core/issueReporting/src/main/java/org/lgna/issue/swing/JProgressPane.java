@@ -45,7 +45,7 @@ package org.lgna.issue.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class JProgressDialog extends javax.swing.JDialog {
+public class JProgressPane extends javax.swing.JPanel {
 	private class RunInBackgroundAction extends javax.swing.AbstractAction {
 		public RunInBackgroundAction() {
 			super( "run in background" );
@@ -53,25 +53,31 @@ public class JProgressDialog extends javax.swing.JDialog {
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			isBackgrounded = true;
-			setVisible( false );
+			javax.swing.SwingUtilities.getRoot( JProgressPane.this ).setVisible( false );
 			worker.hideOwnerDialog();
 		}
 	}
 
-	public JProgressDialog( org.lgna.issue.IssueSubmissionProgressWorker worker ) {
+	public JProgressPane( org.lgna.issue.IssueSubmissionProgressWorker worker ) {
 		this.worker = worker;
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.textArea );
 
-		javax.swing.JButton runInBackgroundButton = new javax.swing.JButton( new RunInBackgroundAction() );
+		this.runInBackgroundButton = new javax.swing.JButton( new RunInBackgroundAction() );
 		javax.swing.JPanel bottomPane = new javax.swing.JPanel();
 		bottomPane.setLayout( new java.awt.FlowLayout( java.awt.FlowLayout.TRAILING ) );
-		bottomPane.add( runInBackgroundButton );
+		bottomPane.add( this.runInBackgroundButton );
 
-		this.getContentPane().add( scrollPane, java.awt.BorderLayout.CENTER );
-		this.getContentPane().add( bottomPane, java.awt.BorderLayout.PAGE_END );
-		this.getRootPane().setDefaultButton( runInBackgroundButton );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( scrollPane, java.awt.BorderLayout.CENTER );
+		this.add( bottomPane, java.awt.BorderLayout.PAGE_END );
 
 		this.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 600 ) );
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.getRootPane().setDefaultButton( this.runInBackgroundButton );
 	}
 
 	public void addMessage( String message ) {
@@ -86,5 +92,6 @@ public class JProgressDialog extends javax.swing.JDialog {
 
 	private final org.lgna.issue.IssueSubmissionProgressWorker worker;
 	private final javax.swing.JTextArea textArea = new javax.swing.JTextArea();
+	private final javax.swing.JButton runInBackgroundButton;
 	private boolean isBackgrounded;
 }
