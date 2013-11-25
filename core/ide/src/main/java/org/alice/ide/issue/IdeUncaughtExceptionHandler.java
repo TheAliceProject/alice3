@@ -69,17 +69,30 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 	protected void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
 		this.count++;
 		if( this.isBugReportSubmissionPaneDesired ) {
-			final org.lgna.issue.swing.JSubmitDialog dialog = new org.lgna.issue.swing.JSubmitDialog( thread, originalThrowable, originalThrowableOrTarget, this.config );
+			final org.lgna.issue.swing.JSubmitPane jSubmitPane = new org.lgna.issue.swing.JSubmitPane( thread, originalThrowable, originalThrowableOrTarget, this.config );
+
+			StringBuilder sbTitle = new StringBuilder();
+			sbTitle.append( "Please Submit Bug Report: " );
+			sbTitle.append( config.getApplicationName() );
+
+			final javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+					.title( sbTitle.toString() )
+					.isModal( true )
+					.build();
+
+			dialog.getContentPane().add( jSubmitPane, java.awt.BorderLayout.CENTER );
 			dialog.pack();
+
 			//todo
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					dialog.pack();
 				}
 			} );
+
 			dialog.setVisible( true );
 
-			if( dialog.isSubmitAttempted() ) {
+			if( jSubmitPane.isSubmitAttempted() ) {
 				//pass
 			} else {
 				if( this.count > 1 ) {

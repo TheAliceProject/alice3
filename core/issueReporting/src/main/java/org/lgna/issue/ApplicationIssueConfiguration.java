@@ -56,5 +56,5 @@ public interface ApplicationIssueConfiguration {
 
 	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
 
-	public void submit( org.lgna.issue.swing.JSubmitDialog jSubmitDialog );
+	public void submit( org.lgna.issue.swing.JSubmitPane jSubmitPane );
 }

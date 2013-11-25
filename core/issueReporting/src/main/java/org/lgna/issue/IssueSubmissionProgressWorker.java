@@ -49,8 +49,8 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 	private static final String START_MESSAGE = "START_MESSAGE";
 	private static final String END_MESSAGE = "END_MESSAGE";
 
-	public IssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitDialog ownerDialog ) {
-		this.ownerDialog = ownerDialog;
+	public IssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitPane owner ) {
+		this.owner = owner;
 	}
 
 	protected abstract Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws java.lang.Exception;
@@ -58,7 +58,7 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 	@Override
 	protected final Boolean do_onBackgroundThread() throws java.lang.Exception {
 		this.publish( START_MESSAGE );
-		edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder = this.ownerDialog.createIssueBuilder();
+		edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder = this.owner.createIssueBuilder();
 		boolean rv = this.doInternal_onBackgroundThread( issueBuilder );
 		this.publish( END_MESSAGE );
 		return rv;
@@ -80,22 +80,22 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 
 	@Override
 	protected final void handleDone_onEventDispatchThread( Boolean value ) {
-		if( this.progressDialog.isBackgrounded() || ( this.ownerDialog.isVisible() == false ) ) {
+		if( this.progressDialog.isBackgrounded() || ( javax.swing.SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "issue submission result:", value );
 		} else {
 			if( value ) {
-				javax.swing.JOptionPane.showMessageDialog( this.ownerDialog, "Your bug report has been successfully submitted.  Thank you." );
+				javax.swing.JOptionPane.showMessageDialog( this.owner, "Your bug report has been successfully submitted.  Thank you." );
 			} else {
-				javax.swing.JOptionPane.showMessageDialog( this.ownerDialog, "Your bug report FAILED to submit.  Thank you for trying." );
+				javax.swing.JOptionPane.showMessageDialog( this.owner, "Your bug report FAILED to submit.  Thank you for trying." );
 			}
-			this.ownerDialog.setVisible( false );
+			this.hideOwnerDialog();
 		}
 	}
 
 	public void hideOwnerDialog() {
-		this.ownerDialog.setVisible( false );
+		javax.swing.SwingUtilities.getRoot( this.owner ).setVisible( false );
 	}
 
-	private final org.lgna.issue.swing.JSubmitDialog ownerDialog;
+	private final org.lgna.issue.swing.JSubmitPane owner;
 	private final org.lgna.issue.swing.JProgressDialog progressDialog = new org.lgna.issue.swing.JProgressDialog( this );
 }

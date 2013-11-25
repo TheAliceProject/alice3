@@ -45,23 +45,20 @@ package org.lgna.issue.swing;
 /**
  * @author Dennis Cosgrove
  */
-public final class JSubmitDialog extends javax.swing.JDialog {
+public final class JSubmitPane extends javax.swing.JPanel {
 	private static final String CONTRACTED_TEXT = "Provide details";
 	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
 
-	public JSubmitDialog( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, org.lgna.issue.ApplicationIssueConfiguration config ) {
-		super( edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame(), true );
-		//this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
-
+	public JSubmitPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, org.lgna.issue.ApplicationIssueConfiguration config ) {
 		this.config = config;
 		this.insightPane = new JInsightPane( thread, originalThrowable, originalThrowableOrTarget );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		javax.swing.Action submitAction = new javax.swing.AbstractAction( config.getSubmitActionName() ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				getConfig().submit( JSubmitDialog.this );
+				getConfig().submit( JSubmitPane.this );
 			}
 		};
-		javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
+		this.submitButton = new javax.swing.JButton( submitAction );
 
 		javax.swing.JPanel headerPane = config.createHeaderPane( thread, originalThrowable, originalThrowableOrTarget );
 
@@ -79,20 +76,15 @@ public final class JSubmitDialog extends javax.swing.JDialog {
 		submitPanel.setLayout( new java.awt.FlowLayout() );
 		submitPanel.add( submitButton );
 
-		this.getContentPane().add( headerPane, java.awt.BorderLayout.PAGE_START );
-		this.getContentPane().add( mainPanel, java.awt.BorderLayout.CENTER );
-		this.getContentPane().add( submitPanel, java.awt.BorderLayout.PAGE_END );
-
-		StringBuilder sbTitle = new StringBuilder();
-		sbTitle.append( "Please Submit Bug Report: " );
-		sbTitle.append( config.getApplicationName() );
-		this.setTitle( sbTitle.toString() );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( headerPane, java.awt.BorderLayout.PAGE_START );
+		this.add( mainPanel, java.awt.BorderLayout.CENTER );
+		this.add( submitPanel, java.awt.BorderLayout.PAGE_END );
 
 		this.toggleButton.addChangeListener( this.changeListener );
 
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( submitButton, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( submitButton, 1.6f );
-		this.getRootPane().setDefaultButton( submitButton );
 
 		this.toggleButton.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon( 12 ) {
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
@@ -112,6 +104,12 @@ public final class JSubmitDialog extends javax.swing.JDialog {
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
 			this.toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
 		}
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.getRootPane().setDefaultButton( this.submitButton );
 	}
 
 	public org.lgna.issue.ApplicationIssueConfiguration getConfig() {
@@ -139,11 +137,12 @@ public final class JSubmitDialog extends javax.swing.JDialog {
 				javax.swing.JToggleButton button = (javax.swing.JToggleButton)src;
 				insightPane.setExpanded( button.isSelected() );
 				toggleButton.setText( button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT );
-				pack();
+				( (java.awt.Window)javax.swing.SwingUtilities.getRoot( button ) ).pack();
 			}
 		}
 	};
 	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
+	private final javax.swing.JButton submitButton;
 
 	private final org.lgna.issue.ApplicationIssueConfiguration config;
 

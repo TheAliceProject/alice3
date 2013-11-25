@@ -48,7 +48,7 @@ package org.alice.ide.issue;
 public class AliceIssueSubmissionProgressWorker extends org.lgna.issue.IssueSubmissionProgressWorker {
 	private final boolean isProjectAttachmentDesired;
 
-	public AliceIssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitDialog owner, boolean isProjectAttachmentDesired ) {
+	public AliceIssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitPane owner, boolean isProjectAttachmentDesired ) {
 		super( owner );
 		this.isProjectAttachmentDesired = isProjectAttachmentDesired;
 	}

@@ -58,21 +58,21 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
 			org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
 			throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE ME", 0, null );
 		} else {
-			while( true ) {
-				new Thread() {
-					@Override
-					public void run() {
-						super.run();
-						final boolean IS_TESTING_GL = true;
-						if( IS_TESTING_GL ) {
-							throw new javax.media.opengl.GLException( "DELETE ME" );
-						} else {
-							throw new RuntimeException( "DELETE ME" );
-						}
+			//while( true ) {
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					final boolean IS_TESTING_GL = true;
+					if( IS_TESTING_GL ) {
+						throw new javax.media.opengl.GLException( "DELETE ME" );
+					} else {
+						throw new RuntimeException( "DELETE ME" );
 					}
-				}.start();
-				Thread.sleep( 100 );
-			}
+				}
+			}.start();
+			Thread.sleep( 100 );
+			//}
 		}
 	}
 }

@@ -50,7 +50,7 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
 
 	protected abstract void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
 
-	private boolean isInTheMidstOfHandlingAThrowable = false;
+	private boolean isInTheMidstOfHandlingAThrowable;
 
 	public final void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
@@ -78,6 +78,8 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
 				} else {
 					this.handleUncaughtException( thread, throwable, originalThrowableOrTarget );
 				}
+			} catch( Throwable t ) {
+				t.printStackTrace();
 			} finally {
 				this.isInTheMidstOfHandlingAThrowable = false;
 			}
