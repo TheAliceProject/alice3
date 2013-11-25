@@ -45,26 +45,25 @@ package org.lgna.issue.swing;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JSubmitDialog extends javax.swing.JFrame {
+public final class JSubmitDialog extends javax.swing.JDialog {
 	private static final String CONTRACTED_TEXT = "Provide details";
 	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
 
-	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
+	public JSubmitDialog( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, org.lgna.issue.ApplicationIssueConfiguration config ) {
+		super( edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame(), true );
+		//this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
 
-	private final org.lgna.issue.ApplicationIssueConfiguration config;
-
-	public JSubmitDialog( Thread thread, Throwable throwable, org.lgna.issue.ApplicationIssueConfiguration config ) {
 		this.config = config;
-		this.insightPane = new JInsightPane( thread, throwable );
+		this.insightPane = new JInsightPane( thread, originalThrowable, originalThrowableOrTarget );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		javax.swing.Action submitAction = new javax.swing.AbstractAction( config.getSubmitActionName() ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				submit();
+				getConfig().submit( JSubmitDialog.this );
 			}
 		};
 		javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
 
-		javax.swing.JPanel headerPane = config.createHeaderPane( thread, throwable );
+		javax.swing.JPanel headerPane = config.createHeaderPane( thread, originalThrowable, originalThrowableOrTarget );
 
 		javax.swing.JPanel insightHeaderPanel = new javax.swing.JPanel();
 		insightHeaderPanel.setLayout( new java.awt.BorderLayout() );
@@ -88,7 +87,6 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		sbTitle.append( "Please Submit Bug Report: " );
 		sbTitle.append( config.getApplicationName() );
 		this.setTitle( sbTitle.toString() );
-		this.setModalExclusionType( java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE );
 
 		this.toggleButton.addChangeListener( this.changeListener );
 
@@ -116,7 +114,7 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		}
 	}
 
-	protected org.lgna.issue.ApplicationIssueConfiguration getConfig() {
+	public org.lgna.issue.ApplicationIssueConfiguration getConfig() {
 		return this.config;
 	}
 
@@ -124,7 +122,13 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 		return this.insightPane.createIssueBuilder();
 	}
 
-	protected abstract void submit();
+	public boolean isSubmitAttempted() {
+		return this.isSubmitAttempted;
+	}
+
+	public void setSubmitAttempted( boolean isSubmitAttempted ) {
+		this.isSubmitAttempted = isSubmitAttempted;
+	}
 
 	private final JInsightPane insightPane;
 
@@ -139,4 +143,9 @@ public abstract class JSubmitDialog extends javax.swing.JFrame {
 			}
 		}
 	};
+	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
+
+	private final org.lgna.issue.ApplicationIssueConfiguration config;
+
+	private boolean isSubmitAttempted;
 }

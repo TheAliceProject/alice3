@@ -45,19 +45,42 @@ package org.lgna.issue;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractUncaughtExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
-	protected abstract java.awt.Window createSubmitDialog( Thread thread, Throwable throwable );
+public abstract class AbstractUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+	protected abstract boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, org.lgna.common.LgnaRuntimeException originalThrowableOrTarget );
 
-	public final void uncaughtException( final Thread t, final Throwable e ) {
-		e.printStackTrace();
-		final java.awt.Window dialog = this.createSubmitDialog( t, e );
-		dialog.pack();
-		//todo
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				dialog.pack();
+	protected abstract void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
+
+	private boolean isInTheMidstOfHandlingAThrowable = false;
+
+	public final void uncaughtException( Thread thread, Throwable throwable ) {
+		throwable.printStackTrace();
+		if( isInTheMidstOfHandlingAThrowable ) {
+			//pass
+		} else {
+			this.isInTheMidstOfHandlingAThrowable = true;
+			try {
+				Throwable cause = throwable.getCause();
+				Throwable originalThrowableOrTarget;
+				if( cause instanceof java.lang.reflect.InvocationTargetException ) {
+					java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
+					originalThrowableOrTarget = invocationTargetException.getTargetException();
+				} else {
+					originalThrowableOrTarget = throwable;
+				}
+
+				boolean isHandled = false;
+				if( originalThrowableOrTarget instanceof org.lgna.common.LgnaRuntimeException ) {
+					org.lgna.common.LgnaRuntimeException lgnaRuntimeException = (org.lgna.common.LgnaRuntimeException)originalThrowableOrTarget;
+					isHandled = this.handleUncaughtLgnaRuntimeException( thread, throwable, lgnaRuntimeException );
+				}
+				if( isHandled ) {
+					//pass
+				} else {
+					this.handleUncaughtException( thread, throwable, originalThrowableOrTarget );
+				}
+			} finally {
+				this.isInTheMidstOfHandlingAThrowable = false;
 			}
-		} );
-		dialog.setVisible( true );
+		}
 	}
 }

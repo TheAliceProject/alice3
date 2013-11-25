@@ -54,5 +54,7 @@ public interface ApplicationIssueConfiguration {
 
 	public String getSubmitActionName();
 
-	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable throwable );
+	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
+
+	public void submit( org.lgna.issue.swing.JSubmitDialog jSubmitDialog );
 }

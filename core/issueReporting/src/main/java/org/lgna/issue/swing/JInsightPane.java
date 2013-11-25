@@ -69,9 +69,9 @@ public class JInsightPane extends javax.swing.JPanel {
 		return rv;
 	}
 
-	public JInsightPane( Thread thread, Throwable throwable ) {
+	public JInsightPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
 		//javax.swing.JTextField summaryTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", SUMMARY_SUGGESTIVE_TEXT );
-		this.exceptionSubPane = new JExceptionSubPane( thread, throwable );
+		this.exceptionSubPane = new JExceptionSubPane( thread, originalThrowable, originalThrowableOrTarget );
 		this.descriptionTextArea = createTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
 		this.stepsTextArea = createTextArea( "", STEPS_SUGGESTIVE_TEXT );
 		this.reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
@@ -104,7 +104,7 @@ public class JInsightPane extends javax.swing.JPanel {
 		rv.steps( this.stepsTextArea.getText() );
 		rv.reportedBy( this.reportedByTextField.getText() );
 		rv.emailAddress( this.emailAddressTextField.getText() );
-		rv.threadAndThrowable( this.exceptionSubPane.getThread(), this.exceptionSubPane.getThrowable() );
+		rv.threadAndThrowable( this.exceptionSubPane.getThread(), this.exceptionSubPane.getOriginalThrowable() );
 		return rv;
 	}
 

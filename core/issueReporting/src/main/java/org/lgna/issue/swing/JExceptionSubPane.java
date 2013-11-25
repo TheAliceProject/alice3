@@ -47,24 +47,26 @@ package org.lgna.issue.swing;
  */
 public class JExceptionSubPane extends javax.swing.JPanel {
 	private final Thread thread;
-	private final Throwable throwable;
+	private final Throwable originalThrowable;
+	private final Throwable originalThrowableOrTarget;
 
-	public JExceptionSubPane( final Thread thread, final Throwable throwable ) {
+	public JExceptionSubPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
 		assert thread != null;
-		assert throwable != null;
+		assert originalThrowable != null;
 		this.thread = thread;
-		this.throwable = throwable;
-		this.removeAll();
+		this.originalThrowable = originalThrowable;
+		this.originalThrowableOrTarget = originalThrowableOrTarget;
+		//this.removeAll();
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
 		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}
 		} );
 
 		StringBuffer sb = new StringBuffer();
-		sb.append( throwable.getClass().getSimpleName() );
-		String message = throwable.getLocalizedMessage();
+		sb.append( originalThrowable.getClass().getSimpleName() );
+		String message = originalThrowable.getLocalizedMessage();
 		if( ( message != null ) && ( message.length() > 0 ) ) {
 			sb.append( "[" );
 			sb.append( message );
@@ -77,7 +79,7 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 		sb.append( "]" );
 
 		this.add( new javax.swing.JLabel( sb.toString() ) );
-		StackTraceElement[] elements = throwable.getStackTrace();
+		StackTraceElement[] elements = originalThrowable.getStackTrace();
 		if( elements.length > 0 ) {
 			StackTraceElement e0 = elements[ 0 ];
 			this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
@@ -91,7 +93,11 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 		return this.thread;
 	}
 
-	public Throwable getThrowable() {
-		return this.throwable;
+	public Throwable getOriginalThrowable() {
+		return this.originalThrowable;
+	}
+
+	public Throwable getOriginalThrowableOrTarget() {
+		return this.originalThrowableOrTarget;
 	}
 }
