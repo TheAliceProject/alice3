@@ -74,8 +74,8 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 		this.dimension = dimension;
 	}
 
-	public File getEncodedVideo() {
-		return this.encoder != null ? this.encoder.getEncodedVideo() : null;
+	public File getEncodedVideoFile() {
+		return this.encoder != null ? this.encoder.getEncodedVideoFile() : null;
 	}
 
 	public void initializeAudioRecording() {

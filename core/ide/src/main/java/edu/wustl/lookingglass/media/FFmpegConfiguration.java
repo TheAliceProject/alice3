@@ -47,6 +47,7 @@ package edu.wustl.lookingglass.media;
  */
 public class FFmpegConfiguration {
 	public static void main( String[] args ) throws Exception {
+		System.out.println( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is32Bit() ? 32 : 64 );
 		ProcessBuilder versionProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-version" );
 		java.util.List<String> versionOutList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( versionProcessBuilder, versionOutList, null );
