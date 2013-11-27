@@ -50,8 +50,8 @@ public abstract class IdeIssueConfiguration implements org.lgna.issue.Applicatio
 		return "submit bug report";
 	}
 
-	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable throwable ) {
-		return throwable instanceof javax.media.opengl.GLException
+	public javax.swing.JPanel createHeaderPane( java.lang.Thread thread, java.lang.Throwable originalThrowable, java.lang.Throwable originalThrowableOrTarget ) {
+		return originalThrowableOrTarget instanceof javax.media.opengl.GLException
 				? new org.alice.ide.issue.swing.JGraphicsHeaderPane( this )
 				: new org.alice.ide.issue.swing.JStandardHeaderPane( this );
 	}

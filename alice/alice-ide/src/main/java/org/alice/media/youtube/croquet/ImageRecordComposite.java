@@ -188,7 +188,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	public void handlePostDeactivation() {
 		isRecordingState.setValueTransactionlessly( false );
 		if( ( encoder != null ) ) {
-			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideo() );
+			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideoFile() );
 		}
 		super.handlePostDeactivation();
 	}

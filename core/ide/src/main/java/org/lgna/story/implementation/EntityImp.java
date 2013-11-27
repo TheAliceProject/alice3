@@ -348,6 +348,86 @@ public abstract class EntityImp implements ReferenceFrame {
 		return null;
 	}
 
+	private static class JNumPad extends javax.swing.JPanel {
+
+		//todo: select all on focus?
+
+		private final javax.swing.event.AncestorListener ancestorListener = new javax.swing.event.AncestorListener() {
+			public void ancestorAdded( javax.swing.event.AncestorEvent event ) {
+				textField.requestFocusInWindow();
+			}
+
+			public void ancestorMoved( javax.swing.event.AncestorEvent event ) {
+			}
+
+			public void ancestorRemoved( javax.swing.event.AncestorEvent event ) {
+			}
+		};
+
+		private final javax.swing.JTextField textField;
+
+		public JNumPad( NumberModel<?> numberModel ) {
+			javax.swing.JPanel gridBagPanel = new javax.swing.JPanel();
+			gridBagPanel.setLayout( new java.awt.GridBagLayout() );
+			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			gbc.weightx = 1.0;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 7 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 8 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 9 ] ), gbc );
+
+			gbc.weightx = 0.0;
+			gbc.gridwidth = 1;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 4 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 5 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 6 ] ), gbc );
+
+			gbc.gridwidth = 1;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 1 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 2 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 3 ] ), gbc );
+
+			DecimalPointAction decimalPointAction = numberModel.getDecimalPointAction();
+			if( decimalPointAction != null ) {
+				gbc.gridwidth = 1;
+				gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 0 ] ), gbc );
+				gridBagPanel.add( new javax.swing.JButton( decimalPointAction ), gbc );
+			} else {
+				gbc.gridwidth = 2;
+				gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 0 ] ), gbc );
+			}
+			gridBagPanel.add( new javax.swing.JButton( numberModel.negateAction ), gbc );
+
+			this.textField = new javax.swing.JTextField( numberModel.document, "", 0 );
+			javax.swing.JPanel lineAxisPanel = new javax.swing.JPanel();
+			lineAxisPanel.setLayout( new javax.swing.BoxLayout( lineAxisPanel, javax.swing.BoxLayout.LINE_AXIS ) );
+			lineAxisPanel.add( this.textField );
+			lineAxisPanel.add( new javax.swing.JButton( numberModel.backspaceAction ) );
+
+			javax.swing.JLabel messageLabel = new javax.swing.JLabel( numberModel.message );
+			//messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+			messageLabel.setAlignmentX( 0.0f );
+			lineAxisPanel.setAlignmentX( 0.0f );
+			gridBagPanel.setAlignmentX( 0.0f );
+
+			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+			this.add( messageLabel );
+			this.add( lineAxisPanel );
+			this.add( gridBagPanel );
+		}
+
+		public void addListeners() {
+			this.textField.addAncestorListener( this.ancestorListener );
+		}
+
+		public void removeListeners() {
+			this.textField.removeAncestorListener( this.ancestorListener );
+		}
+	}
+
 	private static abstract class NumberModel<N extends Number> {
 		private final String message;
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
@@ -431,58 +511,8 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 
-		public javax.swing.JComponent createComponent() {
-			javax.swing.JPanel gridBagPanel = new javax.swing.JPanel();
-			gridBagPanel.setLayout( new java.awt.GridBagLayout() );
-			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-			gbc.fill = java.awt.GridBagConstraints.BOTH;
-			gbc.weightx = 1.0;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 7 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 8 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 9 ] ), gbc );
-
-			gbc.weightx = 0.0;
-			gbc.gridwidth = 1;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 4 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 5 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 6 ] ), gbc );
-
-			gbc.gridwidth = 1;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 1 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 2 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 3 ] ), gbc );
-
-			DecimalPointAction decimalPointAction = this.getDecimalPointAction();
-			if( decimalPointAction != null ) {
-				gbc.gridwidth = 1;
-				gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 0 ] ), gbc );
-				gridBagPanel.add( new javax.swing.JButton( decimalPointAction ), gbc );
-			} else {
-				gbc.gridwidth = 2;
-				gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 0 ] ), gbc );
-			}
-			gridBagPanel.add( new javax.swing.JButton( this.negateAction ), gbc );
-
-			javax.swing.JPanel lineAxisPanel = new javax.swing.JPanel();
-			lineAxisPanel.setLayout( new javax.swing.BoxLayout( lineAxisPanel, javax.swing.BoxLayout.LINE_AXIS ) );
-			lineAxisPanel.add( new javax.swing.JTextField( this.document, "", 0 ) );
-			lineAxisPanel.add( new javax.swing.JButton( this.backspaceAction ) );
-
-			javax.swing.JLabel messageLabel = new javax.swing.JLabel( this.message );
-			//messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-			messageLabel.setAlignmentX( 0.0f );
-			lineAxisPanel.setAlignmentX( 0.0f );
-			gridBagPanel.setAlignmentX( 0.0f );
-
-			javax.swing.JPanel rv = new javax.swing.JPanel();
-			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
-			rv.add( messageLabel );
-			rv.add( lineAxisPanel );
-			rv.add( gridBagPanel );
-			return rv;
+		public JNumPad createComponent() {
+			return new JNumPad( this );
 		}
 	}
 
@@ -584,7 +614,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		String title = null;
 		DoubleNumberModel model = new DoubleNumberModel( message );
 		while( true ) {
-			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			JNumPad numPad = model.createComponent();
+			numPad.addListeners();
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			numPad.removeListeners();
 			Double value = model.getValue();
 			if( value != null ) {
 				return value;
@@ -596,7 +629,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		String title = null;
 		IntegerNumberModel model = new IntegerNumberModel( message );
 		while( true ) {
-			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			JNumPad numPad = model.createComponent();
+			numPad.addListeners();
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			numPad.removeListeners();
 			Integer value = model.getValue();
 			if( value != null ) {
 				return value;
