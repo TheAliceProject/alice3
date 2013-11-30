@@ -111,6 +111,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final PoserControllerAdapter adapter;
 	private final TypeNode typeSelectionRoot;
 	private final TypeNodeSelectionState typeSelectionState;
+	public final boolean typeSwitchingEnabled;
 
 	public AbstractPoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent, UUID uid ) {
 		super( uid );
@@ -127,16 +128,22 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		adapter = new PoserControllerAdapter( this );
 		parent.setAdapter( adapter );
-		typeSelectionRoot = initializeRootTypeNode();
-		TypeNode initialValue = getInitialValue( typeSelectionRoot );
-		typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
-		typeSelectionState.addNewSchoolValueListener( typeChangedListener );
-		//		resourceList.addNewSchoolValueListener( resourceChangeListener );
-		System.out.println( "TYPE: " + typeSelectionState.getValue().getType() );
-		ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
-		System.out.println( "root? " + updateRoot );
-		resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
-
+		typeSwitchingEnabled = FieldFinder.getInstance().isSceneTypeNull();
+		if( typeSwitchingEnabled ) {
+			typeSelectionRoot = initializeRootTypeNode();
+			TypeNode initialValue = getInitialValue( typeSelectionRoot );
+			typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
+			typeSelectionState.addNewSchoolValueListener( typeChangedListener );
+			//		resourceList.addNewSchoolValueListener( resourceChangeListener );
+			System.out.println( "TYPE: " + typeSelectionState.getValue().getType() );
+			ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
+			System.out.println( "root? " + updateRoot );
+			resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
+		} else {
+			resourceTree = null;
+			typeSelectionState = null;
+			typeSelectionRoot = null;
+		}
 	}
 
 	private org.lgna.croquet.event.ValueListener<JointedModelResource> resourceChangeListener = new org.lgna.croquet.event.ValueListener<JointedModelResource>() {

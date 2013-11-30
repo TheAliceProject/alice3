@@ -55,6 +55,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.biped.OgreResource;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -84,6 +85,10 @@ public class FieldFinder {
 	public ArrayList<JointedModelResource> getResourcesForType( NamedUserType type ) {
 		ArrayList<JointedModelResource> rv = Collections.newArrayList();
 		refreshScene();
+		if( sceneType == null ) {
+			JointedModelResource ogre = OgreResource.GREEN;
+			return Collections.newArrayList( ogre );
+		}
 		ArrayList<UserField> fields = sceneType.getDeclaredFields();
 		for( UserField field : fields ) {
 			if( field.getManagementLevel().isManaged() ) {
@@ -113,9 +118,9 @@ public class FieldFinder {
 	}
 
 	public static TypeNode populateList( AbstractType<?, ?, ?> rootType ) {
+		TypeNode rootNode = new TypeNode( rootType );
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		TypeNode rootNode = new TypeNode( rootType );
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			if( type.isAssignableTo( rootType ) ) {
 				TypeNode newNode = new TypeNode( type );
@@ -138,5 +143,13 @@ public class FieldFinder {
 		if( newNode.getParent() == null ) {
 			rootNode.add( newNode );
 		}
+	}
+
+	/**
+	 * HACK FOR NOW
+	 */
+	public boolean isSceneTypeNull() {
+		refreshScene();
+		return sceneType != null;
 	}
 }
