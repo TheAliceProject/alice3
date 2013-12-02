@@ -566,6 +566,11 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
+	protected org.lgna.croquet.ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
+	}
+
+	@Override
 	public AffineMatrix4x4 getDropTargetTransformation()
 	{
 		return this.dropTargetManipulator.getTargetTransformation();
