@@ -101,7 +101,8 @@ public class FFmpegProcess {
 			this.processError = new StringBuilder();
 
 			// Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			final boolean IS_LOCKING_A_PROBLEM_ON_WINDOWS = true;
+			if( IS_LOCKING_A_PROBLEM_ON_WINDOWS && edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 				this.process.getInputStream().close();
 				this.process.getErrorStream().close();
 
@@ -115,6 +116,10 @@ public class FFmpegProcess {
 		}
 		return this.process;
 	}
+
+	//	public Process getProcess() {
+	//		return this.process;
+	//	}
 
 	public synchronized int stop() throws FFmpegProcessException {
 		try {

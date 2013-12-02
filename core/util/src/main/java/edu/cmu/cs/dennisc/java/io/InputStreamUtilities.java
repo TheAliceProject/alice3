@@ -46,6 +46,24 @@ package edu.cmu.cs.dennisc.java.io;
  * @author Dennis Cosgrove
  */
 public class InputStreamUtilities {
+	public static boolean drain( java.io.InputStream is, java.io.OutputStream os ) throws java.io.IOException {
+		while( is.available() > 0 ) {
+			int v = is.read();
+			if( v != -1 ) {
+				if( os != null ) {
+					os.write( v );
+				}
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean drain( java.io.InputStream is ) throws java.io.IOException {
+		return drain( is, null );
+	}
+
 	public static byte[] getBytes( java.io.InputStream is ) throws java.io.IOException {
 		byte[] buffer = null;
 		java.io.ByteArrayOutputStream baos = null;
