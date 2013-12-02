@@ -42,26 +42,37 @@
  */
 package org.alice.ide.issue;
 
-import org.lgna.issue.AbstractUncaughtExceptionHandler;
-
 /**
  * @author Dennis Cosgrove
  */
-public class AliceUncaughtExceptionHandler extends AbstractUncaughtExceptionHandler {
-	@Override
-	protected java.awt.Window createSubmitDialog( Thread thread, Throwable throwable ) {
-		return new org.alice.ide.issue.swing.JAliceSubmitDialog( thread, throwable );
+public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
+	public AliceUncaughtExceptionHandler() {
+		super( new AliceIdeIssueConfiguration() );
 	}
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-
-		final boolean IS_TESTING_GL = true;
 		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
-		if( IS_TESTING_GL ) {
-			throw new javax.media.opengl.GLException( "render" );
+		final boolean IS_TESTING_LGNA = false;
+		if( IS_TESTING_LGNA ) {
+			org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
+			throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE ME", 0, null );
 		} else {
-			throw new Exception( "hello" );
+			//while( true ) {
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					final boolean IS_TESTING_GL = true;
+					if( IS_TESTING_GL ) {
+						throw new javax.media.opengl.GLException( "DELETE ME" );
+					} else {
+						throw new RuntimeException( "DELETE ME" );
+					}
+				}
+			}.start();
+			Thread.sleep( 100 );
+			//}
 		}
 	}
 }

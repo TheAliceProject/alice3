@@ -48,8 +48,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
 import org.alice.stageide.properties.IsAllScaleLinkedState;
@@ -78,12 +76,6 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			ModelSizePropertyController.this.updateUIFromLinkState( state, prevValue, nextValue );
 		}
 	};
-
-	protected class SetSizeOperation extends SetValueOperation<Dimension3> {
-		public SetSizeOperation( AbstractPropertyAdapter<Dimension3, ?> propertyAdapter, Dimension3 value ) {
-			super( propertyAdapter, value, null, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
-		}
-	}
 
 	private ActionListener valueChangeListener;
 
@@ -416,9 +408,9 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		if( this.propertyAdapter != null )
 		{
 
-			SetValueOperation<Dimension3> setSize = new SetSizeOperation( this.propertyAdapter, getOriginalSize() );
-			setSize.setName( "Reset" );
-			this.resetButton = setSize.createButton();
+			org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
+			operation.setName( "Reset" );
+			this.resetButton = operation.createButton();
 
 		}
 		boolean usesReset = false;
@@ -583,8 +575,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				{
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) )
 					{
-						SetValueOperation<Dimension3> operation = new SetSizeOperation( this.propertyAdapter, newScale );
-						operation.setName( newScale.toString() );
+						org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
 						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 					}
 				}

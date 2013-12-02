@@ -50,7 +50,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
@@ -60,12 +59,6 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3>
 {
-
-	protected class SetPoint3Operation extends SetValueOperation<Point3> {
-		public SetPoint3Operation( AbstractPropertyAdapter<Point3, ?> propertyAdapter, Point3 value ) {
-			super( propertyAdapter, value, null, java.util.UUID.fromString( "c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3" ) );
-		}
-	}
 
 	private ActionListener valueChangeListener;
 
@@ -288,8 +281,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 				{
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newPoint ) )
 					{
-						SetValueOperation<Point3> operation = new SetPoint3Operation( this.propertyAdapter, newPoint );
-						operation.setName( newPoint.toString() );
+						org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelPositionPropertyValueOperation( this.propertyAdapter, newPoint );
 						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 					}
 				}

@@ -400,44 +400,6 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 		}
 	}
 
-	public void sayText( String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		final boolean showSpeechBubble = bubble != null;
-		final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf( textToSay, voice.getVoiceString() );
-		final org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation bubbleAnimation = ( showSpeechBubble ) ? new org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation( this, .3, .3, bubble ) : null;
-
-		Runnable textToSpeech = new Runnable() {
-			public void run() {
-				if( !tts.isLoaded() )
-				{
-					tts.loadResource();
-				}
-				edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-				edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
-				if( showSpeechBubble )
-				{
-					bubbleAnimation.setDuration( tts.getDuration() + .2 );
-				}
-				perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
-			}
-		};
-		if( showSpeechBubble )
-		{
-			Runnable[] runnables = new Runnable[ 2 ];
-			runnables[ 0 ] = new Runnable() {
-				public void run() {
-					perform( bubbleAnimation );
-				}
-			};
-			runnables[ 1 ] = textToSpeech;
-			org.lgna.common.ThreadUtilities.doTogether( runnables );
-		}
-		else
-		{
-			textToSpeech.run();
-		}
-
-	}
-
 	public edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator getSpeechBubbleOriginator() {
 		return this.m_originator;
 	}

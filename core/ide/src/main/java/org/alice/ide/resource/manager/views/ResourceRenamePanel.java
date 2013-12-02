@@ -49,7 +49,7 @@ package org.alice.ide.resource.manager.views;
 public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.RenamePanel {
 	private static final int SIZE = 128;
 	private final org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel();
-	private final org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView();
+	private final org.alice.imageeditor.croquet.views.ImageView imageView = new org.alice.imageeditor.croquet.views.ImageView();
 
 	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
 		super( composite );

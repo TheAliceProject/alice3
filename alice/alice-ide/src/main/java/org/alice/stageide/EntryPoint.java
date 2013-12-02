@@ -69,7 +69,7 @@ public class EntryPoint {
 				javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 			}
 		}
-		javax.swing.UIManager.put( "ScrollBar.width", 11 );
+		javax.swing.UIManager.put( "ScrollBar.width", 13 );
 
 		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
@@ -109,19 +109,21 @@ public class EntryPoint {
 					}
 				}
 
+				javax.swing.JFrame rootFrame = edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame();
+				rootFrame.setLocation( xLocation, yLocation );
+				rootFrame.setSize( width, height );
+
+				if( isMaximizationDesired ) {
+					rootFrame.setExtendedState( rootFrame.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+				}
+
 				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
 				if( file != null ) {
 					if( file.exists() ) {
-						ide.loadProjectFrom( file );
+						ide.setProjectFileToLoadOnWindowOpened( file );
 					} else {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
 					}
-				}
-				ide.getFrame().setLocation( xLocation, yLocation );
-				ide.getFrame().setSize( width, height );
-
-				if( isMaximizationDesired ) {
-					ide.getFrame().maximize();
 				}
 				ide.initialize( args );
 				ide.getFrame().setVisible( true );

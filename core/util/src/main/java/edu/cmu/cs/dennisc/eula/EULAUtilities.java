@@ -89,6 +89,9 @@ public class EULAUtilities {
 						.build();
 				dialog.getContentPane().add( eulaPane, java.awt.BorderLayout.CENTER );
 				dialog.pack();
+				if( ( owner != null ) && owner.isVisible() ) {
+					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, owner );
+				}
 				dialog.setVisible( true );
 				isLicenseAccepted = eulaPane.isAccepted();
 				if( isLicenseAccepted ) {

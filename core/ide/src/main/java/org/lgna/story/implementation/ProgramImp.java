@@ -356,7 +356,7 @@ public abstract class ProgramImp {
 			if( this.isAnimatorStarted ) {
 				this.stopAnimator();
 			}
-			throw new org.lgna.project.ProgramClosedException();
+			throw new org.lgna.common.ProgramClosedException();
 		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
