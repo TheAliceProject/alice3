@@ -68,14 +68,17 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 	private TimeLineComposite composite;
 	private KeyFrameData selectedKeyFrame;
-	private final BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
+	private final BoundedDoubleState currentTime;
 	private final ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
-		composite.getTimeLine().addListener( listener );
+		currentTime = createBoundedDoubleState( createKey( "currentTime" ),
+				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
+
 		currentTime.addValueListener( timeListener );
+		composite.getTimeLine().addListener( listener );
 		styleSelectionState.addValueListener( styleListener );
 		updateSelectedEvent( null );
 	}
@@ -83,7 +86,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final TimeLineListener listener = new TimeLineListener() {
 
 		public void currentTimeChanged( double currentTime, Pose pose ) {
-			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
+			//			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
 		}
 
 		public void keyFrameAdded( KeyFrameData event ) {
@@ -130,12 +133,14 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			assert isAdjusting == ( prevValue == nextValue );
-			if( isAdjusting ) {
+			//			if( isAdjusting ) {
+			//			System.out.println( "time changed" );
+			if( ( selectedKeyFrame != null ) ) {
 				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 
-				new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue );
+				new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ).doOrRedo( true );
 			}
 		}
 	};
@@ -160,8 +165,8 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
-			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame );
+			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
+			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
 			return null;
 		}
 	} );

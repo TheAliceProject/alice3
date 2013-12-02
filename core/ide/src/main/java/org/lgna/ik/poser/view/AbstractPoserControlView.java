@@ -88,11 +88,12 @@ public class AbstractPoserControlView extends MigPanel {
 		this.addComponent( llDropDown, "wrap" );
 		this.addComponent( poserControlComposite.getStraightenJointsOperation().createButton(), "wrap, spanx 4, growx" );
 		this.addComponent( poserControlComposite.getJointRotationHandleVisibilityState().createCheckBox(), "wrap" );
-		if( poserControlComposite.typeSwitchingEnabled ) {
+		//		if( poserControlComposite.typeSwitchingEnabled ) {
+		if( false ) {
 			this.addComponent( new ResourceSelectionDropDown( poserControlComposite.getResourceList() ), "wrap" );
 			//		this.addComponent( poserControlComposite.getResourceList().getPrepModel().createComboBox(), "wrap" );
 			this.addComponent( poserControlComposite.getTypeSelectionState().getSidekickLabel().createLabel() );
-			this.addComponent( poserControlComposite.getTypeSelectionState().createDropDown() );
+			this.addComponent( poserControlComposite.getTypeSelectionState().createDropDown(), "wrap" );
 		}
 	}
 }

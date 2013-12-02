@@ -168,8 +168,8 @@ public class JTimeLineView extends JPanel {
 
 			isTimeSliding = ( ARROW.contains( locationOnScreen ) && getComposite().getIsTimeMutable() );
 			isEndSliding = ( D_ARROW.contains( locationOnScreen ) );
-			if( isEndSliding ) {
-				System.out.println( "the end is nigh" );
+			if( isTimeSliding || isEndSliding ) {
+				composite.selectKeyFrame( null );
 			}
 		}
 
