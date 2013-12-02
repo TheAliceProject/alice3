@@ -72,7 +72,6 @@ public class TimeLineView extends Panel {
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite );
 		composite.getTimeLine().addListener( listener );
-		composite.setJComponent( this );
 	}
 
 	private TimeLineListener listener = new TimeLineListener() {
