@@ -503,20 +503,24 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	//		}
 	//	}
 
+	protected abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState();
+
 	private void updateHandleSelection( AbstractTransformableImp selected ) {
-		PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
-		ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListSelectionState = org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
-		org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
-		InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
-		if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
-			if( !selectedState.canUseIteractionGroup( pickHint ) ) {
-				for( org.alice.stageide.sceneeditor.HandleStyle handleStyle : handleStyleListSelectionState )
-				{
-					InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
-					if( interactionState.canUseIteractionGroup( pickHint ) )
+		ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
+		if( handleStyleListSelectionState != null ) {
+			org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
+			InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
+			if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
+				PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
+				if( !selectedState.canUseIteractionGroup( pickHint ) ) {
+					for( org.alice.stageide.sceneeditor.HandleStyle handleStyle : handleStyleListSelectionState )
 					{
-						handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
-						break;
+						InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
+						if( interactionState.canUseIteractionGroup( pickHint ) )
+						{
+							handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
+							break;
+						}
 					}
 				}
 			}
