@@ -53,7 +53,6 @@ import org.lgna.ik.poser.pose.Pose;
  */
 public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 
-	private TimeLineView jTimeLineView;
 	private boolean isTimeMutable = true;
 	private final TimeLine timeLine = new TimeLine();
 	private KeyFrameData selected = null;
@@ -76,18 +75,6 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 	@Override
 	public TimeLineView createView() {
 		return new TimeLineView( this );
-	}
-
-	public int getViewWidth() {
-		return jTimeLineView.getWidth();
-	}
-
-	public int getViewHeight() {
-		return jTimeLineView.getHeight();
-	}
-
-	public void setJComponent( TimeLineView jTimeLineView ) {
-		this.jTimeLineView = jTimeLineView;
 	}
 
 	public void setEditEnabled( boolean b ) {
