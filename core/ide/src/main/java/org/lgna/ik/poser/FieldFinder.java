@@ -99,6 +99,8 @@ public class FieldFinder {
 						Expression[] arr = new Expression[ 1 ];
 						arr[ 0 ] = simpleArgument.expression.getValue();
 						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
+						Object resource = evaluated[ 0 ];
+						rv.add( (JointedModelResource)resource );
 					} else {
 						NamedUserConstructor constructor = (NamedUserConstructor)creation.constructor.getValue();
 						ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
