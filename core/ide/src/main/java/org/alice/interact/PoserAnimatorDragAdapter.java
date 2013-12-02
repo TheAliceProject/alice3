@@ -156,6 +156,12 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
+	protected org.lgna.croquet.ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+		//todo
+		return null;
+	}
+
+	@Override
 	public void setHandlVisibility( boolean isVisible ) {
 		super.setHandlVisibility( isVisible );
 		selectObject.setEnabled( isVisible );
