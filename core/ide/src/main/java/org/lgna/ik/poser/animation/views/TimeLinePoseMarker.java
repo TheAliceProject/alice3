@@ -47,7 +47,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -65,35 +64,79 @@ import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineE
 
 class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 
+	private static Paint FOCUS_PAINT = new Color( 191, 191, 255, 127 );
+	private static Paint ROLLOVER_PAINT = new Color( 191, 191, 191, 127 );
+	private static Paint NORMAL_PAINT = new Color( 221, 221, 221, 127 );
+
+	private static java.awt.Shape createShape( JComponent c ) {
+		int w = c.getWidth() - 1;
+		int h = c.getHeight() - 1;
+
+		double x0 = w * 0.25;
+		double x1 = w - x0;
+		double xCenter = ( x0 + x1 ) * 0.5;
+
+		double yA = x0;
+		double yC = h;
+		double yB = yA + ( ( yC - yA ) * 0.8 );
+
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( x0, yA );
+		path.lineTo( x1, yA );
+		path.lineTo( x1, yB );
+		path.lineTo( xCenter, yC );
+		path.lineTo( x0, yB );
+		path.closePath();
+		//java.awt.Shape cap = new java.awt.geom.Ellipse2D.Float( 0, 0, w, w );
+		java.awt.Shape cap = new java.awt.geom.RoundRectangle2D.Float( 0, 0, w, w / 2, 8, 8 );
+		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( path, cap );
+	}
+
 	@Override
 	public void paint( Graphics g, JComponent c ) {
 		//note: do not invoke super
 		Graphics2D g2 = (Graphics2D)g;
+		edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = new edu.cmu.cs.dennisc.java.awt.GraphicsContext();
+		gc.pushAll( g2 );
+		gc.pushPaint();
+		gc.pushAndSetAntialiasing( true );
 		AbstractButton button = (AbstractButton)c;
 		ButtonModel buttonModel = button.getModel();
 		Paint circlePaint;
-		if( buttonModel.isSelected() ) {
-			circlePaint = Color.YELLOW;
+		if( buttonModel.isRollover() ) {
+			circlePaint = ROLLOVER_PAINT;
 		} else {
-			if( buttonModel.isRollover() ) {
-				circlePaint = Color.GREEN;
+			if( button.isFocusOwner() || buttonModel.isSelected() ) {
+				circlePaint = FOCUS_PAINT;
 			} else {
-				circlePaint = Color.BLUE;
+				circlePaint = NORMAL_PAINT;
 			}
 		}
-		g2.setPaint( Color.BLACK );
-		g2.fillRect( button.getWidth() / 4, button.getWidth() / 4, button.getWidth() / 2, button.getHeight() - ( button.getWidth() / 4 ) );
+		java.awt.Shape shape = createShape( c );
 		g2.setPaint( circlePaint );
-		g2.fillOval( 0, 0, button.getWidth(), button.getWidth() );
+		g2.fill( shape );
+
+		Paint drawPaint = button.isSelected() ? Color.BLACK : Color.GRAY;
+		g2.setPaint( drawPaint );
+		g2.draw( shape );
+
+		//todo: base on component size
+		int w = c.getWidth();
+		for( int xLine = 3; xLine < ( w - 3 ); xLine += 3 ) {
+			g2.drawLine( xLine, 4, xLine, 12 );
+		}
+
+		gc.popAll();
+	}
+
+	@Override
+	public boolean contains( javax.swing.JComponent c, int x, int y ) {
+		return createShape( c ).contains( x, y );
 	}
 }
 
 class JTimeLinePoseMarker extends JToggleButton {
-	public static Dimension SIZE = new Dimension( 32, 64 );
-	private KeyFrameData keyFrameData;
-	private boolean isSliding = false;
-	private final JTimeLineView parent;
-	private double prevEventTime;
+	public static final Dimension SIZE = new Dimension( 32, 48 );
 
 	public JTimeLinePoseMarker( KeyFrameData data, JTimeLineView jView ) {
 		this.keyFrameData = data;
@@ -102,9 +145,26 @@ class JTimeLinePoseMarker extends JToggleButton {
 		this.setRolloverEnabled( true );
 		this.addMouseListener( listener );
 		this.addMouseMotionListener( motionListener );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 	}
 
-	private MouseListener listener = new MouseListener() {
+	@Override
+	public Dimension getPreferredSize() {
+		return SIZE;
+	}
+
+	@Override
+	public void updateUI() {
+		this.setUI( new TimeLinePoseMarkerUI() );
+	}
+
+	public KeyFrameData getKeyFrameData() {
+		return keyFrameData;
+	}
+
+	private final JTimeLineView parent;
+	private final KeyFrameData keyFrameData;
+	private final MouseListener listener = new MouseListener() {
 
 		public void mouseReleased( MouseEvent e ) {
 			if( isSliding ) {
@@ -142,7 +202,7 @@ class JTimeLinePoseMarker extends JToggleButton {
 		public void mouseClicked( MouseEvent e ) {
 		}
 	};
-	private MouseMotionListener motionListener = new MouseMotionListener() {
+	private final MouseMotionListener motionListener = new MouseMotionListener() {
 
 		public void mouseMoved( MouseEvent e ) {
 		}
@@ -156,29 +216,6 @@ class JTimeLinePoseMarker extends JToggleButton {
 
 		}
 	};
-
-	@Override
-	public Dimension getPreferredSize() {
-		return SIZE;
-	}
-
-	@Override
-	public boolean contains( int x, int y ) {
-		return super.contains( x, y );
-	}
-
-	@Override
-	public void updateUI() {
-		this.setUI( new TimeLinePoseMarkerUI() );
-	}
-
-	@Override
-	protected void fireItemStateChanged( ItemEvent event ) {
-		super.fireItemStateChanged( event );
-	}
-
-	public KeyFrameData getKeyFrameData() {
-		return keyFrameData;
-	}
-
+	private boolean isSliding;
+	private double prevEventTime;
 }
