@@ -276,6 +276,9 @@ public class JTimeLineView extends JPanel {
 					step.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
 					isTimeSliding = false;
 				}
+				if( isTimeSliding ) {
+					composite.selectKeyFrame( null );
+				}
 				//				if( isEndSliding ) {
 				//					step.commitAndInvokeDo( new EndTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getEndTime(), prevEndTime ) );
 				//				}

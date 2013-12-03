@@ -112,6 +112,7 @@ public class TimeLine {
 					return new Double( o1.getEventTime() ).compareTo( o2.getEventTime() );
 				}
 			} );
+			fireKeyFrameModified( data );
 		}
 	}
 
@@ -240,7 +241,9 @@ public class TimeLine {
 	}
 
 	public void setSelectedKeyFrame( KeyFrameData keyFrameData ) {
-		this.setCurrentTime( keyFrameData.getEventTime() );
+		if( keyFrameData != null ) {
+			this.setCurrentTime( keyFrameData.getEventTime() );
+		}
 		fireSelectedKeyFrameChanged( keyFrameData );
 	}
 
