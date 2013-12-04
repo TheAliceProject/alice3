@@ -135,9 +135,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 			typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
 			typeSelectionState.addNewSchoolValueListener( typeChangedListener );
 			//		resourceList.addNewSchoolValueListener( resourceChangeListener );
-			System.out.println( "TYPE: " + typeSelectionState.getValue().getType() );
 			ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
-			System.out.println( "root? " + updateRoot );
 			resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
 		} else {
 			resourceTree = null;
@@ -301,22 +299,14 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		} else if( resourceKey instanceof ClassResourceKey ) {
 			JavaType resourceType = ( (ClassResourceKey)resourceKey ).getType();
 
-			System.out.println( "OUT: " + resourceType );
 			AbstractType<?, ?, ?> type = typeSelectionState.getValue().getType();
-			System.out.println( "type: " + type );
-			System.out.println( type + " is assignable to " + resourceType );
-			System.out.println( type.isAssignableTo( resourceType ) );
 			for( Property<?> o : resourceType.getProperties() ) {
-				System.out.println( o.getName() + ": " + o );
 			}
 			System.out.println( type.getPropertyNamed( "superType" ) );
 			if( type.isAssignableTo( resourceType ) ) {
-				System.out.println( "IN: " + resourceType );
 				for( ResourceNode child : node.getNodeChildren() ) {
-					System.out.println( "check? " + child );
 					rv = updateRoot( child );
 					if( rv != null ) {
-						System.out.println( "tunnel: " + rv );
 						return rv;
 					}
 				}
@@ -328,7 +318,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		} else {
 			System.out.println( " ERROR: " + resourceKey.getClass() );
 		}
-		System.out.println( "OUCH" );
 		return node;
 	}
 

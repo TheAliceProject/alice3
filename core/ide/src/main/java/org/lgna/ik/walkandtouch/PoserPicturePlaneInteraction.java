@@ -62,6 +62,7 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import examples.math.pictureplane.PicturePlaneInteraction;
 
@@ -76,6 +77,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
 	private JointSelectionSphere anchor;
+	private Joint joint;
+	private boolean started = false;
 
 	public PoserPicturePlaneInteraction( AbstractPoserScene scene, OnscreenLookingGlass lookingGlass ) {
 		super( lookingGlass, ( (CameraImp)( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
@@ -88,6 +91,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	protected Transformable pick( MouseEvent e ) {
 		ManipulationHandle3D handle = checkIfHandleSelected( e );
 		if( handle != null ) {
+			joint = (Joint)handle.getManipulatedObject();
 			return handle;
 		}
 		ArrayList<Point> sphereLocations = Collections.newArrayList();
@@ -141,7 +145,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	private void fireMousePressed( MouseEvent e ) {
-		if( selected != null ) {
+		if( ( selected != null ) ) {
+			System.out.println( "pressed" );
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireStart( new PoserEvent( selected ) );
 			}
@@ -153,7 +158,15 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	private void fireMouseReleased( MouseEvent e ) {
-		if( selected != null ) {
+		if( joint != null ) {
+			JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+			for( JointSelectionSphere sphere : arr ) {
+				if( sphere.getJoint().getSgComposite() == joint ) {
+					selected = sphere;
+				}
+			}
+		}
+		if( ( selected != null ) ) {
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireFinish( new PoserEvent( selected ) );
 			}
@@ -177,8 +190,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	@Override
 	protected void handleMouseDragged( MouseEvent e ) {
-		if( selected != null ) {
-			super.handleMouseDragged( e );
+		super.handleMouseDragged( e );
+		if( selected == null ) {
 			fireMousePressed( e );
 		}
 	}
