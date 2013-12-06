@@ -145,7 +145,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	private void fireMousePressed( MouseEvent e ) {
-		if( ( selected != null ) ) {
+		if( selected != null ) {
 			System.out.println( "pressed" );
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireStart( new PoserEvent( selected ) );
@@ -166,7 +166,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 				}
 			}
 		}
-		if( ( selected != null ) ) {
+		if( selected != null ) {
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireFinish( new PoserEvent( selected ) );
 			}
@@ -190,8 +190,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	@Override
 	protected void handleMouseDragged( MouseEvent e ) {
-		super.handleMouseDragged( e );
-		if( selected == null ) {
+		if( selected != null ) {
+			super.handleMouseDragged( e );
 			fireMousePressed( e );
 		}
 	}
