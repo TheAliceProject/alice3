@@ -65,6 +65,8 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 				SEPARATOR,
 				org.alice.ide.croquet.models.ui.debug.BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
+				new org.alice.ide.testing.framesize.croquet.CycleFrameSizeOperation().getMenuItemPrepModel(),
+				SEPARATOR,
 				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
 				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),

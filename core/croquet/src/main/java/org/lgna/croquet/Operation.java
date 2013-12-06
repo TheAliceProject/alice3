@@ -178,7 +178,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	//	public javax.swing.KeyStroke getAcceleratorKey() {
 	//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 	//	}
-	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+	protected void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 

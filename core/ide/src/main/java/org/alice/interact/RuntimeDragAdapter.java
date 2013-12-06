@@ -92,4 +92,10 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	public void mouseEntered( MouseEvent e ) {
 		//Overridden to do nothing
 	}
+
+	@Override
+	protected org.lgna.croquet.ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+		//todo
+		return null;
+	}
 }

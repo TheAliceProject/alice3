@@ -145,4 +145,10 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		}
 	}
 
+	@Override
+	protected org.lgna.croquet.ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+		//todo
+		return null;
+	}
+
 }
