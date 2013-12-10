@@ -119,6 +119,8 @@ public class ImageCaptureUtilities {
 		return new ImageScalePair( image, scale );
 	}
 
+	private static final boolean IS_PRINT_GOOD_TO_GO_GL = false;
+
 	public static java.awt.Image captureRectangle( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
 		if( awtComponent.isLightweight() ) { //todo: check descendants?
 			ImageScalePair imageScalePair = createImage( awtComponent, bounds, dpiImage );
@@ -141,7 +143,6 @@ public class ImageCaptureUtilities {
 				g2.translate( -bounds.x, -bounds.y );
 			}
 
-			final boolean IS_PRINT_GOOD_TO_GO_GL = false;
 			if( IS_PRINT_GOOD_TO_GO_GL ) {
 				awtComponent.print( g2 );
 			} else {
@@ -201,7 +202,11 @@ public class ImageCaptureUtilities {
 				java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( lightweightComponent, 0, 0, awtComponent );
 				g.translate( p.x, p.y );
 			}
-			lightweightComponent.print( g );
+			if( IS_PRINT_GOOD_TO_GO_GL ) {
+				lightweightComponent.print( g );
+			} else {
+				lightweightComponent.paint( g );
+			}
 		}
 
 		//todo: check for heavyweight popup menus
