@@ -40,12 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.search.croquet;
+
+import org.alice.stageide.gallerybrowser.GalleryTab;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
+public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView> {
 	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
 	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
 	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
@@ -67,7 +69,7 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
+	protected org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView createView() {
+		return new org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView( this );
 	}
 }
