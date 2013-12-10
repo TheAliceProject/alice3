@@ -48,10 +48,6 @@ import org.alice.stageide.gallerybrowser.GalleryTab;
  * @author Dennis Cosgrove
  */
 public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView> {
-	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
-	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
-	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
-
 	public SearchTab() {
 		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
 	}
@@ -72,4 +68,47 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.sear
 	protected org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView createView() {
 		return new org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView( this );
 	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.getFilterState().addAndInvokeNewSchoolValueListener( this.filterListener );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.getFilterState().removeNewSchoolValueListener( this.filterListener );
+		this.cancelWorkerIfNecessary();
+		super.handlePostDeactivation();
+	}
+
+	private void cancelWorkerIfNecessary() {
+		if( this.worker != null ) {
+			if( this.worker.isDone() ) {
+				//pass
+			} else {
+				this.worker.cancel( false );
+			}
+			this.worker = null;
+		}
+	}
+
+	private void handleFilterChanged( String filter ) {
+		this.cancelWorkerIfNecessary();
+		synchronized( this.getView().getTreeLock() ) {
+			this.getView().removeAllGalleryDragComponents();
+		}
+		this.worker = new org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker( filter, this.getView() );
+		this.worker.execute();
+	}
+
+	private org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker worker;
+	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
+	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
+	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
+	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			SearchTab.this.handleFilterChanged( e.getNextValue() );
+		}
+	};
 }

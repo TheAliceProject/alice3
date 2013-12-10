@@ -51,18 +51,11 @@ import org.alice.stageide.modelresource.ResourceNode;
  */
 public class SearchTabView extends GalleryTabView {
 	public static final javax.swing.Icon SEARCH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( SearchTabView.class.getResource( "images/system-search.png" ) );
-	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
-			SearchTabView.this.handleFilterChanged( e.getNextValue() );
-		}
-	};
 	private final org.lgna.croquet.components.AbstractLabel noMatchesLabel;
 	private final org.lgna.croquet.components.AbstractLabel noEntryLabel;
 
 	private final org.lgna.croquet.components.LineAxisPanel filteredResourcesView = new org.lgna.croquet.components.LineAxisPanel();
 	private final org.lgna.croquet.components.TextField filterTextField;
-
-	private org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker worker;
 
 	public SearchTabView( org.alice.stageide.gallerybrowser.search.croquet.SearchTab composite ) {
 		super( composite );
@@ -91,32 +84,19 @@ public class SearchTabView extends GalleryTabView {
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		org.alice.stageide.gallerybrowser.search.croquet.SearchTab composite = (org.alice.stageide.gallerybrowser.search.croquet.SearchTab)this.getComposite();
-		composite.getFilterState().addAndInvokeNewSchoolValueListener( this.filterListener );
 		this.filterTextField.requestFocusLater();
 	}
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		org.alice.stageide.gallerybrowser.search.croquet.SearchTab composite = (org.alice.stageide.gallerybrowser.search.croquet.SearchTab)this.getComposite();
-		composite.getFilterState().removeNewSchoolValueListener( this.filterListener );
-		super.handleCompositePostDeactivation();
-	}
+	//@Override
+	//public void handleCompositePostDeactivation() {
+	//	super.handleCompositePostDeactivation();
+	//}
 
-	private void handleFilterChanged( String filter ) {
-		if( this.worker != null ) {
-			if( this.worker.isDone() ) {
-				//pass
-			} else {
-				this.worker.cancel( false );
-			}
-			this.worker = null;
-		}
+	public void removeAllGalleryDragComponents() {
 		synchronized( this.getTreeLock() ) {
 			this.filteredResourcesView.removeAllComponents();
 		}
-		this.worker = new org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker( filter, this );
-		this.worker.execute();
+		this.filteredResourcesView.revalidateAndRepaint();
 	}
 
 	public void addGalleryDragComponents( java.util.List<ResourceNode> resourceNodes ) {
