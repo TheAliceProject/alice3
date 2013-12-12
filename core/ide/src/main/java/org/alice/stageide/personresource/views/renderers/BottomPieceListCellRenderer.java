@@ -55,6 +55,7 @@ public class BottomPieceListCellRenderer extends IngredientListCellRenderer<org.
 	}
 
 	private BottomPieceListCellRenderer() {
+		super( 60, 100 );
 	}
 
 	@Override

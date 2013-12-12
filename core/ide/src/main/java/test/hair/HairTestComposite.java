@@ -117,7 +117,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 		class HairPathListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
-				javax.swing.Icon icon = org.alice.stageide.personresource.views.renderers.IngredientListCellRenderer.getIconForPath( value );
+				javax.swing.Icon icon = org.alice.stageide.personresource.views.renderers.IngredientListCellRenderer.getIconForPath( 90, 120, value );
 				rv.setIcon( icon );
 				rv.setText( icon != null ? null : value );
 				return rv;

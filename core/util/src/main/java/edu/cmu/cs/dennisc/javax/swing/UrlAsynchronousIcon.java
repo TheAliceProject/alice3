@@ -40,43 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views.renderers;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.Face> {
-	private static class SingletonHolder {
-		private static FaceListCellRenderer instance = new FaceListCellRenderer();
-	}
-
-	public static FaceListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FaceListCellRenderer() {
-		super( 90, 120 );
+public class UrlAsynchronousIcon extends AsynchronousIcon {
+	public UrlAsynchronousIcon( int width, int height, java.net.URL url ) {
+		super( width, height );
+		this.url = url;
 	}
 
 	@Override
-	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		StringBuilder sb = new StringBuilder();
-		if( gender != null ) {
-			String genderName = gender.name();
-			sb.append( genderName.charAt( 0 ) );
-			sb.append( genderName.substring( 1 ).toLowerCase() );
-		}
-		if( lifeStage != null ) {
-			String lifeStageName = lifeStage.name();
-			sb.append( lifeStageName.charAt( 0 ) );
-			sb.append( lifeStageName.substring( 1 ).toLowerCase() );
-		}
-		sb.append( clsName );
-		return sb.toString();
+	protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
+		return IconUtilities.createImageIcon( this.url );
 	}
 
-	@Override
-	protected String getSubPath() {
-		return "face_pictures";
-	}
+	private final java.net.URL url;
 }

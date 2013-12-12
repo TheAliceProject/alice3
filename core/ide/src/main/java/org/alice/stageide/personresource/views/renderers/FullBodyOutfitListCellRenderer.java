@@ -55,6 +55,7 @@ public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer<o
 	}
 
 	private FullBodyOutfitListCellRenderer() {
+		super( 60, 200 );
 	}
 
 	@Override

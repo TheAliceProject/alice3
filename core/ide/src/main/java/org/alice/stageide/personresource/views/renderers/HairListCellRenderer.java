@@ -55,6 +55,7 @@ public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.s
 	}
 
 	private HairListCellRenderer() {
+		super( 90, 120 );
 	}
 
 	@Override
