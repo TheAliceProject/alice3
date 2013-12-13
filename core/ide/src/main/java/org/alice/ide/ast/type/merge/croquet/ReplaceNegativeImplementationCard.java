@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ReplaceNegativeImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class ReplaceNegativeImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
 	public ReplaceNegativeImplementationCard( DifferentImplementation<?> differentImplementation ) {
@@ -54,9 +54,9 @@ public final class ReplaceNegativeImplementationCard extends org.lgna.croquet.Si
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		org.lgna.project.ast.Member member = this.differentImplementation.getImportHub().getMember();
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0" );
+		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "fill, insets 0" );
 		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createDeleteMemberLabel( member ) );
 		return rv;
 	}

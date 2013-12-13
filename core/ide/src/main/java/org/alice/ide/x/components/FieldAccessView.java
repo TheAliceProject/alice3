@@ -46,12 +46,12 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.croquet.components.JComponent<?> replacement;
+	private final org.lgna.croquet.views.JComponent<?> replacement;
 
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.components.Component<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
+		org.lgna.croquet.views.Component<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
@@ -71,7 +71,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 					//pass
 				} else {
-					this.addComponent( new org.lgna.croquet.components.Label( "." ) );
+					this.addComponent( new org.lgna.croquet.views.Label( "." ) );
 				}
 			}
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
@@ -81,7 +81,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle( field ) == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					org.lgna.croquet.components.Label getLabel = new org.lgna.croquet.components.Label( "get" );
+					org.lgna.croquet.views.Label getLabel = new org.lgna.croquet.views.Label( "get" );
 					//getLabel.scaleFont( 1.2f );
 					//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 					this.addComponent( getLabel );
@@ -91,7 +91,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			if( isExpressionDesired ) {
 				if( isGetter ) {
 					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-						this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
+						this.addComponent( new org.lgna.croquet.views.Label( "()" ) );
 					}
 				}
 			}

@@ -142,32 +142,32 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
 	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
 
-	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
 		if( window == this.getFrame() ) {
 			//pass
 		} else {
-			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
 		}
 	}
 
-	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
 	}
 
 	@Override
-	public void pushWindow( final org.lgna.croquet.components.AbstractWindow<?> window ) {
+	public void pushWindow( final org.lgna.croquet.views.AbstractWindow<?> window ) {
 		this.registerScreenCaptureKeyStrokes( window );
 		super.pushWindow( window );
 	}
 
 	@Override
-	public org.lgna.croquet.components.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.components.AbstractWindow<?> window = super.popWindow();
+	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.views.AbstractWindow<?> window = super.popWindow();
 		this.unregisterScreenCaptureKeyStrokes( window );
 		return window;
 	}
@@ -391,7 +391,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.potentialDropReceptorsStencil;
 	}
 
-	public void showDropReceptorsStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public void showDropReceptorsStencilOver( org.lgna.croquet.views.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.getPotentialDropReceptorsFeedbackView().showStencilOver( potentialDragSource, type );
 	}
 
@@ -610,11 +610,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.croquet.components.Component<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.views.Component<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
 
-	public org.lgna.croquet.components.Component<?> getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	public org.lgna.croquet.views.Component<?> getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		return null;
 	}
 

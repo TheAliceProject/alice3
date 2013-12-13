@@ -47,5 +47,5 @@ package org.lgna.cheshire.simple;
  * @author Dennis Cosgrove
  */
 public interface ScrollRenderer {
-	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape );
+	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.views.ScreenElement root, org.lgna.croquet.views.TrackableShape trackableShape );
 }

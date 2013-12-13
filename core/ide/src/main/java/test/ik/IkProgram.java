@@ -47,7 +47,7 @@ import org.lgna.ik.IkConstants;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.story.Color;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Position;
 import org.lgna.story.SBiped;
@@ -123,7 +123,7 @@ class IkProgram extends SProgram {
 	//	protected java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> currentSpeeds;
 
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
-		return ImplementationAccessor.getImplementation( this.target );
+		return EmployeesOnly.getImplementation( this.target );
 	}
 
 	private SModel createDragProp() {
@@ -152,7 +152,7 @@ class IkProgram extends SProgram {
 	}
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
-		return ImplementationAccessor.getImplementation( this.ogre );
+		return EmployeesOnly.getImplementation( this.ogre );
 	}
 
 	private org.lgna.story.implementation.JointImp getAnchorImp() {
@@ -285,15 +285,14 @@ class IkProgram extends SProgram {
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
-
 		this.modelManipulationDragAdapter.setOnClickRunnable( new Runnable() {
 			public void run() {
 				targetDragStarted();
 			}
 		} );
 
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 

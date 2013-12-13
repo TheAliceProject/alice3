@@ -55,6 +55,7 @@ public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.st
 	}
 
 	private FaceListCellRenderer() {
+		super( 90, 120 );
 	}
 
 	@Override

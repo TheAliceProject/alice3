@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
@@ -72,7 +72,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 	@Override
 	protected void check( SThing changedEntity ) {
 		if( camera == null ) { //should not really be hit
-			camera = ImplementationAccessor.getImplementation( changedEntity ).getScene().findFirstCamera();
+			camera = EmployeesOnly.getImplementation( changedEntity ).getScene().findFirstCamera();
 			if( camera == null ) {
 				return;
 			} else {
@@ -136,9 +136,9 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 		for( SModel m : models ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 				if( camera == null ) {
-					camera = ImplementationAccessor.getImplementation( m ).getScene().findFirstCamera();
+					camera = EmployeesOnly.getImplementation( m ).getScene().findFirstCamera();
 					camera.getSgComposite().addAbsoluteTransformationListener( this );
 				}
 			}

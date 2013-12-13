@@ -80,7 +80,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		if( this.size != null ) {
 			return this.size;
 		} else {
@@ -105,8 +105,8 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
 
-			org.lgna.croquet.components.Component<?> lookingGlassContainer = new org.lgna.croquet.components.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
-			org.lgna.croquet.components.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.components.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
+			org.lgna.croquet.views.Component<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
+			org.lgna.croquet.views.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.views.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
 			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
 			if( controlPanel != null ) {
 				runView.getAwtComponent().add( controlPanel, java.awt.BorderLayout.PAGE_START );
@@ -154,14 +154,14 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 			//pas
 		} else {
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
-			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+			org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			dialog.pack();
 		}
 	}
 
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+		org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( dialog.getAwtComponent() );
 		this.location = bounds.getLocation();
 		this.size = bounds.getSize();
@@ -169,7 +169,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 		this.stopProgram();
 		super.handleFinally( step, dialog );
 	}

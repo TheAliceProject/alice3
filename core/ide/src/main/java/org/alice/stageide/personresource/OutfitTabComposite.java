@@ -51,7 +51,7 @@ public abstract class OutfitTabComposite<V extends org.alice.stageide.personreso
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

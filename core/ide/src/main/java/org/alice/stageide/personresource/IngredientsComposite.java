@@ -739,7 +739,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.getLifeStageState().setValueTransactionlessly( personResource.getLifeStage() );
 			this.getGenderState().setValueTransactionlessly( personResource.getGender() );
 			this.getBaseEyeColorState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseEyeColor)personResource.getEyeColor() );
-			this.getSkinColorState().setValueTransactionlessly( org.lgna.story.ImplementationAccessor.getColor4f( personResource.getSkinColor() ).getAsAWTColor() );
+			this.getSkinColorState().setValueTransactionlessly( org.lgna.story.EmployeesOnly.getAwtColor( personResource.getSkinColor() ) );
 
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( personResource.getLifeStage(), personResource.getGender(), hair );

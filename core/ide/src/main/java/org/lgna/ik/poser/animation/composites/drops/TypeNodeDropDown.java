@@ -44,14 +44,14 @@ package org.lgna.ik.poser.animation.composites.drops;
 
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.State;
-import org.lgna.croquet.components.ItemDropDown;
+import org.lgna.croquet.views.ItemDropDown;
 
 /**
  * @author Matt May
  */
 public class TypeNodeDropDown extends ItemDropDown<TypeNode, TypeNodeSelectionState> {
 
-	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label mainComponent = new org.lgna.croquet.views.Label();
 
 	public TypeNodeDropDown( TypeNodeSelectionState model ) {
 		super( model );

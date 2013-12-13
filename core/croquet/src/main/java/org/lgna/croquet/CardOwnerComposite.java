@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.components.CardPanel> {
+public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.views.CardPanel> {
 	private final java.util.List<Composite<?>> cards;
 	private Composite<?> showingCard;
 
@@ -56,7 +56,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -70,7 +70,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 			//pass
 		} else {
 			this.cards.add( card );
-			org.lgna.croquet.components.CardPanel view = this.peekView();
+			org.lgna.croquet.views.CardPanel view = this.peekView();
 			if( view != null ) {
 				view.addComposite( card );
 			}
@@ -109,8 +109,8 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	}
 
 	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
+	protected org.lgna.croquet.views.CardPanel createView() {
+		return new org.lgna.croquet.views.CardPanel( this );
 	}
 
 	@Override

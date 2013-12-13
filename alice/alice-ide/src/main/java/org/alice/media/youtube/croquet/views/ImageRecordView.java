@@ -45,11 +45,11 @@ package org.alice.media.youtube.croquet.views;
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
+public class ImageRecordView extends org.lgna.croquet.views.MigPanel {
+	private final org.lgna.croquet.views.BorderPanel lookingGlassContainer = new org.lgna.croquet.views.BorderPanel();
 	private final TimeLabel timeLabel;
 
-	private final org.lgna.croquet.components.Component<?> listPane;
+	private final org.lgna.croquet.views.Component<?> listPane;
 
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
@@ -68,7 +68,7 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
+	public org.lgna.croquet.views.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
 

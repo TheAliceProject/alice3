@@ -45,23 +45,23 @@ package org.alice.ide.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpView extends org.lgna.croquet.components.BorderPanel {
+public class HelpView extends org.lgna.croquet.views.BorderPanel {
 	public HelpView( org.alice.ide.help.HelpComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
-		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
-		org.lgna.croquet.components.AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
+		org.lgna.croquet.views.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
+		org.lgna.croquet.views.Label iconLabel = new org.lgna.croquet.views.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
+		org.lgna.croquet.views.AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
 
 		textLabel.scaleFont( 2.0f );
 		textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		hyperlink.scaleFont( 2.0f );
 		hyperlink.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 
-		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel(
-				org.lgna.croquet.components.BoxUtilities.createVerticalGlue(),
+		org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel(
+				org.lgna.croquet.views.BoxUtilities.createVerticalGlue(),
 				textLabel,
 				hyperlink,
-				org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
+				org.lgna.croquet.views.BoxUtilities.createVerticalGlue()
 				);
 		pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		this.addLineStartComponent( iconLabel );

@@ -316,7 +316,7 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 		return TreeNodeCascade.getInstance( this, node );
 	}
 
-	public org.lgna.croquet.components.Tree<T> createTree() {
-		return new org.lgna.croquet.components.Tree<T>( this );
+	public org.lgna.croquet.views.Tree<T> createTree() {
+		return new org.lgna.croquet.views.Tree<T>( this );
 	}
 }

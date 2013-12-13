@@ -56,13 +56,13 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
 
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows );
+	protected abstract void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows );
 
 	@Override
-	public org.lgna.croquet.components.FormPanel createMainComponent() {
-		org.lgna.croquet.components.FormPanel rowsSpringPanel = new org.lgna.croquet.components.FormPanel() {
+	public org.lgna.croquet.views.FormPanel createMainComponent() {
+		org.lgna.croquet.views.FormPanel rowsSpringPanel = new org.lgna.croquet.views.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
 			}
 		};

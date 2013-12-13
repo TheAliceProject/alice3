@@ -978,7 +978,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			return null;
 		}
-		org.lgna.croquet.components.Component lgc = org.lgna.croquet.components.Component.lookup( c );
+		org.lgna.croquet.views.Component lgc = org.lgna.croquet.views.Component.lookup( c );
 		if( lgc instanceof ManipulationHandle )
 		{
 			return (ManipulationHandle)lgc;

@@ -117,8 +117,8 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 
-	public org.lgna.croquet.components.PopupButton createPopupButton() {
-		return new org.lgna.croquet.components.PopupButton( this );
+	public org.lgna.croquet.views.PopupButton createPopupButton() {
+		return new org.lgna.croquet.views.PopupButton( this );
 	}
 
 	private javax.swing.ButtonModel prevButtonModel;

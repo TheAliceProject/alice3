@@ -314,7 +314,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.views.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 		if( ( fieldExpression instanceof org.lgna.project.ast.ThisExpression ) || ( fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) ) {
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();

@@ -179,11 +179,11 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		this.swingModel.setValue( nextValue );
 	}
 
-	public org.lgna.croquet.components.Slider createSlider() {
-		return new org.lgna.croquet.components.Slider( this );
+	public org.lgna.croquet.views.Slider createSlider() {
+		return new org.lgna.croquet.views.Slider( this );
 	}
 
-	public org.lgna.croquet.components.Spinner createSpinner() {
-		return new org.lgna.croquet.components.Spinner( this );
+	public org.lgna.croquet.views.Spinner createSpinner() {
+		return new org.lgna.croquet.views.Spinner( this );
 	}
 }

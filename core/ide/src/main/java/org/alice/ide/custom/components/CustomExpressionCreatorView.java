@@ -57,7 +57,7 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.createValue();
@@ -65,7 +65,7 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 			re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		return new org.lgna.croquet.components.BorderPanel.Builder()
+		return new org.lgna.croquet.views.BorderPanel.Builder()
 				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
 				.build();
 	}

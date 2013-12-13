@@ -55,7 +55,7 @@ public class InputEventTrigger extends ComponentEventTrigger<java.awt.event.Inpu
 		return new InputEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private InputEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.InputEvent inputEvent ) {
+	private InputEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.InputEvent inputEvent ) {
 		super( origin, viewController, inputEvent );
 	}
 

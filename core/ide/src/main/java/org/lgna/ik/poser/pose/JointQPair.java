@@ -48,7 +48,6 @@ import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaConstructor;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SJoint;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
@@ -73,9 +72,9 @@ public class JointQPair {
 	}
 
 	public JointQPair( SJoint sJoint, JointQPair child ) {
-		this.joint = ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getJointId();
-		this.unitQuaternion = new UnitQuaternion( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().orientation );
-		this.translation = new Point3( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().translation );
+		this.joint = ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getJointId();
+		this.unitQuaternion = new UnitQuaternion( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation().orientation );
+		this.translation = new Point3( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation().translation );
 		this.child = child;
 	}
 

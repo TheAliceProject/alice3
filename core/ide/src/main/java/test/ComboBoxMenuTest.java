@@ -49,7 +49,7 @@ package test;
 public class ComboBoxMenuTest {
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = app.getFrame();
+		org.lgna.croquet.views.Frame frame = app.getFrame();
 		javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
 		model.addElement( "manny" );
 		model.addElement( "mo" );
@@ -63,10 +63,10 @@ public class ComboBoxMenuTest {
 			}
 		};
 		action.putValue( javax.swing.Action.NAME, "does not work" );
-		final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		final org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+		final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
+		final org.lgna.croquet.views.BorderPanel borderPanel = new org.lgna.croquet.views.BorderPanel.Builder()
 				.lineStart( label )
-				.center( new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( action ) ) )
+				.center( new org.lgna.croquet.views.SwingAdapter( new javax.swing.JButton( action ) ) )
 				.build();
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
 			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {

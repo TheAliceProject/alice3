@@ -45,11 +45,11 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberView extends org.lgna.croquet.components.LineAxisPanel {
+public class MemberView extends org.lgna.croquet.views.LineAxisPanel {
 	public MemberView( org.lgna.croquet.MenuModel menuModel ) {
-		org.lgna.croquet.components.PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.views.PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
 		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
 		this.addComponent( popupButton );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 	}
 }

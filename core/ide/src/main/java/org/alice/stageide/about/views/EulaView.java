@@ -46,10 +46,10 @@ package org.alice.stageide.about.views;
 /**
  * @author Dennis Cosgrove
  */
-public class EulaView extends org.lgna.croquet.components.BorderPanel {
+public class EulaView extends org.lgna.croquet.views.BorderPanel {
 	public EulaView( org.alice.stageide.about.EulaComposite composite ) {
-		org.lgna.croquet.components.PlainMultiLineLabel label = new org.lgna.croquet.components.PlainMultiLineLabel( composite.getEulaText() );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( label );
+		org.lgna.croquet.views.PlainMultiLineLabel label = new org.lgna.croquet.views.PlainMultiLineLabel( composite.getEulaText() );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( label );
 		this.addCenterComponent( scrollPane );
 		this.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 600 ) );
 	}

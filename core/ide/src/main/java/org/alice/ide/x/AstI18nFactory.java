@@ -49,7 +49,7 @@ package org.alice.ide.x;
 public abstract class AstI18nFactory extends I18nFactory {
 	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression();
 
-	protected org.lgna.croquet.components.JComponent<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent<?> component ) {
+	protected org.lgna.croquet.views.JComponent<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.views.JComponent<?> component ) {
 		return component;
 	}
 
@@ -61,12 +61,12 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
 	}
 
-	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.JComponent<?> prefixPane ) {
+	public org.lgna.croquet.views.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.views.JComponent<?> prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
 			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-			org.lgna.croquet.components.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
+			org.lgna.croquet.views.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
 			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 				org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade model = this.getArgumentCascade( simpleArgument );
 				org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
@@ -81,7 +81,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		}
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createInstanceCreationPane( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	protected org.lgna.croquet.views.JComponent<?> createInstanceCreationPane( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
 			return new org.alice.ide.common.AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
@@ -90,63 +90,63 @@ public abstract class AstI18nFactory extends I18nFactory {
 		}
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	protected org.lgna.croquet.views.JComponent<?> createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return new org.alice.ide.x.components.FieldAccessView( this, fieldAccess );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createGetsComponent( boolean isTowardLeadingEdge ) {
+	protected org.lgna.croquet.views.JComponent<?> createGetsComponent( boolean isTowardLeadingEdge ) {
 		return new org.alice.ide.common.GetsPane( isTowardLeadingEdge );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	protected org.lgna.croquet.views.JComponent<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createLocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal ) {
+	protected org.lgna.croquet.views.JComponent<?> createLocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal ) {
 		return new org.alice.ide.common.LocalDeclarationPane( userLocal, this.createLocalPane( userLocal ) );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createLocalPane( org.lgna.project.ast.UserLocal userLocal ) {
+	protected org.lgna.croquet.views.JComponent<?> createLocalPane( org.lgna.project.ast.UserLocal userLocal ) {
 		return new org.alice.ide.common.LocalPane( userLocal );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createGenericNodePropertyPane( org.lgna.project.ast.NodeProperty<?> nodeProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createGenericNodePropertyPane( org.lgna.project.ast.NodeProperty<?> nodeProperty ) {
 		return new org.alice.ide.x.components.NodePropertyView( this, nodeProperty );
 	}
 
-	public abstract org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> type );
+	public abstract org.lgna.croquet.views.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> type );
 
-	public final org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public final org.lgna.croquet.views.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return this.createExpressionPropertyPane( expressionProperty, null );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createResourcePropertyPane( org.lgna.project.ast.ResourceProperty resourceProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createResourcePropertyPane( org.lgna.project.ast.ResourceProperty resourceProperty ) {
 		return new org.alice.ide.x.components.ResourcePropertyView( this, resourceProperty );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
 	}
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
+	protected abstract org.lgna.croquet.views.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty );
+	protected abstract org.lgna.croquet.views.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty );
 
-	protected org.lgna.croquet.components.JComponent<?> createExpressionListPropertyPane( org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createExpressionListPropertyPane( org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
 		return new org.alice.ide.x.components.ExpressionListPropertyPane( this, expressionListProperty );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createGenericNodeListPropertyPane( org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode> nodeListProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createGenericNodeListPropertyPane( org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode> nodeListProperty ) {
 		return new org.alice.ide.common.DefaultNodeListPropertyPane( this, nodeListProperty );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createGenericListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty<Object> listProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createGenericListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty<Object> listProperty ) {
 		return new org.alice.ide.x.components.ListPropertyLabelsView( this, listProperty );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createGenericInstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty property ) {
+	protected org.lgna.croquet.views.JComponent<?> createGenericInstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty property ) {
 		return new org.alice.ide.x.components.InstancePropertyLabelView( this, property );
 	}
 
@@ -166,14 +166,14 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return this.createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, null );
 	}
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression );
+	protected abstract org.lgna.croquet.views.JComponent<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression );
 
-	public org.lgna.croquet.components.JComponent<?> createExpressionPane( org.lgna.project.ast.Expression expression ) {
+	public org.lgna.croquet.views.JComponent<?> createExpressionPane( org.lgna.project.ast.Expression expression ) {
 		if( expression instanceof org.alice.ide.ast.IdeExpression ) {
 			org.alice.ide.ast.IdeExpression ideExpression = (org.alice.ide.ast.IdeExpression)expression;
 			return this.createIdeExpressionPane( ideExpression );
 		} else {
-			org.lgna.croquet.components.JComponent<?> rv = null;
+			org.lgna.croquet.views.JComponent<?> rv = null;
 			if( expression instanceof org.lgna.project.ast.InfixExpression ) {
 				rv = new org.alice.ide.x.components.InfixExpressionView( this, (org.lgna.project.ast.InfixExpression<? extends Enum<?>>)expression );
 			} else if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
@@ -191,7 +191,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 							org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = (org.lgna.project.ast.JavaKeyedArgument)grandparent;
 							org.lgna.project.ast.AbstractType<?, ?, ?> type = org.lgna.project.ast.AstUtilities.getKeywordFactoryType( javaKeyedArgument );
 							if( type != null ) {
-								rv = new org.lgna.croquet.components.Label( type.getName() + "." );
+								rv = new org.lgna.croquet.views.Label( type.getName() + "." );
 								//rv.makeStandOut();
 							}
 						}
@@ -200,20 +200,20 @@ public abstract class AstI18nFactory extends I18nFactory {
 						//pass
 					} else {
 						org.lgna.project.ast.AbstractType<?, ?, ?> type = typeExpression.value.getValue();
-						rv = new org.lgna.croquet.components.LineAxisPanel(
+						rv = new org.lgna.croquet.views.LineAxisPanel(
 								new org.alice.ide.ast.components.DeclarationNameLabel( type ),
-								new org.lgna.croquet.components.Label( "." )
+								new org.lgna.croquet.views.Label( "." )
 								);
 					}
 				} else {
-					rv = new org.lgna.croquet.components.Label();
+					rv = new org.lgna.croquet.views.Label();
 				}
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (org.lgna.project.ast.InstanceCreation)expression );
 				//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 				//					rv = this.createComponent( expression );
 			} else {
-				org.lgna.croquet.components.JComponent<?> component = null;
+				org.lgna.croquet.views.JComponent<?> component = null;
 				if( expression != null ) {
 					org.lgna.project.ast.Node parent = expression.getParent();
 					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
@@ -225,7 +225,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 								sb.append( "new " );
 								sb.append( type.getName() );
 								sb.append( "(...)." );
-								component = new org.lgna.croquet.components.Label( sb.toString() );
+								component = new org.lgna.croquet.views.Label( sb.toString() );
 							}
 						}
 					}
@@ -248,23 +248,23 @@ public abstract class AstI18nFactory extends I18nFactory {
 	private static final java.util.Set<String> LOCAL_PROPERTY_NAMES = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "local", "item", "variable", "constant" );
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount ) {
+	protected org.lgna.croquet.views.JComponent<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount ) {
 		//todo:
 		String propertyName = property.getName();
 		//
 
-		org.lgna.croquet.components.JComponent<?> rv;
+		org.lgna.croquet.views.JComponent<?> rv;
 		if( underscoreCount == 2 ) {
 			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
 				rv = this.createLocalDeclarationPane( (org.lgna.project.ast.UserLocal)property.getValue() );
 			} else {
-				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 2: " + propertyName );
+				rv = new org.lgna.croquet.views.Label( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
 				rv = this.createLocalPane( (org.lgna.project.ast.UserLocal)property.getValue() );
 			} else {
-				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 1: " + propertyName );
+				rv = new org.lgna.croquet.views.Label( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;

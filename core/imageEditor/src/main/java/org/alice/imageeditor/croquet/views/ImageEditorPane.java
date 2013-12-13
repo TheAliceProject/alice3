@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
+public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 	private final java.awt.event.FocusListener comboBoxEditorFocusListener = new java.awt.event.FocusListener() {
 		public void focusGained( java.awt.event.FocusEvent e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -104,7 +104,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.event.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			jImageView.revalidate();
-			org.lgna.croquet.components.AbstractWindow<?> window = getRoot();
+			org.lgna.croquet.views.AbstractWindow<?> window = getRoot();
 			if( window != null ) {
 				java.awt.Dimension size = window.getSize();
 				java.awt.Dimension preferredSize = window.getAwtComponent().getPreferredSize();
@@ -136,8 +136,8 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
 
-	private final org.lgna.croquet.components.Button saveButton;
-	private final org.lgna.croquet.components.Button cropButton;
+	private final org.lgna.croquet.views.Button saveButton;
+	private final org.lgna.croquet.views.Button cropButton;
 
 	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
 		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow,shrink]16[grow 0, shrink 0][grow 0, shrink 0][grow 0, shrink 0]" );
@@ -152,7 +152,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 
 		this.getAwtComponent().add( this.jImageView, "align center, spanx 2" );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill" );
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill" );
 
 		this.cropButton = composite.getCropOperation().createButton();
 		panel.addComponent( composite.getToolState().createVerticalDefaultRadioButtons(), "growx, wrap" );
@@ -160,7 +160,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		panel.addComponent( composite.getUncropOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getDropShadowState().createCheckBox(), "growx, wrap" );
-		panel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, gap bottom 16, wrap" );
+		panel.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, gap bottom 16, wrap" );
 		panel.addComponent( composite.getShowInScreenResolutionState().getSidekickLabel().createLabel(), "split 2" );
 		panel.addComponent( composite.getShowInScreenResolutionState().createHorizontalToggleButtons(), "growx, wrap" );
 		panel.addComponent( composite.getShowDashedBorderState().createCheckBox(), "growx, wrap" );
@@ -172,7 +172,7 @@ public class ImageEditorPane extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getBrowseOperation().createButton() );
 		this.addComponent( this.saveButton, "spany 3, grow, wrap" );
 
-		this.addComponent( new org.lgna.croquet.components.Label( "file:" ), "align right" );
+		this.addComponent( new org.lgna.croquet.views.Label( "file:" ), "align right" );
 		this.getAwtComponent().add( jComboBox, "growx, shrinkx, wrap" );
 		this.getAwtComponent().add( this.jPathLabel, "skip 1" );
 

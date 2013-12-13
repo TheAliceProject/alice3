@@ -45,13 +45,13 @@ package org.alice.media.youtube.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class TimeLabel extends org.lgna.croquet.components.Label {
+public class TimeLabel extends org.lgna.croquet.views.Label {
 	private static final java.text.SimpleDateFormat MINUTE_SECOND_FORMAT = new java.text.SimpleDateFormat( "mm:ss." );
 	private static final java.text.NumberFormat CENTISECOND_FORMAT = new java.text.DecimalFormat( "00" );
 
 	public TimeLabel() {
 		this.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
-		this.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+		this.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.TRAILING );
 	}
 
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {

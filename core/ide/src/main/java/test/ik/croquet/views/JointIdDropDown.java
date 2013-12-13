@@ -46,8 +46,8 @@ package test.ik.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class JointIdDropDown extends org.lgna.croquet.components.ItemDropDown<org.lgna.story.resources.JointId, test.ik.croquet.JointIdState> {
-	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
+public class JointIdDropDown extends org.lgna.croquet.views.ItemDropDown<org.lgna.story.resources.JointId, test.ik.croquet.JointIdState> {
+	private final org.lgna.croquet.views.Label mainComponent = new org.lgna.croquet.views.Label();
 
 	public JointIdDropDown( test.ik.croquet.JointIdState model ) {
 		super( model );

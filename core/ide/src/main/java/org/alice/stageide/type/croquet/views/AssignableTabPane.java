@@ -45,19 +45,19 @@ package org.alice.stageide.type.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignableTabPane extends org.lgna.croquet.components.BorderPanel {
+public class AssignableTabPane extends org.lgna.croquet.views.BorderPanel {
 	public AssignableTabPane( org.alice.stageide.type.croquet.AssignableTab tab ) {
 		super( tab, 4, 4 );
 		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
 		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( tab.getTypeTreeState() ) );
-		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
+		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 
 		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
 		listScrollPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		this.addPageStartComponent( new org.lgna.croquet.components.Label( "<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>" ) );
+		this.addPageStartComponent( new org.lgna.croquet.views.Label( "<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>" ) );
 		this.addCenterComponent( listScrollPane );
 	}
 }

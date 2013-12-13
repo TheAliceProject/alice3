@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SideView extends org.lgna.croquet.components.BorderPanel {
+public class SideView extends org.lgna.croquet.views.BorderPanel {
 	private static javax.swing.border.Border createSeparatorBorder( int top, int bottom, java.awt.Color color ) {
 		return javax.swing.BorderFactory.createMatteBorder( top, 0, bottom, 0, color );
 	}
@@ -59,8 +59,8 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
 			//pass
 		} else {
-			org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
-					org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
+			org.lgna.croquet.views.FlowPanel undoRedoPanel = new org.lgna.croquet.views.FlowPanel(
+					org.lgna.croquet.views.FlowPanel.Alignment.CENTER,
 					org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
 					org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
 					);
@@ -69,29 +69,29 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 			this.addPageStartComponent( undoRedoPanel );
 		}
 
-		org.lgna.croquet.components.MigPanel migPanel = new org.lgna.croquet.components.MigPanel( null, "fill, insets 0, aligny top", "", "" );
+		org.lgna.croquet.views.MigPanel migPanel = new org.lgna.croquet.views.MigPanel( null, "fill, insets 0, aligny top", "", "" );
 
-		org.lgna.croquet.components.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.components.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
+		org.lgna.croquet.views.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.views.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
 			@Override
-			protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.sceneeditor.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
-				org.lgna.croquet.components.PushButton b = itemSelectedState.createPushButton();
-				b.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-				b.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+			protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.sceneeditor.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
+				org.lgna.croquet.views.PushButton b = itemSelectedState.createPushButton();
+				b.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.BOTTOM );
+				b.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.CENTER );
 				b.setSelectedColor( theme.getSelectedColor() );
 				b.setBackgroundColor( color );
 				return b;
 			}
 		};
-		migPanel.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+		migPanel.addComponent( new org.lgna.croquet.views.LineAxisPanel(
 				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.2f ),
 				radioButtons
 				), "wrap" );
 
-		org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
-		org.lgna.croquet.components.ToolPaletteTitle title = toolPaletteView.getTitle();
-		title.setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+		org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
+		org.lgna.croquet.views.ToolPaletteTitle title = toolPaletteView.getTitle();
+		title.setRenderingStyle( org.lgna.croquet.views.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 
-		migPanel.addComponent( new org.lgna.croquet.components.FlowPanel(
+		migPanel.addComponent( new org.lgna.croquet.views.FlowPanel(
 				composite.getIsSnapEnabledState().createCheckBox(),
 				title ), "wrap, gapleft 4" );
 		migPanel.addComponent( toolPaletteView, "wrap" );
@@ -112,15 +112,15 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 
 		title.setBackgroundColor( color );
 		for( org.lgna.croquet.ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
-			org.lgna.croquet.components.ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
+			org.lgna.croquet.views.ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
 			toolPaletteTitle.setBackgroundColor( color );
 			toolPaletteTitle.scaleFont( 1.4f );
 			toolPaletteTitle.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 			migPanel.addComponent( toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx" );
 		}
-		migPanel.addComponent( new org.lgna.croquet.components.Label(), "wrap, grow, push" );
+		migPanel.addComponent( new org.lgna.croquet.views.Label(), "wrap, grow, push" );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( migPanel );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( migPanel );
 		this.addCenterComponent( scrollPane );
 
 		migPanel.setBackgroundColor( color );

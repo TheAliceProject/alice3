@@ -42,7 +42,6 @@
  */
 package org.alice.interact.manipulator;
 
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SModel;
 import org.lgna.story.implementation.EntityImp;
 
@@ -56,7 +55,7 @@ public class CameraOrbitAboutTargetDragManipulator extends CameraOrbitDragManipu
 	private EntityImp target;
 
 	public void setTarget( SModel target ) {
-		this.target = ImplementationAccessor.getImplementation( target );
+		this.target = org.lgna.story.EmployeesOnly.getImplementation( target );
 	}
 
 	@Override

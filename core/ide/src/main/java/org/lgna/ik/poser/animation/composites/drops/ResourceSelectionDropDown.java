@@ -45,13 +45,13 @@ package org.lgna.ik.poser.animation.composites.drops;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeSelectionState;
 import org.lgna.croquet.State;
-import org.lgna.croquet.components.ItemDropDown;
+import org.lgna.croquet.views.ItemDropDown;
 
 /**
  * @author Matt May
  */
 public class ResourceSelectionDropDown extends ItemDropDown<ResourceNode, CustomItemStateFromTreeState<ResourceNode>> {
-	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label mainComponent = new org.lgna.croquet.views.Label();
 
 	public ResourceSelectionDropDown( ResourceNodeTreeSelectionState model ) {
 		super( new CustomItemStateFromTreeState<ResourceNode>( model, java.util.UUID.fromString( "3b923889-fd4c-4e82-a58c-db3c42a34bd4" ) ) );

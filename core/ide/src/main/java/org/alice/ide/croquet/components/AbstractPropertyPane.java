@@ -45,7 +45,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property.InstanceProperty<T>, T> extends org.lgna.croquet.components.Panel {
+public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property.InstanceProperty<T>, T> extends org.lgna.croquet.views.Panel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final P property;
 	private final int axis;
@@ -88,7 +88,7 @@ public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property
 		}
 	}
 
-	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 

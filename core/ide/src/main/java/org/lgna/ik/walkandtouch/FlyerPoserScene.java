@@ -46,7 +46,6 @@ import java.util.ArrayList;
 
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SCamera;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
@@ -95,7 +94,7 @@ public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 	protected void initializeLimbAnchors() {
 		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getRightWingShoulder(), model.getLeftWingShoulder(), model.getRightHip(), model.getLeftHip() );
 		for( SJoint joint : sJointList ) {
-			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
+			anchorPoints.add( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( joint ) ).getJointId() );
 		}
 	}
 

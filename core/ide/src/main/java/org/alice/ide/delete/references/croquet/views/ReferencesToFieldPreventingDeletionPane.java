@@ -46,9 +46,9 @@ import javax.swing.Icon;
 
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
 import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedIcon;
+import org.lgna.croquet.views.BorderPanel;
 
 /**
  * @author Matt May
@@ -61,7 +61,7 @@ public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
 			TrimmedIcon trimmedIcon = (TrimmedIcon)icon;
 			icon = trimmedIcon.getImageIcon();
 		}
-		org.lgna.croquet.components.AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
+		org.lgna.croquet.views.AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
 		descriptionLabel.setIcon( icon );
 		descriptionLabel.getAwtComponent().setIconTextGap( 16 );
 		this.addPageStartComponent( descriptionLabel );

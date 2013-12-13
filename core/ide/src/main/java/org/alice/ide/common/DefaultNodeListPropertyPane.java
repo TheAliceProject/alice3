@@ -51,7 +51,7 @@ public class DefaultNodeListPropertyPane extends org.alice.ide.croquet.component
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.AbstractNode node ) {
+	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.AbstractNode node ) {
 		return this.getFactory().createComponent( node );
 	}
 }

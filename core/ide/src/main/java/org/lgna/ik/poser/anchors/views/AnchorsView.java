@@ -45,7 +45,7 @@ package org.lgna.ik.poser.anchors.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AnchorsView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+public class AnchorsView extends org.lgna.croquet.views.JComponent<javax.swing.JComponent> {
 	private static class Node {
 		private static final java.awt.Shape SHAPE = new java.awt.geom.Ellipse2D.Float( -8, -8, 16, 16 );
 		private final double theta;
@@ -176,7 +176,7 @@ public class AnchorsView extends org.lgna.croquet.components.JComponent<javax.sw
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		app.getFrame().getContentPane().addCenterComponent( new AnchorsView( null ) );
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 		app.getFrame().pack();
 		app.getFrame().setVisible( true );
 	}

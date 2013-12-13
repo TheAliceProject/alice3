@@ -85,7 +85,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 	}
 
 	@Override
-	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		DeclarationTabState declarationTabState = DeclarationsEditorComposite.getInstance().getTabState();
 
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -189,15 +189,15 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
 		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
-		org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.components.MenuItemContainerUtilities.MenuElementObserver() {
-			public void update( org.lgna.croquet.components.MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, org.lgna.croquet.components.ViewController<?, ?> menuElement ) {
+		org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver() {
+			public void update( org.lgna.croquet.views.MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, org.lgna.croquet.views.ViewController<?, ?> menuElement ) {
 				if( menuElement != null ) {
 					edu.cmu.cs.dennisc.java.awt.font.TextWeight textWeight = set.contains( model ) ? edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD : edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT;
 					menuElement.changeFont( textWeight );
 				}
 			}
 		};
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models, observer );
+		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models, observer );
 
 		super.handleShowing( menuItemContainer, e );
 	}

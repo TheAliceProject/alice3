@@ -49,13 +49,13 @@ import javax.swing.Icon;
 
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.swing.views.HeaderPane;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.FormPanel;
-import org.lgna.croquet.components.Hyperlink;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.LabeledFormRow;
-import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.VerticalAlignment;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LabeledFormRow;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.VerticalAlignment;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 
@@ -67,7 +67,7 @@ public class ReportIssueView extends AbstractIssueView {
 
 	public ReportIssueView( final ReportIssueComposite composite ) {
 		super( composite );
-		final org.lgna.croquet.components.TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
+		final org.lgna.croquet.views.TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
 		//environmentTextArea.getAwtComponent().setEditable( false );
 		//environmentTextArea.setToolTipText( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
 		FormPanel centerComponent = new FormPanel() {

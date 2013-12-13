@@ -46,7 +46,7 @@ package org.lgna.croquet.dialog;
 /**
  * @author Dennis Cosgrove
  */
-public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>> {
+public interface DialogOwner<V extends org.lgna.croquet.views.JComponent<?>> {
 	public boolean isModal();
 
 	public V allocateView( org.lgna.croquet.history.CompletionStep<?> step );
@@ -55,7 +55,7 @@ public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>
 
 	public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step );
 
-	public void updateDialogSize( org.lgna.croquet.components.Dialog dialog );
+	public void updateDialogSize( org.lgna.croquet.views.Dialog dialog );
 
 	public java.awt.Point getDesiredDialogLocation();
 
@@ -67,7 +67,7 @@ public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>
 
 	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
 
-	public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog );
+	public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog );
 
 	public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger );
 }

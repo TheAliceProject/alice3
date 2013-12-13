@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
@@ -74,7 +74,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
 		collisionEventHandler.register( collisionListener, groupOne, groupTwo );

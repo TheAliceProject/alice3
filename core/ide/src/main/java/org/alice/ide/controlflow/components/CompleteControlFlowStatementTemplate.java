@@ -49,7 +49,7 @@ public class CompleteControlFlowStatementTemplate extends org.alice.ide.template
 	public CompleteControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
 		org.lgna.project.ast.Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
-		org.lgna.croquet.components.JComponent<?> incompleteStatementPane;
+		org.lgna.croquet.views.JComponent<?> incompleteStatementPane;
 		if( incompleteStatement instanceof org.lgna.project.ast.Comment ) {
 			incompleteStatementPane = new org.alice.ide.codeeditor.CommentPane( null, org.alice.ide.x.TemplateAstI18nFactory.getInstance(), (org.lgna.project.ast.Comment)incompleteStatement, null ) {
 				@Override

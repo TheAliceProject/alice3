@@ -45,12 +45,12 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectSideView extends org.lgna.croquet.components.MigPanel {
+public class ProjectSideView extends org.lgna.croquet.views.MigPanel {
 	public ProjectSideView( org.alice.ide.projecturi.ProjectSideComposite composite ) {
 		super( composite, "insets 0" );
-		this.addComponent( new org.lgna.croquet.components.Label( "preview", 1.4f ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( "preview", 1.4f ), "wrap" );
 		this.addComponent( new PreviewProjectComponent(), "wrap" );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 0 ) );
 	}
 }

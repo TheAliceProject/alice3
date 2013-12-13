@@ -45,7 +45,7 @@ package org.lgna.story.implementation;
 
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.JointId;
 
@@ -78,25 +78,25 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 		JointImp end;
 		switch( reachingLimb ) {
 		case RIGHT_ARM:
-			anchor = ImplementationAccessor.getImplementation( this.getAbstraction().getRightClavicle() );
-			end = ImplementationAccessor.getImplementation( this.getAbstraction().getRightWrist() );
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightClavicle() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightWrist() );
 			break;
 		case LEFT_ARM:
-			anchor = ImplementationAccessor.getImplementation( this.getAbstraction().getLeftClavicle() );
-			end = ImplementationAccessor.getImplementation( this.getAbstraction().getLeftWrist() );
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftClavicle() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftWrist() );
 			break;
 		case RIGHT_LEG:
-			anchor = ImplementationAccessor.getImplementation( this.getAbstraction().getRightHip() );
-			end = ImplementationAccessor.getImplementation( this.getAbstraction().getRightFoot() );
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightHip() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightFoot() );
 			break;
 		case LEFT_LEG:
-			anchor = ImplementationAccessor.getImplementation( this.getAbstraction().getLeftHip() );
-			end = ImplementationAccessor.getImplementation( this.getAbstraction().getLeftFoot() );
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftHip() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftFoot() );
 			break;
 		default:
 			System.out.println( "Unhandled LIMB: " + reachingLimb );
 			return;
 		}
-		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, ImplementationAccessor.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
+		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, EmployeesOnly.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
 	}
 }

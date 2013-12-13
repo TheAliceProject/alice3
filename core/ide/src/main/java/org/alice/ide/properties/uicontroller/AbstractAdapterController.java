@@ -44,8 +44,8 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.views.GridBagPanel;
+import org.lgna.croquet.views.Panel;
 
 public abstract class AbstractAdapterController<P> extends GridBagPanel implements PropertyAdapterController<P>
 {

@@ -49,7 +49,7 @@ import org.lgna.ik.poser.pose.builder.BipedPoseBuilder;
 import org.lgna.ik.poser.pose.builder.FlyerPoseBuilder;
 import org.lgna.ik.poser.pose.builder.PoseBuilder;
 import org.lgna.ik.poser.pose.builder.QuadrupedPoseBuilder;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
@@ -95,28 +95,28 @@ public abstract class Pose<S extends SJointedModel> {
 	protected abstract JointId[] getJointIdRoots();
 
 	protected static JointId getIDFor( SJoint sJoint ) {
-		return ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getJointId();
+		return ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getJointId();
 	}
 
 	protected static AffineMatrix4x4 getOrientation( SJoint sJoint ) {
-		return ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
+		return ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation();
 	}
 
 	protected static UnitQuaternion getUnitQuaternion( SJoint sJoint ) {
-		return new UnitQuaternion( ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation().orientation );
+		return new UnitQuaternion( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation().orientation );
 	}
 
 	protected static void setOrientationOnly( SJoint sJoint, OrthogonalMatrix3x3 matrix ) {
-		( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).setLocalOrientation( matrix );
+		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( matrix );
 	}
 
 	protected static void setOrientationOnly( SJoint sJoint, UnitQuaternion unitQuaternion ) {
-		( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).setLocalOrientation( new OrthogonalMatrix3x3( unitQuaternion ) );
+		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( new OrthogonalMatrix3x3( unitQuaternion ) );
 	}
 
 	protected static edu.cmu.cs.dennisc.math.UnitQuaternion getQuaternion( org.lgna.story.Orientation orientation ) {
 		//todo: org.lgna.story.Orientation should store the UnitQuaternion?
-		return ImplementationAccessor.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
+		return org.lgna.story.EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
 	}
 
 	public abstract PoseBuilder<Pose<S>> getBuilder();
@@ -164,7 +164,7 @@ public abstract class Pose<S extends SJointedModel> {
 		}
 		List<JointKey> list = Collections.newArrayList();
 		for( JointId id : arr ) {
-			JointImp implementation = ImplementationAccessor.getImplementation( model.getJoint( id ) );
+			JointImp implementation = EmployeesOnly.getImplementation( model.getJoint( id ) );
 			list.add( new JointKey( implementation.getLocalOrientation(), id ) );
 		}
 		for( JointKey key : list ) {

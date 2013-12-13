@@ -62,7 +62,7 @@ import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
 /**
  * @author David Culyba
  */
-public class CameraNavigatorWidget extends org.lgna.croquet.components.LineAxisPanel {
+public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel {
 
 	public enum CameraMode
 	{

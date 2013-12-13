@@ -55,7 +55,7 @@ public class WindowEventTrigger extends ComponentEventTrigger<java.awt.event.Win
 		return new WindowEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private WindowEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.WindowEvent windowEvent ) {
+	private WindowEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.WindowEvent windowEvent ) {
 		super( origin, viewController, windowEvent );
 	}
 

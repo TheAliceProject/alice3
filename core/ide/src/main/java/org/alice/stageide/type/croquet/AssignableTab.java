@@ -45,7 +45,7 @@ package org.alice.stageide.type.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.components.Panel> {
+public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
 	private final OtherTypeDialog dialog;
 
 	public AssignableTab( OtherTypeDialog dialog ) {
@@ -62,12 +62,12 @@ public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		return new org.alice.stageide.type.croquet.views.AssignableTabPane( this );
 	}
 }

@@ -2,10 +2,10 @@ package org.alice.ide.declarationseditor.events.components;
 
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.LineAxisPanel;
-import org.lgna.croquet.components.PopupButton;
-import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserCode;
 
@@ -49,7 +49,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		//		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel );
+		scroll = new org.lgna.croquet.views.ScrollPane( eventsPanel );
 		LineAxisPanel bottom = new LineAxisPanel( button );
 		final StickyBottomPanel panel = new StickyBottomPanel( scroll, bottom );
 		this.addCenterComponent( panel );

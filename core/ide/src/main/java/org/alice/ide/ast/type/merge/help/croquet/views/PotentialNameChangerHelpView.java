@@ -47,21 +47,21 @@ import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class PotentialNameChangerHelpView extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.MigPanel keepBothPanel = new org.lgna.croquet.components.MigPanel( null, "fill" );
+public class PotentialNameChangerHelpView extends org.lgna.croquet.views.BorderPanel {
+	private final org.lgna.croquet.views.MigPanel keepBothPanel = new org.lgna.croquet.views.MigPanel( null, "fill" );
 
 	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite<?, ?, ?> composite ) {
 		super( composite );
-		org.lgna.croquet.components.AbstractLabel label = composite.getHeader().createLabel();
+		org.lgna.croquet.views.AbstractLabel label = composite.getHeader().createLabel();
 		label.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getQuestionIcon() );
 		label.setOpaque( true );
 		label.setBackgroundColor( java.awt.Color.WHITE );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+		label.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.TOP );
 		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		label.getAwtComponent().setIconTextGap( 12 );
 		this.addPageStartComponent( label );
 
-		org.lgna.croquet.components.MigPanel previewPanel = new org.lgna.croquet.components.MigPanel();
+		org.lgna.croquet.views.MigPanel previewPanel = new org.lgna.croquet.views.MigPanel();
 		previewPanel.addComponent( composite.getImportNameText().createLabel(), "wrap" );
 		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub(), true ), "wrap" );
 		previewPanel.addComponent( composite.getProjectNameText().createLabel(), "wrap" );
@@ -77,7 +77,7 @@ public class PotentialNameChangerHelpView extends org.lgna.croquet.components.Bo
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 	}
 
-	public org.lgna.croquet.components.MigPanel getKeepBothPanel() {
+	public org.lgna.croquet.views.MigPanel getKeepBothPanel() {
 		return this.keepBothPanel;
 	}
 }

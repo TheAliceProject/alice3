@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> extends org.lgna.croquet.components.DragComponent<M> {
+public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> extends org.lgna.croquet.views.DragComponent<M> {
 	protected static final int KNURL_WIDTH = 8;
 
 	public KnurlDragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
@@ -232,15 +232,15 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		}
 	}
 
-	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 
-	public void addComponent( org.lgna.croquet.components.Component<?> component, Object constraints ) {
+	public void addComponent( org.lgna.croquet.views.Component<?> component, Object constraints ) {
 		this.internalAddComponent( component, constraints );
 	}
 
-	public void forgetAndRemoveComponent( org.lgna.croquet.components.Component<?> component ) {
+	public void forgetAndRemoveComponent( org.lgna.croquet.views.Component<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
 

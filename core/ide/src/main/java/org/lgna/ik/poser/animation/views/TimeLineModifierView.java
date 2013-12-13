@@ -43,9 +43,9 @@
 package org.lgna.ik.poser.animation.views;
 
 import org.lgna.croquet.BoundedDoubleState;
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.Spinner;
+import org.lgna.croquet.views.ComboBox;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Spinner;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
 

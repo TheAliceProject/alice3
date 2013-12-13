@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
+public abstract class GalleryTabView extends org.lgna.croquet.views.BorderPanel {
 	protected static final int PAD = 4;
 	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
 
@@ -59,8 +59,8 @@ public abstract class GalleryTabView extends org.lgna.croquet.components.BorderP
 		return this.cache.getGalleryDragComponent( resourceNode );
 	}
 
-	protected static org.lgna.croquet.components.ScrollPane createGalleryScrollPane( org.lgna.croquet.components.Component<?> view ) {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
+	protected static org.lgna.croquet.views.ScrollPane createGalleryScrollPane( org.lgna.croquet.views.Component<?> view ) {
+		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
 		rv.setBothScrollBarIncrements( 16, 160 );
 		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;

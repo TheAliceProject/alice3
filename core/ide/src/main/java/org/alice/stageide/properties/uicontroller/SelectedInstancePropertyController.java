@@ -53,9 +53,9 @@ import javax.swing.JLabel;
 
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.Label;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.GridBagPanel;
+import org.lgna.croquet.views.Label;
 
 public class SelectedInstancePropertyController extends BasicPropertyController<org.alice.ide.instancefactory.InstanceFactory>
 {
@@ -111,7 +111,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 		);
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		org.lgna.croquet.components.JComponent<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.views.JComponent<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
 		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
 				xIndex++, // gridX
 				0, // gridY

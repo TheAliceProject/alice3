@@ -55,7 +55,7 @@ public class AppleApplicationEventTrigger extends EventObjectTrigger<java.util.E
 		return new AppleApplicationEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private AppleApplicationEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.util.EventObject event ) {
+	private AppleApplicationEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.util.EventObject event ) {
 		super( origin, viewController, event );
 	}
 

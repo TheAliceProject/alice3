@@ -47,10 +47,10 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class EventObjectTrigger<E extends java.util.EventObject> extends Trigger {
-	private final transient org.lgna.croquet.components.ViewController<?, ?> viewController;
+	private final transient org.lgna.croquet.views.ViewController<?, ?> viewController;
 	private final transient E event;
 
-	public EventObjectTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, E event ) {
+	public EventObjectTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, E event ) {
 		super( origin );
 		this.viewController = viewController;
 		this.event = event;
@@ -69,16 +69,16 @@ public abstract class EventObjectTrigger<E extends java.util.EventObject> extend
 	protected abstract java.awt.Point getPoint();
 
 	@Override
-	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		if( this.viewController != null ) {
 			return this.viewController;
 		} else {
 			Object source = this.event != null ? this.event.getSource() : null;
 			if( source instanceof java.awt.Component ) {
 				java.awt.Component awtComponent = (java.awt.Component)source;
-				org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( awtComponent );
-				if( component instanceof org.lgna.croquet.components.ViewController ) {
-					return (org.lgna.croquet.components.ViewController<?, ?>)component;
+				org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( awtComponent );
+				if( component instanceof org.lgna.croquet.views.ViewController ) {
+					return (org.lgna.croquet.views.ViewController<?, ?>)component;
 				} else {
 					return null;
 				}
@@ -102,7 +102,7 @@ public abstract class EventObjectTrigger<E extends java.util.EventObject> extend
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();
 		java.awt.Component invoker = this.getComponent();
 		if( invoker.isShowing() ) {

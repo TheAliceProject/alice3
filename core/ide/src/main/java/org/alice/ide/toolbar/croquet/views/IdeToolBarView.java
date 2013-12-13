@@ -45,7 +45,7 @@ package org.alice.ide.toolbar.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class IdeToolBarView extends org.lgna.croquet.components.ToolBarView {
+public class IdeToolBarView extends org.lgna.croquet.views.ToolBarView {
 	public IdeToolBarView( org.alice.ide.toolbar.croquet.IdeToolBar composite ) {
 		super( composite );
 	}

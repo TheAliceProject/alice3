@@ -57,7 +57,7 @@ public class ThisPane extends AccessiblePane {
 
 	public ThisPane() {
 		super( org.alice.ide.ast.draganddrop.expression.ThisExpressionDragModel.getInstance() );
-		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForThis() ) );
+		this.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForThis() ) );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
 
@@ -98,7 +98,7 @@ public class ThisPane extends AccessiblePane {
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
 		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

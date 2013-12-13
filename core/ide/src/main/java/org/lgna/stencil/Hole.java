@@ -53,7 +53,7 @@ public class Hole extends Feature {
 
 	private final Painter painter;
 
-	public Hole( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
+	public Hole( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.views.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.painter = painter;
 	}

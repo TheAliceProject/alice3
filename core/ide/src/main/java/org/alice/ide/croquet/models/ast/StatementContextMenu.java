@@ -139,10 +139,10 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updatePopupOperations( models, this.statement );
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }

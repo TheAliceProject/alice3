@@ -43,10 +43,10 @@
 
 package org.alice.stageide.typecontext.components;
 
-class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
-	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
+class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
+	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "selected type:" );
+	private final org.lgna.croquet.views.Label typeLabel = new org.lgna.croquet.views.Label();
+	private final org.lgna.croquet.views.Label snapshotLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
@@ -55,8 +55,8 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 
 	public SelectedTypeView() {
 		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel( this.label, this.typeLabel ) );
+		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.CENTER );
+		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel( this.label, this.typeLabel ) );
 		this.addCenterComponent( this.snapshotLabel );
 	}
 
@@ -76,32 +76,32 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
 		super.handleAddedTo( parent );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }
 
-class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
+class ReturnToSceneTypeButton extends org.lgna.croquet.views.Button {
 	private static javax.swing.Icon BACK_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
-	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label(
+	private final org.lgna.croquet.views.Label thumbnailLabel = new org.lgna.croquet.views.Label(
 			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
 			);
-	private final org.lgna.croquet.components.Label typeIconLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label typeIconLabel = new org.lgna.croquet.views.Label();
 
 	public ReturnToSceneTypeButton( org.lgna.croquet.Operation operation ) {
 		super( operation );
 		javax.swing.JButton jButton = this.getAwtComponent();
 		jButton.setLayout( new javax.swing.BoxLayout( jButton, javax.swing.BoxLayout.LINE_AXIS ) );
-		this.internalAddComponent( new org.lgna.croquet.components.Label( BACK_ICON ) );
-		this.internalAddComponent( new org.lgna.croquet.components.Label( "back to:" ) );
-		this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.internalAddComponent( new org.lgna.croquet.views.Label( BACK_ICON ) );
+		this.internalAddComponent( new org.lgna.croquet.views.Label( "back to:" ) );
+		this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.internalAddComponent( this.thumbnailLabel );
 		this.internalAddComponent( this.typeIconLabel );
 	}
@@ -121,7 +121,7 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPanel {
+public class NonSceneTypeView extends org.lgna.croquet.views.CornerSpringPanel {
 	private final ReturnToSceneTypeButton returnToSceneTypeButton;
 
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {

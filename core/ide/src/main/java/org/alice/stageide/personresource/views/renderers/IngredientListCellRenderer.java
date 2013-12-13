@@ -50,7 +50,9 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 	private static final java.io.File GALLERY_ROOT = org.lgna.story.resourceutilities.StorytellingResources.getGalleryRootDirectory();
 	private static final java.io.File IMAGE_ROOT = new java.io.File( GALLERY_ROOT, "ide/person" );
 
-	public static javax.swing.Icon getIconForPath( String path ) {
+	private static final java.util.Map<java.net.URL, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static javax.swing.Icon getIconForPath( int width, int height, String path ) {
 		java.net.URL urlForIcon;
 		java.io.File file = new java.io.File( IMAGE_ROOT, path );
 		if( file.exists() ) {
@@ -69,10 +71,23 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
 		}
-		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+		javax.swing.Icon rv = map.get( urlForIcon );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new edu.cmu.cs.dennisc.javax.swing.UrlAsynchronousIcon( width, height, urlForIcon );
+			map.put( urlForIcon, rv );
+		}
+		return rv;
+		//return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
 	}
 
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+
+	public IngredientListCellRenderer( int width, int height ) {
+		this.width = width;
+		this.height = height;
+	}
 
 	protected abstract String getSubPath();
 
@@ -119,7 +134,7 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 			javax.swing.Icon icon;
 			if( baseSkinTone != null ) {
 				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-				icon = getIconForPath( path );
+				icon = getIconForPath( this.width, this.height, path );
 			} else {
 				icon = null;
 			}
@@ -139,4 +154,7 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		}
 		return rv;
 	}
+
+	private final int width;
+	private final int height;
 }

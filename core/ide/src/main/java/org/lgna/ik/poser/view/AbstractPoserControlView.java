@@ -42,9 +42,9 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.AbstractLabel;
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.ItemDropDown;
+import org.lgna.croquet.views.MigPanel;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;

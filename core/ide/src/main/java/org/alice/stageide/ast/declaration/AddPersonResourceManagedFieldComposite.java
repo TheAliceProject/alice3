@@ -156,7 +156,7 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumHeight( super.calculateWindowSize( window ), 400 );
 	}
 

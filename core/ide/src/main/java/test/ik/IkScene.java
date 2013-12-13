@@ -44,7 +44,7 @@
 package test.ik;
 
 import org.lgna.story.Color;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
@@ -102,7 +102,7 @@ public class IkScene extends SScene {
 		//if you want the skeleton visualization to be co-located
 		//		this.ogre.setOpacity( 0.25 );
 
-		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
+		org.lgna.story.implementation.JointedModelImp impl = EmployeesOnly.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
 

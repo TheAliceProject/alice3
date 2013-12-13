@@ -57,7 +57,7 @@ public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPa
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

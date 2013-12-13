@@ -51,7 +51,7 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
@@ -81,9 +81,9 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private boolean started = false;
 
 	public PoserPicturePlaneInteraction( AbstractPoserScene scene, OnscreenLookingGlass lookingGlass ) {
-		super( lookingGlass, ( (CameraImp)( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
+		super( lookingGlass, ( (CameraImp)( (SceneImp)EmployeesOnly.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
 		this.scene = scene;
-		SceneImp sceneImp = (SceneImp)ImplementationAccessor.getImplementation( scene );
+		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
 	}
 
@@ -98,9 +98,9 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		double minDist = MIN_SELECTION_DISTANCE;
 		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
 		JointSelectionSphere selected = null;
-		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
+		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
 		for( JointSelectionSphere sphere : arr ) {
-			EntityImp implementation = ImplementationAccessor.getImplementation( sphere );
+			EntityImp implementation = EmployeesOnly.getImplementation( sphere );
 			Point3 point = implementation.getAbsoluteTransformation().translation;
 			sphereLocations.add( sceneImp.transformToAwt( point, camera ) );
 		}
@@ -112,7 +112,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			}
 		}
 		if( selected != null ) {
-			Composite sgComposite = ImplementationAccessor.getImplementation( selected ).getSgComposite();
+			Composite sgComposite = EmployeesOnly.getImplementation( selected ).getSgComposite();
 			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 				this.selected = selected;
 			} else if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
@@ -126,7 +126,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	private ManipulationHandle3D checkIfHandleSelected( MouseEvent e ) {
-		SceneImp implementation = ImplementationAccessor.getImplementation( scene );
+		SceneImp implementation = EmployeesOnly.getImplementation( scene );
 		LookingGlass lg = implementation.getProgram().getOnscreenLookingGlass();
 		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 		if( ( pickResult != null ) && ( pickResult.getVisual() != null ) ) {

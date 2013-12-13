@@ -54,10 +54,10 @@ public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.hel
 
 	public DifferentSignatureHelpView( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite<?> composite ) {
 		super( composite );
-		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
+		org.lgna.croquet.views.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
+		org.lgna.croquet.views.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel();
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );

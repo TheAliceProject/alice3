@@ -51,12 +51,12 @@ public class AddManagedFieldView extends AddFieldView {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
-		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
+	protected org.lgna.croquet.views.BorderPanel createMainComponent() {
+		org.lgna.croquet.views.BorderPanel rv = super.createMainComponent();
 		org.alice.ide.ast.declaration.AddManagedFieldComposite composite = (org.alice.ide.ast.declaration.AddManagedFieldComposite)this.getComposite();
 		if( composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0 ) {
-			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
-			toolPaletteView.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+			org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
+			toolPaletteView.getTitle().setRenderingStyle( org.lgna.croquet.views.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 			//rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
 			toolPaletteView.setBackgroundColor( this.getBackgroundColor() );
 			rv.addCenterComponent( toolPaletteView );

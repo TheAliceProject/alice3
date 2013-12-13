@@ -61,7 +61,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 			try {
 				if( isClearedToSubmitBug() ) {
 					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
-					org.lgna.croquet.components.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
+					org.lgna.croquet.views.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
 					if( root != null ) {
 						if( progressPane.isDone() ) {
 							if( progressPane.isSuccessful() ) {

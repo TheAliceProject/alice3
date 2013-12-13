@@ -46,7 +46,7 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.components.LineAxisPanel {
+public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.views.LineAxisPanel {
 	protected final static String SEPARATOR = ",";
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty;
@@ -95,7 +95,7 @@ public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.Ab
 		String prefix = this.getInitialPrefix();
 		for( N argument : this.argumentListProperty ) {
 			if( prefix != null ) {
-				this.addComponent( new org.lgna.croquet.components.Label( prefix ) );
+				this.addComponent( new org.lgna.croquet.views.Label( prefix ) );
 			}
 			this.addComponent( this.factory.createArgumentPane( argument, null ) );
 			prefix = SEPARATOR;

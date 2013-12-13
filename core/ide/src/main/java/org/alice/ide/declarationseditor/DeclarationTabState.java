@@ -223,7 +223,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 	private void handleAstChangeThatCouldBeOfInterest() {
 		org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = this.getValue();
 		if( declarationComposite != null ) {
-			org.lgna.croquet.components.View view = declarationComposite.getView();
+			org.lgna.croquet.views.View view = declarationComposite.getView();
 			if( view instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
 				org.alice.ide.declarationseditor.code.components.CodeDeclarationView codeDeclarationView = (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)view;
 				org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = codeDeclarationView.getCodePanelWithDropReceptor();

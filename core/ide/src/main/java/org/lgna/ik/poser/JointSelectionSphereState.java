@@ -47,8 +47,8 @@ import java.util.List;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CustomItemStateWithInternalBlank;
 import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.views.ItemDropDown;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;

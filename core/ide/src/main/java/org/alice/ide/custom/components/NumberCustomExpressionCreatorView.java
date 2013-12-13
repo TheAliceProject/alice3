@@ -52,7 +52,7 @@ public final class NumberCustomExpressionCreatorView extends CustomExpressionCre
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
 		org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = (org.alice.ide.custom.NumberCustomExpressionCreatorComposite)this.getComposite();
 		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = composite.getNumberModel();
 		javax.swing.JTextField view = numberModel.getTextField();
@@ -63,7 +63,7 @@ public final class NumberCustomExpressionCreatorView extends CustomExpressionCre
 			decimalPointOperation.setEnabled( numberModel.isDecimalPointSupported() );
 		}
 
-		org.lgna.croquet.components.GridBagPanel gridBagPanel = new org.lgna.croquet.components.GridBagPanel();
+		org.lgna.croquet.views.GridBagPanel gridBagPanel = new org.lgna.croquet.views.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weighty = 0.0;
@@ -98,23 +98,23 @@ public final class NumberCustomExpressionCreatorView extends CustomExpressionCre
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
 		gbc.weighty = 1.0;
-		gridBagPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+		gridBagPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createGlue(), gbc );
 
 		gridBagPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 
-		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
-				new org.lgna.croquet.components.SwingAdapter( view ),
+		org.lgna.croquet.views.LineAxisPanel lineAxisPanel = new org.lgna.croquet.views.LineAxisPanel(
+				new org.lgna.croquet.views.SwingAdapter( view ),
 				org.alice.ide.croquet.models.numberpad.BackspaceOperation.getInstance( numberModel ).createButton()
 				);
 
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel.Builder()
 				.pageStart( lineAxisPanel )
 				.center( gridBagPanel )
 				.build();
 
 		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 2.0f );
 		view.setFont( font );
-		for( org.lgna.croquet.components.Button button : org.lgna.croquet.components.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
+		for( org.lgna.croquet.views.Button button : org.lgna.croquet.views.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.views.Button.class ) ) {
 			button.setFont( font );
 		}
 

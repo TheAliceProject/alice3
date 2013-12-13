@@ -43,6 +43,8 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,7 +72,7 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
+		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView.SEARCH_ICON );
 		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
 	}
 

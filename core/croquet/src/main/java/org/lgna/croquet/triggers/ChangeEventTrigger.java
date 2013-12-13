@@ -59,7 +59,7 @@ public class ChangeEventTrigger extends EventObjectTrigger<javax.swing.event.Cha
 		return new ChangeEventTrigger( Origin.RECOVERY, null, null );
 	}
 
-	private ChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
+	private ChangeEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
 		super( origin, viewController, changeEvent );
 	}
 

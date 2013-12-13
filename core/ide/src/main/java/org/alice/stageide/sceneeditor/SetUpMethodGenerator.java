@@ -230,7 +230,7 @@ public class SetUpMethodGenerator {
 			if( javaType.isAssignableTo( org.lgna.story.STurnable.class ) )
 			{
 				try {
-					statements.add( createOrientationStatement( isThis, field, org.lgna.story.ImplementationAccessor.createOrientation( initialTransform.orientation ), 0 ) );
+					statements.add( createOrientationStatement( isThis, field, org.lgna.story.EmployeesOnly.createOrientation( initialTransform.orientation ), 0 ) );
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 					throw new RuntimeException( ccee );
 				}
@@ -238,7 +238,7 @@ public class SetUpMethodGenerator {
 			if( javaType.isAssignableTo( org.lgna.story.SMovableTurnable.class ) )
 			{
 				try {
-					statements.add( createPositionStatement( isThis, field, org.lgna.story.ImplementationAccessor.createPosition( initialTransform.translation ), 0 ) );
+					statements.add( createPositionStatement( isThis, field, org.lgna.story.EmployeesOnly.createPosition( initialTransform.translation ), 0 ) );
 
 					//todo
 					if( ( initialTransform.translation.y == 0.0 ) && AliceResourceUtilties.shouldPlaceModelAboveGround( abstractType ) ) {
@@ -282,7 +282,7 @@ public class SetUpMethodGenerator {
 	public static org.lgna.project.ast.Expression getGetterExpressionForJoint( org.lgna.story.SJoint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance )
 	{
 		org.lgna.project.ast.AbstractMethod getJointMethod = getJointGetterForJoint( joint, sceneInstance );
-		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.ImplementationAccessor.getImplementation( joint );
+		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.EmployeesOnly.getImplementation( joint );
 		org.lgna.story.SJointedModel jointedModel = getJointedModelForJointImp( jointImp );
 		org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( jointedModel );
 		assert getJointMethod != null;
@@ -292,7 +292,7 @@ public class SetUpMethodGenerator {
 
 	private static org.lgna.project.ast.AbstractMethod getJointGetterForJoint( org.lgna.story.SJoint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance )
 	{
-		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.ImplementationAccessor.getImplementation( joint );
+		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.EmployeesOnly.getImplementation( joint );
 		org.lgna.story.SJointedModel jointedModel = getJointedModelForJointImp( jointImp );
 		org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( jointedModel );
 		org.lgna.project.ast.AbstractMethod getJointMethod = null;
@@ -307,7 +307,7 @@ public class SetUpMethodGenerator {
 						);
 				for( Object o : values ) {
 					if( o instanceof org.lgna.story.SJoint ) {
-						org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation( (org.lgna.story.SJoint)o );
+						org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.EmployeesOnly.getImplementation( (org.lgna.story.SJoint)o );
 						if( gottenJoint.getJointId() == jointImp.getJointId() ) {
 							getJointMethod = jointGetter;
 							break;
@@ -406,7 +406,7 @@ public class SetUpMethodGenerator {
 					}
 				}
 				if( instance instanceof org.lgna.story.SJointedModel ) {
-					org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation( (org.lgna.story.SJointedModel)instance );
+					org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.EmployeesOnly.getImplementation( (org.lgna.story.SJointedModel)instance );
 					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
 					for( org.alice.stageide.ast.JointedTypeInfo jointInfo : jointedTypeInfos ) {
 						for( org.lgna.project.ast.AbstractMethod jointGetter : jointInfo.getJointGetters() ) {
@@ -424,7 +424,7 @@ public class SetUpMethodGenerator {
 							for( Object o : values ) {
 								if( o instanceof org.lgna.story.SJoint ) {
 									org.lgna.story.SJoint jointEntity = (org.lgna.story.SJoint)o;
-									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation( jointEntity );
+									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.EmployeesOnly.getImplementation( jointEntity );
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
 									if( captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf( originalTransform.orientation ) ) {

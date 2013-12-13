@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.lgna.croquet.components.BorderPanel {
+public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderPanel {
 
 	private org.lgna.project.virtualmachine.VirtualMachine vm;
 
@@ -203,7 +203,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.SThing entity = getInstanceInJavaVMForField( field, org.lgna.story.SThing.class );
 		if( entity != null )
 		{
-			return org.lgna.story.ImplementationAccessor.getImplementation( entity );
+			return org.lgna.story.EmployeesOnly.getImplementation( entity );
 		}
 		else
 		{
@@ -306,7 +306,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.SThing entity = getInstanceInJavaVMForField( getActiveSceneField(), org.lgna.story.SThing.class );
 		if( entity != null )
 		{
-			return org.lgna.story.ImplementationAccessor.getImplementation( entity );
+			return org.lgna.story.EmployeesOnly.getImplementation( entity );
 		}
 		else
 		{
@@ -419,7 +419,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private boolean EPIC_HACK_isFirstAddedTo = true;
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
 			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
 			if( projectDocument != null ) {
@@ -434,7 +434,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
 		super.handleRemovedFrom( parent );
 		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
 	}

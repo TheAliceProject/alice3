@@ -54,7 +54,7 @@ import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 
-import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.views.Panel;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;

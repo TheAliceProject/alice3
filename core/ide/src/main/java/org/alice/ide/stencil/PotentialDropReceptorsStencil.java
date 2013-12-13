@@ -46,16 +46,16 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  * 
  */
-public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.LayerStencil {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.views.LayerStencil {
 
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );
 
 	private java.util.List<org.lgna.croquet.DropReceptor> holes = null;
-	private org.lgna.croquet.components.DragComponent<?> potentialDragSource;
-	private org.lgna.croquet.components.Component<?> currentDropReceptorComponent;
+	private org.lgna.croquet.views.DragComponent<?> potentialDragSource;
+	private org.lgna.croquet.views.Component<?> currentDropReceptorComponent;
 
-	public PotentialDropReceptorsStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	public PotentialDropReceptorsStencil( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		super( window, javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 	}
 
@@ -87,7 +87,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.L
 		this.currentDropReceptorComponent = null;
 	}
 
-	public void showStencilOver( org.lgna.croquet.components.DragComponent<?> potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public void showStencilOver( org.lgna.croquet.views.DragComponent<?> potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)ide.getPerspective();
 		java.util.List<org.lgna.croquet.DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
@@ -129,7 +129,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.L
 
 				if( isFauxStencilDesired() ) {
 					for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-						org.lgna.croquet.components.Component<?> component = (org.lgna.croquet.components.Component<?>)dropReceptor;
+						org.lgna.croquet.views.Component<?> component = (org.lgna.croquet.views.Component<?>)dropReceptor;
 						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 						area.subtract( new java.awt.geom.Area( holeBounds ) );
 					}
@@ -143,7 +143,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.L
 				g2.setStroke( THICK_STROKE );
 				final int BUFFER = 6;
 				for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-					org.lgna.croquet.components.Component<?> component = (org.lgna.croquet.components.Component<?>)dropReceptor;
+					org.lgna.croquet.views.Component<?> component = (org.lgna.croquet.views.Component<?>)dropReceptor;
 					java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 					holeBounds.x -= BUFFER;
 					holeBounds.y -= BUFFER;

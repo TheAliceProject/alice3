@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SQuadruped;
@@ -97,7 +97,7 @@ public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 	protected void initializeLimbAnchors() {
 		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getFrontRightClavicle(), model.getFrontLeftClavicle(), model.getBackRightHip(), model.getBackLeftHip() );
 		for( SJoint joint : sJointList ) {
-			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
+			anchorPoints.add( ( (JointImp)EmployeesOnly.getImplementation( joint ) ).getJointId() );
 		}
 	}
 

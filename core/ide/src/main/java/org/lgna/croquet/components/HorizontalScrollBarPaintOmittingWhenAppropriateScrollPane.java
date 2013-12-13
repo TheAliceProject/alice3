@@ -42,6 +42,9 @@
  */
 package org.lgna.croquet.components;
 
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */

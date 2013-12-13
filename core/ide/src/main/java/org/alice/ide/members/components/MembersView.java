@@ -47,7 +47,7 @@ import org.alice.ide.recyclebin.RecycleBin;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersView extends org.lgna.croquet.components.BorderPanel {
+public class MembersView extends org.lgna.croquet.views.BorderPanel {
 	private static edu.cmu.cs.dennisc.map.MapToMap<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
 
@@ -155,11 +155,11 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
-		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return MembersView.this;
 		}
 
-		public org.lgna.croquet.components.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.JComponent<?> getViewController() {
 			return MembersView.this;
 		}
 
@@ -210,9 +210,9 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		//		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
 		//
 		//		this.addPageStartComponent( instancePanel );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		this.addPageStartComponent( instanceFactoryPopupButton );
-		org.lgna.croquet.components.TabbedPane<?> tabbedPane;
+		org.lgna.croquet.views.TabbedPane<?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			tabbedPane = composite.getTabState().createFolderTabbedPane();
 		} else {

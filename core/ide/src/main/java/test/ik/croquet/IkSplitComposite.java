@@ -52,7 +52,7 @@ public class IkSplitComposite extends org.lgna.croquet.SplitComposite {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.SplitPane createView() {
-		return new org.lgna.croquet.components.HorizontalSplitPane( this );
+	protected org.lgna.croquet.views.SplitPane createView() {
+		return new org.lgna.croquet.views.HorizontalSplitPane( this );
 	}
 }

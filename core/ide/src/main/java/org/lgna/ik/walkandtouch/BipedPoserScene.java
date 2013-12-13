@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
@@ -97,7 +97,7 @@ public class BipedPoserScene extends AbstractPoserScene<SBiped> {
 	protected void initializeLimbAnchors() {
 		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getRightClavicle(), model.getLeftClavicle(), model.getRightHip(), model.getLeftHip() );
 		for( SJoint joint : sJointList ) {
-			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
+			anchorPoints.add( ( (JointImp)EmployeesOnly.getImplementation( joint ) ).getJointId() );
 		}
 	}
 

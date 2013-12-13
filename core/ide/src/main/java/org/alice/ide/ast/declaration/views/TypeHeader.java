@@ -46,12 +46,12 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHeader extends org.lgna.croquet.components.FlowPanel {
+public class TypeHeader extends org.lgna.croquet.views.FlowPanel {
 	public TypeHeader( org.lgna.project.ast.NamedUserType type ) {
 		super( Alignment.LEADING );
-		this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( new org.lgna.croquet.views.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-		this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( new org.lgna.croquet.views.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
 
 		for( java.awt.Component awtComponent : this.getAwtComponent().getComponents() ) {

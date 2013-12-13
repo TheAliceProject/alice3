@@ -46,7 +46,7 @@ import java.awt.Rectangle;
 
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
@@ -73,7 +73,7 @@ public class MouseClickEventImp {
 
 	private OnscreenLookingGlass getOnscreenLookingGlass() {
 		if( this.scene != null ) {
-			SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
+			SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
 			ProgramImp programImp = sceneImp.getProgram();
 			if( programImp != null ) {
 				return programImp.getOnscreenLookingGlass();
@@ -105,7 +105,7 @@ public class MouseClickEventImp {
 					if( pickResult != null ) {
 						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {
-							SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
+							SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
 							edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
 							while( true ) {
 								edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();

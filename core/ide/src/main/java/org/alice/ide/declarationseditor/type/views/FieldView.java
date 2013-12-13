@@ -50,7 +50,7 @@ public class FieldView extends MemberView {
 		super( org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ) );
 		org.lgna.project.ast.ManagementLevel managementLevel = field.managementLevel.getValue();
 		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
+			org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
 			label.setForegroundColor( java.awt.Color.GRAY );
 			label.scaleFont( 2.0f );

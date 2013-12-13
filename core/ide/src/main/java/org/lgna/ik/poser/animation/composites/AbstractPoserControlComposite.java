@@ -79,7 +79,6 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
@@ -147,7 +146,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private org.lgna.croquet.event.ValueListener<JointedModelResource> resourceChangeListener = new org.lgna.croquet.event.ValueListener<JointedModelResource>() {
 
 		public void valueChanged( ValueEvent<JointedModelResource> e ) {
-			( (JointedModelImp)ImplementationAccessor.getImplementation( parent.getModel() ) ).setNewResource( e.getNextValue() );
+			( (JointedModelImp)org.lgna.story.EmployeesOnly.getImplementation( parent.getModel() ) ).setNewResource( e.getNextValue() );
 		}
 	};
 

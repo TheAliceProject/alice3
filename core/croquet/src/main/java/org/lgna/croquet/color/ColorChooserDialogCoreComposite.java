@@ -99,7 +99,7 @@ public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.Oper
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 		javax.swing.JColorChooser jColorChooser = this.getView().getAwtComponent();
 		jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
 		if( step.isCanceled() ) {

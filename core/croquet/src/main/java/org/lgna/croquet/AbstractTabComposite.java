@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
 	private String titleText;
 
 	public AbstractTabComposite( java.util.UUID id ) {
@@ -58,8 +58,8 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.views.ScrollPane();
 		return rv;
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		return sb.toString();
 	}
 
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		button.setBackgroundColor( this.getView().getBackgroundColor() );
 	}
 }

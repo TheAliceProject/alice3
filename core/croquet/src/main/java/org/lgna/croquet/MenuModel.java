@@ -42,7 +42,7 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.ComponentManager;
+import org.lgna.croquet.views.ComponentManager;
 
 /**
  * @author Dennis Cosgrove
@@ -123,7 +123,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 		protected org.lgna.croquet.history.PopupPrepStep perform( final org.lgna.croquet.triggers.Trigger trigger ) {
 			final org.lgna.croquet.history.PopupPrepStep step = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
 
-			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
+			final org.lgna.croquet.views.PopupMenu popupMenu = new org.lgna.croquet.views.PopupMenu( this ) {
 				@Override
 				protected void handleDisplayable() {
 					prologue( trigger );

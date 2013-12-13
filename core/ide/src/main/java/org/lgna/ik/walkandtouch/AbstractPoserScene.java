@@ -57,7 +57,7 @@ import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.Duration;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SJoint;
@@ -122,8 +122,8 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 			JointImp end = jss.getJoint();
 			JointId anchor = getAnchorForEndJoint( end );
 			if( anchor != null ) {
-				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( model.getJoint( anchor ) );
-				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
+				JointImp anchor2 = (JointImp)EmployeesOnly.getImplementation( model.getJoint( anchor ) );
+				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, EmployeesOnly.getImplementation( jss ).getAbsoluteTransformation().translation );
 			}
 			jss.setVehicle( end.getAbstraction() );
 		}
@@ -145,7 +145,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	};
 
 	protected JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
-		return new JointSelectionSphere( (JointImp)ImplementationAccessor.getImplementation( joint ), child );
+		return new JointSelectionSphere( (JointImp)EmployeesOnly.getImplementation( joint ), child );
 	}
 
 	private void performGeneratedSetup() {
@@ -168,7 +168,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	}
 
 	private OnscreenLookingGlass getOnscreenLookingGlass() {
-		return ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getOnscreenLookingGlass();
+		return ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getOnscreenLookingGlass();
 	}
 
 	public void jointSelected( JointSelectionSphere sphere, MouseEvent e ) {
@@ -183,7 +183,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	public void addCustomDragAdapter() {
 		synchronized( dragListeners ) {
 			poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
-			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)ImplementationAccessor.getImplementation( this ) ).getProgram().getAnimator() );
+			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getAnimator() );
 			poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
 			poserAnimatorDragAdapter.setTarget( model );
 			poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );

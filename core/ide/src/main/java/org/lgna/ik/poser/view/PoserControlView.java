@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.ik.poser.PoserControlComposite;
 
 /**

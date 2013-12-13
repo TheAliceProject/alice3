@@ -54,14 +54,14 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 
 	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
-		org.lgna.croquet.components.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
+		org.lgna.croquet.views.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel();
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 
-		org.lgna.croquet.components.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ).createRadioButton();
-		org.lgna.croquet.components.RadioButton selectProjectRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
+		org.lgna.croquet.views.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ).createRadioButton();
+		org.lgna.croquet.views.RadioButton selectProjectRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 		panel.addComponent( composite.getSelectOneHeader().createLabel(), "gap top 16, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap 32, wrap" );
 		panel.addComponent( selectProjectRadioButton, "gap 32, wrap" );

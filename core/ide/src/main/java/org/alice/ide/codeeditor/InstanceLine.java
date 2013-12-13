@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends org.lgna.croquet.components.LineAxisPanel {
+class InstanceLine extends org.lgna.croquet.views.LineAxisPanel {
 	public InstanceLine( org.lgna.project.ast.UserCode code ) {
 		//		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 		//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
@@ -55,7 +55,7 @@ class InstanceLine extends org.lgna.croquet.components.LineAxisPanel {
 		//		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		//		this.add( b );
 
-		this.addComponent( new org.lgna.croquet.components.Label( "current instance: ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( new org.lgna.croquet.views.Label( "current instance: ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
 		//		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
 		this.addComponent( thisPane );

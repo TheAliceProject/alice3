@@ -59,7 +59,7 @@ public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

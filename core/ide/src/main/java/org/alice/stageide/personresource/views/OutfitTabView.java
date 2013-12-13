@@ -45,15 +45,15 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OutfitTabView extends org.lgna.croquet.components.BorderPanel {
+public abstract class OutfitTabView extends org.lgna.croquet.views.BorderPanel {
 	public OutfitTabView( org.alice.stageide.personresource.OutfitTabComposite<?> composite ) {
 		super( composite );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
-		org.lgna.croquet.components.Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
+		org.lgna.croquet.views.Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
 		slider.setBackgroundColor( backgroundColor );
 
-		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
+		org.lgna.croquet.views.BorderPanel obesityLevelPane = new org.lgna.croquet.views.BorderPanel.Builder()
 				.hgap( 4 )
 				.lineStart( ingredientsComposite.getObesityLevelState().getSidekickLabel().createLabel() )
 				.center( slider )

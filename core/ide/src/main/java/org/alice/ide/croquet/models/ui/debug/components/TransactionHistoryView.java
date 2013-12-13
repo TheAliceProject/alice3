@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryView extends org.lgna.croquet.components.BorderPanel {
+public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 
 	private final org.lgna.croquet.history.event.Listener historyListener = new org.lgna.croquet.history.event.Listener() {
 		private void reload() {
@@ -72,7 +72,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 		}
 	};
 
-	private final org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane();
+	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
 	private final javax.swing.JTree tree = new javax.swing.JTree();
 	private org.lgna.croquet.history.TransactionHistory transactionHistory;
 	private boolean isCollapsingDesired = true;

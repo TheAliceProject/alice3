@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private final MemberHubWithNameState<?> memberHubWithNameState;
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
 
@@ -56,10 +56,10 @@ public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
 
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
+		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
 		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
 		return rv;
 	}

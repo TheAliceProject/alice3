@@ -66,13 +66,13 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance();
 		this.rootStatementListPropertyPane = new StatementListPropertyView( factory, body.statements, 32 );
 
-		org.lgna.croquet.components.JComponent<?> statementListComponent = null;
+		org.lgna.croquet.views.JComponent<?> statementListComponent = null;
 		if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
 			org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = (org.lgna.project.ast.ConstructorBlockStatement)body;
 			org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 			if( constructorInvocationStatement != null ) {
-				org.lgna.croquet.components.JComponent<?> superComponent = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance().createStatementPane( constructorInvocationStatement );
-				statementListComponent = new org.lgna.croquet.components.PageAxisPanel( new org.lgna.croquet.components.LineAxisPanel( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), superComponent ), this.rootStatementListPropertyPane );
+				org.lgna.croquet.views.JComponent<?> superComponent = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance().createStatementPane( constructorInvocationStatement );
+				statementListComponent = new org.lgna.croquet.views.PageAxisPanel( new org.lgna.croquet.views.LineAxisPanel( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ), superComponent ), this.rootStatementListPropertyPane );
 			}
 		}
 
@@ -84,9 +84,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
 
-		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane() );
+		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane() );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
+		org.lgna.croquet.views.ScrollPane scrollPane = this.getScrollPane();
 		scrollPane.setViewportView( bodyPane );
 		//scrollPane.setBackgroundColor( null );
 		scrollPane.getAwtComponent().getViewport().setOpaque( false );
@@ -114,17 +114,17 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			this.userFunctionStatusComposite = null;
 		}
 
-		org.lgna.croquet.components.JComponent<?> controlFlowComponent;
+		org.lgna.croquet.views.JComponent<?> controlFlowComponent;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
 		} else {
 			controlFlowComponent = null;
 		}
 
-		org.lgna.croquet.components.JComponent<?> pageEndComponent;
+		org.lgna.croquet.views.JComponent<?> pageEndComponent;
 		if( this.userFunctionStatusComposite != null ) {
 			if( controlFlowComponent != null ) {
-				pageEndComponent = new org.lgna.croquet.components.BorderPanel.Builder()
+				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
 						.center( this.userFunctionStatusComposite.getView() )
 						.pageEnd( controlFlowComponent )
 						.build();
@@ -151,8 +151,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		this.handleAstChangeThatCouldBeOfInterest();
 	}
 
-	public org.lgna.croquet.components.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.components.ScrollPane)this.getCenterComponent();
+	public org.lgna.croquet.views.ScrollPane getScrollPane() {
+		return (org.lgna.croquet.views.ScrollPane)this.getCenterComponent();
 	}
 
 	public void handleAstChangeThatCouldBeOfInterest() {
@@ -183,7 +183,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	}
 
 	@Override
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		if( potentialDropSite instanceof BlockStatementIndexPair ) {
 			BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)potentialDropSite;
 			org.lgna.project.ast.StatementListProperty statementListProperty = blockStatementIndexPair.getBlockStatement().statements;
@@ -268,7 +268,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		super.handleUndisplayable();
 	}
 
-	private static int convertY( org.lgna.croquet.components.Component<?> from, int y, org.lgna.croquet.components.Component<?> to ) {
+	private static int convertY( org.lgna.croquet.views.Component<?> from, int y, org.lgna.croquet.views.Component<?> to ) {
 		java.awt.Point pt = from.convertPoint( new java.awt.Point( 0, y ), to );
 		return pt.y;
 	}
@@ -309,7 +309,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 	private static boolean isWarningAlreadyPrinted = false;
 
-	public class StatementListIndexTrackableShape implements org.lgna.croquet.components.TrackableShape {
+	public class StatementListIndexTrackableShape implements org.lgna.croquet.views.TrackableShape {
 		private org.lgna.project.ast.StatementListProperty statementListProperty;
 		private int index;
 		private StatementListPropertyView statementListPropertyPane;
@@ -334,8 +334,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			return this.index;
 		}
 
-		public java.awt.Shape getShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
-			org.lgna.croquet.components.Component<?> src = CodeEditor.this.getAsSeenBy();
+		public java.awt.Shape getShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			org.lgna.croquet.views.Component<?> src = CodeEditor.this.getAsSeenBy();
 			if( src != null ) {
 				java.awt.Rectangle rv = src.convertRectangle( this.boundsAtIndex, asSeenBy );
 				//note: ignore insets
@@ -345,8 +345,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			}
 		}
 
-		public java.awt.Shape getVisibleShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
-			org.lgna.croquet.components.Component<?> src = CodeEditor.this.getAsSeenBy();
+		public java.awt.Shape getVisibleShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
+			org.lgna.croquet.views.Component<?> src = CodeEditor.this.getAsSeenBy();
 			if( src != null ) {
 				java.awt.Rectangle bounds = src.convertRectangle( this.boundsAtIndex, asSeenBy );
 				//note: ignore insets
@@ -368,7 +368,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			return true;
 		}
 
-		public org.lgna.croquet.components.ScrollPane getScrollPaneAncestor() {
+		public org.lgna.croquet.views.ScrollPane getScrollPaneAncestor() {
 			return this.statementListPropertyPane.getScrollPaneAncestor();
 		}
 
@@ -389,11 +389,11 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 	}
 
-	public org.lgna.croquet.components.TrackableShape getTrackableShapeAtIndexOf( org.lgna.project.ast.StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired ) {
+	public org.lgna.croquet.views.TrackableShape getTrackableShapeAtIndexOf( org.lgna.project.ast.StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired ) {
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 
-			org.lgna.croquet.components.Container<?> arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
+			org.lgna.croquet.views.Container<?> arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			org.lgna.croquet.DragModel dragModel = null;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dragModel );
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.dropReceptor.createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
@@ -436,7 +436,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> getAsSeenBy() {
+	protected org.lgna.croquet.views.Component<?> getAsSeenBy() {
 		return this.getScrollPane().getViewportView();
 	}
 

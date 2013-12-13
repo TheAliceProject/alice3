@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.YesNoResult;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class YesNoConfirmDialogComposite<V extends org.lgna.croquet.components.Panel> extends SingleValueCreatorInputDialogCoreComposite<V, YesNoResult> {
+public abstract class YesNoConfirmDialogComposite<V extends org.lgna.croquet.views.Panel> extends SingleValueCreatorInputDialogCoreComposite<V, YesNoResult> {
 	private final MessageType messageType;
 	private String title;
 

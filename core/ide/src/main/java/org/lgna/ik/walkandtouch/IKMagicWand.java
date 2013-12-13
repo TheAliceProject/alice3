@@ -48,7 +48,7 @@ import org.lgna.ik.IkConstants;
 import org.lgna.ik.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -72,10 +72,10 @@ public class IKMagicWand {
 	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Collections.newArrayList(
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftShoulder() ) ).getJointId(),
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightHip() ) ).getJointId(),
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftHip() ) ).getJointId()
+			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
+			( (JointImp)EmployeesOnly.getImplementation( ogre.getLeftShoulder() ) ).getJointId(),
+			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightHip() ) ).getJointId(),
+			( (JointImp)EmployeesOnly.getImplementation( ogre.getLeftHip() ) ).getJointId()
 			);
 
 	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
