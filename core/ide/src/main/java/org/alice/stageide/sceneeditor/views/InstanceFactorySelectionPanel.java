@@ -46,8 +46,8 @@ package org.alice.stageide.sceneeditor.views;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
-	private static final class InternalButton extends org.lgna.croquet.components.JComponent<javax.swing.AbstractButton> {
+public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
+	private static final class InternalButton extends org.lgna.croquet.views.JComponent<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -146,7 +146,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 	}
 
-	private static final class InternalPanel extends org.lgna.croquet.components.PageAxisPanel {
+	private static final class InternalPanel extends org.lgna.croquet.views.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

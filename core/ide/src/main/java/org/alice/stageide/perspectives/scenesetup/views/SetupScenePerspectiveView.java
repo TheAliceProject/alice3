@@ -45,7 +45,7 @@ package org.alice.stageide.perspectives.scenesetup.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspectiveView extends org.lgna.croquet.components.BorderPanel {
+public class SetupScenePerspectiveView extends org.lgna.croquet.views.BorderPanel {
 	public SetupScenePerspectiveView( org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getSceneLayoutComposite().getView() );

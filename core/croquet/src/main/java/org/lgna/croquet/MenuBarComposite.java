@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.components.MenuBar> {
+public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.views.MenuBar> {
 	private final java.util.List<StandardMenuItemPrepModel> items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public MenuBarComposite( java.util.UUID id ) {
@@ -62,7 +62,7 @@ public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.compone
 	}
 
 	@Override
-	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -79,8 +79,8 @@ public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.compone
 	}
 
 	@Override
-	protected org.lgna.croquet.components.MenuBar createView() {
-		return new org.lgna.croquet.components.MenuBar( this );
+	protected org.lgna.croquet.views.MenuBar createView() {
+		return new org.lgna.croquet.views.MenuBar( this );
 	}
 
 }

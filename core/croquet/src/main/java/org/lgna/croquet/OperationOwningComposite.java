@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
+public interface OperationOwningComposite<V extends org.lgna.croquet.views.View<?, ?>> extends Composite<V> {
 	public OwnedByCompositeOperation getLaunchOperation();
 
 	public OwnedByCompositeOperation getLaunchOperation( String subKey );

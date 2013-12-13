@@ -47,7 +47,7 @@ import org.alice.ide.clipboard.DragReceptorState;
 /**
  * @author Dennis Cosgrove
  */
-public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent<org.lgna.croquet.DragModel> {
+public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent<org.lgna.croquet.DragModel> {
 	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
@@ -99,17 +99,17 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
-		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return ClipboardDragComponent.this;
 		}
 
-		public org.lgna.croquet.components.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.JComponent<?> getViewController() {
 			return ClipboardDragComponent.this;
 		}
 	}
 
 	private final ClipboardDropReceptor dropReceptor = new ClipboardDropReceptor();
-	private final org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
+	private final org.lgna.croquet.views.FlowPanel subject = new org.lgna.croquet.views.FlowPanel();
 
 	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
 		super( dragModel, true );
@@ -150,7 +150,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> getSubject() {
+	public org.lgna.croquet.views.JComponent<?> getSubject() {
 		return this.subject;
 	}
 

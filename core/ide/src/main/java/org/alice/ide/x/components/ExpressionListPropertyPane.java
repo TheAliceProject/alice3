@@ -51,16 +51,16 @@ public class ExpressionListPropertyPane extends org.alice.ide.croquet.components
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, final int N ) {
+	protected org.lgna.croquet.views.Component<?> createInterstitial( int i, final int N ) {
 		if( i < ( N - 1 ) ) {
-			return new org.lgna.croquet.components.Label( ", " );
+			return new org.lgna.croquet.views.Label( ", " );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.Expression expression ) {
+	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

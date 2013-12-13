@@ -61,7 +61,7 @@ public class DeclarationMenu extends org.lgna.croquet.MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -71,6 +71,6 @@ public class DeclarationMenu extends org.lgna.croquet.MenuModel {
 		models.add( ClassesSeparator.getInstance() );
 		addTypeFillIns( models, root );
 
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }

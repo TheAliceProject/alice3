@@ -78,7 +78,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		} else {
 			text = null;
 		}
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.Component<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
 				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
 				keyViewController.getAwtComponent().setText( text );

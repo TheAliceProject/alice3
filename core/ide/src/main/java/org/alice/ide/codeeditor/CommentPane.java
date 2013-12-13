@@ -169,6 +169,6 @@ public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
 		super( model, factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
-		this.addComponent( new org.lgna.croquet.components.SwingAdapter( commentLine ) );
+		this.addComponent( new org.lgna.croquet.views.SwingAdapter( commentLine ) );
 	}
 }

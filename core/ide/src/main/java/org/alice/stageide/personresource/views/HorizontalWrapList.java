@@ -46,10 +46,10 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList<T> extends org.lgna.croquet.components.List<T> {
+public class HorizontalWrapList<T> extends org.lgna.croquet.views.List<T> {
 	public HorizontalWrapList( org.lgna.croquet.ListSelectionState<T> model, int visibleRowCount, javax.swing.ListCellRenderer cellRenderer ) {
 		super( model );
-		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( visibleRowCount );
 		this.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		this.setCellRenderer( cellRenderer );

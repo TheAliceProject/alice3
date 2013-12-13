@@ -89,22 +89,22 @@ public abstract class StringState extends SimpleValueState<String> {
 	private final DocumentListener documentListener = new DocumentListener();
 
 	public static class SwingModel {
-		private final java.util.List<org.lgna.croquet.components.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
 
 		private SwingModel() {
 		}
 
-		public void install( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+		public void install( org.lgna.croquet.views.TextComponent<?> textComponent ) {
 			this.textComponents.add( textComponent );
 			textComponent.getAwtComponent().setDocument( this.document );
 		}
 
-		public void deinstall( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+		public void deinstall( org.lgna.croquet.views.TextComponent<?> textComponent ) {
 			this.textComponents.remove( textComponent );
 		}
 
-		public Iterable<org.lgna.croquet.components.TextComponent<?>> getTextComponents() {
+		public Iterable<org.lgna.croquet.views.TextComponent<?>> getTextComponents() {
 			return this.textComponents;
 		}
 
@@ -163,7 +163,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
-			for( org.lgna.croquet.components.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+			for( org.lgna.croquet.views.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
 				textComponent.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}
@@ -197,9 +197,9 @@ public abstract class StringState extends SimpleValueState<String> {
 
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
-		for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.lgna.croquet.components.TextComponent<?> ) {
-				org.lgna.croquet.components.TextComponent<?> textComponent = (org.lgna.croquet.components.TextComponent<?>)component;
+		for( org.lgna.croquet.views.JComponent<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+			if( component instanceof org.lgna.croquet.views.TextComponent<?> ) {
+				org.lgna.croquet.views.TextComponent<?> textComponent = (org.lgna.croquet.views.TextComponent<?>)component;
 				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
 			}
 		}
@@ -218,34 +218,34 @@ public abstract class StringState extends SimpleValueState<String> {
 		}
 	}
 
-	public org.lgna.croquet.components.TextField createTextField() {
+	public org.lgna.croquet.views.TextField createTextField() {
 		return this.createTextField( null );
 	}
 
-	public org.lgna.croquet.components.PasswordField createPasswordField() {
+	public org.lgna.croquet.views.PasswordField createPasswordField() {
 		return this.createPasswordField( null );
 	}
 
-	public org.lgna.croquet.components.TextField createTextField( Operation operation ) {
-		return new org.lgna.croquet.components.TextField( this, operation );
+	public org.lgna.croquet.views.TextField createTextField( Operation operation ) {
+		return new org.lgna.croquet.views.TextField( this, operation );
 	}
 
-	public org.lgna.croquet.components.PasswordField createPasswordField( Operation operation ) {
-		return new org.lgna.croquet.components.PasswordField( this, operation );
+	public org.lgna.croquet.views.PasswordField createPasswordField( Operation operation ) {
+		return new org.lgna.croquet.views.PasswordField( this, operation );
 	}
 
-	public org.lgna.croquet.components.TextArea createTextArea() {
-		return new org.lgna.croquet.components.TextArea( this );
+	public org.lgna.croquet.views.TextArea createTextArea() {
+		return new org.lgna.croquet.views.TextArea( this );
 	}
 
 	public void selectAll() {
-		for( org.lgna.croquet.components.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+		for( org.lgna.croquet.views.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
 			textComponent.selectAll();
 		}
 	}
 
 	public void requestFocus() {
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.Component<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			//todo: find the most appropriate candidate?
 			component.requestFocus();
 		}

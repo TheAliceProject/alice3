@@ -240,8 +240,8 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 
 		@Override
-		public org.lgna.croquet.components.MenuItem createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-			org.lgna.croquet.components.MenuItem menuItem = new org.lgna.croquet.components.MenuItem( this.getOperation() );
+		public org.lgna.croquet.views.MenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+			org.lgna.croquet.views.MenuItem menuItem = new org.lgna.croquet.views.MenuItem( this.getOperation() );
 			menuItemContainer.addMenuItem( menuItem );
 			return menuItem;
 		}
@@ -270,15 +270,15 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.menuPrepModel;
 	}
 
-	public org.lgna.croquet.components.Button createButton() {
-		return new org.lgna.croquet.components.Button( this );
+	public org.lgna.croquet.views.Button createButton() {
+		return new org.lgna.croquet.views.Button( this );
 	}
 
-	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		return new org.lgna.croquet.components.Hyperlink( this );
+	public org.lgna.croquet.views.Hyperlink createHyperlink() {
+		return new org.lgna.croquet.views.Hyperlink( this );
 	}
 
-	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
-		return new org.lgna.croquet.components.ButtonWithRightClickCascade( this, cascade );
+	public org.lgna.croquet.views.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
+		return new org.lgna.croquet.views.ButtonWithRightClickCascade( this, cascade );
 	}
 }

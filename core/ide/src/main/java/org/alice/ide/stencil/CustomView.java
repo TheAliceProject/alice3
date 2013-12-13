@@ -45,7 +45,7 @@ package org.alice.ide.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomView extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+public abstract class CustomView extends org.lgna.croquet.views.JComponent<javax.swing.JPanel> {
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
 
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );

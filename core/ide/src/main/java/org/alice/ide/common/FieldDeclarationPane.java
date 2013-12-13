@@ -45,10 +45,10 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPanel {
+public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label finalLabel = new org.lgna.croquet.views.Label();
 	private final boolean isDropDownDesired;
 	private final boolean isFinalDesiredIfAppropriate;
 
@@ -75,14 +75,14 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 			this.addComponent( finalLabel );
 		}
 		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.lgna.croquet.components.Label nameLabel = this.createNameLabel();
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+		org.lgna.croquet.views.Label nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( 1.5f );
 		this.addComponent( nameLabel );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 
-		org.lgna.croquet.components.Component<?> component;
+		org.lgna.croquet.views.Component<?> component;
 		if( isDropDownDesired ) {
 			component = new org.alice.ide.croquet.components.ExpressionDropDown( org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ), org.alice.ide.x.DialogAstI18nFactory.getInstance() );
 		} else {
@@ -91,7 +91,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		this.addComponent( component );
 	}
 
-	protected org.lgna.croquet.components.Label createNameLabel() {
+	protected org.lgna.croquet.views.Label createNameLabel() {
 		return new org.alice.ide.ast.components.DeclarationNameLabel( this.field );
 	}
 

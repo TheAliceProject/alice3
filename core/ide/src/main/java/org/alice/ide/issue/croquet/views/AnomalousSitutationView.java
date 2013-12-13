@@ -50,8 +50,8 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 
 	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( ICON );
-		iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
+		org.lgna.croquet.views.Label iconLabel = new org.lgna.croquet.views.Label( ICON );
+		iconLabel.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.TOP );
 		this.addLineStartComponent( iconLabel );
 
 		Throwable throwable = composite.getThrowable();
@@ -70,15 +70,15 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 		sb.append( "</body>" );
 		sb.append( "<html>" );
 
-		org.lgna.croquet.components.MigPanel centerPanel = new org.lgna.croquet.components.MigPanel();
-		centerPanel.addComponent( new org.lgna.croquet.components.Label( sb.toString() ), "wrap" );
+		org.lgna.croquet.views.MigPanel centerPanel = new org.lgna.croquet.views.MigPanel();
+		centerPanel.addComponent( new org.lgna.croquet.views.Label( sb.toString() ), "wrap" );
 		centerPanel.addComponent( createScrollPaneTextArea( composite.getStepsState() ), "wrap, growx" );
-		centerPanel.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+		centerPanel.addComponent( new org.lgna.croquet.views.LineAxisPanel(
 				composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(),
-				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+				org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ),
 				composite.getShowApplicationContentPanelImageOperation().createHyperlink()
 				), "wrap" );
-		centerPanel.addComponent( new org.lgna.croquet.components.Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
+		centerPanel.addComponent( new org.lgna.croquet.views.Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
 
 		this.addCenterComponent( centerPanel );
 	}

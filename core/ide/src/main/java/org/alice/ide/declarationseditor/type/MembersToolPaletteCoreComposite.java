@@ -62,7 +62,7 @@ public abstract class MembersToolPaletteCoreComposite<MC extends MembersComposit
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

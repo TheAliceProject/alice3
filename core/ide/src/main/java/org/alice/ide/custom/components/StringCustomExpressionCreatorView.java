@@ -52,8 +52,8 @@ public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionC
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 		org.alice.ide.custom.StringCustomExpressionCreatorComposite composite = (org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getValueLabel(), composite.getValueState().createTextField() ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getValueLabel(), composite.getValueState().createTextField() ) );
 	}
 }

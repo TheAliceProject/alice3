@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+public abstract class MembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.views.MigPanel {
 	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
 	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
 	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
@@ -59,14 +59,14 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
 	private static final String COLUMN_2_CONSTRAINT = "[grow 0]";
 
-	private static org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+	private static org.lgna.croquet.views.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
-		org.lgna.croquet.components.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
+		org.lgna.croquet.views.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
 		return header;
 	}
 
-	private static org.lgna.croquet.components.HorizontalSeparator createSeparator() {
-		return new org.lgna.croquet.components.HorizontalSeparator();
+	private static org.lgna.croquet.views.HorizontalSeparator createSeparator() {
+		return new org.lgna.croquet.views.HorizontalSeparator();
 	}
 
 	private int row = 0;
@@ -137,7 +137,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( importOnly.getImportHub().getIsDesiredState().createCheckBox() );
 
 			this.addComponent( MemberViewUtilities.createPopupView( importOnly.getImportHub().getPopup() ), "split 2, skip 1" );
-			org.lgna.croquet.components.AbstractLabel label = MemberViewUtilities.createAddMemberLabel( importOnly.getImportHub().getMember() );
+			org.lgna.croquet.views.AbstractLabel label = MemberViewUtilities.createAddMemberLabel( importOnly.getImportHub().getMember() );
 			this.addComponent( label, "wrap" );
 
 			//todo: removeValueListener somewhere
@@ -155,15 +155,15 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( differentSignature.getImportHub().getIsDesiredState().createCheckBox() );
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getImportHub().getPopup() ), "skip 1, split 2" );
-			org.lgna.croquet.components.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), differentSignature.getForegroundCustomizer() );
+			org.lgna.croquet.views.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), differentSignature.getForegroundCustomizer() );
 			this.addComponent( textField );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.components.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getLaunchOperation().createHyperlink();
+			org.lgna.croquet.views.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getLaunchOperation().createHyperlink();
 			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
-			org.lgna.croquet.components.CheckBox keepCheckBox = differentSignature.getProjectHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox keepCheckBox = differentSignature.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getProjectHub().getPopup() ), "split 2" );
@@ -184,14 +184,14 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			//BracketView rightBracket = new BracketView( false );
 			//rightBracket.setToolTipText( createDifferentImplementationToolText( titleText, differentImplementation.getImportMember() ) );
 
-			org.lgna.croquet.components.CheckBox addCheckBox = differentImplementation.getImportHub().getIsDesiredState().createCheckBox();
-			org.lgna.croquet.components.CheckBox keepCheckBox = differentImplementation.getProjectHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox addCheckBox = differentImplementation.getImportHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox keepCheckBox = differentImplementation.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getImportHub().getPopup() ), "skip 1, split 2" );
 			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.components.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getLaunchOperation().createHyperlink();
+			org.lgna.croquet.views.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getLaunchOperation().createHyperlink();
 			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
@@ -204,9 +204,9 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 
 		for( org.alice.ide.ast.type.merge.croquet.Identical<M> identical : composite.getIdenticals() ) {
 			String toolTipText = createIdenticalToolText( titleText, identical.getImportHub().getMember() );
-			org.lgna.croquet.components.CheckBox addCheckBox = identical.getImportHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox addCheckBox = identical.getImportHub().getIsDesiredState().createCheckBox();
 			addCheckBox.setToolTipText( toolTipText );
-			org.lgna.croquet.components.CheckBox keepCheckBox = identical.getProjectHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox keepCheckBox = identical.getProjectHub().getIsDesiredState().createCheckBox();
 			keepCheckBox.setToolTipText( toolTipText );
 			this.addComponent( addCheckBox );
 			this.addComponent( keepCheckBox );
@@ -215,7 +215,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		}
 
 		for( org.alice.ide.ast.type.merge.croquet.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
-			org.lgna.croquet.components.CheckBox keepCheckBox = projectOnly.getProjectHub().getIsDesiredState().createCheckBox();
+			org.lgna.croquet.views.CheckBox keepCheckBox = projectOnly.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( projectOnly.getProjectHub().getPopup() ), "split 2" );
 			this.addComponent( MemberViewUtilities.createKeepUniqueMemberLabel( projectOnly.getProjectHub().getMember() ), "wrap" );
@@ -232,7 +232,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		this.startIndicesOfRowPairs.add( this.row );
 	}
 
-	private void addToRow( org.lgna.croquet.components.Component<?> component ) {
+	private void addToRow( org.lgna.croquet.views.Component<?> component ) {
 		while( this.rows.size() <= this.row ) {
 			this.rows.add( new java.util.LinkedList<java.awt.Component>() );
 		}
@@ -240,13 +240,13 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
 		super.addComponent( component );
 		this.addToRow( component );
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.components.Component<?> component, String constraint ) {
+	public void addComponent( org.lgna.croquet.views.Component<?> component, String constraint ) {
 		super.addComponent( component, constraint );
 		if( constraint.contains( "spany" ) ) {
 			//pass

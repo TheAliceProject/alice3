@@ -50,10 +50,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.SwingAdapter;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.GridBagPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingAdapter;
 
 import edu.cmu.cs.dennisc.math.Point3;
 

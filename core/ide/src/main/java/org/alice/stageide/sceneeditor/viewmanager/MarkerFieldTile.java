@@ -45,8 +45,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
 
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.MarkerImp;
 
@@ -98,6 +98,6 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.iconLabel.setIcon( MarkerUtilities.getIconForMarkerField( field ) );
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 }

@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class ActionEventTrigger extends EventObjectTrigger<java.awt.event.ActionEvent> {
-	public static ActionEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
+	public static ActionEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
 		return new ActionEventTrigger( Origin.USER, viewController, actionEvent );
 	}
 
@@ -59,7 +59,7 @@ public class ActionEventTrigger extends EventObjectTrigger<java.awt.event.Action
 		return new ActionEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private ActionEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
+	private ActionEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
 		super( origin, viewController, actionEvent );
 	}
 

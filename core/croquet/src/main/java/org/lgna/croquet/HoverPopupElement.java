@@ -61,7 +61,7 @@ public class HoverPopupElement extends AbstractElement { //todo
 	protected void localize() {
 	}
 
-	public org.lgna.croquet.components.HoverPopupView createHoverPopupView() {
-		return new org.lgna.croquet.components.HoverPopupView( this );
+	public org.lgna.croquet.views.HoverPopupView createHoverPopupView() {
+		return new org.lgna.croquet.views.HoverPopupView( this );
 	}
 }

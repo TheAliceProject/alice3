@@ -46,7 +46,7 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> extends org.lgna.croquet.components.PageAxisPanel {
+public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> extends org.lgna.croquet.views.PageAxisPanel {
 	public MethodsSubView( org.alice.ide.member.MethodsSubComposite composite ) {
 		super( composite );
 		this.setMaximumSizeClampedToPreferredSize( true );
@@ -67,15 +67,15 @@ public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> 
 		composite.updateTabTitle();
 
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
-			org.lgna.croquet.components.JComponent<?> component;
+			org.lgna.croquet.views.DragComponent<?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
+			org.lgna.croquet.views.JComponent<?> component;
 			if( method instanceof org.lgna.project.ast.UserMethod ) {
 				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForMethod( method );
-				org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
+				org.lgna.croquet.views.Hyperlink hyperlink = operation.createHyperlink();
 				hyperlink.setClobberText( "edit" );
-				component = new org.lgna.croquet.components.LineAxisPanel( hyperlink, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
+				component = new org.lgna.croquet.views.LineAxisPanel( hyperlink, org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
 			} else {
 				component = dragComponent;
 			}

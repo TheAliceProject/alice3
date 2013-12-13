@@ -67,12 +67,12 @@ public class AutomaticCompletionTrigger extends Trigger {
 	}
 
 	@Override
-	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		return null;
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
 

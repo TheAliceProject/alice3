@@ -129,7 +129,7 @@ public abstract class TableRowSelectionState<T> extends ItemState<T> {
 		return this.swingModel;
 	}
 
-	public org.lgna.croquet.components.Table<T> createTable() {
-		return new org.lgna.croquet.components.Table<T>( this );
+	public org.lgna.croquet.views.Table<T> createTable() {
+		return new org.lgna.croquet.views.Table<T>( this );
 	}
 }

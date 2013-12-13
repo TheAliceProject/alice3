@@ -42,11 +42,11 @@
  */
 package org.alice.ide.warning.components;
 
-public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
+public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 	public WarningView( org.alice.ide.warning.WarningDialogComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		this.addComponent( new org.lgna.croquet.views.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
 
 		StringBuilder sb = new StringBuilder();
 		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
@@ -55,11 +55,11 @@ public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
 		sb.append( "Thank you for your patience.\n" );
 		sb.append( "We welcome your feedback.\n" );
 
-		org.lgna.croquet.components.PlainMultiLineLabel descriptionLabel = new org.lgna.croquet.components.PlainMultiLineLabel( sb.toString() );
+		org.lgna.croquet.views.PlainMultiLineLabel descriptionLabel = new org.lgna.croquet.views.PlainMultiLineLabel( sb.toString() );
 		descriptionLabel.scaleFont( 1.4f );
 		descriptionLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		this.addComponent( descriptionLabel );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
 		class FurtherInfoPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
@@ -84,6 +84,6 @@ public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
 		this.getAwtComponent().add( new FurtherInfoPane() );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }

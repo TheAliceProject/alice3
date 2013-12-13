@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
  */
 //<kjh remove file/>
 @Deprecated
-public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderPanel {
+public class TransactionHistoryPanel extends org.lgna.croquet.views.BorderPanel {
 
 	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
@@ -63,7 +63,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 		}
 	};
 
-	private final org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane();
+	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
 	private final javax.swing.JTree tree = new javax.swing.JTree();
 	private org.lgna.croquet.history.TransactionHistory transactionHistory;
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {

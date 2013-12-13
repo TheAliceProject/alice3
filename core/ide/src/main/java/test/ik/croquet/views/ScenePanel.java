@@ -46,7 +46,7 @@ package test.ik.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ScenePanel extends org.lgna.croquet.components.BorderPanel {
+public class ScenePanel extends org.lgna.croquet.views.BorderPanel {
 	public ScenePanel( test.ik.croquet.SceneComposite composite ) {
 		super( composite );
 	}

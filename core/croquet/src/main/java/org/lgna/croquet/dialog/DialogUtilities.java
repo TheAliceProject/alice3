@@ -47,19 +47,19 @@ package org.lgna.croquet.dialog;
  * @author Dennis Cosgrove
  */
 public class DialogUtilities {
-	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.components.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
+	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.views.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
 
-	public static <V extends org.lgna.croquet.components.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public static <V extends org.lgna.croquet.views.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 
-		org.lgna.croquet.components.AbstractWindow<?> window = application.peekWindow();
+		org.lgna.croquet.views.AbstractWindow<?> window = application.peekWindow();
 
-		org.lgna.croquet.components.ScreenElement owner;
+		org.lgna.croquet.views.ScreenElement owner;
 		if( window != null ) {
 			owner = window;
 		} else {
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			org.lgna.croquet.components.ViewController<?, ?> viewController = trigger.getViewController();
+			org.lgna.croquet.views.ViewController<?, ?> viewController = trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
@@ -67,7 +67,7 @@ public class DialogUtilities {
 			}
 		}
 		boolean isModal = dialogOwner.isModal();
-		final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner, dialogOwner.isModal() );
+		final org.lgna.croquet.views.Dialog dialog = new org.lgna.croquet.views.Dialog( owner, dialogOwner.isModal() );
 		step.putEphemeralDataFor( DIALOG_KEY, dialog );
 		class DialogWindowListener implements java.awt.event.WindowListener {
 			public void windowOpened( java.awt.event.WindowEvent e ) {

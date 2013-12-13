@@ -46,7 +46,7 @@ package org.alice.stageide.about.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AboutView extends org.lgna.croquet.components.BorderPanel {
+public class AboutView extends org.lgna.croquet.views.BorderPanel {
 	private static final javax.swing.ImageIcon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( AboutView.class.getResource( "images/about.png" ) );
 
 	private static class IconBorder extends javax.swing.border.AbstractBorder {
@@ -82,22 +82,22 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		sb.append( "<b>The Sims <sup>TM</sup> 2</b> Art Assets donated by <strong>Electronic Arts</strong>." );
 		sb.append( "</html>" );
 
-		org.lgna.croquet.components.Label supportedByLabel = new org.lgna.croquet.components.Label( sb.toString() );
+		org.lgna.croquet.views.Label supportedByLabel = new org.lgna.croquet.views.Label( sb.toString() );
 		supportedByLabel.setBorder( new IconBorder() );
 		this.addPageStartComponent( supportedByLabel );
 
-		org.lgna.croquet.components.PageAxisPanel otherPanel = new org.lgna.croquet.components.PageAxisPanel();
+		org.lgna.croquet.views.PageAxisPanel otherPanel = new org.lgna.croquet.views.PageAxisPanel();
 
-		org.lgna.croquet.components.FormPanel formPanel = new org.lgna.croquet.components.FormPanel() {
+		org.lgna.croquet.views.FormPanel formPanel = new org.lgna.croquet.views.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
-					rows.add( new org.lgna.croquet.components.LabeledFormRow( eulaComposite.getLaunchOperation().getSidekickLabel(), eulaComposite.getLaunchOperation().createButton() ) );
+					rows.add( new org.lgna.croquet.views.LabeledFormRow( eulaComposite.getLaunchOperation().getSidekickLabel(), eulaComposite.getLaunchOperation().createButton() ) );
 				}
 			}
 		};
 		otherPanel.addComponent( formPanel );
-		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
+		otherPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
 
 		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 
 		//				org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
@@ -107,9 +107,9 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
 		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getLaunchOperation().createHyperlink() );
-		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
-		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
-		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );
+		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
+		otherPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
+		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );
 
 		otherPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.addCenterComponent( otherPanel );

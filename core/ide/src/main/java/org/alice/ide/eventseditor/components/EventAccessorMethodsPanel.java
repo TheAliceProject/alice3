@@ -45,7 +45,7 @@ package org.alice.ide.eventseditor.components;
 /**
  * @author Dennis Cosgrove
  */
-public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineAxisPanel {
+public class EventAccessorMethodsPanel extends org.lgna.croquet.views.LineAxisPanel {
 	public EventAccessorMethodsPanel( org.lgna.project.ast.UserCode code ) {
 		for( org.lgna.project.ast.UserParameter parameter : code.getRequiredParamtersProperty() ) {
 			this.addComponentsForParameter( parameter );
@@ -61,7 +61,7 @@ public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineA
 						org.lgna.project.annotations.Visibility visibility = method.getVisibility();
 						if( ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME ) ) {
 							this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
-							this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+							this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ) );
 						}
 					}
 				}

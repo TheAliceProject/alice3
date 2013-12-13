@@ -44,12 +44,12 @@ package org.alice.ide.croquet.models.help;
 
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.components.Label;
+import org.lgna.croquet.views.Label;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 
 	public void updateWelcomeString( String str ) {
 		usernameLabel.setText( welcome.getText() + str );
@@ -65,11 +65,11 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		updateWelcomeString( "" );
-		return new org.lgna.croquet.components.FlowPanel(
+		return new org.lgna.croquet.views.FlowPanel(
 				this,
-				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
+				org.lgna.croquet.views.FlowPanel.Alignment.TRAILING,
 				this.usernameLabel,
 				this.logoutOperation.createButton() );
 	}

@@ -51,7 +51,7 @@ public class ListPropertyLabelsView extends org.alice.ide.croquet.components.Abs
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createComponent( Object instance ) {
-		return new org.lgna.croquet.components.Label( instance.toString() );
+	protected org.lgna.croquet.views.Component<?> createComponent( Object instance ) {
+		return new org.lgna.croquet.views.Label( instance.toString() );
 	}
 }

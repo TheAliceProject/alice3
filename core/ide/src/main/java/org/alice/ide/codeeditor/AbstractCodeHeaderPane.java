@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
+class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
 	protected static final float NAME_SCALE = 1.8f;
 	private final boolean isPreview;
 
@@ -66,7 +66,7 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 		return this.isPreview;
 	}
 
-	protected void addComponent( org.lgna.croquet.components.Component<?> component ) {
+	protected void addComponent( org.lgna.croquet.views.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

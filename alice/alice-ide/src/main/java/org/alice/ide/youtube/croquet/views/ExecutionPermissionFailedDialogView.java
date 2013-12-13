@@ -44,7 +44,7 @@ package org.alice.ide.youtube.croquet.views;
 
 import org.alice.ide.youtube.croquet.ExecutionPermissionFailedDialogComposite;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.views.MigPanel;
 
 /**
  * @author Matt May

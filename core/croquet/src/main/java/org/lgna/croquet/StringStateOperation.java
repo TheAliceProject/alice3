@@ -70,11 +70,11 @@ public abstract class StringStateOperation extends ActionOperation {
 		}
 	}
 
-	public org.lgna.croquet.components.TextField createTextField() {
+	public org.lgna.croquet.views.TextField createTextField() {
 		return this.stringState.createTextField( this );
 	}
 
-	public org.lgna.croquet.components.PasswordField createPasswordField() {
+	public org.lgna.croquet.views.PasswordField createPasswordField() {
 		return this.stringState.createPasswordField( this );
 	}
 }

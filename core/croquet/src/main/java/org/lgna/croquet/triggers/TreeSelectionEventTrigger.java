@@ -55,7 +55,7 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 		return new TreeSelectionEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
 		super( origin, viewController, treeSelectionEvent );
 	}
 

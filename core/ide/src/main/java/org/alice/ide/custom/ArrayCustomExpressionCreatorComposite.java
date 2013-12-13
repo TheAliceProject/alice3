@@ -134,7 +134,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		return new java.awt.Dimension( 400, 500 );
 	}
 

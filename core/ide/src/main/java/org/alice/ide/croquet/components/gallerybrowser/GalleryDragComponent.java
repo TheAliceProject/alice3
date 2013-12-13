@@ -53,7 +53,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	private final java.awt.Color activeHighlightColor;
 	private final java.awt.Color activeShadowColor;
 
-	private static final class SuperclassIconLabel extends org.lgna.croquet.components.JComponent<javax.swing.JLabel> {
+	private static final class SuperclassIconLabel extends org.lgna.croquet.views.JComponent<javax.swing.JLabel> {
 		private final Class<?> modelResourceInterface;
 
 		public SuperclassIconLabel( Class<?> modelResourceInterface ) {
@@ -121,9 +121,9 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				modelResourceCls = resourceKey.getModelResourceCls();
 			}
 
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
+			org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
-			label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.BOTTOM );
+			label.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.BOTTOM );
 			this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
 		}
 		if( modelResourceCls != null ) {
@@ -145,12 +145,12 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			}
 		}
 
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
 		label.setText( model.getText() );
 		org.lgna.croquet.icon.IconFactory iconFactory = model.getIconFactory();
 		label.setIcon( iconFactory != null ? iconFactory.getIcon( model.getIconSize() ) : null );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		label.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.BOTTOM );
+		label.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.CENTER );
 
 		this.internalAddComponent( label, GalleryDragLayoutManager.BASE_CONSTRAINT );
 		this.setBackgroundColor( this.baseColor );

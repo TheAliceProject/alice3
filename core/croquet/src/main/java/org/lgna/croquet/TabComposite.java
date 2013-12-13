@@ -45,10 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
+public interface TabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends Composite<V> {
 	public boolean isCloseable();
 
 	public boolean isPotentiallyCloseable();
 
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button );
 }

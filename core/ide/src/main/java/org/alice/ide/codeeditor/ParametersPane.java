@@ -59,7 +59,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
+	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
 		return new TypedParameterPane( getProperty(), parameter );
 	}
 
@@ -67,7 +67,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "( " ) );
+			this.addComponent( new org.lgna.croquet.views.Label( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -82,17 +82,17 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				text = " with parameters: ";
 			}
 			if( text != null ) {
-				this.addComponent( new org.lgna.croquet.components.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+				this.addComponent( new org.lgna.croquet.views.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			}
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, int N ) {
+	protected org.lgna.croquet.views.Component<?> createInterstitial( int i, int N ) {
 		if( i < ( N - 1 ) ) {
-			return new org.lgna.croquet.components.Label( ", " );
+			return new org.lgna.croquet.views.Label( ", " );
 		} else {
-			return org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 );
+			return org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 );
 		}
 	}
 
@@ -113,7 +113,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-			this.addComponent( new org.lgna.croquet.components.Label( " )" ) );
+			this.addComponent( new org.lgna.croquet.views.Label( " )" ) );
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}

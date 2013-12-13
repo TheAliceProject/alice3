@@ -56,7 +56,7 @@ public class InfixExpressionView extends AbstractExpressionView<org.lgna.project
 
 		String value = resourceBundle.getString( e.name() );
 		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-		org.lgna.croquet.components.JComponent<?> component = factory.createComponent( page, infixExpression );
+		org.lgna.croquet.views.JComponent<?> component = factory.createComponent( page, infixExpression );
 		for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
 			if( child instanceof javax.swing.JLabel ) {
 				javax.swing.JLabel label = (javax.swing.JLabel)child;

@@ -51,11 +51,11 @@ import org.alice.stageide.modelresource.ResourceNode;
  */
 public class SearchTabView extends GalleryTabView {
 	public static final javax.swing.Icon SEARCH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( SearchTabView.class.getResource( "images/system-search.png" ) );
-	private final org.lgna.croquet.components.AbstractLabel noMatchesLabel;
-	private final org.lgna.croquet.components.AbstractLabel noEntryLabel;
+	private final org.lgna.croquet.views.AbstractLabel noMatchesLabel;
+	private final org.lgna.croquet.views.AbstractLabel noEntryLabel;
 
-	private final org.lgna.croquet.components.LineAxisPanel filteredResourcesView = new org.lgna.croquet.components.LineAxisPanel();
-	private final org.lgna.croquet.components.TextField filterTextField;
+	private final org.lgna.croquet.views.LineAxisPanel filteredResourcesView = new org.lgna.croquet.views.LineAxisPanel();
+	private final org.lgna.croquet.views.TextField filterTextField;
 
 	public SearchTabView( org.alice.stageide.gallerybrowser.search.croquet.SearchTab composite ) {
 		super( composite );
@@ -71,10 +71,10 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.scaleFont( 1.2f );
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
-		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.filteredResourcesView );
+		org.lgna.croquet.views.ScrollPane scrollPane = createGalleryScrollPane( this.filteredResourcesView );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(
+		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel(
 				composite.getFilterState().getSidekickLabel().createLabel(),
 				this.filterTextField
 				) );

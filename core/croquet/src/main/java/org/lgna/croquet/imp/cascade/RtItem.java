@@ -59,7 +59,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 	private final RtBlank<B>[] rtBlanks;
 	private final CascadeBlankChild<F> owner;
 	private final int index;
-	private org.lgna.croquet.components.ViewController<?, ?> menuItem = null;
+	private org.lgna.croquet.views.ViewController<?, ?> menuItem = null;
 	private boolean wasLast = false;
 
 	public RtItem( M element, C node, CascadeBlankChild<F> owner, int index ) {
@@ -160,7 +160,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		//		assert stepFillIn == this.getContext() : stepFillIn;
 	}
 
-	protected void addNextNodeMenuItems( org.lgna.croquet.components.MenuItemContainer parent ) {
+	protected void addNextNodeMenuItems( org.lgna.croquet.views.MenuItemContainer parent ) {
 		RtBlank<?> nextNode = this.getNextNode();
 		if( nextNode.isAutomaticallyDetermined() ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextNode );
@@ -171,19 +171,19 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		int i = 0;
 		while( i < N ) {
 			RtItem<?, ?, ?, ?> rtItem = children[ i ];
-			org.lgna.croquet.components.ViewController<?, ?> menuItem = rtItem.getMenuItem();
+			org.lgna.croquet.views.ViewController<?, ?> menuItem = rtItem.getMenuItem();
 			if( menuItem != null ) {
-				if( menuItem instanceof org.lgna.croquet.components.CascadeMenu ) {
-					parent.addCascadeMenu( (org.lgna.croquet.components.CascadeMenu)menuItem );
-				} else if( menuItem instanceof org.lgna.croquet.components.CascadeMenuItem ) {
-					org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem = (org.lgna.croquet.components.CascadeMenuItem)menuItem;
+				if( menuItem instanceof org.lgna.croquet.views.CascadeMenu ) {
+					parent.addCascadeMenu( (org.lgna.croquet.views.CascadeMenu)menuItem );
+				} else if( menuItem instanceof org.lgna.croquet.views.CascadeMenuItem ) {
+					org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem = (org.lgna.croquet.views.CascadeMenuItem)menuItem;
 					if( itemChildrenAndComboOffsetsPair.isComboOffset( i ) ) {
 						i++;
 						RtItem<?, ?, ?, ?> rtItem2 = children[ i ];
-						org.lgna.croquet.components.ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
+						org.lgna.croquet.views.ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
 						if( menuItem2 != null ) {
-							if( menuItem2 instanceof org.lgna.croquet.components.CascadeMenu ) {
-								org.lgna.croquet.components.CascadeMenu cascadeMenu = (org.lgna.croquet.components.CascadeMenu)menuItem2;
+							if( menuItem2 instanceof org.lgna.croquet.views.CascadeMenu ) {
+								org.lgna.croquet.views.CascadeMenu cascadeMenu = (org.lgna.croquet.views.CascadeMenu)menuItem2;
 								parent.addCascadeCombo( cascadeMenuItem, cascadeMenu );
 							} else {
 								assert false : menuItem2;
@@ -205,7 +205,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		}
 	}
 
-	protected void removeAll( org.lgna.croquet.components.MenuItemContainer parent ) {
+	protected void removeAll( org.lgna.croquet.views.MenuItemContainer parent ) {
 		parent.removeAllMenuItems();
 	}
 
@@ -217,29 +217,29 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 	};
 	private javax.swing.event.MenuListener menuListener = new javax.swing.event.MenuListener() {
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
-			RtItem.this.addNextNodeMenuItems( (org.lgna.croquet.components.CascadeMenu)RtItem.this.getMenuItem() );
+			RtItem.this.addNextNodeMenuItems( (org.lgna.croquet.views.CascadeMenu)RtItem.this.getMenuItem() );
 			RtItem.this.select();
 		}
 
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			RtItem.this.deselect();
-			RtItem.this.removeAll( (org.lgna.croquet.components.CascadeMenu)RtItem.this.getMenuItem() );
+			RtItem.this.removeAll( (org.lgna.croquet.views.CascadeMenu)RtItem.this.getMenuItem() );
 		}
 
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 		}
 	};
 
-	protected org.lgna.croquet.components.ViewController<?, ?> createMenuItem( CascadeItem<F, B> item, boolean isLast ) {
-		org.lgna.croquet.components.ViewController<?, ?> rv;
+	protected org.lgna.croquet.views.ViewController<?, ?> createMenuItem( CascadeItem<F, B> item, boolean isLast ) {
+		org.lgna.croquet.views.ViewController<?, ?> rv;
 		javax.swing.JMenuItem jMenuItem;
 		if( isLast ) {
-			org.lgna.croquet.components.CascadeMenuItem menuItem = new org.lgna.croquet.components.CascadeMenuItem( item, this.getRtRoot() );
+			org.lgna.croquet.views.CascadeMenuItem menuItem = new org.lgna.croquet.views.CascadeMenuItem( item, this.getRtRoot() );
 			menuItem.getAwtComponent().addActionListener( this.actionListener );
 			jMenuItem = menuItem.getAwtComponent();
 			rv = menuItem;
 		} else {
-			org.lgna.croquet.components.CascadeMenu menu = new org.lgna.croquet.components.CascadeMenu( item );
+			org.lgna.croquet.views.CascadeMenu menu = new org.lgna.croquet.views.CascadeMenu( item );
 			menu.getAwtComponent().addMenuListener( this.menuListener );
 			jMenuItem = menu.getAwtComponent();
 			rv = menu;
@@ -249,17 +249,17 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		return rv;
 	}
 
-	public org.lgna.croquet.components.ViewController<?, ?> getMenuItem() {
+	public org.lgna.croquet.views.ViewController<?, ?> getMenuItem() {
 		CascadeItem<F, B> item = this.getElement();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
 			if( this.wasLast == isLast ) {
 				//pass
 			} else {
-				if( this.menuItem instanceof org.lgna.croquet.components.CascadeMenu ) {
-					( (org.lgna.croquet.components.CascadeMenu)this.menuItem ).getAwtComponent().removeMenuListener( this.menuListener );
-				} else if( this.menuItem instanceof org.lgna.croquet.components.CascadeMenuItem ) {
-					( (org.lgna.croquet.components.CascadeMenuItem)this.menuItem ).getAwtComponent().removeActionListener( this.actionListener );
+				if( this.menuItem instanceof org.lgna.croquet.views.CascadeMenu ) {
+					( (org.lgna.croquet.views.CascadeMenu)this.menuItem ).getAwtComponent().removeMenuListener( this.menuListener );
+				} else if( this.menuItem instanceof org.lgna.croquet.views.CascadeMenuItem ) {
+					( (org.lgna.croquet.views.CascadeMenuItem)this.menuItem ).getAwtComponent().removeActionListener( this.actionListener );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.menuItem );
 				}
@@ -321,10 +321,10 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ViewController<?, ?> createMenuItem( CascadeItem<Void, Void> item, boolean isLast ) {
+	protected org.lgna.croquet.views.ViewController<?, ?> createMenuItem( CascadeItem<Void, Void> item, boolean isLast ) {
 		//todo
 		if( ( item.getMenuItemText( null ) != null ) || ( item.getMenuItemIcon( null ) != null ) ) {
-			org.lgna.croquet.components.ViewController<?, ?> rv = super.createMenuItem( item, isLast );
+			org.lgna.croquet.views.ViewController<?, ?> rv = super.createMenuItem( item, isLast );
 			rv.getAwtComponent().setEnabled( false );
 			return rv;
 		} else {

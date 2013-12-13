@@ -60,12 +60,12 @@ public class CascadeAutomaticDeterminationTrigger extends Trigger {
 	}
 
 	@Override
-	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		return this.previousTrigger.getViewController();
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
 	}
 

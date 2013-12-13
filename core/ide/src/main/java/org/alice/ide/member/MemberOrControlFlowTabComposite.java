@@ -45,13 +45,13 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberOrControlFlowTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
+public abstract class MemberOrControlFlowTabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public MemberOrControlFlowTabComposite( java.util.UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.4f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );

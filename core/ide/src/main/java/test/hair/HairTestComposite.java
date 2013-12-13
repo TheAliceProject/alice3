@@ -50,7 +50,7 @@ import org.alice.stageide.personresource.data.HairUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private final java.awt.event.ActionListener eyeDropperListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.PointerInfo pointerInfo = java.awt.MouseInfo.getPointerInfo();
@@ -73,14 +73,14 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 		}
 	};
 
-	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
 
 	public HairTestComposite() {
 		super( java.util.UUID.fromString( "c51cd23c-62c0-46fe-be64-099c081ffa2a" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairColorName, String> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
@@ -107,12 +107,12 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 			}
 		}
 
-		org.lgna.croquet.components.BorderPanel outerPanel = new org.lgna.croquet.components.BorderPanel();
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
+		org.lgna.croquet.views.BorderPanel outerPanel = new org.lgna.croquet.views.BorderPanel();
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel();
 
 		label.setOpaque( true );
 		label.setBackgroundColor( java.awt.Color.RED );
-		outerPanel.addPageStartComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineStart( new org.lgna.croquet.components.Label( "eyedropper (F2)" ) ).center( label ).build() );
+		outerPanel.addPageStartComponent( new org.lgna.croquet.views.BorderPanel.Builder().lineStart( new org.lgna.croquet.views.Label( "eyedropper (F2)" ) ).center( label ).build() );
 
 		class HairPathListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
 			@Override
@@ -127,34 +127,34 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 		for( HairColorName hairColorName : HairColorName.values() ) {
 			java.util.List<String> paths = map.get( hairColorName );
 			if( paths != null ) {
-				panel.addComponent( new org.lgna.croquet.components.Label( hairColorName.name(), hairColorName.getIcon() ) );
+				panel.addComponent( new org.lgna.croquet.views.Label( hairColorName.name(), hairColorName.getIcon() ) );
 				org.lgna.croquet.ListSelectionState<String> state = this.createListSelectionState( this.createKey( "unused" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, -1, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( paths, String.class ) );
-				org.lgna.croquet.components.List<String> listView = state.createList();
+				org.lgna.croquet.views.List<String> listView = state.createList();
 				listView.setCellRenderer( new HairPathListCellRenderer() );
-				listView.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+				listView.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
 				listView.setVisibleRowCount( 1 );
 				panel.addComponent( listView, "wrap" );
 			}
 		}
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( panel );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
 
 		outerPanel.addCenterComponent( scrollPane );
 		javax.swing.KeyStroke keyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 );
-		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
 
 		return outerPanel;
 	}
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = app.getFrame();
+		org.lgna.croquet.views.Frame frame = app.getFrame();
 		HairTestComposite hairTest = new HairTestComposite();
 		frame.getContentPane().addCenterComponent( hairTest.getRootComponent() );
 		frame.setLocation( -1920, 400 );
 		frame.setSize( 1000, 800 );
 		frame.maximize();
-		frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 		frame.setVisible( true );
 	}
 }

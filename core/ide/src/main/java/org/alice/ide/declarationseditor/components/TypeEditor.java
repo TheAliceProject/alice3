@@ -131,9 +131,9 @@ class DeclarationMenuIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownA
 /**
  * @author Dennis Cosgrove
  */
-public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
-	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
+public class TypeEditor extends org.lgna.croquet.views.BorderPanel {
+	private final org.lgna.croquet.views.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
+	private final org.lgna.croquet.views.AbstractPopupButton<?> startButton;
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
@@ -143,7 +143,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		//				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 		//				);
 
-		org.lgna.croquet.components.JComponent<?> headerTrailingComponent = composite.getControlsComposite().getView();
+		org.lgna.croquet.views.JComponent<?> headerTrailingComponent = composite.getControlsComposite().getView();
 
 		//		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
 		//		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
@@ -153,7 +153,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 		final boolean IS_CUSTOM_DRAWING_DESIRED = false;
 		if( IS_CUSTOM_DRAWING_DESIRED ) {
-			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite>( composite.getTabState() ) {
+			this.tabbedPane = new org.lgna.croquet.views.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite>( composite.getTabState() ) {
 				@Override
 				protected TitlesPanel createTitlesPanel() {
 					return new TitlesPanel() {
@@ -179,7 +179,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 		this.startButton.setClobberIcon( new DeclarationMenuIcon() );
 		this.addCenterComponent( tabbedPane );
-		org.lgna.croquet.components.JComponent<?> component;
+		org.lgna.croquet.views.JComponent<?> component;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			component = this.startButton;
 		} else {
@@ -192,7 +192,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = (org.alice.ide.declarationseditor.DeclarationsEditorComposite)this.getComposite();
 		org.alice.ide.declarationseditor.DeclarationComposite item = composite.getTabState().getValue();
 		if( item != null ) {
-			org.lgna.croquet.components.JComponent<?> component = this.tabbedPane.getMainComponentFor( item );
+			org.lgna.croquet.views.JComponent<?> component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
 				return ( (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component ).getCodePanelWithDropReceptor();
 			}

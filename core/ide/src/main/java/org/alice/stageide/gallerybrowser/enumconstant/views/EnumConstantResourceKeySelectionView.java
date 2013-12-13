@@ -45,16 +45,16 @@ package org.alice.stageide.gallerybrowser.enumconstant.views;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantResourceKeySelectionView extends org.lgna.croquet.components.BorderPanel {
+public class EnumConstantResourceKeySelectionView extends org.lgna.croquet.views.BorderPanel {
 	public EnumConstantResourceKeySelectionView( org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite ) {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
-		org.lgna.croquet.components.List<org.alice.stageide.modelresource.EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
+		org.lgna.croquet.views.List<org.alice.stageide.modelresource.EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
 		list.setCellRenderer( new org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		list.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
 		list.setBackgroundColor( this.getBackgroundColor() );
 		list.enableClickingDefaultButtonOnDoubleClick();
-		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( list ) );
+		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane( list ) );
 	}
 }

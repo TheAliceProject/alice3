@@ -201,11 +201,11 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public org.lgna.croquet.components.Component<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.views.Component<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( icon );
+			org.lgna.croquet.views.Label rv = new org.lgna.croquet.views.Label( icon );
 			//			rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
 			//			rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
 			rv.getAwtComponent().setAlignmentY( 0.5f );
@@ -215,12 +215,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public org.lgna.croquet.components.Component<?> getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	public org.lgna.croquet.views.Component<?> getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 		if( constructor != null ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
 			if( COLOR_TYPE.isAssignableFrom( type ) ) {
-				org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
+				org.lgna.croquet.views.Label rv = new org.lgna.croquet.views.Label();
 				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
 				java.awt.Color awtColor = org.lgna.story.EmployeesOnly.getAwtColor( color );
 				rv.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );

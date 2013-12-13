@@ -54,7 +54,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	public EmptyExpressionPane( org.alice.ide.ast.EmptyExpression emptyExpression ) {
 		super( null );
 		this.emptyExpression = emptyExpression;
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( " ??? " );
+		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( " ??? " );
 		this.addComponent( label );
 	}
 

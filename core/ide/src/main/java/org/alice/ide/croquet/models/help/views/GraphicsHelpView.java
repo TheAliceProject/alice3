@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsHelpView extends org.lgna.croquet.components.MigPanel {
+public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 	private static String getSystemInformation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "System information: " );
@@ -92,13 +92,13 @@ public class GraphicsHelpView extends org.lgna.croquet.components.MigPanel {
 		sb.append( "." );
 		final int LEVEL_1 = 16;
 		final int LEVEL_2 = 32;
-		this.addComponent( new org.lgna.croquet.components.Label( "The most common way to fix graphics problems is to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.Label( "Where to go for help:" ), "wrap, gapleft " + LEVEL_1 );
+		this.addComponent( new org.lgna.croquet.views.Label( "The most common way to fix graphics problems is to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( "Where to go for help:" ), "wrap, gapleft " + LEVEL_1 );
 		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( org.alice.ide.issue.croquet.GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.components.Label( "About your computer:" ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
-		this.addComponent( new org.lgna.croquet.components.Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.components.Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.components.Label( sb.toString() ), "wrap, gaptop 24" );
+		this.addComponent( new org.lgna.croquet.views.Label( "About your computer:" ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
+		this.addComponent( new org.lgna.croquet.views.Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new org.lgna.croquet.views.Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new org.lgna.croquet.views.Label( sb.toString() ), "wrap, gaptop 24" );
 	}
 }

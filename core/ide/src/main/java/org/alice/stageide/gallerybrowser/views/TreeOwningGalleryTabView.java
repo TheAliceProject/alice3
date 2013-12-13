@@ -46,13 +46,13 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class TreeOwningGalleryTabView extends GalleryTabView {
-	private class ModelResourceDirectoryView extends org.lgna.croquet.components.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
+	private class ModelResourceDirectoryView extends org.lgna.croquet.views.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
 		public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
 			super( model );
 		}
 
 		@Override
-		protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+		protected org.lgna.croquet.views.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
 			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value );
 		}
 	}
@@ -64,7 +64,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	};
 
 	private final java.util.Map<org.alice.stageide.modelresource.ResourceNode, Integer> mapNodeToHorizontalScrollPosition = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final org.lgna.croquet.components.ScrollPane scrollPane;
+	private final org.lgna.croquet.views.ScrollPane scrollPane;
 
 	public TreeOwningGalleryTabView( org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite ) {
 		super( composite );
@@ -81,9 +81,9 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		} else {
 			breadCrumbColor = null;
 		}
-		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
+		org.lgna.croquet.views.BorderPanel panel = new org.lgna.croquet.views.BorderPanel.Builder()
 				.vgap( PAD )
-				.pageStart( new org.lgna.croquet.components.TreePathViewController( state, breadCrumbColor ) )
+				.pageStart( new org.lgna.croquet.views.TreePathViewController( state, breadCrumbColor ) )
 				.center( scrollPane )
 				.build();
 

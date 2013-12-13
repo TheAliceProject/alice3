@@ -45,18 +45,18 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class FaceTabView extends org.lgna.croquet.components.MigPanel {
+public class FaceTabView extends org.lgna.croquet.views.MigPanel {
 	public FaceTabView( org.alice.stageide.personresource.FaceTabComposite composite ) {
 		super( composite, "insets 2, fillx", "[right][left, grow, shrink]", "" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1, org.alice.stageide.personresource.views.renderers.FaceListCellRenderer.getInstance() );
+		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1, org.alice.stageide.personresource.views.renderers.FaceListCellRenderer.getInstance() );
 		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
-		org.lgna.croquet.components.ScrollPane faceScrollPane = new org.lgna.croquet.components.ScrollPane( faceList );
-		faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		org.lgna.croquet.views.ScrollPane faceScrollPane = new org.lgna.croquet.views.ScrollPane( faceList );
+		faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		faceScrollPane.setBothScrollBarIncrements( 66, 66 );
 		this.addComponent( faceScrollPane, "wrap, grow, shrink" );
 
@@ -74,7 +74,7 @@ public class FaceTabView extends org.lgna.croquet.components.MigPanel {
 				itemSelectedState.initializeIfNecessary();
 				itemSelectedState.setTextForBothTrueAndFalse( "" );
 				itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );
-				org.lgna.croquet.components.ToggleButton toggleButton = itemSelectedState.createToggleButton();
+				org.lgna.croquet.views.ToggleButton toggleButton = itemSelectedState.createToggleButton();
 				toggleButton.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 				this.addComponent( toggleButton, constraint );
 				constraint = "";

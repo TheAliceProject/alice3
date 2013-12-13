@@ -50,7 +50,7 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 		super( composite );
 	}
 
-	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label( org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+	private final org.lgna.croquet.views.Label typeIconView = new org.lgna.croquet.views.Label( org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 
 	public FieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
@@ -58,19 +58,19 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField>)this.getComposite();
 		org.lgna.project.ast.UserField field = composite.getPreviewValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> getSideView() {
+	protected org.lgna.croquet.views.JComponent<?> getSideView() {
 		return this.typeIconView;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
-		return new org.lgna.croquet.components.BorderPanel.Builder()
+	protected org.lgna.croquet.views.JComponent<?> createPageStartComponent() {
+		return new org.lgna.croquet.views.BorderPanel.Builder()
 				.lineStart( super.createPageStartComponent() )
 				.lineEnd( this.getSideView() )
 				.build();

@@ -45,13 +45,13 @@ package org.alice.ide.issue.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowImageView extends org.lgna.croquet.components.BorderPanel {
+public class ShowImageView extends org.lgna.croquet.views.BorderPanel {
 	public ShowImageView( org.alice.ide.issue.croquet.ShowImageComposite composite ) {
 		super( composite );
 		java.awt.Image image = composite.getImage();
 		int width = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( image );
 		int height = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( image );
-		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( image ) ) ) );
+		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane( new org.lgna.croquet.views.Label( new javax.swing.ImageIcon( image ) ) ) );
 		this.setPreferredSize( new java.awt.Dimension( width / 2, height / 2 ) );
 	}
 }

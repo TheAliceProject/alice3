@@ -50,7 +50,7 @@ public class ConstructorView extends MemberView {
 		super( org.alice.ide.declarationseditor.type.ConstructorMenuModel.getInstance( constructor ) );
 		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForConstructor( constructor );
-		org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
+		org.lgna.croquet.views.Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
 		//hyperlink.setClobberText( "constructor" );
 		this.addComponent( hyperlink );

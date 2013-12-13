@@ -59,7 +59,7 @@ public class MainComposite extends org.lgna.croquet.SimpleComposite {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View createView() {
-		return new org.lgna.croquet.components.BorderPanel();
+	protected org.lgna.croquet.views.View createView() {
+		return new org.lgna.croquet.views.BorderPanel();
 	}
 }

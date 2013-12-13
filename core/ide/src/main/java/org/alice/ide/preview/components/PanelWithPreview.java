@@ -46,7 +46,7 @@ package org.alice.ide.preview.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview extends org.lgna.croquet.components.BorderPanel {
+public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPanel {
 	private static final int PAD = 16;
 
 	public PanelWithPreview() {
@@ -65,7 +65,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 
 	private org.alice.ide.croquet.components.PreviewPanel previewPanel;
 
-	public abstract org.lgna.croquet.components.JComponent<?> createPreviewSubComponent();
+	public abstract org.lgna.croquet.views.JComponent<?> createPreviewSubComponent();
 
 	public org.alice.ide.croquet.components.PreviewPanel getPreviewPanel() {
 		return this.previewPanel;
@@ -82,7 +82,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 		}
 	}
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createMainComponent();
+	protected abstract org.lgna.croquet.views.JComponent<?> createMainComponent();
 
 	private void initializeIfNecessary() {
 		if( this.previewPanel != null ) {
@@ -92,16 +92,16 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 
 			if( this.isPreviewDesired() ) {
 				this.previewPanel = this.createPreviewPanel();
-				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
-						new org.lgna.croquet.components.LineAxisPanel(
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
+				org.lgna.croquet.views.PageAxisPanel northPanel = new org.lgna.croquet.views.PageAxisPanel(
+						new org.lgna.croquet.views.LineAxisPanel(
+								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
+								new org.lgna.croquet.views.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
+								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
 								this.previewPanel
 						),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
-						new org.lgna.croquet.components.HorizontalSeparator(),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
+						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ),
+						new org.lgna.croquet.views.HorizontalSeparator(),
+						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 )
 						);
 				this.addPageStartComponent( northPanel );
 			}

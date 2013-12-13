@@ -45,7 +45,7 @@ package org.alice.ide.capture.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageCaptureRectangleStencilView extends org.lgna.croquet.components.LayerStencil {
+public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.LayerStencil {
 	private static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 63, 63, 63, 63 );
 	private static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 31, 31, 31, 63 );
 
@@ -67,7 +67,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	private static final java.awt.Paint STENCIL_PAINT = createStencilPaint();
 
 	private final JZoomView jZoomView = new JZoomView();
-	private final org.lgna.croquet.components.Window window = new org.lgna.croquet.components.Window();
+	private final org.lgna.croquet.views.Window window = new org.lgna.croquet.views.Window();
 
 	private final class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		private int xPressed = -1;
@@ -141,7 +141,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	private final java.awt.Rectangle hole = new java.awt.Rectangle();
 	private final org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite;
 
-	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId, org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite ) {
+	public ImageCaptureRectangleStencilView( org.lgna.croquet.views.AbstractWindow<?> window, Integer layerId, org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite ) {
 		super( window, layerId );
 		this.imageCaptureComposite = imageCaptureComposite;
 		this.window.getAwtComponent().setContentPane( this.jZoomView );

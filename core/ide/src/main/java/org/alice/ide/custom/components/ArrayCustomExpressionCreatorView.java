@@ -146,8 +146,8 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	}
 
-	private static class ExpressionDropDown extends org.lgna.croquet.components.DropDown<org.lgna.croquet.PopupPrepModel> {
-		private class MainComponent extends org.lgna.croquet.components.BorderPanel {
+	private static class ExpressionDropDown extends org.lgna.croquet.views.DropDown<org.lgna.croquet.PopupPrepModel> {
+		private class MainComponent extends org.lgna.croquet.views.BorderPanel {
 			private final org.alice.ide.x.AstI18nFactory factory;
 
 			public MainComponent( org.alice.ide.x.AstI18nFactory factory ) {
@@ -160,7 +160,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 				this.forgetAndRemoveAllComponents();
 				org.lgna.project.ast.Expression expression = cascade.getData().getItemAt( cascade.getIndex() );
 				this.addLineStartComponent( factory.createExpressionPane( expression ) );
-				this.addCenterComponent( new org.lgna.croquet.components.Label() );
+				this.addCenterComponent( new org.lgna.croquet.views.Label() );
 				this.revalidateAndRepaint();
 			}
 		};
@@ -185,7 +185,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	};
 
-	private static class ExpressionMutableList extends org.lgna.croquet.components.MutableList<org.lgna.project.ast.Expression> {
+	private static class ExpressionMutableList extends org.lgna.croquet.views.MutableList<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
 
 		private class JExpressionItemAtIndexButton extends JItemAtIndexButton {
@@ -283,19 +283,19 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
+	protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.expressionList );
-		org.lgna.croquet.components.PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( this.expressionList );
+		org.lgna.croquet.views.PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
 		scrollPane.getAwtComponent().setMinimumSize( new java.awt.Dimension( 0, 0 ) );
 		popupButton.setMaximumSizeClampedToPreferredSize( true );
 
 		rv.addComponent( composite.getArrayTypeLabel().createLabel() );
-		rv.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ), "wrap" );
+		rv.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ), "wrap" );
 
-		org.lgna.croquet.components.AbstractLabel label = composite.getValueLabel().createLabel();
+		org.lgna.croquet.views.AbstractLabel label = composite.getValueLabel().createLabel();
 		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 		rv.addComponent( label, "aligny top, spany 2" );
 		rv.addComponent( scrollPane, "wrap" );

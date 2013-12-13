@@ -49,7 +49,7 @@ import java.awt.Point;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
-import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.views.DragComponent;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;

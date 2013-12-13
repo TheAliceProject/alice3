@@ -51,7 +51,7 @@ public class MethodsView extends MembersView<org.lgna.project.ast.UserMethod> {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserMethod method ) {
+	protected org.lgna.croquet.views.JComponent<?> createComponentForItem( org.lgna.project.ast.UserMethod method ) {
 		return new MethodView( method );
 	}
 }

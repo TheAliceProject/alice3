@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDropDown<M extends org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType>> extends org.lgna.croquet.components.ItemDropDown<org.lgna.project.ast.AbstractType, M> {
+public class TypeDropDown<M extends org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType>> extends org.lgna.croquet.views.ItemDropDown<org.lgna.project.ast.AbstractType, M> {
 	public TypeDropDown( M model ) {
 		super( model );
 		this.update( model.getValue() );

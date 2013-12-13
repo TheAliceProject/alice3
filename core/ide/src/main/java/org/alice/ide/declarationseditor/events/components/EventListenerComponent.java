@@ -46,11 +46,11 @@ import javax.swing.BorderFactory;
 
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.x.components.StatementListPropertyView;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.JComponent;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;
@@ -77,9 +77,9 @@ public class EventListenerComponent extends BorderPanel {
 
 					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
 							new Label( "declare procedure", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-							org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ),
+							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ),
 							new Label( singleAbstractMethod.getName(), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
-							org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ),
 							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
 							);
 
@@ -105,7 +105,7 @@ public class EventListenerComponent extends BorderPanel {
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
 		rv.addComponent( new org.alice.ide.common.ThisPane() );
-		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+		rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ) );
 		Label label = new Label( methodInvocation.method.getValue().getName(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		rv.addComponent( label );
 		if( method.getRequiredParameters() != null ) {

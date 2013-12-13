@@ -70,10 +70,10 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActi
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.DragComponent;
-import org.lgna.croquet.components.SpringPanel.Horizontal;
-import org.lgna.croquet.components.SpringPanel.Vertical;
+import org.lgna.croquet.views.ComboBox;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.SpringPanel.Horizontal;
+import org.lgna.croquet.views.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
@@ -185,11 +185,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			globalDragAdapter.dragExited( dragStep );
 		}
 
-		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return StorytellingSceneEditor.this;
 		}
 
-		public org.lgna.croquet.components.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.JComponent<?> getViewController() {
 			return StorytellingSceneEditor.this;
 		}
 	}
@@ -225,7 +225,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory
 			.getInstance().createLightweightOnscreenLookingGlass();
 
-	private class LookingGlassPanel extends org.lgna.croquet.components.CompassPointSpringPanel {
+	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
 			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
@@ -280,11 +280,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
-	private org.lgna.croquet.components.Button expandButton;
-	private org.lgna.croquet.components.Button contractButton;
+	private org.lgna.croquet.views.Button expandButton;
+	private org.lgna.croquet.views.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton();
+	private final org.lgna.croquet.views.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton();
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;

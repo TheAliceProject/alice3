@@ -45,7 +45,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionStateView extends org.lgna.croquet.components.BorderPanel {
+public class ExpressionStateView extends org.lgna.croquet.views.BorderPanel {
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model;
 	private final org.alice.ide.x.AstI18nFactory factory;
 

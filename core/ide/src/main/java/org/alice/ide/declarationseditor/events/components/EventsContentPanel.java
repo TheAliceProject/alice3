@@ -76,7 +76,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		}
 
 		@Override
-		protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
+		protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
 				Expression expression = expressionStatement.expression.getValue();
@@ -109,12 +109,12 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> getAsSeenBy() {
+	protected org.lgna.croquet.views.Component<?> getAsSeenBy() {
 		return this;
 	}
 
 	@Override
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+	public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
 		return null;
 	}

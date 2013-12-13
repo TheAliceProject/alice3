@@ -47,7 +47,7 @@ import org.alice.ide.ast.type.croquet.ImportTypeWizard;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, ImportTypeWizard> {
+public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.views.Panel, ImportTypeWizard> {
 	private final org.lgna.croquet.BooleanState isIncludingAllState = this.createBooleanState( this.createKey( "isIncludingAllState" ), false );
 	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
@@ -95,7 +95,7 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
 	}
 }

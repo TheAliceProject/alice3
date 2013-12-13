@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public final class PopupPrepStep extends PrepStep<org.lgna.croquet.PopupPrepModel> {
-	private transient org.lgna.croquet.components.PopupMenu popupMenu;
+	private transient org.lgna.croquet.views.PopupMenu popupMenu;
 
 	public static PopupPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new PopupPrepStep( parent, model, trigger );
@@ -61,7 +61,7 @@ public final class PopupPrepStep extends PrepStep<org.lgna.croquet.PopupPrepMode
 		super( binaryDecoder );
 	}
 
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
 		this.popupMenu = popupMenu;
 		trigger.showPopupMenu( popupMenu );
@@ -71,7 +71,7 @@ public final class PopupPrepStep extends PrepStep<org.lgna.croquet.PopupPrepMode
 	public void handleResized( java.awt.event.ComponentEvent componentEvent ) {
 	}
 
-	public org.lgna.croquet.components.PopupMenu getPopupMenu() {
+	public org.lgna.croquet.views.PopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}
 }

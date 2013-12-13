@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private AbstractLoginComposite loginComposite;
 	private LogInOutComposite parent;
 
@@ -55,10 +55,10 @@ public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.c
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.FlowPanel(
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.FlowPanel(
 				this,
-				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
+				org.lgna.croquet.views.FlowPanel.Alignment.TRAILING,
 				loginComposite.getLaunchOperation().createButton() );
 	}
 

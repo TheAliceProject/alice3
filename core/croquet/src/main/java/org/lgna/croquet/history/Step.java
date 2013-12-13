@@ -164,7 +164,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 	}
 
-	protected org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+	protected org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 

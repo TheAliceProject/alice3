@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
+public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
 	public static final class InternalCloseOperationResolver extends IndirectResolver<InternalCloseOperation, PlainDialogOperationComposite> {
 		private InternalCloseOperationResolver( PlainDialogOperationComposite indirect ) {
 			super( indirect );
@@ -134,13 +134,13 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view ) {
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view ) {
 		super.releaseView();
 		//todo
 	}

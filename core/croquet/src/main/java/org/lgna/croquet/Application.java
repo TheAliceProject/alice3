@@ -66,8 +66,8 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private final org.lgna.croquet.components.Frame frame = org.lgna.croquet.components.Frame.getApplicationRootFrame();
-	private final java.util.Stack<org.lgna.croquet.components.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow<?>[] { this.frame } );
+	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
+	private final java.util.Stack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.views.AbstractWindow<?>[] { this.frame } );
 
 	public Application() {
 		assert Application.singleton == null;
@@ -92,17 +92,17 @@ public abstract class Application {
 
 	public abstract Document getDocument();
 
-	public void pushWindow( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	public void pushWindow( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		this.stack.push( window );
 	}
 
-	public org.lgna.croquet.components.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.components.AbstractWindow<?> rv = this.stack.peek();
+	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.views.AbstractWindow<?> rv = this.stack.peek();
 		this.stack.pop();
 		return rv;
 	}
 
-	public org.lgna.croquet.components.AbstractWindow<?> peekWindow() {
+	public org.lgna.croquet.views.AbstractWindow<?> peekWindow() {
 		if( this.stack.size() > 0 ) {
 			return this.stack.peek();
 		} else {
@@ -111,12 +111,12 @@ public abstract class Application {
 		}
 	}
 
-	public org.lgna.croquet.components.Frame getFrame() {
+	public org.lgna.croquet.views.Frame getFrame() {
 		return this.frame;
 	}
 
 	public void initialize( String[] args ) {
-		this.frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.DO_NOTHING );
+		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				Application.this.handleWindowOpened( e );

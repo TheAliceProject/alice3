@@ -46,7 +46,7 @@ package org.alice.ide.highlight;
 /**
  * @author Dennis Cosgrove
  */
-public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
+public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 	private static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 150 );
 	private static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
 
@@ -82,7 +82,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
 	private final org.lgna.stencil.Note note = new org.lgna.stencil.Note();
 
-	public HighlightStencil( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
+	public HighlightStencil( org.lgna.croquet.views.AbstractWindow<?> window, Integer layerId ) {
 		super( window, layerId );
 		this.note.setActive( true );
 		this.internalAddComponent( this.note );
@@ -156,7 +156,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 		if( note.isActive() ) {
 			for( org.lgna.stencil.Feature feature : note.getFeatures() ) {
-				org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
+				org.lgna.croquet.views.TrackableShape trackableShape = feature.getTrackableShape();
 				if( trackableShape != null ) {
 					if( trackableShape.isInView() ) {
 						//pass
@@ -199,7 +199,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		}
 	}
 
-	protected void show( org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverB, final String noteText ) {
+	protected void show( org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape> trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape> trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
 
 		org.lgna.stencil.Painter painter;

@@ -45,17 +45,17 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class InitialPropertyValuesToolPaletteCoreView extends org.lgna.croquet.components.FormPanel {
+public class InitialPropertyValuesToolPaletteCoreView extends org.lgna.croquet.views.FormPanel {
 	public InitialPropertyValuesToolPaletteCoreView( org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 		org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite composite = (org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite)this.getComposite();
 		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
 		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state : composite.getInitialPropertyValueExpressionStates() ) {
-			rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ), false ) );
+			rows.add( new org.lgna.croquet.views.LabeledFormRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ), false ) );
 		}
 	}
 }

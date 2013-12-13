@@ -55,7 +55,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		this.userMethod = userMethod;
 	}
 
-	protected org.lgna.croquet.components.Label createNameLabel() {
+	protected org.lgna.croquet.views.Label createNameLabel() {
 		return new org.alice.ide.ast.components.DeclarationNameLabel( this.userMethod );
 
 	}
@@ -69,7 +69,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
 			//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
-			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.views.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( userMethod.isStatic() ) {
 				sb.append( "*static* " );
@@ -80,20 +80,20 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new org.lgna.croquet.views.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 
-		org.lgna.croquet.components.Label nameLabel = this.createNameLabel();
+		org.lgna.croquet.views.Label nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( NAME_SCALE );
 		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 
 		if( userMethod.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
-			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
-				private org.lgna.croquet.components.Component<?> centerComponent;
+			class PopupPanel extends org.lgna.croquet.views.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
+				private org.lgna.croquet.views.Component<?> centerComponent;
 
-				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
+				public PopupPanel( org.lgna.croquet.views.Component<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupPrepModel( popupMenuOperation );

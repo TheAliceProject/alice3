@@ -94,7 +94,7 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 			for( int i = 0; i < depth; i++ ) {
 				sb.append( "+" );
 			}
-			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
+			return new org.lgna.croquet.views.LineAxisPanel( new org.lgna.croquet.views.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
 		} else {
 			throw new AssertionError();
 		}

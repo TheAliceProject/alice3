@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowAllSystemPropertiesView extends org.lgna.croquet.components.BorderPanel {
+public class ShowAllSystemPropertiesView extends org.lgna.croquet.views.BorderPanel {
 	public ShowAllSystemPropertiesView( org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite composite ) {
 		super( composite );
 		java.util.Properties properties = System.getProperties();

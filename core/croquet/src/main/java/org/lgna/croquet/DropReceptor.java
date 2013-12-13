@@ -46,13 +46,13 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( DropSite potentialDropSite );
+	public org.lgna.croquet.views.TrackableShape getTrackableShape( DropSite potentialDropSite );
 
 	public boolean isPotentiallyAcceptingOf( DragModel dragModel );
 
 	//public ViewController<?,?> getViewController();
 	//todo: rename
-	public org.lgna.croquet.components.JComponent<?> getViewController();
+	public org.lgna.croquet.views.JComponent<?> getViewController();
 
 	public void dragStarted( org.lgna.croquet.history.DragStep step );
 

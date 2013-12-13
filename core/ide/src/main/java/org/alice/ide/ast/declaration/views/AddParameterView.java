@@ -46,21 +46,21 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserParameter> {
-	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.components.BorderPanel warningPanel;
+	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
+	private final org.lgna.croquet.views.BorderPanel warningPanel;
 
 	public AddParameterView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
+		org.lgna.croquet.views.PageAxisPanel pane = new org.lgna.croquet.views.PageAxisPanel();
 		pane.addComponent( this.label );
-		pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-		pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
-		pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( new org.lgna.croquet.views.LineAxisPanel( new org.lgna.croquet.views.Label( "Tip: look for " ), org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
+		pane.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
 		pane.addComponent( composite.getIsRequirementToUpdateInvocationsUnderstoodState().createCheckBox() );
 
-		org.lgna.croquet.components.Label warningLabel = new org.lgna.croquet.components.Label();
+		org.lgna.croquet.views.Label warningLabel = new org.lgna.croquet.views.Label();
 		warningLabel.setIcon( javax.swing.UIManager.getIcon( "OptionPane.warningIcon" ) );
-		this.warningPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+		this.warningPanel = new org.lgna.croquet.views.BorderPanel.Builder()
 				.hgap( 32 )
 				.lineStart( warningLabel )
 				.center( pane )
@@ -71,15 +71,15 @@ public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserP
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
-		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
+	protected org.lgna.croquet.views.BorderPanel createMainComponent() {
+		org.lgna.croquet.views.BorderPanel rv = super.createMainComponent();
 		rv.addPageEndComponent( this.warningPanel );
 		return rv;
 	}

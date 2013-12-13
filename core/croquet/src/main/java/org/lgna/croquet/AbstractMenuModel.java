@@ -109,25 +109,25 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.setEnabled( isEnabled );
 	}
 
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
 
-	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
+	public void handlePopupMenuEpilogue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
 
-	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
 
-	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
 
-	protected void handleCanceled( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleCanceled( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
 
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
-		private org.lgna.croquet.components.MenuItemContainer menuItemContainer;
+		private org.lgna.croquet.views.MenuItemContainer menuItemContainer;
 
-		public PopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		public PopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 			this.menuItemContainer = menuItemContainer;
 		}
 
@@ -146,25 +146,25 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 
 	private PopupMenuListener popupMenuListener;
 
-	public final void addPopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+	public final void addPopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener == null;
 		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
 		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
 	}
 
-	public final void removePopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+	public final void removePopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener != null;
 		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
 		this.popupMenuListener = null;
 	}
 
-	public org.lgna.croquet.components.Menu createMenu() {
-		return new org.lgna.croquet.components.Menu( this );
+	public org.lgna.croquet.views.Menu createMenu() {
+		return new org.lgna.croquet.views.Menu( this );
 	};
 
 	@Override
-	public org.lgna.croquet.components.Menu createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.components.Menu rv = this.createMenu();
+	public org.lgna.croquet.views.Menu createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.views.Menu rv = this.createMenu();
 		menuItemContainer.addMenu( rv );
 		return rv;
 	}

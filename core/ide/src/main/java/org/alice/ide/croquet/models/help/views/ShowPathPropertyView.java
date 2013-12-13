@@ -45,17 +45,17 @@ package org.alice.ide.croquet.models.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowPathPropertyView extends org.lgna.croquet.components.FormPanel {
+public class ShowPathPropertyView extends org.lgna.croquet.views.FormPanel {
 	public ShowPathPropertyView( org.alice.ide.croquet.models.help.ShowPathPropertyComposite composite ) {
 		super( composite );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 
-	private org.lgna.croquet.components.LabeledFormRow[] createComponentRowsForSystemProperty( String name, String separator ) {
+	private org.lgna.croquet.views.LabeledFormRow[] createComponentRowsForSystemProperty( String name, String separator ) {
 		String value = System.getProperty( name );
 		assert value != null;
 		String[] array = value.split( separator );
-		org.lgna.croquet.components.LabeledFormRow[] rv = new org.lgna.croquet.components.LabeledFormRow[ array.length ];
+		org.lgna.croquet.views.LabeledFormRow[] rv = new org.lgna.croquet.views.LabeledFormRow[ array.length ];
 		for( int i = 0; i < array.length; i++ ) {
 			String prefix;
 			if( i == 0 ) {
@@ -63,16 +63,16 @@ public class ShowPathPropertyView extends org.lgna.croquet.components.FormPanel 
 			} else {
 				prefix = "";
 			}
-			rv[ i ] = org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( prefix + "[" + i + "]:" ), new org.lgna.croquet.components.Label( array[ i ] ) );
+			rv[ i ] = org.lgna.croquet.views.LabeledFormRow.createFromLabel( new org.lgna.croquet.views.Label( prefix + "[" + i + "]:" ), new org.lgna.croquet.views.Label( array[ i ] ) );
 		}
 		return rv;
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 		org.alice.ide.croquet.models.help.ShowPathPropertyComposite composite = (org.alice.ide.croquet.models.help.ShowPathPropertyComposite)this.getComposite();
 		String pathSepartor = System.getProperty( "path.separator" );
-		for( org.lgna.croquet.components.LabeledFormRow row : createComponentRowsForSystemProperty( composite.getPropertyName(), pathSepartor ) ) {
+		for( org.lgna.croquet.views.LabeledFormRow row : createComponentRowsForSystemProperty( composite.getPropertyName(), pathSepartor ) ) {
 			rows.add( row );
 		}
 	}

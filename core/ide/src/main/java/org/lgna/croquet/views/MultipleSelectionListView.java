@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MultipleSelectionListView<T> extends org.lgna.croquet.components.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionState<T>> {
+public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionState<T>> {
 	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionState<T> state ) {
 		super( state );
 	}

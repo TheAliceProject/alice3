@@ -122,7 +122,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
-			for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			for( org.lgna.croquet.views.JComponent<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}

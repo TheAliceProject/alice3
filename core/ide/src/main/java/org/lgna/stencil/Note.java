@@ -45,7 +45,7 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+public class Note extends org.lgna.croquet.views.JComponent<javax.swing.JPanel> {
 	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
 
@@ -84,7 +84,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 		return this.features;
 	}
 
-	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container<?> container ) {
+	public java.awt.Point calculateLocation( org.lgna.croquet.views.Container<?> container ) {
 		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
@@ -218,7 +218,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			for( Feature feature : this.features ) {
 				feature.updateTrackableShapeIfNecessary();
 			}
-			org.lgna.croquet.components.Container<?> container = this.getParent();
+			org.lgna.croquet.views.Container<?> container = this.getParent();
 			if( container != null ) {
 				container.repaint();
 			}

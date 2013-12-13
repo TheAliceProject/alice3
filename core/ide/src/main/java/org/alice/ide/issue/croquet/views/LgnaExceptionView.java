@@ -45,20 +45,20 @@ package org.alice.ide.issue.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaExceptionView extends org.lgna.croquet.components.MigPanel {
+public class LgnaExceptionView extends org.lgna.croquet.views.MigPanel {
 	private static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/alice.png" ) );
 
 	public LgnaExceptionView( org.alice.ide.issue.croquet.LgnaExceptionComposite composite ) {
 		super( composite, "", "", "[top][top]" );
 
 		org.lgna.common.LgnaRuntimeException lgnaRuntimeException = composite.getLgnaRuntimeException();
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( lgnaRuntimeException.getFormattedString(), javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ) );
-		label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( lgnaRuntimeException.getFormattedString(), javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ) );
+		label.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.TOP );
+		label.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.TOP );
 
-		this.addComponent( new org.lgna.croquet.components.Label( ICON ), "span 1 2" );
-		this.addComponent( new org.lgna.croquet.components.Label( "Alice has encountered a problem in your program", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.Label( lgnaRuntimeException.getFormattedString() ) );
+		this.addComponent( new org.lgna.croquet.views.Label( ICON ), "span 1 2" );
+		this.addComponent( new org.lgna.croquet.views.Label( "Alice has encountered a problem in your program", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( lgnaRuntimeException.getFormattedString() ) );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}

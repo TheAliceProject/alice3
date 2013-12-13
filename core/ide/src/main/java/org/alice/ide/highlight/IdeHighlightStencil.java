@@ -46,21 +46,21 @@ package org.alice.ide.highlight;
  * @author Dennis Cosgrove
  */
 public class IdeHighlightStencil extends HighlightStencil {
-	public IdeHighlightStencil( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
+	public IdeHighlightStencil( org.lgna.croquet.views.AbstractWindow<?> window, Integer layerId ) {
 		super( window, layerId );
 	}
 
 	public void showHighlightOverField( final org.lgna.project.ast.UserField field, String noteText ) {
 		if( field != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						if( view instanceof org.alice.ide.declarationseditor.type.components.TypeDeclarationView ) {
 							java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
 							for( javax.swing.JPanel jPanel : jPanels ) {
-								org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
+								org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( jPanel );
 								if( component instanceof org.alice.ide.common.FieldDeclarationPane ) {
 									org.alice.ide.common.FieldDeclarationPane fieldDeclarationPane = (org.alice.ide.common.FieldDeclarationPane)component;
 									org.lgna.project.ast.UserField candidate = fieldDeclarationPane.getField();
@@ -81,8 +81,8 @@ public class IdeHighlightStencil extends HighlightStencil {
 
 	public void showHighlightOverExpression( final org.lgna.project.ast.Expression expression, String noteText ) {
 		if( expression != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
@@ -90,7 +90,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
 						for( javax.swing.AbstractButton jButton : jButtons ) {
 							org.lgna.project.ast.Expression candidate = null;
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( jButton );
 							if( component instanceof org.alice.ide.codeeditor.ExpressionPropertyDropDownPane ) {
 								org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (org.alice.ide.codeeditor.ExpressionPropertyDropDownPane)component;
 								candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
@@ -122,15 +122,15 @@ public class IdeHighlightStencil extends HighlightStencil {
 
 	public void showHighlightOverStatement( final org.lgna.project.ast.Statement statement, String message ) {
 		if( statement != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
 						for( javax.swing.JPanel jPanel : jPanels ) {
 							org.lgna.project.ast.Statement candidate = null;
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
+							org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( jPanel );
 							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
 								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
 								candidate = statementPane.getStatement();
@@ -152,9 +152,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 
 	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
 		if( model != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
+					org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.ComponentManager.getFirstComponent( model );
 					if( component != null ) {
 						//pass
 					} else {
@@ -168,7 +168,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 		}
 	}
 
-	private org.lgna.croquet.components.TrackableShape getRenderWindow() {
+	private org.lgna.croquet.views.TrackableShape getRenderWindow() {
 		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getRenderWindow();
@@ -179,15 +179,15 @@ public class IdeHighlightStencil extends HighlightStencil {
 
 	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
 						for( javax.swing.JPanel jPanel : jPanels ) {
 							org.lgna.project.ast.Statement candidate = null;
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
+							org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( jPanel );
 							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
 								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
 								candidate = statementPane.getStatement();
@@ -201,8 +201,8 @@ public class IdeHighlightStencil extends HighlightStencil {
 					}
 					return null;
 				}
-			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
+			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				public org.lgna.croquet.views.TrackableShape getResolved() {
 					return getRenderWindow();
 				}
 			}, "" );
@@ -212,9 +212,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 	}
 
 	public void showHighlightOverCroquetViewControllerAndRenderWindow( final org.lgna.croquet.Model model ) {
-		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
-				org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+			public org.lgna.croquet.views.TrackableShape getResolved() {
+				org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.ComponentManager.getFirstComponent( model );
 				if( component != null ) {
 					//pass
 				} else {
@@ -222,8 +222,8 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 				return component;
 			}
-		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
+		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+			public org.lgna.croquet.views.TrackableShape getResolved() {
 				return getRenderWindow();
 			}
 		}, "" );

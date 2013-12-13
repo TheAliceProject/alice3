@@ -45,7 +45,7 @@ package org.alice.stageide.type.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.project.ast.AbstractType> {
+public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.project.ast.AbstractType> {
 	private static class SingletonHolder {
 		private static OtherTypeDialog instance = new OtherTypeDialog();
 	}
@@ -211,7 +211,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		return new org.alice.stageide.type.croquet.views.OtherTypeDialogPane( this );
 	}
 

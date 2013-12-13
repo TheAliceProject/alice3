@@ -45,9 +45,9 @@ package org.alice.stageide.type.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.TextField filterTextField;
-	private final org.lgna.croquet.components.List<org.lgna.project.ast.Member> listView;
+public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
+	private final org.lgna.croquet.views.TextField filterTextField;
+	private final org.lgna.croquet.views.List<org.lgna.project.ast.Member> listView;
 
 	private final java.awt.event.FocusListener focusListener = new java.awt.event.FocusListener() {
 		public void focusGained( java.awt.event.FocusEvent e ) {
@@ -94,9 +94,9 @@ public class ContainsTabPane extends org.lgna.croquet.components.MigPanel {
 
 		this.listView = tab.getMemberListState().createList();
 		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
-		org.lgna.croquet.components.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
+		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
 
-		this.addComponent( new org.lgna.croquet.components.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
 		this.addComponent( this.filterTextField, "growx, wrap" );
 		this.addComponent( listScrollPane, "grow" );
 

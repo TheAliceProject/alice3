@@ -45,12 +45,12 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
+public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 	private static final boolean IS_MINI_DESIRED = true;
 	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
 
-	private final org.lgna.croquet.components.AbstractLabel returnHeader;
-	private final org.lgna.croquet.components.DragComponent<?> returnDragComponent;
+	private final org.lgna.croquet.views.AbstractLabel returnHeader;
+	private final org.lgna.croquet.views.DragComponent<?> returnDragComponent;
 
 	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
 		super( composite, "insets 4, gap 0" );
@@ -76,11 +76,11 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );
 	}
 
-	private org.lgna.croquet.components.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+	private org.lgna.croquet.views.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
 		return stringValue.createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 	}
 
-	private void addHeader( org.lgna.croquet.components.AbstractLabel label ) {
+	private void addHeader( org.lgna.croquet.views.AbstractLabel label ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "wrap" );
 		if( this.getComponentCount() > 0 ) {
@@ -94,8 +94,8 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		this.addHeader( this.createHeader( stringValue ) );
 	}
 
-	private org.lgna.croquet.components.DragComponent<?> createDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
-		org.lgna.croquet.components.DragComponent<?> dragComponent;
+	private org.lgna.croquet.views.DragComponent<?> createDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+		org.lgna.croquet.views.DragComponent<?> dragComponent;
 		if( IS_MINI_DESIRED ) {
 			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
 		} else {
@@ -104,7 +104,7 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		return dragComponent;
 	}
 
-	private void addDragComponent( org.lgna.croquet.components.DragComponent<?> dragComponent ) {
+	private void addDragComponent( org.lgna.croquet.views.DragComponent<?> dragComponent ) {
 		this.addComponent( dragComponent, "wrap, gapleft 8" );
 	}
 

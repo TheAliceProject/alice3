@@ -55,7 +55,7 @@ public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEven
 		return new ItemEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private ItemEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
+	private ItemEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
 		super( origin, viewController, itemEvent );
 	}
 

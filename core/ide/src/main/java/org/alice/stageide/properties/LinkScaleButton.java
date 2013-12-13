@@ -46,7 +46,7 @@ package org.alice.stageide.properties;
 /**
  * @author Dennis Cosgrove
  */
-public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
+public class LinkScaleButton extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
 	public LinkScaleButton( org.lgna.croquet.BooleanState state ) {
 		super( state );
 	}

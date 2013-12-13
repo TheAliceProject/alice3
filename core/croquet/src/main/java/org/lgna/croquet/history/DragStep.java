@@ -106,7 +106,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 			int i = 0;
 			for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {
-				org.lgna.croquet.components.Component<?> dropComponent = dropReceptor.getViewController();
+				org.lgna.croquet.views.Component<?> dropComponent = dropReceptor.getViewController();
 				java.awt.Rectangle bounds = dropComponent.getBounds();
 				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
 				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
@@ -116,8 +116,8 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		return this.potentialDropReceptorInfos;
 	}
 
-	public org.lgna.croquet.components.DragComponent getDragSource() {
-		return (org.lgna.croquet.components.DragComponent)this.getViewController();
+	public org.lgna.croquet.views.DragComponent getDragSource() {
+		return (org.lgna.croquet.views.DragComponent)this.getViewController();
 	}
 
 	public java.awt.event.MouseEvent getLatestMouseEvent() {
@@ -250,7 +250,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		if( this.isCanceled() ) {
 			this.cancel( e );
 		} else {
-			org.lgna.croquet.components.imp.JDropProxy.Hider dropProxyHider = null;
+			org.lgna.croquet.views.imp.JDropProxy.Hider dropProxyHider = null;
 
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
@@ -260,16 +260,16 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 				//				
 				if( model != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
-					org.lgna.croquet.components.JComponent<?> component = this.currentDropReceptor.getViewController();
-					org.lgna.croquet.components.ViewController<?, ?> viewController;
-					if( component instanceof org.lgna.croquet.components.ViewController<?, ?> ) {
-						viewController = (org.lgna.croquet.components.ViewController<?, ?>)component;
+					org.lgna.croquet.views.JComponent<?> component = this.currentDropReceptor.getViewController();
+					org.lgna.croquet.views.ViewController<?, ?> viewController;
+					if( component instanceof org.lgna.croquet.views.ViewController<?, ?> ) {
+						viewController = (org.lgna.croquet.views.ViewController<?, ?>)component;
 					} else {
 						viewController = null;
 					}
 					try {
-						if( model instanceof org.lgna.croquet.components.imp.JDropProxy.Hider ) {
-							dropProxyHider = (org.lgna.croquet.components.imp.JDropProxy.Hider)model;
+						if( model instanceof org.lgna.croquet.views.imp.JDropProxy.Hider ) {
+							dropProxyHider = (org.lgna.croquet.views.imp.JDropProxy.Hider)model;
 							dropProxyHider.setDragSource( this.getDragSource() );
 						} else {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "drop proxy hider:", model.getClass() );
@@ -307,7 +307,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		this.hideProxies( null );
 	}
 
-	private void hideProxies( org.lgna.croquet.components.imp.JDropProxy.Hider dropProxyHider ) {
+	private void hideProxies( org.lgna.croquet.views.imp.JDropProxy.Hider dropProxyHider ) {
 		this.getDragSource().hideDragProxy();
 		if( dropProxyHider != null ) {
 			//pass

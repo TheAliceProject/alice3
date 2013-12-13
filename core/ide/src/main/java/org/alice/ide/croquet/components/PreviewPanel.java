@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
+public class PreviewPanel extends org.lgna.croquet.views.BorderPanel {
 	private final org.alice.ide.preview.components.PanelWithPreview panelWithPreview;
 
 	public PreviewPanel( org.alice.ide.preview.components.PanelWithPreview panelWithPreview ) {
