@@ -203,7 +203,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.SThing entity = getInstanceInJavaVMForField( field, org.lgna.story.SThing.class );
 		if( entity != null )
 		{
-			return org.lgna.story.ImplementationAccessor.getImplementation( entity );
+			return org.lgna.story.EmployeesOnly.getImplementation( entity );
 		}
 		else
 		{
@@ -306,7 +306,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.SThing entity = getInstanceInJavaVMForField( getActiveSceneField(), org.lgna.story.SThing.class );
 		if( entity != null )
 		{
-			return org.lgna.story.ImplementationAccessor.getImplementation( entity );
+			return org.lgna.story.EmployeesOnly.getImplementation( entity );
 		}
 		else
 		{

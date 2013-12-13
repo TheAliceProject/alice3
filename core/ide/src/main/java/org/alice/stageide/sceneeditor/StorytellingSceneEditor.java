@@ -83,7 +83,7 @@ import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.SMarker;
@@ -336,7 +336,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			TransformableImp transImp = null;
 			if( selectedEntity != null )
 			{
-				EntityImp imp = ImplementationAccessor.getImplementation( selectedEntity );
+				EntityImp imp = EmployeesOnly.getImplementation( selectedEntity );
 				if( imp instanceof TransformableImp )
 				{
 					transImp = (TransformableImp)imp;
@@ -354,7 +354,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			AbstractTransformableImp transImp = null;
 			if( selectedEntity != null )
 			{
-				EntityImp imp = ImplementationAccessor.getImplementation( selectedEntity );
+				EntityImp imp = EmployeesOnly.getImplementation( selectedEntity );
 				if( imp instanceof AbstractTransformableImp )
 				{
 					transImp = (AbstractTransformableImp)imp;
@@ -453,21 +453,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	{
 		PerspectiveCameraMarker openingSceneMarker = new PerspectiveCameraMarker();
 		openingSceneMarker.setColorId( org.lgna.story.Color.DARK_GRAY );
-		this.openingSceneMarkerImp = ImplementationAccessor.getImplementation( openingSceneMarker );
+		this.openingSceneMarkerImp = EmployeesOnly.getImplementation( openingSceneMarker );
 		this.openingSceneMarkerImp.setDisplayVisuals( true );
 		MarkerUtilities.addIconForCameraImp( this.openingSceneMarkerImp, "mainCamera" );
 		MarkerUtilities.setViewForCameraImp( this.openingSceneMarkerImp, View.STARTING_CAMERA_VIEW );
 
 		PerspectiveCameraMarker sceneViewMarker = new PerspectiveCameraMarker();
 		sceneViewMarker.setColorId( org.lgna.story.Color.LIGHT_BLUE );
-		this.sceneViewMarkerImp = ImplementationAccessor.getImplementation( sceneViewMarker );
+		this.sceneViewMarkerImp = EmployeesOnly.getImplementation( sceneViewMarker );
 		this.sceneViewMarkerImp.setDisplayVisuals( true );
 		MarkerUtilities.addIconForCameraImp( this.sceneViewMarkerImp, "sceneEditorCamera" );
 		MarkerUtilities.setViewForCameraImp( this.sceneViewMarkerImp, View.LAYOUT_SCENE_VIEW );
 
 		this.orthographicCameraMarkerImps.clear();
 		OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
-		this.topOrthoMarkerImp = ImplementationAccessor.getImplementation( topOrthoMarker );
+		this.topOrthoMarkerImp = EmployeesOnly.getImplementation( topOrthoMarker );
 		MarkerUtilities.addIconForCameraImp( this.topOrthoMarkerImp, "top" );
 		MarkerUtilities.setViewForCameraImp( this.topOrthoMarkerImp, View.TOP );
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
@@ -485,7 +485,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		orthographicCameraMarkerImps.add( this.topOrthoMarkerImp );
 
 		OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
-		this.sideOrthoMarkerImp = ImplementationAccessor.getImplementation( sideOrthoMarker );
+		this.sideOrthoMarkerImp = EmployeesOnly.getImplementation( sideOrthoMarker );
 		MarkerUtilities.addIconForCameraImp( this.sideOrthoMarkerImp, "side" );
 		MarkerUtilities.setViewForCameraImp( this.sideOrthoMarkerImp, View.SIDE );
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
@@ -499,7 +499,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		orthographicCameraMarkerImps.add( this.sideOrthoMarkerImp );
 
 		OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
-		this.frontOrthoMarkerImp = ImplementationAccessor.getImplementation( frontOrthoMarker );
+		this.frontOrthoMarkerImp = EmployeesOnly.getImplementation( frontOrthoMarker );
 		MarkerUtilities.addIconForCameraImp( this.frontOrthoMarkerImp, "front" );
 		MarkerUtilities.setViewForCameraImp( this.frontOrthoMarkerImp, View.FRONT );
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
@@ -807,7 +807,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		super.addField( declaringType, field, index, statements );
 		if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
 			org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField( field, org.lgna.story.SMarker.class );
-			MarkerImp markerImp = ImplementationAccessor.getImplementation( marker );
+			MarkerImp markerImp = EmployeesOnly.getImplementation( marker );
 			markerImp.setDisplayVisuals( true );
 			markerImp.setShowing( true );
 
@@ -822,7 +822,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
 			if( field.getValueType().isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
 				org.lgna.story.SJointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.SJointedModel.class );
-				org.lgna.story.implementation.JointedModelImp jointedModelImp = ImplementationAccessor.getImplementation( jointedModel );
+				org.lgna.story.implementation.JointedModelImp jointedModelImp = EmployeesOnly.getImplementation( jointedModel );
 				jointedModelImp.opacity.setValue( 0.25f );
 				jointedModelImp.showVisualization();
 			}
@@ -834,13 +834,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		super.setActiveScene( sceneField );
 
 		if( sceneField != null ) {
-			ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+			EmployeesOnly.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 
 			org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 			org.lgna.story.SProgram program = getProgramInstanceInJava();
 			org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
 
-			SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
+			SceneImp ACCEPTABLE_HACK_sceneImp = EmployeesOnly.getImplementation( scene );
 			ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
 			try {
 				program.setActiveScene( scene );
@@ -924,7 +924,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				//Turn markers on so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene. we have to manually make them visible to see them in the scene editor)
 				if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
 					org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField( field, org.lgna.story.SMarker.class );
-					MarkerImp markerImp = ImplementationAccessor.getImplementation( marker );
+					MarkerImp markerImp = EmployeesOnly.getImplementation( marker );
 					markerImp.setDisplayVisuals( true );
 					markerImp.setShowing( true );
 				}
@@ -937,7 +937,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				}
 			}
 
-			ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( 1.0 );
+			EmployeesOnly.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( 1.0 );
 		}
 	}
 
@@ -1238,7 +1238,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		Object obj = this.getInstanceInJavaVMForField( field );
 		if( obj instanceof SMarker )
 		{
-			return ImplementationAccessor.getImplementation( (SMarker)obj );
+			return EmployeesOnly.getImplementation( (SMarker)obj );
 		}
 		return null;
 	}

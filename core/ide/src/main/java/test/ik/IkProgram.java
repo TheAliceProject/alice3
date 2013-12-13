@@ -43,7 +43,7 @@
 
 package test.ik;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SProgram;
@@ -82,11 +82,11 @@ class IkProgram extends SProgram {
 	};
 
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
-		return ImplementationAccessor.getImplementation( this.target );
+		return EmployeesOnly.getImplementation( this.target );
 	}
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
-		return ImplementationAccessor.getImplementation( this.ogre );
+		return EmployeesOnly.getImplementation( this.ogre );
 	}
 
 	private org.lgna.story.implementation.JointImp getAnchorImp() {
@@ -144,8 +144,8 @@ class IkProgram extends SProgram {
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 

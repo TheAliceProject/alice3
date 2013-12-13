@@ -89,8 +89,8 @@ public class PaintView extends org.lgna.croquet.components.ViewController<javax.
 					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
 						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
 
-						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( paint, null );
-						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
+						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( paint, null );
+						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.EmployeesOnly.getTexture( paint, null );
 
 						if( color != null ) {
 							g.setColor( color.getAsAWTColor() );

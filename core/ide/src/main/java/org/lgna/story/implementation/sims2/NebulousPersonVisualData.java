@@ -123,7 +123,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	}
 
 	private Object getValueForSkinTone() {
-		java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( this.skinColor ).getAsAWTColor();
+		java.awt.Color awtColor = org.lgna.story.EmployeesOnly.getAwtColor( this.skinColor );
 		return awtColor.getRGB();
 	}
 

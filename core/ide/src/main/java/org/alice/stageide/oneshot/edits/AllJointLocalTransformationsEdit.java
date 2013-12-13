@@ -78,7 +78,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
 		if( instance instanceof org.lgna.story.SJointedModel ) {
 			org.lgna.story.SJointedModel jointedModel = (org.lgna.story.SJointedModel)instance;
-			org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation( jointedModel );
+			org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.EmployeesOnly.getImplementation( jointedModel );
 			Iterable<org.lgna.story.implementation.JointImp> joints = jointedModelImp.getJoints();
 			java.util.List<JointUndoRunnable> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( org.lgna.story.implementation.JointImp joint : joints ) {

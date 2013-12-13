@@ -74,11 +74,13 @@ public abstract class PaintProperty extends Property<org.lgna.story.Paint> {
 				org.lgna.story.Color bColor = (org.lgna.story.Color)b;
 
 				edu.cmu.cs.dennisc.color.Color4f c = edu.cmu.cs.dennisc.color.Color4f.createInterpolation(
-						org.lgna.story.ImplementationAccessor.getColor4f( aColor ),
-						org.lgna.story.ImplementationAccessor.getColor4f( bColor ),
+						org.lgna.story.EmployeesOnly.getColor4f( aColor ),
+						org.lgna.story.EmployeesOnly.getColor4f( bColor ),
 						(float)portion
 						);
 				return new org.lgna.story.Color( c.red, c.green, c.blue );
+				//todo:
+				//return org.lgna.story.EmployeesOnly.createInterpolation( aColor, bColor, (float)portion );
 			}
 		}
 		return b;

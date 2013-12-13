@@ -159,7 +159,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				try {
 					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
 					org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
-					java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+					java.awt.Color awtColor = org.lgna.story.EmployeesOnly.getAwtColor( color );
 					return new org.alice.stageide.icons.ColorIconFactory( awtColor ).getIcon( new java.awt.Dimension( 15, 15 ) );
 				} catch( RuntimeException re ) {
 					//pass
@@ -222,7 +222,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( COLOR_TYPE.isAssignableFrom( type ) ) {
 				org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
 				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
-				java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+				java.awt.Color awtColor = org.lgna.story.EmployeesOnly.getAwtColor( color );
 				rv.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );
 				return rv;
 			}

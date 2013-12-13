@@ -52,7 +52,7 @@ public class ScenePanel extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	public void initializeInAwtContainer( org.lgna.story.SProgram program ) {
-		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
+		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( program );
 		programImp.initializeInAwtContainer( this.getAwtComponent() );
 	}
 }

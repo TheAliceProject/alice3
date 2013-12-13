@@ -48,7 +48,7 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SThing;
 
@@ -221,7 +221,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 		if( this.instance != null )
 		{
 			this.initializeListenersIfNecessary();
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation( (SThing)this.instance );
+			org.lgna.story.implementation.EntityImp imp = EmployeesOnly.getImplementation( (SThing)this.instance );
 			imp.getSgComposite().addHierarchyListener( this.hierarchyListener );
 		}
 	}
@@ -232,7 +232,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 		super.stopPropertyListening();
 		if( this.instance != null )
 		{
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation( (SThing)this.instance );
+			org.lgna.story.implementation.EntityImp imp = EmployeesOnly.getImplementation( (SThing)this.instance );
 			imp.getSgComposite().removeHierarchyListener( this.hierarchyListener );
 		}
 	}

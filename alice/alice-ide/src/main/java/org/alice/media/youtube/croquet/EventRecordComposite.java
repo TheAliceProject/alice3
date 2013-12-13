@@ -63,7 +63,6 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
@@ -154,7 +153,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
-		eventScript = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		eventScript = ( (SceneImp)org.lgna.story.EmployeesOnly.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 		owner.setEventScript( eventScript );
 		getEventList().clear();
 		eventScript.addListener( this.listener );

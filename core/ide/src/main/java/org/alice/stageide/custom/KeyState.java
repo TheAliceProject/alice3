@@ -98,7 +98,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
+		org.lgna.story.Key nextValue = org.lgna.story.EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
 		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
 		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );
