@@ -79,7 +79,7 @@ public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
 		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.addComponent( tabbedPane, "grow" );
 
-		org.lgna.croquet.views.ScrollPane treeScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
+		org.lgna.croquet.views.ScrollPane treeScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
 
 		this.descriptionLabel = composite.getDescriptionText().createLabel();

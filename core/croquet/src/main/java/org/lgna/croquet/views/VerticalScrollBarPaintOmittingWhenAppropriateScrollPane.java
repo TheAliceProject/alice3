@@ -40,10 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet.views;
 
-import org.lgna.croquet.views.Component;
-import org.lgna.croquet.views.ScrollPane;
 
 /**
  * @author Dennis Cosgrove

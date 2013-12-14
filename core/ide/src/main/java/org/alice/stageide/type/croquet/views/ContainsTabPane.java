@@ -94,7 +94,7 @@ public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
 
 		this.listView = tab.getMemberListState().createList();
 		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
-		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
+		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
 
 		this.addComponent( new org.lgna.croquet.views.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
 		this.addComponent( this.filterTextField, "growx, wrap" );
