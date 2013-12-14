@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle2D extends org.lgna.croquet.components.Label implements ManipulationHandle, ManipulationListener {
+public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label implements ManipulationHandle, ManipulationListener {
 	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 	protected HandleState state = new HandleState();

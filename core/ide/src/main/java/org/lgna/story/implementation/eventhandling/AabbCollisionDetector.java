@@ -87,7 +87,6 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.EntityImp;
@@ -146,7 +145,7 @@ public class AabbCollisionDetector {
 	//	}
 
 	private static void findCenterAndCorner( SThing object, Point3 center, Vector3 corner ) {
-		AxisAlignedBox aabb1 = ImplementationAccessor.getImplementation( object ).getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE );
+		AxisAlignedBox aabb1 = org.lgna.story.EmployeesOnly.getImplementation( object ).getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE );
 		Point3 min = aabb1.getMinimum();
 		Point3 max = aabb1.getMaximum();
 		center.setToInterpolation( min, max, .5 );

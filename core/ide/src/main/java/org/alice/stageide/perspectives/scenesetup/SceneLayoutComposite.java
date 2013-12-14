@@ -52,8 +52,8 @@ public final class SceneLayoutComposite extends org.lgna.croquet.SplitComposite 
 	}
 
 	@Override
-	protected org.lgna.croquet.components.SplitPane createView() {
-		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();
+	protected org.lgna.croquet.views.SplitPane createView() {
+		org.lgna.croquet.views.SplitPane rv = this.createHorizontalSplitPane();
 		rv.setResizeWeight( 1.0 );
 		return rv;
 	}

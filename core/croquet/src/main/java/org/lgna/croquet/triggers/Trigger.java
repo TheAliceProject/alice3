@@ -71,9 +71,9 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		return this.origin;
 	}
 
-	public abstract org.lgna.croquet.components.ViewController<?, ?> getViewController();
+	public abstract org.lgna.croquet.views.ViewController<?, ?> getViewController();
 
-	public abstract void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
+	public abstract void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu );
 
 	public abstract String getNoteText();
 

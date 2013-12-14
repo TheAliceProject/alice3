@@ -51,19 +51,19 @@ public abstract class PlainStringValue extends StringValue {
 		super( id, new javax.swing.text.PlainDocument() );
 	}
 
-	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.components.ImmutableTextArea( this, fontScalar, textAttributes );
+	public org.lgna.croquet.views.ImmutableTextArea createImmutableTextArea( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.views.ImmutableTextArea( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public org.lgna.croquet.views.ImmutableTextArea createImmutableTextArea( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		return this.createImmutableTextArea( 1.0f, textAttributes );
 	}
 
-	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.components.ImmutableTextField( this, fontScalar, textAttributes );
+	public org.lgna.croquet.views.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.views.ImmutableTextField( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public org.lgna.croquet.views.ImmutableTextField createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		return this.createImmutableTextField( 1.0f, textAttributes );
 	}
 }

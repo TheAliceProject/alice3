@@ -52,7 +52,7 @@ public class TexturedPaintUtilities {
 
 	protected static void setPaint( edu.cmu.cs.dennisc.scenegraph.TexturedVisual sgTexturedVisual, org.lgna.story.Paint paint ) {
 		//sgTexturedVisual.setPaint( paint );
-		sgTexturedVisual.getAppearance().setDiffuseColor( org.lgna.story.ImplementationAccessor.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
-		sgTexturedVisual.setTexture( org.lgna.story.ImplementationAccessor.getTexture( paint, null ) );
+		sgTexturedVisual.getAppearance().setDiffuseColor( org.lgna.story.EmployeesOnly.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
+		sgTexturedVisual.setTexture( org.lgna.story.EmployeesOnly.getTexture( paint, null ) );
 	}
 }

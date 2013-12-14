@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.lgna.croquet.components.DropDown<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
+public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropDown<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
 	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
@@ -89,11 +89,11 @@ public class ExpressionPropertyDropDownPane extends org.lgna.croquet.components.
 		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 		}
 
-		public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+		public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 			return ExpressionPropertyDropDownPane.this;
 		}
 
-		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return ExpressionPropertyDropDownPane.this;
 		}
 	}
@@ -101,7 +101,7 @@ public class ExpressionPropertyDropDownPane extends org.lgna.croquet.components.
 	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.components.JComponent<?> prefixPane, org.lgna.croquet.components.JComponent<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.views.JComponent<?> prefixPane, org.lgna.croquet.views.JComponent<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}

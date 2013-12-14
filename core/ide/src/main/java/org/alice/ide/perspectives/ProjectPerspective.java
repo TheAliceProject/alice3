@@ -58,7 +58,7 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		return this.menuBar;
 	}
 
-	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();
+	public abstract org.lgna.croquet.views.TrackableShape getRenderWindow();
 
 	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
 

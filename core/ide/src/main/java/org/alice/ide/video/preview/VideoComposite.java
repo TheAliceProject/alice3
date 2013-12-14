@@ -155,7 +155,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 					app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
 
 					app.getFrame().pack();
-					app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+					app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 					app.getFrame().setVisible( true );
 
 					final boolean IS_SNAPSHOT_TEST = false;

@@ -58,7 +58,7 @@ class UnadornedButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 /**
  * @author Dennis Cosgrove
  */
-public class UnadornedButton extends org.lgna.croquet.components.OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
+public class UnadornedButton extends org.lgna.croquet.views.OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
 	public UnadornedButton( org.lgna.croquet.Operation operation ) {
 		super( operation );
 	}

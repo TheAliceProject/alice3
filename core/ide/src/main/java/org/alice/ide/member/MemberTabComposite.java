@@ -139,7 +139,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
 
 	@Override
-	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -281,12 +281,12 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
 		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
 		if( IS_ICON_DESIRED ) {
 			button.getModel().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
-			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
+			button.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.TRAILING );
 			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}
 	}

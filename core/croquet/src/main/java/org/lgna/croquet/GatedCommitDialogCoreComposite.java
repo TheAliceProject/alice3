@@ -43,14 +43,14 @@
 package org.lgna.croquet;
 
 /*package-private*/abstract class GatedCommitDialogContentPanel<CC extends GatedCommitDialogContentComposite> extends DialogContentPanel<CC> {
-	private final org.lgna.croquet.components.StatusLabel statusLabel = new org.lgna.croquet.components.StatusLabel();
-	private final org.lgna.croquet.components.LineAxisPanel controlLine = new org.lgna.croquet.components.LineAxisPanel();
+	private final org.lgna.croquet.views.StatusLabel statusLabel = new org.lgna.croquet.views.StatusLabel();
+	private final org.lgna.croquet.views.LineAxisPanel controlLine = new org.lgna.croquet.views.LineAxisPanel();
 
 	public GatedCommitDialogContentPanel( CC composite ) {
 		super( composite );
 		controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		org.lgna.croquet.components.GridBagPanel pageEndPanel = new org.lgna.croquet.components.GridBagPanel();
+		org.lgna.croquet.views.GridBagPanel pageEndPanel = new org.lgna.croquet.views.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -61,7 +61,7 @@ package org.lgna.croquet;
 		if( coreComposite.isStatusLineDesired() ) {
 			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
 		}
-		pageEndPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
+		pageEndPanel.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), gbc );
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
 
@@ -70,11 +70,11 @@ package org.lgna.croquet;
 		this.statusLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 
-	protected org.lgna.croquet.components.LineAxisPanel getControlLine() {
+	protected org.lgna.croquet.views.LineAxisPanel getControlLine() {
 		return this.controlLine;
 	}
 
-	public org.lgna.croquet.components.StatusLabel getStatusLabel() {
+	public org.lgna.croquet.views.StatusLabel getStatusLabel() {
 		return this.statusLabel;
 	}
 }
@@ -88,7 +88,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V, CC> {
+public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V, CC> {
 	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {

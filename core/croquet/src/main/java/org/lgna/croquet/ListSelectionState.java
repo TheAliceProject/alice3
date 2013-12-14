@@ -522,20 +522,20 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return null;
 	}
 
-	public org.lgna.croquet.components.List<T> createList() {
-		return new org.lgna.croquet.components.List<T>( this );
+	public org.lgna.croquet.views.List<T> createList() {
+		return new org.lgna.croquet.views.List<T>( this );
 	}
 
-	public org.lgna.croquet.components.DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {
-		return new org.lgna.croquet.components.DefaultRadioButtons<T>( this, true );
+	public org.lgna.croquet.views.DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {
+		return new org.lgna.croquet.views.DefaultRadioButtons<T>( this, true );
 	}
 
-	public org.lgna.croquet.components.DefaultRadioButtons<T> createHorizontalDefaultRadioButtons() {
-		return new org.lgna.croquet.components.DefaultRadioButtons<T>( this, false );
+	public org.lgna.croquet.views.DefaultRadioButtons<T> createHorizontalDefaultRadioButtons() {
+		return new org.lgna.croquet.views.DefaultRadioButtons<T>( this, false );
 	}
 
-	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.components.ItemSelectable<?, T, ?> itemSelectable = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
+	public org.lgna.croquet.views.TrackableShape getTrackableShapeFor( T item ) {
+		org.lgna.croquet.views.ItemSelectable<?, T, ?> itemSelectable = org.lgna.croquet.views.ComponentManager.getFirstComponent( this, org.lgna.croquet.views.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -586,7 +586,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
@@ -602,7 +602,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			menuItemContainer.forgetAndRemoveAllMenuItems();
 			super.handleHiding( menuItemContainer, e );
 		}
@@ -676,8 +676,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			return new InternalPrepModelResolver<T>( this.listSelectionState );
 		}
 
-		public org.lgna.croquet.components.ComboBox<T> createComboBox() {
-			return new org.lgna.croquet.components.ComboBox<T>( this );
+		public org.lgna.croquet.views.ComboBox<T> createComboBox() {
+			return new org.lgna.croquet.views.ComboBox<T>( this );
 		}
 
 		@Override

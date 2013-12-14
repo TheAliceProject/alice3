@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.project.stats.croquet.views;
 
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
-import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.views.BorderPanel;
 
 /**
  * @author Matt May

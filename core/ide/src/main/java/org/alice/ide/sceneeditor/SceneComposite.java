@@ -45,20 +45,20 @@ package org.alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.BorderPanel> {
+public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.BorderPanel> {
 	public SceneComposite() {
 		super( java.util.UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		return new org.lgna.croquet.components.BorderPanel( this );
+	protected org.lgna.croquet.views.BorderPanel createView() {
+		return new org.lgna.croquet.views.BorderPanel( this );
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.lgna.croquet.components.BorderPanel view = this.getView();
+		org.lgna.croquet.views.BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleShowing();
 			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
@@ -68,7 +68,7 @@ public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.l
 	@Override
 	public void handlePostDeactivation() {
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleHiding();
-		org.lgna.croquet.components.BorderPanel view = this.getView();
+		org.lgna.croquet.views.BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
 			this.getView().removeAllComponents();
 		}

@@ -50,7 +50,7 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 
-		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
+		org.lgna.croquet.views.FlowPanel flowPanel = new org.lgna.croquet.views.FlowPanel();
 		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
 		//				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
 		//				org.alice.stageide.icons.SphereIconFactory.getInstance(),
@@ -61,14 +61,14 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.ShowMeIconFactory.getInstance();
 		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
 			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
-			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );
+			flowPanel.addComponent( new org.lgna.croquet.views.Label( icon ) );
 		}
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( new java.awt.Dimension( 160, 120 ) ) ) );
+		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) ) );
+		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( new java.awt.Dimension( 160, 120 ) ) ) );
 
 		testCroquet.getFrame().getContentPane().addCenterComponent( flowPanel );
-		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );
 	}

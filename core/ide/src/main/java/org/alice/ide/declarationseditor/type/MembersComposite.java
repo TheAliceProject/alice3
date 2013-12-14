@@ -55,7 +55,7 @@ public abstract class MembersComposite<T extends org.lgna.project.ast.UserMember
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPanel extends org.lgna.croquet.components.BorderPanel {
+public abstract class TabContentPanel extends org.lgna.croquet.views.BorderPanel {
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
 
 	public TabContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite ) {

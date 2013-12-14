@@ -47,8 +47,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.Component;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Component;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P>
 {

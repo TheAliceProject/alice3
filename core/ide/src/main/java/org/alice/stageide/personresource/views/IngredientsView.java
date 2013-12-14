@@ -46,13 +46,13 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class IngredientsView extends org.lgna.croquet.components.MigPanel {
+public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 	public static final java.awt.Insets COLOR_BUTTON_MARGIN = new java.awt.Insets( 1, -7, 1, -7 ); //todo
 	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	private final org.lgna.croquet.components.Label isLifeStageLockedLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label isLifeStageLockedLabel = new org.lgna.croquet.views.Label();
 	private final HorizontalWrapList<org.lgna.story.resources.sims2.LifeStage> lifeStageList;
 
 	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
@@ -80,7 +80,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			itemSelectedState.initializeIfNecessary();
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
 			itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( melaninShade ) );
-			org.lgna.croquet.components.ToggleButton button = itemSelectedState.createToggleButton();
+			org.lgna.croquet.views.ToggleButton button = itemSelectedState.createToggleButton();
 			button.tightenUpMargin( COLOR_BUTTON_MARGIN );
 			this.addComponent( button, constraints );
 			constraints = "gap 0";
@@ -105,7 +105,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		final OtherColorCallable otherColorCallable = new OtherColorCallable();
 
 		final org.lgna.croquet.BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
-		final org.lgna.croquet.components.ToggleButton otherColorButton = otherColorState.createToggleButton();
+		final org.lgna.croquet.views.ToggleButton otherColorButton = otherColorState.createToggleButton();
 		final int SIZE = edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE;
 		class OtherColorIcon implements javax.swing.Icon {
 			public int getIconWidth() {
@@ -131,7 +131,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( otherColorButton, "gap 8, split 2" );
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
-		final org.lgna.croquet.components.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
+		final org.lgna.croquet.views.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
 		customColorDialogButton.setClobberText( "Custom Color..." );
 
 		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
@@ -165,7 +165,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			}
 		}, "skip 2, grow, gaptop 0, wrap" );
 
-		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
+		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.addComponent( tabbedPane, "span 4, grow" );
 		this.setBackgroundColor( BACKGROUND_COLOR );

@@ -46,7 +46,7 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class InstancePropertyLabelView extends org.alice.ide.croquet.components.AbstractPropertyPane<edu.cmu.cs.dennisc.property.InstanceProperty<Object>, Object> {
-	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
 
 	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty<Object> property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );

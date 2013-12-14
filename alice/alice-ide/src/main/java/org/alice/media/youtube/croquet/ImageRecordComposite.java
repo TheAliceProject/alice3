@@ -52,13 +52,12 @@ import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.eventhandling.EventManager;
@@ -248,7 +247,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
 		SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
-		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
+		SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
 		EventManager manager = sceneImp.getEventManager();
 
 		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( owner.getEventScript(), manager ) );

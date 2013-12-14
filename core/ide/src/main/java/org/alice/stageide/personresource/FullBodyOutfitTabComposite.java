@@ -55,7 +55,7 @@ public class FullBodyOutfitTabComposite extends OutfitTabComposite<org.alice.sta
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

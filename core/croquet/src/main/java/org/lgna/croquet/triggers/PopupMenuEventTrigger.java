@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.PopupMenuEvent> {
-	public static PopupMenuEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	public static PopupMenuEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		return new PopupMenuEventTrigger( Origin.USER, viewController, popupMenuEvent );
 	}
 
@@ -59,7 +59,7 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.
 		return new PopupMenuEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private PopupMenuEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	private PopupMenuEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		super( origin, viewController, popupMenuEvent );
 	}
 

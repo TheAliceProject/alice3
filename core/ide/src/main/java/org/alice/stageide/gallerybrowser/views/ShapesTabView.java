@@ -48,14 +48,14 @@ package org.alice.stageide.gallerybrowser.views;
 public class ShapesTabView extends GalleryTabView {
 	public ShapesTabView( org.alice.stageide.gallerybrowser.ShapesTab composite ) {
 		super( composite );
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
 		for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : composite.getDragModels() ) {
 			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( dragModel ) );
 		}
 
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( panel );
+		org.lgna.croquet.views.ScrollPane scrollPane = createGalleryScrollPane( panel );
 		this.addCenterComponent( scrollPane );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}

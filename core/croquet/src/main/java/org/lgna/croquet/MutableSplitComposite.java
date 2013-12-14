@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableSplitComposite extends AbstractSplitComposite<org.lgna.croquet.components.MutableSplitPane> {
+public abstract class MutableSplitComposite extends AbstractSplitComposite<org.lgna.croquet.views.MutableSplitPane> {
 	private Composite<?> leadingComposite;
 	private Composite<?> trailingComposite;
 
@@ -80,12 +80,12 @@ public abstract class MutableSplitComposite extends AbstractSplitComposite<org.l
 	}
 
 	@Override
-	protected org.lgna.croquet.components.HorizontalMutableSplitPane createHorizontalSplitPane() {
-		return new org.lgna.croquet.components.HorizontalMutableSplitPane( this );
+	protected org.lgna.croquet.views.HorizontalMutableSplitPane createHorizontalSplitPane() {
+		return new org.lgna.croquet.views.HorizontalMutableSplitPane( this );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.VerticalMutableSplitPane createVerticalSplitPane() {
-		return new org.lgna.croquet.components.VerticalMutableSplitPane( this );
+	protected org.lgna.croquet.views.VerticalMutableSplitPane createVerticalSplitPane() {
+		return new org.lgna.croquet.views.VerticalMutableSplitPane( this );
 	}
 }

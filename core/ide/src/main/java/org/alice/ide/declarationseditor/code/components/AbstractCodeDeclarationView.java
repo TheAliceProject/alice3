@@ -66,7 +66,7 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 				//pass
 			} else {
-				java.util.List<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane> list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane>() {
+				java.util.List<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane> list = org.lgna.croquet.views.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane>() {
 					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 						org.lgna.project.ast.AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 						assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();

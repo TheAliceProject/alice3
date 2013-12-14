@@ -46,7 +46,7 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HairTabView extends org.lgna.croquet.components.MigPanel {
+public class HairTabView extends org.lgna.croquet.views.MigPanel {
 	public HairTabView( org.alice.stageide.personresource.HairTabComposite composite ) {
 		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "[grow 0][grow]" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
@@ -57,10 +57,10 @@ public class HairTabView extends org.lgna.croquet.components.MigPanel {
 		//this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
 		this.addComponent( new HairColorNameRadioButtons( composite.getHairColorNameState() ), "align left, wrap, grow, shrink" );
 
-		org.lgna.croquet.components.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
+		org.lgna.croquet.views.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
-		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
-		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		org.lgna.croquet.views.ScrollPane hairScrollPane = new org.lgna.croquet.views.ScrollPane( hairList );
+		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
 
 		this.addComponent( hairScrollPane, "span 2, wrap, grow, shrink" );

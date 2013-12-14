@@ -45,20 +45,20 @@ package org.alice.ide.issue.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class GlExceptionView extends org.lgna.croquet.components.MigPanel {
+public class GlExceptionView extends org.lgna.croquet.views.MigPanel {
 	public static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
 
 	public GlExceptionView( org.alice.ide.issue.croquet.GlExceptionComposite composite ) {
 		super( composite, "", "", "[top][top]" );
 
 		javax.media.opengl.GLException glException = composite.getGlException();
-		this.addComponent( new org.lgna.croquet.components.Label( ICON ), "span 1 2" );
-		this.addComponent( new org.lgna.croquet.components.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( ICON ), "span 1 2" );
+		this.addComponent( new org.lgna.croquet.views.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 		this.addComponent( new org.alice.ide.croquet.models.help.views.GraphicsHelpView(), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
-				new org.lgna.croquet.components.Label( "If you have updated your video drivers and the problem still persists please " ),
-				new org.lgna.croquet.components.Label( "submit a bug report", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-				new org.lgna.croquet.components.Label( "." )
+		this.addComponent( new org.lgna.croquet.views.LineAxisPanel(
+				new org.lgna.croquet.views.Label( "If you have updated your video drivers and the problem still persists please " ),
+				new org.lgna.croquet.views.Label( "submit a bug report", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+				new org.lgna.croquet.views.Label( "." )
 				), "wrap, span 2" );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );

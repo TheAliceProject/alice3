@@ -123,21 +123,21 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			}
 		} );
 
-		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
+		org.lgna.croquet.views.GridPanel gridPanel = org.lgna.croquet.views.GridPanel.createGridPane(
 				0, 2,
 				integerState.createSlider(), integerState.createSpinner(),
 				doubleState.createSlider(), doubleState.createSpinner(),
 				booleanState.createToggleButton(), booleanState.createCheckBox(),
-				operation.createButton(), new org.lgna.croquet.components.Label()
+				operation.createButton(), new org.lgna.croquet.views.Label()
 				);
 
-		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+		org.lgna.croquet.views.BorderPanel borderPanel = new org.lgna.croquet.views.BorderPanel.Builder()
 				.center( fileSelectionState.getOneAndOnlyOneFileChooser() )
 				.pageEnd( gridPanel )
 				.build();
 
 		testCroquet.getFrame().getContentPane().addCenterComponent( borderPanel );
-		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );
 	}

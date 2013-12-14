@@ -48,9 +48,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import org.alice.ide.declarationseditor.type.components.FieldList;
-import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.Button;
-import org.lgna.croquet.components.GridBagPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.GridBagPanel;
 
 public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 
@@ -75,7 +75,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 		this.removeAllComponents();
 		this.fieldList = this.createFieldList( type );
 		this.fieldList.setBackgroundColor( this.getBackgroundColor() );
-		this.addComponent( new org.lgna.croquet.components.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), new GridBagConstraints(
+		this.addComponent( new org.lgna.croquet.views.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), new GridBagConstraints(
 				0, //gridX
 				0, //gridY
 				1, //gridWidth

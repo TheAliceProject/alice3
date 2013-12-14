@@ -64,19 +64,19 @@ public abstract class StaticMenuModel extends MenuModel {
 		return this.models;
 	}
 
-	private void updateMenuItemContainer( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
+	private void updateMenuItemContainer( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
 	}
 
 	@Override
-	public final org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = super.createMenu();
+	public final org.lgna.croquet.views.Menu createMenu() {
+		org.lgna.croquet.views.Menu rv = super.createMenu();
 		this.updateMenuItemContainer( rv );
 		return rv;
 	}
 
 	@Override
-	public final void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+	public final void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		this.updateMenuItemContainer( popupMenu );
 	}

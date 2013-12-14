@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractElement implements Composite<V> {
+public abstract class AbstractComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractElement implements Composite<V> {
 	protected static final class Key {
 		private final AbstractComposite<?> composite;
 		private final String localizationKey;
@@ -769,8 +769,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected org.lgna.croquet.components.SplitPane createView() {
-			org.lgna.croquet.components.SplitPane rv;
+		protected org.lgna.croquet.views.SplitPane createView() {
+			org.lgna.croquet.views.SplitPane rv;
 			if( this.isHorizontal ) {
 				rv = this.createHorizontalSplitPane();
 			} else {
@@ -791,7 +791,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	private V view;
 
-	private final org.lgna.croquet.components.ScrollPane scrollPane;
+	private final org.lgna.croquet.views.ScrollPane scrollPane;
 
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
@@ -808,7 +808,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.cardId;
 	}
 
-	protected abstract org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired();
+	protected abstract org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired();
 
 	protected abstract V createView();
 
@@ -829,11 +829,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.view;
 	}
 
-	public final org.lgna.croquet.components.ScrollPane getScrollPaneIfItExists() {
+	public final org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists() {
 		return this.scrollPane;
 	}
 
-	public final org.lgna.croquet.components.JComponent<?> getRootComponent() {
+	public final org.lgna.croquet.views.JComponent<?> getRootComponent() {
 		V view = this.getView();
 		if( this.scrollPane != null ) {
 			return this.scrollPane;

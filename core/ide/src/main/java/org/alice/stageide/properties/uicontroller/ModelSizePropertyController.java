@@ -56,11 +56,11 @@ import org.alice.stageide.properties.IsXZScaleLinkedState;
 import org.alice.stageide.properties.IsYZScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.properties.ModelSizeAdapter;
-import org.lgna.croquet.components.BooleanStateButton;
-import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.Button;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.SwingAdapter;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingAdapter;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.Dimension3;

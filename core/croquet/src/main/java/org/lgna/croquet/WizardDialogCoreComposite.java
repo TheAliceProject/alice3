@@ -48,12 +48,12 @@ import java.util.Iterator;
 	public WizardDialogContentPanel( WizardDialogContentComposite composite ) {
 		super( composite );
 		WizardDialogCoreComposite coreComposite = (WizardDialogCoreComposite)composite.getCoreComposite();
-		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
 		this.getControlLine().addComponent( coreComposite.getPrevOperation().createButton() );
 		this.getControlLine().addComponent( coreComposite.getNextOperation().createButton() );
-		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
-		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
 	}
 }
@@ -72,7 +72,7 @@ import java.util.Iterator;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.components.Panel, WizardDialogContentComposite> {
+public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.views.Panel, WizardDialogContentComposite> {
 	private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
 		public InternalWizardDialogOperation( java.util.UUID id, WizardDialogCoreComposite composite ) {
 			super( id, composite );
@@ -246,7 +246,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	};
 	private final javax.swing.DefaultListSelectionModel listSelectionModel = new javax.swing.DefaultListSelectionModel();
-	private final org.lgna.croquet.components.Label stepLabel = new org.lgna.croquet.components.Label( "todo" );
+	private final org.lgna.croquet.views.Label stepLabel = new org.lgna.croquet.views.Label( "todo" );
 
 	private final WizardDialogContentComposite contentComposite = new WizardDialogContentComposite( this );
 	private final WizardCardOwnerComposite cardComposite;
@@ -281,20 +281,20 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
-	private org.lgna.croquet.components.MigPanel createAdornmentPanel( org.lgna.croquet.components.JComponent<?> header ) {
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
+	private org.lgna.croquet.views.MigPanel createAdornmentPanel( org.lgna.croquet.views.JComponent<?> header ) {
+		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
 		rv.addComponent( header, "wrap" );
-		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
+		rv.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
 		return rv;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		org.lgna.croquet.components.CardPanel cardPanel = this.cardComposite.getView();
-		org.lgna.croquet.components.Panel rv;
+	protected org.lgna.croquet.views.Panel createView() {
+		org.lgna.croquet.views.CardPanel cardPanel = this.cardComposite.getView();
+		org.lgna.croquet.views.Panel rv;
 		if( this.isAdornmentDesired() ) {
-			org.lgna.croquet.components.AbstractLabel stepsLabel = this.stepsLabel.createLabel();
+			org.lgna.croquet.views.AbstractLabel stepsLabel = this.stepsLabel.createLabel();
 			javax.swing.JList list = new javax.swing.JList( this.listModel ) {
 				@Override
 				public boolean contains( int x, int y ) {
@@ -306,14 +306,14 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			//list.setEnabled( false );
 			list.setCellRenderer( this.listCellRenderer );
 
-			org.lgna.croquet.components.MigPanel stepsView = this.createAdornmentPanel( stepsLabel );
+			org.lgna.croquet.views.MigPanel stepsView = this.createAdornmentPanel( stepsLabel );
 			stepsView.setBackgroundColor( java.awt.Color.WHITE );
 			stepsView.getAwtComponent().add( list, "aligny top" );
 
-			org.lgna.croquet.components.MigPanel mainView = this.createAdornmentPanel( this.stepLabel );
+			org.lgna.croquet.views.MigPanel mainView = this.createAdornmentPanel( this.stepLabel );
 			mainView.addComponent( cardPanel, "aligny top" );
 
-			rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			rv = new org.lgna.croquet.views.BorderPanel.Builder()
 					.lineStart( stepsView )
 					.center( mainView )
 					.build();

@@ -51,7 +51,7 @@ public class ExpressionPropertyView extends NodePropertyView<org.lgna.project.as
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createComponent( org.lgna.project.ast.Expression expression ) {
+	protected org.lgna.croquet.views.JComponent<?> createComponent( org.lgna.project.ast.Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

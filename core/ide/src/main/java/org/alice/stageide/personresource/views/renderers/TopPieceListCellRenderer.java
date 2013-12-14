@@ -55,6 +55,7 @@ public class TopPieceListCellRenderer extends IngredientListCellRenderer<org.lgn
 	}
 
 	private TopPieceListCellRenderer() {
+		super( 60, 100 );
 	}
 
 	@Override

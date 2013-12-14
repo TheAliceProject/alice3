@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.preview.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPane extends org.lgna.croquet.components.MigPanel {
+public class PreviewPane extends org.lgna.croquet.views.MigPanel {
 	public PreviewPane( org.alice.ide.ast.type.preview.croquet.PreviewPage page ) {
 		super( page, "fillx", "", "[grow 0][grow]" );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor() );
@@ -58,7 +58,7 @@ public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 		org.alice.ide.ast.type.preview.croquet.PreviewPage page = (org.alice.ide.ast.type.preview.croquet.PreviewPage)this.getComposite();
 		org.alice.ide.ast.type.merge.croquet.AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fillx, insets 0" );
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "fillx, insets 0" );
 
 		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
 
@@ -77,15 +77,15 @@ public class PreviewPane extends org.lgna.croquet.components.MigPanel {
 			panel.addComponent( new MembersSubPane<org.lgna.project.ast.UserField>( "properties", theme.getFieldColor(), fieldHubs ), "gap 8, grow, shrink, wrap" );
 		}
 
-		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( addMembersPage.getDstType() ) );
+		org.lgna.croquet.views.Label classLabel = new org.lgna.croquet.views.Label( "class", org.alice.ide.common.TypeIcon.getInstance( addMembersPage.getDstType() ) );
 		//classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		classLabel.scaleFont( 1.2f );
-		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+		classLabel.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "split 3, grow, shrink, push" );
 		this.addComponent( page.getIsIncludingAllState().getSidekickLabel().createLabel() );
 		this.addComponent( page.getIsIncludingAllState().createHorizontalToggleButtons( false ), "wrap" );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( panel );
 		panel.setBackgroundColor( this.getBackgroundColor() );
 		this.addComponent( scrollPane, "grow, shrink, wrap" );
 	}

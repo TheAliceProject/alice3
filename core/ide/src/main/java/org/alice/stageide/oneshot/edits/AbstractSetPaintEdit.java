@@ -63,7 +63,7 @@ public abstract class AbstractSetPaintEdit<I extends org.lgna.story.implementati
 	protected final void preserveUndoInfo( Object instance, boolean isDo ) {
 		if( instance instanceof org.lgna.story.SThing ) {
 			org.lgna.story.SThing thing = (org.lgna.story.SThing)instance;
-			this.modelImp = org.lgna.story.ImplementationAccessor.getImplementation( thing );
+			this.modelImp = org.lgna.story.EmployeesOnly.getImplementation( thing );
 			this.value = this.getPaintProperty( this.modelImp ).getValue();
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );

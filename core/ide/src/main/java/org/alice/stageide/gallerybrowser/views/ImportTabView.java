@@ -60,7 +60,7 @@ public class ImportTabView extends GalleryTabView {
 		return rv;
 	}
 
-	private class DragComponentsView extends org.lgna.croquet.components.LineAxisPanel {
+	private class DragComponentsView extends org.lgna.croquet.views.LineAxisPanel {
 		@Override
 		protected void internalRefresh() {
 			super.internalRefresh();
@@ -86,8 +86,8 @@ public class ImportTabView extends GalleryTabView {
 			handleDirectoryChanged();
 		}
 	};
-	private final org.lgna.croquet.components.AbstractLabel notDirectoryLabel = new org.lgna.croquet.components.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-	private final org.lgna.croquet.components.AbstractLabel noFilesLabel = new org.lgna.croquet.components.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	private final org.lgna.croquet.views.AbstractLabel notDirectoryLabel = new org.lgna.croquet.views.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	private final org.lgna.croquet.views.AbstractLabel noFilesLabel = new org.lgna.croquet.views.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 	private final DragComponentsView dragComponentsView = new DragComponentsView();
 
 	public ImportTabView( org.alice.stageide.gallerybrowser.ImportTab composite ) {
@@ -95,12 +95,12 @@ public class ImportTabView extends GalleryTabView {
 		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
 		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
 		panel.addComponent( composite.getBrowseOperation().createButton() );
 		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
-		org.lgna.croquet.components.ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
+		org.lgna.croquet.views.ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
 		panel.addComponent( scrollPane, "span 4, wrap" );
 		this.addCenterComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );

@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class ComponentEventTrigger<E extends java.awt.event.ComponentEvent> extends EventObjectTrigger<E> {
-	public ComponentEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, E event ) {
+	public ComponentEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, E event ) {
 		super( origin, viewController, event );
 	}
 

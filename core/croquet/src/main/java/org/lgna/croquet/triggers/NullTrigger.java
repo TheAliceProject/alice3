@@ -69,12 +69,12 @@ public class NullTrigger extends Trigger {
 	}
 
 	@Override
-	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
+	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		return null;
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
 

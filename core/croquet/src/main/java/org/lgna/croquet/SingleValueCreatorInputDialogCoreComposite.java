@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
+public abstract class SingleValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
 	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
 
 	public SingleValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {

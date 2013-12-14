@@ -99,7 +99,7 @@ class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rende
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
+public class TypeHierarchyView extends org.lgna.croquet.views.BorderPanel {
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			TypeHierarchyView.this.handleTypeStateChanged( e.getNextValue() );
@@ -147,9 +147,9 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );
 		this.jTree.setBackground( color );
 
-		org.lgna.croquet.components.JComponent<?> viewportView = new org.lgna.croquet.components.SwingAdapter( this.jTree );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( viewportView );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+		org.lgna.croquet.views.JComponent<?> viewportView = new org.lgna.croquet.views.SwingAdapter( this.jTree );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( viewportView );
+		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.setBackgroundColor( color );
 		this.addPageStartComponent( label );
 		this.addCenterComponent( scrollPane );

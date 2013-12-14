@@ -48,8 +48,8 @@ package org.alice.ide.controlflow.components;
  */
 public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private final org.lgna.project.ast.Statement incompleteStatement;
-	private org.lgna.croquet.components.JComponent<?> incompleteStatementPane;
-	private org.lgna.croquet.components.Label label;
+	private org.lgna.croquet.views.JComponent<?> incompleteStatementPane;
+	private org.lgna.croquet.views.Label label;
 	private javax.swing.JToolTip toolTip;
 
 	public MiniControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
@@ -76,7 +76,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		return this.labelText;
 	}
 
-	private org.lgna.croquet.components.JComponent<?> getIncompleteStatementPane() {
+	private org.lgna.croquet.views.JComponent<?> getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
@@ -86,7 +86,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> getSubject() {
+	public org.lgna.croquet.views.JComponent<?> getSubject() {
 		return this.getIncompleteStatementPane();
 	}
 
@@ -124,7 +124,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
+			this.label = new org.lgna.croquet.views.Label( this.getLabelText() );
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForegroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 			}

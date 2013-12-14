@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-class MemoryUsageGraph extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+class MemoryUsageGraph extends org.lgna.croquet.views.JComponent<javax.swing.JComponent> {
 	private static final long K = 1024;
 	//private static final long M = K*K;
 	private java.util.List<java.lang.management.MemoryUsage> samples = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -123,7 +123,7 @@ class GarbageCollectAction extends org.lgna.croquet.ActionOperation {
 	}
 }
 
-public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
+public class MemoryUsagePanel extends org.lgna.croquet.views.BorderPanel {
 	private GarbageCollectAction garbageCollectAction = new GarbageCollectAction();
 	private MemoryUsageGraph memoryUsageGraph = new MemoryUsageGraph();
 	private javax.swing.Timer timer = new javax.swing.Timer( 500, new java.awt.event.ActionListener() {

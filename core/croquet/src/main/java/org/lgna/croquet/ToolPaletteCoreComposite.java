@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
+public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> {
 	private static class InternalIsExpandedState extends BooleanState {
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
@@ -65,7 +65,7 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		}
 	}
 
-	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.components.ToolPaletteView> {
+	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.views.ToolPaletteView> {
 		private final BooleanState isExpandedState;
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
@@ -84,13 +84,13 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		}
 
 		@Override
-		protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 			return null;
 		}
 
 		@Override
-		protected org.lgna.croquet.components.ToolPaletteView createView() {
-			return new org.lgna.croquet.components.ToolPaletteView( this );
+		protected org.lgna.croquet.views.ToolPaletteView createView() {
+			return new org.lgna.croquet.views.ToolPaletteView( this );
 		}
 
 		@Override

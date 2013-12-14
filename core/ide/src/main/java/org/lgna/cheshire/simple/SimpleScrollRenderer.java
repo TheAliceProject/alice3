@@ -58,10 +58,10 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 		return new java.awt.geom.Area( new java.awt.Rectangle( rect.x - 2, rect.y - 2, rect.width + 4 + 1, rect.height + 4 + 1 ) );
 	}
 
-	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape ) {
-		org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.views.ScreenElement root, org.lgna.croquet.views.TrackableShape trackableShape ) {
+		org.lgna.croquet.views.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 		if( scrollPane != null ) {
-			org.lgna.croquet.components.Component<?> view = scrollPane.getViewportView();
+			org.lgna.croquet.views.Component<?> view = scrollPane.getViewportView();
 
 			java.awt.Shape shape = trackableShape.getShape( view, null );
 			if( shape != null ) {

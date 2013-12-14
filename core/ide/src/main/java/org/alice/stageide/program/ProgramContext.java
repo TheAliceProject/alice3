@@ -105,7 +105,7 @@ public abstract class ProgramContext {
 	}
 
 	public org.lgna.story.implementation.ProgramImp getProgramImp() {
-		return org.lgna.story.ImplementationAccessor.getImplementation( this.getProgram() );
+		return org.lgna.story.EmployeesOnly.getImplementation( this.getProgram() );
 	}
 
 	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {

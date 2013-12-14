@@ -47,7 +47,7 @@ import org.alice.ide.ast.type.merge.core.MergeUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.Panel, org.alice.ide.ast.type.croquet.ImportTypeWizard> {
+public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.views.Panel, org.alice.ide.ast.type.croquet.ImportTypeWizard> {
 
 	public static String modifyFilenameLocalizedText( String s, java.net.URI uri ) {
 		java.io.File file = new java.io.File( uri );
@@ -167,7 +167,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

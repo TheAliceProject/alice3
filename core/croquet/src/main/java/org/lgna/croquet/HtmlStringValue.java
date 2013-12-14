@@ -51,11 +51,11 @@ public abstract class HtmlStringValue extends StringValue {
 		super( migrationId, new javax.swing.text.html.HTMLDocument() );
 	}
 
-	public org.lgna.croquet.components.ImmutableEditorPane createImmutableEditorPane( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.components.ImmutableEditorPane( this, fontScalar, textAttributes );
+	public org.lgna.croquet.views.ImmutableEditorPane createImmutableEditorPane( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.views.ImmutableEditorPane( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.components.ImmutableEditorPane createImmutableEditorPane( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public org.lgna.croquet.views.ImmutableEditorPane createImmutableEditorPane( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		return this.createImmutableEditorPane( 1.0f, textAttributes );
 	}
 }

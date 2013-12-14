@@ -56,7 +56,7 @@ public abstract class SelectUriTab extends org.lgna.croquet.SimpleTabComposite<o
 	protected abstract void refresh();
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

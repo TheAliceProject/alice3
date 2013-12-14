@@ -66,7 +66,7 @@ public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
 	// this epic hack was inserted to account for menu item icons returning a size of 0,0
 	// dennisc
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent<?> component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected org.lgna.croquet.views.JComponent<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.views.JComponent<?> component ) {
+		return new org.lgna.croquet.views.LineAxisPanel( component );
 	}
 }

@@ -78,7 +78,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		} else {
 			text = null;
 		}
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.Component<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
 				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
 				keyViewController.getAwtComponent().setText( text );
@@ -98,7 +98,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
+		org.lgna.story.Key nextValue = org.lgna.story.EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
 		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
 		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );

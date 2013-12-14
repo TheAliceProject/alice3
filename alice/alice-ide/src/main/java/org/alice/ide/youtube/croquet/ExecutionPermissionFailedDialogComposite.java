@@ -102,7 +102,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

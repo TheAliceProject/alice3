@@ -45,10 +45,10 @@ package org.alice.stageide.type.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.Tree<org.alice.stageide.type.croquet.TypeNode> treeView;
+public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
+	private final org.lgna.croquet.views.Tree<org.alice.stageide.type.croquet.TypeNode> treeView;
 
-	private final org.lgna.croquet.components.AbstractLabel descriptionLabel;
+	private final org.lgna.croquet.views.AbstractLabel descriptionLabel;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -68,24 +68,24 @@ public class OtherTypeDialogPane extends org.lgna.croquet.components.MigPanel {
 
 		this.treeView = composite.getTypeTreeState().createTree();
 		this.treeView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer() );
-		this.addComponent( new org.lgna.croquet.components.Label( "Filtering", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-		this.addComponent( new org.lgna.croquet.components.Label( "Selection", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-		this.addComponent( new org.lgna.croquet.components.Label( "Available Procedures, Functions, and Properties", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.views.Label( "Filtering", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.views.Label( "Selection", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.views.Label( "Available Procedures, Functions, and Properties", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 
-		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
-		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx" );
-		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
+		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx" );
+		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx" );
+		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
 
-		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
+		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.addComponent( tabbedPane, "grow" );
 
-		org.lgna.croquet.components.ScrollPane treeScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
+		org.lgna.croquet.views.ScrollPane treeScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
 
 		this.descriptionLabel = composite.getDescriptionText().createLabel();
 		this.descriptionLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		org.lgna.croquet.components.ScrollPane descriptionScrollPane = new org.lgna.croquet.components.ScrollPane( descriptionLabel );
+		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.TOP );
+		org.lgna.croquet.views.ScrollPane descriptionScrollPane = new org.lgna.croquet.views.ScrollPane( descriptionLabel );
 		this.descriptionLabel.setBackgroundColor( java.awt.Color.WHITE );
 		descriptionScrollPane.setBackgroundColor( java.awt.Color.WHITE );
 		this.addComponent( descriptionScrollPane, "grow" );

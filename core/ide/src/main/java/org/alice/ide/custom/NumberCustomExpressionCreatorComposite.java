@@ -56,7 +56,7 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		java.awt.Dimension rv = super.calculateWindowSize( window );
 		//todo
 		rv.width = (int)( rv.height / edu.cmu.cs.dennisc.math.GoldenRatio.PHI );

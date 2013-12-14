@@ -43,8 +43,8 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
 
 /**
  * @author dculyba

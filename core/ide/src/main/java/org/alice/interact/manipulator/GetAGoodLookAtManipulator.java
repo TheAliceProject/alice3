@@ -107,8 +107,8 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 					}
 
 					//Check to see if we're already at a "good look" position of the target. If so, don't do anything
-					org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( storytellingCamera );
-					org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( org.lgna.story.ImplementationAccessor.getImplementation( toLookAtEntity ) );
+					org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.EmployeesOnly.getImplementation( storytellingCamera );
+					org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( org.lgna.story.EmployeesOnly.getImplementation( toLookAtEntity ) );
 					edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
 					edu.cmu.cs.dennisc.math.AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
 					if( currentTransform.orientation.isWithinReasonableEpsilonOf( goalTransform.orientation ) && currentTransform.translation.isWithinReasonableEpsilonOf( goalTransform.translation ) ) {

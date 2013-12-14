@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends org.lgna.croquet.components.JComponent<javax.swing.JLabel> {
+public class TypeComponent extends org.lgna.croquet.views.JComponent<javax.swing.JLabel> {
 	public static TypeComponent createInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		TypeComponent rv = new TypeComponent( type );
 		return rv;

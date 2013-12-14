@@ -42,15 +42,15 @@
  */
 package org.alice.ide.recentprojects;
 
-import org.lgna.croquet.components.CascadeMenu;
-import org.lgna.croquet.components.CascadeMenuItem;
-import org.lgna.croquet.components.CheckBoxMenuItem;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Container;
-import org.lgna.croquet.components.Menu;
-import org.lgna.croquet.components.MenuItem;
-import org.lgna.croquet.components.MenuTextSeparator;
-import org.lgna.croquet.components.ViewController;
+import org.lgna.croquet.views.CascadeMenu;
+import org.lgna.croquet.views.CascadeMenuItem;
+import org.lgna.croquet.views.CheckBoxMenuItem;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.Container;
+import org.lgna.croquet.views.Menu;
+import org.lgna.croquet.views.MenuItem;
+import org.lgna.croquet.views.MenuTextSeparator;
+import org.lgna.croquet.views.ViewController;
 
 /**
  * @author Dennis Cosgrove
@@ -68,7 +68,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		super( java.util.UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
 	}
 
-	private void setChildren( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+	private void setChildren( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.net.URI currentUri = ide.getUri();
 		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
@@ -83,7 +83,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		if( models.size() == 0 ) {
 			models.add( NoRecentUrisSeparatorModel.getInstance() );
 		}
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
+		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 	}
 
 	//	@Override
@@ -100,11 +100,11 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
 	//	}
 	@Override
-	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		Object src = e.getSource();
 		if( src instanceof javax.swing.JPopupMenu ) {
 			final javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
-			this.setChildren( new org.lgna.croquet.components.MenuItemContainer() {
+			this.setChildren( new org.lgna.croquet.views.MenuItemContainer() {
 				public ViewController<?, ?> getViewController() {
 					return null;
 				}
@@ -156,7 +156,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 				}
 
-				public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+				public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
 					this.addCascadeMenuItem( cascadeMenuItem );
 					this.addCascadeMenu( cascadeMenu );
 				}

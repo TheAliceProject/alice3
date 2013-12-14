@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.components.MigPanel {
+public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.views.MigPanel {
 	private static java.awt.Paint createOmitOrReplacePaint() {
 		int size = 24;
 		int width = size;
@@ -64,14 +64,14 @@ public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> e
 
 	private static final java.awt.Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
 
-	public static org.lgna.croquet.components.Component<?> createView( org.alice.ide.ast.type.merge.croquet.MemberHub<?> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+	public static org.lgna.croquet.views.Component<?> createView( org.alice.ide.ast.type.merge.croquet.MemberHub<?> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
 		org.lgna.project.ast.Declaration member = memberHub.getMember();
 		if( member instanceof org.lgna.project.ast.UserMethod ) {
 			return new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
 		} else if( member instanceof org.lgna.project.ast.UserField ) {
 			return new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
 		} else {
-			return new org.lgna.croquet.components.Label( "todo" );
+			return new org.lgna.croquet.views.Label( "todo" );
 		}
 	}
 

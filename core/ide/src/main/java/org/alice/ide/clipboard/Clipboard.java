@@ -120,7 +120,7 @@ public enum Clipboard {
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
 	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );
 
-	public org.lgna.croquet.components.DragComponent getDragComponent() {
+	public org.lgna.croquet.views.DragComponent getDragComponent() {
 		return this.dragComponent;
 	}
 

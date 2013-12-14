@@ -48,7 +48,7 @@ package org.alice.ide.eventseditor.components;
 public class EventAccessorMethodDragView extends org.alice.ide.templates.ExpressionTemplate {
 	public EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel ) {
 		super( dragModel );
-		this.addComponent( new org.lgna.croquet.components.Label( dragModel.getMethod().getName() ) );
+		this.addComponent( new org.lgna.croquet.views.Label( dragModel.getMethod().getName() ) );
 	}
 
 	@Override

@@ -48,7 +48,7 @@ import org.lgna.croquet.ValueCreator;
 /**
  * @author Dennis Cosgrove
  */
-public final class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
+public final class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.story.resources.sims2.PersonResource> {
 	private static class SingletonHolder {
 		private static PersonResourceComposite instance = new PersonResourceComposite();
 	}
@@ -194,8 +194,8 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 		super.handleFinally( step, dialog );
 		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().enableRendering();
 	}

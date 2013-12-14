@@ -111,7 +111,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	@Override
-	protected final org.lgna.croquet.components.Component<?> createInterstitial( int i, int N ) {
+	protected final org.lgna.croquet.views.Component<?> createInterstitial( int i, int N ) {
 		return null;
 	}
 
@@ -308,7 +308,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
+	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
 		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 
@@ -417,12 +417,12 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				rv.y = null;
 				rv.yPlusHeight = 0;
 			} else if( index == N ) {
-				org.lgna.croquet.components.Component<?> lastComponent = this.getComponent( N - 1 );
+				org.lgna.croquet.views.Component<?> lastComponent = this.getComponent( N - 1 );
 				rv.y = lastComponent.getY() + lastComponent.getHeight();
 				rv.yPlusHeight = null;
 			} else {
 				if( index < this.getComponentCount() ) {
-					org.lgna.croquet.components.Component<?> component = this.getComponent( index );
+					org.lgna.croquet.views.Component<?> component = this.getComponent( index );
 					rv.y = component.getY();
 					rv.yPlusHeight = rv.y + component.getHeight();
 				}

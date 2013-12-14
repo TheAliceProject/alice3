@@ -51,5 +51,5 @@ public abstract class StandardMenuItemPrepModel extends MenuItemPrepModel {
 		super( id );
 	}
 
-	public abstract org.lgna.croquet.components.ViewController<?, ?> createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer );
+	public abstract org.lgna.croquet.views.ViewController<?, ?> createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer );
 }

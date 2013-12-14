@@ -175,7 +175,7 @@ class PauseButtonIcon implements javax.swing.Icon {
 /**
  * @author Dennis Cosgrove
  */
-public class VideoView extends org.lgna.croquet.components.BorderPanel {
+public class VideoView extends org.lgna.croquet.views.BorderPanel {
 	private static final java.text.SimpleDateFormat FORMAT = new java.text.SimpleDateFormat( "m:ss" );
 
 	private java.net.URI uri;
@@ -322,7 +322,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private final java.awt.Dimension PLAY_PAUSE_ICON_SIZE = new java.awt.Dimension( 16, 16 );
 	private final javax.swing.Icon PLAY_ICON = new PlayButtonIcon( PLAY_PAUSE_ICON_SIZE );
 	private final javax.swing.Icon PAUSE_ICON = new PauseButtonIcon( PLAY_PAUSE_ICON_SIZE );
-	private final org.lgna.croquet.components.Label durationLabel = new org.lgna.croquet.components.Label( "0:00" );
+	private final org.lgna.croquet.views.Label durationLabel = new org.lgna.croquet.views.Label( "0:00" );
 
 	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
@@ -335,7 +335,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 
 		this.durationLabel.setForegroundColor( java.awt.Color.LIGHT_GRAY );
 
-		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
+		org.lgna.croquet.views.BorderPanel pageEndPanel = new org.lgna.croquet.views.BorderPanel();
 		pageEndPanel.addLineStartComponent( playPauseButton );
 		pageEndPanel.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.CENTER );
 		pageEndPanel.addLineEndComponent( this.durationLabel );
