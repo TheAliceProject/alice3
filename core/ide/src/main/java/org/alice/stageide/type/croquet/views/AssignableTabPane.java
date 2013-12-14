@@ -50,7 +50,7 @@ public class AssignableTabPane extends org.lgna.croquet.views.BorderPanel {
 		super( tab, 4, 4 );
 		org.lgna.croquet.views.MultipleSelectionListView<org.lgna.project.ast.UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
 		listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.FieldCellRenderer( tab.getTypeTreeState() ) );
-		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.components.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
+		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
 
 		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
 		listScrollPane.setBackgroundColor( color );
