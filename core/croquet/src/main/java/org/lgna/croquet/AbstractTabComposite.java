@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
 	private String titleText;
 
 	public AbstractTabComposite( java.util.UUID id ) {

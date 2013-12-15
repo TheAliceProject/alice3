@@ -45,7 +45,7 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberOrControlFlowTabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
+public abstract class MemberOrControlFlowTabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public MemberOrControlFlowTabComposite( java.util.UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}

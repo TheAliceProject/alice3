@@ -45,7 +45,7 @@ package org.lgna.croquet.color.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorChooserDialogCoreView extends org.lgna.croquet.views.View<javax.swing.JColorChooser, org.lgna.croquet.color.ColorChooserDialogCoreComposite> {
+public class ColorChooserDialogCoreView extends org.lgna.croquet.views.CompositeView<javax.swing.JColorChooser, org.lgna.croquet.color.ColorChooserDialogCoreComposite> {
 	public ColorChooserDialogCoreView( org.lgna.croquet.color.ColorChooserDialogCoreComposite composite ) {
 		super( composite );
 		//		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.getAwtComponent().getChooserPanels();

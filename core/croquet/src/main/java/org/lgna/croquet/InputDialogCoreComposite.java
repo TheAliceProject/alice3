@@ -65,7 +65,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
+public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
 	private final InputDialogContentComposite contentComposite = new InputDialogContentComposite( this );
 
 	public InputDialogCoreComposite( java.util.UUID migrationId ) {

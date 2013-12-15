@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> {
+public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> {
 	private static class InternalIsExpandedState extends BooleanState {
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
