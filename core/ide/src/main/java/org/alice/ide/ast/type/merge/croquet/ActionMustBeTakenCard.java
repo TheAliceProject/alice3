@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class ActionMustBeTakenCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public final class ActionMustBeTakenCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
 	public ActionMustBeTakenCard( DifferentImplementation<?> differentImplementation ) {
@@ -54,9 +54,9 @@ public final class ActionMustBeTakenCard extends org.lgna.croquet.SimpleComposit
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		org.lgna.project.ast.Member member = this.differentImplementation.getProjectHub().getMember();
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( this, "insets 0, fill" );
+		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "insets 0, fill" );
 		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createActionMustBeTakeMemberLabel( member ) );
 		return rv;
 	}

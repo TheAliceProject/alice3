@@ -43,7 +43,7 @@
 package org.alice.stageide.sceneeditor.side;
 
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
@@ -107,7 +107,7 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 		try {
 			org.lgna.project.ast.Statement orientationStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement(
 					false, field,
-					ImplementationAccessor.createOrientation( initialMarkerTransform.orientation )
+					EmployeesOnly.createOrientation( initialMarkerTransform.orientation )
 					);
 			rv.addDoStatement( orientationStatement );
 		} catch( CannotCreateExpressionException ccee ) {
@@ -116,7 +116,7 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 		try {
 			org.lgna.project.ast.Statement positionStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement(
 					false, field,
-					ImplementationAccessor.createPosition( initialMarkerTransform.translation )
+					EmployeesOnly.createPosition( initialMarkerTransform.translation )
 					);
 			rv.addDoStatement( positionStatement );
 		} catch( CannotCreateExpressionException ccee ) {

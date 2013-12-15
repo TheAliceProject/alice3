@@ -46,8 +46,8 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionDropDown<M extends org.lgna.project.ast.Expression> extends org.lgna.croquet.components.ItemDropDown<M, org.lgna.croquet.CustomItemState<M>> {
-	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
+public class ExpressionDropDown<M extends org.lgna.project.ast.Expression> extends org.lgna.croquet.views.ItemDropDown<M, org.lgna.croquet.CustomItemState<M>> {
+	private static class MainComponent extends org.lgna.croquet.views.BorderPanel {
 		private final org.alice.ide.x.AstI18nFactory factory;
 		private org.lgna.project.ast.Expression expression;
 

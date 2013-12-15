@@ -46,13 +46,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
+public abstract class SimpleComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> {
 	public SimpleComposite( java.util.UUID id ) {
 		super( id );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.recyclebin;
 /**
  * @author Dennis Cosgrove
  */
-public class RecycleBinView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+public class RecycleBinView extends org.lgna.croquet.views.JComponent<javax.swing.JComponent> {
 	private static final javax.swing.Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
 
 	@Override

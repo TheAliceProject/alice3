@@ -60,15 +60,15 @@ import org.alice.ide.croquet.models.project.stats.croquet.StatisticsMethodFreque
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.CheckBox;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.HorizontalAlignment;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.LineAxisPanel;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.CheckBox;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.GridPanel;
+import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserMethod;
 
@@ -92,7 +92,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		listSelectionState.addValueListener( statsDisplay );
 		listSelectionState.setSelectedIndex( 0 );
 		gridPanel.addComponent( statsDisplay.getLayout() );
-		org.lgna.croquet.components.List<UserMethod> list = new org.lgna.croquet.components.List<UserMethod>( composite.getUserMethodList() );
+		org.lgna.croquet.views.List<UserMethod> list = new org.lgna.croquet.views.List<UserMethod>( composite.getUserMethodList() );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );

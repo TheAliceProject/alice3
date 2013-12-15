@@ -45,9 +45,9 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ToggleButtonLabelCombo extends org.lgna.croquet.components.Panel {
-	private final org.lgna.croquet.components.ToggleButton toggleButton;
-	private final org.lgna.croquet.components.AbstractLabel label;
+public class ToggleButtonLabelCombo extends org.lgna.croquet.views.Panel {
+	private final org.lgna.croquet.views.ToggleButton toggleButton;
+	private final org.lgna.croquet.views.AbstractLabel label;
 
 	public ToggleButtonLabelCombo( org.lgna.croquet.BooleanState state ) {
 		this.toggleButton = state.createToggleButton();
@@ -56,11 +56,11 @@ public class ToggleButtonLabelCombo extends org.lgna.croquet.components.Panel {
 		this.internalAddComponent( this.label );
 	}
 
-	public org.lgna.croquet.components.ToggleButton getToggleButton() {
+	public org.lgna.croquet.views.ToggleButton getToggleButton() {
 		return this.toggleButton;
 	}
 
-	public org.lgna.croquet.components.AbstractLabel getLabel() {
+	public org.lgna.croquet.views.AbstractLabel getLabel() {
 		return this.label;
 	}
 

@@ -62,7 +62,7 @@ public class ConeDragModel extends ShapeDragModel {
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.ImplementationAccessor.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override

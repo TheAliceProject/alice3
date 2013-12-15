@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberHubNameLabel extends org.lgna.croquet.components.Label {
+public class MemberHubNameLabel extends org.lgna.croquet.views.Label {
 	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
 
 	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {

@@ -43,7 +43,6 @@
 package org.alice.interact.event;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
@@ -63,7 +62,7 @@ public class SelectionEvent extends Event<AbstractDragAdapter> {
 		super( source );
 		if( mtTransformable != null )
 		{
-			this.transformable = ImplementationAccessor.getImplementation( mtTransformable );
+			this.transformable = org.lgna.story.EmployeesOnly.getImplementation( mtTransformable );
 		}
 		else
 		{

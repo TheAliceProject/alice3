@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FrameComposite<V extends org.lgna.croquet.components.Panel> extends AbstractWindowComposite<V> {
+public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> extends AbstractWindowComposite<V> {
 	public static final class IsFrameShowingStateResolver extends IndirectResolver<BooleanState, FrameComposite> {
 		private IsFrameShowingStateResolver( FrameComposite indirect ) {
 			super( indirect );
@@ -83,7 +83,7 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.Panel
 		protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
 			super.fireChanged( prevValue, nextValue, isAdjusting );
 			if( nextValue ) {
-				org.lgna.croquet.components.Frame frameView = this.frameComposite.getOwnerFrameView_createIfNecessary();
+				org.lgna.croquet.views.Frame frameView = this.frameComposite.getOwnerFrameView_createIfNecessary();
 				frameView.setTitle( this.frameComposite.getFrameTitle() );
 				this.frameComposite.handlePreActivation();
 				frameView.setVisible( true );
@@ -100,7 +100,7 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.Panel
 		}
 	}
 
-	private org.lgna.croquet.components.Frame ownerFrameView;
+	private org.lgna.croquet.views.Frame ownerFrameView;
 
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 		public void windowActivated( java.awt.event.WindowEvent e ) {
@@ -126,11 +126,11 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.Panel
 		}
 	};
 
-	private org.lgna.croquet.components.Frame getOwnerFrameView_createIfNecessary() {
+	private org.lgna.croquet.views.Frame getOwnerFrameView_createIfNecessary() {
 		if( this.ownerFrameView != null ) {
 			//pass
 		} else {
-			this.ownerFrameView = new org.lgna.croquet.components.Frame();
+			this.ownerFrameView = new org.lgna.croquet.views.Frame();
 			this.ownerFrameView.getContentPane().addCenterComponent( this.getView() );
 			this.updateWindowSize( this.ownerFrameView );
 			this.ownerFrameView.addWindowListener( this.windowListener );

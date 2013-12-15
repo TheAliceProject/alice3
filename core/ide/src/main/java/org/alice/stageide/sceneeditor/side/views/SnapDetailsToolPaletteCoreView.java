@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
+public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.views.MigPanel {
 	private final org.lgna.croquet.event.ValueListener<Boolean> isEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			handleEnabledChanged( e.getNextValue() );

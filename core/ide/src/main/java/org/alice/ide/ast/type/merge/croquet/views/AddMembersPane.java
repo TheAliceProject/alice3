@@ -45,10 +45,10 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AddMembersPane extends org.lgna.croquet.components.MigPanel {
-	private void addToolPaletteViewIfAppropriate( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite, org.lgna.croquet.components.MigPanel panel ) {
+public class AddMembersPane extends org.lgna.croquet.views.MigPanel {
+	private void addToolPaletteViewIfAppropriate( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite, org.lgna.croquet.views.MigPanel panel ) {
 		if( composite.getTotalCount() > 0 ) {
-			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
+			org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
 			toolPaletteView.getTitle().setInert( true );
 			toolPaletteView.getTitle().setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
 			//toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
@@ -59,16 +59,16 @@ public class AddMembersPane extends org.lgna.croquet.components.MigPanel {
 
 	public AddMembersPane( org.alice.ide.ast.type.merge.croquet.AddMembersPage composite ) {
 		super( composite, "fillx" );
-		org.lgna.croquet.components.Label classLabel = new org.lgna.croquet.components.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) );
-		classLabel.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+		org.lgna.croquet.views.Label classLabel = new org.lgna.croquet.views.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) );
+		classLabel.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "wrap" );
 
-		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel( null, "fill, insets 0" );
+		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "fill, insets 0" );
 		this.addToolPaletteViewIfAppropriate( composite.getAddProceduresComposite(), panel );
 		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite(), panel );
 		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite(), panel );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( panel );
 		this.addComponent( scrollPane, "grow, shrink, wrap" );
 
 		if( composite.isContainingDifferentImplementations() ) {

@@ -51,9 +51,9 @@ public abstract class AbstractArgumentListPropertyPane extends org.alice.ide.cro
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, final int N ) {
+	protected org.lgna.croquet.views.Component<?> createInterstitial( int i, final int N ) {
 		if( i < ( N - 1 ) ) {
-			return new org.lgna.croquet.components.Label( ", " );
+			return new org.lgna.croquet.views.Label( ", " );
 		} else {
 			return null;
 		}

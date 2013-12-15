@@ -55,7 +55,7 @@ public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
 			this.addComponent( composite.getManagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( managedFieldsComposite.getView() );
 			this.addComponent( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().createButton() );
-			this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ) );
+			this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalStrut( 24 ) );
 			this.addComponent( composite.getUnmanagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		this.addComponent( composite.getMembersComposite().getView() );

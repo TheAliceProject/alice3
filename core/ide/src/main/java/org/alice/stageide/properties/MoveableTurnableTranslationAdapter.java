@@ -45,7 +45,7 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -79,7 +79,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 		if( this.instance != null )
 		{
 			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			org.lgna.story.implementation.AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
 			implementation.getSgComposite().addAbsoluteTransformationListener( this.absoluteTransformationListener );
 		}
 	}
@@ -89,7 +89,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 	{
 		if( this.instance != null )
 		{
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			org.lgna.story.implementation.AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
 			implementation.getSgComposite().removeAbsoluteTransformationListener( this.absoluteTransformationListener );
 		}
 	}
@@ -111,7 +111,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 	{
 		if( this.instance != null )
 		{
-			return ImplementationAccessor.getImplementation( this.instance ).getAbsoluteTransformation().translation;
+			return EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation().translation;
 		}
 		return null;
 	}
@@ -122,7 +122,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 		super.setValue( newValue );
 		if( this.instance != null )
 		{
-			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation( this.instance ).getAbsoluteTransformation();
+			AffineMatrix4x4 currentTrans = EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation();
 			double dist = Point3.calculateDistanceBetween( currentTrans.translation, newValue );
 			double duration = 1;
 			if( dist < .02 )
@@ -134,7 +134,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 				duration = ( dist - .02 ) / ( .5 - .02 );
 			}
 
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			org.lgna.story.implementation.AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
 			implementation.animatePositionOnly( org.lgna.story.implementation.AsSeenBy.SCENE.getActualEntityImplementation( implementation ), newValue, false, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
 	}

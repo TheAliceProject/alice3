@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.imp.JDropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.views.imp.JDropProxy.Hider {
 	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );
@@ -269,7 +269,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			}
 		}
 
-		private java.util.Map<org.lgna.croquet.components.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private java.util.Map<org.lgna.croquet.views.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		@Override
 		protected String findDefaultLocalizedText() {
@@ -279,7 +279,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
@@ -306,7 +306,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
 			javax.swing.JPopupMenu jPopupMenu = ( (javax.swing.JMenu)menuItemContainer.getViewController().getAwtComponent() ).getPopupMenu();
 			jPopupMenu.removeComponentListener( listeners.getComponentListener() );
@@ -316,7 +316,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleCanceled( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleCanceled( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
 			listeners.getPopupMenuListener().popupMenuCanceled( e );
 			super.handleCanceled( menuItemContainer, e );
@@ -354,9 +354,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
 	}
 
-	private org.lgna.croquet.components.DragComponent dragSource;
+	private org.lgna.croquet.views.DragComponent dragSource;
 
-	public final void setDragSource( org.lgna.croquet.components.DragComponent dragSource ) {
+	public final void setDragSource( org.lgna.croquet.views.DragComponent dragSource ) {
 		this.dragSource = dragSource;
 	}
 

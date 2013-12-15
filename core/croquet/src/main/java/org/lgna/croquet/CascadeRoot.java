@@ -120,7 +120,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 				this.handleFinally();
 			} else {
 				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
-				final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this );
+				final org.lgna.croquet.views.PopupMenu popupMenu = new org.lgna.croquet.views.PopupMenu( this );
 				popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
 					public void componentShown( java.awt.event.ComponentEvent e ) {
 					}
@@ -157,8 +157,8 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			text.append( "</strong>" );
 		}
 
-		public org.lgna.croquet.components.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
-			return new org.lgna.croquet.components.FauxComboBoxPopupButton<T>( this );
+		public org.lgna.croquet.views.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
+			return new org.lgna.croquet.views.FauxComboBoxPopupButton<T>( this );
 		}
 	}
 

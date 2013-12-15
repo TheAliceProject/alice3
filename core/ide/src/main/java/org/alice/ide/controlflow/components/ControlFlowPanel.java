@@ -46,14 +46,14 @@ package org.alice.ide.controlflow.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowPanel extends org.lgna.croquet.components.Panel {
+public class ControlFlowPanel extends org.lgna.croquet.views.Panel {
 	public ControlFlowPanel( org.alice.ide.controlflow.ControlFlowComposite composite ) {
 		super( composite );
 		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {
 			if( dragModel != null ) {
 				this.internalAddComponent( new MiniControlFlowStatementTemplate( dragModel ) );
 			} else {
-				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+				this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 			}
 		}
 		this.setBackgroundColor( null );

@@ -56,13 +56,13 @@ import javax.swing.JList;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFlowControlFrequencyComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.HorizontalAlignment;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.GridPanel;
+import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.AbstractEachInTogether;
 import org.lgna.project.ast.AbstractForEachLoop;
 import org.lgna.project.ast.ConditionalStatement;
@@ -92,7 +92,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		userMethodList.addNewSchoolValueListener( statsDisplay );
 		statsDisplay.update( StatisticsFlowControlFrequencyComposite.root );
 		gridPanel.addComponent( statsDisplay.getLayout() );
-		org.lgna.croquet.components.List<UserMethod> list = new org.lgna.croquet.components.List<UserMethod>( userMethodList );
+		org.lgna.croquet.views.List<UserMethod> list = new org.lgna.croquet.views.List<UserMethod>( userMethodList );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );

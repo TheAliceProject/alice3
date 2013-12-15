@@ -63,14 +63,14 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNo
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.List;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.Tree;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.GridPanel;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.TextField;
+import org.lgna.croquet.views.Tree;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.GoldenRatio;

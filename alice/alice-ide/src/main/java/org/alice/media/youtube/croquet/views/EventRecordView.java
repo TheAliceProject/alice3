@@ -47,9 +47,9 @@ import org.alice.media.youtube.croquet.EventRecordComposite;
 /**
  * @author Matt May
  */
-public class EventRecordView extends org.lgna.croquet.components.MigPanel {
+public class EventRecordView extends org.lgna.croquet.views.MigPanel {
 
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
+	private final org.lgna.croquet.views.BorderPanel lookingGlassContainer = new org.lgna.croquet.views.BorderPanel();
 	private final TimeLabel timeLabel;
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
@@ -58,7 +58,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		this.timeLabel = new TimeLabel();
 		this.updateTime( 0 );
 
-		org.lgna.croquet.components.Component<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
+		org.lgna.croquet.views.Component<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
 
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
 		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );
@@ -70,7 +70,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
+	public org.lgna.croquet.views.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
 

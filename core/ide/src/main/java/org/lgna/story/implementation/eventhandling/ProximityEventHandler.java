@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
@@ -73,7 +73,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
 		proximityEventManager.register( pEList, groupOne, groupTwo, distance );

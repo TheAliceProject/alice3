@@ -46,20 +46,20 @@ package org.alice.ide.declarationseditor.type.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel<E> {
+public abstract class MemberList<E> extends org.lgna.croquet.views.ItemSelectablePanel<E> {
 	protected final float NAME_FONT_SCALE = 1.5f;
 
-	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
-		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.JComponent<?> lineStart, org.lgna.croquet.components.JComponent<?> center, org.lgna.croquet.components.JComponent<?> lineEnd ) {
+	protected class MemberButton extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
+		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.views.JComponent<?> lineStart, org.lgna.croquet.views.JComponent<?> center, org.lgna.croquet.views.JComponent<?> lineEnd ) {
 			super( booleanState );
 			if( lineStart != null ) {
-				this.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+				this.addComponent( lineStart, org.lgna.croquet.views.BorderPanel.Constraint.LINE_START );
 			}
 			if( center != null ) {
-				this.addComponent( center, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+				this.addComponent( center, org.lgna.croquet.views.BorderPanel.Constraint.CENTER );
 			}
 			if( lineEnd != null ) {
-				this.addComponent( lineEnd, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+				this.addComponent( lineEnd, org.lgna.croquet.views.BorderPanel.Constraint.LINE_END );
 			}
 
 		}
@@ -106,19 +106,19 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 			return rv;
 		}
 
-		public void addComponent( org.lgna.croquet.components.Component<?> component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
+		public void addComponent( org.lgna.croquet.views.Component<?> component, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
 			this.internalAddComponent( component, constraint.getInternal() );
 		}
 	}
 
-	private org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+	private org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel();
 
 	public MemberList( org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.Operation... operations ) {
 		super( model );
 		this.internalAddComponent( pageAxisPanel );
 		for( org.lgna.croquet.Operation operation : operations ) {
 			if( operation != null ) {
-				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+				this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
 				this.internalAddComponent( operation.createButton() );
 			}
 		}
@@ -129,14 +129,14 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createButtonLineStart( E item );
+	protected abstract org.lgna.croquet.views.JComponent<?> createButtonLineStart( E item );
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createButtonCenter( E item );
+	protected abstract org.lgna.croquet.views.JComponent<?> createButtonCenter( E item );
 
-	protected abstract org.lgna.croquet.components.JComponent<?> createButtonLineEnd( E item );
+	protected abstract org.lgna.croquet.views.JComponent<?> createButtonLineEnd( E item );
 
 	@Override
-	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
 		MemberButton memberButton = new MemberButton( itemSelectedState,
 				this.createButtonLineStart( item ),
 				this.createButtonCenter( item ),
@@ -147,7 +147,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 
 	@Override
 	protected void removeAllDetails() {
-		for( org.lgna.croquet.components.BooleanStateButton<?> button : this.getAllButtons() ) {
+		for( org.lgna.croquet.views.BooleanStateButton<?> button : this.getAllButtons() ) {
 			button.setVisible( false );
 		}
 	}
@@ -155,13 +155,13 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 	@Override
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
-		for( org.lgna.croquet.components.BooleanStateButton<?> button : this.getAllButtons() ) {
+		for( org.lgna.croquet.views.BooleanStateButton<?> button : this.getAllButtons() ) {
 			button.setVisible( false );
 		}
 	}
 
 	@Override
-	protected void addItem( E item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	protected void addItem( E item, org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		button.setVisible( true );
 	}
 

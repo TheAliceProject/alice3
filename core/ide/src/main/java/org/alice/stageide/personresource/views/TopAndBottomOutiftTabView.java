@@ -50,19 +50,19 @@ public class TopAndBottomOutiftTabView extends OutfitTabView {
 		super( composite );
 		java.awt.Color backgroundColor = this.getBackgroundColor();
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.TopPiece> topList = new HorizontalWrapList<org.lgna.story.resources.sims2.TopPiece>( composite.getTopPieceState(), -1, org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer.getInstance() );
+		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.TopPiece> topList = new HorizontalWrapList<org.lgna.story.resources.sims2.TopPiece>( composite.getTopPieceState(), -1, org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer.getInstance() );
 		topList.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.ScrollPane topScrollPane = new org.lgna.croquet.components.ScrollPane( topList );
+		org.lgna.croquet.views.ScrollPane topScrollPane = new org.lgna.croquet.views.ScrollPane( topList );
 		topScrollPane.setBothScrollBarIncrements( 66, 66 );
-		topScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		topScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		topScrollPane.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.WHITE ) );
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BottomPiece> bottomList = new HorizontalWrapList<org.lgna.story.resources.sims2.BottomPiece>( composite.getBottomPieceState(), -1, org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer.getInstance() );
+		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.BottomPiece> bottomList = new HorizontalWrapList<org.lgna.story.resources.sims2.BottomPiece>( composite.getBottomPieceState(), -1, org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer.getInstance() );
 		bottomList.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.ScrollPane bottomScrollPane = new org.lgna.croquet.components.ScrollPane( bottomList );
+		org.lgna.croquet.views.ScrollPane bottomScrollPane = new org.lgna.croquet.views.ScrollPane( bottomList );
 		bottomScrollPane.setBothScrollBarIncrements( 66, 66 );
-		bottomScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		bottomScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 
-		this.addCenterComponent( org.lgna.croquet.components.GridPanel.createSingleColumnGridPane( topScrollPane, bottomScrollPane ) );
+		this.addCenterComponent( org.lgna.croquet.views.GridPanel.createSingleColumnGridPane( topScrollPane, bottomScrollPane ) );
 	}
 }

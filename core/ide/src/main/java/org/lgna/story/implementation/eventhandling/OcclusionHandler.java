@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
@@ -77,13 +77,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 		List<SModel> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		if( ( groupOne.size() > 0 ) && ( groupOne.get( 0 ) != null ) && ( camera == null ) ) {
-			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
+			camera = EmployeesOnly.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
 			camera.getSgComposite().addAbsoluteTransformationListener( this );
 		}
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
 		occlusionEventHandler.register( occlusionEventListener, groupOne, groupTwo );
@@ -113,7 +113,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 
 		public void check( SThing changedEntity ) {
 			if( camera == null ) {
-				camera = ImplementationAccessor.getImplementation( changedEntity ).getScene().findFirstCamera();
+				camera = EmployeesOnly.getImplementation( changedEntity ).getScene().findFirstCamera();
 				if( camera == null ) {
 					return;
 				}
@@ -124,7 +124,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 						for( Object occList : eventMap.get( t ).get( m ) ) {
 							if( check( occList, t, m ) ) {
 								CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
-								if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( t ) ) ) {
+								if( camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( t ) ) ) {
 									models.add( m );
 									models.add( t );
 								} else {
@@ -150,7 +150,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 					for( Object occList : eventMap.get( changedEntity ).get( m ) ) {
 						if( check( occList, (SModel)changedEntity, m ) ) {
 							CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
-							if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( changedEntity ) ) ) {
+							if( camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( changedEntity ) ) ) {
 								models.add( m );
 								models.add( (SModel)changedEntity );
 							} else {

@@ -76,8 +76,8 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+		return new org.lgna.croquet.views.ScrollPane();
 	}
 
 	public void addImportOnlyMember( M method ) {

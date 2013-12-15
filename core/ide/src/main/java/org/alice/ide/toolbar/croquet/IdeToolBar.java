@@ -51,7 +51,7 @@ public abstract class IdeToolBar extends org.lgna.croquet.ToolBarComposite {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ToolBarView createView() {
+	protected org.lgna.croquet.views.ToolBarView createView() {
 		return new org.alice.ide.toolbar.croquet.views.IdeToolBarView( this );
 	}
 }

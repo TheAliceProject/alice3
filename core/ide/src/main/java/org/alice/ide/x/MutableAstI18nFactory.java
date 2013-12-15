@@ -58,37 +58,37 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
 		org.lgna.project.ast.ArgumentOwner owner = argumentListProperty.getOwner();
 		org.lgna.project.ast.DeclarationProperty<? extends org.lgna.project.ast.AbstractCode> codeProperty = owner.getParameterOwnerProperty();
 		org.lgna.project.ast.AbstractCode code = codeProperty.getValue();
 		if( code.getKeyedParameter() != null ) {
 			return new org.alice.ide.x.components.KeyedArgumentListPropertyView( this, argumentListProperty );
 		} else {
-			return new org.lgna.croquet.components.Label();
+			return new org.lgna.croquet.views.Label();
 		}
 
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
+	protected org.lgna.croquet.views.JComponent<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
 		throw new RuntimeException( ideExpression.toString() );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	protected org.lgna.croquet.views.JComponent<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.views.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
+	public org.lgna.croquet.views.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
 		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-		org.lgna.croquet.components.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
+		org.lgna.croquet.views.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
 			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );

@@ -45,11 +45,11 @@ package org.alice.ide.ast.type.merge.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberPopupCoreView extends org.lgna.croquet.components.BorderPanel {
+public class MemberPopupCoreView extends org.lgna.croquet.views.BorderPanel {
 	public MemberPopupCoreView( final org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub(), false );
-		org.lgna.croquet.components.AbstractLabel label = composite.getDescription().createLabel();
+		org.lgna.croquet.views.Component<?> component = MemberPreviewPane.createView( composite.getMemberHub(), false );
+		org.lgna.croquet.views.AbstractLabel label = composite.getDescription().createLabel();
 		label.setIcon( composite.getIcon() );
 		this.addPageStartComponent( label );
 		this.addCenterComponent( component );

@@ -45,17 +45,17 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
+public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
 	private final ImageView toBeReplacedImageView = new ImageView();
 	private final ImageView nextImageView = new ImageView();
-	private final org.lgna.croquet.components.Label toBeReplacedHeaderLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.components.Label toBeReplacedDetailsLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.components.Label nextDetailsLabel = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label toBeReplacedHeaderLabel = new org.lgna.croquet.views.Label();
+	private final org.lgna.croquet.views.Label toBeReplacedDetailsLabel = new org.lgna.croquet.views.Label();
+	private final org.lgna.croquet.views.Label nextDetailsLabel = new org.lgna.croquet.views.Label();
 
 	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
 		super( composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]" );
 		this.addComponent( this.toBeReplacedHeaderLabel );
-		this.addComponent( new org.lgna.croquet.components.VerticalSeparator(), "spany 3, growy" );
+		this.addComponent( new org.lgna.croquet.views.VerticalSeparator(), "spany 3, growy" );
 		this.addComponent( composite.getNextHeader().createLabel(), "wrap" );
 		this.addComponent( this.toBeReplacedImageView, "grow, shrink" );
 		this.addComponent( this.nextImageView, "skip 1, grow, shrink, wrap" );
@@ -97,9 +97,9 @@ public class SaveOverPane extends org.lgna.croquet.components.MigPanel {
 		this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
 		this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
 		super.handleCompositePreActivation();
-		org.lgna.croquet.components.AbstractWindow<?> window = this.getRoot();
-		if( window instanceof org.lgna.croquet.components.Dialog ) {
-			org.lgna.croquet.components.Dialog dialog = (org.lgna.croquet.components.Dialog)window;
+		org.lgna.croquet.views.AbstractWindow<?> window = this.getRoot();
+		if( window instanceof org.lgna.croquet.views.Dialog ) {
+			org.lgna.croquet.views.Dialog dialog = (org.lgna.croquet.views.Dialog)window;
 			dialog.setTitle( "Save Over " + file );
 			dialog.pack();
 		}

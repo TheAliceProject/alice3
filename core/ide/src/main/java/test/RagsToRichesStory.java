@@ -47,8 +47,8 @@ import java.awt.Component;
 import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.Color;
 import org.lgna.story.Duration;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.RollDirection;
@@ -315,10 +315,10 @@ class RagsToRichesStory extends SProgram {
 	public void playOutStory() {
 		//		this.setActiveScene( this.desertScene );
 		//		this.desertScene.turnBigRocksIntoLittleRocks();
-		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = ImplementationAccessor.getImplementation( susan );
+		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = EmployeesOnly.getImplementation( susan );
 		susanImp.opacity.setValue( 0.25f );
 		susanImp.showVisualization();
-		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = ImplementationAccessor.getImplementation( ogre );
+		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = EmployeesOnly.getImplementation( ogre );
 		ogreImp.opacity.setValue( 0.25f );
 		ogreImp.showVisualization();
 		this.setActiveScene( this.snowScene );
@@ -340,7 +340,7 @@ class RagsToRichesStory extends SProgram {
 			@Override
 			public void run() {
 				ThreadUtilities.sleep( 250 );
-				Component awtComponent = ImplementationAccessor.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAWTComponent();
+				Component awtComponent = EmployeesOnly.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAWTComponent();
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootFrame( awtComponent ).setSize( 1024, 768 );
 			}
 		}.start();

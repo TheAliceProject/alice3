@@ -56,7 +56,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			int keyCode = binaryDecoder.decodeInt();
-			return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( keyCode );
+			return org.lgna.story.EmployeesOnly.getKeyFromKeyCode( keyCode );
 		} else {
 			return null;
 		}
@@ -65,7 +65,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
-			binaryEncoder.encode( org.lgna.story.ImplementationAccessor.getKeyCodeFromKey( value ) );
+			binaryEncoder.encode( org.lgna.story.EmployeesOnly.getKeyCodeFromKey( value ) );
 		} else {
 			binaryEncoder.encode( false );
 		}

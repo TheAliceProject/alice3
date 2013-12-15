@@ -45,7 +45,7 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewProjectComponent extends org.lgna.croquet.components.JComponent<javax.swing.AbstractButton> {
+public class PreviewProjectComponent extends org.lgna.croquet.views.JComponent<javax.swing.AbstractButton> {
 	private static final int SIZE = 64;
 	private static final java.awt.Stroke stroke = new java.awt.BasicStroke( SIZE / 25.0f );
 

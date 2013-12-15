@@ -58,6 +58,56 @@ public class EmployeesOnly {
 		jointedModel.setJointedModelResource( resource );
 	}
 
+	public static <T extends org.lgna.story.implementation.EntityImp> T getImplementation( SThing entity ) {
+		return (T)entity.getImplementation();
+	}
+
+	public static org.lgna.story.implementation.ProgramImp getImplementation( SProgram program ) {
+		return program.getImplementation();
+	}
+
+	public static edu.cmu.cs.dennisc.math.Point3 getPoint3( Position position ) {
+		return position.getInternal();
+	}
+
+	public static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getOrthogonalMatrix3x3( Orientation orientation ) {
+		return orientation.getInternal();
+	}
+
+	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAffineMatrix4x4( VantagePoint vantagePoint ) {
+		return vantagePoint.getInternal();
+	}
+
+	public static Color createInterpolation( Color a, Color b, float portion ) {
+		return Color.createInstance(
+				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
+				);
+	}
+
+	public static Position createPosition( edu.cmu.cs.dennisc.math.Point3 xyz ) {
+		return Position.createInstance( xyz );
+	}
+
+	public static Orientation createOrientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
+		return Orientation.createInstance( m );
+	}
+
+	public static VantagePoint createVantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		return VantagePoint.createInstance( m );
+	}
+
+	public static Key getKeyFromKeyCode( int keyCode ) {
+		return Key.getInstanceFromKeyCode( keyCode );
+	}
+
+	public static int getKeyCodeFromKey( Key key ) {
+		if( key != null ) {
+			return key.getInternal();
+		} else {
+			return -1;
+		}
+	}
+
 	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f color ) {
 		return color != null ? Color.createInstance( color ) : null;
 	}
@@ -72,5 +122,67 @@ public class EmployeesOnly {
 
 	public static java.awt.Color getAwtColor( Color color ) {
 		return color != null ? getColor4f( color ).getAsAWTColor() : null;
+	}
+
+	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
+		if( paint instanceof org.lgna.story.Color ) {
+			return getColor4f( (org.lgna.story.Color)paint );
+		} else {
+			return defaultValue;
+		}
+	}
+
+	private static final java.util.Map<ImagePaint, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapImagePaintToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {
+		if( paint instanceof org.lgna.story.ImageSource ) {
+			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
+			org.lgna.common.resources.ImageResource imageResource = imageSource.getImageResource();
+			if( imageResource != null ) {
+				return org.lgna.story.implementation.TextureFactory.getTexture( imageResource, true );
+			} else {
+				return null;
+			}
+		} else if( paint instanceof org.lgna.story.ImagePaint ) {
+			org.lgna.story.ImagePaint imagePaint = (org.lgna.story.ImagePaint)paint;
+			edu.cmu.cs.dennisc.texture.BufferedImageTexture rv = mapImagePaintToTexture.get( imagePaint );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+				try {
+					rv.setBufferedImage( javax.imageio.ImageIO.read( imagePaint.getResource() ) );
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( ioe );
+				}
+				rv.setMipMappingDesired( true );
+				mapImagePaintToTexture.put( imagePaint, rv );
+			}
+			return rv;
+		} else if( paint instanceof edu.cmu.cs.dennisc.nebulous.NebulousPaint ) {
+			edu.cmu.cs.dennisc.nebulous.NebulousPaint nPaint = (edu.cmu.cs.dennisc.nebulous.NebulousPaint)paint;
+			edu.cmu.cs.dennisc.nebulous.NebulousTexture nTexture = nPaint.getTexture();
+			nTexture.setMipMappingDesired( true );
+			return nTexture;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	public static Object getKeyedArgumentValue( Object argumentValue ) {
+		try {
+			if( argumentValue != null ) {
+				Class<?> cls = argumentValue.getClass();
+				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getValue", Object[].class );
+				Object array = new Object[] { argumentValue };
+				return mthd.invoke( null, array );
+			} else {
+				return null;
+			}
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			return argumentValue;
+		}
 	}
 }

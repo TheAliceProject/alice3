@@ -50,18 +50,18 @@ public class TemplateFactory {
 		throw new AssertionError();
 	}
 
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.components.DragComponent> mapMethodToProcedureInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.components.DragComponent> mapMethodToFunctionInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.views.DragComponent> mapMethodToProcedureInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.views.DragComponent> mapMethodToFunctionInvocationTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.components.DragComponent> mapMethodToAccessorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.components.DragComponent> mapMethodToAccessArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.components.DragComponent> mapMethodToArrayLengthTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToAccessorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToAccessArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToArrayLengthTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.components.DragComponent> mapMethodToMutatorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.components.DragComponent> mapMethodToMutateArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToMutatorTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToMutateArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static org.lgna.croquet.components.DragComponent getProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
+	public static org.lgna.croquet.views.DragComponent getProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.croquet.views.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -71,8 +71,8 @@ public class TemplateFactory {
 		return rv;
 	}
 
-	public static org.lgna.croquet.components.DragComponent getFunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
+	public static org.lgna.croquet.views.DragComponent getFunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.croquet.views.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -82,7 +82,7 @@ public class TemplateFactory {
 		return rv;
 	}
 
-	public static org.lgna.croquet.components.DragComponent getMethodInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+	public static org.lgna.croquet.views.DragComponent getMethodInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		if( method.isProcedure() ) {
 			return getProcedureInvocationTemplate( method );
 		} else {
@@ -90,8 +90,8 @@ public class TemplateFactory {
 		}
 	}
 
-	public static org.lgna.croquet.components.DragComponent getAccessorTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToAccessorTemplate.get( field );
+	public static org.lgna.croquet.views.DragComponent getAccessorTemplate( org.lgna.project.ast.AbstractField field ) {
+		org.lgna.croquet.views.DragComponent rv = mapMethodToAccessorTemplate.get( field );
 		if( rv != null ) {
 
 		} else {
@@ -101,8 +101,8 @@ public class TemplateFactory {
 		return rv;
 	}
 
-	public static org.lgna.croquet.components.DragComponent getAccessArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
+	public static org.lgna.croquet.views.DragComponent getAccessArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
+		org.lgna.croquet.views.DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
 		if( rv != null ) {
 
 		} else {
@@ -112,8 +112,8 @@ public class TemplateFactory {
 		return rv;
 	}
 
-	public static org.lgna.croquet.components.DragComponent getArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.components.DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
+	public static org.lgna.croquet.views.DragComponent getArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
+		org.lgna.croquet.views.DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
 		if( rv != null ) {
 
 		} else {

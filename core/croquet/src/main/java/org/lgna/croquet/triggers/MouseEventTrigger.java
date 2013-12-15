@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class MouseEventTrigger extends AbstractMouseEventTrigger {
-	public static MouseEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+	public static MouseEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
 		return new MouseEventTrigger( Origin.USER, viewController, mouseEvent );
 	}
 
@@ -63,7 +63,7 @@ public class MouseEventTrigger extends AbstractMouseEventTrigger {
 		return new MouseEventTrigger( Origin.RECOVERY, null, null );
 	}
 
-	private MouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+	private MouseEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
 		super( origin, viewController, mouseEvent );
 	}
 

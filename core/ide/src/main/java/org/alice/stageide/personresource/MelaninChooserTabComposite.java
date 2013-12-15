@@ -84,7 +84,7 @@ public final class MelaninChooserTabComposite extends org.lgna.croquet.color.Col
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

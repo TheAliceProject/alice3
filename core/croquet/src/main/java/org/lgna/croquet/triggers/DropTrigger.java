@@ -47,7 +47,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
+	public static DropTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
 		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
 	}
 
@@ -61,7 +61,7 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 
 	private org.lgna.croquet.DropSite dropSite;
 
-	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
+	private DropTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
 		super( origin, viewController, e );
 		if( dropSite != null ) {
 			//pass

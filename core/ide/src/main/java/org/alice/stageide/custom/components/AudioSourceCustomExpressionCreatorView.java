@@ -52,12 +52,12 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
 		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ), false ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, composite.getTestOperation().createButton(), false ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ), false ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, composite.getTestOperation().createButton(), false ) );
 	}
 }

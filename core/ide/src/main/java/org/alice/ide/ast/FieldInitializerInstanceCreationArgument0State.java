@@ -99,7 +99,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 		// update Scene Editor
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 		org.lgna.story.SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, org.lgna.story.SJointedModel.class );
-		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.ImplementationAccessor.getImplementation( model );
+		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.EmployeesOnly.getImplementation( model );
 
 		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
 		org.lgna.project.virtualmachine.UserInstance userInstance = null;

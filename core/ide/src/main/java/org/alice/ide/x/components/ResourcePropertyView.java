@@ -47,7 +47,7 @@ package org.alice.ide.x.components;
  */
 public class ResourcePropertyView extends org.alice.ide.croquet.components.AbstractPropertyPane<org.lgna.project.ast.ResourceProperty, org.lgna.common.Resource> {
 	private static final java.text.NumberFormat DURATION_FORMAT = new java.text.DecimalFormat( "0.00" );
-	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
 	private org.lgna.common.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 

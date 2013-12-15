@@ -45,7 +45,7 @@ package org.alice.ide.upgrade.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectAheadView extends org.lgna.croquet.components.BorderPanel {
+public class ProjectAheadView extends org.lgna.croquet.views.BorderPanel {
 	public ProjectAheadView( org.alice.ide.upgrade.ProjectAheadDialog composite ) {
 		super( composite );
 		org.lgna.project.Version projectVersion = composite.getProjectVersion();
@@ -66,6 +66,6 @@ public class ProjectAheadView extends org.lgna.croquet.components.BorderPanel {
 		sb.append( "You can attempt to load this project anyway, but we warned there may be problems.<p>" );
 		sb.append( "</html>" );
 
-		this.addPageStartComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
+		this.addPageStartComponent( new org.lgna.croquet.views.Label( sb.toString() ) );
 	}
 }

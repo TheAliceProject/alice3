@@ -126,7 +126,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<org.lgna.c
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel {
+public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
@@ -138,7 +138,7 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		}
 	};
 
-	private final org.lgna.croquet.components.Table<org.lgna.common.Resource> table;
+	private final org.lgna.croquet.views.Table<org.lgna.common.Resource> table;
 
 	public ResourceManagerView( org.alice.ide.resource.manager.ResourceManagerComposite composite ) {
 		super( composite, 8, 8 );
@@ -151,18 +151,18 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.NAME_COLUMN_INDEX ) ).setCellRenderer( new ResourceNameTableCellRenderer() );
 		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.table );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( this.table );
 		this.addCenterComponent( scrollPane );
 
-		org.lgna.croquet.components.Panel lineEndPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(
+		org.lgna.croquet.views.Panel lineEndPanel = org.lgna.croquet.views.GridPanel.createSingleColumnGridPane(
 				org.alice.ide.resource.manager.ImportAudioResourceOperation.getInstance().createButton(),
 				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
 				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(),
-				new org.lgna.croquet.components.Label(),
+				new org.lgna.croquet.views.Label(),
 				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().createButton(),
 				org.alice.ide.resource.manager.ReloadContentResourceOperation.getInstance().createButton()
 				);
-		this.addLineEndComponent( new org.lgna.croquet.components.BorderPanel.Builder()
+		this.addLineEndComponent( new org.lgna.croquet.views.BorderPanel.Builder()
 				.pageStart( lineEndPanel )
 				.build() );
 

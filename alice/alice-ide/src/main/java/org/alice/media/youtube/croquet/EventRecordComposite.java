@@ -52,9 +52,9 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
@@ -63,7 +63,6 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
@@ -154,7 +153,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
-		eventScript = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		eventScript = ( (SceneImp)org.lgna.story.EmployeesOnly.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 		owner.setEventScript( eventScript );
 		getEventList().clear();
 		eventScript.addListener( this.listener );

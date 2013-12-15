@@ -46,7 +46,7 @@ package org.alice.stageide.modelviewer;
 /**
  * @author Dennis Cosgrove
  */
-abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
+abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );

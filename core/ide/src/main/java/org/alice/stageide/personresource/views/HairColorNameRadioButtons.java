@@ -45,18 +45,18 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameRadioButtons extends org.lgna.croquet.components.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
+public class HairColorNameRadioButtons extends org.lgna.croquet.views.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
 	public HairColorNameRadioButtons( org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> model ) {
 		super( model );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.BooleanState itemSelectedState ) {
+	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.BooleanState itemSelectedState ) {
 		javax.swing.Icon icon = item.getIcon();
 		itemSelectedState.initializeIfNecessary();
 		itemSelectedState.setIconForBothTrueAndFalse( icon );
 		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
-		org.lgna.croquet.components.ToggleButton rv = itemSelectedState.createToggleButton();
+		org.lgna.croquet.views.ToggleButton rv = itemSelectedState.createToggleButton();
 		rv.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 		rv.setToolTipText( item.name() );
 		return rv;
@@ -67,7 +67,7 @@ public class HairColorNameRadioButtons extends org.lgna.croquet.components.Custo
 	}
 
 	@Override
-	protected void addItem( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	protected void addItem( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		this.internalAddComponent( button );
 	}
 

@@ -45,9 +45,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.croquet.components.Panel> {
+public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.croquet.views.Panel> {
 	private class LaunchFocusWindowOperation extends Operation {
-		private final org.lgna.croquet.components.Frame window = new org.lgna.croquet.components.Frame();
+		private final org.lgna.croquet.views.Frame window = new org.lgna.croquet.views.Frame();
 		private final java.awt.event.WindowFocusListener windowFocusListener = new java.awt.event.WindowFocusListener() {
 			public void windowGainedFocus( java.awt.event.WindowEvent e ) {
 			}
@@ -81,7 +81,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 
 		@Override
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.components.JComponent<?> view = FocusWindowComposite.this.getRootComponent();
+			org.lgna.croquet.views.JComponent<?> view = FocusWindowComposite.this.getRootComponent();
 			if( view.getParent() == null ) {
 				window.getContentPane().addCenterComponent( view );
 			}
@@ -116,7 +116,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 		return this.launchOperation;
 	}
 
-	protected java.awt.Point calculateLocationOnScreenForFocusWindow( java.awt.Component awtSource, org.lgna.croquet.components.Frame focusWindow ) {
+	protected java.awt.Point calculateLocationOnScreenForFocusWindow( java.awt.Component awtSource, org.lgna.croquet.views.Frame focusWindow ) {
 		java.awt.Point p = awtSource.getLocationOnScreen();
 		final int PAD = 8;
 		return new java.awt.Point( p.x + awtSource.getWidth() + PAD, p.y );

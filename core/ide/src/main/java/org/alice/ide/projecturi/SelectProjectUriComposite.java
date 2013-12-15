@@ -46,7 +46,7 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.alice.ide.uricontent.UriProjectLoader> {
+public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.alice.ide.uricontent.UriProjectLoader> {
 	private static final boolean IS_STARTERS_TAB_READY_FOR_PRIME_TIME = false;
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
@@ -116,7 +116,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		return new org.alice.ide.projecturi.views.SelectProjectUriView( this );
 	}
 
@@ -147,7 +147,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 			tab = this.myProjectsTab; // todo: recentTab?
 		}
 		this.tabState.setValueTransactionlessly( tab );
-		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
+		org.lgna.croquet.views.ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
 	}
 
 	private void refresh() {

@@ -65,7 +65,7 @@ public class InitialPropertyValuesToolPaletteCoreComposite extends org.lgna.croq
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

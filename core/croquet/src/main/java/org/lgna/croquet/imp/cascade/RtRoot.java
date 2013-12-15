@@ -118,7 +118,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		this.complete( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
-	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		return new javax.swing.event.PopupMenuListener() {
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 				RtRoot.this.addNextNodeMenuItems( menuItemContainer );

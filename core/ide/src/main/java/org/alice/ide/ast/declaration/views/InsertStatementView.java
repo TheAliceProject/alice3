@@ -52,7 +52,7 @@ public class InsertStatementView extends DeclarationLikeSubstanceView {
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.InsertStatementComposite<?> composite = (org.alice.ide.ast.declaration.InsertStatementComposite<?>)this.getComposite();
 		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
 		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );

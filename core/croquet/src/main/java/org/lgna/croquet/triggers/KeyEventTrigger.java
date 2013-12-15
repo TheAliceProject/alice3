@@ -48,7 +48,7 @@ package org.lgna.croquet.triggers;
  */
 public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
 
-	public static KeyEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
+	public static KeyEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
 		return new KeyEventTrigger( Origin.USER, viewController, keyEvent );
 	}
 
@@ -64,7 +64,7 @@ public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEve
 		return new KeyEventTrigger( Origin.RECOVERY, null, null );
 	}
 
-	private KeyEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
+	private KeyEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
 		super( origin, viewController, keyEvent );
 	}
 

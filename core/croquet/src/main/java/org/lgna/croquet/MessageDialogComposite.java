@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.components.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
+public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
 	private final edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType;
 	private String title;
 

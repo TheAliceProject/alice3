@@ -45,7 +45,7 @@ package org.alice.ide.ast.export.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExportDeclarationView extends org.lgna.croquet.components.PageAxisPanel {
+public abstract class ExportDeclarationView extends org.lgna.croquet.views.PageAxisPanel {
 	public ExportDeclarationView( org.alice.ide.ast.export.ExportDeclarationComposite<?> composite ) {
 		super( composite );
 	}

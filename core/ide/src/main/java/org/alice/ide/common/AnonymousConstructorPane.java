@@ -42,11 +42,11 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends org.lgna.croquet.components.BorderPanel {
+class MethodPane extends org.lgna.croquet.views.BorderPanel {
 	public MethodPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod method ) {
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
 		this.addPageStartComponent( new org.alice.ide.codeeditor.MethodHeaderPane( factory, method, false ) );
-		this.addLineStartComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ) );
+		this.addLineStartComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 12 ) );
 		this.addCenterComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ) );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -76,10 +76,10 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		this.anonymousConstructor = anonymousConstructor;
 		boolean isJava = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
 		if( isJava ) {
-			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel(
-					new org.lgna.croquet.components.Label( "new " ),
+			org.lgna.croquet.views.LineAxisPanel header = new org.lgna.croquet.views.LineAxisPanel(
+					new org.lgna.croquet.views.Label( "new " ),
 					TypeComponent.createInstance( anonymousConstructor.getDeclaringType().getSuperType() ),
-					new org.lgna.croquet.components.Label( "() {" )
+					new org.lgna.croquet.views.Label( "() {" )
 					);
 			header.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.addComponent( header );
@@ -87,7 +87,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 
 		org.lgna.project.ast.AnonymousUserType type = this.anonymousConstructor.getDeclaringType();
 		for( org.lgna.project.ast.UserMethod method : type.getDeclaredMethods() ) {
-			org.lgna.croquet.components.GridPanel pane = org.lgna.croquet.components.GridPanel.createGridPane( 1, 1 );
+			org.lgna.croquet.views.GridPanel pane = org.lgna.croquet.views.GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
 			if( isJava ) {
@@ -98,7 +98,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.addComponent( pane );
 		}
 		if( isJava ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "}" ) );
+			this.addComponent( new org.lgna.croquet.views.Label( "}" ) );
 		}
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
 	}

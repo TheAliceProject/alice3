@@ -49,7 +49,7 @@ package org.alice.ide.projecturi.views;
 public class FileSystemPane extends TabContentPanel {
 	public FileSystemPane( org.alice.ide.projecturi.FileSystemTab composite ) {
 		super( composite );
-		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel.Builder()
+		org.lgna.croquet.views.BorderPanel pane = new org.lgna.croquet.views.BorderPanel.Builder()
 				.hgap( 4 )
 				.lineStart( composite.getPathState().getSidekickLabel().createLabel() )
 				.center( composite.getPathState().createTextField() )

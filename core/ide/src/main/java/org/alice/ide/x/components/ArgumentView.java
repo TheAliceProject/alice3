@@ -46,7 +46,7 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.components.LineAxisPanel {
+public abstract class ArgumentView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.views.LineAxisPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final N argument;
 
@@ -67,7 +67,7 @@ public abstract class ArgumentView<N extends org.lgna.project.ast.AbstractArgume
 		super.internalRefresh();
 		String name = this.getName();
 		if( name != null ) {
-			this.internalAddComponent( new org.lgna.croquet.components.Label( name + ": " ) );
+			this.internalAddComponent( new org.lgna.croquet.views.Label( name + ": " ) );
 		}
 		//this.internalAddComponent( this.factory.createExpressionPane( argument.expression.getValue() ) );
 		this.internalAddComponent( this.factory.createExpressionPropertyPane( argument.expression ) );

@@ -46,7 +46,7 @@ package org.alice.stageide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
+public class VolumeLevelSlider extends org.lgna.croquet.views.Slider {
 	public VolumeLevelSlider( org.lgna.croquet.BoundedNumberState<?> model ) {
 		super( model );
 
@@ -58,7 +58,7 @@ public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
 		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
 		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
 
-		this.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
+		this.setOrientation( org.lgna.croquet.views.Slider.Orientation.VERTICAL );
 
 		java.util.Dictionary<Integer, javax.swing.JComponent> labelTable = new java.util.Hashtable<Integer, javax.swing.JComponent>();
 		labelTable.put( 0, new javax.swing.JLabel( silentText ) );

@@ -74,8 +74,8 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 			}
 
 			@Override
-			protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-				return new org.lgna.croquet.components.SwingAdapter( jColorChooser );
+			protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+				return new org.lgna.croquet.views.SwingAdapter( jColorChooser );
 			}
 		}
 		return new ColorCustomExpressionCreatorView( this );
@@ -86,7 +86,7 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 		java.awt.Color awtColor = this.jColorChooser.getColor();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
-		org.lgna.story.Color color = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( awtColor ) );
+		org.lgna.story.Color color = org.lgna.story.EmployeesOnly.createColor( awtColor );
 		try {
 			return expressionCreator.createExpression( color );
 		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
@@ -106,7 +106,7 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 			try {
 				org.lgna.story.Color color = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression, org.lgna.story.Color.class );
 				if( color != null ) {
-					edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.ImplementationAccessor.getColor4f( color );
+					edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.EmployeesOnly.getColor4f( color );
 					this.jColorChooser.setColor( color4f.getAsAWTColor() );
 				}
 			} catch( Throwable t ) {

@@ -45,8 +45,8 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersView extends org.lgna.croquet.components.BorderPanel {
-	private static class MarkerView extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
+public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
+	private static class MarkerView extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
 		public MarkerView( org.lgna.croquet.BooleanState model ) {
 			super( model );
 		}
@@ -70,8 +70,8 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		}
 	}
 
-	private static class MarkerListView extends org.lgna.croquet.components.CustomRadioButtons<org.lgna.project.ast.UserField> {
-		private class MarkerPopupButton extends org.lgna.croquet.components.PopupButton {
+	private static class MarkerListView extends org.lgna.croquet.views.CustomRadioButtons<org.lgna.project.ast.UserField> {
+		private class MarkerPopupButton extends org.lgna.croquet.views.PopupButton {
 			private final org.lgna.project.ast.UserField field;
 
 			public MarkerPopupButton( org.lgna.project.ast.UserField field ) {
@@ -133,13 +133,13 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		}
 
 		@Override
-		protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+		protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
 			super.handleAddedTo( parent );
 			this.getModel().addNewSchoolValueListener( this.selectionListener );
 		}
 
 		@Override
-		protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+		protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
 			this.getModel().removeNewSchoolValueListener( this.selectionListener );
 			super.handleRemovedFrom( parent );
 		}
@@ -159,7 +159,7 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		}
 
 		@Override
-		protected void addItem( org.lgna.project.ast.UserField item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		protected void addItem( org.lgna.project.ast.UserField item, org.lgna.croquet.views.BooleanStateButton<?> button ) {
 			this.internalAddComponent( this.mapFieldToPopupButton.get( item ) );
 			this.internalAddComponent( button, "wrap, grow" );
 		}
@@ -169,7 +169,7 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		}
 
 		@Override
-		protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( final org.lgna.project.ast.UserField item, final org.lgna.croquet.BooleanState itemSelectedState ) {
+		protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( final org.lgna.project.ast.UserField item, final org.lgna.croquet.BooleanState itemSelectedState ) {
 			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
 
 			item.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -182,7 +182,7 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 			} );
 
 			MarkerView rv = new MarkerView( itemSelectedState );
-			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+			rv.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.LEADING );
 			this.mapFieldToPopupButton.put( item, new MarkerPopupButton( item ) );
 			return rv;
 		}
@@ -208,11 +208,11 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 
 	public MarkersView( org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite ) {
 		super( composite );
-		this.addPageStartComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+		this.addPageStartComponent( new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.LEADING,
 				composite.getMoveToMarkerOperation().createButton(),
 				composite.getMoveMarkerToOperation().createButton() ) );
 		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
-		this.addPageEndComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+		this.addPageEndComponent( new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.LEADING,
 				composite.getAddOperation().createButton() ) );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
@@ -224,13 +224,13 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
 		super.handleAddedTo( parent );
 		this.addMouseListener( this.mouseListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
 		this.removeMouseListener( this.mouseListener );
 		super.handleRemovedFrom( parent );
 	}

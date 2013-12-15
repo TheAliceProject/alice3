@@ -218,7 +218,7 @@ public abstract class ApiConfigurationManager {
 
 	public abstract org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType );
 
-	public abstract org.lgna.croquet.components.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
+	public abstract org.lgna.croquet.views.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
 
 	public abstract org.lgna.croquet.CascadeItem<?, ?> getCustomFillInFor( org.lgna.project.annotations.ValueDetails<?> valueDetails );
 

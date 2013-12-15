@@ -46,7 +46,7 @@ package org.alice.stageide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class PaintView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
+public class PaintView extends org.lgna.croquet.views.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
 	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			PaintView.this.repaint();
@@ -89,8 +89,8 @@ public class PaintView extends org.lgna.croquet.components.ViewController<javax.
 					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
 						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
 
-						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( paint, null );
-						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
+						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( paint, null );
+						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.EmployeesOnly.getTexture( paint, null );
 
 						if( color != null ) {
 							g.setColor( color.getAsAWTColor() );

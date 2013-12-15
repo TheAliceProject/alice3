@@ -43,7 +43,7 @@
 
 package org.alice.stageide.utilities;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.ModelImp;
@@ -80,7 +80,7 @@ public class BoundingBoxUtilities {
 
 	public static AxisAlignedBox getTransformableScaledBBox( org.lgna.story.STurnable transformable, boolean ignoreJointOrientations )
 	{
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)ImplementationAccessor.getImplementation( transformable ).getSgComposite();
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)EmployeesOnly.getImplementation( transformable ).getSgComposite();
 		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
 	}
 

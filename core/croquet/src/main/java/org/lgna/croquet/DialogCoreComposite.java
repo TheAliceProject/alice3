@@ -43,29 +43,29 @@
 
 package org.lgna.croquet;
 
-/*package-private*/abstract class DialogContentPanel<CC extends DialogContentComposite> extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.Button commitButton;
-	private final org.lgna.croquet.components.Button cancelButton;
+/*package-private*/abstract class DialogContentPanel<CC extends DialogContentComposite> extends org.lgna.croquet.views.BorderPanel {
+	private final org.lgna.croquet.views.Button commitButton;
+	private final org.lgna.croquet.views.Button cancelButton;
 
 	public DialogContentPanel( CC composite ) {
 		super( composite );
 		DialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		org.lgna.croquet.components.View<?, ?> coreView = coreComposite.getView();
+		org.lgna.croquet.views.View<?, ?> coreView = coreComposite.getView();
 		this.setBackgroundColor( coreView.getBackgroundColor() );
 		this.addCenterComponent( coreView );
 	}
 
-	public org.lgna.croquet.components.Button getCommitButton() {
+	public org.lgna.croquet.views.Button getCommitButton() {
 		return this.commitButton;
 	}
 
-	public org.lgna.croquet.components.Button getCancelButton() {
+	public org.lgna.croquet.views.Button getCancelButton() {
 		return this.cancelButton;
 	}
 
-	protected org.lgna.croquet.components.Button getLeadingCommitCancelButton() {
+	protected org.lgna.croquet.views.Button getLeadingCommitCancelButton() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return this.commitButton;
 		} else {
@@ -73,7 +73,7 @@ package org.lgna.croquet;
 		}
 	}
 
-	protected org.lgna.croquet.components.Button getTrailingCommitCancelButton() {
+	protected org.lgna.croquet.views.Button getTrailingCommitCancelButton() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return this.cancelButton;
 		} else {
@@ -110,7 +110,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
+public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
 	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, DialogCoreComposite> {
@@ -177,7 +177,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 				assert coreComposite != null : this;
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 				assert dialogStep != null : transaction;
-				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 				assert dialog != null : dialogStep;
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
@@ -318,13 +318,13 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view ) {
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view ) {
 		//todo
 	}
 
@@ -336,9 +336,9 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
-			org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
+			org.lgna.croquet.views.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}

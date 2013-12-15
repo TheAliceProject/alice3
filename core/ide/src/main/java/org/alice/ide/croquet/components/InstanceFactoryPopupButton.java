@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
+public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
 	// note: for singleton ThisInstanceFactory
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
@@ -83,7 +83,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 
 	protected void internalRefresh() {
 		this.internalForgetAndRemoveAllComponents();
-		org.lgna.croquet.components.JComponent<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
+		org.lgna.croquet.views.JComponent<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
 
 		for( javax.swing.JLabel label : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, javax.swing.JLabel.class ) ) {
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 2.0f );
@@ -96,7 +96,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 				java.awt.Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height ) : org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE;
 				javax.swing.Icon icon = iconFactory.getIcon( size );
 				if( icon != null ) {
-					this.internalAddComponent( new org.lgna.croquet.components.Label( icon ) );
+					this.internalAddComponent( new org.lgna.croquet.views.Label( icon ) );
 				}
 			}
 		}

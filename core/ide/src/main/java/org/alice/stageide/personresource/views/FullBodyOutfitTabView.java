@@ -50,11 +50,11 @@ public class FullBodyOutfitTabView extends OutfitTabView {
 	public FullBodyOutfitTabView( org.alice.stageide.personresource.FullBodyOutfitTabComposite composite ) {
 		super( composite );
 		java.awt.Color backgroundColor = this.getBackgroundColor();
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
+		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
 		list.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 
 		this.addCenterComponent( scrollPane );
 	}

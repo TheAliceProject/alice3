@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /*package-private*/final class InputDialogContentPanel extends GatedCommitDialogContentPanel<InputDialogContentComposite> {
 	public InputDialogContentPanel( InputDialogContentComposite composite ) {
 		super( composite );
-		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
 		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
 		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
 	}
@@ -65,7 +65,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
+public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
 	private final InputDialogContentComposite contentComposite = new InputDialogContentComposite( this );
 
 	public InputDialogCoreComposite( java.util.UUID migrationId ) {

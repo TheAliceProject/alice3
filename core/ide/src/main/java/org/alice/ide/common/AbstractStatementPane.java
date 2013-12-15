@@ -131,7 +131,7 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {
-			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

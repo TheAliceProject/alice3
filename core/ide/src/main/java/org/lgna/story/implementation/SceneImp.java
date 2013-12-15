@@ -91,12 +91,12 @@ public class SceneImp extends EntityImp {
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
-			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgBackground.color.getValue() );
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgBackground.color.getValue() );
 		}
 
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
 			SceneImp.this.sgBackground.color.setValue( color );
 			SceneImp.this.sgFog.color.setValue( color );
 		}
@@ -104,12 +104,12 @@ public class SceneImp extends EntityImp {
 	public final ColorProperty fromAboveLightColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
-			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
 		}
 
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
 			SceneImp.this.sgAmbientLight.color.setValue( color );
 			SceneImp.this.sgFromAboveDirectionalLightA.color.setValue( color );
 			SceneImp.this.sgFromAboveDirectionalLightB.color.setValue( color );
@@ -119,12 +119,12 @@ public class SceneImp extends EntityImp {
 	public final ColorProperty fromBelowLightColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
-			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
 		}
 
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
 			SceneImp.this.sgFromBelowDirectionalLight.color.setValue( color );
 		}
 	};

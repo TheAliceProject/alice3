@@ -45,10 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractWindowComposite<V> {
+public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractWindowComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
-	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.components.View<?, ?>> {
+	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.views.View<?, ?>> {
 		private final AbstractDialogComposite<?> composite;
 
 		public DialogOwner( AbstractDialogComposite<?> composite ) {
@@ -59,11 +59,11 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			return this.composite.isModal;
 		}
 
-		public org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view ) {
+		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view ) {
 			this.composite.releaseView( step, view );
 		}
 
@@ -75,7 +75,7 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			return this.composite.getDesiredWindowLocation();
 		}
 
-		public void updateDialogSize( org.lgna.croquet.components.Dialog dialog ) {
+		public void updateDialogSize( org.lgna.croquet.views.Dialog dialog ) {
 			this.composite.updateWindowSize( dialog );
 		}
 
@@ -99,7 +99,7 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			this.composite.handlePostHideDialog( step );
 		}
 
-		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 			this.composite.handleFinally( step, dialog );
 		}
 	}
@@ -119,9 +119,9 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 	}
 
 	//todo
-	protected abstract org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
 
-	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view );
+	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view );
 
 	//todo: remove?
 	protected final boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
@@ -163,7 +163,7 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 
 	protected abstract void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
 
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 	}
 
 	public boolean isSubTransactionHistoryRequired() {

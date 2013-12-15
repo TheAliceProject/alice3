@@ -64,7 +64,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
 	private org.lgna.project.ast.Expression createOrientationExpression( org.lgna.story.Orientation orientation ) {
 		if( orientation != null ) {
-			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.EmployeesOnly.getOrthogonalMatrix3x3( orientation );
 			edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 			Class<?> cls = org.lgna.story.Orientation.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class );

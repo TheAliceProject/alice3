@@ -45,7 +45,7 @@ package org.alice.ide.upgrade;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectAheadDialog extends org.lgna.croquet.OperationInputDialogCoreComposite<org.lgna.croquet.components.Panel> {
+public class ProjectAheadDialog extends org.lgna.croquet.OperationInputDialogCoreComposite<org.lgna.croquet.views.Panel> {
 	private final org.lgna.project.Version projectVersion;
 
 	public ProjectAheadDialog( org.lgna.project.Version projectVersion ) {
@@ -72,7 +72,7 @@ public class ProjectAheadDialog extends org.lgna.croquet.OperationInputDialogCor
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
+	protected org.lgna.croquet.views.Panel createView() {
 		return new org.alice.ide.upgrade.views.ProjectAheadView( this );
 	}
 

@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.PropertyChangeEvent> {
-	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
 		return new PropertyChangeEventTrigger( Origin.USER, viewController, propertyChangeEvent );
 	}
 
@@ -54,7 +54,7 @@ public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.Pr
 		return new PropertyChangeEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	private PropertyChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+	private PropertyChangeEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
 		super( origin, viewController, propertyChangeEvent );
 	}
 

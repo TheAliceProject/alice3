@@ -48,7 +48,7 @@ package test;
  */
 import java.awt.event.MouseEvent;
 
-import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
@@ -98,7 +98,7 @@ class TestScene extends SScene {
 
 		//this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.5 );
 		//this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.5 );
-		org.lgna.story.implementation.JointedModelImp susanImp = ImplementationAccessor.getImplementation( this.susan );
+		org.lgna.story.implementation.JointedModelImp susanImp = EmployeesOnly.getImplementation( this.susan );
 		//susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
 	}
 
@@ -120,7 +120,7 @@ class TestScene extends SScene {
 	}
 
 	public void test() {
-		org.lgna.story.implementation.JointedModelImp imp = ImplementationAccessor.getImplementation( this.susan );
+		org.lgna.story.implementation.JointedModelImp imp = EmployeesOnly.getImplementation( this.susan );
 		imp.showVisualization();
 		//while( true ) {
 		////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
@@ -167,7 +167,7 @@ class TestJointedModel extends SProgram {
 	private int previousY = -1;
 
 	public void test() {
-		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass();
+		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass();
 
 		lg.getAWTComponent().addMouseListener( new java.awt.event.MouseListener() {
 			public void mousePressed( MouseEvent e ) {

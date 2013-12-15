@@ -364,7 +364,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		this.clearShapes();
 		this.imageHolder.setValue( image );
 		this.getIsFrameShowingState().setValueTransactionlessly( true );
-		org.lgna.croquet.components.AbstractWindow<?> window = this.getView().getRoot();
+		org.lgna.croquet.views.AbstractWindow<?> window = this.getView().getRoot();
 		if( window != null ) {
 			this.getView().revalidateAndRepaint();
 			window.pack();
