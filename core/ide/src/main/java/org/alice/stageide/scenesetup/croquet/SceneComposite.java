@@ -45,13 +45,13 @@ package org.alice.stageide.scenesetup.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
+public class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	public SceneComposite() {
 		super( java.util.UUID.fromString( "69ab798c-8ce4-432d-90d0-ea829a5eda3a" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.BorderPanel();
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.BorderPanel();
 	}
 }

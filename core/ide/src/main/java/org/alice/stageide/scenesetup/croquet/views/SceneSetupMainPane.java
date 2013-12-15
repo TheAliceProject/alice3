@@ -45,7 +45,7 @@ package org.alice.stageide.scenesetup.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneSetupMainPane extends org.lgna.croquet.components.BorderPanel {
+public class SceneSetupMainPane extends org.lgna.croquet.views.BorderPanel {
 	public SceneSetupMainPane( org.alice.stageide.scenesetup.croquet.SceneSetupMainComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getSplitComposite().getRootComponent() );
