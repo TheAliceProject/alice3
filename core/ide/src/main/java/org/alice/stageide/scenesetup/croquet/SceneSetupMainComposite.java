@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.stageide.scenesetup.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public SetupScenePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), menuBar );
-	}
-
-	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
-		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
-	}
-
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
-		} else {
-			return null;
-		}
+public class SceneSetupMainComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane> {
+	public SceneSetupMainComposite() {
+		super( java.util.UUID.fromString( "e9b6f450-0b21-4d73-b14c-d8b2ae20e71a" ) );
 	}
 
 	@Override
-	public org.lgna.croquet.components.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	protected org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane createView() {
+		return new org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane( this );
 	}
 
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
+	public org.lgna.croquet.SplitComposite getSplitComposite() {
+		return this.splitComposite;
 	}
 
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	public org.alice.stageide.gallerybrowser.GalleryComposite getGalleryComposite() {
+		return this.galleryComposite;
 	}
+
+	private final SceneComposite sceneComposite = new SceneComposite();
+	private final org.alice.stageide.sceneeditor.side.SideComposite sideComposite = new org.alice.stageide.sceneeditor.side.SideComposite();
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.sceneComposite, this.sideComposite, 1.0 );
+	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = new org.alice.stageide.gallerybrowser.GalleryComposite();
 }

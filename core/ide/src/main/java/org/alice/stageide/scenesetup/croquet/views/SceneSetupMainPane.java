@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.stageide.scenesetup.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public SetupScenePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), menuBar );
-	}
-
-	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
-		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
-	}
-
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public org.lgna.croquet.components.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+public class SceneSetupMainPane extends org.lgna.croquet.components.BorderPanel {
+	public SceneSetupMainPane( org.alice.stageide.scenesetup.croquet.SceneSetupMainComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getSplitComposite().getRootComponent() );
+		this.addPageEndComponent( composite.getGalleryComposite().getRootComponent() );
 	}
 }
