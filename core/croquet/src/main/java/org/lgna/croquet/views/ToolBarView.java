@@ -83,7 +83,7 @@ public abstract class ToolBarView extends MigPanel {
 			this.addComponent( new Label(), "push" );
 			nextConstraints = "";
 		} else {
-			JComponent<?> component;
+			SwingComponentView<?> component;
 			if( element instanceof org.lgna.croquet.Operation ) {
 				org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)element;
 				Button button = operation.createButton();

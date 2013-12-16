@@ -58,7 +58,7 @@ public class EventRecordView extends org.lgna.croquet.views.MigPanel {
 		this.timeLabel = new TimeLabel();
 		this.updateTime( 0 );
 
-		org.lgna.croquet.views.Component<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
+		org.lgna.croquet.views.AwtComponentView<?> listPane = new EventScriptPane( eventRecordComposite.getEventList() );
 
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
 		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );

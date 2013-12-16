@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
+public abstract class SwingComponentView<J extends javax.swing.JComponent> extends AwtContainerView<J> {
 
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {

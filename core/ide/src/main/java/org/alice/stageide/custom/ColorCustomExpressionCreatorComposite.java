@@ -74,7 +74,7 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 			}
 
 			@Override
-			protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+			protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
 				return new org.lgna.croquet.views.SwingAdapter( jColorChooser );
 			}
 		}

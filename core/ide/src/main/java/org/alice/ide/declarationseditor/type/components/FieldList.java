@@ -53,7 +53,7 @@ public abstract class FieldList extends MemberList<org.lgna.project.ast.UserFiel
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createButtonLineStart( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createButtonLineStart( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
 		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 			org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "*" );
@@ -68,13 +68,13 @@ public abstract class FieldList extends MemberList<org.lgna.project.ast.UserFiel
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createButtonCenter( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createButtonCenter( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createButtonLineEnd( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createButtonLineEnd( org.lgna.project.ast.UserField item ) {
 		org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
 		rv.addComponent( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getLaunchOperation().createButton() );
 		if( item.isDeletionAllowed.getValue() ) {

@@ -2,7 +2,7 @@ package org.alice.ide.declarationseditor.events.components;
 
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.croquet.views.ScrollPane;
@@ -95,7 +95,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	}
 
 	@Override
-	protected void handleAddedTo( Component<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
@@ -103,7 +103,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	}
 
 	@Override
-	protected void handleRemovedFrom( Component<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );

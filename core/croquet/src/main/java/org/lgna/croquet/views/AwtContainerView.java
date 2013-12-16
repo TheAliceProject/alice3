@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Container<J extends java.awt.Container> extends Component<J> {
+public abstract class AwtContainerView<J extends java.awt.Container> extends AwtComponentView<J> {
 	//	private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
 	//		public void componentAdded(java.awt.event.ContainerEvent e) {
 	//			assert e.getContainer() == Component.this.getJComponent();
@@ -82,17 +82,17 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 	//		}
 	//	};
 	@Deprecated
-	public Component<?> getComponent( int i ) {
-		return Component.lookup( this.getAwtComponent().getComponent( i ) );
+	public AwtComponentView<?> getComponent( int i ) {
+		return AwtComponentView.lookup( this.getAwtComponent().getComponent( i ) );
 	}
 
 	@Deprecated
-	public Component<?>[] getComponents() {
+	public AwtComponentView<?>[] getComponents() {
 		java.awt.Component[] components = this.getAwtComponent().getComponents();
 		final int N = components.length;
-		Component<?>[] rv = new Component<?>[ N ];
+		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 		for( int i = 0; i < N; i++ ) {
-			rv[ i ] = Component.lookup( components[ i ] );
+			rv[ i ] = AwtComponentView.lookup( components[ i ] );
 		}
 		return rv;
 	}
@@ -101,25 +101,25 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		return getAwtComponent().getComponentCount();
 	}
 
-	public boolean isAncestorOf( Component<?> other ) {
+	public boolean isAncestorOf( AwtComponentView<?> other ) {
 		return this.getAwtComponent().isAncestorOf( other.getAwtComponent() );
 	}
 
-	protected final void internalAddComponent( Component<?> component ) {
+	protected final void internalAddComponent( AwtComponentView<?> component ) {
 		assert component != null : this;
 		assert component != this : this;
 		this.checkTreeLock();
 		this.getAwtComponent().add( component.getAwtComponent() );
 	}
 
-	protected final void internalAddComponent( Component<?> component, Object constraints ) {
+	protected final void internalAddComponent( AwtComponentView<?> component, Object constraints ) {
 		assert component != null : this;
 		assert component != this : this;
 		this.checkTreeLock();
 		this.getAwtComponent().add( component.getAwtComponent(), constraints );
 	}
 
-	private void internalRemoveComponent( Component<?> component, boolean isReleaseDesired ) {
+	private void internalRemoveComponent( AwtComponentView<?> component, boolean isReleaseDesired ) {
 		assert component != null : this;
 		assert component != this : this;
 		this.checkTreeLock();
@@ -128,8 +128,8 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		//			component.handleUndisplayable();
 		//		}
 		if( isReleaseDesired ) {
-			if( component instanceof Container<?> ) {
-				Container<?> container = (Container<?>)component;
+			if( component instanceof AwtContainerView<?> ) {
+				AwtContainerView<?> container = (AwtContainerView<?>)component;
 				container.internalRemoveAllComponents( true );
 			}
 			component.release();
@@ -140,7 +140,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
 		for( java.awt.Component awtComponent : awtComponents ) {
 			if( awtComponent != null ) {
-				Component<?> component = lookup( awtComponent );
+				AwtComponentView<?> component = lookup( awtComponent );
 				this.internalRemoveComponent( component, isReleaseDesired );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "encountered null component", this );
@@ -148,7 +148,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		}
 	}
 
-	protected void internalRemoveComponent( Component<?> component ) {
+	protected void internalRemoveComponent( AwtComponentView<?> component ) {
 		this.internalRemoveComponent( component, false );
 	}
 
@@ -156,7 +156,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		this.internalRemoveAllComponents( false );
 	}
 
-	protected void internalForgetAndRemoveComponent( Component<?> component ) {
+	protected void internalForgetAndRemoveComponent( AwtComponentView<?> component ) {
 		this.internalRemoveComponent( component, true );
 		//		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
 		//		this.repaint();

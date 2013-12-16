@@ -419,7 +419,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private boolean EPIC_HACK_isFirstAddedTo = true;
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
 			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
 			if( projectDocument != null ) {
@@ -434,7 +434,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
 	}

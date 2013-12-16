@@ -62,7 +62,7 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CheckBox;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.GridPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
 import org.lgna.croquet.views.Label;
@@ -129,7 +129,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
 		private GridPanel gridPanel;
-		private Map<Integer, Map<Integer, Component>> componentMap = Collections.newHashMap();
+		private Map<Integer, Map<Integer, AwtComponentView>> componentMap = Collections.newHashMap();
 		private boolean showFunctions;
 		private boolean showProcedures;
 		private int numRows = 6;
@@ -158,7 +158,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		private void initGridPanel() {
 			this.gridPanel = GridPanel.createGridPane( minSize, numCols, 5, 5 );
 			for( int i = 0; i != minSize; ++i ) {
-				componentMap.put( i, new HashMap<Integer, Component>() );
+				componentMap.put( i, new HashMap<Integer, AwtComponentView>() );
 				for( int j = 0; j != numCols; ++j ) {
 					Label label;
 					if( ( j == 1 ) && ( i != 0 ) ) {
@@ -231,7 +231,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 			}
 			this.gridPanel = GridPanel.createGridPane( numRows, numCols, 5, 5 );
 			for( int i = 0; i != numRows; ++i ) {
-				componentMap.put( i, new HashMap<Integer, Component>() );
+				componentMap.put( i, new HashMap<Integer, AwtComponentView>() );
 				for( int j = 0; j != numCols; ++j ) {
 					Label label;
 					if( ( j == 1 ) && ( i != 0 ) ) {
@@ -286,7 +286,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		}
 
 		private void setCell( int col, int row, int count ) {
-			Component component = getCell( col, row );
+			AwtComponentView component = getCell( col, row );
 			if( component instanceof BarLabel ) {
 				BarLabel label = (BarLabel)component;
 				label.setCount( count );
@@ -294,14 +294,14 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		}
 
 		private void setCell( int col, int row, String name ) {
-			Component component = getCell( col, row );
+			AwtComponentView component = getCell( col, row );
 			if( component instanceof Label ) {
 				Label label = (Label)component;
 				label.setText( name );
 			}
 		}
 
-		private Component getCell( int col, int row ) {
+		private AwtComponentView getCell( int col, int row ) {
 			return componentMap.get( row ).get( col );
 		}
 

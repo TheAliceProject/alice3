@@ -161,7 +161,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( null );
-		for( Component<?> component : this.getComponents() ) {
+		for( AwtComponentView<?> component : this.getComponents() ) {
 			component.setBackgroundColor( color );
 		}
 	}

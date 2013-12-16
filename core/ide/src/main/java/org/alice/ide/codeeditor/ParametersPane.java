@@ -59,7 +59,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
+	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
 		return new TypedParameterPane( getProperty(), parameter );
 	}
 
@@ -88,7 +88,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createInterstitial( int i, int N ) {
+	protected org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, int N ) {
 		if( i < ( N - 1 ) ) {
 			return new org.lgna.croquet.views.Label( ", " );
 		} else {

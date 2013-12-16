@@ -51,7 +51,7 @@ public class ConstructorsView extends MembersView<org.lgna.project.ast.NamedUser
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createComponentForItem( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createComponentForItem( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		return new ConstructorView( constructor );
 	}
 }

@@ -141,7 +141,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 
 		outerPanel.addCenterComponent( scrollPane );
 		javax.swing.KeyStroke keyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 );
-		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
 
 		return outerPanel;
 	}

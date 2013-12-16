@@ -49,7 +49,7 @@ package org.lgna.croquet.dialog;
 public class DialogUtilities {
 	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.views.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
 
-	public static <V extends org.lgna.croquet.views.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public static <V extends org.lgna.croquet.views.SwingComponentView<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 
 		org.lgna.croquet.views.AbstractWindow<?> window = application.peekWindow();

@@ -49,7 +49,7 @@ package org.lgna.croquet.views;
 public final class Layer {
 	private final LayeredPane layeredPane;
 	private final Integer id;
-	private JComponent<?> component;
+	private SwingComponentView<?> component;
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
@@ -76,11 +76,11 @@ public final class Layer {
 		}
 	}
 
-	public JComponent<?> getComponent() {
+	public SwingComponentView<?> getComponent() {
 		return this.component;
 	}
 
-	public void setComponent( JComponent<?> component ) {
+	public void setComponent( SwingComponentView<?> component ) {
 		if( this.component != component ) {
 			javax.swing.JLayeredPane jLayeredPane = this.layeredPane.getAwtComponent();
 			if( this.component != null ) {

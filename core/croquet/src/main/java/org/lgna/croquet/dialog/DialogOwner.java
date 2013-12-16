@@ -46,7 +46,7 @@ package org.lgna.croquet.dialog;
 /**
  * @author Dennis Cosgrove
  */
-public interface DialogOwner<V extends org.lgna.croquet.views.JComponent<?>> {
+public interface DialogOwner<V extends org.lgna.croquet.views.SwingComponentView<?>> {
 	public boolean isModal();
 
 	public V allocateView( org.lgna.croquet.history.CompletionStep<?> step );

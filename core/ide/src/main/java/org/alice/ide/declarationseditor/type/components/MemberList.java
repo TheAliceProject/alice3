@@ -50,7 +50,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.views.ItemSelectabl
 	protected final float NAME_FONT_SCALE = 1.5f;
 
 	protected class MemberButton extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
-		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.views.JComponent<?> lineStart, org.lgna.croquet.views.JComponent<?> center, org.lgna.croquet.views.JComponent<?> lineEnd ) {
+		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.views.SwingComponentView<?> lineStart, org.lgna.croquet.views.SwingComponentView<?> center, org.lgna.croquet.views.SwingComponentView<?> lineEnd ) {
 			super( booleanState );
 			if( lineStart != null ) {
 				this.addComponent( lineStart, org.lgna.croquet.views.BorderPanel.Constraint.LINE_START );
@@ -106,7 +106,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.views.ItemSelectabl
 			return rv;
 		}
 
-		public void addComponent( org.lgna.croquet.views.Component<?> component, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
+		public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
 			this.internalAddComponent( component, constraint.getInternal() );
 		}
 	}
@@ -129,11 +129,11 @@ public abstract class MemberList<E> extends org.lgna.croquet.views.ItemSelectabl
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 
-	protected abstract org.lgna.croquet.views.JComponent<?> createButtonLineStart( E item );
+	protected abstract org.lgna.croquet.views.SwingComponentView<?> createButtonLineStart( E item );
 
-	protected abstract org.lgna.croquet.views.JComponent<?> createButtonCenter( E item );
+	protected abstract org.lgna.croquet.views.SwingComponentView<?> createButtonCenter( E item );
 
-	protected abstract org.lgna.croquet.views.JComponent<?> createButtonLineEnd( E item );
+	protected abstract org.lgna.croquet.views.SwingComponentView<?> createButtonLineEnd( E item );
 
 	@Override
 	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {

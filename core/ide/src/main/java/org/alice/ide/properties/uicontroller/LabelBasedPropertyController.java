@@ -44,7 +44,7 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;
 
 public abstract class LabelBasedPropertyController<P> extends BasicPropertyController<P>
@@ -64,7 +64,7 @@ public abstract class LabelBasedPropertyController<P> extends BasicPropertyContr
 	}
 
 	@Override
-	protected Component<?> createPropertyComponent()
+	protected AwtComponentView<?> createPropertyComponent()
 	{
 		return new Label();
 	}

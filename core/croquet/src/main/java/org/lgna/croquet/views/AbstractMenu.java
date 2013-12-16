@@ -97,17 +97,17 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		return rv;
 	}
 
-	public Component<?> getMenuComponent( int i ) {
-		return Component.lookup( this.getAwtComponent().getMenuComponent( i ) );
+	public AwtComponentView<?> getMenuComponent( int i ) {
+		return AwtComponentView.lookup( this.getAwtComponent().getMenuComponent( i ) );
 	}
 
 	public int getMenuComponentCount() {
 		return this.getAwtComponent().getMenuComponentCount();
 	}
 
-	public synchronized Component<?>[] getMenuComponents() {
+	public synchronized AwtComponentView<?>[] getMenuComponents() {
 		final int N = this.getMenuComponentCount();
-		Component<?>[] rv = new Component<?>[ N ];
+		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 		for( int i = 0; i < N; i++ ) {
 			rv[ i ] = this.getMenuComponent( i );
 		}

@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public class HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane extends ScrollPane {
-	public HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( Component<?> view ) {
+	public HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( AwtComponentView<?> view ) {
 		super( view );
 		this.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.ALWAYS );
 	}

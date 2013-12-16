@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class SwingAdapter extends JComponent<javax.swing.JComponent> {
+public class SwingAdapter extends SwingComponentView<javax.swing.JComponent> {
 	private final javax.swing.JComponent jComponent;
 
 	public SwingAdapter( javax.swing.JComponent jComponent ) {

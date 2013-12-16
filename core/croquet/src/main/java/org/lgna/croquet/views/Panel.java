@@ -127,11 +127,11 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 		return rv;
 	}
 
-	public void removeComponent( Component<?> component ) {
+	public void removeComponent( AwtComponentView<?> component ) {
 		this.internalRemoveComponent( component );
 	}
 
-	public void forgetAndRemoveComponent( Component<?> component ) {
+	public void forgetAndRemoveComponent( AwtComponentView<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
 

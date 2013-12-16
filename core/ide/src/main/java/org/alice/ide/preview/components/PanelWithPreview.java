@@ -65,7 +65,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 
 	private org.alice.ide.croquet.components.PreviewPanel previewPanel;
 
-	public abstract org.lgna.croquet.views.JComponent<?> createPreviewSubComponent();
+	public abstract org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent();
 
 	public org.alice.ide.croquet.components.PreviewPanel getPreviewPanel() {
 		return this.previewPanel;
@@ -82,7 +82,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 		}
 	}
 
-	protected abstract org.lgna.croquet.views.JComponent<?> createMainComponent();
+	protected abstract org.lgna.croquet.views.SwingComponentView<?> createMainComponent();
 
 	private void initializeIfNecessary() {
 		if( this.previewPanel != null ) {

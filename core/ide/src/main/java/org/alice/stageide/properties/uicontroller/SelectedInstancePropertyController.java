@@ -53,7 +53,7 @@ import javax.swing.JLabel;
 
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 
@@ -68,7 +68,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	}
 
 	@Override
-	protected Component<?> createPropertyComponent()
+	protected AwtComponentView<?> createPropertyComponent()
 	{
 		this.label = new Label( "", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD )
 		{
@@ -93,7 +93,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 		this.label.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getSelectedColor() );
 		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		AwtComponentView itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 		GridBagPanel componentPanel = new GridBagPanel();
 		int xIndex = 0;
 		componentPanel.addComponent( itemSelector, new GridBagConstraints(
@@ -111,7 +111,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 		);
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		org.lgna.croquet.views.JComponent<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.views.SwingComponentView<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
 		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
 				xIndex++, // gridX
 				0, // gridY

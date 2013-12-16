@@ -57,7 +57,7 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.createValue();

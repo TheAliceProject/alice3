@@ -91,9 +91,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( nameLabel );
 		} else {
 			class PopupPanel extends org.lgna.croquet.views.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
-				private org.lgna.croquet.views.Component<?> centerComponent;
+				private org.lgna.croquet.views.AwtComponentView<?> centerComponent;
 
-				public PopupPanel( org.lgna.croquet.views.Component<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
+				public PopupPanel( org.lgna.croquet.views.AwtComponentView<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupPrepModel( popupMenuOperation );

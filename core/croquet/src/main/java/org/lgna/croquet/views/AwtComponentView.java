@@ -46,10 +46,10 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component<J extends java.awt.Component> extends ScreenElement {
-	private static java.util.Map<java.awt.Component, Component<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+public abstract class AwtComponentView<J extends java.awt.Component> extends ScreenElement {
+	private static java.util.Map<java.awt.Component, AwtComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 
-	private static class InternalAwtContainerAdapter extends Container<java.awt.Container> {
+	private static class InternalAwtContainerAdapter extends AwtContainerView<java.awt.Container> {
 		private java.awt.Container awtContainer;
 
 		public InternalAwtContainerAdapter( java.awt.Container awtContainer ) {
@@ -68,7 +68,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 
-	private static class InternalAwtComponentAdapter extends Component<java.awt.Component> {
+	private static class InternalAwtComponentAdapter extends AwtComponentView<java.awt.Component> {
 		private java.awt.Component awtComponent;
 
 		public InternalAwtComponentAdapter( java.awt.Component awtComponent ) {
@@ -88,9 +88,9 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	//todo reduce visibility to /* package-private */
-	public static Component<?> lookup( java.awt.Component awtComponent ) {
+	public static AwtComponentView<?> lookup( java.awt.Component awtComponent ) {
 		if( awtComponent != null ) {
-			Component<?> rv = Component.map.get( awtComponent );
+			AwtComponentView<?> rv = AwtComponentView.map.get( awtComponent );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -114,7 +114,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-			Component.this.handleHierarchyChanged( e );
+			AwtComponentView.this.handleHierarchyChanged( e );
 		}
 	};
 
@@ -148,17 +148,17 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 
-	protected void handleAddedTo( Component<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 	}
 
-	protected void handleRemovedFrom( Component<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 	}
 
 	private java.awt.Container awtParent;
 
 	private void handleParentChange( java.awt.Container awtParent ) {
 		if( this.awtParent != null ) {
-			Component<?> parent = Component.lookup( this.awtParent );
+			AwtComponentView<?> parent = AwtComponentView.lookup( this.awtParent );
 			if( parent != null ) {
 				//pass
 			} else {
@@ -172,7 +172,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 		this.awtParent = awtParent;
 		if( this.awtParent != null ) {
-			Component<?> parent = Component.lookup( this.awtParent );
+			AwtComponentView<?> parent = AwtComponentView.lookup( this.awtParent );
 			if( parent != null ) {
 				//pass
 			} else {
@@ -202,11 +202,11 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 		if( ( flags & java.awt.event.HierarchyEvent.PARENT_CHANGED ) != 0 ) {
 
-			assert awtComponent == Component.this.getAwtComponent();
+			assert awtComponent == AwtComponentView.this.getAwtComponent();
 
 			if( awtComponent == awtChanged ) {
-				if( awtParent != Component.this.awtParent ) {
-					Component.this.handleParentChange( awtParent );
+				if( awtParent != AwtComponentView.this.awtParent ) {
+					AwtComponentView.this.handleParentChange( awtParent );
 				} else {
 					if( isWarningAlreadyPrinted ) {
 						//pass
@@ -242,7 +242,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			if( this.awtComponent instanceof javax.swing.JComponent ) {
 				( (javax.swing.JComponent)this.awtComponent ).setComponentOrientation( java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() ) );
 			}
-			Component.map.put( this.awtComponent, this );
+			AwtComponentView.map.put( this.awtComponent, this );
 		}
 		return this.awtComponent;
 	}
@@ -252,7 +252,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			//System.err.println( "release: " + this.hashCode() );
 			this.awtComponent.removeHierarchyListener( this.hierarchyListener );
 			this.trackDisplayability();
-			Component.map.remove( this.awtComponent );
+			AwtComponentView.map.remove( this.awtComponent );
 			this.awtComponent = null;
 		}
 	}
@@ -468,7 +468,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
-		Container<?> parent = this.getParent();
+		AwtContainerView<?> parent = this.getParent();
 		if( parent != null ) {
 			return parent.convertRectangle( this.getBounds(), asSeenBy );
 		} else {
@@ -496,8 +496,8 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 
-	public <E extends Container<?>> E getFirstAncestorAssignableTo( Class<E> cls ) {
-		Container<?> parent = this.getParent();
+	public <E extends AwtContainerView<?>> E getFirstAncestorAssignableTo( Class<E> cls ) {
+		AwtContainerView<?> parent = this.getParent();
 		if( parent != null ) {
 			if( cls.isAssignableFrom( parent.getClass() ) ) {
 				return cls.cast( parent );
@@ -522,8 +522,8 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	@Deprecated
-	public Container<?> getParent() {
-		return (Container<?>)Component.lookup( this.getAwtComponent().getParent() );
+	public AwtContainerView<?> getParent() {
+		return (AwtContainerView<?>)AwtComponentView.lookup( this.getAwtComponent().getParent() );
 	}
 
 	@Deprecated

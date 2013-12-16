@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class AwtAdapter extends Component<java.awt.Component> {
+public class AwtAdapter extends AwtComponentView<java.awt.Component> {
 	private final java.awt.Component awtComponent;
 
 	public AwtAdapter( java.awt.Component awtComponent ) {

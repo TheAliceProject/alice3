@@ -133,13 +133,13 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+		protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 			super.handleAddedTo( parent );
 			this.getModel().addNewSchoolValueListener( this.selectionListener );
 		}
 
 		@Override
-		protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+		protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 			this.getModel().removeNewSchoolValueListener( this.selectionListener );
 			super.handleRemovedFrom( parent );
 		}
@@ -224,13 +224,13 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		this.addMouseListener( this.mouseListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		this.removeMouseListener( this.mouseListener );
 		super.handleRemovedFrom( parent );
 	}

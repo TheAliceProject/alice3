@@ -52,7 +52,7 @@ public final class NumberCustomExpressionCreatorView extends CustomExpressionCre
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
 		org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = (org.alice.ide.custom.NumberCustomExpressionCreatorComposite)this.getComposite();
 		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = composite.getNumberModel();
 		javax.swing.JTextField view = numberModel.getTextField();

@@ -60,13 +60,13 @@ public class Manager {
 	public static Model findFirstAppropriateModel( java.util.UUID id ) {
 		java.util.Set<Model> models = lookupModels( id );
 		for( Model model : models ) {
-			java.util.Queue<org.lgna.croquet.views.JComponent<?>> components = ComponentManager.getComponents( model );
-			for( org.lgna.croquet.views.JComponent<?> component : components ) {
+			java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> components = ComponentManager.getComponents( model );
+			for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
 				}
 			}
-			for( org.lgna.croquet.views.JComponent<?> component : components ) {
+			for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
 				if( component.getAwtComponent().isVisible() ) {
 					return model;
 				}

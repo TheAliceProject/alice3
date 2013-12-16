@@ -60,7 +60,7 @@ public class MenuTextSeparator extends ViewController<javax.swing.JMenuItem, org
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		org.lgna.croquet.LabelMenuSeparatorModel model = this.getModel();
 		String modelName = model.getName();
 		if( ( modelName != null ) && ( modelName.length() > 0 ) ) {

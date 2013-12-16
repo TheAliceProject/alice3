@@ -69,13 +69,13 @@ public class Menu extends AbstractMenu<org.lgna.croquet.AbstractMenuModel> {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		this.getAwtComponent().setAction( this.getModel().getAction() );
 		super.handleAddedTo( parent );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.getAwtComponent().setAction( null );
 	}

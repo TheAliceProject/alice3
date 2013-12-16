@@ -48,7 +48,7 @@ package org.alice.ide.controlflow.components;
  */
 public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private final org.lgna.project.ast.Statement incompleteStatement;
-	private org.lgna.croquet.views.JComponent<?> incompleteStatementPane;
+	private org.lgna.croquet.views.SwingComponentView<?> incompleteStatementPane;
 	private org.lgna.croquet.views.Label label;
 	private javax.swing.JToolTip toolTip;
 
@@ -76,7 +76,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		return this.labelText;
 	}
 
-	private org.lgna.croquet.views.JComponent<?> getIncompleteStatementPane() {
+	private org.lgna.croquet.views.SwingComponentView<?> getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
@@ -86,7 +86,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> getSubject() {
+	public org.lgna.croquet.views.SwingComponentView<?> getSubject() {
 		return this.getIncompleteStatementPane();
 	}
 

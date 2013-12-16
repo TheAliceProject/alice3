@@ -62,7 +62,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 				java.util.List<T> children = owner.getChildren();
 				if( children != null ) {
 					for( T child : children ) {
-						JComponent<?> component = owner.getComponentFor( child );
+						SwingComponentView<?> component = owner.getComponentFor( child );
 						if( component != null ) {
 							this.internalAddComponent( component );
 						}
@@ -98,7 +98,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 		super.handleUndisplayable();
 	}
 
-	protected abstract JComponent<?> getComponentFor( T value );
+	protected abstract SwingComponentView<?> getComponentFor( T value );
 
 	protected java.util.List<T> getChildren() {
 		org.lgna.croquet.TreeSelectionState<T> model = this.getModel();

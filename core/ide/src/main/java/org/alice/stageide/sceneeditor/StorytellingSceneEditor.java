@@ -189,7 +189,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			return StorytellingSceneEditor.this;
 		}
 
-		public org.lgna.croquet.views.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return StorytellingSceneEditor.this;
 		}
 	}

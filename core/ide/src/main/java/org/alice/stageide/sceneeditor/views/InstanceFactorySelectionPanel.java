@@ -47,7 +47,7 @@ package org.alice.stageide.sceneeditor.views;
  * @author Dennis Cosgrove
  */
 public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
-	private static final class InternalButton extends org.lgna.croquet.views.JComponent<javax.swing.AbstractButton> {
+	private static final class InternalButton extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {

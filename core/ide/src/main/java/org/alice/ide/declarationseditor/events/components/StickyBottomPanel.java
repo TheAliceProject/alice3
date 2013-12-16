@@ -132,7 +132,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 }
 
 public class StickyBottomPanel extends org.lgna.croquet.views.Panel {
-	public StickyBottomPanel( org.lgna.croquet.views.ScrollPane top, org.lgna.croquet.views.JComponent<?> bottom ) {
+	public StickyBottomPanel( org.lgna.croquet.views.ScrollPane top, org.lgna.croquet.views.SwingComponentView<?> bottom ) {
 		this.internalAddComponent( top, org.lgna.croquet.views.BorderPanel.Constraint.CENTER.getInternal() );
 		this.internalAddComponent( bottom, org.lgna.croquet.views.BorderPanel.Constraint.PAGE_END.getInternal() );
 	}

@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
+public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends SwingComponentView<J> {
 	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
 		if( awtParent != null ) {
 			if( awtParent.isOpaque() ) {

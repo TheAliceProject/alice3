@@ -51,7 +51,7 @@ public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
 		return new FieldView( field );
 	}
 }
