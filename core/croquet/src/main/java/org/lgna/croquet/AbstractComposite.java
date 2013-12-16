@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractElement implements Composite<V> {
+public abstract class AbstractComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractElement implements Composite<V> {
 	protected static final class Key {
 		private final AbstractComposite<?> composite;
 		private final String localizationKey;

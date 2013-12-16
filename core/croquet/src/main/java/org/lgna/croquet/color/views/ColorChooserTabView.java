@@ -45,7 +45,7 @@ package org.lgna.croquet.color.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorChooserTabView extends org.lgna.croquet.views.View<javax.swing.colorchooser.AbstractColorChooserPanel, org.lgna.croquet.color.ColorChooserTabComposite<?>> {
+public abstract class ColorChooserTabView extends org.lgna.croquet.views.CompositeView<javax.swing.colorchooser.AbstractColorChooserPanel, org.lgna.croquet.color.ColorChooserTabComposite<?>> {
 	protected abstract class JColorChooserPanel extends javax.swing.colorchooser.AbstractColorChooserPanel {
 		@Override
 		public String getDisplayName() {

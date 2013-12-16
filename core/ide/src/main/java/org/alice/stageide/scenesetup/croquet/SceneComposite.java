@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.views;
+package org.alice.stageide.scenesetup.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View<J extends javax.swing.JComponent, C extends org.lgna.croquet.Composite<?>> extends JComponent<J> {
-	private final C composite;
-
-	public View( C composite ) {
-		this.composite = composite;
-		if( this.composite != null ) {
-			this.composite.initializeIfNecessary();
-		}
-	}
-
-	public C getComposite() {
-		return composite;
+public class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+	public SceneComposite() {
+		super( java.util.UUID.fromString( "69ab798c-8ce4-432d-90d0-ea829a5eda3a" ) );
 	}
 
 	@Override
-	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "composite=" );
-		rv.append( composite );
-		return rv;
-	}
-
-	public void handleCompositePreActivation() {
-	}
-
-	public void handleCompositePostDeactivation() {
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.BorderPanel();
 	}
 }

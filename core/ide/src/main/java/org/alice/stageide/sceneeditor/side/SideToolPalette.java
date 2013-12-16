@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SideToolPalette<V extends org.lgna.croquet.views.View<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+public abstract class SideToolPalette<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
 	public SideToolPalette( java.util.UUID migrationId, boolean initialValue ) {
 		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
 	}

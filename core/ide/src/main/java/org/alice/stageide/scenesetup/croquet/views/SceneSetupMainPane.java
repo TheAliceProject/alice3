@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.stageide.scenesetup.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
-	public java.util.UUID getCardId();
-
-	public V getView();
-
-	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
-
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
-
-	public void releaseView();
-
-	public void handlePreActivation();
-
-	public void handlePostDeactivation();
-
-	public boolean contains( Model model );
+public class SceneSetupMainPane extends org.lgna.croquet.views.BorderPanel {
+	public SceneSetupMainPane( org.alice.stageide.scenesetup.croquet.SceneSetupMainComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getSplitComposite().getRootComponent() );
+		this.addPageEndComponent( composite.getGalleryComposite().getRootComponent() );
+	}
 }

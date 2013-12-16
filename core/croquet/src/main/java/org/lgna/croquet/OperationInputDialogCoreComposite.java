@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
+public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
 	private final OwnedByCompositeOperation launchOperation;
 	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractComposite<V> {
+public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 
 	public static abstract class Status extends AbstractInternalStringValue {

@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends View<javax.swing.JPanel, org.lgna.croquet.Composite<?>> {
+public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.croquet.Composite<?>> {
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
 			this.setOpaque( false );

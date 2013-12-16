@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleTabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractTabComposite<V> {
+public abstract class SimpleTabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractTabComposite<V> {
 	protected static enum IsCloseable {
 		TRUE( true ),
 		FALSE( false );

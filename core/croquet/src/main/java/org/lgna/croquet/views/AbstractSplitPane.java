@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSplitPane<SC extends org.lgna.croquet.AbstractSplitComposite> extends View<javax.swing.JSplitPane, SC> {
+public abstract class AbstractSplitPane<SC extends org.lgna.croquet.AbstractSplitComposite> extends CompositeView<javax.swing.JSplitPane, SC> {
 	private static final java.awt.Dimension MINIMUM_SIZE = new java.awt.Dimension( 24, 24 );
 	private final int orientation;
 

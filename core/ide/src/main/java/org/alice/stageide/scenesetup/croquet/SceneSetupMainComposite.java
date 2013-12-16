@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.stageide.scenesetup.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
-	public java.util.UUID getCardId();
+public class SceneSetupMainComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane> {
+	public SceneSetupMainComposite() {
+		super( java.util.UUID.fromString( "e9b6f450-0b21-4d73-b14c-d8b2ae20e71a" ) );
+	}
 
-	public V getView();
+	@Override
+	protected org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane createView() {
+		return new org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane( this );
+	}
 
-	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
+	public org.lgna.croquet.SplitComposite getSplitComposite() {
+		return this.splitComposite;
+	}
 
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
+	public org.alice.stageide.gallerybrowser.GalleryComposite getGalleryComposite() {
+		return this.galleryComposite;
+	}
 
-	public void releaseView();
-
-	public void handlePreActivation();
-
-	public void handlePostDeactivation();
-
-	public boolean contains( Model model );
+	private final SceneComposite sceneComposite = new SceneComposite();
+	private final org.alice.stageide.sceneeditor.side.SideComposite sideComposite = new org.alice.stageide.sceneeditor.side.SideComposite();
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.sceneComposite, this.sideComposite, 1.0 );
+	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = new org.alice.stageide.gallerybrowser.GalleryComposite();
 }

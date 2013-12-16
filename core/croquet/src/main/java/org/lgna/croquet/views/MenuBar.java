@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite> implements MenuItemContainer {
+public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite> implements MenuItemContainer {
 	public MenuBar( org.lgna.croquet.MenuBarComposite composite ) {
 		super( composite );
 		for( org.lgna.croquet.StandardMenuItemPrepModel item : composite.getChildren() ) {

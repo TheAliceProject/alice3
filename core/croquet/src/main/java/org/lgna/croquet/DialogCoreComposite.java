@@ -52,7 +52,7 @@ package org.lgna.croquet;
 		DialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		org.lgna.croquet.views.View<?, ?> coreView = coreComposite.getView();
+		org.lgna.croquet.views.CompositeView<?, ?> coreView = coreComposite.getView();
 		this.setBackgroundColor( coreView.getBackgroundColor() );
 		this.addCenterComponent( coreView );
 	}
@@ -110,7 +110,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
+public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
 	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, DialogCoreComposite> {
@@ -318,13 +318,13 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.View<
 	}
 
 	@Override
-	protected org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view ) {
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
 		//todo
 	}
 

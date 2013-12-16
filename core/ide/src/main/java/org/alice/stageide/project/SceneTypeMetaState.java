@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.stageide.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
-	public java.util.UUID getCardId();
+public class SceneTypeMetaState extends org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, org.alice.ide.ProjectDocument> {
+	private static class SingletonHolder {
+		private static SceneTypeMetaState instance = new SceneTypeMetaState();
+	}
 
-	public V getView();
+	public static SceneTypeMetaState getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
+	private SceneTypeMetaState() {
+		super( org.alice.ide.project.ProjectDocumentState.getInstance() );
+	}
 
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
-
-	public void releaseView();
-
-	public void handlePreActivation();
-
-	public void handlePostDeactivation();
-
-	public boolean contains( Model model );
+	@Override
+	public org.lgna.project.ast.NamedUserType getValue() {
+		org.alice.ide.ProjectDocument projectDocument = org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromDocument( projectDocument );
+	}
 }

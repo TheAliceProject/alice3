@@ -41,25 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
-	public java.util.UUID getCardId();
+public abstract class CompositeView<J extends javax.swing.JComponent, C extends org.lgna.croquet.Composite<?>> extends JComponent<J> {
+	private final C composite;
 
-	public V getView();
+	public CompositeView( C composite ) {
+		this.composite = composite;
+		if( this.composite != null ) {
+			this.composite.initializeIfNecessary();
+		}
+	}
 
-	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
+	public C getComposite() {
+		return composite;
+	}
 
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
+	@Override
+	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "composite=" );
+		rv.append( composite );
+		return rv;
+	}
 
-	public void releaseView();
+	public void handleCompositePreActivation() {
+	}
 
-	public void handlePreActivation();
-
-	public void handlePostDeactivation();
-
-	public boolean contains( Model model );
+	public void handleCompositePostDeactivation() {
+	}
 }

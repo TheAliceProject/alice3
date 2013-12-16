@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.stageide.scenesetup.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
-	public java.util.UUID getCardId();
+public class SceneSetupPerspective extends org.alice.ide.perspectives.ProjectPerspective {
+	public SceneSetupPerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
+		super( java.util.UUID.fromString( "7b59bece-fa31-4a4c-ac94-5a8f17dfccd3" ), menuBar );
+	}
 
-	public V getView();
+	public SceneSetupMainComposite getMainComposite() {
+		return this.mainComposite;
+	}
 
-	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
+	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
+		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
+		} else {
+			return null;
+		}
+	}
 
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
+	@Override
+	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	}
 
-	public void releaseView();
+	@Override
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
+		return null;
+	}
 
-	public void handlePreActivation();
+	@Override
+	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	}
 
-	public void handlePostDeactivation();
+	private final SceneSetupMainComposite mainComposite = new SceneSetupMainComposite();
 
-	public boolean contains( Model model );
+	public static void main( String[] args ) {
+		//org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		//app.initialize( args );
+		org.alice.stageide.StageIDE app = new org.alice.stageide.StageIDE();
+		SceneSetupPerspective perspective = new SceneSetupPerspective( null );
+		app.setPerspective( perspective );
+		//org.alice.ide.MetaDeclarationFauxState.getInstance();
+		//app.getFrame().setMainComposite( fullSceneSetupComposite );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
+	}
 }
