@@ -58,7 +58,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.View;
+import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.poser.AbstractAnimatorInputDialogComposite;
 import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
 import org.lgna.ik.poser.PoserEvent;
@@ -284,7 +284,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		}
 	}
 
-	public View getSouthViewForDialog() {
+	public CompositeView getSouthViewForDialog() {
 		BorderPanel borderPanel = new BorderPanel();
 		borderPanel.addCenterComponent( tlComposite.getView() );
 		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );

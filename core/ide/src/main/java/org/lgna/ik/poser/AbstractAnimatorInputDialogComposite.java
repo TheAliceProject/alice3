@@ -50,7 +50,7 @@ import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.View;
+import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
@@ -112,8 +112,8 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	}
 
 	@Override
-	protected View createView() {
-		View splitPane = super.createView();
+	protected CompositeView createView() {
+		CompositeView splitPane = super.createView();
 		BorderPanel panel = new BorderPanel();
 		panel.addCenterComponent( splitPane );
 		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );
