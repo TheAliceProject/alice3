@@ -96,15 +96,15 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final JointSelectionSphereState leftArmAnchor;
 	private final JointSelectionSphereState rightLegAnchor;
 	private final JointSelectionSphereState leftLegAnchor;
-	private final StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
-	private final StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
-	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
-	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	private final StringValue typeSelectionLabel = this.createStringValue( createKey( "typeSelectionLabel" ) );
-	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final StringValue rightArmLabel = this.createStringValue( "rightArm" );
+	private final StringValue leftArmLabel = this.createStringValue( "leftArm" );
+	private final StringValue rightLegLabel = this.createStringValue( "rightLeg" );
+	private final StringValue leftLegLabel = this.createStringValue( "leftLeg" );
+	private final StringValue typeSelectionLabel = this.createStringValue( "typeSelectionLabel" );
+	private final BooleanState isUsingIK = createBooleanState( "isUsingIK", true );
 	private final UpdatableRootResourceNodeTreeSelectionState resourceTree;
-	//			createListSelectionState( createKey( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
-	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
+	//			createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
+	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( "showHandles", false );
 	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
 	private final TypeNode typeSelectionRoot;
@@ -185,7 +185,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return null;
 	}
 
-	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
+	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			parent.getModel().straightenOutJoints();

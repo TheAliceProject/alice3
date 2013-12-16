@@ -69,12 +69,12 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private TimeLineComposite composite;
 	private KeyFrameData selectedKeyFrame;
 	private final BoundedDoubleState currentTime;
-	private final SingleSelectListState<KeyFrameStyles> styleSelectionState = this.createSingleSelectListStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
+	private final SingleSelectListState<KeyFrameStyles> styleSelectionState = this.createSingleSelectListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
-		currentTime = createBoundedDoubleState( createKey( "currentTime" ),
+		currentTime = createBoundedDoubleState( "currentTime",
 				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
 
 		currentTime.addValueListener( timeListener );
@@ -162,7 +162,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		return new TimeLineModifierView( this );
 	}
 
-	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
+	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );

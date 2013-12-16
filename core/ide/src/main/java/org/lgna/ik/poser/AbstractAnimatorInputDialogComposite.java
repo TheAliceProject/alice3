@@ -100,7 +100,7 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 		} else {
 			this.validator = new MethodNameValidator( getDeclaringType() );
 		}
-		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+		ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 		String candidate = getControlComposite().getNameState().getValue();
 		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
 		if( explanation != null ) {
