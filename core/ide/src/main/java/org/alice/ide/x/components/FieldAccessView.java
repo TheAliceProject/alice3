@@ -62,13 +62,13 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 		} else {
 			boolean isExpressionDesired;
 			if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().isTypeExpressionDesired();
+				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().isTypeExpressionDesired();
 			} else {
 				isExpressionDesired = true;
 			}
 			if( isExpressionDesired ) {
 				this.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression ) );
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 					//pass
 				} else {
 					this.addComponent( new org.lgna.croquet.views.Label( "." ) );
@@ -90,7 +90,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			this.addComponent( nodeNameLabel );
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+					if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 						this.addComponent( new org.lgna.croquet.views.Label( "()" ) );
 					}
 				}

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			fireContentsChanged( e.getIndex0(), e.getIndex1() );
-		}
+public class DefaultSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
+	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel;
 
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
-		}
-	};
-
-	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
-		super( group, migrationId, data, selectionIndex );
-		data.addListener( this.listDataListener );
+	public DefaultSingleSelectTreeState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel ) {
+		super( group, id, initialSelection, itemCodec );
+		this.treeModel = treeModel;
 	}
 
 	@Override
-	public org.lgna.croquet.data.RefreshableListData<T> getData() {
-		return (org.lgna.croquet.data.RefreshableListData<T>)super.getData();
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
+		return this.treeModel;
 	}
 
-	//	public final void refresh() {
-	//		//todo: track selection
-	//		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
-	//		if( isDataChanged ) {
-	//			this.fireContentsChanged( 0, this.getItemCount() );
-	//		}
-	//	}
+	@Override
+	protected String getTextForNode( T node ) {
+		return node.toString();
+	}
+
+	@Override
+	protected javax.swing.Icon getIconForNode( T node ) {
+		return null;
+	}
+
+	@Override
+	public void refresh( T node ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+	}
 }

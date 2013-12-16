@@ -41,13 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.projecturi;
+package org.alice.stageide.croquet.models.sceneditor;
 
-/**
- * @author Dennis Cosgrove
- */
-public class RecentProjectsUriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
-	public RecentProjectsUriSelectionState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), org.alice.ide.recentprojects.RecentProjectsListData.getInstance(), -1 );
+import org.lgna.project.ast.UserField;
+
+public class ObjectMarkerFieldState extends org.lgna.croquet.MutableDataSingleSelectListState<UserField> {
+	private static class SingletonHolder {
+		private static ObjectMarkerFieldState instance = new ObjectMarkerFieldState();
+	}
+
+	public static ObjectMarkerFieldState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ObjectMarkerFieldState() {
+		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
 	}
 }

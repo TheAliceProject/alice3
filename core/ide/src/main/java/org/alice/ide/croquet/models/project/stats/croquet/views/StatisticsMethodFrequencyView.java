@@ -57,7 +57,7 @@ import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsMethodFrequencyTabComposite;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
@@ -80,7 +80,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class StatisticsMethodFrequencyView extends BorderPanel {
 
-	ListSelectionState<UserMethod> listSelectionState;
+	SingleSelectListState<UserMethod> listSelectionState;
 
 	public StatisticsMethodFrequencyView( StatisticsMethodFrequencyTabComposite composite ) {
 		super( composite );
@@ -149,7 +149,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 
 		};
 
-		public ControlDisplay( ListSelectionState<UserMethod> listSelectionState ) {
+		public ControlDisplay( SingleSelectListState<UserMethod> listSelectionState ) {
 			initGridPanel();
 			populateGridPanel();
 			this.gridPanel.setBackgroundColor( Color.WHITE );

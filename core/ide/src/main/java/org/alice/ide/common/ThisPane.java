@@ -57,7 +57,7 @@ public class ThisPane extends AccessiblePane {
 
 	public ThisPane() {
 		super( org.alice.ide.ast.draganddrop.expression.ThisExpressionDragModel.getInstance() );
-		this.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForThis() ) );
+		this.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForThis() ) );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
 
@@ -87,7 +87,7 @@ public class ThisPane extends AccessiblePane {
 			this.type = null;
 		}
 		if( this.type != null ) {
-			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForThis() );
+			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForThis() );
 		} else {
 			this.type = TYPE_FOR_NULL;
 			this.setToolTipText( null );

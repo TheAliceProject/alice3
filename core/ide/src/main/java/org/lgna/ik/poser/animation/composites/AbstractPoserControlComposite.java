@@ -45,12 +45,11 @@ package org.lgna.ik.poser.animation.composites;
 import java.util.UUID;
 
 import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
-import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
-import org.alice.stageide.modelresource.ResourceNodeTreeSelectionState;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.alice.stageide.modelresource.RootResourceKey;
 import org.alice.stageide.modelresource.UpdatableRootResourceNodeTreeSelectionState;
 import org.alice.stageide.type.croquet.TypeNode;
@@ -134,7 +133,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 			typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
 			typeSelectionState.addNewSchoolValueListener( typeChangedListener );
 			//		resourceList.addNewSchoolValueListener( resourceChangeListener );
-			ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
+			ResourceNode updateRoot = updateRoot( org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance().getTreeModel().getRoot() );
 			resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
 		} else {
 			resourceTree = null;
@@ -332,7 +331,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return jointRotationHandleVisibilityState;
 	}
 
-	public ResourceNodeTreeSelectionState getResourceList() {
+	public ResourceNodeTreeState getResourceList() {
 		return this.resourceTree;
 	}
 

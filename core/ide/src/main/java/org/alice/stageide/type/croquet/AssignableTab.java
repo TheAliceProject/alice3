@@ -53,11 +53,11 @@ public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.
 		this.dialog = dialog;
 	}
 
-	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+	public org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> getSceneFieldsState() {
 		return this.dialog.getSceneFieldsState();
 	}
 
-	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+	public org.lgna.croquet.SingleSelectTreeState<TypeNode> getTypeTreeState() {
 		return this.dialog.getTypeTreeState();
 	}
 

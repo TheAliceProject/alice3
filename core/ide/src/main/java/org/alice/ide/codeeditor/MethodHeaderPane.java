@@ -65,7 +65,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		super.internalRefresh();
 		this.forgetAndRemoveAllComponents();
 		//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
 			//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {

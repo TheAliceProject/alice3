@@ -51,8 +51,8 @@ public class GroupBasedResourceNode extends TagBasedResourceNode {
 	}
 
 	@Override
-	protected ResourceNodeTreeSelectionState getState() {
-		return GroupBasedResourceNodeTreeSelectionState.getInstance();
+	protected ResourceNodeTreeState getState() {
+		return GroupBasedResourceNodeTreeState.getInstance();
 	}
 
 }

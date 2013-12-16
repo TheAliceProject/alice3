@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.formatter;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FormatterSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState<org.alice.ide.formatter.Formatter> {
-	@Deprecated
-	public static boolean isJava() {
-		return FormatterSelectionState.getInstance().getValue() == org.alice.ide.formatter.JavaFormatter.getInstance();
+public abstract class ImmutableDataSingleSelectListState<T> extends SingleSelectListState<T> {
+	public ImmutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
+		super( group, migrationId, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ), selectionIndex );
 	}
 
-	private static class SingletonHolder {
-		private static FormatterSelectionState instance = new FormatterSelectionState();
-	}
-
-	public static FormatterSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FormatterSelectionState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ),
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ),
-				0,
-				org.alice.ide.formatter.AliceFormatter.getInstance(),
-				org.alice.ide.formatter.JavaFormatter.getInstance() );
+	@Override
+	public org.lgna.croquet.data.ImmutableListData<T> getData() {
+		return (org.lgna.croquet.data.ImmutableListData<T>)super.getData();
 	}
 }

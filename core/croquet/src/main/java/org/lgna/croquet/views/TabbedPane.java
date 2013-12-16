@@ -52,7 +52,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
-				org.lgna.croquet.ListSelectionState<E> model = getModel();
+				org.lgna.croquet.SingleSelectListState<E> model = getModel();
 				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
 				int indexFromCroquet = model.getSelectedIndex();
 				final boolean USE_CROQUET_OVER_SWING;
@@ -77,7 +77,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 		}
 	};
 
-	public TabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
+	public TabbedPane( org.lgna.croquet.SingleSelectListState<E> model ) {
 		super( model );
 	}
 

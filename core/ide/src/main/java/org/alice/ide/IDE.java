@@ -87,7 +87,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
-		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+		org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}

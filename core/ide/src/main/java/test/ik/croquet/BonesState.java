@@ -46,7 +46,7 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BonesState extends org.lgna.croquet.MutableDataListSelectionState<org.lgna.ik.solver.Bone> {
+public class BonesState extends org.lgna.croquet.MutableDataSingleSelectListState<org.lgna.ik.solver.Bone> {
 	private static class SingletonHolder {
 		private static BonesState instance = new BonesState();
 	}

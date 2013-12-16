@@ -49,7 +49,7 @@ import org.lgna.project.ast.AbstractMethod;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectionState<DeclarationComposite> {
+public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationComposite> {
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();

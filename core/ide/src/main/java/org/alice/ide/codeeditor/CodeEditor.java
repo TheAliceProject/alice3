@@ -257,14 +257,14 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addNewSchoolValueListener( this.formatterListener );
+		org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().addNewSchoolValueListener( this.formatterListener );
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeNewSchoolValueListener( this.typeFeedbackListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeNewSchoolValueListener( this.typeFeedbackListener );
-		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().removeNewSchoolValueListener( this.formatterListener );
+		org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().removeNewSchoolValueListener( this.formatterListener );
 		super.handleUndisplayable();
 	}
 

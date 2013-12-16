@@ -46,8 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabSelectionState<T extends TabComposite<?>> extends ListSelectionState<T> {
-	public TabSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+public abstract class TabState<T extends TabComposite<?>> extends SingleSelectListState<T> {
+	public TabState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, data, selectionIndex );
 	}
 

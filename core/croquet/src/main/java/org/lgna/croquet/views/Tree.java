@@ -46,8 +46,8 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.TreeSelectionState<E>> {
-	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
+public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.SingleSelectTreeState<E>> {
+	public Tree( org.lgna.croquet.SingleSelectTreeState<E> model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ThemeBasedResourceNodeTreeSelectionState extends ResourceNodeTreeSelectionState {
-	private static class SingletonHolder {
-		private static ThemeBasedResourceNodeTreeSelectionState instance = new ThemeBasedResourceNodeTreeSelectionState();
-	}
-
-	public static ThemeBasedResourceNodeTreeSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ThemeBasedResourceNodeTreeSelectionState() {
-		super( java.util.UUID.fromString( "a17403a2-da1f-46e8-8d3d-c7dd819c98c8" ), TreeUtilities.getTreeBasedOnTheme() );
-	}
-
-	@Override
-	protected boolean isBreadcrumbButtonIconDesired() {
-		return false;
+public class RecentProjectsUriSingleSelectListState extends org.lgna.croquet.SingleSelectListState<java.net.URI> {
+	public RecentProjectsUriSingleSelectListState() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), org.alice.ide.recentprojects.RecentProjectsListData.getInstance(), -1 );
 	}
 }

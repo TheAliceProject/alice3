@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public class AliceMenuBar extends MenuBarComposite {
-	public AliceMenuBar( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
+	public AliceMenuBar( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
 		super( perspectiveState, uploadOperations );
 	}
 }

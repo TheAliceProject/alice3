@@ -40,14 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.ui.formatter;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleTabSelectionState<C extends SimpleTabComposite<?>> extends ImmutableDataTabSelectionState<C> {
-	public SimpleTabSelectionState( Group group, java.util.UUID migrationId, Class<C> cls, C[] values, int selectionIndex ) {
-		super( group, migrationId, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), values, selectionIndex );
+public class FormatterState extends org.lgna.croquet.preferences.PreferenceMutableDataSingleSelectListState<org.alice.ide.formatter.Formatter> {
+	@Deprecated
+	public static boolean isJava() {
+		return FormatterState.getInstance().getValue() == org.alice.ide.formatter.JavaFormatter.getInstance();
+	}
+
+	private static class SingletonHolder {
+		private static FormatterState instance = new FormatterState();
+	}
+
+	public static FormatterState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private FormatterState() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ),
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ),
+				0,
+				org.alice.ide.formatter.AliceFormatter.getInstance(),
+				org.alice.ide.formatter.JavaFormatter.getInstance() );
 	}
 }

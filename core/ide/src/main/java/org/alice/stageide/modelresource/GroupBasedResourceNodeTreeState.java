@@ -45,16 +45,16 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class GroupBasedResourceNodeTreeSelectionState extends ResourceNodeTreeSelectionState {
+public class GroupBasedResourceNodeTreeState extends ResourceNodeTreeState {
 	private static class SingletonHolder {
-		private static GroupBasedResourceNodeTreeSelectionState instance = new GroupBasedResourceNodeTreeSelectionState();
+		private static GroupBasedResourceNodeTreeState instance = new GroupBasedResourceNodeTreeState();
 	}
 
-	public static GroupBasedResourceNodeTreeSelectionState getInstance() {
+	public static GroupBasedResourceNodeTreeState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private GroupBasedResourceNodeTreeSelectionState() {
+	private GroupBasedResourceNodeTreeState() {
 		super( java.util.UUID.fromString( "92417991-1b96-429c-aa2a-a4dd706732bc" ), TreeUtilities.getTreeBasedOnGroup() );
 	}
 

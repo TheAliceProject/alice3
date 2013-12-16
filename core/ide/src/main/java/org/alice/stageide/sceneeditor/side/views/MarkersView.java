@@ -128,7 +128,7 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		};
 
-		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
+		public MarkerListView( org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> model ) {
 			super( model );
 		}
 

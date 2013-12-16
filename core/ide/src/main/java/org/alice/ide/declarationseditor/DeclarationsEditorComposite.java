@@ -74,7 +74,7 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 	private DeclarationsEditorComposite() {
 		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
 		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
-		this.registerTabSelectionState( this.tabState );
+		this.registerTabState( this.tabState );
 	}
 
 	public org.alice.ide.declarationseditor.DeclarationMenu getDeclarationMenu() {

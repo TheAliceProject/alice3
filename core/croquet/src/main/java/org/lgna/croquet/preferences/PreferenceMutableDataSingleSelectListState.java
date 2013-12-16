@@ -41,14 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models;
+package org.lgna.croquet.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.RefreshableDataListSelectionState<E> {
-	public FilteredListPropertySelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.alice.ide.ast.data.FilteredListPropertyData<E> data, int selectionIndex ) {
-		super( group, id, data, selectionIndex );
-		//this.updateData();
+public class PreferenceMutableDataSingleSelectListState<T> extends org.lgna.croquet.MutableDataSingleSelectListState<T> {
+	public PreferenceMutableDataSingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... data ) {
+		super( group, id, codec, selectionIndex, data );
+		PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 	}
 }

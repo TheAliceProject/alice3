@@ -98,7 +98,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 	private void updateFinalLabel() {
 		String text;
 		if( field.isFinal() ) {
-			text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
+			text = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getFinalText() + " ";
 		} else {
 			text = "";
 		}

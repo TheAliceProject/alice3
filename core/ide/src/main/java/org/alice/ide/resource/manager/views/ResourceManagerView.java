@@ -131,7 +131,7 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
-				if( org.alice.ide.resource.manager.ResourceTableRowSelectionState.getInstance().getValue() != null ) {
+				if( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.getInstance().getValue() != null ) {
 					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 				}
 			}
@@ -147,9 +147,9 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		javax.swing.JTable jTable = this.table.getAwtComponent();
 		javax.swing.table.JTableHeader tableHeader = jTable.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
-		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
-		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.NAME_COLUMN_INDEX ) ).setCellRenderer( new ResourceNameTableCellRenderer() );
-		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX ) ).setCellRenderer( new ResourceNameTableCellRenderer() );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
 
 		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( this.table );
 		this.addCenterComponent( scrollPane );

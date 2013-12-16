@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TableRowSelectionState<T> extends ItemState<T> {
+public abstract class SingleSelectTableRowState<T> extends ItemState<T> {
 	public class SwingModel {
 		private final javax.swing.table.TableModel tableModel;
 		private final javax.swing.ListSelectionModel listSelectionModel;
@@ -78,17 +78,17 @@ public abstract class TableRowSelectionState<T> extends ItemState<T> {
 	};
 	private final SwingModel swingModel;
 
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
 		super( group, migrationId, initialValue, itemCodec );
 		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
 		this.swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
+	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
 		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new javax.swing.DefaultListSelectionModel() );
 	}
 
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel ) {
+	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel ) {
 		this( group, migrationId, initialValue, itemCodec, tableModel, null ); //new javax.swing.table.DefaultTableColumnModel() );
 	}
 

@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeDirectoryViewController<T> extends PanelViewController<org.lgna.croquet.TreeSelectionState<T>> {
+public abstract class TreeDirectoryViewController<T> extends PanelViewController<org.lgna.croquet.SingleSelectTreeState<T>> {
 	private static class InternalPanel<T> extends MigPanel {
 		public InternalPanel() {
 			super( null, "insets 0", "", "" );
@@ -81,7 +81,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 		}
 	};
 
-	public TreeDirectoryViewController( org.lgna.croquet.TreeSelectionState<T> model ) {
+	public TreeDirectoryViewController( org.lgna.croquet.SingleSelectTreeState<T> model ) {
 		super( model, new InternalPanel<T>() );
 
 	}
@@ -101,7 +101,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 	protected abstract SwingComponentView<?> getComponentFor( T value );
 
 	protected java.util.List<T> getChildren() {
-		org.lgna.croquet.TreeSelectionState<T> model = this.getModel();
+		org.lgna.croquet.SingleSelectTreeState<T> model = this.getModel();
 		T node = model.getSelectedNode();
 		if( node != null ) {
 			if( model.isLeaf( node ) ) {

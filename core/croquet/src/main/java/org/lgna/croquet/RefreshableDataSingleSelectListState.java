@@ -45,25 +45,36 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableDataListSelectionState<T> extends ListSelectionState<T> {
-	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
-	}
+public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T> {
+	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+			fireContentsChanged( e.getIndex0(), e.getIndex1() );
+		}
 
-	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
-		this( group, migrationId, itemCodec, -1 );
-	}
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
+		}
 
-	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
-	}
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
+		}
+	};
 
-	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
+	public RefreshableDataSingleSelectListState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+		super( group, migrationId, data, selectionIndex );
+		data.addListener( this.listDataListener );
 	}
 
 	@Override
-	public org.lgna.croquet.data.MutableListData<T> getData() {
-		return (org.lgna.croquet.data.MutableListData<T>)super.getData();
+	public org.lgna.croquet.data.RefreshableListData<T> getData() {
+		return (org.lgna.croquet.data.RefreshableListData<T>)super.getData();
 	}
+
+	//	public final void refresh() {
+	//		//todo: track selection
+	//		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
+	//		if( isDataChanged ) {
+	//			this.fireContentsChanged( 0, this.getItemCount() );
+	//		}
+	//	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,8 +45,20 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataListSelectionState<T> {
-	public EnumConstantSelectionState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, org.lgna.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
+public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T> {
+	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
+	}
+
+	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
+		this( group, migrationId, itemCodec, -1 );
+	}
+
+	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
+	}
+
+	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 }

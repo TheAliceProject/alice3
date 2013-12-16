@@ -181,7 +181,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 				rv = this.createFieldAccessPane( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().isTypeExpressionDesired() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().isTypeExpressionDesired() ) {
 					org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
 					org.lgna.project.ast.Node parent = typeExpression.getParent();
 					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {

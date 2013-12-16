@@ -128,7 +128,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 			java.util.List<String> paths = map.get( hairColorName );
 			if( paths != null ) {
 				panel.addComponent( new org.lgna.croquet.views.Label( hairColorName.name(), hairColorName.getIcon() ) );
-				org.lgna.croquet.ListSelectionState<String> state = this.createListSelectionState( this.createKey( "unused" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, -1, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( paths, String.class ) );
+				org.lgna.croquet.SingleSelectListState<String> state = this.createSingleSelectListState( this.createKey( "unused" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, -1, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( paths, String.class ) );
 				org.lgna.croquet.views.List<String> listView = state.createList();
 				listView.setCellRenderer( new HairPathListCellRenderer() );
 				listView.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );

@@ -41,14 +41,86 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.preferences;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceListSelectionState<T> extends org.lgna.croquet.MutableDataListSelectionState<T> {
-	public PreferenceListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... data ) {
-		super( group, id, codec, selectionIndex, data );
-		PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
+public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
+	private final edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T>() {
+		public int getChildCount( Object parent ) {
+			return CustomSingleSelectTreeState.this.getChildCount( (T)parent );
+		}
+
+		public T getChild( Object parent, int index ) {
+			return CustomSingleSelectTreeState.this.getChild( (T)parent, index );
+		}
+
+		public int getIndexOfChild( Object parent, Object child ) {
+			return CustomSingleSelectTreeState.this.getIndexOfChild( (T)parent, (T)child );
+		}
+
+		public T getRoot() {
+			return CustomSingleSelectTreeState.this.getRoot();
+		}
+
+		public boolean isLeaf( Object node ) {
+			return CustomSingleSelectTreeState.this.isLeaf( (T)node );
+		}
+
+		private Object[] getPathToRoot( T node ) {
+			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			T n = node;
+			if( n != null ) {
+				T root = this.getRoot();
+				while( n != root ) {
+					T parent = CustomSingleSelectTreeState.this.getParent( n );
+					if( parent != null ) {
+						collection.add( 0, n );
+						n = parent;
+					} else {
+						break;
+					}
+				}
+				collection.add( 0, root );
+			}
+			return collection.toArray();
+		}
+
+		public javax.swing.tree.TreePath getTreePath( Object node ) {
+			if( node != null ) {
+				Object[] nodes = this.getPathToRoot( (T)node );
+				assert nodes != null : CustomSingleSelectTreeState.this;
+				assert nodes.length > 0 : CustomSingleSelectTreeState.this;
+				return new javax.swing.tree.TreePath( nodes );
+			} else {
+				return null;
+			}
+		}
+	};
+
+	public CustomSingleSelectTreeState( Group group, java.util.UUID id, T initialSelection, ItemCodec<T> itemCodec ) {
+		super( group, id, initialSelection, itemCodec );
+	}
+
+	protected abstract int getChildCount( T parent );
+
+	protected abstract T getChild( T parent, int index );
+
+	protected abstract int getIndexOfChild( T parent, T child );
+
+	protected abstract T getRoot();
+
+	@Override
+	public abstract boolean isLeaf( T node );
+
+	@Override
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
+		return this.treeModel;
+	}
+
+	@Override
+	public void refresh( T node ) {
+		this.treeModel.reload( node );
 	}
 }

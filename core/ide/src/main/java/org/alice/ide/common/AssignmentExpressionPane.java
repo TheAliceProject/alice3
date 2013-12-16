@@ -74,7 +74,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 				org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 				isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 				parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 					parent.addComponent( new org.lgna.croquet.views.Label( " . " ) );
 				} else {
 					parent.addComponent( new org.lgna.croquet.views.Label( " " ) );
@@ -84,7 +84,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 				}
 				parent.addComponent( nameLabel );
 				if( isSetter ) {
-					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+					if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 						parent.addComponent( new org.lgna.croquet.views.Label( "( " ) );
 					}
 				}
@@ -113,7 +113,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 		if( isSetter ) {
 			//pass
 		} else {
-			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+			if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 				parent.addComponent( new org.lgna.croquet.views.Label( " = " ) );
 			} else {
 				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
@@ -122,7 +122,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 		org.lgna.project.ast.AbstractType<?, ?, ?> rightHandValueType = this.assignmentExpression.expressionType.getValue();
 		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, rightHandValueType ) );
 		if( isSetter ) {
-			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+			if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 				parent.addComponent( new org.lgna.croquet.views.Label( " )" ) );
 			}
 		}

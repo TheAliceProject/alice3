@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.sceneeditor;
+package org.alice.stageide.modelresource;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SceneFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<org.lgna.project.ast.UserField> {
-	public SceneFieldListSelectionState() {
-		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7ae55863-9782-4cd5-9cb4-710327fb5a69" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
+public final class ClassHierarchyBasedResourceNodeTreeState extends ResourceNodeTreeState {
+	private static class SingletonHolder {
+		private static ClassHierarchyBasedResourceNodeTreeState instance = new ClassHierarchyBasedResourceNodeTreeState();
+	}
+
+	public static ClassHierarchyBasedResourceNodeTreeState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ClassHierarchyBasedResourceNodeTreeState() {
+		super( java.util.UUID.fromString( "c37c9803-2482-4f1b-9731-b110f1f6fde7" ), TreeUtilities.getTreeBasedOnClassHierarchy() );
+	}
+
+	@Override
+	protected boolean isBreadcrumbButtonIconDesired() {
+		return true;
 	}
 }
