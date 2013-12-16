@@ -46,14 +46,14 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabComposite extends MemberOrControlFlowTabComposite<org.alice.ide.member.views.ControlFlowTabView> {
-	private final org.lgna.croquet.PlainStringValue doInOrderHeader = this.createStringValue( this.createKey( "doInOrderHeader" ) );
-	private final org.lgna.croquet.PlainStringValue doTogetherHeader = this.createStringValue( this.createKey( "doTogetherHeader" ) );
-	private final org.lgna.croquet.PlainStringValue loopHeader = this.createStringValue( this.createKey( "loopHeader" ) );
-	private final org.lgna.croquet.PlainStringValue ifThenHeader = this.createStringValue( this.createKey( "ifThenHeader" ) );
-	private final org.lgna.croquet.PlainStringValue eachInTogetherHeader = this.createStringValue( this.createKey( "eachInTogetherHeader" ) );
-	private final org.lgna.croquet.PlainStringValue commentHeader = this.createStringValue( this.createKey( "commentHeader" ) );
-	private final org.lgna.croquet.PlainStringValue localHeader = this.createStringValue( this.createKey( "localHeader" ) );
-	private final org.lgna.croquet.PlainStringValue returnHeader = this.createStringValue( this.createKey( "returnHeader" ) );
+	private final org.lgna.croquet.PlainStringValue doInOrderHeader = this.createStringValue( "doInOrderHeader" );
+	private final org.lgna.croquet.PlainStringValue doTogetherHeader = this.createStringValue( "doTogetherHeader" );
+	private final org.lgna.croquet.PlainStringValue loopHeader = this.createStringValue( "loopHeader" );
+	private final org.lgna.croquet.PlainStringValue ifThenHeader = this.createStringValue( "ifThenHeader" );
+	private final org.lgna.croquet.PlainStringValue eachInTogetherHeader = this.createStringValue( "eachInTogetherHeader" );
+	private final org.lgna.croquet.PlainStringValue commentHeader = this.createStringValue( "commentHeader" );
+	private final org.lgna.croquet.PlainStringValue localHeader = this.createStringValue( "localHeader" );
+	private final org.lgna.croquet.PlainStringValue returnHeader = this.createStringValue( "returnHeader" );
 
 	public ControlFlowTabComposite() {
 		super( java.util.UUID.fromString( "80073c5b-1308-4c32-9081-edf8e4573ab3" ) );

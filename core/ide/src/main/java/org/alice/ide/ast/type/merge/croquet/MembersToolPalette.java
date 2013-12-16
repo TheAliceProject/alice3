@@ -54,9 +54,9 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private java.util.List<ProjectOnly<M>> projectOnlys;
 
-	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( this.createKey( "fromImportHeader" ) );
-	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( this.createKey( "alreadyInProjectHeader" ) );
-	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
+	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( "fromImportHeader" );
+	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( "alreadyInProjectHeader" );
+	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( "resultHeader" );
 
 	public MembersToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );

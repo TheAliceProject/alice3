@@ -59,9 +59,9 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );
-	private final StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
-	private final StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
-	private final SingleSelectListState<EventScriptEvent> eventList = createSingleSelectListState( createKey( "eventList" ), EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
+	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
+	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
+	private final SingleSelectListState<EventScriptEvent> eventList = createSingleSelectListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
 	private org.lgna.project.Project project;
 	private EventScript eventScript;

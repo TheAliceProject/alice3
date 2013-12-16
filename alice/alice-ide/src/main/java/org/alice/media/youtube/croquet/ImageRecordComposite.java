@@ -72,10 +72,10 @@ import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, ExportToYouTubeWizardDialogComposite> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private WebmRecordingAdapter encoder;
-	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
-	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( this.createKey( "frameRateState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
-	private final Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
-	private final Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
+	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
+	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( "frameRateState", new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
+	private final Status errorIsRecording = createErrorStatus( "errorIsRecording" );
+	private final Status errorHasNotYetRecorded = createErrorStatus( "errorNothingIsRecorded" );
 	private java.awt.image.BufferedImage image;
 	private int imageCount;
 
@@ -92,7 +92,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		}
 	};
 
-	private final ActionOperation restartOperation = createActionOperation( this.createKey( "restartImageRecorder" ), new Action() {
+	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );

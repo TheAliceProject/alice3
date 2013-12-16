@@ -55,7 +55,7 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.StringState valueState = this.createStringState( this.createKey( "valueState" ) );
+	private final org.lgna.croquet.StringState valueState = this.createStringState( "valueState" );
 
 	private StringCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );

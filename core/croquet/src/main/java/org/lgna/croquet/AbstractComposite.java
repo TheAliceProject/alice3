@@ -1061,81 +1061,93 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return new Key( this, localizationKey );
 	}
 
-	protected PlainStringValue createStringValue( Key key ) {
+	protected PlainStringValue createStringValue( String keyText ) {
+		Key key = this.createKey( keyText );
 		InternalStringValue rv = new InternalStringValue( key );
 		this.registerStringValue( rv );
 		return rv;
 	}
 
-	protected StringState createStringState( Key key, String initialValue ) {
+	protected StringState createStringState( String keyText, String initialValue ) {
+		Key key = this.createKey( keyText );
 		InternalStringState rv = new InternalStringState( initialValue, key );
 		this.mapKeyToStringState.put( key, rv );
 		return rv;
 	}
 
-	protected StringState createStringState( Key key ) {
-		return createStringState( key, "" );
+	protected StringState createStringState( String keyText ) {
+		return createStringState( keyText, "" );
 	}
 
-	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
-		return createPreferenceStringState( key, initialValue, isStoringPreferenceDesiredState, null );
-	}
-
-	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( Key key, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
+	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
+		Key key = this.createKey( keyText );
 		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, encryptionId );
 		this.mapKeyToPreferenceStringState.put( key, rv );
 		return rv;
 	}
 
-	protected BooleanState createBooleanState( Key key, boolean initialValue ) {
+	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
+		return createPreferenceStringState( keyText, initialValue, isStoringPreferenceDesiredState, null );
+	}
+
+	protected BooleanState createBooleanState( String keyText, boolean initialValue ) {
+		Key key = this.createKey( keyText );
 		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
 
-	protected org.lgna.croquet.preferences.PreferenceBooleanState createPreferenceBooleanState( Key key, boolean initialValue ) {
+	protected org.lgna.croquet.preferences.PreferenceBooleanState createPreferenceBooleanState( String keyText, boolean initialValue ) {
+		Key key = this.createKey( keyText );
 		InternalPreferenceBooleanState rv = new InternalPreferenceBooleanState( initialValue, key );
 		this.mapKeyToPreferenceBooleanState.put( key, rv );
 		return rv;
 	}
 
-	protected BoundedIntegerState createBoundedIntegerState( Key key, BoundedIntegerState.Details details ) {
+	protected BoundedIntegerState createBoundedIntegerState( String keyText, BoundedIntegerState.Details details ) {
+		Key key = this.createKey( keyText );
 		InternalBoundedIntegerState rv = new InternalBoundedIntegerState( details, key );
 		this.mapKeyToBoundedIntegerState.put( key, rv );
 		return rv;
 	}
 
-	protected BoundedDoubleState createBoundedDoubleState( Key key, BoundedDoubleState.Details details ) {
+	protected BoundedDoubleState createBoundedDoubleState( String keyText, BoundedDoubleState.Details details ) {
+		Key key = this.createKey( keyText );
 		InternalBoundedDoubleState rv = new InternalBoundedDoubleState( details, key );
 		this.mapKeyToBoundedDoubleState.put( key, rv );
 		return rv;
 	}
 
-	protected ActionOperation createActionOperation( Key key, Action action ) {
+	protected ActionOperation createActionOperation( String keyText, Action action ) {
+		Key key = this.createKey( keyText );
 		InternalActionOperation rv = new InternalActionOperation( action, key );
 		this.mapKeyToActionOperation.put( key, rv );
 		return rv;
 	}
 
-	protected <T> Cascade<T> createCascadeWithInternalBlank( Key key, Class<T> cls, CascadeCustomizer<T> customizer ) {
+	protected <T> Cascade<T> createCascadeWithInternalBlank( String keyText, Class<T> cls, CascadeCustomizer<T> customizer ) {
+		Key key = this.createKey( keyText );
 		InternalCascadeWithInternalBlank<T> rv = new InternalCascadeWithInternalBlank<T>( customizer, cls, key );
 		this.mapKeyToCascade.put( key, rv );
 		return rv;
 	}
 
-	protected <T> CustomItemState<T> createCustomItemState( Key key, ItemCodec<T> itemCodec, T initialValue, ItemStateCustomizer<T> customizer ) {
+	protected <T> CustomItemState<T> createCustomItemState( String keyText, ItemCodec<T> itemCodec, T initialValue, ItemStateCustomizer<T> customizer ) {
+		Key key = this.createKey( keyText );
 		InternalCustomItemState<T> rv = new InternalCustomItemState<T>( customizer, itemCodec, initialValue, key );
 		this.mapKeyToItemState.put( key, rv );
 		return rv;
 	}
 
-	protected <T> MutableDataSingleSelectListState<T> createSingleSelectListState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+	protected <T> MutableDataSingleSelectListState<T> createSingleSelectListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+		Key key = this.createKey( keyText );
 		InternalMutableDataSingleSelectListState<T> rv = new InternalMutableDataSingleSelectListState<T>( codec, selectionIndex, values, key );
 		this.mapKeyToMutableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createSingleSelectListStateForEnum( Key key, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
+	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createSingleSelectListStateForEnum( String keyText, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
+		Key key = this.createKey( keyText );
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
 		org.lgna.croquet.codecs.EnumCodec<T> enumCodec = localizationCustomizer != null ? org.lgna.croquet.codecs.EnumCodec.createInstance( valueCls, localizationCustomizer ) : org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls );
@@ -1144,24 +1156,26 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createSingleSelectListStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
-		return this.createSingleSelectListStateForEnum( key, valueCls, null, initialValue );
+	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createSingleSelectListStateForEnum( String keyText, Class<T> valueCls, T initialValue ) {
+		return this.createSingleSelectListStateForEnum( keyText, valueCls, null, initialValue );
 	}
 
-	protected <T> RefreshableDataSingleSelectListState<T> createSingleSelectListState( Key key, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+	protected <T> RefreshableDataSingleSelectListState<T> createSingleSelectListState( String keyText, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+		Key key = this.createKey( keyText );
 		InternalRefreshableDataSingleSelectListState<T> rv = new InternalRefreshableDataSingleSelectListState<T>( data, selectionIndex, key );
 		this.mapKeyToRefreshableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <C extends SimpleTabComposite<?>> TabState<C> createTabState( Key key, Class<C> cls, int selectionIndex, C... tabComposites ) {
+	protected <C extends SimpleTabComposite<?>> TabState<C> createTabState( String keyText, Class<C> cls, int selectionIndex, C... tabComposites ) {
+		Key key = this.createKey( keyText );
 		InternalTabState<C> rv = new InternalTabState<C>( cls, selectionIndex, tabComposites, key );
 		this.mapKeyToTabState.put( key, rv );
 		return rv;
 	}
 
-	protected TabState<SimpleTabComposite> createTabState( Key key, int selectionIndex, SimpleTabComposite... tabComposites ) {
-		return this.createTabState( key, SimpleTabComposite.class, selectionIndex, tabComposites );
+	protected TabState<SimpleTabComposite> createTabState( String keyText, int selectionIndex, SimpleTabComposite... tabComposites ) {
+		return this.createTabState( keyText, SimpleTabComposite.class, selectionIndex, tabComposites );
 	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {

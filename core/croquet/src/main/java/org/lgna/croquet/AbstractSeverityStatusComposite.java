@@ -43,6 +43,7 @@
 
 package org.lgna.croquet;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,13 +80,15 @@ public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet
 		}
 	}
 
-	protected WarningStatus createWarningStatus( Key key ) {
+	protected WarningStatus createWarningStatus( String keyText ) {
+		Key key = this.createKey( keyText );
 		WarningStatus rv = new WarningStatus( key );
 		this.registerStringValue( rv );
 		return rv;
 	}
 
-	protected ErrorStatus createErrorStatus( Key key ) {
+	protected ErrorStatus createErrorStatus( String keyText ) {
+		Key key = this.createKey( keyText );
 		ErrorStatus rv = new ErrorStatus( key );
 		this.registerStringValue( rv );
 		return rv;

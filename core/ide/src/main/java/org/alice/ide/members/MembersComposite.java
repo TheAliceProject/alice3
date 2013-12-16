@@ -70,7 +70,7 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 			this.controlStructureTabComposite = new org.alice.ide.member.ControlFlowTabComposite();
 			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite };
 		}
-		this.tabState = this.createTabState( this.createKey( "tabState" ), org.alice.ide.member.MemberOrControlFlowTabComposite.class, 0, tabComposites );
+		this.tabState = this.createTabState( "tabState", org.alice.ide.member.MemberOrControlFlowTabComposite.class, 0, tabComposites );
 	}
 
 	public org.lgna.croquet.TabState<org.alice.ide.member.MemberOrControlFlowTabComposite> getTabState() {

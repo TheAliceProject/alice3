@@ -54,7 +54,7 @@ public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposit
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.SSphere.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, org.lgna.story.SSphere.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
 
 	private AddSphereManagedFieldComposite() {
 		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ), org.lgna.story.SSphere.class );

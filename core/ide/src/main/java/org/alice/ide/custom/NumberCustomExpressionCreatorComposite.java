@@ -47,7 +47,7 @@ package org.alice.ide.custom;
  * @author Dennis Cosgrove
  */
 public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.NumberCustomExpressionCreatorView> {
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
 
 	public NumberCustomExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {

@@ -49,14 +49,14 @@ package org.alice.ide.projecturi;
 public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.alice.ide.uricontent.UriProjectLoader> {
 	private static final boolean IS_STARTERS_TAB_READY_FOR_PRIME_TIME = false;
 
-	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
 	private final StartersTab startersTab = IS_STARTERS_TAB_READY_FOR_PRIME_TIME ? new StartersTab() : null;
 	private final TemplatesTab templatesTab = new TemplatesTab();
 	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
 	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
 	private final org.lgna.croquet.TabState<SelectUriTab> tabState = this.createTabState(
-			this.createKey( "tabState" ),
+			"tabState",
 			SelectUriTab.class,
 			-1,
 			//todo:

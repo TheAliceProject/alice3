@@ -55,7 +55,7 @@ public class AddBillboardManagedFieldComposite extends AddModelManagedFieldCompo
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> backPaintState = this.createInitialPropertyValueExpressionState( this.createKey( "backPaintState" ), null, org.lgna.story.SBillboard.class, "setBackPaint", org.lgna.story.Paint.class, org.lgna.story.SetBackPaint.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> backPaintState = this.createInitialPropertyValueExpressionState( "backPaintState", null, org.lgna.story.SBillboard.class, "setBackPaint", org.lgna.story.Paint.class, org.lgna.story.SetBackPaint.Detail[].class );
 
 	private AddBillboardManagedFieldComposite() {
 		super( java.util.UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ), org.lgna.story.SBillboard.class );

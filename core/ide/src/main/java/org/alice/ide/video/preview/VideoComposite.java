@@ -46,7 +46,7 @@ package org.alice.ide.video.preview;
  * @author Dennis Cosgrove
  */
 public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
-	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( this.createKey( "togglePlayPauseOperation" ), new Action() {
+	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( "togglePlayPauseOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
 				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();

@@ -74,7 +74,7 @@ public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView
 	protected StatisticsFrameView createView() {
 		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
 		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-		tabState = this.createTabState( this.createKey( "tabState" ), 0, flowControlFrequencyTab, methodTab );
+		tabState = this.createTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
 		return new StatisticsFrameView( this );
 	}
 

@@ -54,8 +54,8 @@ public class AddCylinderManagedFieldComposite extends AddModelManagedFieldCompos
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.SCylinder.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( this.createKey( "lengthState" ), 1.0, org.lgna.story.SCylinder.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, org.lgna.story.SCylinder.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, org.lgna.story.SCylinder.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
 
 	private AddCylinderManagedFieldComposite() {
 		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ), org.lgna.story.SCylinder.class );
