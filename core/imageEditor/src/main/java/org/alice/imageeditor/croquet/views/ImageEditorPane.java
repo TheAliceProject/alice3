@@ -160,7 +160,7 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		panel.addComponent( composite.getUncropOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getDropShadowState().createCheckBox(), "growx, wrap" );
-		panel.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, gap bottom 16, wrap" );
+		panel.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, gap bottom 16, wrap" );
 		panel.addComponent( composite.getShowInScreenResolutionState().getSidekickLabel().createLabel(), "split 2" );
 		panel.addComponent( composite.getShowInScreenResolutionState().createHorizontalToggleButtons(), "growx, wrap" );
 		panel.addComponent( composite.getShowDashedBorderState().createCheckBox(), "growx, wrap" );

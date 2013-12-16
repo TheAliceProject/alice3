@@ -100,7 +100,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 								this.previewPanel
 						),
 						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ),
-						new org.lgna.croquet.views.HorizontalSeparator(),
+						org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(),
 						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 )
 						);
 				this.addPageStartComponent( northPanel );

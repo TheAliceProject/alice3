@@ -127,7 +127,7 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 					scrollPaneView.addComponent( view, "wrap" );
 				}
 			} else {
-				scrollPaneView.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "wrap" );
+				scrollPaneView.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "wrap" );
 			}
 		}
 		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );

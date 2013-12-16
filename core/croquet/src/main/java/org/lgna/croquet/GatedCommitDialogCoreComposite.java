@@ -61,7 +61,7 @@ package org.lgna.croquet;
 		if( coreComposite.isStatusLineDesired() ) {
 			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
 		}
-		pageEndPanel.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), gbc );
+		pageEndPanel.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), gbc );
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
 
