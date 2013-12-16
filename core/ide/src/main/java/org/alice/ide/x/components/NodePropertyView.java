@@ -51,7 +51,7 @@ public class NodePropertyView<P extends org.lgna.project.ast.NodeProperty<N>, N 
 		this.refreshLater();
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> createComponent( N node ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( N node ) {
 		return this.getFactory().createComponent( node );
 	}
 

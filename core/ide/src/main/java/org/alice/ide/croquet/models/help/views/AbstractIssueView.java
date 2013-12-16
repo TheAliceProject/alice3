@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.help.views;
  * @author Dennis Cosgrove
  */
 public class AbstractIssueView extends org.lgna.croquet.views.BorderPanel {
-	protected static org.lgna.croquet.views.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+	protected static org.lgna.croquet.views.SwingComponentView<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
 		org.lgna.croquet.views.TextArea textArea = stringState.createTextArea();
 		textArea.getAwtComponent().setLineWrap( true );
 		textArea.getAwtComponent().setWrapStyleWord( true );

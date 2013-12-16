@@ -58,7 +58,7 @@ public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croque
 		return new javax.swing.JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
 	}
 
-	public void setLeadingComponent( Component<?> component ) {
+	public void setLeadingComponent( AwtComponentView<?> component ) {
 		this.leadingPanel.removeAllComponents();
 		if( component != null ) {
 			this.leadingPanel.addComponent( component );
@@ -66,7 +66,7 @@ public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croque
 		this.revalidateAndRepaint();
 	}
 
-	public void setTrailingComponent( Component<?> component ) {
+	public void setTrailingComponent( AwtComponentView<?> component ) {
 		this.trailingPanel.removeAllComponents();
 		if( component != null ) {
 			this.trailingPanel.addComponent( component );

@@ -351,7 +351,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		}
 	}
 
-	public JComponent<?> getSubject() {
+	public SwingComponentView<?> getSubject() {
 		return this;
 	}
 
@@ -405,7 +405,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		}
 	}
 
-	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
+	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, AwtComponentView<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );
 

@@ -67,32 +67,32 @@ public class FlowPanel extends Panel {
 	private final int hgap;
 	private final int vgap;
 
-	public FlowPanel( Component<?>... components ) {
+	public FlowPanel( AwtComponentView<?>... components ) {
 		this( (org.lgna.croquet.Composite)null, components );
 	}
 
-	public FlowPanel( Alignment alignment, Component<?>... components ) {
+	public FlowPanel( Alignment alignment, AwtComponentView<?>... components ) {
 		this( null, alignment, components );
 	}
 
-	public FlowPanel( Alignment alignment, int hgap, int vgap, Component<?>... components ) {
+	public FlowPanel( Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
 		this( null, alignment, hgap, vgap, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
+	public FlowPanel( org.lgna.croquet.Composite composite, AwtComponentView<?>... components ) {
 		this( composite, Alignment.CENTER, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, Component<?>... components ) {
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, AwtComponentView<?>... components ) {
 		this( composite, alignment, 0, 0, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap, Component<?>... components ) {
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
 		super( composite );
 		this.alignment = alignment;
 		this.hgap = hgap;
 		this.vgap = vgap;
-		for( Component<?> component : components ) {
+		for( AwtComponentView<?> component : components ) {
 			this.addComponent( component );
 		}
 	}
@@ -124,7 +124,7 @@ public class FlowPanel extends Panel {
 		return this.createFlowLayout( this.alignment.internal, this.hgap, this.vgap );
 	}
 
-	public void addComponent( Component<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

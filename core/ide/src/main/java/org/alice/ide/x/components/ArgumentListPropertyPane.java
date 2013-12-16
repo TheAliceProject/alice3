@@ -76,8 +76,8 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.views.Component<?> expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+		org.lgna.croquet.views.AwtComponentView<?> expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
 		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
 		if( IS_PARAMETER_NAME_DESIRED ) {

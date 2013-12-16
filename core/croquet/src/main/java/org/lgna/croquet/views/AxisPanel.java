@@ -49,10 +49,10 @@ package org.lgna.croquet.views;
 public abstract class AxisPanel extends Panel {
 	private final int axis;
 
-	protected AxisPanel( org.lgna.croquet.Composite composite, int axis, Component<?>... components ) {
+	protected AxisPanel( org.lgna.croquet.Composite composite, int axis, AwtComponentView<?>... components ) {
 		super( composite );
 		this.axis = axis;
-		for( Component<?> component : components ) {
+		for( AwtComponentView<?> component : components ) {
 			this.addComponent( component );
 		}
 	}
@@ -71,7 +71,7 @@ public abstract class AxisPanel extends Panel {
 		}
 	}
 
-	public void addComponent( Component<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

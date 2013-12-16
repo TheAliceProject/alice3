@@ -53,7 +53,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.views.LayerS
 
 	private java.util.List<org.lgna.croquet.DropReceptor> holes = null;
 	private org.lgna.croquet.views.DragComponent<?> potentialDragSource;
-	private org.lgna.croquet.views.Component<?> currentDropReceptorComponent;
+	private org.lgna.croquet.views.AwtComponentView<?> currentDropReceptorComponent;
 
 	public PotentialDropReceptorsStencil( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		super( window, javax.swing.JLayeredPane.POPUP_LAYER + 1 );
@@ -129,7 +129,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.views.LayerS
 
 				if( isFauxStencilDesired() ) {
 					for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-						org.lgna.croquet.views.Component<?> component = (org.lgna.croquet.views.Component<?>)dropReceptor;
+						org.lgna.croquet.views.AwtComponentView<?> component = (org.lgna.croquet.views.AwtComponentView<?>)dropReceptor;
 						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 						area.subtract( new java.awt.geom.Area( holeBounds ) );
 					}
@@ -143,7 +143,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.views.LayerS
 				g2.setStroke( THICK_STROKE );
 				final int BUFFER = 6;
 				for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-					org.lgna.croquet.views.Component<?> component = (org.lgna.croquet.views.Component<?>)dropReceptor;
+					org.lgna.croquet.views.AwtComponentView<?> component = (org.lgna.croquet.views.AwtComponentView<?>)dropReceptor;
 					java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 					holeBounds.x -= BUFFER;
 					holeBounds.y -= BUFFER;

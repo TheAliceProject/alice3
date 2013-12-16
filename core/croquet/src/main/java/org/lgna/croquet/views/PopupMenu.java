@@ -77,11 +77,11 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		return rv;
 	}
 
-	public Component<?> getMenuComponent( int i ) {
+	public AwtComponentView<?> getMenuComponent( int i ) {
 		javax.swing.MenuElement menuElement = this.getAwtComponent().getSubElements()[ i ];
 		if( menuElement instanceof java.awt.Component ) {
 			java.awt.Component awtComponent = (java.awt.Component)menuElement;
-			return Component.lookup( awtComponent );
+			return AwtComponentView.lookup( awtComponent );
 		} else {
 			return null;
 		}
@@ -91,9 +91,9 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		return this.getAwtComponent().getSubElements().length;
 	}
 
-	public synchronized Component<?>[] getMenuComponents() {
+	public synchronized AwtComponentView<?>[] getMenuComponents() {
 		final int N = this.getMenuComponentCount();
-		Component<?>[] rv = new Component<?>[ N ];
+		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 		for( int i = 0; i < N; i++ ) {
 			rv[ i ] = this.getMenuComponent( i );
 		}
@@ -158,7 +158,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	//		} );
 	//	}
 
-	public void showAtLocation( Component<?> invoker, int x, int y ) {
+	public void showAtLocation( AwtComponentView<?> invoker, int x, int y ) {
 		java.awt.Component awtInvoker;
 		if( invoker != null ) {
 			awtInvoker = invoker.getAwtComponent();
@@ -168,7 +168,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		this.getAwtComponent().show( awtInvoker, x, y );
 	}
 
-	public void showBelow( Component<?> invoker ) {
+	public void showBelow( AwtComponentView<?> invoker ) {
 		int x;
 		int y;
 		if( invoker != null ) {

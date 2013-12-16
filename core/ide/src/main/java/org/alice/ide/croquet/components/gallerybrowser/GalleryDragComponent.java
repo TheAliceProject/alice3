@@ -53,7 +53,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	private final java.awt.Color activeHighlightColor;
 	private final java.awt.Color activeShadowColor;
 
-	private static final class SuperclassIconLabel extends org.lgna.croquet.views.JComponent<javax.swing.JLabel> {
+	private static final class SuperclassIconLabel extends org.lgna.croquet.views.SwingComponentView<javax.swing.JLabel> {
 		private final Class<?> modelResourceInterface;
 
 		public SuperclassIconLabel( Class<?> modelResourceInterface ) {

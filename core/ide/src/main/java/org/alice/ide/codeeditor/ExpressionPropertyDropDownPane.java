@@ -101,7 +101,7 @@ public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropD
 	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.views.JComponent<?> prefixPane, org.lgna.croquet.views.JComponent<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.views.SwingComponentView<?> prefixPane, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}

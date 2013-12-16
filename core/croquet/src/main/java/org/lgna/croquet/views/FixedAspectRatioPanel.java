@@ -49,7 +49,7 @@ package org.lgna.croquet.views;
 public class FixedAspectRatioPanel extends SingleComponentPanel {
 	private final double widthToHeightRatio/* = edu.cmu.cs.dennisc.math.GoldenRatio.PHI */;
 
-	public FixedAspectRatioPanel( Component<?> centerPanel, double widthToHeightRatio ) {
+	public FixedAspectRatioPanel( AwtComponentView<?> centerPanel, double widthToHeightRatio ) {
 		super( centerPanel );
 		assert widthToHeightRatio != 0.0;
 		this.widthToHeightRatio = widthToHeightRatio;

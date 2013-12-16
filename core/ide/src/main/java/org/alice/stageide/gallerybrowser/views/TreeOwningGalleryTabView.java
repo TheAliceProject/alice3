@@ -52,7 +52,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		}
 
 		@Override
-		protected org.lgna.croquet.views.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+		protected org.lgna.croquet.views.SwingComponentView<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
 			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value );
 		}
 	}

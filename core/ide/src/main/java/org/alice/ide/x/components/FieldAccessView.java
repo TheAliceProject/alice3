@@ -46,12 +46,12 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.croquet.views.JComponent<?> replacement;
+	private final org.lgna.croquet.views.SwingComponentView<?> replacement;
 
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.views.Component<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
+		org.lgna.croquet.views.AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}

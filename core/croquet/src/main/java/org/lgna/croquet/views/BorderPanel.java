@@ -49,11 +49,11 @@ package org.lgna.croquet.views;
 public class BorderPanel extends Panel {
 	public static class Builder {
 		private org.lgna.croquet.Composite<?> composite;
-		private Component<?> pageStart;
-		private Component<?> pageEnd;
-		private Component<?> center;
-		private Component<?> lineStart;
-		private Component<?> lineEnd;
+		private AwtComponentView<?> pageStart;
+		private AwtComponentView<?> pageEnd;
+		private AwtComponentView<?> center;
+		private AwtComponentView<?> lineStart;
+		private AwtComponentView<?> lineEnd;
 		private int hgap;
 		private int vgap;
 
@@ -63,35 +63,35 @@ public class BorderPanel extends Panel {
 			return this;
 		}
 
-		public Builder center( Component<?> center ) {
+		public Builder center( AwtComponentView<?> center ) {
 			assert center != null;
 			assert this.center == null : this.center + " " + center;
 			this.center = center;
 			return this;
 		}
 
-		public Builder pageStart( Component<?> pageStart ) {
+		public Builder pageStart( AwtComponentView<?> pageStart ) {
 			assert pageStart != null;
 			assert this.pageStart == null : this.pageStart + " " + pageStart;
 			this.pageStart = pageStart;
 			return this;
 		}
 
-		public Builder pageEnd( Component<?> pageEnd ) {
+		public Builder pageEnd( AwtComponentView<?> pageEnd ) {
 			assert pageEnd != null;
 			assert this.pageEnd == null : this.pageEnd + " " + pageEnd;
 			this.pageEnd = pageEnd;
 			return this;
 		}
 
-		public Builder lineStart( Component<?> lineStart ) {
+		public Builder lineStart( AwtComponentView<?> lineStart ) {
 			assert lineStart != null;
 			assert this.lineStart == null : this.lineStart + " " + lineStart;
 			this.lineStart = lineStart;
 			return this;
 		}
 
-		public Builder lineEnd( Component<?> lineEnd ) {
+		public Builder lineEnd( AwtComponentView<?> lineEnd ) {
 			assert lineEnd != null;
 			assert this.lineEnd == null : this.lineEnd + " " + lineEnd;
 			this.lineEnd = lineEnd;
@@ -176,34 +176,34 @@ public class BorderPanel extends Panel {
 		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
 
-	public void addComponent( Component<?> child, Constraint constraint ) {
+	public void addComponent( AwtComponentView<?> child, Constraint constraint ) {
 		this.internalAddComponent( child, constraint.internal );
 	}
 
-	public void addCenterComponent( Component<?> child ) {
+	public void addCenterComponent( AwtComponentView<?> child ) {
 		this.addComponent( child, Constraint.CENTER );
 	}
 
-	public void addPageStartComponent( Component<?> child ) {
+	public void addPageStartComponent( AwtComponentView<?> child ) {
 		this.addComponent( child, Constraint.PAGE_START );
 	}
 
-	public void addPageEndComponent( Component<?> child ) {
+	public void addPageEndComponent( AwtComponentView<?> child ) {
 		this.addComponent( child, Constraint.PAGE_END );
 	}
 
-	public void addLineStartComponent( Component<?> child ) {
+	public void addLineStartComponent( AwtComponentView<?> child ) {
 		this.addComponent( child, Constraint.LINE_START );
 	}
 
-	public void addLineEndComponent( Component<?> child ) {
+	public void addLineEndComponent( AwtComponentView<?> child ) {
 		this.addComponent( child, Constraint.LINE_END );
 	}
 
-	public Component<?> getComponent( Constraint constraint ) {
+	public AwtComponentView<?> getComponent( Constraint constraint ) {
 		javax.swing.JPanel jPanel = this.getAwtComponent();
 		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();
-		for( Component<?> component : this.getComponents() ) {
+		for( AwtComponentView<?> component : this.getComponents() ) {
 			java.awt.Component awtComponent = component.getAwtComponent();
 			if( constraint.internal.equals( borderLayout.getConstraints( awtComponent ) ) ) {
 				return component;
@@ -212,23 +212,23 @@ public class BorderPanel extends Panel {
 		return null;
 	}
 
-	public Component<?> getCenterComponent() {
+	public AwtComponentView<?> getCenterComponent() {
 		return this.getComponent( Constraint.CENTER );
 	}
 
-	public Component<?> getPageStartComponent() {
+	public AwtComponentView<?> getPageStartComponent() {
 		return this.getComponent( Constraint.PAGE_START );
 	}
 
-	public Component<?> getPageEndComponent() {
+	public AwtComponentView<?> getPageEndComponent() {
 		return this.getComponent( Constraint.PAGE_END );
 	}
 
-	public Component<?> getLineStartComponent() {
+	public AwtComponentView<?> getLineStartComponent() {
 		return this.getComponent( Constraint.LINE_START );
 	}
 
-	public Component<?> getLineEndComponent() {
+	public AwtComponentView<?> getLineEndComponent() {
 		return this.getComponent( Constraint.LINE_END );
 	}
 }

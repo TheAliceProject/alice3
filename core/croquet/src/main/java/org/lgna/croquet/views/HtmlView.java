@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlView extends org.lgna.croquet.views.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView> {
+public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView> {
 	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
 		return this.getAwtComponent().getHtmlDocument();
 	}

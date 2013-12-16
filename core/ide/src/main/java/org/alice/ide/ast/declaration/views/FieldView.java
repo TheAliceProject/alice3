@@ -58,18 +58,18 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField>)this.getComposite();
 		org.lgna.project.ast.UserField field = composite.getPreviewValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> getSideView() {
+	protected org.lgna.croquet.views.SwingComponentView<?> getSideView() {
 		return this.typeIconView;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createPageStartComponent() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createPageStartComponent() {
 		return new org.lgna.croquet.views.BorderPanel.Builder()
 				.lineStart( super.createPageStartComponent() )
 				.lineEnd( this.getSideView() )

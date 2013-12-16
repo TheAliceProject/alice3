@@ -121,7 +121,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 
 	}
 
-	public JComponent<?> getMainComponentFor( E item ) {
+	public SwingComponentView<?> getMainComponentFor( E item ) {
 		if( item != null ) {
 			return item.getView();
 		} else {
@@ -137,7 +137,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 		}
 	}
 
-	public JComponent<?> getRootComponentFor( E item ) {
+	public SwingComponentView<?> getRootComponentFor( E item ) {
 		if( item != null ) {
 			return item.getRootComponent();
 		} else {

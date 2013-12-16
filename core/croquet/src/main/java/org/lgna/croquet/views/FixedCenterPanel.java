@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public class FixedCenterPanel extends SingleComponentPanel {
-	public FixedCenterPanel( Component<?> centerPanel ) {
+	public FixedCenterPanel( AwtComponentView<?> centerPanel ) {
 		super( centerPanel );
 	}
 

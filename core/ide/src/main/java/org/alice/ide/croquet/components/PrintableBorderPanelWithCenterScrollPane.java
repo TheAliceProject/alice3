@@ -60,7 +60,7 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.v
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.Component<?> child, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> child, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
 		if( constraint == Constraint.CENTER ) {
 			assert child instanceof org.lgna.croquet.views.ScrollPane : child;
 		}
@@ -72,23 +72,23 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.v
 			return NO_SUCH_PAGE;
 		} else {
 			org.lgna.croquet.views.ScrollPane scrollPane = this.getScrollPane();
-			org.lgna.croquet.views.Component<?> lineStart = this.getLineStartComponent();
-			org.lgna.croquet.views.Component<?> lineEnd = this.getLineEndComponent();
-			org.lgna.croquet.views.Component<?> pageStart = this.getPageStartComponent();
-			org.lgna.croquet.views.Component<?> pageEnd = this.getPageEndComponent();
+			org.lgna.croquet.views.AwtComponentView<?> lineStart = this.getLineStartComponent();
+			org.lgna.croquet.views.AwtComponentView<?> lineEnd = this.getLineEndComponent();
+			org.lgna.croquet.views.AwtComponentView<?> pageStart = this.getPageStartComponent();
+			org.lgna.croquet.views.AwtComponentView<?> pageEnd = this.getPageEndComponent();
 
 			//todo: this code will not suffice in the limit
 			java.awt.Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
 			int width = scrollSize.width;
 			int height = scrollSize.height;
-			for( org.lgna.croquet.views.Component<?> component : new org.lgna.croquet.views.Component[] { lineStart, lineEnd } ) {
+			for( org.lgna.croquet.views.AwtComponentView<?> component : new org.lgna.croquet.views.AwtComponentView[] { lineStart, lineEnd } ) {
 				if( component != null ) {
 					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
 					width += componentSize.width;
 					height = Math.max( height, componentSize.height );
 				}
 			}
-			for( org.lgna.croquet.views.Component<?> component : new org.lgna.croquet.views.Component[] { pageStart, pageEnd } ) {
+			for( org.lgna.croquet.views.AwtComponentView<?> component : new org.lgna.croquet.views.AwtComponentView[] { pageStart, pageEnd } ) {
 				if( component != null ) {
 					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
 					width = Math.max( width, componentSize.width );

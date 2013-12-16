@@ -88,62 +88,62 @@ public class GridPanel extends Panel {
 		}
 	}
 
-	public GridPanel( Details details, Component<?>... components ) {
+	public GridPanel( Details details, AwtComponentView<?>... components ) {
 		super( details.composite );
 		this.rowCount = details.rowCount;
 		this.columnCount = details.columnCount;
 		this.hgap = details.hgap;
 		this.vgap = details.vgap;
-		for( Component<?> component : components ) {
+		for( AwtComponentView<?> component : components ) {
 			this.addComponent( component );
 		}
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, Component<?>... components ) {
+	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, Component<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).columnCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, Component<?>... components ) {
+	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ), components );
 	}
 
-	public static GridPanel createSingleRowGridPane( Component<?>... components ) {
+	public static GridPanel createSingleRowGridPane( AwtComponentView<?>... components ) {
 		return createSingleRowGridPane( null, components );
 	}
 
-	public static GridPanel createSingleRowGridPane( int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createSingleRowGridPane( int hgap, int vgap, AwtComponentView<?>... components ) {
 		return createSingleRowGridPane( null, hgap, vgap, components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( Component<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( AwtComponentView<?>... components ) {
 		return createSingleColumnGridPane( null, components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( int hgap, int vgap, AwtComponentView<?>... components ) {
 		return createSingleColumnGridPane( null, hgap, vgap, components );
 	}
 
-	public static GridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap, Component<?>... components ) {
+	public static GridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return createGridPane( null, rowCount, columnCount, hgap, vgap, components );
 	}
 
-	public static GridPanel createGridPane( int rowCount, int columnCount, Component<?>... components ) {
+	public static GridPanel createGridPane( int rowCount, int columnCount, AwtComponentView<?>... components ) {
 		return createGridPane( null, rowCount, columnCount, components );
 	}
 
@@ -152,7 +152,7 @@ public class GridPanel extends Panel {
 		return new java.awt.GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
 	}
 
-	public void addComponent( Component<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

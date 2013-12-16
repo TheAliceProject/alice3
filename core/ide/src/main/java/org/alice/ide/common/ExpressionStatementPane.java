@@ -98,7 +98,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
 			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (org.lgna.project.ast.AssignmentExpression)expression ) );
 		} else {
-			org.lgna.croquet.views.JComponent<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			org.lgna.croquet.views.SwingComponentView<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
 			this.addComponent( expressionPane );
 			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 				final org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;

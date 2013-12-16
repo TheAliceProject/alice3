@@ -88,7 +88,7 @@ public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property
 		}
 	}
 
-	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 

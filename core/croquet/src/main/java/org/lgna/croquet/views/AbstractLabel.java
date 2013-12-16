@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractLabel extends JComponent<javax.swing.JLabel> {
+public abstract class AbstractLabel extends SwingComponentView<javax.swing.JLabel> {
 	public String getText() {
 		return this.getAwtComponent().getText();
 	}

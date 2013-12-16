@@ -64,7 +64,7 @@ public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> getSideView() {
+	protected org.lgna.croquet.views.SwingComponentView<?> getSideView() {
 		return this.sidePanel;
 	}
 }

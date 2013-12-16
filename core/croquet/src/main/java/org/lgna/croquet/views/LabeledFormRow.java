@@ -48,11 +48,11 @@ package org.lgna.croquet.views;
 public class LabeledFormRow implements FormRow {
 	private final Label label;
 	private final org.lgna.croquet.PlainStringValue labelStringValue;
-	private final org.lgna.croquet.views.JComponent<?> trailingComponent;
+	private final org.lgna.croquet.views.SwingComponentView<?> trailingComponent;
 	private final org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment;
 	private final boolean isFillHorizontal;
 
-	private LabeledFormRow( org.lgna.croquet.views.Label label, org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.JComponent<?> trailingComponent, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	private LabeledFormRow( org.lgna.croquet.views.Label label, org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> trailingComponent, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this.label = label;
 		this.labelStringValue = labelStringValue;
 		this.trailingComponent = trailingComponent;
@@ -63,27 +63,27 @@ public class LabeledFormRow implements FormRow {
 		this.isFillHorizontal = isFillHorizontal;
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.JComponent<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this( null, labelStringValue, component, labelVerticalAlignment, isFillHorizontal );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.JComponent<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment ) {
+	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment ) {
 		this( labelStringValue, component, labelVerticalAlignment, true );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.JComponent<?> component, boolean isFillHorizontal ) {
+	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, boolean isFillHorizontal ) {
 		this( labelStringValue, component, org.lgna.croquet.views.VerticalAlignment.CENTER, isFillHorizontal );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.JComponent<?> component ) {
+	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component ) {
 		this( labelStringValue, component, org.lgna.croquet.views.VerticalAlignment.CENTER );
 	}
 
-	public static LabeledFormRow createFromLabel( org.lgna.croquet.views.Label label, org.lgna.croquet.views.JComponent<?> component ) {
+	public static LabeledFormRow createFromLabel( org.lgna.croquet.views.Label label, org.lgna.croquet.views.SwingComponentView<?> component ) {
 		return new LabeledFormRow( label, null, component, org.lgna.croquet.views.VerticalAlignment.CENTER, true );
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> createLabel() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createLabel() {
 		if( this.labelStringValue != null ) {
 			org.lgna.croquet.views.AbstractLabel textField = this.labelStringValue.createLabel();
 			textField.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.TRAILING );
@@ -109,7 +109,7 @@ public class LabeledFormRow implements FormRow {
 	}
 
 	public void addComponents( org.lgna.croquet.views.FormPanel formPanel ) {
-		JComponent<?> leadingComponent;
+		SwingComponentView<?> leadingComponent;
 		if( this.label != null ) {
 			leadingComponent = this.label;
 		} else {

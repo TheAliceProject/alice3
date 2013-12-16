@@ -58,11 +58,11 @@ public interface MenuItemContainer {
 
 	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
 
-	public Container<?> getParent();
+	public AwtContainerView<?> getParent();
 
-	public Component<?>[] getMenuComponents();
+	public AwtComponentView<?>[] getMenuComponents();
 
-	public Component<?> getMenuComponent( int i );
+	public AwtComponentView<?> getMenuComponent( int i );
 
 	public int getMenuComponentCount();
 

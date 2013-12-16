@@ -50,7 +50,7 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 	private org.lgna.project.ast.UserLocal userLocal;
 	private org.lgna.croquet.views.Label finalLabel = new org.lgna.croquet.views.Label();
 
-	public LocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal, org.lgna.croquet.views.Component<?> component ) {
+	public LocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal, org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.userLocal = userLocal;
 		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
 			this.addComponent( finalLabel );

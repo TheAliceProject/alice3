@@ -45,7 +45,7 @@ package org.alice.ide.ast.export.views;
 /**
  * @author Dennis Cosgrove
  */
-public class InfoCheckBox extends org.lgna.croquet.views.JComponent<javax.swing.JCheckBox> {
+public class InfoCheckBox extends org.lgna.croquet.views.SwingComponentView<javax.swing.JCheckBox> {
 	private final org.alice.ide.ast.export.DeclarationInfo<?> info;
 
 	public InfoCheckBox( org.alice.ide.ast.export.DeclarationInfo<?> info ) {

@@ -47,11 +47,11 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public class PageAxisPanel extends AxisPanel {
-	public PageAxisPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
+	public PageAxisPanel( org.lgna.croquet.Composite composite, AwtComponentView<?>... components ) {
 		super( composite, javax.swing.BoxLayout.PAGE_AXIS, components );
 	}
 
-	public PageAxisPanel( Component<?>... components ) {
+	public PageAxisPanel( AwtComponentView<?>... components ) {
 		this( null, components );
 	}
 }

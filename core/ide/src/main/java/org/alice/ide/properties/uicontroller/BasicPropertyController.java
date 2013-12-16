@@ -48,20 +48,20 @@ import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P>
 {
 	protected static final String BLANK_STRING = "NO VALUE";
 
-	protected Component<?> propertyComponent;
+	protected AwtComponentView<?> propertyComponent;
 
 	public BasicPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		super( propertyAdapter );
 	}
 
-	protected abstract Component<?> createPropertyComponent();
+	protected abstract AwtComponentView<?> createPropertyComponent();
 
 	@Override
 	protected void initializeComponents()

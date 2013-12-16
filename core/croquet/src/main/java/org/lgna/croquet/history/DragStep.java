@@ -106,7 +106,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 			int i = 0;
 			for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {
-				org.lgna.croquet.views.Component<?> dropComponent = dropReceptor.getViewController();
+				org.lgna.croquet.views.AwtComponentView<?> dropComponent = dropReceptor.getViewController();
 				java.awt.Rectangle bounds = dropComponent.getBounds();
 				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
 				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
@@ -260,7 +260,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 				//				
 				if( model != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
-					org.lgna.croquet.views.JComponent<?> component = this.currentDropReceptor.getViewController();
+					org.lgna.croquet.views.SwingComponentView<?> component = this.currentDropReceptor.getViewController();
 					org.lgna.croquet.views.ViewController<?, ?> viewController;
 					if( component instanceof org.lgna.croquet.views.ViewController<?, ?> ) {
 						viewController = (org.lgna.croquet.views.ViewController<?, ?>)component;
