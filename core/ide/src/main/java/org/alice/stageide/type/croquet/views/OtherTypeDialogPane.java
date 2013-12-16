@@ -72,9 +72,9 @@ public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( new org.lgna.croquet.views.Label( "Selection", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
 		this.addComponent( new org.lgna.croquet.views.Label( "Available Procedures, Functions, and Properties", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx" );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx" );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 
 		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.addComponent( tabbedPane, "grow" );

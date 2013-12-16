@@ -63,7 +63,7 @@ public class ControlsPanel extends org.lgna.croquet.views.PageAxisPanel {
 				) );
 
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator() );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom() );
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
 
 		this.addComponent( new org.lgna.croquet.views.Label( "chain:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
@@ -74,7 +74,7 @@ public class ControlsPanel extends org.lgna.croquet.views.PageAxisPanel {
 		this.addComponent( list );
 
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator() );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom() );
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
 
 		this.addComponent( new org.lgna.croquet.views.Label( "info:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );

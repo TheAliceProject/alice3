@@ -65,8 +65,8 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		return header;
 	}
 
-	private static org.lgna.croquet.views.HorizontalSeparator createSeparator() {
-		return new org.lgna.croquet.views.HorizontalSeparator();
+	private static org.lgna.croquet.views.Separator createSeparator() {
+		return org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom();
 	}
 
 	private int row = 0;

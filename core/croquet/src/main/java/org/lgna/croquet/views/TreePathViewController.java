@@ -174,7 +174,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 					//todo: remove when look and feel magic is performed   
 					if( i > 0 ) {
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-						this.internalAddComponent( new VerticalSeparator() );
+						this.internalAddComponent( Separator.createInstanceSeparatingLeftFromRight() );
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 					}
 					T treeNode = (T)treePath.getPathComponent( i );

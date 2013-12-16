@@ -60,7 +60,7 @@ public class EventScriptPane extends org.lgna.croquet.views.MigPanel {
 		list.setBackgroundColor( this.getBackgroundColor() );
 
 		this.addComponent( state.getSidekickLabel().createLabel(), "grow, wrap" );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "grow, wrap" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "grow, wrap" );
 		this.addComponent( list, "grow" );
 	}
 }

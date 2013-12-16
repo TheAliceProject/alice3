@@ -285,7 +285,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
 		rv.addComponent( header, "wrap" );
-		rv.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
+		rv.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 		return rv;
 	}
 
