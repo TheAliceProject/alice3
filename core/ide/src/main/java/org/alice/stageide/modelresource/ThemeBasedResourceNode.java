@@ -51,7 +51,7 @@ public final class ThemeBasedResourceNode extends TagBasedResourceNode {
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
-		return ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
+		return ThemeBasedResourceNodeTreeState.getInstance();
 	}
 }

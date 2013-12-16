@@ -71,7 +71,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 			} else {
 				cls = this.getStatementCls();
 			}
-			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getLocale() );
+			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getLocale() );
 		}
 		return this.labelText;
 	}

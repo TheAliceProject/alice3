@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
+public abstract class ResourceNodeTreeState extends org.lgna.croquet.CustomSingleSelectTreeState<ResourceNode> {
 
 	//todo
 	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
@@ -56,7 +56,7 @@ public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.Cu
 
 	private final ResourceNode root;
 
-	public ResourceNodeTreeSelectionState( java.util.UUID migrationId, ResourceNode root ) {
+	public ResourceNodeTreeState( java.util.UUID migrationId, ResourceNode root ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, migrationId, root, ResourceNodeCodec.SINGLETON );
 		this.root = root;
 	}

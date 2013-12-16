@@ -62,11 +62,11 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	@Override
 	public String getColumnName( int columnIndex ) {
 		switch( columnIndex ) {
-		case ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
 			return "is referenced?";
-		case ResourceTableRowSelectionState.NAME_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
 			return "name";
-		case ResourceTableRowSelectionState.TYPE_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
 			return "type";
 		default:
 			return null;
@@ -75,11 +75,11 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 
 	public Object getValueAt( int rowIndex, int columnIndex ) {
 		switch( columnIndex ) {
-		case ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
 			return this.referencedResources.contains( this.resources[ rowIndex ] );
-		case ResourceTableRowSelectionState.NAME_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
 			return this.resources[ rowIndex ];
-		case ResourceTableRowSelectionState.TYPE_COLUMN_INDEX:
+		case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
 			return this.resources[ rowIndex ].getClass();
 		default:
 			return null;
@@ -105,20 +105,20 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceTableRowSelectionState extends org.lgna.croquet.TableRowSelectionState<org.lgna.common.Resource> {
+public class ResourceSingleSelectTableRowState extends org.lgna.croquet.SingleSelectTableRowState<org.lgna.common.Resource> {
 	public static final int NAME_COLUMN_INDEX = 0;
 	public static final int TYPE_COLUMN_INDEX = 1;
 	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
 
 	private static class SingletonHolder {
-		private static ResourceTableRowSelectionState instance = new ResourceTableRowSelectionState();
+		private static ResourceSingleSelectTableRowState instance = new ResourceSingleSelectTableRowState();
 	}
 
-	public static ResourceTableRowSelectionState getInstance() {
+	public static ResourceSingleSelectTableRowState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ResourceTableRowSelectionState() {
+	private ResourceSingleSelectTableRowState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ), new ResourceTableModel() );
 	}
 

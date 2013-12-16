@@ -136,7 +136,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
-	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
+	public abstract org.lgna.croquet.SingleSelectListState<String> getSortState();
 
 	@Override
 	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {

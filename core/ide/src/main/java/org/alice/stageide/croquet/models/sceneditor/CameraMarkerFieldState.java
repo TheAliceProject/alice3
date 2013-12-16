@@ -47,16 +47,16 @@ import org.lgna.project.ast.UserField;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkerFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<UserField> {
+public class CameraMarkerFieldState extends org.lgna.croquet.MutableDataSingleSelectListState<UserField> {
 	private static class SingletonHolder {
-		private static CameraMarkerFieldListSelectionState instance = new CameraMarkerFieldListSelectionState();
+		private static CameraMarkerFieldState instance = new CameraMarkerFieldState();
 	}
 
-	public static CameraMarkerFieldListSelectionState getInstance() {
+	public static CameraMarkerFieldState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private CameraMarkerFieldListSelectionState() {
+	private CameraMarkerFieldState() {
 		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
 	}
 }

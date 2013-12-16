@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.sceneditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ViewListSelectionState extends org.lgna.croquet.EnumConstantSelectionState<org.alice.stageide.sceneeditor.View> {
+public class ViewListSelectionState extends org.lgna.croquet.EnumConstantState<org.alice.stageide.sceneeditor.View> {
 	private static class SingletonHolder {
 		private static ViewListSelectionState instance = new ViewListSelectionState();
 	}

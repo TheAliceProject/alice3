@@ -41,20 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.ide.croquet.models;
 
-import org.lgna.project.ast.UserField;
-
-public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<UserField> {
-	private static class SingletonHolder {
-		private static ObjectMarkerFieldListSelectionState instance = new ObjectMarkerFieldListSelectionState();
-	}
-
-	public static ObjectMarkerFieldListSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ObjectMarkerFieldListSelectionState() {
-		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class FilteredListPropertySingleSelectListState<E> extends org.lgna.croquet.RefreshableDataSingleSelectListState<E> {
+	public FilteredListPropertySingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, org.alice.ide.ast.data.FilteredListPropertyData<E> data, int selectionIndex ) {
+		super( group, id, data, selectionIndex );
+		//this.updateData();
 	}
 }

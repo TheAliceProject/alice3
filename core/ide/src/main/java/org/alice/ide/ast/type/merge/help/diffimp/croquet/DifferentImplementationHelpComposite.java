@@ -56,7 +56,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		}
 	};
 
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, this.localizationCustomizer, null );
+	private final org.lgna.croquet.SingleSelectListState<DifferentImplementationChoice> choiceState = this.createSingleSelectListStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, this.localizationCustomizer, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
 
@@ -106,7 +106,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		return this.selectOneHeader;
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getChoiceState() {
+	public org.lgna.croquet.SingleSelectListState<DifferentImplementationChoice> getChoiceState() {
 		return this.choiceState;
 	}
 

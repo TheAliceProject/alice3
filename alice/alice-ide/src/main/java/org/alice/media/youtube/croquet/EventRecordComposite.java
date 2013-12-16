@@ -50,7 +50,7 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
@@ -250,7 +250,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		return false;
 	}
 
-	public ListSelectionState<EventScriptEvent> getEventList() {
+	public SingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 

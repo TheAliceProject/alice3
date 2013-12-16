@@ -46,8 +46,8 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.FaceTabView> {
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createListSelectionStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createSingleSelectListStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createSingleSelectListStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
 
 	public FaceTabComposite() {
 		super( java.util.UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
@@ -63,11 +63,11 @@ public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<
 		return new org.alice.stageide.personresource.views.FaceTabView( this );
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
 		return this.baseEyeColorState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
 		return this.baseFaceState;
 	}
 

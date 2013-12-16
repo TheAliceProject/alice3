@@ -46,9 +46,9 @@ package org.alice.ide.uricontent;
  * @author Dennis Cosgrove
  */
 public class BlankSlateProjectLoader extends UriProjectLoader {
-	private final org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template;
+	private final org.alice.stageide.openprojectpane.models.TemplateUriState.Template template;
 
-	public BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template ) {
+	public BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template template ) {
 		this.template = template;
 	}
 

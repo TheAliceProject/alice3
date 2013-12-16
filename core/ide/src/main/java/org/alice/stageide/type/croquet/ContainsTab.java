@@ -48,7 +48,7 @@ package org.alice.stageide.type.croquet;
 public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
 	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
 	private final org.alice.stageide.type.croquet.data.MemberListData memberListData = new org.alice.stageide.type.croquet.data.MemberListData( this.filterState );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> memberListState = this.createListSelectionState( this.createKey( "memberListState" ), this.memberListData, -1 );
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> memberListState = this.createSingleSelectListState( this.createKey( "memberListState" ), this.memberListData, -1 );
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Member> e ) {
@@ -74,7 +74,7 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 		return this.memberListData;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Member> getMemberListState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> getMemberListState() {
 		return this.memberListState;
 	}
 

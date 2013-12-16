@@ -56,8 +56,8 @@ public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 
 	private PreferencesMenuModel() {
 		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
+				org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getMenuModel(),
+				org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().getMenuModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
 				//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),

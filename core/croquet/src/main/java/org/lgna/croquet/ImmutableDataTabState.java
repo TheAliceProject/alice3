@@ -45,13 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableDataListSelectionState<T> extends ListSelectionState<T> {
-	public ImmutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
+public class ImmutableDataTabState<T extends TabComposite<?>> extends TabState<T> {
+	public ImmutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
 		super( group, migrationId, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ), selectionIndex );
-	}
-
-	@Override
-	public org.lgna.croquet.data.ImmutableListData<T> getData() {
-		return (org.lgna.croquet.data.ImmutableListData<T>)super.getData();
 	}
 }

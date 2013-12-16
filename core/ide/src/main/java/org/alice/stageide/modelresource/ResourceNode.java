@@ -140,7 +140,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		}
 	}
 
-	protected abstract ResourceNodeTreeSelectionState getState();
+	protected abstract ResourceNodeTreeState getState();
 
 	private static boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = false;
 

@@ -63,7 +63,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	private org.lgna.project.ast.UserField selectedField;
 
-	private final SceneFieldListSelectionState sceneFieldListSelectionState = new SceneFieldListSelectionState();
+	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {

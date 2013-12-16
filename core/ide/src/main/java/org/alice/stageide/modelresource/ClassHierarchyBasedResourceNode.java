@@ -51,7 +51,7 @@ public final class ClassHierarchyBasedResourceNode extends ResourceNode {
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
-		return ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
+	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
+		return ClassHierarchyBasedResourceNodeTreeState.getInstance();
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,58 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-
-public class LocalDeclarationPane extends TypedDeclarationPane {
-	private org.lgna.project.ast.UserLocal userLocal;
-	private org.lgna.croquet.views.Label finalLabel = new org.lgna.croquet.views.Label();
-
-	public LocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal, org.lgna.croquet.views.AwtComponentView<?> component ) {
-		this.userLocal = userLocal;
-		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
-			this.addComponent( finalLabel );
-		}
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
-		this.addComponent( component );
+public abstract class MutableDataSingleSelectListState<T> extends SingleSelectListState<T> {
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
 	}
 
-	private void updateFinalLabel() {
-		String text;
-		if( userLocal.isFinal.getValue() ) {
-			if( userLocal.getParent() instanceof org.lgna.project.ast.EachInStatement ) {
-				text = "";
-			} else {
-				text = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getFinalText() + " ";
-			}
-		} else {
-			text = "";
-		}
-		this.finalLabel.setText( text );
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
+		this( group, migrationId, itemCodec, -1 );
 	}
 
-	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		}
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
+	}
 
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			updateFinalLabel();
-		}
-	};
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.updateFinalLabel();
-		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 
 	@Override
-	protected void handleUndisplayable() {
-		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
-		super.handleUndisplayable();
+	public org.lgna.croquet.data.MutableListData<T> getData() {
+		return (org.lgna.croquet.data.MutableListData<T>)super.getData();
 	}
 }

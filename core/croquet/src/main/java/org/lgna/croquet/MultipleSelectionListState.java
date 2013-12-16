@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MultipleSelectionState<T> extends /*todo*/AbstractCompletionModel {
+public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractCompletionModel {
 	private static class DataListModel<T> extends javax.swing.AbstractListModel {
 		private final org.lgna.croquet.data.ListData<T> data;
 
@@ -102,7 +102,7 @@ public abstract class MultipleSelectionState<T> extends /*todo*/AbstractCompleti
 		}
 	};
 
-	public MultipleSelectionState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
+	public MultipleSelectionListState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
 		super( group, migrationId );
 		this.swingModel = new SwingModel<T>( data );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );

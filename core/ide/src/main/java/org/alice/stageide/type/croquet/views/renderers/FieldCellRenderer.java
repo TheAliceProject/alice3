@@ -61,9 +61,9 @@ public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.
 		}
 	};
 
-	private final org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState;
+	private final org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.type.croquet.TypeNode> typeState;
 
-	public FieldCellRenderer( org.lgna.croquet.TreeSelectionState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
+	public FieldCellRenderer( org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
 		this.typeState = typeState;
 	}
 

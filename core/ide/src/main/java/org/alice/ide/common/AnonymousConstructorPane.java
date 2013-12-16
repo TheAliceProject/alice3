@@ -74,7 +74,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	public AnonymousConstructorPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
 		super( null );
 		this.anonymousConstructor = anonymousConstructor;
-		boolean isJava = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
+		boolean isJava = org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava();
 		if( isJava ) {
 			org.lgna.croquet.views.LineAxisPanel header = new org.lgna.croquet.views.LineAxisPanel(
 					new org.lgna.croquet.views.Label( "new " ),

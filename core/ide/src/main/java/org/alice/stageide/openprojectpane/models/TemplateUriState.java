@@ -46,7 +46,7 @@ package org.alice.stageide.openprojectpane.models;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataListSelectionState<java.net.URI> {
+public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelectListState<java.net.URI> {
 	public static final String SCHEME = "gen";
 
 	public static enum Template {
@@ -202,14 +202,14 @@ public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataLis
 	}
 
 	private static class SingletonHolder {
-		private static TemplateUriSelectionState instance = new TemplateUriSelectionState();
+		private static TemplateUriState instance = new TemplateUriState();
 	}
 
-	public static TemplateUriSelectionState getInstance() {
+	public static TemplateUriState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private TemplateUriSelectionState() {
+	private TemplateUriState() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, createArray(), -1 );
 	}
 }

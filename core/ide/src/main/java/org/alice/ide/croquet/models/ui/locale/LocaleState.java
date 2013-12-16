@@ -40,37 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.ui.locale;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultTreeSelectionState<T> extends TreeSelectionState<T> {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel;
+public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableDataSingleSelectListState<java.util.Locale> {
+	private static class SingletonHolder {
+		private static LocaleState instance = new LocaleState();
+	}
 
-	public DefaultTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel ) {
-		super( group, id, initialSelection, itemCodec );
-		this.treeModel = treeModel;
+	public static LocaleState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private LocaleState() {
+		super(
+				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
+				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
+				0,
+				new java.util.Locale( "en", "US" ),
+				new java.util.Locale( "pt" ),
+				new java.util.Locale( "pt", "BR" ),
+				new java.util.Locale( "es" ),
+				new java.util.Locale( "fr" ),
+				new java.util.Locale( "fr", "BE" ),
+				new java.util.Locale( "it" ),
+				new java.util.Locale( "nl" ),
+				new java.util.Locale( "de" ),
+				new java.util.Locale( "el" ),
+				new java.util.Locale( "ro" ),
+				new java.util.Locale( "cs" ),
+				new java.util.Locale( "sl" ),
+				new java.util.Locale( "lt" ),
+				new java.util.Locale( "ru" ),
+				new java.util.Locale( "uk" ),
+				new java.util.Locale( "tr" ),
+				new java.util.Locale( "ar" ),
+				new java.util.Locale( "iw" ),
+				new java.util.Locale( "in" ),
+				new java.util.Locale( "zh", "CN" ),
+				new java.util.Locale( "zh", "TW" ),
+				new java.util.Locale( "ko" ) );
+		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
+				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
+			}
+		} );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
-		return this.treeModel;
-	}
-
-	@Override
-	protected String getTextForNode( T node ) {
-		return node.toString();
-	}
-
-	@Override
-	protected javax.swing.Icon getIconForNode( T node ) {
-		return null;
-	}
-
-	@Override
-	public void refresh( T node ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+	protected String getMenuText( java.util.Locale item ) {
+		if( item != null ) {
+			return item.getDisplayName( item ) + " / " + item.getDisplayName();
+		} else {
+			return super.getMenuText( item );
+		}
 	}
 }

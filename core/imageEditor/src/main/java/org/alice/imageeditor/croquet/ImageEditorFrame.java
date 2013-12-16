@@ -132,7 +132,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( this.createKey( "showInScreenResolutionState" ), true );
 	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( this.createKey( "dropShadowState" ), true );
 
-	private final org.lgna.croquet.ListSelectionState<Tool> toolState = this.createListSelectionStateForEnum( this.createKey( "toolState" ), Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
+	private final org.lgna.croquet.SingleSelectListState<Tool> toolState = this.createSingleSelectListStateForEnum( this.createKey( "toolState" ), Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
 		public String customize( String localization, Tool value ) {
 			if( value == Tool.ADD_RECTANGLE ) {
 				return localization + " (F11)";
@@ -259,7 +259,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.cropCommitHolder;
 	}
 
-	public org.lgna.croquet.ListSelectionState<Tool> getToolState() {
+	public org.lgna.croquet.SingleSelectListState<Tool> getToolState() {
 		return this.toolState;
 	}
 

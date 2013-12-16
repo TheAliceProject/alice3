@@ -51,7 +51,7 @@ import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.DeclarationSeachTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.ExpressionSearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
-import org.lgna.croquet.CustomTreeSelectionState;
+import org.lgna.croquet.CustomSingleSelectTreeState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -62,7 +62,7 @@ import org.lgna.project.ast.UserMethod;
 /**
  * @author Matt May
  */
-public class FindReferencesTreeState extends CustomTreeSelectionState<SearchTreeNode> {
+public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchTreeNode> {
 
 	private final static SearchTreeNode root = new SearchTreeNode( null );
 	private final static ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );

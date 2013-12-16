@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+public abstract class SingleSelectListState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
 	private class DataIndexPair implements javax.swing.ComboBoxModel {
 		private final org.lgna.croquet.data.ListData<T> data;
 		private int index;
@@ -85,7 +85,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		public void setSelectedItem( Object item ) {
 			int index = this.data.indexOf( (T)item );
-			ListSelectionState.this.swingModel.setSelectionIndex( index );
+			SingleSelectListState.this.swingModel.setSelectionIndex( index );
 		}
 	}
 
@@ -97,11 +97,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 				int index = swingModel.getSelectionIndex();
 				T nextValue;
 				if( index != -1 ) {
-					nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
+					nextValue = (T)SingleSelectListState.this.swingModel.comboBoxModel.getElementAt( index );
 				} else {
 					nextValue = null;
 				}
-				ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 			}
 		}
 	};
@@ -182,13 +182,13 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		@Override
 		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
-			return ListSelectionState.this.getClassUsedForLocalization();
+			return SingleSelectListState.this.getClassUsedForLocalization();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			StringBuilder sb = new StringBuilder();
-			String subKey = ListSelectionState.this.getSubKeyForLocalization();
+			String subKey = SingleSelectListState.this.getSubKeyForLocalization();
 			if( subKey != null ) {
 				sb.append( subKey );
 				sb.append( "." );
@@ -200,7 +200,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
 
-	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+	public SingleSelectListState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
 		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
@@ -543,8 +543,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
-	public static final class InternalMenuModelResolver<T> extends IndirectResolver<MenuModel, ListSelectionState<T>> {
-		private InternalMenuModelResolver( ListSelectionState<T> indirect ) {
+	public static final class InternalMenuModelResolver<T> extends IndirectResolver<MenuModel, SingleSelectListState<T>> {
+		private InternalMenuModelResolver( SingleSelectListState<T> indirect ) {
 			super( indirect );
 		}
 
@@ -553,20 +553,20 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected MenuModel getDirect( ListSelectionState<T> indirect ) {
+		protected MenuModel getDirect( SingleSelectListState<T> indirect ) {
 			return indirect.getMenuModel();
 		}
 	}
 
 	private static final class InternalMenuModel<T> extends MenuModel {
-		private ListSelectionState<T> listSelectionState;
+		private SingleSelectListState<T> listSelectionState;
 
-		public InternalMenuModel( ListSelectionState<T> listSelectionState ) {
+		public InternalMenuModel( SingleSelectListState<T> listSelectionState ) {
 			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
 			this.listSelectionState = listSelectionState;
 		}
 
-		public ListSelectionState<T> getListSelectionState() {
+		public SingleSelectListState<T> getListSelectionState() {
 			return this.listSelectionState;
 		}
 
@@ -619,8 +619,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return this.menuModel;
 	}
 
-	public static final class InternalPrepModelResolver<T> extends IndirectResolver<InternalPrepModel<T>, ListSelectionState<T>> {
-		private InternalPrepModelResolver( ListSelectionState<T> indirect ) {
+	public static final class InternalPrepModelResolver<T> extends IndirectResolver<InternalPrepModel<T>, SingleSelectListState<T>> {
+		private InternalPrepModelResolver( SingleSelectListState<T> indirect ) {
 			super( indirect );
 		}
 
@@ -629,15 +629,15 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected InternalPrepModel<T> getDirect( ListSelectionState<T> indirect ) {
+		protected InternalPrepModel<T> getDirect( SingleSelectListState<T> indirect ) {
 			return indirect.getPrepModel();
 		}
 	}
 
 	public static final class InternalPrepModel<T> extends AbstractPrepModel {
-		private final ListSelectionState<T> listSelectionState;
+		private final SingleSelectListState<T> listSelectionState;
 
-		private InternalPrepModel( ListSelectionState<T> listSelectionState ) {
+		private InternalPrepModel( SingleSelectListState<T> listSelectionState ) {
 			super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 			assert listSelectionState != null;
 			this.listSelectionState = listSelectionState;
@@ -657,7 +657,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			throw new RuntimeException();
 		}
 
-		public ListSelectionState<T> getListSelectionState() {
+		public SingleSelectListState<T> getListSelectionState() {
 			return this.listSelectionState;
 		}
 

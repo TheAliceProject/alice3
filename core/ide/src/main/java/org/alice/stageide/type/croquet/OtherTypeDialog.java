@@ -60,11 +60,11 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
 	};
 	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
-	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+	private final org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
 
 	private final AssignableTab assignableTab = new AssignableTab( this );
 	private final ContainsTab containsTab = new ContainsTab( this );
-	private final org.lgna.croquet.TabSelectionState tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
+	private final org.lgna.croquet.TabState tabState = this.createTabState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 
@@ -108,15 +108,15 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return 600;
 	}
 
-	public org.lgna.croquet.TabSelectionState getTabState() {
+	public org.lgna.croquet.TabState getTabState() {
 		return this.tabState;
 	}
 
-	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+	public org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> getSceneFieldsState() {
 		return this.sceneFieldsState;
 	}
 
-	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+	public org.lgna.croquet.SingleSelectTreeState<TypeNode> getTypeTreeState() {
 		return this.typeTreeState;
 	}
 

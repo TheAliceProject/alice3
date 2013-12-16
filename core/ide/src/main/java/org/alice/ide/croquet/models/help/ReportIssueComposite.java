@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 import java.awt.Color;
 
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueListener;
 
@@ -53,13 +53,13 @@ import org.lgna.croquet.event.ValueListener;
  * @author Matt May
  */
 public abstract class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
-	private final ListSelectionState<BugSubmitVisibility> visibilityState = createListSelectionStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
 
 	private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
-	private final ListSelectionState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
+	private final SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
 	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
-	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
+	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
 
@@ -73,7 +73,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
+		this.reportTypeState = createSingleSelectListStateForEnum( createKey( "reportTypeState" ), edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
 		this.registerSubComposite( logInOutComposite );
 		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 	}
@@ -88,7 +88,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		return this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC );
 	}
 
-	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
+	public SingleSelectListState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
 
@@ -97,7 +97,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		return this.reportTypeState.getValue();
 	}
 
-	public ListSelectionState<edu.cmu.cs.dennisc.issue.IssueType> getReportTypeState() {
+	public SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> getReportTypeState() {
 		return this.reportTypeState;
 	}
 
@@ -119,7 +119,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		return this.descriptionState;
 	}
 
-	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
+	public SingleSelectListState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
 

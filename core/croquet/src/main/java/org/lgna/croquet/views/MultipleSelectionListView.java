@@ -45,8 +45,8 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionState<T>> {
-	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionState<T> state ) {
+public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionListState<T>> {
+	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionListState<T> state ) {
 		super( state );
 	}
 
@@ -60,7 +60,7 @@ public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewCon
 
 	@Override
 	protected javax.swing.JList createAwtComponent() {
-		org.lgna.croquet.MultipleSelectionState.SwingModel swingModel = this.getModel().getSwingModel();
+		org.lgna.croquet.MultipleSelectionListState.SwingModel swingModel = this.getModel().getSwingModel();
 		javax.swing.JList rv = new javax.swing.JList( swingModel.getListModel() );
 		rv.setSelectionModel( swingModel.getListSelectionModel() );
 		return rv;

@@ -50,7 +50,7 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueListener;
@@ -227,7 +227,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return this.isRecordingState;
 	}
 
-	public ListSelectionState<EventScriptEvent> getEventList() {
+	public SingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 
