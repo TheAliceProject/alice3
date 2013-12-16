@@ -71,6 +71,7 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", org.lgna.ik.poser.pose.Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
+	ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 
 	public AbstractAnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
 		super( valueType, uuid );
@@ -100,7 +101,6 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 		} else {
 			this.validator = new MethodNameValidator( getDeclaringType() );
 		}
-		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 		String candidate = getControlComposite().getNameState().getValue();
 		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
 		if( explanation != null ) {

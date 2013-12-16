@@ -62,6 +62,7 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 
 	private FieldNameValidator validator;
 	private ErrorStatus emptyPoseStatus = createErrorStatus( createKey( "noPose" ) );
+	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 
 	public AbstractPoserInputDialogComposite( NamedUserType valueType, UUID uuid ) {
 		super( valueType, uuid );
@@ -92,7 +93,6 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 		String candidate = getControlComposite().getNameState().getValue();
 		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
 		if( explanation != null ) {
-			ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 			errorStatus.setText( explanation );
 			return errorStatus;
 		} else {
