@@ -55,7 +55,7 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
 	private final ImportTab importTab = new ImportTab();
-	private final org.lgna.croquet.TabState<GalleryTab> tabState = this.createTabState( this.createKey( "tabState" ), GalleryTab.class, 0,
+	private final org.lgna.croquet.TabState<GalleryTab> tabState = this.createTabState( "tabState", GalleryTab.class, 0,
 			org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType.getValue()
 					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab }
 					: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab }

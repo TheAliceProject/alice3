@@ -208,7 +208,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( completionStep, sceneEditor, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
 	}
 
-	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( Key key, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
+	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( String keyText, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
 		java.lang.reflect.Method mthd;
 		if( variableLengthCls != null ) {
 			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
@@ -219,7 +219,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		org.alice.ide.ast.ExpressionCreator expressionCreator = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
 		try {
 			org.lgna.project.ast.Expression expression = expressionCreator.createExpression( initialValue );
-			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> rv = this.createCustomItemState( key, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), expression, new InitialPropertyValueExpressionCustomizer( method ) );
+			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> rv = this.createCustomItemState( keyText, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), expression, new InitialPropertyValueExpressionCustomizer( method ) );
 			this.initialPropertyValuesToolPaletteCoreComposite.addInitialPropertyValueExpressionState( rv );
 			return rv;
 		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {

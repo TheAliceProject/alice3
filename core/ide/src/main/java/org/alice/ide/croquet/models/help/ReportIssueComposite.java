@@ -53,13 +53,13 @@ import org.lgna.croquet.event.ValueListener;
  * @author Matt May
  */
 public abstract class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
-	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
 
 	private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
 	private final SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
-	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
-	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
-	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
+	private final StringState summaryState = createStringState( "summaryState" );
+	private final StringState descriptionState = createStringState( "descriptionState" );
+	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
 
@@ -73,7 +73,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createSingleSelectListStateForEnum( createKey( "reportTypeState" ), edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
+		this.reportTypeState = createSingleSelectListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
 		this.registerSubComposite( logInOutComposite );
 		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 	}

@@ -46,11 +46,11 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView> {
-	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( this.createKey( "isGridShowingState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
-	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( this.createKey( "isRotationState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
-	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( this.createKey( "isSnapToGroundEnabledState" ), true );
+	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( "isGridShowingState", true );
+	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( "gridSpacingState", new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
+	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( "isRotationState", true );
+	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( "angleState", new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
+	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( "isSnapToGroundEnabledState", true );
 
 	public SnapDetailsToolPaletteCoreComposite() {
 		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );

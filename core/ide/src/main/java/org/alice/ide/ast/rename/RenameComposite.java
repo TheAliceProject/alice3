@@ -47,8 +47,8 @@ package org.alice.ide.ast.rename;
  */
 public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( "nameState" );
+	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
 	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );

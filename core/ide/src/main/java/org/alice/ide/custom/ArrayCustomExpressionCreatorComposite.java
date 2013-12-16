@@ -63,12 +63,12 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		}
 	}
 
-	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) );
+	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( "arrayTypeLabel" );
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
 
 	private final org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data = new org.lgna.croquet.data.MutableListData<Expression>( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
 
-	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
+	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( "addItemCascade", org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );

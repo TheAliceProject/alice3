@@ -64,9 +64,9 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 	private final AssignableTab assignableTab = new AssignableTab( this );
 	private final ContainsTab containsTab = new ContainsTab( this );
-	private final org.lgna.croquet.TabState tabState = this.createTabState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
+	private final org.lgna.croquet.TabState tabState = this.createTabState( "tabState", 0, this.assignableTab, this.containsTab );
 
-	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
 
 	private boolean isInTheMidstOfLowestCommonAncestorSetting;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {

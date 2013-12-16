@@ -54,8 +54,8 @@ public final class AddConeManagedFieldComposite extends AddModelManagedFieldComp
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> baseRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "baseRadiusState" ), 0.5, org.lgna.story.SCone.class, "setBaseRadius", Number.class, org.lgna.story.SetBaseRadius.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( this.createKey( "lengthState" ), 1.0, org.lgna.story.SCone.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> baseRadiusState = this.createInitialPropertyValueExpressionState( "baseRadiusState", 0.5, org.lgna.story.SCone.class, "setBaseRadius", Number.class, org.lgna.story.SetBaseRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, org.lgna.story.SCone.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
 
 	private AddConeManagedFieldComposite() {
 		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ), org.lgna.story.SCone.class );

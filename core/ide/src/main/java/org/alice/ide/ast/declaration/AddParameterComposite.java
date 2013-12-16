@@ -56,8 +56,8 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 		} );
 	}
 
-	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( this.createKey( "isRequirementToUpdateInvocationsUnderstoodState" ), false );
-	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( this.createKey( "hasNotAgreedToUpdateInvocationsStatus" ) );
+	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( "isRequirementToUpdateInvocationsUnderstoodState", false );
+	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( "hasNotAgreedToUpdateInvocationsStatus" );
 	private final org.lgna.project.ast.UserCode code;
 	//todo: remove
 	private final org.alice.ide.name.validators.ParameterNameValidator parameterNameValidator;

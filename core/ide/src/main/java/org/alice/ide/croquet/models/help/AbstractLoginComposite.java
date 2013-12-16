@@ -63,22 +63,22 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
 
-	private final BooleanState isRememberingState = this.createPreferenceBooleanState( this.createKey( "isRememberingState" ), false );
-	protected final PreferenceStringState userNameState = this.createPreferenceStringState( createKey( "userNameState" ), "", this.isRememberingState );
-	protected final PreferenceStringState passwordState = this.createPreferenceStringState( createKey( "passwordState" ), "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
-	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
-	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
+	private final BooleanState isRememberingState = this.createPreferenceBooleanState( "isRememberingState", false );
+	protected final PreferenceStringState userNameState = this.createPreferenceStringState( "userNameState", "", this.isRememberingState );
+	protected final PreferenceStringState passwordState = this.createPreferenceStringState( "passwordState", "", this.isRememberingState, java.util.UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
+	protected final BooleanState displayPasswordValue = createBooleanState( "displayPasswordState", false );
+	protected final BooleanState isLoggedIn = createBooleanState( "isLoggedIn", false );
 	private Status status;
-	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
-	protected Status connectionFailedStatus = createWarningStatus( createKey( "warningConnectionFailed" ) );
-	private final BooleanState connectionFailed = this.createBooleanState( createKey( "doNotLocalize" ), false );
+	protected Status loginFailedStatus = createWarningStatus( "warningLoginFailed" );
+	protected Status connectionFailedStatus = createWarningStatus( "warningConnectionFailed" );
+	private final BooleanState connectionFailed = this.createBooleanState( "doNotLocalize", false );
 	private final List<LogInOutListener> listeners = Collections.newCopyOnWriteArrayList();
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
 	}
 
-	private final ActionOperation logOutOperation = createActionOperation( createKey( "logOutOperation" ), new Action() {
+	private final ActionOperation logOutOperation = createActionOperation( "logOutOperation", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			internalLogout();

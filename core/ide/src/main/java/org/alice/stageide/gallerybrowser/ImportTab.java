@@ -46,10 +46,10 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ImportTabView> {
-	private final org.lgna.croquet.PlainStringValue notDirectoryText = this.createStringValue( this.createKey( "notDirectoryText" ) );
-	private final org.lgna.croquet.PlainStringValue noFilesText = this.createStringValue( this.createKey( "noFilesText" ) );
-	private final org.lgna.croquet.StringState directoryState = this.createStringState( this.createKey( "directoryState" ) );
-	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
+	private final org.lgna.croquet.PlainStringValue notDirectoryText = this.createStringValue( "notDirectoryText" );
+	private final org.lgna.croquet.PlainStringValue noFilesText = this.createStringValue( "noFilesText" );
+	private final org.lgna.croquet.StringState directoryState = this.createStringState( "directoryState" );
+	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
@@ -70,7 +70,7 @@ public final class ImportTab extends GalleryTab<org.alice.stageide.gallerybrowse
 			return null;
 		}
 	} );
-	private final org.lgna.croquet.Operation restoreToDefaultOperation = this.createActionOperation( this.createKey( "restoreToDefaultOperation" ), new Action() {
+	private final org.lgna.croquet.Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			restoreToDefault();
 			return null;

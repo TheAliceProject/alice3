@@ -46,8 +46,8 @@ package org.alice.imageeditor.croquet;
  * @author Dennis Cosgrove
  */
 public class SaveOverComposite extends org.lgna.croquet.YesNoConfirmDialogComposite<org.lgna.croquet.views.Panel> {
-	private final org.lgna.croquet.PlainStringValue prevHeader = this.createStringValue( this.createKey( "prevHeader" ) );
-	private final org.lgna.croquet.PlainStringValue nextHeader = this.createStringValue( this.createKey( "nextHeader" ) );
+	private final org.lgna.croquet.PlainStringValue prevHeader = this.createStringValue( "prevHeader" );
+	private final org.lgna.croquet.PlainStringValue nextHeader = this.createStringValue( "nextHeader" );
 	private final SaveOperation owner;
 
 	public SaveOverComposite( SaveOperation owner ) {

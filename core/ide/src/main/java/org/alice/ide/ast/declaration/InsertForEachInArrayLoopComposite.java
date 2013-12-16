@@ -70,5 +70,5 @@ public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayCo
 				new org.lgna.project.ast.BlockStatement() );
 	}
 
-	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) );
+	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( "EPIC_HACK_externalErrorStatus" );
 }

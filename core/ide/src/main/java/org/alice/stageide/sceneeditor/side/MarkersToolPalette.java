@@ -85,7 +85,7 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 
 	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId, false );
-		this.markerListState = this.createSingleSelectListState( this.createKey( "markerListState" ), markerFieldData, -1 );
+		this.markerListState = this.createSingleSelectListState( "markerListState", markerFieldData, -1 );
 		org.alice.stageide.project.SceneTypeMetaState.getInstance().addAndInvokeValueListener( this.sceneTypeListener );
 	}
 

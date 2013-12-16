@@ -47,7 +47,7 @@ package org.alice.ide.custom;
  * @author Dennis Cosgrove
  */
 public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V, org.lgna.project.ast.Expression> {
-	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( this.createKey( "valueLabel" ) );
+	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( "valueLabel" );
 
 	public CustomExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );

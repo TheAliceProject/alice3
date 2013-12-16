@@ -84,17 +84,17 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "294cb10a-ad2f-42cf-8159-ac859c7fe792" ), new YouTubeLoginComposite( this ) );
 
-	private final StringState titleState = this.createStringState( this.createKey( "titleState" ), "Alice Video" );
-	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivateState" ), false );
+	private final StringState titleState = this.createStringState( "titleState", "Alice Video" );
+	private final BooleanState isPrivateState = this.createBooleanState( "isPrivateState", false );
 	//	private final ListSelectionState<String> videoCategoryState;
-	private final StringState descriptionState = this.createStringState( this.createKey( "descriptionState" ), "" );
-	private final StringState tagsState = this.createStringState( this.createKey( "tagsState" ), "Alice3" );
+	private final StringState descriptionState = this.createStringState( "descriptionState", "" );
+	private final StringState tagsState = this.createStringState( "tagsState", "Alice3" );
 
-	private final Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
-	private final Status errorCannotConnect = createErrorStatus( this.createKey( "errorCannotConnect" ) );
-	private final Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
-	private final Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
-	private final Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
+	private final Status errorNotLoggedIn = createErrorStatus( "errorNotLoggedIn" );
+	private final Status errorCannotConnect = createErrorStatus( "errorCannotConnect" );
+	private final Status noTittle = createErrorStatus( "errorNoTittle" );
+	private final Status noDescriptions = createWarningStatus( "warningNoDescriptions" );
+	private final Status noTags = createWarningStatus( "warningNoTags" );
 
 	private final org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
 	private boolean isUploaded = false;
@@ -103,14 +103,14 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ), owner );
 		//		uploader.addYouTubeListener( this.getUploadOperation() );
-		//		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
+		//		this.videoCategoryState = this.createListSelectionState( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
 		this.registerSubComposite( this.videoComposite );
 		this.registerSubComposite( logInOutComposite );
 		logInOutComposite.addListener( this.logInOutListener );
 		//		videoCategoryState.setEnabled( categoriesEnabled );
 	}
 
-	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
+	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
 			File videosDirectory = org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
