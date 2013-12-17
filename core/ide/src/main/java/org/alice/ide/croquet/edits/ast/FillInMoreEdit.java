@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
+public class FillInMoreEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
 	private org.lgna.project.ast.Expression argumentExpression;
 
 	public FillInMoreEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression argumentExpression ) {

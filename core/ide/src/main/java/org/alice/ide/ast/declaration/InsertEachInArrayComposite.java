@@ -51,7 +51,7 @@ public abstract class InsertEachInArrayComposite<S extends org.lgna.project.ast.
 	}
 
 	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
 		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
 		org.lgna.project.ast.EachInArrayStatement eachInArrayStatement = (org.lgna.project.ast.EachInArrayStatement)statement;

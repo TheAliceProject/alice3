@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
 	public DependentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		super( completionStep );
 	}
@@ -91,12 +91,12 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate );
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

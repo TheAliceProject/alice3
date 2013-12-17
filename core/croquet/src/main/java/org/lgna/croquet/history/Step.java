@@ -172,7 +172,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		return this.getModel();
 	}
 
-	public String getTutorialNoteText( org.lgna.croquet.edits.Edit<?> edit ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
 			String triggerText;

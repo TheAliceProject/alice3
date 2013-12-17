@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit {
+public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private org.lgna.project.ast.ArgumentOwner argumentOwner;
 	private org.lgna.project.ast.JavaKeyedArgument keyedArgument;
 
@@ -77,7 +77,7 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	protected void postCopy( org.lgna.croquet.edits.Edit result ) {
+	protected void postCopy( org.lgna.croquet.edits.AbstractEdit result ) {
 		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
 		super.postCopy( result );
 	}
@@ -113,7 +113,7 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
 		retargeter.addKeyValuePair( this.argumentOwner, replacementEdit.argumentOwner );

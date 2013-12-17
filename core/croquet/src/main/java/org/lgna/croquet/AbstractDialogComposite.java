@@ -170,9 +170,9 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 		return true;
 	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 }

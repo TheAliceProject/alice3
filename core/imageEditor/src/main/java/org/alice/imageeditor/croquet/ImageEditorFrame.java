@@ -53,7 +53,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( "rootDirectoryState", DEFAULT_ROOT_DIRECTORY_PATH, null );
 
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			String rootDirectoryPath = rootDirectoryState.getValue();
 			javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
 			if( ( rootDirectoryPath != null ) && ( rootDirectoryPath.length() > 0 ) ) {
@@ -95,7 +95,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final SaveOperation saveOperation = new SaveOperation( this );
 
 	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			clearShapes();
 			//todo
 			getView().repaint();
@@ -104,21 +104,21 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	} );
 
 	private final org.lgna.croquet.Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			crop();
 			return null;
 		}
 	} );
 
 	private final org.lgna.croquet.Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			uncrop();
 			return null;
 		}
 	} );
 
 	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			if( isGoodToGoCroppingIfNecessary() ) {
 				copyImageToClipboard( getView().render() );
 				return null;

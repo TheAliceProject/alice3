@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
+public class AddExpressionEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
 	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
 	private final org.lgna.project.ast.Expression expression;
 	private transient int index;

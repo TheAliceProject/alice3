@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
+public abstract class DeclareFieldEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final org.lgna.project.ast.UserField field;
 

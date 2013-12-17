@@ -156,7 +156,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;

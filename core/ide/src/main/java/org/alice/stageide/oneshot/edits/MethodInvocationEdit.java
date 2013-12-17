@@ -45,7 +45,7 @@ package org.alice.stageide.oneshot.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Edit {
+public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;

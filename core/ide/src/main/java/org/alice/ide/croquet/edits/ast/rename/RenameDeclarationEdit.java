@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameDeclarationEdit extends org.lgna.croquet.edits.Edit {
+public class RenameDeclarationEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.AbstractDeclaration declaration;
 	private final String prevValue;
 	private final String nextValue;

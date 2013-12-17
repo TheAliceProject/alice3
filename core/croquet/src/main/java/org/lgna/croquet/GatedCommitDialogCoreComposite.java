@@ -186,11 +186,11 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		completionStep.cancel();
 	}
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
-		org.lgna.croquet.edits.Edit<?> commitEdit = null;
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException {
+		org.lgna.croquet.edits.AbstractEdit<?> commitEdit = null;
 		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit, null );
 	}
 
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> edit ) throws UnsupportedGenerationException {
 	}
 }

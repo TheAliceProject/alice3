@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
 	private org.lgna.project.ast.Statement statement;
 
 	public StatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.Statement statement ) {
@@ -69,7 +69,7 @@ public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> 
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		StatementEdit replacementEdit = (StatementEdit)edit;
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 	}

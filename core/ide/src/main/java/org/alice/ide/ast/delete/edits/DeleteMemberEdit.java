@@ -46,7 +46,7 @@ package org.alice.ide.ast.delete.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation> {
+public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation> {
 	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final int index;
 	private final M member;

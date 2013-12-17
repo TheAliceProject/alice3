@@ -46,7 +46,7 @@ package org.alice.ide.properties.adapter.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyValueEdit<P> extends org.lgna.croquet.edits.Edit {
+public class PropertyValueEdit<P> extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.alice.ide.properties.adapter.AbstractPropertyAdapter<P, ?> propertyAdapter;
 	private final P nextValue;
 	private P originalValue;

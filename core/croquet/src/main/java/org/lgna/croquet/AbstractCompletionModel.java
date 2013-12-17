@@ -131,7 +131,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeIfNecessary();
-		org.lgna.croquet.edits.Edit<?> edit = step.getEdit();
+		org.lgna.croquet.edits.AbstractEdit<?> edit = step.getEdit();
 		if( edit != null ) {
 			return edit.getTutorialTransactionTitle();
 		} else {
@@ -140,16 +140,16 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 	}
 
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit, step );
+	protected org.lgna.croquet.edits.AbstractEdit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.croquet.edits.AbstractEdit<?> replacementEdit = org.lgna.croquet.edits.AbstractEdit.createCopy( originalEdit, step );
 		replacementEdit.retarget( retargeter );
 		return replacementEdit;
 	}
 
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
+	public org.lgna.croquet.edits.AbstractEdit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( completionStep, originalEdit, retargeter );
+		org.lgna.croquet.edits.AbstractEdit<?> replacementEdit = this.createTutorialCompletionEdit( completionStep, originalEdit, retargeter );
 		completionStep.commitAndInvokeDo( replacementEdit );
 
 		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
@@ -157,7 +157,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return replacementEdit;
 	}
 
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
+	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit );
 
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
@@ -170,19 +170,19 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return false;
 	}
 
-	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException {
 	}
 
-	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
-	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
-	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit, AddGeneratedTransactionObserver observer ) throws UnsupportedGenerationException {
+	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.AbstractEdit<?> edit, AddGeneratedTransactionObserver observer ) throws UnsupportedGenerationException {
 		this.pushGeneratedContexts( edit );
 		try {
 			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( ownerTransactionHistory );

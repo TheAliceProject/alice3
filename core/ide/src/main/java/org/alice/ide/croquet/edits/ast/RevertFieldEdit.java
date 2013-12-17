@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast;
  * @author dculyba
  * 
  */
-public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
+public class RevertFieldEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.Statement redoStateCode;
 

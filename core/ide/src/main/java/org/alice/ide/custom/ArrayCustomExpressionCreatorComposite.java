@@ -74,7 +74,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
 		}
 
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
+		public org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;
 			data.internalAddItem( values[ 0 ] );
 			getView().updatePreview();

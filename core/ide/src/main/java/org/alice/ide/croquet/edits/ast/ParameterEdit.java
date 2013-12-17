@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
+public abstract class ParameterEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.CompletionModel> {
 	private final org.lgna.project.ast.UserCode code;
 	private final org.lgna.project.ast.UserParameter parameter;
 	private transient java.util.Map<org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

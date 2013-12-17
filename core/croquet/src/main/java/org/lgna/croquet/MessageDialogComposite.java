@@ -83,20 +83,20 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		return true;
 	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 
 	public boolean isToolBarTextClobbered( boolean defaultValue ) {
 		return defaultValue;
 	}
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
 	}
 
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
 	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

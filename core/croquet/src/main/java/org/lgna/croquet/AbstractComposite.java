@@ -589,7 +589,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	}
 
 	protected static interface Action {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
 	}
 
 	protected static final class InternalActionOperation extends ActionOperation {
@@ -620,7 +620,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			try {
-				org.lgna.croquet.edits.Edit edit = this.action.perform( step, this );
+				org.lgna.croquet.edits.AbstractEdit edit = this.action.perform( step, this );
 				if( edit != null ) {
 					step.commitAndInvokeDo( edit );
 				} else {
@@ -642,7 +642,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	protected static interface CascadeCustomizer<T> {
 		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
 
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
+		public org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
 	}
 
 	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
@@ -670,7 +670,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
+		protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
 			return this.customizer.createEdit( completionStep, values );
 		}
 

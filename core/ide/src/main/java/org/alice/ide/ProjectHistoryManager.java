@@ -83,7 +83,7 @@ public class ProjectHistoryManager {
 		return rv;
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
+	private void handleEditCommitted( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		assert edit != null;
 		org.lgna.croquet.undo.UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
 		if( projectHistory != null ) {

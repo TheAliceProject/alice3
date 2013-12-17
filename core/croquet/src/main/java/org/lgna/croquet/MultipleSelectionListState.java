@@ -186,7 +186,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		}
 	}
 
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 
@@ -195,12 +195,12 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 	}
 
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return false;
 	}
 
 	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
 	@Override

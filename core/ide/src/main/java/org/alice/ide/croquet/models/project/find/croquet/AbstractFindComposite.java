@@ -60,7 +60,7 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -145,7 +145,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	};
 	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {
 				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
