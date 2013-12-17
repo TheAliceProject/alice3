@@ -48,7 +48,7 @@ package org.lgna.croquet.history;
 public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> extends Step<M> {
 
 	private final TransactionHistory transactionHistory;
-	private org.lgna.croquet.edits.Edit<M> edit;
+	private org.lgna.croquet.edits.AbstractEdit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
 
@@ -127,24 +127,24 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		this.isSuccessfullyCompleted = isSuccessfullyCompleted;
 	}
 
-	public org.lgna.croquet.edits.Edit<?> getEdit() {
+	public org.lgna.croquet.edits.AbstractEdit<?> getEdit() {
 		return this.edit;
 	}
 
-	private void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	private void setEdit( org.lgna.croquet.edits.AbstractEdit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;
 	}
 
-	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.AbstractEdit<M> edit ) {
 		org.lgna.croquet.history.event.TutorialCompletionEvent e = new org.lgna.croquet.history.event.TutorialCompletionEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
 		this.fireChanged( e );
 	}
 
-	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
+	public void commitAndInvokeDo( org.lgna.croquet.edits.AbstractEdit edit ) {
 		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );

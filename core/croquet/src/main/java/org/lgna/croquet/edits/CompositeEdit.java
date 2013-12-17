@@ -45,12 +45,12 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class CompositeEdit extends Edit {
-	private final Edit<?>[] edits;
+public class CompositeEdit extends AbstractEdit {
+	private final AbstractEdit<?>[] edits;
 	private final boolean isDoToBeIgnored;
 	private final String presentation;
 
-	public CompositeEdit( org.lgna.croquet.history.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
+	public CompositeEdit( org.lgna.croquet.history.CompletionStep completionStep, AbstractEdit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
 		super( completionStep );
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;
@@ -59,7 +59,7 @@ public class CompositeEdit extends Edit {
 
 	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
+		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( AbstractEdit.class );
 		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
 		this.presentation = binaryDecoder.decodeString();
 	}
@@ -77,7 +77,7 @@ public class CompositeEdit extends Edit {
 		if( isDo && this.isDoToBeIgnored ) {
 			//pass
 		} else {
-			for( Edit<?> edit : this.edits ) {
+			for( AbstractEdit<?> edit : this.edits ) {
 				edit.doOrRedo( isDo );
 			}
 		}
@@ -93,7 +93,7 @@ public class CompositeEdit extends Edit {
 
 	@Override
 	public boolean canRedo() {
-		for( Edit<?> edit : this.edits ) {
+		for( AbstractEdit<?> edit : this.edits ) {
 			if( edit.canRedo() ) {
 				//pass
 			} else {
@@ -105,7 +105,7 @@ public class CompositeEdit extends Edit {
 
 	@Override
 	public boolean canUndo() {
-		for( Edit<?> edit : this.edits ) {
+		for( AbstractEdit<?> edit : this.edits ) {
 			if( edit.canUndo() ) {
 				//pass
 			} else {

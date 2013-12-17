@@ -113,7 +113,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
 			try {
 				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
-				org.lgna.croquet.edits.Edit edit = this.cascade.createEdit( completionStep, values );
+				org.lgna.croquet.edits.AbstractEdit edit = this.cascade.createEdit( completionStep, values );
 				if( edit != null ) {
 					completionStep.commitAndInvokeDo( edit );
 				} else {
@@ -138,7 +138,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
 	}
 
@@ -162,7 +162,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return false;
 	}
 
@@ -177,7 +177,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		this.hideDropProxyIfNecessary();
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
+	protected abstract org.lgna.croquet.edits.AbstractEdit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
 
 	public static final class InternalMenuModelResolver<T> extends IndirectResolver<InternalMenuModel<T>, Cascade<T>> {
 		private InternalMenuModelResolver( Cascade<T> indirect ) {
@@ -339,7 +339,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	@Override
-	protected void appendTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		//todo:
 		org.lgna.croquet.history.Transaction ownerTransaction = step.getOwner();
 		final int N = ownerTransaction.getPrepStepCount();

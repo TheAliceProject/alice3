@@ -251,7 +251,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		//todo: 
 		return java.util.Collections.emptyList();
 	}
@@ -681,7 +681,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 
 		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 			if( edit != null ) {
 				org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
 				text.append( "First press on " );

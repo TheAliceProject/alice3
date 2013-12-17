@@ -45,7 +45,7 @@ package org.alice.ide.clipboard.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
+public abstract class ClipboardEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.Statement statement;
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 

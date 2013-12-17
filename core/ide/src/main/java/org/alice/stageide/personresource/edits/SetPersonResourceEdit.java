@@ -46,7 +46,7 @@ package org.alice.stageide.personresource.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class SetPersonResourceEdit extends org.lgna.croquet.edits.Edit {
+public class SetPersonResourceEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.story.resources.sims2.PersonResource prevResource;
 	private final org.lgna.story.resources.sims2.PersonResource nextResource;
 

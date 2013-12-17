@@ -71,7 +71,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.v
 		}
 
 		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 			text.append( "Press the <strong>Close</strong> button when you are ready." );
 		}
 
@@ -171,11 +171,11 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.v
 		}, completionStep );
 	}
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: generate close transaction" );
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 }

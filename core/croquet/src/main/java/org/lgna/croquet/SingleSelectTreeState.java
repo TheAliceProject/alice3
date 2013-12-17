@@ -178,7 +178,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 		assert values.length == 1;
 		this.model.changeValueFromIndirectModel( values[ 0 ], org.lgna.croquet.State.IsAdjusting.FALSE, org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		return null;
@@ -223,7 +223,7 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

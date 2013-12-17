@@ -46,7 +46,7 @@ package org.alice.ide.resource.manager.edits;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.Edit {
+public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.common.Resource resource;
 
 	public AddOrRemoveResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {

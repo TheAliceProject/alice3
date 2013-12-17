@@ -45,7 +45,7 @@ package org.alice.ide.ast.code.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class SwapParametersEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.code.SwapParametersOperation> {
+public class SwapParametersEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.code.SwapParametersOperation> {
 	private final org.lgna.project.ast.UserMethod method;
 	private final int aIndex;
 

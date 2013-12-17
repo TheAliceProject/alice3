@@ -56,13 +56,13 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.views.Compo
 
 	public boolean isSubTransactionHistoryRequired();
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
+	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit );
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException;
 
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
+	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit );
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit );
 
 	public String modifyNameIfNecessary( String text );
 }

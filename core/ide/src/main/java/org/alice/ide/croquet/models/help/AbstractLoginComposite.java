@@ -52,7 +52,7 @@ import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.preferences.PreferenceStringState;
 
@@ -80,7 +80,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 
 	private final ActionOperation logOutOperation = createActionOperation( "logOutOperation", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			internalLogout();
 			isLoggedIn.setValueTransactionlessly( false );
 			userNameState.setValueTransactionlessly( "" );
@@ -110,7 +110,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
 		//note: work is done in isClearedForCommit
 		return null;
 	}

@@ -50,8 +50,8 @@ import org.lgna.croquet.Retargeter;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public static <E extends Edit<?>> E createCopy( E original, org.lgna.croquet.history.CompletionStep<?> step ) {
+public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static <E extends AbstractEdit<?>> E createCopy( E original, org.lgna.croquet.history.CompletionStep<?> step ) {
 		assert step != null : original;
 		original.preCopy();
 		edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
@@ -64,11 +64,11 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 
 	private transient org.lgna.croquet.history.CompletionStep<M> completionStep;
 
-	public Edit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
+	public AbstractEdit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
 		this.completionStep = completionStep;
 	}
 
-	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AbstractEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		this.completionStep = (org.lgna.croquet.history.CompletionStep<M>)step;
 	}
 
@@ -78,7 +78,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	protected void preCopy() {
 	}
 
-	protected void postCopy( Edit<?> result ) {
+	protected void postCopy( AbstractEdit<?> result ) {
 	}
 
 	public boolean isValid() {
@@ -155,7 +155,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
+	public ReplacementAcceptability getReplacementAcceptability( AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
@@ -166,7 +166,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	public void retarget( Retargeter retargeter ) {
 	}
 
-	public void addKeyValuePairs( Retargeter retargeter, Edit<?> edit ) {
+	public void addKeyValuePairs( Retargeter retargeter, AbstractEdit<?> edit ) {
 	}
 
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {

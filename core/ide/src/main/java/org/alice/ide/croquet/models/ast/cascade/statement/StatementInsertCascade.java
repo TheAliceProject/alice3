@@ -122,7 +122,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.AbstractEdit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit originalInsertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)originalEdit;
 		org.lgna.project.ast.Expression[] values = originalInsertStatementEdit.getInitialExpressions();
 		org.lgna.project.ast.Expression[] retargetedValues = new org.lgna.project.ast.Expression[ values.length ];

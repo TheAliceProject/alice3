@@ -109,7 +109,7 @@ public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.Oper
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		java.awt.Color color = this.getView().getSelectedColor();
 		if( color != null ) {
 			this.colorState.setValueTransactionlessly( color );

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlockStatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+public abstract class BlockStatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 
 	public BlockStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.BlockStatement blockStatement ) {

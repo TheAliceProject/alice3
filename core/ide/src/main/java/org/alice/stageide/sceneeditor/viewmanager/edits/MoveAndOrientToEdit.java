@@ -42,13 +42,13 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager.edits;
 
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 
 /**
  * @author dculyba
  * 
  */
-public class MoveAndOrientToEdit extends Edit {
+public class MoveAndOrientToEdit extends AbstractEdit {
 	private final org.lgna.story.SMovableTurnable toMove;
 	private final org.lgna.story.SThing target;
 	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;

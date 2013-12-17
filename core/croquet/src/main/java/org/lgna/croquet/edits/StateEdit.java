@@ -45,7 +45,7 @@ package org.lgna.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.croquet.State<T>> {
+public final class StateEdit<T> extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.State<T>> {
 	private T prevValue;
 	private T nextValue;
 

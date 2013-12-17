@@ -45,7 +45,7 @@ package org.alice.ide.ast.code.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class EnvelopStatementsEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.code.EnvelopStatementsOperation> {
+public class EnvelopStatementsEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.code.EnvelopStatementsOperation> {
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
 	private transient int count;
@@ -89,7 +89,7 @@ public class EnvelopStatementsEdit extends org.lgna.croquet.edits.Edit<org.alice
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		EnvelopStatementsEdit replacementEdit = (EnvelopStatementsEdit)edit;
 		retargeter.addKeyValuePair( this.fromLocation, replacementEdit.fromLocation );
 		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
@@ -102,7 +102,7 @@ public class EnvelopStatementsEdit extends org.lgna.croquet.edits.Edit<org.alice
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof EnvelopStatementsEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {

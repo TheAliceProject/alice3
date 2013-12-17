@@ -88,11 +88,11 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return text;
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
@@ -103,7 +103,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 				if( isCommited != null ) { // close button condition
 					if( isCommited ) {
 						try {
-							org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+							org.lgna.croquet.edits.AbstractEdit edit = createEdit( completionStep );
 							if( edit != null ) {
 								completionStep.commitAndInvokeDo( edit );
 							} else {

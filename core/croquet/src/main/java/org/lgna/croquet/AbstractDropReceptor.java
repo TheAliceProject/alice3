@@ -75,7 +75,7 @@ public abstract class AbstractDropReceptor implements DropReceptor {
 		return this.dragDroppedPostRejectorCheck( step );
 	}
 
-	public final String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
+	public final String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return "Drop...";
 	}
 }

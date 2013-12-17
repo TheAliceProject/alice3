@@ -153,7 +153,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( "<strong>" );
 		text.append( this.value );
 		text.append( "</strong>" );

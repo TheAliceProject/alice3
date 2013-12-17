@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor.side.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class MarkerColorIdEdit extends org.lgna.croquet.edits.Edit {
+public class MarkerColorIdEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.Expression nextArgumentExpression;
 	private transient org.lgna.project.ast.Expression prevArgumentExpression;
@@ -92,7 +92,7 @@ public class MarkerColorIdEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.AbstractEdit.DescriptionStyle descriptionStyle ) {
 		rv.append( "change " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.field );
 		rv.append( " color id " );

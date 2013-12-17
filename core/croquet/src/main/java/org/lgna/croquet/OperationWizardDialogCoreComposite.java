@@ -84,7 +84,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return defaultValue;
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 
@@ -96,11 +96,11 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return false;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	private void createAndCommitEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		try {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
+			org.lgna.croquet.edits.AbstractEdit edit = this.createEdit( completionStep );
 			if( edit != null ) {
 				completionStep.commitAndInvokeDo( edit );
 			} else {

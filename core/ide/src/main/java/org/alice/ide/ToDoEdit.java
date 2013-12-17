@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public abstract class ToDoEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+public abstract class ToDoEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
 	public ToDoEdit( org.lgna.croquet.history.CompletionStep<M> step ) {
 		super( step );
 	}
