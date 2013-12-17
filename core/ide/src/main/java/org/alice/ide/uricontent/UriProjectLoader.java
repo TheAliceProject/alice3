@@ -50,8 +50,8 @@ public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project
 		java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
 		if( file != null ) {
 			return new org.alice.ide.uricontent.FileProjectLoader( file );
-		} else if( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.isValidUri( uri ) ) {
-			org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.getSurfaceAppearance( uri );
+		} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
+			org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
 			return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
 		} else {
 			return null;

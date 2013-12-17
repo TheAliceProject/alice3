@@ -58,7 +58,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.View;
+import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.poser.AbstractAnimatorInputDialogComposite;
 import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
 import org.lgna.ik.poser.PoserEvent;
@@ -94,9 +94,9 @@ import org.lgna.story.SetPose;
 public class AnimatorControlComposite<M extends SJointedModel> extends AbstractPoserControlComposite<AnimatorControlView> {
 
 	public static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
-	private StringState nameState = createStringState( createKey( "nameState" ) );
+	private StringState nameState = createStringState( "nameState" );
 	private TimeLineComposite tlComposite = new TimeLineComposite();
-	private BoundedDoubleState currentTime = createBoundedDoubleState( createKey( "currentTime" ), new BoundedDoubleDetails() );
+	private BoundedDoubleState currentTime = createBoundedDoubleState( "currentTime", new BoundedDoubleDetails() );
 	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite );
 	private BlockStatement blockStatement = new BlockStatement();
 
@@ -162,7 +162,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		public void fireAnchorUpdate( PoserEvent poserEvent ) {
 		}
 	};
-	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
+	private ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
@@ -284,7 +284,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		}
 	}
 
-	public View getSouthViewForDialog() {
+	public CompositeView getSouthViewForDialog() {
 		BorderPanel borderPanel = new BorderPanel();
 		borderPanel.addCenterComponent( tlComposite.getView() );
 		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );

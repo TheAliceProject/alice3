@@ -51,12 +51,12 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
 		org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 
-		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getNameForDeclaration( argument.parameter.getValue() );
+		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getNameForDeclaration( argument.parameter.getValue() );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
 			rv.addComponent( new org.lgna.croquet.views.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );

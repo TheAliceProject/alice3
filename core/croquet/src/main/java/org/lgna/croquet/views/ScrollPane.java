@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
+public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 	public enum VerticalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
@@ -73,7 +73,7 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 		this( null, null, null );
 	}
 
-	public ScrollPane( Component<?> viewportView ) {
+	public ScrollPane( AwtComponentView<?> viewportView ) {
 		this( viewportView, null, null );
 	}
 
@@ -81,7 +81,7 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 		this( null, verticalScrollbarPolicy, horizontalScrollbarPolicy );
 	}
 
-	public ScrollPane( Component<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public ScrollPane( AwtComponentView<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		if( viewportView != null ) {
 			this.setViewportView( viewportView );
 		}
@@ -112,11 +112,11 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 		return rv;
 	}
 
-	public Component<?> getViewportView() {
-		return Component.lookup( this.getAwtComponent().getViewport().getView() );
+	public AwtComponentView<?> getViewportView() {
+		return AwtComponentView.lookup( this.getAwtComponent().getViewport().getView() );
 	}
 
-	public void setViewportView( Component<?> view ) {
+	public void setViewportView( AwtComponentView<?> view ) {
 		javax.swing.JScrollPane jScrollPane = this.getAwtComponent();
 		if( view != null ) {
 			final boolean IS_SCROLLABLE_HEEDED = false;

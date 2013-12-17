@@ -42,7 +42,7 @@
  */
 package org.alice.media.youtube.croquet.views;
 
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
 
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
  * @author Dennis Cosgrove
  */
 public class EventScriptPane extends org.lgna.croquet.views.MigPanel {
-	public EventScriptPane( ListSelectionState<EventScriptEvent> state ) {
+	public EventScriptPane( SingleSelectListState<EventScriptEvent> state ) {
 		super( null, "fill, insets 0", "[grow,shrink]", "[grow 0][grow 0][grow100]" );
 		org.lgna.croquet.views.List<EventScriptEvent> list = state.createList();
 		list.setCellRenderer( new ItemCodecListCellRenderer<EventScriptEvent>( state.getItemCodec() ) );
@@ -60,7 +60,7 @@ public class EventScriptPane extends org.lgna.croquet.views.MigPanel {
 		list.setBackgroundColor( this.getBackgroundColor() );
 
 		this.addComponent( state.getSidekickLabel().createLabel(), "grow, wrap" );
-		this.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "grow, wrap" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "grow, wrap" );
 		this.addComponent( list, "grow" );
 	}
 }

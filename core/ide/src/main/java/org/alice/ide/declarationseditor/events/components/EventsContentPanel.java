@@ -76,7 +76,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		}
 
 		@Override
-		protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
+		protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
 				Expression expression = expressionStatement.expression.getValue();
@@ -109,7 +109,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> getAsSeenBy() {
+	protected org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy() {
 		return this;
 	}
 

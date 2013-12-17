@@ -56,7 +56,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 	public void handleInitializerChanged( org.lgna.project.ast.Expression expression ) {
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> createPageStartComponent() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createPageStartComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "", "[align right]12[]24[]" );
 		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
@@ -71,7 +71,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 			org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
 			org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 			if( valueComponentTypeState != null ) {
-				org.lgna.croquet.views.JComponent<?> component;
+				org.lgna.croquet.views.SwingComponentView<?> component;
 				if( valueComponentTypeState.isEnabled() ) {
 					org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
 					if( composite.isValueIsArrayTypeStateDisplayed() ) {
@@ -102,7 +102,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		if( composite.isInitializerDisplayed() ) {
 			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = composite.getInitializerState();
 			if( initializerState != null ) {
-				org.lgna.croquet.views.JComponent<?> component;
+				org.lgna.croquet.views.SwingComponentView<?> component;
 				if( initializerState.isEnabled() ) {
 					component = new org.alice.ide.croquet.components.ExpressionDropDown( initializerState, factory );
 				} else {

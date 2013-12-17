@@ -47,8 +47,8 @@ import javax.swing.BorderFactory;
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.Component;
-import org.lgna.croquet.views.JComponent;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.AbstractMethod;
@@ -100,7 +100,7 @@ public class EventListenerComponent extends BorderPanel {
 		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, bottom, 4 ) );
 	}
 
-	private JComponent<?> createHeader( MethodInvocation methodInvocation ) {
+	private SwingComponentView<?> createHeader( MethodInvocation methodInvocation ) {
 		AbstractMethod method = methodInvocation.method.getValue();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
@@ -112,7 +112,7 @@ public class EventListenerComponent extends BorderPanel {
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
 			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty ) {
 				@Override
-				protected Component<?> createComponent( SimpleArgument argument ) {
+				protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
 					if( argument.expression.getValue() instanceof LambdaExpression ) {
 						return null;
 					} else {
@@ -127,7 +127,7 @@ public class EventListenerComponent extends BorderPanel {
 			//			System.out.println(requiredParametersListView);
 		}
 		if( method.getKeyedParameter() != null ) {
-			JComponent<?> keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
+			SwingComponentView<?> keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
 		return rv;

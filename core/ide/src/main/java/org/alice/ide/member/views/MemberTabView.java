@@ -46,7 +46,7 @@ package org.alice.ide.member.views;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
-	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.views.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.views.SwingComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private final org.lgna.croquet.views.PopupButton popupButton;
 	private final org.lgna.croquet.views.ComboBox<String> comboBox;
@@ -64,13 +64,13 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 		this.comboBox = composite.getSortState().getPrepModel().createComboBox();
 	}
 
-	private static org.lgna.croquet.views.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
+	private static org.lgna.croquet.views.SwingComponentView<?> createDragView( org.lgna.project.ast.Member member ) {
 		return new org.lgna.croquet.views.Label( member.getName() );
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> getComponentFor( org.lgna.project.ast.Member member ) {
+	protected org.lgna.croquet.views.SwingComponentView<?> getComponentFor( org.lgna.project.ast.Member member ) {
 		synchronized( this.map ) {
-			org.lgna.croquet.views.JComponent<?> rv = this.map.get( member );
+			org.lgna.croquet.views.SwingComponentView<?> rv = this.map.get( member );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -88,7 +88,7 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 		this.removeAllComponents();
 
 		org.alice.ide.member.AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
-		org.lgna.croquet.views.JComponent<?> leftTopComponent;
+		org.lgna.croquet.views.SwingComponentView<?> leftTopComponent;
 		if( addMethodMenuModel != null ) {
 			if( addMethodMenuModel.isRelevant() ) {
 				leftTopComponent = this.popupButton;
@@ -127,7 +127,7 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 					scrollPaneView.addComponent( view, "wrap" );
 				}
 			} else {
-				scrollPaneView.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "wrap" );
+				scrollPaneView.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "wrap" );
 			}
 		}
 		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );

@@ -45,7 +45,7 @@ package org.alice.stageide.type.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTreeState extends org.lgna.croquet.CustomTreeSelectionState<TypeNode> {
+public class TypeTreeState extends org.lgna.croquet.CustomSingleSelectTreeState<TypeNode> {
 	private TypeNode root;
 
 	public TypeTreeState() {

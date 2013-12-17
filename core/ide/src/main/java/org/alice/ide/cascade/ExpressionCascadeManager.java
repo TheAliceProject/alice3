@@ -161,7 +161,7 @@ public abstract class ExpressionCascadeManager {
 				this.updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementParent, index );
 			} else if( statementParent instanceof org.lgna.project.ast.CountLoop ) {
 				org.lgna.project.ast.CountLoop countLoopParent = (org.lgna.project.ast.CountLoop)statementParent;
-				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
+				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
 					rv.add( countLoopParent.constant.getValue() );

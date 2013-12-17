@@ -42,7 +42,7 @@
  */
 package org.lgna.croquet.views;
 
-import org.lgna.croquet.TabSelectionState;
+import org.lgna.croquet.TabState;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +56,7 @@ public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposit
 
 	private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
 
-	public CardBasedTabbedPane( TabSelectionState<E> model ) {
+	public CardBasedTabbedPane( TabState<E> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
 			if( card != null ) {

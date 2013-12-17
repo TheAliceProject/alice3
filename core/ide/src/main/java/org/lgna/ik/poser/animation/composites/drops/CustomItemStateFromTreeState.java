@@ -48,16 +48,16 @@ import java.util.UUID;
 import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.CustomTreeSelectionState;
+import org.lgna.croquet.CustomSingleSelectTreeState;
 
 /**
  * @author Matt May
  */
 public class CustomItemStateFromTreeState<A> extends CustomItemState<A> {
 
-	private CustomTreeSelectionState<A> state;
+	private CustomSingleSelectTreeState<A> state;
 
-	public CustomItemStateFromTreeState( CustomTreeSelectionState<A> state, UUID id ) {
+	public CustomItemStateFromTreeState( CustomSingleSelectTreeState<A> state, UUID id ) {
 		super( state.getGroup(), id, state.getValue(), state.getItemCodec() );
 		this.state = state;
 	}

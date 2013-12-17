@@ -46,8 +46,8 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
@@ -69,12 +69,12 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private TimeLineComposite composite;
 	private KeyFrameData selectedKeyFrame;
 	private final BoundedDoubleState currentTime;
-	private final ListSelectionState<KeyFrameStyles> styleSelectionState = this.createListSelectionStateForEnum( createKey( "styleState" ), KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
+	private final SingleSelectListState<KeyFrameStyles> styleSelectionState = this.createSingleSelectListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
-		currentTime = createBoundedDoubleState( createKey( "currentTime" ),
+		currentTime = createBoundedDoubleState( "currentTime",
 				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
 
 		currentTime.addValueListener( timeListener );
@@ -162,7 +162,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		return new TimeLineModifierView( this );
 	}
 
-	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
+	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
@@ -175,7 +175,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		return this.deletePoseOperation;
 	}
 
-	public ListSelectionState<KeyFrameStyles> getStyleSelectionState() {
+	public SingleSelectListState<KeyFrameStyles> getStyleSelectionState() {
 		return this.styleSelectionState;
 	}
 

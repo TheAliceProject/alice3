@@ -56,8 +56,8 @@ public class ReferencesToFieldPreventingDeletionDialog extends OperationInputDia
 	private final UserField field;
 	private final java.util.List<org.lgna.project.ast.FieldAccess> references;
 
-	private final StringValue singlularDescriptionText = this.createStringValue( this.createKey( "singlularDescriptionText" ) );
-	private final StringValue pluralDescriptionText = this.createStringValue( this.createKey( "pluralDescriptionText" ) );
+	private final StringValue singlularDescriptionText = this.createStringValue( "singlularDescriptionText" );
+	private final StringValue pluralDescriptionText = this.createStringValue( "pluralDescriptionText" );
 
 	public ReferencesToFieldPreventingDeletionDialog( UserField field, java.util.List<org.lgna.project.ast.FieldAccess> references ) {
 		super( java.util.UUID.fromString( "e6ba357c-6490-4e88-a406-ba6567a4cc71" ), null );

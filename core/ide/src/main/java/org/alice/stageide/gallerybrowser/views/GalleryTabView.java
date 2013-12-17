@@ -59,8 +59,8 @@ public abstract class GalleryTabView extends org.lgna.croquet.views.BorderPanel 
 		return this.cache.getGalleryDragComponent( resourceNode );
 	}
 
-	protected static org.lgna.croquet.views.ScrollPane createGalleryScrollPane( org.lgna.croquet.views.Component<?> view ) {
-		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.components.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
+	protected static org.lgna.croquet.views.ScrollPane createGalleryScrollPane( org.lgna.croquet.views.AwtComponentView<?> view ) {
+		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.views.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
 		rv.setBothScrollBarIncrements( 16, 160 );
 		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;

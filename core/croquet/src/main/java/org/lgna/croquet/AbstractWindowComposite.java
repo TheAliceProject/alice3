@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractSeverityStatusComposite<V> {
+public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractSeverityStatusComposite<V> {
 	public AbstractWindowComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}

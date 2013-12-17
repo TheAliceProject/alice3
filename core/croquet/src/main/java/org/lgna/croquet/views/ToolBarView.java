@@ -83,7 +83,7 @@ public abstract class ToolBarView extends MigPanel {
 			this.addComponent( new Label(), "push" );
 			nextConstraints = "";
 		} else {
-			JComponent<?> component;
+			SwingComponentView<?> component;
 			if( element instanceof org.lgna.croquet.Operation ) {
 				org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)element;
 				Button button = operation.createButton();
@@ -93,8 +93,8 @@ public abstract class ToolBarView extends MigPanel {
 				}
 				button.tightenUpMargin();
 				component = button;
-			} else if( element instanceof org.lgna.croquet.ListSelectionState<?> ) {
-				org.lgna.croquet.ListSelectionState<?> listSelectionState = (org.lgna.croquet.ListSelectionState<?>)element;
+			} else if( element instanceof org.lgna.croquet.SingleSelectListState<?> ) {
+				org.lgna.croquet.SingleSelectListState<?> listSelectionState = (org.lgna.croquet.SingleSelectListState<?>)element;
 				ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBox();
 				component = comboBox;
 			} else if( element instanceof org.lgna.croquet.Composite<?> ) {

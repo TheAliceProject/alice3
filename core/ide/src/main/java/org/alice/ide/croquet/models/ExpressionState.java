@@ -51,11 +51,11 @@ public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItem
 		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
 	}
 
-	public org.lgna.croquet.views.JComponent<?> createEditor( org.alice.ide.x.AstI18nFactory factory ) {
+	public org.lgna.croquet.views.SwingComponentView<?> createEditor( org.alice.ide.x.AstI18nFactory factory ) {
 		return new org.alice.ide.croquet.components.ExpressionDropDown( this, factory );
 	}
 
-	public org.lgna.croquet.views.JComponent<?> createView( org.alice.ide.x.AstI18nFactory factory ) {
+	public org.lgna.croquet.views.SwingComponentView<?> createView( org.alice.ide.x.AstI18nFactory factory ) {
 		return factory.createExpressionPane( this.getValue() );
 	}
 }

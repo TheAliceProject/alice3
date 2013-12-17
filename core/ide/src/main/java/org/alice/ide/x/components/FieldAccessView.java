@@ -46,12 +46,12 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.croquet.views.JComponent<?> replacement;
+	private final org.lgna.croquet.views.SwingComponentView<?> replacement;
 
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.views.Component<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
+		org.lgna.croquet.views.AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
@@ -62,13 +62,13 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 		} else {
 			boolean isExpressionDesired;
 			if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().isTypeExpressionDesired();
+				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().isTypeExpressionDesired();
 			} else {
 				isExpressionDesired = true;
 			}
 			if( isExpressionDesired ) {
 				this.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression ) );
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 					//pass
 				} else {
 					this.addComponent( new org.lgna.croquet.views.Label( "." ) );
@@ -90,7 +90,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			this.addComponent( nodeNameLabel );
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+					if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 						this.addComponent( new org.lgna.croquet.views.Label( "()" ) );
 					}
 				}

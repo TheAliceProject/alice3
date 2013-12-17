@@ -50,7 +50,7 @@ import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.View;
+import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
@@ -71,7 +71,7 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", org.lgna.ik.poser.pose.Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
-	ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
 	public AbstractAnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
 		super( valueType, uuid );
@@ -112,8 +112,8 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	}
 
 	@Override
-	protected View createView() {
-		View splitPane = super.createView();
+	protected CompositeView createView() {
+		CompositeView splitPane = super.createView();
 		BorderPanel panel = new BorderPanel();
 		panel.addCenterComponent( splitPane );
 		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );

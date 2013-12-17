@@ -45,12 +45,11 @@ package org.lgna.ik.poser.animation.composites;
 import java.util.UUID;
 
 import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
-import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
-import org.alice.stageide.modelresource.ResourceNodeTreeSelectionState;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.alice.stageide.modelresource.RootResourceKey;
 import org.alice.stageide.modelresource.UpdatableRootResourceNodeTreeSelectionState;
 import org.alice.stageide.type.croquet.TypeNode;
@@ -97,15 +96,15 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final JointSelectionSphereState leftArmAnchor;
 	private final JointSelectionSphereState rightLegAnchor;
 	private final JointSelectionSphereState leftLegAnchor;
-	private final StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
-	private final StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
-	private final StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
-	private final StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	private final StringValue typeSelectionLabel = this.createStringValue( createKey( "typeSelectionLabel" ) );
-	private final BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
+	private final StringValue rightArmLabel = this.createStringValue( "rightArm" );
+	private final StringValue leftArmLabel = this.createStringValue( "leftArm" );
+	private final StringValue rightLegLabel = this.createStringValue( "rightLeg" );
+	private final StringValue leftLegLabel = this.createStringValue( "leftLeg" );
+	private final StringValue typeSelectionLabel = this.createStringValue( "typeSelectionLabel" );
+	private final BooleanState isUsingIK = createBooleanState( "isUsingIK", true );
 	private final UpdatableRootResourceNodeTreeSelectionState resourceTree;
-	//			createListSelectionState( createKey( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
-	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( createKey( "showHandles" ), false );
+	//			createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
+	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( "showHandles", false );
 	protected AbstractPoserOrAnimatorInputDialogComposite parent;
 	private final PoserControllerAdapter adapter;
 	private final TypeNode typeSelectionRoot;
@@ -134,7 +133,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 			typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
 			typeSelectionState.addNewSchoolValueListener( typeChangedListener );
 			//		resourceList.addNewSchoolValueListener( resourceChangeListener );
-			ResourceNode updateRoot = updateRoot( ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().getTreeModel().getRoot() );
+			ResourceNode updateRoot = updateRoot( org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance().getTreeModel().getRoot() );
 			resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
 		} else {
 			resourceTree = null;
@@ -186,7 +185,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return null;
 	}
 
-	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
+	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			parent.getModel().straightenOutJoints();
@@ -332,7 +331,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		return jointRotationHandleVisibilityState;
 	}
 
-	public ResourceNodeTreeSelectionState getResourceList() {
+	public ResourceNodeTreeState getResourceList() {
 		return this.resourceTree;
 	}
 

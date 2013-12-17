@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
+public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPanel> {
 
 	private class MutableListLayout implements java.awt.LayoutManager {
 		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {

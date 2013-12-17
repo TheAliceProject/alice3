@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class RootPane extends JComponent<javax.swing.JRootPane> {
+public class RootPane extends SwingComponentView<javax.swing.JRootPane> {
 	private final AbstractWindow<?> window;
 
 	private final LayeredPane layeredPane;
@@ -64,11 +64,11 @@ public class RootPane extends JComponent<javax.swing.JRootPane> {
 		return this.window.getJRootPane();
 	}
 
-	public Component<?> getGlassPane() {
-		return Component.lookup( this.getAwtComponent().getGlassPane() );
+	public AwtComponentView<?> getGlassPane() {
+		return AwtComponentView.lookup( this.getAwtComponent().getGlassPane() );
 	}
 
-	public void setGlassPane( Component<?> component ) {
+	public void setGlassPane( AwtComponentView<?> component ) {
 		this.getAwtComponent().setGlassPane( component != null ? component.getAwtComponent() : null );
 	}
 }

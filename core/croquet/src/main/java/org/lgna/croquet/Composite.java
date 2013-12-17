@@ -46,14 +46,14 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite<V extends org.lgna.croquet.views.View<?, ?>> extends Element {
+public interface Composite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Element {
 	public java.util.UUID getCardId();
 
 	public V getView();
 
 	public org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists();
 
-	public org.lgna.croquet.views.JComponent<?> getRootComponent();
+	public org.lgna.croquet.views.SwingComponentView<?> getRootComponent();
 
 	public void releaseView();
 

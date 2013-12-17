@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Matt May
  */
-public class UpdatableRootResourceNodeTreeSelectionState extends ResourceNodeTreeSelectionState {
+public class UpdatableRootResourceNodeTreeSelectionState extends ResourceNodeTreeState {
 
 	public UpdatableRootResourceNodeTreeSelectionState( ResourceNode root ) {
 		super( java.util.UUID.fromString( "847f6ac7-e0d0-4ea2-8632-a40c75188d50" ), root );

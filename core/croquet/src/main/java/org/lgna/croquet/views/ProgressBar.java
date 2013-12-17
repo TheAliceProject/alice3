@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgressBar extends JComponent<javax.swing.JProgressBar> {
+public class ProgressBar extends SwingComponentView<javax.swing.JProgressBar> {
 	private final javax.swing.BoundedRangeModel boundedRangeModel;
 
 	public ProgressBar() {

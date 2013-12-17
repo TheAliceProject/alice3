@@ -44,12 +44,12 @@
 package org.lgna.croquet.views;
 
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.TreeSelectionState;
+import org.lgna.croquet.SingleSelectTreeState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TreePathViewController<T> extends PanelViewController<TreeSelectionState<T>> {
+public class TreePathViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
 	private static class BreadcrumbLayout implements java.awt.LayoutManager {
 		private static final int AMOUNT_TO_SCOOT = 4;
 		private static final String SYNTH_UI_CLASS_NAME = "javax.swing.plaf.synth.SynthToggleButtonUI";
@@ -122,7 +122,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 	private static java.awt.Insets MARGIN = new java.awt.Insets( 2, 2, 2, 0 );
 
 	private static class SelectDirectoryPanel<T> extends Panel {
-		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode, java.awt.Color breadCrumbColor ) {
+		private SelectDirectoryPanel( SingleSelectTreeState<T> treeSelectionState, T treeNode, java.awt.Color breadCrumbColor ) {
 			PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
 			if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 				selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
@@ -174,7 +174,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 					//todo: remove when look and feel magic is performed   
 					if( i > 0 ) {
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-						this.internalAddComponent( new VerticalSeparator() );
+						this.internalAddComponent( Separator.createInstanceSeparatingLeftFromRight() );
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 					}
 					T treeNode = (T)treePath.getPathComponent( i );
@@ -196,7 +196,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 		}
 	};
 
-	public TreePathViewController( TreeSelectionState<T> model, java.awt.Color breadCrumbColor ) {
+	public TreePathViewController( SingleSelectTreeState<T> model, java.awt.Color breadCrumbColor ) {
 		super( model, new InternalPanel<T>( breadCrumbColor ) );
 		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );

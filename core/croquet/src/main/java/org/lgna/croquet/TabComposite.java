@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface TabComposite<V extends org.lgna.croquet.views.View<?, ?>> extends Composite<V> {
+public interface TabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Composite<V> {
 	public boolean isCloseable();
 
 	public boolean isPotentiallyCloseable();

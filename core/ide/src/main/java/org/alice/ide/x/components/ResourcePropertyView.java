@@ -124,7 +124,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 			}
 			sb.append( "</html>" );
 		} else {
-			sb.append( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForNull() );
+			sb.append( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForNull() );
 		}
 		this.label.setText( sb.toString() );
 		if( nextResource != null ) {

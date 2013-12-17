@@ -54,8 +54,8 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue pressAnyKeyLabel = this.createStringValue( this.createKey( "pressAnyKeyLabel" ) );
-	private final ErrorStatus keyRequiredError = this.createErrorStatus( this.createKey( "keyRequiredError" ) );
+	private final org.lgna.croquet.PlainStringValue pressAnyKeyLabel = this.createStringValue( "pressAnyKeyLabel" );
+	private final ErrorStatus keyRequiredError = this.createErrorStatus( "keyRequiredError" );
 
 	private KeyCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );

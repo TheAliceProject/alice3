@@ -54,7 +54,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue restartLabel = this.createStringValue( this.createKey( "restart" ) );
+	private final org.lgna.croquet.PlainStringValue restartLabel = this.createStringValue( "restart" );
 
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
@@ -105,7 +105,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
 
-			org.lgna.croquet.views.Component<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
+			org.lgna.croquet.views.AwtComponentView<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
 			org.lgna.croquet.views.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.views.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
 			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
 			if( controlPanel != null ) {

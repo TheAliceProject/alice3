@@ -50,7 +50,7 @@ public abstract class TreeOwningGalleryTab extends GalleryTab<org.alice.stageide
 		super( migrationId );
 	}
 
-	public abstract org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState();
+	public abstract org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState();
 
 	@Override
 	protected final org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {

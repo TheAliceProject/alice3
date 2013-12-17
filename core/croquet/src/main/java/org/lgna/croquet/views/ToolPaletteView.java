@@ -146,7 +146,7 @@ public final class ToolPaletteView extends Panel {
 		return this.title;
 	}
 
-	public View<?, ?> getCenterView() {
+	public CompositeView<?, ?> getCenterView() {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
 		return composite.getCoreComposite().getView();
 	}
@@ -161,7 +161,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( null );
-		for( Component<?> component : this.getComponents() ) {
+		for( AwtComponentView<?> component : this.getComponents() ) {
 			component.setBackgroundColor( color );
 		}
 	}

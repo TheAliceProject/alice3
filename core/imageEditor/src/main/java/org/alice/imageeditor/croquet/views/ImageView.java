@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageView extends org.lgna.croquet.views.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
+public class ImageView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JImageView createAwtComponent() {
 		return new edu.cmu.cs.dennisc.javax.swing.components.JImageView();

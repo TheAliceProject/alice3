@@ -49,8 +49,8 @@ import java.util.UUID;
 import org.alice.ide.IDE;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.SplitPane;
-import org.lgna.croquet.views.View;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.pose.Pose;
 import org.lgna.ik.walkandtouch.AbstractPoserScene;
@@ -73,7 +73,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends OperationInputDialogCoreComposite<View> {
+public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends OperationInputDialogCoreComposite<CompositeView> {
 
 	private IkPoser poser;
 
@@ -209,7 +209,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	}
 
 	@Override
-	protected View createView() {
+	protected CompositeView createView() {
 		SplitPane view = splitComposite.getView();
 		return view;
 	}

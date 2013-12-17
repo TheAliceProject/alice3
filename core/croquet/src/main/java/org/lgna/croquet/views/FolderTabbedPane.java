@@ -47,7 +47,7 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.TabSelectionState;
+import org.lgna.croquet.TabState;
 
 /**
  * @author Dennis Cosgrove
@@ -511,7 +511,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private final ScrollListener scrollListener = new ScrollListener();
 
-	public FolderTabbedPane( TabSelectionState<E> model ) {
+	public FolderTabbedPane( TabState<E> model ) {
 		super( model );
 		org.lgna.croquet.CardOwnerComposite cardOwner = this.getCardOwner();
 		cardOwner.getView().setBackgroundColor( null );
@@ -539,7 +539,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					g.setColor( SELECTED_BORDER_COLOR );
 					g.fillRect( x, y, width, 1 );
 					g.fillRect( x, y, 1, height );
-					for( Component<?> component : titlesPanel.getComponents() ) {
+					for( AwtComponentView<?> component : titlesPanel.getComponents() ) {
 						if( component instanceof AbstractButton<?, ?> ) {
 							AbstractButton<?, ?> button = (AbstractButton<?, ?>)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
@@ -564,16 +564,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	}
 
-	public JComponent<?> getHeaderLeadingComponent() {
-		return (JComponent<?>)this.innerHeaderPanel.getLineStartComponent();
+	public SwingComponentView<?> getHeaderLeadingComponent() {
+		return (SwingComponentView<?>)this.innerHeaderPanel.getLineStartComponent();
 	}
 
-	public void setHeaderLeadingComponent( JComponent<?> component ) {
+	public void setHeaderLeadingComponent( SwingComponentView<?> component ) {
 		if( component != null ) {
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineStartComponent( component );
 		} else {
-			Component<?> prevComponent = this.innerHeaderPanel.getLineStartComponent();
+			AwtComponentView<?> prevComponent = this.innerHeaderPanel.getLineStartComponent();
 			if( prevComponent != null ) {
 				this.innerHeaderPanel.removeComponent( prevComponent );
 			}
@@ -581,7 +581,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.innerHeaderPanel.revalidateAndRepaint();
 	}
 
-	private void setInnerHeaderTrailingComponent( JComponent<?> component ) {
+	private void setInnerHeaderTrailingComponent( SwingComponentView<?> component ) {
 		if( component != null ) {
 			if( component.isOpaque() ) {
 				//pass
@@ -591,7 +591,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineEndComponent( component );
 		} else {
-			Component<?> prevComponent = this.innerHeaderPanel.getLineEndComponent();
+			AwtComponentView<?> prevComponent = this.innerHeaderPanel.getLineEndComponent();
 			if( prevComponent != null ) {
 				this.innerHeaderPanel.removeComponent( prevComponent );
 			}
@@ -599,7 +599,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.innerHeaderPanel.revalidateAndRepaint();
 	}
 
-	public void setHeaderTrailingComponent( JComponent<?> component ) {
+	public void setHeaderTrailingComponent( SwingComponentView<?> component ) {
 		if( component != null ) {
 			if( component.isOpaque() ) {
 				//pass
@@ -609,7 +609,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.outerHeaderPanel.addLineEndComponent( component );
 		} else {
-			Component<?> prevComponent = this.outerHeaderPanel.getLineEndComponent();
+			AwtComponentView<?> prevComponent = this.outerHeaderPanel.getLineEndComponent();
 			if( prevComponent != null ) {
 				this.outerHeaderPanel.removeComponent( prevComponent );
 			}

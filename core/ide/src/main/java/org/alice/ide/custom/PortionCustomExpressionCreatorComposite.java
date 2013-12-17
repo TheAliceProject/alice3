@@ -55,7 +55,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
 
 	private PortionCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );

@@ -95,7 +95,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			repaint();
 		}
 
-		public StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.DragModel dragModel, org.lgna.croquet.views.Container<?> source ) {
+		public StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.DragModel dragModel, org.lgna.croquet.views.AwtContainerView<?> source ) {
 			java.util.List<StatementListPropertyView> statementListPropertyPanes = org.lgna.croquet.views.HierarchyUtilities.findAllMatches( CodePanelWithDropReceptor.this, StatementListPropertyView.class );
 
 			boolean isAddEvent;
@@ -173,7 +173,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						//pass
 					} else {
-						org.lgna.croquet.views.Component<?> subject = source.getSubject();
+						org.lgna.croquet.views.AwtComponentView<?> subject = source.getSubject();
 						if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
 							org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 							if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -401,7 +401,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			return CodePanelWithDropReceptor.this.getTrackableShape( potentialDropSite );
 		}
 
-		public org.lgna.croquet.views.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return CodePanelWithDropReceptor.this;
 		}
 	}
@@ -422,7 +422,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 
-	protected abstract org.lgna.croquet.views.Component<?> getAsSeenBy();
+	protected abstract org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy();
 
 	public abstract org.lgna.project.ast.AbstractCode getCode();
 

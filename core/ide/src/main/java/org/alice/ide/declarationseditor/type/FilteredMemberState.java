@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredMemberState<T extends org.lgna.project.ast.UserMember> extends org.alice.ide.croquet.models.FilteredListPropertySelectionState<T> {
+public abstract class FilteredMemberState<T extends org.lgna.project.ast.UserMember> extends org.alice.ide.croquet.models.FilteredListPropertySingleSelectListState<T> {
 	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, org.alice.ide.declarationseditor.type.data.FilteredMemberData<T> data ) {
 		super( group, id, data, -1 );
 	}

@@ -61,8 +61,8 @@ import org.lgna.story.SQuadruped;
 public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorInputDialogComposite<PoserControlComposite, M> {
 
 	private FieldNameValidator validator;
-	private ErrorStatus emptyPoseStatus = createErrorStatus( createKey( "noPose" ) );
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final ErrorStatus emptyPoseStatus = this.createErrorStatus( "noPose" );
+	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
 	public AbstractPoserInputDialogComposite( NamedUserType valueType, UUID uuid ) {
 		super( valueType, uuid );

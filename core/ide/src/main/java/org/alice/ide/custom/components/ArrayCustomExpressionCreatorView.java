@@ -283,7 +283,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
 

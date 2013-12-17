@@ -52,7 +52,7 @@ public interface DropReceptor {
 
 	//public ViewController<?,?> getViewController();
 	//todo: rename
-	public org.lgna.croquet.views.JComponent<?> getViewController();
+	public org.lgna.croquet.views.SwingComponentView<?> getViewController();
 
 	public void dragStarted( org.lgna.croquet.history.DragStep step );
 

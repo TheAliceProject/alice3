@@ -197,7 +197,7 @@ public abstract class StringState extends SimpleValueState<String> {
 
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
-		for( org.lgna.croquet.views.JComponent<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.lgna.croquet.views.TextComponent<?> ) {
 				org.lgna.croquet.views.TextComponent<?> textComponent = (org.lgna.croquet.views.TextComponent<?>)component;
 				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
@@ -245,7 +245,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	public void requestFocus() {
-		for( org.lgna.croquet.views.Component<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.AwtComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			//todo: find the most appropriate candidate?
 			component.requestFocus();
 		}

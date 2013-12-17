@@ -63,7 +63,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	private org.lgna.project.ast.UserField selectedField;
 
-	private final SceneFieldListSelectionState sceneFieldListSelectionState = new SceneFieldListSelectionState();
+	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
 		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
@@ -419,7 +419,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private boolean EPIC_HACK_isFirstAddedTo = true;
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
 			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
 			if( projectDocument != null ) {
@@ -434,7 +434,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
 	}

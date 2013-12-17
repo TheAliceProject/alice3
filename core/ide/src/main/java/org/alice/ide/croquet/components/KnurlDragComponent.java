@@ -232,15 +232,15 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		}
 	}
 
-	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 
-	public void addComponent( org.lgna.croquet.views.Component<?> component, Object constraints ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component, Object constraints ) {
 		this.internalAddComponent( component, constraints );
 	}
 
-	public void forgetAndRemoveComponent( org.lgna.croquet.views.Component<?> component ) {
+	public void forgetAndRemoveComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
 

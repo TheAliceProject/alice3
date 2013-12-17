@@ -60,7 +60,7 @@ public class GridBagPanel extends Panel {
 		return new java.awt.GridBagLayout();
 	}
 
-	public void addComponent( Component<?> component, java.awt.GridBagConstraints gbc ) {
+	public void addComponent( AwtComponentView<?> component, java.awt.GridBagConstraints gbc ) {
 		this.internalAddComponent( component, gbc );
 	}
 }

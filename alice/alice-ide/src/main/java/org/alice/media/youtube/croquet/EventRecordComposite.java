@@ -50,7 +50,7 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
@@ -76,8 +76,8 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 
 	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
-	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
+	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( "cannotAdvanceBecauseRecording" );
+	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
 	private RunProgramContext programContext;
 	private EventScript eventScript;
 
@@ -114,7 +114,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		public void complete() {
 		}
 	};
-	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
+	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			isRecordingState.setValueTransactionlessly( false );
@@ -250,7 +250,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		return false;
 	}
 
-	public ListSelectionState<EventScriptEvent> getEventList() {
+	public SingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 

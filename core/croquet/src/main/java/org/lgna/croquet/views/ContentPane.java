@@ -45,7 +45,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public final class ContentPane extends JComponent<javax.swing.JPanel> {//Container<java.awt.Container> {
+public final class ContentPane extends SwingComponentView<javax.swing.JPanel> {//Container<java.awt.Container> {
 	private final AbstractWindow<?> window;
 
 	/* package-private */ContentPane( AbstractWindow<?> window ) {
@@ -57,27 +57,27 @@ public final class ContentPane extends JComponent<javax.swing.JPanel> {//Contain
 		return (javax.swing.JPanel)this.window.getAwtContentPane();
 	}
 
-	public void addCenterComponent( Component<?> component ) {
+	public void addCenterComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component, java.awt.BorderLayout.CENTER );
 	}
 
-	public void addPageStartComponent( Component<?> component ) {
+	public void addPageStartComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_START );
 	}
 
-	public void addPageEndComponent( Component<?> component ) {
+	public void addPageEndComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_END );
 	}
 
-	public void addLineStartComponent( Component<?> component ) {
+	public void addLineStartComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component, java.awt.BorderLayout.LINE_START );
 	}
 
-	public void addLineEndComponent( Component<?> component ) {
+	public void addLineEndComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component, java.awt.BorderLayout.LINE_END );
 	}
 
-	public void removeComponent( Component<?> component ) {
+	public void removeComponent( AwtComponentView<?> component ) {
 		this.internalRemoveComponent( component );
 	}
 }

@@ -56,7 +56,7 @@ public final class UriBasedResourceNode extends org.alice.stageide.modelresource
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
+	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
 		return null;
 	}
 

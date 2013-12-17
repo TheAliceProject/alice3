@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemState<T>> extends DropDown<org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel<T>> {
-	public ItemDropDown( CM state, org.lgna.croquet.views.JComponent<?> prefixComponent, org.lgna.croquet.views.JComponent<?> mainComponent, org.lgna.croquet.views.JComponent<?> postfixComponent ) {
+	public ItemDropDown( CM state, org.lgna.croquet.views.SwingComponentView<?> prefixComponent, org.lgna.croquet.views.SwingComponentView<?> mainComponent, org.lgna.croquet.views.SwingComponentView<?> postfixComponent ) {
 		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
 	}
 
@@ -73,13 +73,13 @@ public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemStat
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		this.getState().addAndInvokeValueListener( this.valueListener );
 		super.handleAddedTo( parent );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.getState().removeValueListener( this.valueListener );
 	}

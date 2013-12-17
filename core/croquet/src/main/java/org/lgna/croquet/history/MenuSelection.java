@@ -49,7 +49,7 @@ package org.lgna.croquet.history;
 public class MenuSelection {
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
-			org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( menuElement.getComponent() );
+			org.lgna.croquet.views.AwtComponentView<?> component = org.lgna.croquet.views.AwtComponentView.lookup( menuElement.getComponent() );
 			if( ( component instanceof org.lgna.croquet.views.MenuBar ) || ( component instanceof org.lgna.croquet.views.MenuItem ) || ( component instanceof org.lgna.croquet.views.Menu ) || ( component instanceof org.lgna.croquet.views.PopupMenu ) || ( component instanceof org.lgna.croquet.views.MenuTextSeparator ) ) {
 				return true;
 			}
@@ -70,7 +70,7 @@ public class MenuSelection {
 	private static org.lgna.croquet.views.MenuBar getMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
 		javax.swing.JMenuBar jMenuBar = getJMenuBarOrigin( menuElements );
 		if( jMenuBar != null ) {
-			return (org.lgna.croquet.views.MenuBar)org.lgna.croquet.views.Component.lookup( jMenuBar );
+			return (org.lgna.croquet.views.MenuBar)org.lgna.croquet.views.AwtComponentView.lookup( jMenuBar );
 		} else {
 			return null;
 		}
@@ -109,7 +109,7 @@ public class MenuSelection {
 					//pass
 				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
 					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-					org.lgna.croquet.views.Component<?> component = org.lgna.croquet.views.Component.lookup( jMenuItem );
+					org.lgna.croquet.views.AwtComponentView<?> component = org.lgna.croquet.views.AwtComponentView.lookup( jMenuItem );
 					if( component instanceof org.lgna.croquet.views.ViewController<?, ?> ) {
 						org.lgna.croquet.views.ViewController<?, ?> viewController = (org.lgna.croquet.views.ViewController<?, ?>)component;
 						org.lgna.croquet.Model model = viewController.getModel();

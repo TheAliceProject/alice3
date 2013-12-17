@@ -51,7 +51,7 @@ public class GroupBasedTab extends TreeOwningGalleryTab {
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.GroupBasedResourceNodeTreeSelectionState.getInstance();
+	public org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+		return org.alice.stageide.modelresource.GroupBasedResourceNodeTreeState.getInstance();
 	}
 }

@@ -57,7 +57,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	private final Throwable throwable;
 	private final java.awt.image.BufferedImage applicationContentPanelImage;
 
-	private final org.lgna.croquet.BooleanState areProjectAndImageAttachmentsDesired = this.createBooleanState( this.createKey( "areProjectAndImageAttachmentsDesired" ), true );
+	private final org.lgna.croquet.BooleanState areProjectAndImageAttachmentsDesired = this.createBooleanState( "areProjectAndImageAttachmentsDesired", true );
 	private final org.lgna.croquet.Operation showApplicationContentPanelImageOperation = new ShowImageComposite( java.util.UUID.fromString( "f8455aee-e131-417c-b539-b8a9ad7bdc73" ) ) {
 		@Override
 		public java.awt.Image getImage() {

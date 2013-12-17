@@ -145,7 +145,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	}
 
-	private final PlainStringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
+	private final PlainStringValue stepsLabel = this.createStringValue( "stepsLabel" );
 	private int index = 0;
 
 	private int getIndex() {
@@ -281,11 +281,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
-	private org.lgna.croquet.views.MigPanel createAdornmentPanel( org.lgna.croquet.views.JComponent<?> header ) {
+	private org.lgna.croquet.views.MigPanel createAdornmentPanel( org.lgna.croquet.views.SwingComponentView<?> header ) {
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
 		rv.addComponent( header, "wrap" );
-		rv.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
+		rv.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 		return rv;
 	}
 

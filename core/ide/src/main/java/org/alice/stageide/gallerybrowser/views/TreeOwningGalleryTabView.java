@@ -47,12 +47,12 @@ package org.alice.stageide.gallerybrowser.views;
  */
 public class TreeOwningGalleryTabView extends GalleryTabView {
 	private class ModelResourceDirectoryView extends org.lgna.croquet.views.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
-		public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
+		public ModelResourceDirectoryView( org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.modelresource.ResourceNode> model ) {
 			super( model );
 		}
 
 		@Override
-		protected org.lgna.croquet.views.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+		protected org.lgna.croquet.views.SwingComponentView<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
 			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value );
 		}
 	}
@@ -69,7 +69,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	public TreeOwningGalleryTabView( org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite ) {
 		super( composite );
 
-		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
+		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
 		this.scrollPane = createGalleryScrollPane( view );
@@ -98,7 +98,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	@Override
 	protected void handleDisplayable() {
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
-		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
+		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		state.addNewSchoolValueListener( this.treeListener );
 		super.handleDisplayable();
 	}
@@ -107,7 +107,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
 		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
-		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
+		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		state.removeNewSchoolValueListener( this.treeListener );
 	}
 

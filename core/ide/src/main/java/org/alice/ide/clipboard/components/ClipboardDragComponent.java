@@ -103,7 +103,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 			return ClipboardDragComponent.this;
 		}
 
-		public org.lgna.croquet.views.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return ClipboardDragComponent.this;
 		}
 	}
@@ -150,7 +150,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> getSubject() {
+	public org.lgna.croquet.views.SwingComponentView<?> getSubject() {
 		return this.subject;
 	}
 

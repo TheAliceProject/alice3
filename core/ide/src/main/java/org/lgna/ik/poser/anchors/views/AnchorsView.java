@@ -45,7 +45,7 @@ package org.lgna.ik.poser.anchors.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AnchorsView extends org.lgna.croquet.views.JComponent<javax.swing.JComponent> {
+public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax.swing.JComponent> {
 	private static class Node {
 		private static final java.awt.Shape SHAPE = new java.awt.geom.Ellipse2D.Float( -8, -8, 16, 16 );
 		private final double theta;

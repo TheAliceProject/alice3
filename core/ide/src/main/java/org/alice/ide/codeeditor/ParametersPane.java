@@ -59,14 +59,14 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
+	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
 		return new TypedParameterPane( getProperty(), parameter );
 	}
 
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 			this.addComponent( new org.lgna.croquet.views.Label( "( " ) );
 		} else {
 			int n = this.getProperty().size();
@@ -88,7 +88,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Component<?> createInterstitial( int i, int N ) {
+	protected org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, int N ) {
 		if( i < ( N - 1 ) ) {
 			return new org.lgna.croquet.views.Label( ", " );
 		} else {
@@ -112,7 +112,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				}
 			}
 		}
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 			this.addComponent( new org.lgna.croquet.views.Label( " )" ) );
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );

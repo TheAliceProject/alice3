@@ -49,8 +49,8 @@ import java.util.Map;
 
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsMethodFrequencyView;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Statement;
@@ -63,11 +63,11 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<StatisticsMethodFrequencyView> {
 
-	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
-	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
+	private final BooleanState showFunctionsState = this.createBooleanState( "areFunctionsShowing", true );
+	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
 	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
 
-	private final ListSelectionState<UserMethod> userMethodListState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final SingleSelectListState<UserMethod> userMethodListState = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod root = new UserMethod();
 	private Integer maximum;
 
@@ -184,7 +184,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		return new StatisticsMethodFrequencyView( this );
 	}
 
-	public ListSelectionState<UserMethod> getUserMethodList() {
+	public SingleSelectListState<UserMethod> getUserMethodList() {
 		return this.userMethodListState;
 	}
 

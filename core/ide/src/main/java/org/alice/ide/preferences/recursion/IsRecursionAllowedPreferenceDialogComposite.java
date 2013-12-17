@@ -54,8 +54,8 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
-	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( this.createKey( "recursiveButtonText" ) );
+	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
+	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
 	private final int depth;
 	private IsRecursionAllowedPreferenceDialogComposite next;
 

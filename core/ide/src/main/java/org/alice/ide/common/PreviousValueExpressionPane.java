@@ -55,16 +55,16 @@ public class PreviousValueExpressionPane extends org.lgna.croquet.views.BorderPa
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-		org.lgna.croquet.views.JComponent<?> component = this.factory.createExpressionPane( previousExpression );
+		org.lgna.croquet.views.SwingComponentView<?> component = this.factory.createExpressionPane( previousExpression );
 		component.getAwtComponent().doLayout();
 		this.addCenterComponent( component );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		this.forgetAndRemoveAllComponents();
 		super.handleRemovedFrom( parent );
 	}

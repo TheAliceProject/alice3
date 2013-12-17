@@ -55,10 +55,10 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( this.createKey( "silentLabel" ) );
-	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( this.createKey( "normalLabel" ) );
-	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) );
+	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", VolumeLevelUtilities.createDetails() );
+	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( "silentLabel" );
+	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( "normalLabel" );
+	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( "louderLabel" );
 
 	private VolumeLevelCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );

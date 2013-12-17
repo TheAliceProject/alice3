@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
+	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		rv.add( perspectiveState.getMenuModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
@@ -61,7 +61,7 @@ public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return rv;
 	}
 
-	public WindowMenuModel( org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
+	public WindowMenuModel( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
 		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels( perspectiveState ) );
 	}
 }

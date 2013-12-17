@@ -50,9 +50,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	public static String INVALID_PATH_EMPTY_SUB_PATH = "INVALID_PATH_EMPTY_SUB_PATH";
 	private static final String DEFAULT_ROOT_DIRECTORY_PATH = edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities.getBestGuessPicturesDirectory().getAbsolutePath();
 
-	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( this.createKey( "rootDirectoryState" ), DEFAULT_ROOT_DIRECTORY_PATH, null );
+	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( "rootDirectoryState", DEFAULT_ROOT_DIRECTORY_PATH, null );
 
-	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( this.createKey( "browseOperation" ), new Action() {
+	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			String rootDirectoryPath = rootDirectoryState.getValue();
 			javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
@@ -94,7 +94,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private final SaveOperation saveOperation = new SaveOperation( this );
 
-	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( this.createKey( "clearOperation" ), new Action() {
+	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			clearShapes();
 			//todo
@@ -103,21 +103,21 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	} );
 
-	private final org.lgna.croquet.Operation cropOperation = this.createActionOperation( this.createKey( "cropOperation" ), new Action() {
+	private final org.lgna.croquet.Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			crop();
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation uncropOperation = this.createActionOperation( this.createKey( "uncropOperation" ), new Action() {
+	private final org.lgna.croquet.Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			uncrop();
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( this.createKey( "copyOperation" ), new Action() {
+	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			if( isGoodToGoCroppingIfNecessary() ) {
 				copyImageToClipboard( getView().render() );
@@ -128,11 +128,11 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	} );
 
-	private final org.lgna.croquet.BooleanState showDashedBorderState = this.createBooleanState( this.createKey( "showDashedBorderState" ), true );
-	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( this.createKey( "showInScreenResolutionState" ), true );
-	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( this.createKey( "dropShadowState" ), true );
+	private final org.lgna.croquet.BooleanState showDashedBorderState = this.createBooleanState( "showDashedBorderState", true );
+	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( "showInScreenResolutionState", true );
+	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( "dropShadowState", true );
 
-	private final org.lgna.croquet.ListSelectionState<Tool> toolState = this.createListSelectionStateForEnum( this.createKey( "toolState" ), Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
+	private final org.lgna.croquet.SingleSelectListState<Tool> toolState = this.createSingleSelectListStateForEnum( "toolState", Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
 		public String customize( String localization, Tool value ) {
 			if( value == Tool.ADD_RECTANGLE ) {
 				return localization + " (F11)";
@@ -259,7 +259,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		return this.cropCommitHolder;
 	}
 
-	public org.lgna.croquet.ListSelectionState<Tool> getToolState() {
+	public org.lgna.croquet.SingleSelectListState<Tool> getToolState() {
 		return this.toolState;
 	}
 
@@ -466,20 +466,20 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 		}
 	}
 
-//	public static void main( String[] args ) throws Exception {
-//		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-//
-//		//final javax.swing.ImageIcon icon = new javax.swing.ImageIcon( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );
-//		final java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );
-//		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-//		final ImageEditorFrame imageComposite = new ImageEditorFrame();
-//		imageComposite.getShowInScreenResolutionState().setValueTransactionlessly( false );
-//		imageComposite.getToolState().setValueTransactionlessly( Tool.CROP_SELECT );
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				imageComposite.setImageClearShapesAndShowFrame( image );
-//				( (org.lgna.croquet.components.Frame)imageComposite.getView().getRoot() ).setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-//			}
-//		} );
-//	}
+	//	public static void main( String[] args ) throws Exception {
+	//		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+	//
+	//		//final javax.swing.ImageIcon icon = new javax.swing.ImageIcon( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );
+	//		final java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( org.alice.ide.warning.components.WarningView.class.getResource( "images/toxic.png" ) );
+	//		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+	//		final ImageEditorFrame imageComposite = new ImageEditorFrame();
+	//		imageComposite.getShowInScreenResolutionState().setValueTransactionlessly( false );
+	//		imageComposite.getToolState().setValueTransactionlessly( Tool.CROP_SELECT );
+	//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	//			public void run() {
+	//				imageComposite.setImageClearShapesAndShowFrame( image );
+	//				( (org.lgna.croquet.components.Frame)imageComposite.getView().getRoot() ).setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+	//			}
+	//		} );
+	//	}
 }

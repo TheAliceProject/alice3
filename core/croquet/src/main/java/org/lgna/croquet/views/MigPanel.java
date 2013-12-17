@@ -83,11 +83,11 @@ public class MigPanel extends Panel {
 		return rv;
 	}
 
-	public void addComponent( Component<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 
-	public void addComponent( Component<?> component, String constraint ) {
+	public void addComponent( AwtComponentView<?> component, String constraint ) {
 		this.internalAddComponent( component, constraint );
 	}
 }
