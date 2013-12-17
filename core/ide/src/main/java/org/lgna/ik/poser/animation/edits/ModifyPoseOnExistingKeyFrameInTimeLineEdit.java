@@ -74,7 +74,7 @@ public class ModifyPoseOnExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 	}
 
 	@Override
-	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 	}
 
 }

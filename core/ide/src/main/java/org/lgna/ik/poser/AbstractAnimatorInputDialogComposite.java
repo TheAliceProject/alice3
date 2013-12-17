@@ -47,7 +47,7 @@ import java.util.UUID;
 import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
@@ -84,7 +84,7 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
 		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
 		BlockStatement body = controlComposite.createMethodBody();
 		if( method != null ) {

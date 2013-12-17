@@ -60,7 +60,7 @@ import org.lgna.croquet.Model;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.AbstractPoserOrAnimatorInputDialogComposite;
@@ -187,7 +187,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			parent.getModel().straightenOutJoints();
 			return null;
 		}

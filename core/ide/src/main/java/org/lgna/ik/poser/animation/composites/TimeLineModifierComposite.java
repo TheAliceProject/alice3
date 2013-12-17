@@ -50,7 +50,7 @@ import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.KeyFrameData;
@@ -164,7 +164,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
 			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
 			return null;

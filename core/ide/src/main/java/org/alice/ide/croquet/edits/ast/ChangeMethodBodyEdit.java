@@ -42,7 +42,7 @@
  */
 package org.alice.ide.croquet.edits.ast;
 
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.UserMethod;
@@ -50,7 +50,7 @@ import org.lgna.project.ast.UserMethod;
 /**
  * @author Matt May
  */
-public class ChangeMethodBodyEdit extends Edit {
+public class ChangeMethodBodyEdit extends AbstractEdit {
 
 	private final UserMethod method;
 	private final BlockStatement prevBody;
@@ -74,7 +74,7 @@ public class ChangeMethodBodyEdit extends Edit {
 	}
 
 	@Override
-	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.Edit.DescriptionStyle descriptionStyle ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 	}
 
 }

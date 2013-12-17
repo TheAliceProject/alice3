@@ -54,7 +54,7 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.BorderPanel;
@@ -164,7 +164,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
