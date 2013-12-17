@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.dialog;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, org.lgna.croquet.imp.dialog.InputDialogContentComposite> {
-	private final org.lgna.croquet.imp.dialog.InputDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.InputDialogContentComposite( this );
-
-	public InputDialogCoreComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+public final class InputDialogContentComposite extends GatedCommitDialogContentComposite<org.lgna.croquet.imp.dialog.views.InputDialogContentPane> {
+	public InputDialogContentComposite( org.lgna.croquet.InputDialogCoreComposite<?> coreComposite ) {
+		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
 	}
 
 	@Override
-	protected org.lgna.croquet.imp.dialog.InputDialogContentComposite getDialogContentComposite() {
-		return this.contentComposite;
-	}
-
-	@Override
-	protected String getCommitUiKey() {
-		return "OptionPane.okButtonText";
-	}
-
-	@Override
-	protected String getDefaultCommitText() {
-		return "OK";
-	}
-
-	@Override
-	protected void updateIsGoodToGo( boolean isGoodToGo ) {
-		this.getCommitOperation().setEnabled( isGoodToGo );
+	protected org.lgna.croquet.imp.dialog.views.InputDialogContentPane createView() {
+		return new org.lgna.croquet.imp.dialog.views.InputDialogContentPane( this );
 	}
 }

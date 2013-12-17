@@ -43,74 +43,10 @@
 
 package org.lgna.croquet;
 
-/*package-private*/abstract class DialogContentPanel<CC extends DialogContentComposite> extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.views.Button commitButton;
-	private final org.lgna.croquet.views.Button cancelButton;
-
-	public DialogContentPanel( CC composite ) {
-		super( composite );
-		DialogCoreComposite coreComposite = composite.getCoreComposite();
-		this.commitButton = coreComposite.getCommitOperation().createButton();
-		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		org.lgna.croquet.views.CompositeView<?, ?> coreView = coreComposite.getView();
-		this.setBackgroundColor( coreView.getBackgroundColor() );
-		this.addCenterComponent( coreView );
-	}
-
-	public org.lgna.croquet.views.Button getCommitButton() {
-		return this.commitButton;
-	}
-
-	public org.lgna.croquet.views.Button getCancelButton() {
-		return this.cancelButton;
-	}
-
-	protected org.lgna.croquet.views.Button getLeadingCommitCancelButton() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return this.commitButton;
-		} else {
-			return this.cancelButton;
-		}
-	}
-
-	protected org.lgna.croquet.views.Button getTrailingCommitCancelButton() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return this.cancelButton;
-		} else {
-			return this.commitButton;
-		}
-	}
-}
-
-/* package-private */abstract class DialogContentComposite<V extends GatedCommitDialogContentPanel> extends SimpleComposite<V> {
-	private final DialogCoreComposite coreComposite;
-
-	public DialogContentComposite( java.util.UUID migrationId, DialogCoreComposite coreComposite ) {
-		super( migrationId );
-		this.coreComposite = coreComposite;
-	}
-
-	public DialogCoreComposite getCoreComposite() {
-		return this.coreComposite;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.coreComposite.handlePreActivation();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		this.coreComposite.handlePostDeactivation();
-		super.handlePostDeactivation();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
+public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
 	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, DialogCoreComposite> {
@@ -265,7 +201,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 		super( migrationId, true );
 	}
 
-	protected abstract CC getDialogContentComposite();
+	protected abstract DCC getDialogContentComposite();
 
 	public final Operation getCommitOperation() {
 		return this.commitOperation;

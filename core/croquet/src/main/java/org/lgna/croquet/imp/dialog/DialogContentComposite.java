@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.dialog;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, org.lgna.croquet.imp.dialog.InputDialogContentComposite> {
-	private final org.lgna.croquet.imp.dialog.InputDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.InputDialogContentComposite( this );
+public abstract class DialogContentComposite<V extends org.lgna.croquet.imp.dialog.views.DialogContentPane> extends org.lgna.croquet.SimpleComposite<V> {
+	private final org.lgna.croquet.DialogCoreComposite<?, ?> coreComposite;
 
-	public InputDialogCoreComposite( java.util.UUID migrationId ) {
+	public DialogContentComposite( java.util.UUID migrationId, org.lgna.croquet.DialogCoreComposite<?, ?> coreComposite ) {
 		super( migrationId );
+		this.coreComposite = coreComposite;
+	}
+
+	public org.lgna.croquet.DialogCoreComposite<?, ?> getCoreComposite() {
+		return this.coreComposite;
 	}
 
 	@Override
-	protected org.lgna.croquet.imp.dialog.InputDialogContentComposite getDialogContentComposite() {
-		return this.contentComposite;
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.coreComposite.handlePreActivation();
 	}
 
 	@Override
-	protected String getCommitUiKey() {
-		return "OptionPane.okButtonText";
-	}
-
-	@Override
-	protected String getDefaultCommitText() {
-		return "OK";
-	}
-
-	@Override
-	protected void updateIsGoodToGo( boolean isGoodToGo ) {
-		this.getCommitOperation().setEnabled( isGoodToGo );
+	public void handlePostDeactivation() {
+		this.coreComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
 	}
 }
