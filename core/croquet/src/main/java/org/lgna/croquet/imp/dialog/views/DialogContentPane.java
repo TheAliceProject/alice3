@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.dialog.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, org.lgna.croquet.imp.dialog.InputDialogContentComposite> {
-	private final org.lgna.croquet.imp.dialog.InputDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.InputDialogContentComposite( this );
-
-	public InputDialogCoreComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+public abstract class DialogContentPane extends org.lgna.croquet.views.BorderPanel {
+	public DialogContentPane( org.lgna.croquet.imp.dialog.DialogContentComposite composite ) {
+		super( composite );
+		org.lgna.croquet.DialogCoreComposite coreComposite = composite.getCoreComposite();
+		this.commitButton = coreComposite.getCommitOperation().createButton();
+		this.cancelButton = coreComposite.getCancelOperation().createButton();
+		org.lgna.croquet.views.CompositeView<?, ?> coreView = coreComposite.getView();
+		this.setBackgroundColor( coreView.getBackgroundColor() );
+		this.addCenterComponent( coreView );
 	}
 
-	@Override
-	protected org.lgna.croquet.imp.dialog.InputDialogContentComposite getDialogContentComposite() {
-		return this.contentComposite;
+	public org.lgna.croquet.views.Button getCommitButton() {
+		return this.commitButton;
 	}
 
-	@Override
-	protected String getCommitUiKey() {
-		return "OptionPane.okButtonText";
+	public org.lgna.croquet.views.Button getCancelButton() {
+		return this.cancelButton;
 	}
 
-	@Override
-	protected String getDefaultCommitText() {
-		return "OK";
+	protected org.lgna.croquet.views.Button getLeadingCommitCancelButton() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			return this.commitButton;
+		} else {
+			return this.cancelButton;
+		}
 	}
 
-	@Override
-	protected void updateIsGoodToGo( boolean isGoodToGo ) {
-		this.getCommitOperation().setEnabled( isGoodToGo );
+	protected org.lgna.croquet.views.Button getTrailingCommitCancelButton() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			return this.cancelButton;
+		} else {
+			return this.commitButton;
+		}
 	}
+
+	private final org.lgna.croquet.views.Button commitButton;
+	private final org.lgna.croquet.views.Button cancelButton;
 }

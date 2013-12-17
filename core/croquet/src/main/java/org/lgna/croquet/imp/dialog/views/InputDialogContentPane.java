@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.dialog.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, org.lgna.croquet.imp.dialog.InputDialogContentComposite> {
-	private final org.lgna.croquet.imp.dialog.InputDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.InputDialogContentComposite( this );
-
-	public InputDialogCoreComposite( java.util.UUID migrationId ) {
-		super( migrationId );
-	}
-
-	@Override
-	protected org.lgna.croquet.imp.dialog.InputDialogContentComposite getDialogContentComposite() {
-		return this.contentComposite;
-	}
-
-	@Override
-	protected String getCommitUiKey() {
-		return "OptionPane.okButtonText";
-	}
-
-	@Override
-	protected String getDefaultCommitText() {
-		return "OK";
-	}
-
-	@Override
-	protected void updateIsGoodToGo( boolean isGoodToGo ) {
-		this.getCommitOperation().setEnabled( isGoodToGo );
+public final class InputDialogContentPane extends GatedCommitDialogContentPane {
+	public InputDialogContentPane( org.lgna.croquet.imp.dialog.InputDialogContentComposite composite ) {
+		super( composite );
+		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
+		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
+		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
 	}
 }
