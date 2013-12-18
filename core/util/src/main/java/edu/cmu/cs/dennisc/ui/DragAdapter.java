@@ -202,7 +202,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 			m_isActive = this.isAcceptable( e );
 		}
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+			if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 				if( e.isShiftDown() ) {
 					m_dragStyleCurrent = DragStyle.CONTROL_SHIFT;
 				} else {

@@ -74,7 +74,6 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
 
 /**
  * @author Matt May
@@ -268,7 +267,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	};
 
 	public boolean tryToUpload() {
-		JFrame parent = SwingUtilities.getRootJFrame( getView().getAwtComponent() );
+		JFrame parent = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootJFrame( getView().getAwtComponent() );
 		UploadToYouTubeStatusPane statusPane = new UploadToYouTubeStatusPane( parent, uploader );
 		uploader.addYouTubeListener( listener );
 		uploader.addYouTubeListener( statusPane );

@@ -262,4 +262,94 @@ public class ComponentUtilities {
 	public static java.awt.Component findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
 	}
+
+	public static void doLayoutTree( java.awt.Component c ) {
+		//c.doLayout();
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				doLayoutTree( component );
+			}
+		}
+		c.doLayout();
+	}
+
+	public static void setSizeToPreferredSizeTree( java.awt.Component c ) {
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				setSizeToPreferredSizeTree( component );
+			}
+		}
+		c.setSize( c.getPreferredSize() );
+	}
+
+	public static void invalidateTree( java.awt.Component c ) {
+		c.invalidate();
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				invalidateTree( component );
+			}
+		}
+	}
+
+	public static void validateTree( java.awt.Component c ) {
+		c.validate();
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				validateTree( component );
+			}
+		}
+	}
+
+	public static void revalidateTree( java.awt.Component c ) {
+		if( c instanceof javax.swing.JComponent ) {
+			javax.swing.JComponent jc = (javax.swing.JComponent)c;
+			jc.revalidate();
+		}
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				validateTree( component );
+			}
+		}
+	}
+
+	public static java.awt.Frame getRootFrame( java.awt.Component c ) {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
+		if( root instanceof java.awt.Frame ) {
+			return (java.awt.Frame)root;
+		} else {
+			return null;
+		}
+	}
+
+	public static javax.swing.JFrame getRootJFrame( java.awt.Component c ) {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
+		if( root instanceof javax.swing.JFrame ) {
+			return (javax.swing.JFrame)root;
+		} else {
+			return null;
+		}
+	}
+
+	public static java.awt.Dialog getRootDialog( java.awt.Component c ) {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
+		if( root instanceof java.awt.Dialog ) {
+			return (java.awt.Dialog)root;
+		} else {
+			return null;
+		}
+	}
+
+	public static javax.swing.JDialog getRootJDialog( java.awt.Component c ) {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
+		if( root instanceof javax.swing.JDialog ) {
+			return (javax.swing.JDialog)root;
+		} else {
+			return null;
+		}
+	}
 }

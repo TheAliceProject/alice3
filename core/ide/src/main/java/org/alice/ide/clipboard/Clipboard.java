@@ -102,7 +102,7 @@ public enum Clipboard {
 			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
 				org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
 				org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
-				boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
+				boolean isCopy = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
 				if( isCopy ) {
 					return CopyToClipboardOperation.getInstance( statement );
 				} else {
