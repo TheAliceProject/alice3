@@ -47,7 +47,7 @@ package org.alice.ide.perspectives.noproject;
  */
 public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
 				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,

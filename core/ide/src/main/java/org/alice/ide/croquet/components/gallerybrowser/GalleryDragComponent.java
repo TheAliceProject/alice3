@@ -169,8 +169,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		private static String TOP_LEFT_CONSTRAINT = "TOP_LEFT_CONSTRAINT";
 		private static String TOP_RIGHT_CONSTRAINT = "TOP_RIGHT_CONSTRAINT";
 
-		private final java.util.List<java.awt.Component> topLeftComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-		private final java.util.List<java.awt.Component> topRightComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<java.awt.Component> topLeftComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		private final java.util.List<java.awt.Component> topRightComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		private java.awt.Component baseComponent;
 
 		public void addLayoutComponent( String name, java.awt.Component comp ) {

@@ -71,18 +71,18 @@ public class ExpressionFillInGenerator {
 		return completionStepSubTransactionHistory;
 	}
 
-	//	private final static java.util.Collection<Integer> integerLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 1, 2, 3 );
-	//	private final static java.util.Collection<Double> doubleLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.25, 0.5, 1.0, 2.0, 10.0 );
-	//	private final static java.util.Collection<Double> angleLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 );
-	//	private final static java.util.Collection<Double> opacityLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 ); //org.lgna.story.annotation.PortionDetails.SINGLETON.getLiterals() ); //todo: handle portion, and others more gracefully
-	private final static java.util.Collection<String> stringLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.cascade.fillerinners.StringFillerInner.getLiterals() );
+	//	private final static java.util.Collection<Integer> integerLiteralValues = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( 1, 2, 3 );
+	//	private final static java.util.Collection<Double> doubleLiteralValues = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( 0.25, 0.5, 1.0, 2.0, 10.0 );
+	//	private final static java.util.Collection<Double> angleLiteralValues = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 );
+	//	private final static java.util.Collection<Double> opacityLiteralValues = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 ); //org.lgna.story.annotation.PortionDetails.SINGLETON.getLiterals() ); //todo: handle portion, and others more gracefully
+	private final static java.util.Collection<String> stringLiteralValues = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( org.alice.ide.cascade.fillerinners.StringFillerInner.getLiterals() );
 
 	private static java.util.Collection<Integer> getIntegerLiterals( org.lgna.project.annotations.ValueDetails<?> valueDetails ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newList( org.alice.ide.cascade.fillerinners.IntegerFillerInner.getLiterals( valueDetails ) );
+		return edu.cmu.cs.dennisc.java.util.Lists.newList( org.alice.ide.cascade.fillerinners.IntegerFillerInner.getLiterals( valueDetails ) );
 	}
 
 	private static java.util.Collection<Double> getDoubleLiterals( org.lgna.project.annotations.ValueDetails<?> valueDetails ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newList( org.alice.ide.cascade.fillerinners.DoubleFillerInner.getLiterals( valueDetails ) );
+		return edu.cmu.cs.dennisc.java.util.Lists.newList( org.alice.ide.cascade.fillerinners.DoubleFillerInner.getLiterals( valueDetails ) );
 	}
 
 	public static org.lgna.croquet.CascadeFillIn generateFillInForExpression( org.lgna.project.ast.Expression expression, org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory ) throws org.lgna.croquet.UnsupportedGenerationException {

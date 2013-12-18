@@ -50,7 +50,7 @@ public class JointId {
 
 	private final JointId parent;
 	private final Class<? extends JointedModelResource> containingClass;
-	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private static final java.util.Map<Class<? extends JointedModelResource>, java.util.Map<JointId, java.util.List<JointId>>> externalChildrenMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
@@ -74,7 +74,7 @@ public class JointId {
 		}
 		else
 		{
-			externalChildList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			externalChildList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			childClassMap.put( parent, externalChildList );
 		}
 		externalChildList.add( child );

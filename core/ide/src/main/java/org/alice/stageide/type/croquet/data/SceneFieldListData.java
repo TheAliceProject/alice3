@@ -55,7 +55,7 @@ public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListDat
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		if( sceneType != null ) {
-			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 			final boolean IS_SCENE_FIELD_DESIRED = true;
 			if( IS_SCENE_FIELD_DESIRED ) {

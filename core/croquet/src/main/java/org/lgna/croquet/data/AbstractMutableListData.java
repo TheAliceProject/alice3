@@ -46,7 +46,7 @@ package org.lgna.croquet.data;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMutableListData<T> extends ListData<T> {
-	private final java.util.List<javax.swing.event.ListDataListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<javax.swing.event.ListDataListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public AbstractMutableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
 		super( itemCodec );

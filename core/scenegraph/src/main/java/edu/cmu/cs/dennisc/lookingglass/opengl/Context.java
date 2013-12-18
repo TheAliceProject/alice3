@@ -57,7 +57,7 @@ public abstract class Context {
 	}
 
 	private int scaledCount = 0;
-	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public void initialize() {
 		this.scaledCount = 0;

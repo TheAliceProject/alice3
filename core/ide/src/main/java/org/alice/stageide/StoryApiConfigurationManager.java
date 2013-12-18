@@ -64,7 +64,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
 
 	private static java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> createUnmodifiableSubCompositeList( org.alice.ide.member.FilteredJavaMethodsSubComposite... subComposites ) {
-		return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( subComposites ) );
+		return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( subComposites ) );
 	}
 
 	private StoryApiConfigurationManager() {

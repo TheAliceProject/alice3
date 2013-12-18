@@ -70,7 +70,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
@@ -223,7 +222,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	}
 
 	public List<Criterion> getCriteria() {
-		List<Criterion> rv = Collections.newArrayList();
+		List<Criterion> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		if( !showGenerated ) {
 			rv.add( AcceptIfNotGenerated.getInstance() );
 		}

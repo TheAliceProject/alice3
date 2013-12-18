@@ -56,7 +56,8 @@ import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.StartCollisionEvent;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
@@ -69,7 +70,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		registerIsFiringMap( collisionListener );
 		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
+		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
@@ -98,10 +99,10 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 
 	private class CollisionEventHandler {
 
-		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Collections.newConcurrentHashMap();
-		private final Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
-		private final Map<SThing, Map<SThing, Boolean>> wereTouchingMap = Collections.newConcurrentHashMap();
-		private final Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
+		private final Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
+		private final Map<SThing, Map<SThing, Boolean>> wereTouchingMap = Maps.newConcurrentHashMap();
+		private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {

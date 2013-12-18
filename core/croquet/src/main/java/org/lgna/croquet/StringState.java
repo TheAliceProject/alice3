@@ -89,7 +89,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	private final DocumentListener documentListener = new DocumentListener();
 
 	public static class SwingModel {
-		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
 
 		private SwingModel() {

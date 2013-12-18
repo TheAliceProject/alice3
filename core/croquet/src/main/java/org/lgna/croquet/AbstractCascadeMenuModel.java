@@ -59,7 +59,7 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 
 	private String menuItemText;
 
-	private final java.util.List<InternalBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new InternalBlank() ) );
+	private final java.util.List<InternalBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new InternalBlank() ) );
 
 	public AbstractCascadeMenuModel( java.util.UUID id ) {
 		super( id );

@@ -178,7 +178,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
 
-	private final java.util.List<org.alice.stageide.personresource.data.HairColorName> hairColorNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.stageide.personresource.data.HairColorName> hairColorNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );

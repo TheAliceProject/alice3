@@ -250,7 +250,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private String reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
 		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
-		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( fields );
+		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( fields );
 		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
 		java.util.List<org.lgna.project.ast.FieldAccess> accessesForFieldToMoveToTheEnd = null;
 		for( org.lgna.project.ast.UserField field : fields ) {
@@ -315,7 +315,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
 			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
-				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
 					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )

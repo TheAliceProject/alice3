@@ -94,7 +94,7 @@ public class MenuSelection {
 		javax.swing.MenuElement[] selectedPath = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( selectedPath ) ) {
 			menuBarComposite = getMenuBarComposite( selectedPath );
-			java.util.List<org.lgna.croquet.MenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			int i0;
 			if( menuBarComposite != null ) {
 				i0 = 1;

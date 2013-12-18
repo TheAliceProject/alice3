@@ -85,10 +85,10 @@ public class StoryApiSpecificAstUtilities {
 
 	public static java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedSceneActivationListeners( org.lgna.project.ast.NamedUserType sceneType ) {
 		if( sceneType != null ) {
-			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.lgna.project.ast.UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 			if( initializeEventListenersMethod != null ) {
-				java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 				for( org.lgna.project.ast.Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
 					if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {

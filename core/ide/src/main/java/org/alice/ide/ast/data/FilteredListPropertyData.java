@@ -96,7 +96,7 @@ public abstract class FilteredListPropertyData<E> extends org.lgna.croquet.data.
 	@Override
 	protected java.util.List<E> createValues() {
 		if( this.listProperty != null ) {
-			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 			for( E item : this.listProperty ) {
 				if( this.isAcceptableItem( item ) ) {

@@ -198,7 +198,7 @@ public class TypeManager {
 	}
 
 	private static org.lgna.project.ast.AbstractType<?, ?, ?>[] getArgumentTypes( org.lgna.project.ast.AbstractType<?, ?, ?> ancestorType, org.lgna.project.ast.AbstractType<?, ?, ?> resourceType ) {
-		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ), resourceType );
 		org.lgna.project.ast.AbstractType<?, ?, ?>[] rv = new org.lgna.project.ast.AbstractType<?, ?, ?>[ types.size() ];
 		types.toArray( rv );
@@ -383,7 +383,7 @@ public class TypeManager {
 	}
 
 	public static java.util.List<org.lgna.project.ast.NamedUserType> getNamedUserTypesFromSuperTypes( java.util.List<org.lgna.project.ast.JavaType> superTypes ) {
-		java.util.ArrayList<org.lgna.project.ast.NamedUserType> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( superTypes.size() );
+		java.util.ArrayList<org.lgna.project.ast.NamedUserType> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( superTypes.size() );
 		for( org.lgna.project.ast.JavaType superType : superTypes ) {
 			rv.add( getNamedUserTypeFromSuperType( superType ) );
 		}

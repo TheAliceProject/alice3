@@ -62,7 +62,7 @@ public class ComponentManager {
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentLinkedQueue();
+				rv = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
 				map.put( model, rv );
 			}
 			return rv;

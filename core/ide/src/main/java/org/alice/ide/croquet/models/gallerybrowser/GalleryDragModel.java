@@ -77,7 +77,7 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 		if( ide != null ) {
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( sceneEditor.getDropReceptor() );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( sceneEditor.getDropReceptor() );
 		} else {
 			return java.util.Collections.emptyList();
 		}

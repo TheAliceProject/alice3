@@ -100,11 +100,11 @@ public class ProjectInfo {
 			for( TypeInfo typeInfo : this.getTypeInfos() ) {
 				typeInfo.resetRequired();
 			}
-			java.util.List<DeclarationInfo<?>> desired = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<DeclarationInfo<?>> desired = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( TypeInfo typeInfo : this.getTypeInfos() ) {
 				typeInfo.appendDesired( desired );
 			}
-			java.util.Set<DeclarationInfo<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+			java.util.Set<DeclarationInfo<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 			for( DeclarationInfo<?> declarationInfo : desired ) {
 				declarationInfo.updateRequired( set );
 			}

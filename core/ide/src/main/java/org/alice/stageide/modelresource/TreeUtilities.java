@@ -55,7 +55,7 @@ public class TreeUtilities {
 	private static GroupBasedResourceNode treeBasedOnGroup;
 
 	private static ClassHierarchyBasedResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
-		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
 			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
@@ -131,7 +131,7 @@ public class TreeUtilities {
 
 	private static java.util.List<ResourceNode> convert( java.util.List<ResourceNode> srcNodes, boolean isTheme ) {
 		if( srcNodes != null ) {
-			java.util.List<ResourceNode> dstNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<ResourceNode> dstNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( ResourceNode srcNode : srcNodes ) {
 				java.util.List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren(), isTheme );
 				ResourceNode node;
@@ -150,7 +150,7 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> createIconFactories( java.util.List<ResourceNode> dstChildNodes ) {
-		java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( ResourceNode resourceNode : dstChildNodes ) {
 			ResourceKey resourceKey = resourceNode.getResourceKey();
 			//todo
@@ -187,11 +187,11 @@ public class TreeUtilities {
 	private static java.util.List<ResourceNode> createTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, boolean isTheme, String... emptyTagNames ) {
 		java.util.Map<String, ResourceNode> mapInternal = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-		java.util.List<ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		java.util.List<String> emptyTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( emptyTagNames );
+		java.util.List<String> emptyTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( emptyTagNames );
 		for( String emptyGroupTag : emptyTags ) {
-			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			addTagNode( emptyGroupTag, childNodes, rv, mapInternal, isTheme );
 		}
 

@@ -208,7 +208,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener listener, SThing[] setA, SThing[] setB ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ) );
+		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -216,20 +216,20 @@ public abstract class SScene extends SThing {
 	public void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener listener, SThing[] setA, SThing[] setB, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
-				.addWhileCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ), TimerFrequency.getValue( details ).getFrequency(),
+				.addWhileCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener listener, SThing[] setA, SThing[] setB ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ) );
+		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener listener, SThing[] setA, SThing[] setB, Number distance ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ), distance );// AddEnterProximityEventListener.getDist( details ));
+		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance );// AddEnterProximityEventListener.getDist( details ));
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -237,8 +237,8 @@ public abstract class SScene extends SThing {
 	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener listener, SThing[] setA, SThing[] setB, Number distance, AddTimeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addWhileProximityListener(
 				listener,
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ),
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ),
 				distance,
 				TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
@@ -247,7 +247,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener listener, SThing[] setA, SThing[] setB, Number distance ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ), distance );// AddExitProximityEventListener.getDist( details ));
+		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance );// AddExitProximityEventListener.getDist( details ));
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
@@ -259,7 +259,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@AddEventListenerTemplate( )
 	public void addWhileInViewListener( org.lgna.story.event.WhileInViewListener listener, SModel[] set, AddTimeListener.Detail... details ) {
-		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( set ), TimerFrequency.getValue( details ).getFrequency(),
+		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( set ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 
@@ -272,7 +272,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener listener, SModel[] setA, SModel[] setB ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ) );
+		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -280,8 +280,8 @@ public abstract class SScene extends SThing {
 	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener listener, SModel[] setA, SModel[] setB, AddTimeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addWhileOcclusionListener(
 				listener,
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ),
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ),
 				TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
@@ -289,7 +289,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener listener, SModel[] setA, SModel[] setB ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( setB ) );
+		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
 	}
 
 	//remove

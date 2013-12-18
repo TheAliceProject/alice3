@@ -154,7 +154,7 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 	}
 
 	public javax.swing.tree.TreePath getTreePath( Object node ) {
-		java.util.List<Object> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<Object> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		updatePath( list, node );
 		return new javax.swing.tree.TreePath( list.toArray() );
 	}

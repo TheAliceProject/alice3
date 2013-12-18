@@ -114,7 +114,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		if( ( this.count > 1 ) && ( from == to ) ) {
 			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
+				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
 				statementListProperty.removeExclusive( fromIndex, fromIndex + count );
 				statementListProperty.addAll( toIndex, l );
 			} else {
@@ -140,7 +140,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		if( ( this.count > 1 ) && ( from == to ) ) {
 			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
+				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
 				statementListProperty.removeExclusive( toIndex, toIndex + count );
 				statementListProperty.addAll( fromIndex, l );
 			} else {

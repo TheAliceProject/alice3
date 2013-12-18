@@ -65,7 +65,7 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 	}
 
 	private void process( String... chunks ) {
-		this.process( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( chunks ) );
+		this.process( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( chunks ) );
 	}
 
 	protected boolean uploadToJIRAViaSOAP() throws Exception {

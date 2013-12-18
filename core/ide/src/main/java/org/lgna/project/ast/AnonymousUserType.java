@@ -65,7 +65,7 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 		if( this.constructors != null ) {
 			//pass
 		} else {
-			this.constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			this.constructors = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			this.constructors.add( AnonymousUserConstructor.get( this ) );
 		}
 		return this.constructors;

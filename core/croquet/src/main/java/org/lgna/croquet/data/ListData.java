@@ -86,7 +86,7 @@ public abstract class ListData<T> implements Iterable<T> {
 	public abstract void internalSetAllItems( java.util.Collection<T> items );
 
 	public final void internalSetAllItems( T[] items ) {
-		this.internalSetAllItems( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( items ) );
+		this.internalSetAllItems( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( items ) );
 	}
 
 	public abstract void internalSetItemAt( int index, T item );

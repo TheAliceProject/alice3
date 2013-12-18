@@ -78,7 +78,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
 		if( expressions.size() > 0 ) {
 			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), dropTrigger );
-			java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
 			for( org.lgna.project.ast.Expression expression : expressions ) {
 				org.lgna.croquet.CascadeFillIn fillIn = org.lgna.cheshire.ast.ExpressionFillInGenerator.generateFillInForExpression( expression, bufferForCompletionStepSubTransactionHistory );

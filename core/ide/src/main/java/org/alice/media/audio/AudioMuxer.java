@@ -48,7 +48,6 @@ import java.util.Map;
 
 import org.lgna.common.resources.AudioResource;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
@@ -56,7 +55,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class AudioMuxer {
 
-	private final List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
+	private final List<ScheduledAudioStream> scheduledStreams = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public void addAudioStream( ScheduledAudioStream audio ) {
 		scheduledStreams.add( audio );

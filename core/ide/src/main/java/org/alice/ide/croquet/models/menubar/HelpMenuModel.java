@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.menubar;
  */
 public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
 				org.alice.ide.help.HelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.help.GraphicsHelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,

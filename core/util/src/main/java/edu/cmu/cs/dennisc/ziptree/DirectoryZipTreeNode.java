@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.ziptree;
  * @author Dennis Cosgrove
  */
 public class DirectoryZipTreeNode extends ZipTreeNode {
-	private java.util.List<ZipTreeNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ZipTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private boolean isSorted = false;
 
 	public DirectoryZipTreeNode( String path ) {

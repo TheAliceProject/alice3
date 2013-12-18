@@ -113,7 +113,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 					this.componentsToRepaint.add( componentToRepaint );
 				}
 			} else {
-				this.componentsToRepaint = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( componentToRepaint );
+				this.componentsToRepaint = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( componentToRepaint );
 				this.worker.execute();
 			}
 		}

@@ -88,13 +88,13 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		DeclarationTabState declarationTabState = DeclarationsEditorComposite.getInstance().getTabState();
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> managedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> managedFieldModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.lgna.croquet.data.ListData<DeclarationComposite> data = declarationTabState.getData();
-		final java.util.Set<org.lgna.croquet.StandardMenuItemPrepModel> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set<org.lgna.croquet.StandardMenuItemPrepModel> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
 				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod( method ).getMenuItemPrepModel();
@@ -137,7 +137,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
 
 		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForType( type );
 		operation.setName( type.getName() );

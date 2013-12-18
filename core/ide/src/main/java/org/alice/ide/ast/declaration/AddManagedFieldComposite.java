@@ -89,9 +89,9 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 
 	protected static class EditCustomization {
-		private final java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
 			this.doStatements.add( statement );
@@ -120,7 +120,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
 	private static class InitialPropertyValueExpressionCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.JavaMethod setter;
-		private static final java.util.Collection<org.lgna.project.ast.JavaMethod> setDimensionPolicyMethods = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		private static final java.util.Collection<org.lgna.project.ast.JavaMethod> setDimensionPolicyMethods = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
 		public InitialPropertyValueExpressionCustomizer( org.lgna.project.ast.JavaMethod setter ) {
 			this.setter = setter;

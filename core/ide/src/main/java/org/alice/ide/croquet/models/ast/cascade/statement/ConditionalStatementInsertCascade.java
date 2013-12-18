@@ -71,7 +71,7 @@ public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStat
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ConditionalStatement : statement;
 		org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
 	}
 
 	@Override

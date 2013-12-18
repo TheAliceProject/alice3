@@ -63,7 +63,7 @@ public abstract class SimpleAssignmentInsertCascade extends AssignmentInsertCasc
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
 		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
 				assignmentExpression.rightHandSide.getValue()
 				);
 	}

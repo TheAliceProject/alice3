@@ -74,7 +74,7 @@ public class NewSchoolImagesToWebmEncoder {
 		this.encodedVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
 		this.encodedVideoFile.deleteOnExit();
 
-		java.util.List<String> args = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<String> args = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		// overwrite output files without asking
 		args.add( "-y" );

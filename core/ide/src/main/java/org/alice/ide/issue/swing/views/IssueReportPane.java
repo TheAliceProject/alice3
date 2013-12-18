@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 public abstract class IssueReportPane extends javax.swing.JPanel implements ReportGenerator {
 	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
 
-	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "java.version", "os.name", "os.arch" ) );
+	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
 
 	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
 		return systemPropertiesForEnnvironmentField;

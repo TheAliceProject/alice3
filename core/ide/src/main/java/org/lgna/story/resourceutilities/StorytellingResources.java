@@ -547,7 +547,7 @@ public class StorytellingResources {
 
 	public List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
 		List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getRootNodes();
-		List<org.lgna.project.ast.JavaType> rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		List<org.lgna.project.ast.JavaType> rootTypes = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		for( ModelResourceTreeNode node : rootNodes ) {
 			rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 		}
@@ -595,7 +595,7 @@ public class StorytellingResources {
 
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		//System.out.println( "Getting children for type: " + type );
-		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		TreeNode<JavaType> typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( typeNode != null ) {
 			for( int i = 0; i < typeNode.getChildCount(); i++ ) {

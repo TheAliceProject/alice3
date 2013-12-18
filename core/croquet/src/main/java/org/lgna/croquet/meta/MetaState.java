@@ -46,7 +46,7 @@ package org.lgna.croquet.meta;
  * @author Dennis Cosgrove
  */
 public abstract class MetaState<T> {
-	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private T prevValue;
 

@@ -49,7 +49,7 @@ public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentH
 	public java.util.List<E> getInitializingIfAbsentToLinkedList( K key ) {
 		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
 			public java.util.List<E> initialize( K key ) {
-				return Collections.newLinkedList();
+				return Lists.newLinkedList();
 			}
 		} );
 	}
@@ -57,7 +57,7 @@ public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentH
 	public java.util.List<E> getInitializingIfAbsentToArrayList( K key ) {
 		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
 			public java.util.List<E> initialize( K key ) {
-				return Collections.newArrayList();
+				return Lists.newArrayList();
 			}
 		} );
 	}
@@ -65,7 +65,7 @@ public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentH
 	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( K key ) {
 		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
 			public java.util.List<E> initialize( K key ) {
-				return edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+				return edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 			}
 		} );
 	}

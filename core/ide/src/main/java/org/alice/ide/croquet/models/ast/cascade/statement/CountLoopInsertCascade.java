@@ -71,7 +71,7 @@ public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.CountLoop : statement;
 		org.lgna.project.ast.CountLoop countLoop = (org.lgna.project.ast.CountLoop)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( countLoop.count.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( countLoop.count.getValue() );
 	}
 
 	@Override

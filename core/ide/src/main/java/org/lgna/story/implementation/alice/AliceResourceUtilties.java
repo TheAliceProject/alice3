@@ -1013,7 +1013,7 @@ public class AliceResourceUtilties {
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
 	{
 		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
-			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			for( String tag : tags ) {
 				String[] splitTags = tag.split( ":" );
 				StringBuilder finalTag = new StringBuilder();

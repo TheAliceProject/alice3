@@ -60,7 +60,7 @@ public abstract class UriContentLoader<T> {
 	}
 
 	private class Worker {
-		private final java.util.List<GetContentObserver<T>> observers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<GetContentObserver<T>> observers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 		private final java.util.concurrent.FutureTask<T> futureTask;
 		private boolean isStarted;

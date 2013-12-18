@@ -72,7 +72,7 @@ public abstract class Property<T> {
 		}
 	}
 
-	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final EntityImp owner;
 	private final Class<T> valueCls;
 

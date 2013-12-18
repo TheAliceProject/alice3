@@ -79,7 +79,7 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		if( this.componentRows != null ) {
 			//pass
 		} else {
-			this.componentRows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.componentRows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			this.updateComponentRows( this.componentRows );
 			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}

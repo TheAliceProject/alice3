@@ -81,7 +81,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
-		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );

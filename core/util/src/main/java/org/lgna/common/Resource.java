@@ -48,8 +48,8 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	private String originalFileName;
 	private String contentType;
 	private byte[] data;
-	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> nameListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List<org.lgna.common.event.ResourceContentListener> contentListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> nameListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private java.util.List<org.lgna.common.event.ResourceContentListener> contentListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;

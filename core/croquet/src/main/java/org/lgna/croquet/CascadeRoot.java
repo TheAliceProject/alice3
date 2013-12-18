@@ -81,7 +81,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 		@Override
 		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.root );
+			return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( this.root );
 		}
 
 		@Override
@@ -163,7 +163,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<T>( this );
-	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private String text;
 
 	public CascadeRoot( java.util.UUID id ) {

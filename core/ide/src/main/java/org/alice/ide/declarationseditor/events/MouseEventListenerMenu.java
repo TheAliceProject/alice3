@@ -10,8 +10,6 @@ import org.lgna.story.SScene;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 public class MouseEventListenerMenu extends EventListenerMenuModel {
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
@@ -24,7 +22,7 @@ public class MouseEventListenerMenu extends EventListenerMenuModel {
 	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(
 			SScene.class,
 			"addDefaultModelManipulation" );
-	public static final java.util.List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Collections.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
+	public static final java.util.List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
 
 	private static class SingletonHolder {
 		private static MouseEventListenerMenu instance = new MouseEventListenerMenu();

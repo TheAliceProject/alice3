@@ -69,7 +69,7 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
 		}
 
 		private Object[] getPathToRoot( T node ) {
-			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			T n = node;
 			if( n != null ) {
 				T root = this.getRoot();

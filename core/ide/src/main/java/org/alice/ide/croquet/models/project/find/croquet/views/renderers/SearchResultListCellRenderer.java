@@ -47,8 +47,6 @@ import java.util.Stack;
 
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -78,7 +76,7 @@ public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing
 	private String getNameString( String name, String value ) {
 		String rv = name;
 		String unparsed = value.toLowerCase();
-		ArrayList<String> list = Collections.newArrayList();
+		ArrayList<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		while( true ) {
 			if( unparsed.length() == 0 ) {
 				break;

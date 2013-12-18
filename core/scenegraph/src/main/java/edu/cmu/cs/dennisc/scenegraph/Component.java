@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends Element implements edu.cmu.cs.dennisc.pattern.Visitable, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame {
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener> absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener> absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private Composite vehicle = null;
 
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {

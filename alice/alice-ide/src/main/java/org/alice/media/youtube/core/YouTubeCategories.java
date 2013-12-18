@@ -76,8 +76,8 @@ public class YouTubeCategories {
 			sb.append( charVal );
 		}
 		String categoryData = sb.toString();
-		java.util.List<String> labels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.List<String> terms = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<String> labels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<String> terms = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		int TERM_LENGTH = TERM_STRING.length();
 		int LABEL_LENGTH = LABEL_STRING.length();
 		int DEPRECATED_LENGTH = DEPRECATED_STRING.length();

@@ -75,7 +75,7 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 	}
 
 	public void expandEachRowOnce() {
-		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		javax.swing.JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
 			javax.swing.tree.TreePath treePath = jTree.getPathForRow( i );

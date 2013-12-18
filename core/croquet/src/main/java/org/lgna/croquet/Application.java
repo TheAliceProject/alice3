@@ -67,7 +67,7 @@ public abstract class Application {
 	}
 
 	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
-	private final java.util.Stack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.views.AbstractWindow<?>[] { this.frame } );
+	private final java.util.Stack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( new org.lgna.croquet.views.AbstractWindow<?>[] { this.frame } );
 
 	public Application() {
 		assert Application.singleton == null;

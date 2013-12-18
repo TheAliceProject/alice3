@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropReceptor implements DropReceptor {
-	private final java.util.List<DropRejector> dropRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<DropRejector> dropRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public void addDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.add( dropRejector );

@@ -71,7 +71,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 
 	private ConsistentMouseDragEventQueue() {
 		if( IS_CLICK_AND_CLACK_DESIRED ) {
-			this.stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 		} else {
 			this.stack = null;
 		}

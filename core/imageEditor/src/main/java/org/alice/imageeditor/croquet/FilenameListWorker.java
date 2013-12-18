@@ -91,7 +91,7 @@ package org.alice.imageeditor.croquet;
 	protected java.io.File[] do_onBackgroundThread() throws Exception {
 		//Thread.currentThread().setPriority( Thread.MIN_PRIORITY );
 		if( this.rootDirectory.isDirectory() ) {
-			java.util.List<java.io.File> descendants = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<java.io.File> descendants = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			this.appendDescendants( descendants, this.rootDirectory );
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( descendants, java.io.File.class );
 		} else {

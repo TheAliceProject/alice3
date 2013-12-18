@@ -59,7 +59,7 @@ public class MetaDeclarationFauxState {
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<ValueListener> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<ValueListener> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
 			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();

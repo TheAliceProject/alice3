@@ -71,7 +71,7 @@ public class GeometryUtilities {
 		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = rv.vertices.getValue();
 		if( isSharingVerticesNecessary( vertices ) ) {
 			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			java.util.List<edu.cmu.cs.dennisc.scenegraph.Vertex> sharedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<edu.cmu.cs.dennisc.scenegraph.Vertex> sharedVertices = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			final int N = vertices.length;
 			for( int i = 0; i < N; i++ ) {
 				if( map.keySet().contains( i ) ) {
@@ -188,7 +188,7 @@ public class GeometryUtilities {
 
 			int[] polygonData = rv.polygonData.getValueAsArray();
 
-			java.util.ArrayList<Triangle> triangles = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			java.util.ArrayList<Triangle> triangles = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			final int N_POLYGON_DATA = polygonData.length;
 			for( int i = 0; i < N_POLYGON_DATA; i += 3 ) {
 				int a = polygonData[ i + 0 ];
@@ -233,7 +233,7 @@ public class GeometryUtilities {
 			//			}
 			//			rv.polygonData.setValue( trimmedPolygonData );
 
-			java.util.LinkedList<Integer> trimmedPolygonData = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.LinkedList<Integer> trimmedPolygonData = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Triangle triangle : triangles ) {
 				if( triangle.isToBeIncluded ) {
 					trimmedPolygonData.add( triangle.a );
@@ -272,7 +272,7 @@ public class GeometryUtilities {
 		}
 
 		if( isRequiringTrimming ) {
-			java.util.List<Vertex> trimmedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<Vertex> trimmedVertices = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			for( int i = 0; i < N; i++ ) {
 				if( isReferencedArray[ i ] ) {

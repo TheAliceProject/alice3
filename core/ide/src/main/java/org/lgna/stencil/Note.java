@@ -49,7 +49,7 @@ public class Note extends org.lgna.croquet.views.SwingComponentView<javax.swing.
 	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
 
-	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final javax.swing.text.html.HTMLDocument document = new javax.swing.text.html.HTMLDocument();
 
 	public String getText() {

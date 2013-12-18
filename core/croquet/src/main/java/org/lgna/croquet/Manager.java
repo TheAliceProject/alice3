@@ -75,7 +75,7 @@ public class Manager {
 		return null;
 	}
 
-	private static java.util.List<Composite> composites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static java.util.List<Composite> composites = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	/* package-private */static void registerComposite( Composite composite ) {
 		composites.add( composite );
@@ -96,7 +96,7 @@ public class Manager {
 			if( set != null ) {
 				//pass
 			} else {
-				set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 				mapIdToModels.put( id, set );
 			}
 			set.add( model );
@@ -122,7 +122,7 @@ public class Manager {
 	}
 
 	public static <M extends Model> Iterable<M> getRegisteredModels( Class<M> cls ) {
-		java.util.List<M> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<M> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.util.Set<Model> set : mapIdToModels.values() ) {
 			for( Model model : set ) {
 				if( cls.isAssignableFrom( model.getClass() ) ) {

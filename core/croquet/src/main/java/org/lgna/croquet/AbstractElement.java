@@ -62,7 +62,7 @@ public abstract class AbstractElement implements Element {
 		}
 		final boolean IS_NULL_LOCALIZATION_OUTPUT_DESIRED = false;
 		if( IS_NULL_LOCALIZATION_OUTPUT_DESIRED ) {
-			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
+			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
 		} else {
 			ignoredLocalizationSubkeys = null;
 		}

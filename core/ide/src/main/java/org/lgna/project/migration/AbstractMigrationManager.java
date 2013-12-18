@@ -46,7 +46,7 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigrationManager implements MigrationManager {
-	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final org.lgna.project.Version currentVersion;
 

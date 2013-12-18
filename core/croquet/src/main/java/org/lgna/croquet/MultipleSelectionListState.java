@@ -84,7 +84,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		}
 	}
 
-	private final java.util.List<org.lgna.croquet.event.ValueListener<java.util.List<T>>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.croquet.event.ValueListener<java.util.List<T>>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final SwingModel<T> swingModel;
 
 	private boolean isInTheMidstOfSettingSwingValue;
@@ -117,7 +117,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 	}
 
 	public java.util.List<T> getValue() {
-		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		final int N = this.swingModel.listModel.data.getItemCount();
 		for( int i = 0; i < N; i++ ) {
 			if( this.swingModel.listSelectionModel.isSelectedIndex( i ) ) {

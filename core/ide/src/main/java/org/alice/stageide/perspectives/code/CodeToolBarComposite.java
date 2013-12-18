@@ -58,7 +58,7 @@ public final class CodeToolBarComposite extends org.alice.ide.toolbar.croquet.Id
 
 	private CodeToolBarComposite() {
 		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
-		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( list );
 		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( list );
 		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( list );

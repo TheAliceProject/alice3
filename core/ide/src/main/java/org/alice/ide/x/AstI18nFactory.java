@@ -224,7 +224,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		}
 	}
 
-	private static final java.util.Set<String> LOCAL_PROPERTY_NAMES = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "local", "item", "variable", "constant" );
+	private static final java.util.Set<String> LOCAL_PROPERTY_NAMES = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( "local", "item", "variable", "constant" );
 
 	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount ) {

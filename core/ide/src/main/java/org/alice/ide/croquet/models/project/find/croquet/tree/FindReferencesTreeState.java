@@ -140,7 +140,7 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
 	}
 
 	//	public List<Expression> getReferencesForSearchResult( SearchResult searchObject ) {
-	//		List<Expression> rv = Collections.newArrayList();
+	//		List<Expression> rv = Lists.newArrayList();
 	//		for( Expression reference : searchObject.getReferences() ) {
 	//			UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
 	//			if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {

@@ -67,7 +67,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 		this.id = java.util.UUID.randomUUID();
 
-		java.util.List<org.lgna.croquet.Context> contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Context> contexts = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( model != null ) {
 			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
@@ -83,7 +83,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
 		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
-		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( contexts ) );
+		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( contexts ) );
 	}
 
 	public static class Key<T> {

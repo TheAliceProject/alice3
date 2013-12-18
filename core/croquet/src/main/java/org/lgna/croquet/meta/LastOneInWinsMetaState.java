@@ -58,7 +58,7 @@ public final class LastOneInWinsMetaState<T> extends MetaState<T> {
 	private final java.util.List<org.lgna.croquet.State<T>> states;
 
 	public LastOneInWinsMetaState( org.lgna.croquet.State<T>... states ) {
-		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( states ) );
+		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( states ) );
 		for( org.lgna.croquet.State<T> state : this.states ) {
 			state.addValueListener( this.valueListener );
 		}
