@@ -48,7 +48,7 @@ package org.alice.stageide.gallerybrowser.uri;
 public final class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
 	//public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
 
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
 		return map.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriGalleryDragModel>() {

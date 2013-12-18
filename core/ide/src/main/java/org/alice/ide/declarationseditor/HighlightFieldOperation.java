@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
  * @author Dennis Cosgrove
  */
 public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {

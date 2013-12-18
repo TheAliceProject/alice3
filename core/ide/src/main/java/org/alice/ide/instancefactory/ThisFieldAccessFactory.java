@@ -47,7 +47,7 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map<org.lgna.project.ast.UserField, ThisFieldAccessFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, ThisFieldAccessFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.UserField field ) {
 		assert field != null;

@@ -63,7 +63,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		}
 	};
 
-	private final java.util.Map<org.alice.stageide.modelresource.ResourceNode, Integer> mapNodeToHorizontalScrollPosition = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.alice.stageide.modelresource.ResourceNode, Integer> mapNodeToHorizontalScrollPosition = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.views.ScrollPane scrollPane;
 
 	public TreeOwningGalleryTabView( org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite ) {

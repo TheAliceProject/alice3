@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public final class FieldMenuModel extends MemberMenuModel<org.lgna.project.ast.UserField> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, FieldMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, FieldMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static FieldMenuModel getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldMenuModel>() {

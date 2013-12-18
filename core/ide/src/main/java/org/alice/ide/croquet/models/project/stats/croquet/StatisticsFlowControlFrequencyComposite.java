@@ -53,10 +53,10 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
-	private final Map<UserMethod, List<Statement>> methodToConstructMap = Collections.newHashMap();
+	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
 	private final SingleSelectListState<UserMethod> userMethodList = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public final static UserMethod root = new UserMethod();
 
@@ -80,7 +80,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 	}
 
 	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof org.lgna.project.ast.Statement ) {

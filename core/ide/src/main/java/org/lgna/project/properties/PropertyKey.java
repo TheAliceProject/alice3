@@ -46,7 +46,7 @@ package org.lgna.project.properties;
  * @author Dennis Cosgrove
  */
 public abstract class PropertyKey<T> {
-	private static java.util.Map<java.util.UUID, PropertyKey> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.util.UUID, PropertyKey> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static <T> PropertyKey<T> lookupInstance( java.util.UUID id ) {
 		return map.get( id );

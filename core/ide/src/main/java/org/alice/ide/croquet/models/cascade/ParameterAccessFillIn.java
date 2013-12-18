@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.ParameterAccess> {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ParameterAccessFillIn getInstance( org.lgna.project.ast.UserParameter value ) {
 		synchronized( map ) {

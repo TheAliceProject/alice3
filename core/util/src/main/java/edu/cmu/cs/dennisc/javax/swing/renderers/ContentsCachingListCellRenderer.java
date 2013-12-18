@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.renderers;
  */
 public abstract class ContentsCachingListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.ListCellRenderer {
 	private static java.awt.Color selectionBackground = javax.swing.UIManager.getColor( "List.selectionBackground" );
-	private java.util.Map<E, java.awt.Component> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<E, java.awt.Component> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	protected abstract void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus );
 

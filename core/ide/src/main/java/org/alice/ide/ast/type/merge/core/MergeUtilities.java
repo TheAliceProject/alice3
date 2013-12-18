@@ -143,7 +143,7 @@ public class MergeUtilities {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.MethodInvocation.class );
 		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
 
-		java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.AbstractMethod> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.AbstractMethod> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( org.lgna.project.ast.MethodInvocation methodInvocation : crawler.getList() ) {
 			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 			if( isAcceptableType( method.getDeclaringType(), types ) ) {
@@ -175,7 +175,7 @@ public class MergeUtilities {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.FieldAccess.class );
 		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
 
-		java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractField> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractField> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( org.lgna.project.ast.FieldAccess fieldAccess : crawler.getList() ) {
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			if( isAcceptableType( field.getDeclaringType(), types ) ) {

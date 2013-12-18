@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {

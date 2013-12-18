@@ -85,8 +85,8 @@ public class RenderContext extends Context {
 		unusedTexturesListeners.add( listener );
 	}
 
-	private final java.util.Map<GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.List<Integer> toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List<ForgettableBinding> toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 

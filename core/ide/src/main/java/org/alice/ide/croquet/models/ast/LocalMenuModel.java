@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized LocalMenuModel getInstance( org.lgna.project.ast.UserLocal local ) {
 		LocalMenuModel rv = map.get( local );

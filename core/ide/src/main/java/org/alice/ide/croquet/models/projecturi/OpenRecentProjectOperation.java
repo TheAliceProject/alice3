@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
 		OpenRecentProjectOperation rv = map.get( uri );

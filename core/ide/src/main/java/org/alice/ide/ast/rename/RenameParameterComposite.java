@@ -47,7 +47,7 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameParameterComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, RenameParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, RenameParameterComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized RenameParameterComposite getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		assert parameter != null;

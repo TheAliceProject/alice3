@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ParameterAccessMenuModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		ParameterAccessMenuModel rv = map.get( parameter );

@@ -987,8 +987,8 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		}
 	}
 
-	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> activeFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> forgottenFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> activeFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> forgottenFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	@Override
 	public boolean isRemembered( java.awt.Font font ) {

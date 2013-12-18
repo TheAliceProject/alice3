@@ -70,7 +70,7 @@ public class GeometryUtilities {
 	private static IndexedTriangleArray shareVertices( IndexedTriangleArray rv ) {
 		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = rv.vertices.getValue();
 		if( isSharingVerticesNecessary( vertices ) ) {
-			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			java.util.List<edu.cmu.cs.dennisc.scenegraph.Vertex> sharedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			final int N = vertices.length;
 			for( int i = 0; i < N; i++ ) {
@@ -273,7 +273,7 @@ public class GeometryUtilities {
 
 		if( isRequiringTrimming ) {
 			java.util.List<Vertex> trimmedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			for( int i = 0; i < N; i++ ) {
 				if( isReferencedArray[ i ] ) {
 					map.put( i, trimmedVertices.size() );

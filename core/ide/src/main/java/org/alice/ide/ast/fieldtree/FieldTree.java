@@ -75,7 +75,7 @@ public class FieldTree {
 	}
 
 	private static class Data {
-		private final java.util.Map<org.lgna.project.ast.AbstractType, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.AbstractType, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		private final RootNode root = new RootNode();
 
 		public Data( TypeCollapseThresholdData[] topLevels ) {

@@ -47,7 +47,7 @@ package org.alice.stageide.oneshot;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {

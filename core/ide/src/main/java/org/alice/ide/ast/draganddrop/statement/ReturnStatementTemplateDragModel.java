@@ -47,7 +47,7 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, ReturnStatementTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, ReturnStatementTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ReturnStatementTemplateDragModel getInstance( org.lgna.project.ast.UserMethod method ) {
 		ReturnStatementTemplateDragModel rv = map.get( method );

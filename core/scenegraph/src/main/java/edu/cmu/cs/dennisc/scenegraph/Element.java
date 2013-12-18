@@ -67,7 +67,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	public static final Key<StackTraceElement[]> DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
 	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
 
-	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public Element() {
 		if( isCreationStackTraceDesired ) {

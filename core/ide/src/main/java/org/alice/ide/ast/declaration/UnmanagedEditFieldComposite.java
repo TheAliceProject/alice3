@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class UnmanagedEditFieldComposite extends EditFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized UnmanagedEditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite>() {

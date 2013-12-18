@@ -523,7 +523,7 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	public static java.util.Map<AbstractDeclaration, Integer> createEncodeMapFromDeclarationSet( java.util.Set<AbstractDeclaration> set ) {
-		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( AbstractDeclaration declaration : set ) {
 			getUniqueKeyAndPutInEncodeMap( declaration, map );
 		}

@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ConstructorsComposite extends MembersComposite<org.lgna.project.ast.NamedUserConstructor> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ConstructorsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ConstructorsComposite rv = map.get( type );

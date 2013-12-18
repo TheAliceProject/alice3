@@ -57,8 +57,8 @@ import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFlowControlF
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.GridPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
 import org.lgna.croquet.views.Label;
@@ -75,7 +75,7 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.WhileLoop;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -107,7 +107,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
 		private GridPanel gridPanel;
-		private Map<Integer, Map<Integer, AwtComponentView>> componentMap = Collections.newHashMap();
+		private Map<Integer, Map<Integer, AwtComponentView>> componentMap = Maps.newHashMap();
 		private int numRows = 10;
 		private int numCols = 2;
 		private int maximum = 10;

@@ -47,7 +47,7 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.AbstractNode, CopyToClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractNode, CopyToClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
 		assert node != null;

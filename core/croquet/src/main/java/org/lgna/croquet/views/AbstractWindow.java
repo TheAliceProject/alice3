@@ -48,7 +48,7 @@ package org.lgna.croquet.views;
  */
 //todo: better name
 public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
-	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 
 	/* package-private */static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {

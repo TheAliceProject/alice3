@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.numberpad;
  */
 public class PlusMinusOperation extends NumberPadOperation {
 
-	private static java.util.Map<NumberModel<?>, PlusMinusOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<NumberModel<?>, PlusMinusOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized PlusMinusOperation getInstance( NumberModel<?> model ) {
 		PlusMinusOperation rv = map.get( model );

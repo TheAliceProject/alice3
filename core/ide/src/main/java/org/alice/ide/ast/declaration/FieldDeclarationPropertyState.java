@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationPropertyState extends org.alice.ide.ast.PropertyState {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static FieldDeclarationPropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
 		return map.getInitializingIfAbsent( setter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState>() {

@@ -49,7 +49,7 @@ import org.lgna.croquet.history.CompletionStep;
  * @author Dennis Cosgrove
  */
 public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project.ast.UserField> {
-	private static java.util.Map<org.lgna.project.ast.UserField, DeleteFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, DeleteFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
 		return getInstance( field, field.getDeclaringType() );

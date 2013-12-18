@@ -47,7 +47,7 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;

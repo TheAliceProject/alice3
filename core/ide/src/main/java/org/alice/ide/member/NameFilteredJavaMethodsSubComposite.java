@@ -46,7 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMethodsSubComposite {
-	private final java.util.Map<String, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<String, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
 		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
 			Integer valueA = map.get( methodA.getName() );

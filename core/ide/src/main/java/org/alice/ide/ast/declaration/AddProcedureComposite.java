@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddProcedureComposite>() {

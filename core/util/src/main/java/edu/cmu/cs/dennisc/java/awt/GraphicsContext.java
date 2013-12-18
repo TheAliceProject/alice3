@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public final class GraphicsContext {
 	private static final GraphicsContext edtInstance = new GraphicsContext();
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Thread, GraphicsContext> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Thread, GraphicsContext> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static GraphicsContext getInstanceAndPushGraphics( java.awt.Graphics g ) {
 		GraphicsContext rv;

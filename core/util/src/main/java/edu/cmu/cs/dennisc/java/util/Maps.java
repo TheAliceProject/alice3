@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.rename;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
-	private static java.util.Map<org.lgna.project.ast.UserField, RenameFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
-		assert field != null;
-		RenameFieldComposite rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameFieldComposite( field );
-			map.put( field, rv );
-		}
-		return rv;
+public class Maps {
+	private Maps() {
+		throw new Error();
 	}
 
-	private RenameFieldComposite( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new org.alice.ide.name.validators.FieldNameValidator( field ), field );
+	public static <K, V> java.util.HashMap<K, V> newHashMap() {
+		return new java.util.HashMap<K, V>();
+	}
+
+	public static <K, V> java.util.WeakHashMap<K, V> newWeakHashMap() {
+		return new java.util.WeakHashMap<K, V>();
+	}
+
+	public static <K, V> InitializingIfAbsentMap<K, V> newInitializingIfAbsentHashMap() {
+		return new InitializingIfAbsentHashMap<K, V>();
+	}
+
+	public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
+		return new InitializingIfAbsentListHashMap<K, E>();
+	}
+
+	public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
+		return new InitializingIfAbsentMapHashMap<K, K2, E2>();
+	}
+
+	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {
+		java.util.HashMap<B, A> rv = newHashMap();
+		for( A a : map.keySet() ) {
+			B b = map.get( a );
+			rv.put( b, a );
+		}
+		return rv;
 	}
 }

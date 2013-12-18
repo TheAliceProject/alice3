@@ -67,7 +67,7 @@ public class Decoder {
 
 	private static final edu.cmu.cs.dennisc.map.MapToMap<ClassReflectionProxy, String, ClassReflectionProxyAndMethodName> betweenClassesMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static final edu.cmu.cs.dennisc.map.MapToMap<ClassReflectionProxy, String, String> intraClassMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final java.util.Map<String, String> mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<String, String> mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static void addMethodFilterWithinClass( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
 		Decoder.intraClassMethodMap.put( classReflectionProxy, prevName, nextName );
@@ -209,7 +209,7 @@ public class Decoder {
 		return createClassReflectionProxy( clsName );
 	}
 
-	private final java.util.Map<Integer, Integer> EPIC_HACK_mapArrayTypeKeyToLeafTypeKey = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<Integer, Integer> EPIC_HACK_mapArrayTypeKeyToLeafTypeKey = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );

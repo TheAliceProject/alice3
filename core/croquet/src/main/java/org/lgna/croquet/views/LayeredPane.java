@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public final class LayeredPane extends SwingComponentView<javax.swing.JLayeredPane> {
-	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final RootPane rootPane;
 

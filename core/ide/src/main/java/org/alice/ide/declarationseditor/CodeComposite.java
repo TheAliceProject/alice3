@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
  * @author Dennis Cosgrove
  */
 public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView> {
-	private static java.util.Map<org.lgna.project.ast.AbstractCode, CodeComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractCode, CodeComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {

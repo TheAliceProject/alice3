@@ -49,7 +49,7 @@ public class CopyUtilities {
 	public static Project createCopy( Project other, org.lgna.project.ast.DecodeIdPolicy policy ) {
 		org.w3c.dom.Document xmlDocument = other.getProgramType().encode();
 		try {
-			java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)dst;
 

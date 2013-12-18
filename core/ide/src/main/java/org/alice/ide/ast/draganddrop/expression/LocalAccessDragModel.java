@@ -47,7 +47,7 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class LocalAccessDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
 		return map.getInitializingIfAbsent( local, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserLocal, LocalAccessDragModel>() {

@@ -47,7 +47,7 @@ package org.alice.stageide.cascade;
  * @author Dennis Cosgrove
  */
 public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		assert type != null;

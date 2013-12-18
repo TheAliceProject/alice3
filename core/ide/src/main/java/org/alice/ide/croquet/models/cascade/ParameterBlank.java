@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterBlank extends ExpressionBlank {
-	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ParameterBlank getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;

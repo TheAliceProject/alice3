@@ -48,7 +48,7 @@ import org.lgna.croquet.views.ComponentManager;
  * @author Dennis Cosgrove
  */
 public class Manager {
-	private static java.util.Map<java.util.UUID, java.util.Set<Model>> mapIdToModels = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.util.UUID, java.util.Set<Model>> mapIdToModels = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static java.util.Set<Model> lookupModels( java.util.UUID id ) {
 		synchronized( mapIdToModels ) {

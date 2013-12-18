@@ -260,10 +260,10 @@ public class IconFactoryManager {
 		}
 	}
 
-	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory> mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<ResourceDeclaration, org.lgna.croquet.icon.IconFactory> mapResourceDeclarationToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToCameraMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToObjectMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory> mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<ResourceDeclaration, org.lgna.croquet.icon.IconFactory> mapResourceDeclarationToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToCameraMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToObjectMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private IconFactoryManager() {
 	}

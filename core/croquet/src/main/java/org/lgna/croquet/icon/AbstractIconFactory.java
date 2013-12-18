@@ -55,7 +55,7 @@ public abstract class AbstractIconFactory implements IconFactory {
 
 	public AbstractIconFactory( IsCachingDesired isCachingDesired ) {
 		if( isCachingDesired == IsCachingDesired.TRUE ) {
-			this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			this.map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		} else {
 			this.map = null;
 		}

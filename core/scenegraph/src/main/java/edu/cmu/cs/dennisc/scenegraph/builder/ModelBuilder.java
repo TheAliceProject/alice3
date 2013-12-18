@@ -34,7 +34,7 @@ public class ModelBuilder {
 		return rv;
 	}
 
-	private static java.util.Map<java.io.File, ModelBuilder> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.io.File, ModelBuilder> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> getGeometries() {
 		return this.geometries;
@@ -57,8 +57,8 @@ public class ModelBuilder {
 		} else {
 			rv = new ModelBuilder();
 			try {
-				java.util.Map<Integer, edu.cmu.cs.dennisc.scenegraph.Geometry> mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-				java.util.Map<Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapIdToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				java.util.Map<Integer, edu.cmu.cs.dennisc.scenegraph.Geometry> mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+				java.util.Map<Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapIdToTexture = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
 				java.util.Map<String, byte[]> map = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( fis );
 

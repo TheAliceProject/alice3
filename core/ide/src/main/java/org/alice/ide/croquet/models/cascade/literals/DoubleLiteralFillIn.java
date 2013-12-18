@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.literals;
  * @author Dennis Cosgrove
  */
 public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
-	private static java.util.Map<Double, DoubleLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Double, DoubleLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static DoubleLiteralFillIn getInstance( double value ) {
 		synchronized( map ) {

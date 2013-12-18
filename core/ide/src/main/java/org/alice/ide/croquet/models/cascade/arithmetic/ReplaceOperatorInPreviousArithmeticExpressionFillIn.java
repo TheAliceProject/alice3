@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
  * @author Dennis Cosgrove
  */
 public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ArithmeticInfixExpression> {
-	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {

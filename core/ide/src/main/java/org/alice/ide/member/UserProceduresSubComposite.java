@@ -47,7 +47,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class UserProceduresSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresSubComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized UserProceduresSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		assert type != null;

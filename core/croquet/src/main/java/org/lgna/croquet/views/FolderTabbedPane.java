@@ -377,7 +377,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		return new TitlesPanel();
 	}
 
-	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
 		Operation operation = this.getModel().getItemSelectionOperation( item );
 		operation.initializeIfNecessary();

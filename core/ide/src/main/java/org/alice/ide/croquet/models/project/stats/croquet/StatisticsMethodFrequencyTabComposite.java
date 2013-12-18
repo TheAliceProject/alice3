@@ -57,6 +57,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -65,7 +66,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 
 	private final BooleanState showFunctionsState = this.createBooleanState( "areFunctionsShowing", true );
 	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
-	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
+	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
 
 	private final SingleSelectListState<UserMethod> userMethodListState = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod root = new UserMethod();
@@ -205,7 +206,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
+		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {

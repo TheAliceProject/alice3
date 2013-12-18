@@ -148,7 +148,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 
 	private static final class InternalPanel extends org.lgna.croquet.views.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		public InternalPanel() {
 			this.setBackgroundColor( null );

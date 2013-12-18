@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * 
  */
 public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ManagedCameraMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ManagedCameraMarkerFieldState rv = map.get( type );

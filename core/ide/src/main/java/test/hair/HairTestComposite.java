@@ -82,7 +82,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 	@Override
 	protected org.lgna.croquet.views.Panel createView() {
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairColorName, String> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairColorName, String> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
 			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
 				for( HairHatStyle hairHatStyle : HairUtilities.getHairHatStyles( lifeStage, gender ) ) {

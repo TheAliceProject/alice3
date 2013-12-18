@@ -58,7 +58,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		TYPE_FONT = defaultFont.deriveFont( 18.0f );
 		BONUS_FONT = defaultFont.deriveFont( java.awt.Font.ITALIC );
 	}
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized TypeMenu getInstance( org.lgna.project.ast.NamedUserType type ) {
 		TypeMenu rv = map.get( type );

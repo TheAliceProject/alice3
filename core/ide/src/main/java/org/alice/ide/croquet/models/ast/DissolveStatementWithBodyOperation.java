@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized DissolveStatementWithBodyOperation getInstance( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
 		DissolveStatementWithBodyOperation rv = map.get( statementWithBody );

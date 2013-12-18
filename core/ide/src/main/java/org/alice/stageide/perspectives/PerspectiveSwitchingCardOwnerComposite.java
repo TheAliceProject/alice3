@@ -65,7 +65,7 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 		}
 
 		public java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> build() {
-			java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> rv = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			rv.put( org.alice.ide.IDE.getActiveInstance().getCodePerspective(), this.codePerspecitiveCard );
 			rv.put( org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective(), this.setupScenePerspecitiveCard );
 			return rv;

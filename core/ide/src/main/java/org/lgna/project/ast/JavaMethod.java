@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaMethod extends AbstractMethod {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {

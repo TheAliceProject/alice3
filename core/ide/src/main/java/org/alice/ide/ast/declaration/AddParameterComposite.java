@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserParameter> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserCode, AddParameterComposite>() {

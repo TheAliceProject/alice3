@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class KeyedMoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.JavaKeyedArgument> {
-	private static java.util.Map<org.lgna.project.ast.ArgumentOwner, KeyedMoreCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ArgumentOwner, KeyedMoreCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized KeyedMoreCascade getInstance( org.lgna.project.ast.ArgumentOwner argumentOwner ) {
 		KeyedMoreCascade rv = map.get( argumentOwner );

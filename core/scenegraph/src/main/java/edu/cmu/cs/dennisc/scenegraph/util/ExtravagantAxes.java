@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ExtravagantAxes extends Transformable {
-	private java.util.Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final Arrow sgXAxis;
 	private final Arrow sgYAxis;
 	private final Arrow sgZAxis;

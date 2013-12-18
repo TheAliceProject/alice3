@@ -49,7 +49,7 @@ package org.alice.ide.croquet.edits.ast;
 public abstract class ParameterEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.CompletionModel> {
 	private final org.lgna.project.ast.UserCode code;
 	private final org.lgna.project.ast.UserParameter parameter;
-	private transient java.util.Map<org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private transient java.util.Map<org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public ParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep );

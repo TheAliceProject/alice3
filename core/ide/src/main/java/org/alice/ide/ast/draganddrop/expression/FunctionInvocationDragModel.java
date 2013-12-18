@@ -47,7 +47,7 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel>() {

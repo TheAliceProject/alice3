@@ -120,7 +120,7 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		}
 
-		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {

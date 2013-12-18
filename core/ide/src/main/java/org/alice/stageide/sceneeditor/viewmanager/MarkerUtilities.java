@@ -66,12 +66,12 @@ public class MarkerUtilities {
 	private static final String[] COLOR_NAME_KEYS;
 	private static final org.lgna.story.Color[] COLORS;
 
-	private static final HashMap<CameraMarker, Tuple2<org.lgna.croquet.icon.ImageIconFactory, org.lgna.croquet.icon.ImageIconFactory>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static final HashMap<CameraMarker, View> cameraToViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<CameraMarker, Tuple2<org.lgna.croquet.icon.ImageIconFactory, org.lgna.croquet.icon.ImageIconFactory>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final HashMap<CameraMarker, View> cameraToViewMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<CameraMarker, org.lgna.croquet.icon.IconFactory> mapCameraIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<CameraMarker, org.lgna.croquet.icon.IconFactory> mapCameraIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	static
 	{

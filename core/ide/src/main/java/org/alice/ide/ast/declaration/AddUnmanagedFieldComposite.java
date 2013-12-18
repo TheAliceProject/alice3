@@ -47,7 +47,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class AddUnmanagedFieldComposite extends AddFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite>() {

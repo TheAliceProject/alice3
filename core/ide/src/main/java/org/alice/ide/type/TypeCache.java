@@ -48,7 +48,7 @@ package org.alice.ide.type;
  */
 public class TypeCache {
 	private final org.lgna.project.Project project;
-	private final java.util.Map<TypeKey, org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<TypeKey, org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public TypeCache( org.lgna.project.Project project ) {
 		this.project = project;

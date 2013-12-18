@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized LocalArrayLengthFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;

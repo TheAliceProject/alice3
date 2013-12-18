@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaField> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ClassReflectionProxy, JavaType> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ClassReflectionProxy, JavaType> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 	public static final JavaType VOID_TYPE = getInstance( Void.TYPE );
 
 	public static final JavaType BOOLEAN_PRIMITIVE_TYPE = getInstance( Boolean.TYPE );
@@ -67,7 +67,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public static final JavaType OBJECT_TYPE = getInstance( Object.class );
 	public static final JavaType STRING_TYPE = getInstance( String.class );
 
-	private static java.util.Map<JavaType, JavaType> mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();;
+	private static java.util.Map<JavaType, JavaType> mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();;
 	static {
 		addPrimitiveToWrapper( Void.TYPE, Void.class );
 		addPrimitiveToWrapper( Boolean.TYPE, Boolean.class );

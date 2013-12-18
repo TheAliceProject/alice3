@@ -185,7 +185,7 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<ResourceNode> createTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, boolean isTheme, String... emptyTagNames ) {
-		java.util.Map<String, ResourceNode> mapInternal = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<String, ResourceNode> mapInternal = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		java.util.List<ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
@@ -238,8 +238,8 @@ public class TreeUtilities {
 
 	private static void createTreesBasedOnThemeAndGroup() {
 		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
 		buildMap( mapGroup, mapTheme, rootClassHierarchy );
 
 		java.util.List<ResourceNode> themeNodes = createThemeTagNodeList( mapTheme );

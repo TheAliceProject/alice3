@@ -892,24 +892,24 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private final java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalImmutableDataSingleSelectListState> mapKeyToImmutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalRefreshableDataSingleSelectListState> mapKeyToRefreshableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalMutableDataSingleSelectListState> mapKeyToMutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalTabState> mapKeyToTabState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalImmutableDataSingleSelectListState> mapKeyToImmutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalRefreshableDataSingleSelectListState> mapKeyToRefreshableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalMutableDataSingleSelectListState> mapKeyToMutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalTabState> mapKeyToTabState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final java.util.Set<TabState> registeredTabStates = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
-	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
 

@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class InsertLocalDeclarationStatementComposite extends InsertStatementComposite<org.lgna.project.ast.LocalDeclarationStatement> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized InsertLocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
