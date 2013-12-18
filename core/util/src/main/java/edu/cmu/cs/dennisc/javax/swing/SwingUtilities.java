@@ -188,25 +188,6 @@ public class SwingUtilities {
 		return s_bufferedImage.getGraphics();
 	}
 
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
-		assert ( messageType == javax.swing.JOptionPane.ERROR_MESSAGE ) || ( messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE ) || ( messageType == javax.swing.JOptionPane.WARNING_MESSAGE ) || ( messageType == javax.swing.JOptionPane.PLAIN_MESSAGE );
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( text );
-		textArea.setEditable( false );
-		javax.swing.JOptionPane.showMessageDialog( owner, new javax.swing.JScrollPane( textArea ) {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				java.awt.Dimension rv = super.getPreferredSize();
-				rv.width = Math.min( rv.width, maxPreferredWidth );
-				rv.height = Math.min( rv.height, maxPreferredHeight );
-				return rv;
-			}
-		}, title, messageType );
-	}
-
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
-		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
-	}
-
 	public static java.awt.event.MouseEvent convertMouseEvent( java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination ) {
 		int modifiers = sourceEvent.getModifiers();
 		int modifiersEx = sourceEvent.getModifiersEx();

@@ -40,64 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.issue.swing;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JExceptionSubPane extends javax.swing.JPanel {
-	private final Thread thread;
-	private final Throwable originalThrowable;
-	private final Throwable originalThrowableOrTarget;
+public class JOptionPaneUtilities {
+	private JOptionPaneUtilities() {
+		throw new Error();
+	}
 
-	public JExceptionSubPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		assert thread != null;
-		assert originalThrowable != null;
-		this.thread = thread;
-		this.originalThrowable = originalThrowable;
-		this.originalThrowableOrTarget = originalThrowableOrTarget;
-		//this.removeAll();
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.javax.swing.JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
+		assert ( messageType == javax.swing.JOptionPane.ERROR_MESSAGE ) || ( messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE ) || ( messageType == javax.swing.JOptionPane.WARNING_MESSAGE ) || ( messageType == javax.swing.JOptionPane.PLAIN_MESSAGE );
+		javax.swing.JTextArea textArea = new javax.swing.JTextArea( text );
+		textArea.setEditable( false );
+		javax.swing.JOptionPane.showMessageDialog( owner, new javax.swing.JScrollPane( textArea ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				java.awt.Dimension rv = super.getPreferredSize();
+				rv.width = Math.min( rv.width, maxPreferredWidth );
+				rv.height = Math.min( rv.height, maxPreferredHeight );
+				return rv;
 			}
-		} );
-
-		StringBuffer sb = new StringBuffer();
-		sb.append( originalThrowable.getClass().getSimpleName() );
-		String message = originalThrowable.getLocalizedMessage();
-		if( ( message != null ) && ( message.length() > 0 ) ) {
-			sb.append( "[" );
-			sb.append( message );
-			sb.append( "]" );
-		}
-		sb.append( " in " );
-		sb.append( thread.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( thread.getName() );
-		sb.append( "]" );
-
-		this.add( new javax.swing.JLabel( sb.toString() ) );
-		StackTraceElement[] elements = originalThrowable.getStackTrace();
-		if( elements.length > 0 ) {
-			StackTraceElement e0 = elements[ 0 ];
-			this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
-			this.add( new javax.swing.JLabel( "method: " + e0.getMethodName() ) );
-			this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
-		}
-		this.add( vcShowStackTrace );
+		}, title, messageType );
 	}
 
-	public Thread getThread() {
-		return this.thread;
-	}
-
-	public Throwable getOriginalThrowable() {
-		return this.originalThrowable;
-	}
-
-	public Throwable getOriginalThrowableOrTarget() {
-		return this.originalThrowableOrTarget;
+	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
+		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
 	}
 }
