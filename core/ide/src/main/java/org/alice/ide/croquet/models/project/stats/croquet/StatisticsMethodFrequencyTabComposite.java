@@ -56,7 +56,7 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
@@ -216,7 +216,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				if( list != null ) {
 					list.add( methodInvocation );
 				} else {
-					list = Collections.newLinkedList( methodInvocation );
+					list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( methodInvocation );
 					this.mapMethodToInvocations.put( method, list );
 				}
 			}
@@ -297,7 +297,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	public static class InvocationCounts {
-		private List<MethodCountPair> methodCountPairs = Collections.newLinkedList();
+		private List<MethodCountPair> methodCountPairs = Lists.newLinkedList();
 
 		public void addInvocation( MethodInvocation invocation ) {
 			addMethod( invocation.method.getValue() );

@@ -70,7 +70,7 @@ package org.alice.ide.video.preview.views;
 		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( roundRect, path );
 	}
 
-	private final java.util.List<org.alice.ide.video.preview.views.events.ThumbListener> thumbListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.alice.ide.video.preview.views.events.ThumbListener> thumbListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mouseClicked( java.awt.event.MouseEvent e ) {

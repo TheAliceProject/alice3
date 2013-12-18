@@ -53,7 +53,7 @@ import org.lgna.ik.poser.pose.builder.PoseBuilder;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.Orientation;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
@@ -66,10 +66,10 @@ public class TimeLine {
 	private double currentTime = 0;
 	private double endTime = 10;
 	//I used datas here, get over it
-	private List<KeyFrameData> datas = Collections.newArrayList();
-	private List<TimeLineListener> listeners = Collections.newArrayList();
+	private List<KeyFrameData> datas = Lists.newArrayList();
+	private List<TimeLineListener> listeners = Lists.newArrayList();
 	private Pose<?> initialPose;
-	private final List<JointId> usedIds = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final List<JointId> usedIds = Lists.newCopyOnWriteArrayList();
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
@@ -306,7 +306,7 @@ public class TimeLine {
 		init.getJointKeys();
 		double prevTime = key1 != null ? key1.getEventTime() : 0;
 		double k = ( targetTime - prevTime ) / ( key2.getEventTime() - prevTime );
-		List<JointKey> builderList = Collections.newArrayList();
+		List<JointKey> builderList = Lists.newArrayList();
 		for( JointId joint : map.keySet() ) {
 			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).getStartOrientation().createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).getEndOrientation().createOrthogonalMatrix3x3() ), k );
 			builderList.add( new JointKey( rightAnkleUnitQuaternion.createOrthogonalMatrix3x3(), joint ) );
@@ -324,8 +324,8 @@ public class TimeLine {
 		} else {
 			return initialPose;
 		}
-		List<JointKey> rvKeys = Collections.newArrayList();
-		List<JointId> unhandledIds = Collections.newArrayList();
+		List<JointKey> rvKeys = Lists.newArrayList();
+		List<JointId> unhandledIds = Lists.newArrayList();
 		PoseBuilder<?> builder = key1.getPose().getBuilder();
 		for( JointKey jointKey : key2.getPoseActual().getJointKeys() ) {
 			rvKeys.add( jointKey );
@@ -346,7 +346,7 @@ public class TimeLine {
 		if( priorKeyFrame != null ) {
 			prevPose = priorKeyFrame.getPose();
 		}
-		List<JointId> handledIds = Collections.newArrayList();
+		List<JointId> handledIds = Lists.newArrayList();
 		for( JointId id : unhandledIds ) {
 			for( JointKey key : prevPose.getJointKeys() ) {
 				if( key.getJointId().equals( id ) ) {
@@ -390,7 +390,7 @@ public class TimeLine {
 	}
 
 	private List<JointId> getNoLongerUsedJoints() {
-		ArrayList<JointId> unused = Collections.newArrayList( usedIds );
+		ArrayList<JointId> unused = Lists.newArrayList( usedIds );
 		for( JointId id : usedIds ) {
 			boolean removed = false;
 			for( KeyFrameData data : datas ) {

@@ -88,7 +88,7 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 
 		assert method == this.method : method;
 
-		java.util.List<org.lgna.project.ast.Expression> expressions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Expression> expressions = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( org.lgna.project.ast.SimpleArgument argument : methodInvocation.requiredArguments ) {
 			org.lgna.project.ast.Expression argumentExpression = argument.expression.getValue();
 			expressions.add( argumentExpression );

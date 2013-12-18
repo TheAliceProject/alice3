@@ -80,7 +80,7 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
 		}
 	}
 
-	private final java.util.List<InternalBlank<T>> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new InternalBlank<T>( this ) ) );
+	private final java.util.List<InternalBlank<T>> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new InternalBlank<T>( this ) ) );
 
 	public CascadeWithInternalBlank( Group group, java.util.UUID id, Class<T> componentType ) {
 		super( group, id, componentType );

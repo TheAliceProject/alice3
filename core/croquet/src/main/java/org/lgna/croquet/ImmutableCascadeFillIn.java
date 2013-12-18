@@ -50,7 +50,7 @@ public abstract class ImmutableCascadeFillIn<F, B> extends CascadeFillIn<F, B> {
 
 	public ImmutableCascadeFillIn( java.util.UUID id, CascadeBlank<B>... blanks ) {
 		super( id );
-		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( blanks ) );
+		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( blanks ) );
 	}
 
 	//todo: make final

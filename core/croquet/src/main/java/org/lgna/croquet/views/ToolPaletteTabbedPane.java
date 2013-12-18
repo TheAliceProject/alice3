@@ -49,7 +49,7 @@ package org.lgna.croquet.views;
 public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends TabbedPane<E> {
 
 	private static class AccordionLayoutManager implements java.awt.LayoutManager {
-		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 		public void addLayoutComponent( String name, java.awt.Component awtComponent ) {
 			//this.awtComponents.add( awtComponent );

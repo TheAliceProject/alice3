@@ -58,7 +58,7 @@ public class RendererNativeLibraryLoader {
 		} else {
 			try {
 				com.jogamp.common.jvm.JNILibLoaderBase.setLoadingAction( new com.jogamp.common.jvm.JNILibLoaderBase.LoaderAction() {
-					private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+					private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
 					private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
 						edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.SILENT : edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION;

@@ -62,7 +62,7 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 	}
 
 	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.imp.cascade.BlankNode<B> blankNode ) {
-		java.util.List<CascadeBlankChild> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<CascadeBlankChild> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.updateChildren( children, blankNode );
 		for( CascadeBlankChild child : children ) {
 			assert child != null;

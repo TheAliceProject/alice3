@@ -60,7 +60,7 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
 		java.net.URI[] array = org.lgna.croquet.preferences.PreferenceManager.decodeListData( this.getPreferenceKey(), this.getItemCodec(), new java.net.URI[] {} );
 
-		java.util.List<java.net.URI> existingFileUris = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<java.net.URI> existingFileUris = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.net.URI uri : array ) {
 			try {
 				java.io.File file = new java.io.File( uri );
@@ -75,7 +75,7 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 			}
 		}
 
-		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( existingFileUris );
+		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( existingFileUris );
 		org.lgna.croquet.preferences.PreferenceManager.registerListData( this );
 	}
 

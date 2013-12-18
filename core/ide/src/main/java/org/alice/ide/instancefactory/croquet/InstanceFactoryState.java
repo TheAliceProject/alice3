@@ -211,7 +211,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				//pass
 			} else {
 				java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
-				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( org.lgna.project.ast.UserField field : fields ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
 						filteredFields.add( field );
@@ -247,8 +247,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
 
-				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				boolean containsVariable = false;
 				boolean containsConstant = false;
 				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;

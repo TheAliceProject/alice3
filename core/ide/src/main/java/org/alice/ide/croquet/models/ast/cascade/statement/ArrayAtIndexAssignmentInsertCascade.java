@@ -67,7 +67,7 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInse
 		assert leftExpression instanceof org.lgna.project.ast.ArrayAccess : leftExpression;
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftExpression;
 
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
 				arrayAccess.index.getValue(),
 				assignmentExpression.rightHandSide.getValue()
 				);

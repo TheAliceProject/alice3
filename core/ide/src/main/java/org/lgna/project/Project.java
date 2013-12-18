@@ -48,11 +48,11 @@ package org.lgna.project;
 public class Project {
 
 	private final org.lgna.project.ast.NamedUserType programType;
-	private final java.util.Set<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private final java.util.Set<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.Sets.newCopyOnWriteArraySet();
 	private final java.util.Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private final java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = edu.cmu.cs.dennisc.java.util.Sets.newCopyOnWriteArraySet();
 
-	private final java.util.List<org.lgna.project.event.ResourceListener> resourceListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.project.event.ResourceListener> resourceListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final Object lock = new Object();
 

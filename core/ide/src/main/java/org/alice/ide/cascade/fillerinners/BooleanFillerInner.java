@@ -46,7 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class BooleanFillerInner extends ExpressionFillerInner {
-	private final java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> relationalTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> relationalTypes = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public BooleanFillerInner() {
 		super( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );

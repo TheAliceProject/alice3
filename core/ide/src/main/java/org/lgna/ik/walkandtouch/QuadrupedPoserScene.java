@@ -52,7 +52,7 @@ import org.lgna.story.SJoint;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -68,21 +68,21 @@ public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 		JointSelectionSphere a = createJSS( model.getBackRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getBackRightKnee(), a );
 		JointSelectionSphere c = createJSS( model.getBackRightAnkle(), b );
-		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
+		limbToJointMap.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
 		JointSelectionSphere d = createJSS( model.getFrontRightClavicle(), null );
 		JointSelectionSphere e = createJSS( model.getFrontRightShoulder(), d );
 		JointSelectionSphere f = createJSS( model.getFrontRightKnee(), e );
 		JointSelectionSphere g = createJSS( model.getFrontRightAnkle(), f );
-		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f, g ) );
+		limbToJointMap.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f, g ) );
 		JointSelectionSphere h = createJSS( model.getBackLeftHip(), null );
 		JointSelectionSphere i = createJSS( model.getBackLeftKnee(), h );
 		JointSelectionSphere j = createJSS( model.getBackLeftAnkle(), i );
-		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( h, i, j ) );
+		limbToJointMap.put( Limb.LEFT_LEG, Lists.newArrayList( h, i, j ) );
 		JointSelectionSphere k = createJSS( model.getFrontLeftClavicle(), null );
 		JointSelectionSphere l = createJSS( model.getFrontLeftShoulder(), k );
 		JointSelectionSphere m = createJSS( model.getFrontLeftKnee(), l );
 		JointSelectionSphere n = createJSS( model.getFrontLeftAnkle(), m );
-		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( k, l, m, n ) );
+		limbToJointMap.put( Limb.LEFT_ARM, Lists.newArrayList( k, l, m, n ) );
 
 		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
 			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
@@ -90,12 +90,12 @@ public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 				sphere.setOpacity( 0 );
 			}
 		}
-		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l, m, n );
+		this.jssArr = Lists.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l, m, n );
 	}
 
 	@Override
 	protected void initializeLimbAnchors() {
-		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getFrontRightClavicle(), model.getFrontLeftClavicle(), model.getBackRightHip(), model.getBackLeftHip() );
+		ArrayList<SJoint> sJointList = Lists.newArrayList( model.getFrontRightClavicle(), model.getFrontLeftClavicle(), model.getBackRightHip(), model.getBackLeftHip() );
 		for( SJoint joint : sJointList ) {
 			anchorPoints.add( ( (JointImp)EmployeesOnly.getImplementation( joint ) ).getJointId() );
 		}

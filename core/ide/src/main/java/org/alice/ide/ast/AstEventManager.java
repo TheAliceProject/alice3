@@ -51,7 +51,7 @@ public class AstEventManager {
 		public void typeHierarchyHasPotentiallyChanged();
 	}
 
-	private static final java.util.List<TypeHierarchyListener> typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<TypeHierarchyListener> typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private AstEventManager() {
 		throw new AssertionError();

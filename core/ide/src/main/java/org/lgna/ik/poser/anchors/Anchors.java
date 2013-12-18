@@ -46,7 +46,7 @@ package org.lgna.ik.poser.anchors;
  * @author Dennis Cosgrove
  */
 public class Anchors {
-	private final java.util.List<org.lgna.ik.poser.anchors.events.AnchorListener> anchorListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.ik.poser.anchors.events.AnchorListener> anchorListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private org.lgna.story.resources.JointId leftArm;
 	private org.lgna.story.resources.JointId rightArm;
 	private org.lgna.story.resources.JointId leftLeg;

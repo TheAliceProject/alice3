@@ -146,7 +146,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 
 	private final org.lgna.croquet.ValueHolder<String> pathHolder = org.lgna.croquet.ValueHolder.createInstance( INVALID_PATH_EMPTY_SUB_PATH );
 
-	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final org.lgna.croquet.ValueHolder<java.awt.Rectangle> cropSelectHolder = org.lgna.croquet.ValueHolder.createInstance( null );
 

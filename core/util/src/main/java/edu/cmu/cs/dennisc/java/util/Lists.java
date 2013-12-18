@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,16 +45,9 @@ package edu.cmu.cs.dennisc.java.util;
 /**
  * @author Dennis Cosgrove
  */
-public class Collections {
-	private Collections() {
-		throw new AssertionError();
-	}
-
-	public static <C extends java.util.Collection<E>, E> C addAll( C rv, E... values ) {
-		for( E value : values ) {
-			rv.add( value );
-		}
-		return rv;
+public class Lists {
+	private Lists() {
+		throw new Error();
 	}
 
 	public static <E> java.util.LinkedList<E> newLinkedList() {
@@ -185,56 +178,18 @@ public class Collections {
 		}
 	}
 
-	public static <E> java.util.Vector<E> newVector() {
-		return new java.util.Vector<E>();
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
+		return new java.util.concurrent.CopyOnWriteArrayList<E>();
 	}
 
-	public static <E> java.util.Vector<E> newVector( E... array ) {
-		java.util.Vector<E> rv = new java.util.Vector<E>();
-		if( array != null ) {
-			edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-		}
-		return rv;
-	}
-
-	public static <E> java.util.Vector<E> newVector( java.util.Collection<E> other ) {
-		java.util.Vector<E> rv = new java.util.Vector<E>();
-		rv.addAll( other );
-		return rv;
-	}
-
-	public static <E> java.util.Stack<E> newStack() {
-		return new java.util.Stack<E>();
-	}
-
-	public static <E> java.util.Stack<E> newStack( E... array ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( E... array ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 
-	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
-		rv.addAll( other );
-		return rv;
-	}
-
-	public static <E> java.util.HashSet<E> newHashSet() {
-		return new java.util.HashSet<E>();
-	}
-
-	public static <E> java.util.HashSet<E> newHashSet( E... values ) {
-		java.util.HashSet<E> rv = new java.util.HashSet<E>();
-		if( values != null ) {
-			for( E value : values ) {
-				rv.add( value );
-			}
-		}
-		return rv;
-	}
-
-	public static <E> java.util.HashSet<E> newHashSet( java.util.Collection<E> other ) {
-		java.util.HashSet<E> rv = new java.util.HashSet<E>();
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection<E> other ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
 		rv.addAll( other );
 		return rv;
 	}

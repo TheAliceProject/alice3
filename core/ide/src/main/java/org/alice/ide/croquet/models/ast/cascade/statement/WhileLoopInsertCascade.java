@@ -71,7 +71,7 @@ public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.WhileLoop : statement;
 		org.lgna.project.ast.WhileLoop whileLoop = (org.lgna.project.ast.WhileLoop)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( whileLoop.conditional.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( whileLoop.conditional.getValue() );
 	}
 
 	@Override

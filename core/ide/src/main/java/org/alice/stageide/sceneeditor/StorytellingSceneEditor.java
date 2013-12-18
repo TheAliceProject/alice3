@@ -1083,7 +1083,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getUndoStatementsForAddField( org.lgna.project.ast.UserField field ) {
-		java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		undoStatements.add( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 
@@ -1092,7 +1092,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getDoStatementsForRemoveField( org.lgna.project.ast.UserField field ) {
-		java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		doStatements.add( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 

@@ -50,7 +50,7 @@ import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -59,7 +59,7 @@ public class PoserSphereManipulator {
 	private OmniDirectionalPoserSphereManipulator omni = new OmniDirectionalPoserSphereManipulator();
 	private UpDownPoserSphereManipulator uppy = new UpDownPoserSphereManipulator();
 
-	List<PoserSphereManipulatorListener> listeners = Collections.newArrayList();
+	List<PoserSphereManipulatorListener> listeners = Lists.newArrayList();
 
 	public void addListener( PoserSphereManipulatorListener listener ) {
 		listeners.add( listener );

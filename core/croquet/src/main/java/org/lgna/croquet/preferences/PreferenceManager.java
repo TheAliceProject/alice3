@@ -67,9 +67,9 @@ public class PreferenceManager {
 		}
 	}
 
-	//	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	//	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	//	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	//	public static void registerAndInitializePreference( org.lgna.croquet.BooleanState booleanState ) {
 	//		IDE ide = IDE.getActiveInstance();
@@ -113,9 +113,9 @@ public class PreferenceManager {
 	//		}
 	//	}
 
-	private static java.util.List<org.lgna.croquet.SingleSelectListState<?>> selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	//private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List<org.lgna.croquet.data.ListData<?>> registeredListData = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.croquet.SingleSelectListState<?>> selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private static java.util.List<org.lgna.croquet.data.ListData<?>> registeredListData = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getMigrationId().toString();

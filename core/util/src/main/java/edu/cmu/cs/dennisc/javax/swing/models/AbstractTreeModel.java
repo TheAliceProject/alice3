@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTreeModel<E> implements TreeModel<E> {
-	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public void addTreeModelListener( javax.swing.event.TreeModelListener treeModelListener ) {
 		this.treeModelListeners.add( 0, treeModelListener );

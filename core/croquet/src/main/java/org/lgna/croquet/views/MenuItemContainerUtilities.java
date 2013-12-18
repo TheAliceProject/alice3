@@ -52,7 +52,7 @@ public class MenuItemContainerUtilities {
 	}
 
 	//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
-	//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	//		rv.add( menuItem.getModel() );
 	//
 	//		Container< ? > parent = menuItem.getParent();
@@ -90,7 +90,7 @@ public class MenuItemContainerUtilities {
 	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, MenuElementObserver observer ) {
 		final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
 		if( IS_REUSE_READY_FOR_PRIME_TIME ) {
-			java.util.Set<AwtComponentView<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( menuItemContainer.getMenuComponents() );
+			java.util.Set<AwtComponentView<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( menuItemContainer.getMenuComponents() );
 			for( AwtComponentView<?> component : set ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 			}

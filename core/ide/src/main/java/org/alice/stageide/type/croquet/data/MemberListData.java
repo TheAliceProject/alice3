@@ -70,7 +70,7 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 	}
 
 	public void connect( org.alice.stageide.type.croquet.TypeNode root ) {
-		java.util.List<org.lgna.project.ast.Member> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Member> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		build( list, root );
 		java.util.Collections.sort( list, new java.util.Comparator<org.lgna.project.ast.Member>() {
 			public int compare( org.lgna.project.ast.Member o1, org.lgna.project.ast.Member o2 ) {
@@ -90,7 +90,7 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 		if( ( this.allMembers != null ) && ( this.allMembers.size() > 0 ) ) {
 			String filter = this.filterState.getValue();
 			if( ( filter != null ) && ( filter.length() > 0 ) ) {
-				java.util.List<org.lgna.project.ast.Member> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.Member> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( org.lgna.project.ast.Member member : this.allMembers ) {
 					if( member.getName().contains( filter ) ) {
 						rv.add( member );

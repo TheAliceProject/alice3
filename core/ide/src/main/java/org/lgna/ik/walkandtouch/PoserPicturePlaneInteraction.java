@@ -56,7 +56,7 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.lookingglass.LookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
@@ -74,7 +74,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private static final double MIN_SELECTION_DISTANCE = 50;
 	private final AbstractPoserScene scene;
 	private final CameraImp camera;
-	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
 	private JointSelectionSphere anchor;
 	private Joint joint;
@@ -94,7 +94,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			joint = (Joint)handle.getManipulatedObject();
 			return handle;
 		}
-		ArrayList<Point> sphereLocations = Collections.newArrayList();
+		ArrayList<Point> sphereLocations = Lists.newArrayList();
 		double minDist = MIN_SELECTION_DISTANCE;
 		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
 		JointSelectionSphere selected = null;

@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.animation.Style;
 public class PoseAnimation extends DurationBasedAnimation {
 	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel;
 	private final Pose<?> pose;
-	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private static class JointInfo {
 		private final org.lgna.story.implementation.JointImp jointImp;

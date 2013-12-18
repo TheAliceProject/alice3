@@ -75,7 +75,7 @@ public final class TypeSummary {
 		this.version = CURRENT_VERSION;
 		this.typeName = type.getName();
 
-		this.hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		addHierarchyClassNames( this.hierarchyClassNames, type.getSuperType() );
 
 		org.lgna.project.ast.Declaration declaration = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceFieldOrType( type );
@@ -89,8 +89,8 @@ public final class TypeSummary {
 			this.resourceInfo = null;
 		}
 
-		this.procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.functionInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.procedureNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		this.functionInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : type.methods ) {
 			org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
 			if( ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) ) {
@@ -101,7 +101,7 @@ public final class TypeSummary {
 				}
 			}
 		}
-		this.fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.fieldInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( org.lgna.project.ast.UserField field : type.fields ) {
 			this.fieldInfos.add( new FieldInfo( field.getValueType().getName(), field.getName() ) );
 		}

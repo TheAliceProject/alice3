@@ -846,7 +846,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		this.view = null;
 	}
 
-	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	protected <C extends Composite<?>> C registerSubComposite( C subComposite ) {
 		this.subComposites.add( subComposite );
@@ -907,7 +907,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private final java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-	private final java.util.Set<TabState> registeredTabStates = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private final java.util.Set<TabState> registeredTabStates = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
 	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 

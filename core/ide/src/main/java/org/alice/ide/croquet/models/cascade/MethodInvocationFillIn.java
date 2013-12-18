@@ -59,7 +59,7 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	private final java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> lockedBlanks;
 
 	private static java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> createBlanks( org.lgna.project.ast.AbstractMethod method ) {
-		return (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) ) );
+		return (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) ) );
 	}
 
 	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.Expression transientValueExpression, org.lgna.project.ast.AbstractMethod method ) {

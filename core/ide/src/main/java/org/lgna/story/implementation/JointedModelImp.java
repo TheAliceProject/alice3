@@ -359,7 +359,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public Iterable<JointImp> getJoints() {
-		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.treeWalk( new TreeWalkObserver() {
 			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 				//todo: remove null check?
@@ -406,7 +406,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private void matchNewDataToExistingJoints( java.util.Map<org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion> mapIdToOriginalRotation, java.util.Map<org.lgna.story.resources.JointId, JointImp> newJoints ) {
-		java.util.List<org.lgna.story.resources.JointId> toRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.story.resources.JointId> toRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.util.Map.Entry<org.lgna.story.resources.JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet() ) {
 			if( newJoints.containsKey( jointEntry.getKey() ) ) {
 				JointImp newJoint = newJoints.get( jointEntry.getKey() );
@@ -723,7 +723,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public java.util.List<JointImp> getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB, java.util.List<org.lgna.ik.solver.Bone.Direction> directions ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
-		java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( jointA == jointB ) {
 			//?
 			rv.add( jointA );
@@ -744,8 +744,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private void updateJointsUpToAndExcludingCommonAncestor( List<JointImp> rvPath, List<Direction> rvDirections, JointImp jointA, JointImp jointB ) {
-		java.util.List<JointImp> pathA = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.List<JointImp> pathB = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JointImp> pathA = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<JointImp> pathB = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		List<Direction> directionsA = new java.util.ArrayList<Direction>();
 		List<Direction> directionsB = new java.util.ArrayList<Direction>();
@@ -851,7 +851,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private static class StraightenTreeWalkObserver implements TreeWalkObserver {
-		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		public void pushJoint( JointImp jointImp ) {
 			if( jointImp != null ) {

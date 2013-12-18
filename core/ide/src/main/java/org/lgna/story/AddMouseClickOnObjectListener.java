@@ -27,9 +27,9 @@ public class AddMouseClickOnObjectListener {
 	//	public static List<Model> getTargeted(Detail[] details) {
 	//		for(Detail detail: details){
 	//			if(detail instanceof TargetedModels){
-	//				return Collections.newArrayList(TargetedModels.getCollection((TargetedModels) detail));
+	//				return Lists.newArrayList(TargetedModels.getCollection((TargetedModels) detail));
 	//			}
 	//		}
-	//		return Collections.newArrayList(TargetedModels.getEmptyCollection());
+	//		return Lists.newArrayList(TargetedModels.getEmptyCollection());
 	//	}
 }

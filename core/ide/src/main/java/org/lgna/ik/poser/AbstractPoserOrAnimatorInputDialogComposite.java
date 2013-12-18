@@ -68,7 +68,7 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 import test.ik.croquet.SceneComposite;
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -82,8 +82,8 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	private final AbstractPoserScene scene;
 	private NamedUserType userType;
 	private T controlComposite;
-	private final List<JointId> usedJoints = Collections.newArrayList();
-	private List<JointedModelResource> resourceList = Collections.newArrayList();
+	private final List<JointId> usedJoints = Lists.newArrayList();
+	private List<JointedModelResource> resourceList = Lists.newArrayList();
 
 	private final SplitComposite splitComposite;
 

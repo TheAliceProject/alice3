@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimator implements Animator {
-	private final java.util.Queue<WaitingAnimation> waitingAnimations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentLinkedQueue();
-	private final java.util.List<FrameObserver> frameObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.Queue<WaitingAnimation> waitingAnimations = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
+	private final java.util.List<FrameObserver> frameObservers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private double speedFactor = 1.0;
 	private double tCurrent;

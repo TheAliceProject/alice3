@@ -109,8 +109,8 @@ public class ModelBuilder {
 				rv.root = decoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
 				rv.root.resolve( mapIdToGeometry, mapIdToTexture );
 
-				rv.geometries = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( mapIdToGeometry.values() );
-				rv.textures = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( mapIdToTexture.values() );
+				rv.geometries = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( mapIdToGeometry.values() );
+				rv.textures = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( mapIdToTexture.values() );
 			} catch( java.io.IOException ioe ) {
 				throw new RuntimeException( file.toString(), ioe );
 			}
@@ -182,8 +182,8 @@ public class ModelBuilder {
 
 	public static ModelBuilder newInstance( edu.cmu.cs.dennisc.scenegraph.Transformable transformable ) {
 		ModelBuilder rv = new ModelBuilder();
-		rv.geometries = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		rv.textures = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		rv.geometries = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		rv.textures = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		rv.root = ModelPart.newInstance( transformable, rv.geometries, rv.textures );
 		return rv;
 	}

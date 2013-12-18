@@ -50,7 +50,7 @@ public class IconFactoryManager {
 		public org.lgna.croquet.icon.IconFactory createIconFactory();
 	}
 
-	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(
+	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Sets.newHashSet(
 			org.lgna.story.resources.BipedResource.class,
 			org.lgna.story.resources.FishResource.class,
 			org.lgna.story.resources.FlyerResource.class,
@@ -104,9 +104,9 @@ public class IconFactoryManager {
 			//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
 			//					if( constants.length > 1 ) {
 			//						int MAXIMUM_CONSTANTS_TO_USE = 5;
-			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
 			//
-			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
+			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( constants );
 			//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
 			//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
 			//								return o1.toString().compareTo( o2.toString() );

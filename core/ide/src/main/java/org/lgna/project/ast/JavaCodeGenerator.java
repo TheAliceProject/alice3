@@ -48,9 +48,9 @@ package org.lgna.project.ast;
 /* package-private */class JavaCodeGenerator {
 	private final boolean isLambdaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
-	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
-	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	/* package-private */JavaCodeGenerator( boolean isLambdaSupported ) {
 		this.isLambdaSupported = isLambdaSupported;

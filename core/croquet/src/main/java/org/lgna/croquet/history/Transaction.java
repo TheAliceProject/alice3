@@ -48,7 +48,7 @@ package org.lgna.croquet.history;
 public class Transaction extends TransactionNode<TransactionHistory> {
 
 	private static class DescendantStepIterator implements java.util.Iterator<Step<?>> {
-		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		private int transactionIndex;
 		private int stepIndex;
 
@@ -111,13 +111,13 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.completionStep = null;
 	}
 
 	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
+		this.prepSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
 		for( PrepStep<?> prepStep : this.prepSteps ) {
 			prepStep.setOwner( this );
 		}
@@ -141,7 +141,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	}
 
 	public Iterable<org.lgna.croquet.Context> getAllContexts() {
-		java.util.List<org.lgna.croquet.Context> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Context> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.appendContexts( rv );
 		return rv;
 	}

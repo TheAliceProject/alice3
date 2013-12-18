@@ -58,7 +58,7 @@ import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.CameraImp;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -66,8 +66,8 @@ import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 public class ViewEventHandler extends TransformationChangedHandler<Object, ViewEvent> {
 
 	private CameraImp camera;
-	private final Map<SModel, List<Object>> map = Collections.newConcurrentHashMap();
-	private final Map<SModel, Boolean> wasInView = Collections.newConcurrentHashMap();
+	private final Map<SModel, List<Object>> map = Maps.newConcurrentHashMap();
+	private final Map<SModel, Boolean> wasInView = Maps.newConcurrentHashMap();
 
 	@Override
 	protected void check( SThing changedEntity ) {

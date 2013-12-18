@@ -50,7 +50,7 @@ import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 
 /**
@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
  */
 public abstract class PoseBuilder<P extends Pose<?>> {
 
-	private final List<JointKey> keys = Collections.newArrayList();
+	private final List<JointKey> keys = Lists.newArrayList();
 
 	public PoseBuilder<P> addCustom( Orientation orientation, JointId jointid ) {
 		edu.cmu.cs.dennisc.math.Orientation mathOrientation = new OrthogonalMatrix3x3( EmployeesOnly.getOrthogonalMatrix3x3( orientation ) );

@@ -53,7 +53,7 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 	public static MethodMenuModel getInstance( final org.lgna.project.ast.UserMethod method ) {
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
 			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();

@@ -89,7 +89,7 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		}
 	}
 
-	private static java.util.List<PreferenceStringState> instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static java.util.List<PreferenceStringState> instances = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {

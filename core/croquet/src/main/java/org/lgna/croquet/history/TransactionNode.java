@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class TransactionNode<P extends TransactionNode<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private P owner;
 

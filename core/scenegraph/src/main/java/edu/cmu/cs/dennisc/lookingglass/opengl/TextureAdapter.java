@@ -65,7 +65,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	}
 
 	private final TextureBinding textureBinding = new TextureBinding();
-	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private com.jogamp.opengl.util.texture.TextureData textureData;
 	private boolean isTextureDataDirty = true;
 

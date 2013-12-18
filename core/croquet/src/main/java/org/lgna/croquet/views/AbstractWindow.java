@@ -260,7 +260,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		if( this.defaultJButtonStack != null ) {
 			//pass
 		} else {
-			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 		}
 		this.defaultJButtonStack.push( this.getJRootPane().getDefaultButton() );
 		this.setDefaultButton( button );

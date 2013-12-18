@@ -59,7 +59,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserParameter;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -67,11 +67,11 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class SearchResult {
 
 	private final AbstractDeclaration declaration;
-	private final List<Expression> references = Collections.newArrayList();
+	private final List<Expression> references = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 
 	@SuppressWarnings( "unchecked" )
 	private static final List<Class<? extends AbstractDeclaration>> clsList =
-			Collections.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
+			Lists.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
 
 	public SearchResult( AbstractDeclaration object ) {
 		assert checkClass( object );

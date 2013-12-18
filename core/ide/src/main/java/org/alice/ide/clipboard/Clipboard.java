@@ -115,7 +115,7 @@ public enum Clipboard {
 		}
 	}
 
-	private final java.util.Stack<org.lgna.project.ast.Node> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<org.lgna.project.ast.Node> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private final ClipboardDropSite dropSite = new ClipboardDropSite();
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
 	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );

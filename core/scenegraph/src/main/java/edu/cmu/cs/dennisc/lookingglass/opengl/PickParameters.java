@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class PickParameters {
-	private final java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private final edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass;
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private final int x;

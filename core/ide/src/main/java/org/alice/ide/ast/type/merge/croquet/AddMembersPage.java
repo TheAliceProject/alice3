@@ -98,8 +98,8 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		this.dstType = dstType;
 
 		if( this.dstType != null ) {
-			java.util.List<org.lgna.project.ast.UserMethod> projectProcedures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserMethod> projectFunctions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> projectProcedures = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> projectFunctions = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( org.lgna.project.ast.UserMethod projectMethod : this.dstType.methods ) {
 				if( isManagementLevelAppropriate( projectMethod ) ) {
 					if( projectMethod.isProcedure() ) {
@@ -113,7 +113,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 			this.addFunctionsComposite = this.registerSubComposite( new FunctionsToolPalette( this.uriForDescriptionPurposesOnly, projectFunctions ) );
 
 			java.util.List<org.lgna.project.ast.UserField> dstFields = this.dstType.getDeclaredFields();
-			java.util.List<org.lgna.project.ast.UserField> projectFields = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( dstFields.size() );
+			java.util.List<org.lgna.project.ast.UserField> projectFields = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( dstFields.size() );
 			projectFields.addAll( dstFields );
 			this.addFieldsComposite = this.registerSubComposite( new FieldsToolPalette( this.uriForDescriptionPurposesOnly, projectFields ) );
 
@@ -255,16 +255,16 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 	public org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.dstType != null ) {
-			java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-			java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( MethodsToolPalette<?> addMethodsComposite : new MethodsToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				addMembersAndRenames( methodsToAdd, methodsToRemove, renames, addMethodsComposite );
 			}
 
-			java.util.List<org.lgna.project.ast.UserField> fieldsToAdd = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserField> fieldsToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> fieldsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> fieldsToRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			addMembersAndRenames( fieldsToAdd, fieldsToRemove, renames, this.addFieldsComposite );
 			return new org.alice.ide.ast.type.merge.croquet.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
 		} else {
@@ -275,7 +275,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( MembersToolPalette<?, M> addMembersComposite ) {
 		if( this.dstType != null ) {
 			boolean isIncludingAll = getOwner().getPreviewPage().getIsIncludingAllState().getValue();
-			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 				if( isIncludingAll || importOnly.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( importOnly.getImportHub() );

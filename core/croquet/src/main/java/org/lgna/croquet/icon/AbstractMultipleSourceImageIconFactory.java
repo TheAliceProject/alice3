@@ -69,7 +69,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 
 		this.defaultImageIcon = imageIcons[ defaultIndex ];
 
-		java.util.List<javax.swing.ImageIcon> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( imageIcons );
+		java.util.List<javax.swing.ImageIcon> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( imageIcons );
 		assert list.contains( null ) == false : this;
 
 		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {

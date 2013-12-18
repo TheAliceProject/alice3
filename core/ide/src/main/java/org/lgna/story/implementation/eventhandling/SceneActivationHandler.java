@@ -48,14 +48,14 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
  */
 public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
 
-	private final List<SceneActivationListener> listeners = Collections.newCopyOnWriteArrayList();
+	private final List<SceneActivationListener> listeners = Lists.newCopyOnWriteArrayList();
 
 	public void handleEventFire( SceneActivationEvent event ) {
 		for( SceneActivationListener listener : listeners ) {

@@ -61,7 +61,7 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return rv;
 	}
 
-	private final java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private final org.lgna.project.ast.AbstractCode code;
 
 	private ControlFlowComposite( org.lgna.project.ast.AbstractCode code ) {
@@ -91,7 +91,7 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 	protected void initialize() {
 		super.initialize();
 
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.addAll( this.models,
 				org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),

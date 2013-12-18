@@ -86,7 +86,7 @@ public abstract class AbstractMapToMap<A, B, V> {
 	}
 
 	public final java.util.Collection<V> values() {
-		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.util.Map<B, V> innerMap : this.outerMap.values() ) {
 			rv.addAll( innerMap.values() );
 		}

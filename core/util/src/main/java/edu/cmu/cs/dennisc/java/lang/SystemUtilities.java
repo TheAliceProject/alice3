@@ -99,7 +99,7 @@ public class SystemUtilities {
 	}
 
 	public static java.util.List<Property> getPropertyList() {
-		java.util.List<Property> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<Property> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		java.util.Properties systemProperties = System.getProperties();
 		for( java.util.Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
 			Object key = entry.getKey();

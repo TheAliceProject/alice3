@@ -50,7 +50,7 @@ import org.lgna.story.Size;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 public class JointSelectionSphere extends SSphere {
 
@@ -89,7 +89,7 @@ public class JointSelectionSphere extends SSphere {
 	}
 
 	public List<JointSelectionSphere> getPossibleAnchors() {
-		List<JointSelectionSphere> rv = Collections.newArrayList();
+		List<JointSelectionSphere> rv = Lists.newArrayList();
 		JointSelectionSphere ptr = this;
 		while( ptr != this.getRoot() ) {
 			rv.add( ptr );

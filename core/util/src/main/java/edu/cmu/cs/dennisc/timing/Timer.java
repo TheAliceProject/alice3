@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.timing;
  */
 public class Timer {
 	private final String description;
-	private final java.util.List<Mark> marks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<Mark> marks = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private long tStart;
 
 	public Timer( String description ) {

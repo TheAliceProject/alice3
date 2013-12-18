@@ -78,4 +78,8 @@ public class Maps {
 		}
 		return rv;
 	}
+
+	public static <K, V> java.util.concurrent.ConcurrentHashMap<K, V> newConcurrentHashMap() {
+		return new java.util.concurrent.ConcurrentHashMap<K, V>();
+	}
 }

@@ -85,7 +85,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	//TODO: contemplate passing context factories on construction
 	public AbstractModel( java.util.UUID id/* , ContextFactory<?>... contextFactories */) {

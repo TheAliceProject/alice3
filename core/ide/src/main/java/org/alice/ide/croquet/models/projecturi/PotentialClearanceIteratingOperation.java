@@ -59,7 +59,7 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 
 	@Override
 	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
-		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if( application.isProjectUpToDateWithFile() ) {

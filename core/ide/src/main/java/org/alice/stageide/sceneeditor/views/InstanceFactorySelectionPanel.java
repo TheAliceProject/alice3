@@ -169,7 +169,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.removeAllComponents();
-			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
 			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 			org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();

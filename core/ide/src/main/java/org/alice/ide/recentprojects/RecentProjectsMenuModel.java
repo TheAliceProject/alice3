@@ -72,7 +72,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.net.URI currentUri = ide.getUri();
 		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.net.URI uri : uris ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
 				//pass

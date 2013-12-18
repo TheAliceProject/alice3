@@ -363,7 +363,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 				data.internalAddItem( org.alice.ide.declarationseditor.TypeComposite.getInstance( sceneType ) );
 
-				java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				methods.add( sceneType.findMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME ) );
 				methods.addAll( this.getUserMethodsInvokedFromSceneActivationListeners() );
 

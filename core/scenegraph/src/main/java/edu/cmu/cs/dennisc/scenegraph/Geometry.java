@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-	private java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundObservers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
 	private edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
 

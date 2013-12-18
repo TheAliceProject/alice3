@@ -54,7 +54,7 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -71,7 +71,7 @@ public class IKMagicWand {
 
 	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private static final boolean USING_OLD = false;
-	private static List<JointId> defaultAnchors = Collections.newArrayList(
+	private static List<JointId> defaultAnchors = Lists.newArrayList(
 			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
 			( (JointImp)EmployeesOnly.getImplementation( ogre.getLeftShoulder() ) ).getJointId(),
 			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightHip() ) ).getJointId(),

@@ -52,9 +52,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 
-	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List<ValueListener<T>> oldSchoolValueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<ValueListener<T>> oldSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	private T previousValue;
 

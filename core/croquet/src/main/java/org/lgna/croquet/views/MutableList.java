@@ -157,7 +157,7 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 	}
 
 	private final org.lgna.croquet.data.MutableListData<E> data;
-	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup buttonGroup = new edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup();
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {

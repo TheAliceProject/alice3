@@ -52,7 +52,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 
 	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
 		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+		this.cards = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( cards );
 	}
 
 	@Override

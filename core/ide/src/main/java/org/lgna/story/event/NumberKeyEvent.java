@@ -3,7 +3,7 @@ package org.lgna.story.event;
 import org.lgna.story.Key;
 
 public class NumberKeyEvent extends AbstractKeyEvent {
-	public static final java.util.List<Key> NUMBERS = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+	public static final java.util.List<Key> NUMBERS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
 			Key.NUMPAD0, Key.NUMPAD1, Key.NUMPAD2, Key.NUMPAD3, Key.NUMPAD4, Key.NUMPAD5, Key.NUMPAD6, Key.NUMPAD7, Key.NUMPAD8, Key.NUMPAD9,
 			Key.DIGIT_0, Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5, Key.DIGIT_6, Key.DIGIT_7, Key.DIGIT_8, Key.DIGIT_9
 			);

@@ -51,7 +51,7 @@ import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
 import org.lgna.story.implementation.JointImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -67,19 +67,19 @@ public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 		JointSelectionSphere a = createJSS( model.getRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getRightKnee(), a );
 		JointSelectionSphere c = createJSS( model.getRightAnkle(), b );
-		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( a, b, c ) );
+		limbToJointMap.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
 		JointSelectionSphere d = createJSS( model.getRightWingShoulder(), null );
 		JointSelectionSphere e = createJSS( model.getRightWingElbow(), d );
 		JointSelectionSphere f = createJSS( model.getRightWingWrist(), e );
-		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f ) );
+		limbToJointMap.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f ) );
 		JointSelectionSphere g = createJSS( model.getLeftHip(), null );
 		JointSelectionSphere h = createJSS( model.getLeftKnee(), g );
 		JointSelectionSphere i = createJSS( model.getLeftAnkle(), h );
-		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( g, h, i ) );
+		limbToJointMap.put( Limb.LEFT_LEG, Lists.newArrayList( g, h, i ) );
 		JointSelectionSphere j = createJSS( model.getLeftWingShoulder(), null );
 		JointSelectionSphere k = createJSS( model.getLeftWingElbow(), j );
 		JointSelectionSphere l = createJSS( model.getLeftWingWrist(), k );
-		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( j, k, l ) );
+		limbToJointMap.put( Limb.LEFT_ARM, Lists.newArrayList( j, k, l ) );
 
 		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
 			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
@@ -87,12 +87,12 @@ public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 				sphere.setOpacity( 0 );
 			}
 		}
-		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, g, h, i, j, k, l );
+		this.jssArr = Lists.newArrayList( a, b, c, d, e, f, g, g, h, i, j, k, l );
 	}
 
 	@Override
 	protected void initializeLimbAnchors() {
-		ArrayList<SJoint> sJointList = Collections.newArrayList( model.getRightWingShoulder(), model.getLeftWingShoulder(), model.getRightHip(), model.getLeftHip() );
+		ArrayList<SJoint> sJointList = Lists.newArrayList( model.getRightWingShoulder(), model.getLeftWingShoulder(), model.getRightHip(), model.getLeftHip() );
 		for( SJoint joint : sJointList ) {
 			anchorPoints.add( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( joint ) ).getJointId() );
 		}

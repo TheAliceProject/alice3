@@ -59,7 +59,7 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
@@ -84,7 +84,7 @@ public abstract class Pose<S extends SJointedModel> {
 	}
 
 	public JointId[] getDefaultJoints() {
-		ArrayList<JointId> rv = Collections.newArrayList();
+		ArrayList<JointId> rv = Lists.newArrayList();
 		JointId[] roots = getJointIdRoots();
 		for( JointId id : roots ) {
 			rv.addAll( tunnel( id ) );
@@ -128,7 +128,7 @@ public abstract class Pose<S extends SJointedModel> {
 	}
 
 	protected ArrayList<JointId> tunnel( JointId id ) {
-		ArrayList<JointId> rv = Collections.newArrayList( id );
+		ArrayList<JointId> rv = Lists.newArrayList( id );
 		for( JointId child : id.getChildren( defaultResource ) ) {
 			rv.addAll( tunnel( child ) );
 		}
@@ -162,7 +162,7 @@ public abstract class Pose<S extends SJointedModel> {
 		} else {
 			return null;
 		}
-		List<JointKey> list = Collections.newArrayList();
+		List<JointKey> list = Lists.newArrayList();
 		for( JointId id : arr ) {
 			JointImp implementation = EmployeesOnly.getImplementation( model.getJoint( id ) );
 			list.add( new JointKey( implementation.getLocalOrientation(), id ) );

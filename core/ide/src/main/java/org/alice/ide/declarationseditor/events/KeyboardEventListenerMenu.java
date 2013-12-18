@@ -11,8 +11,6 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyPressListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 public class KeyboardEventListenerMenu extends EventListenerMenuModel {
 	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
@@ -30,7 +28,7 @@ public class KeyboardEventListenerMenu extends EventListenerMenuModel {
 			SScene.class,
 			"addNumberKeyPressListener",
 			NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Collections.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
+	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
 
 	private static class SingletonHolder {
 		private static KeyboardEventListenerMenu instance = new KeyboardEventListenerMenu();

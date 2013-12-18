@@ -106,7 +106,7 @@ public final class FlyerImp extends JointedModelImp<org.lgna.story.SFlyer, org.l
 	//	}
 	//
 	//	private static class UnfoldWingsTreeWalkObserver implements TreeWalkObserver {
-	//		private java.util.List<WingJointData> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		private java.util.List<WingJointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	//
 	//		public void pushJoint( JointImp jointImp ) {
 	//			if( ( jointImp != null ) && (

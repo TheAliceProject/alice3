@@ -120,19 +120,19 @@ public abstract class ApiConfigurationManager {
 	}
 
 	public final java.util.List<org.lgna.project.ast.JavaType> getPrimeTimeSelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
 
 	public final java.util.List<org.lgna.project.ast.JavaType> getSecondarySelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
 	}
 
 	//	public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
-	//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	//		this.addAliceTypes( rv, true );
 	//		return rv;
 	//	}

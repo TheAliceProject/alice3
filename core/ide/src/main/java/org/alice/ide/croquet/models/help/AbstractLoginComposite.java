@@ -56,7 +56,7 @@ import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.preferences.PreferenceStringState;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -72,7 +72,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	protected Status loginFailedStatus = createWarningStatus( "warningLoginFailed" );
 	protected Status connectionFailedStatus = createWarningStatus( "warningConnectionFailed" );
 	private final BooleanState connectionFailed = this.createBooleanState( "doNotLocalize", false );
-	private final List<LogInOutListener> listeners = Collections.newCopyOnWriteArrayList();
+	private final List<LogInOutListener> listeners = Lists.newCopyOnWriteArrayList();
 
 	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );

@@ -54,7 +54,7 @@ import org.lgna.story.resources.ModelResource;
 public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType>, Comparable<ModelResourceTreeNode> {
 
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent;
-	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private NamedUserType userType;
 	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
 	private JavaType resourceJavaType;

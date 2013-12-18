@@ -57,7 +57,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.biped.OgreResource;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
@@ -83,11 +83,11 @@ public class FieldFinder {
 	}
 
 	public ArrayList<JointedModelResource> getResourcesForType( NamedUserType type ) {
-		ArrayList<JointedModelResource> rv = Collections.newArrayList();
+		ArrayList<JointedModelResource> rv = Lists.newArrayList();
 		refreshScene();
 		if( sceneType == null ) {
 			JointedModelResource ogre = OgreResource.GREEN;
-			return Collections.newArrayList( ogre );
+			return Lists.newArrayList( ogre );
 		}
 		ArrayList<UserField> fields = sceneType.getDeclaredFields();
 		for( UserField field : fields ) {

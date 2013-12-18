@@ -412,10 +412,10 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	public final void setItems( java.util.Collection<T> items ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			java.util.Set<T> previous = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.toArray() );
-			java.util.Set<T> next = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( items );
-			java.util.List<T> added = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List<T> removed = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.Set<T> previous = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( this.toArray() );
+			java.util.Set<T> next = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( items );
+			java.util.List<T> added = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<T> removed = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 			for( T item : previous ) {
 				if( next.contains( item ) ) {
@@ -645,7 +645,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 
 		@Override
 		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.listSelectionState );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.listSelectionState );
 		}
 
 		@Override

@@ -139,7 +139,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 
 	@Override
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
 	}
 
 	public InternalRoot<T> getRoot() {

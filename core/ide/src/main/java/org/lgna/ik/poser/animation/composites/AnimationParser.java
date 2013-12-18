@@ -56,7 +56,7 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 
@@ -67,8 +67,8 @@ public class AnimationParser implements Crawler {
 
 	org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	double currentTime = 0;
-	ArrayList<KeyFrameData> dataList = Collections.newArrayList();
-	ArrayList<AnimationStyle> styleList = Collections.newArrayList();
+	ArrayList<KeyFrameData> dataList = Lists.newArrayList();
+	ArrayList<AnimationStyle> styleList = Lists.newArrayList();
 
 	public static ArrayList<KeyFrameData> initializeAndParse( UserMethod animation ) {
 		AnimationParser parser = new AnimationParser();
@@ -96,7 +96,7 @@ public class AnimationParser implements Crawler {
 				Pose pose = null;
 				double duration = 0;
 				AnimationStyle style = null;
-				ArrayList<Expression> list = Collections.newArrayList();
+				ArrayList<Expression> list = Lists.newArrayList();
 				list.add( methodInv.requiredArguments.get( 0 ).expression.getValue() );
 				for( JavaKeyedArgument kArg : methodInv.keyedArguments ) {
 					Expression value = ( (MethodInvocation)kArg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();

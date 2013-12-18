@@ -54,7 +54,7 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
@@ -103,7 +103,7 @@ public class TypeNodeSelectionState extends CustomItemStateWithInternalBlank<Typ
 	}
 
 	private List<TypeNode> getListFromRoot( TypeNode root ) {
-		List<TypeNode> rv = Collections.newArrayList();
+		List<TypeNode> rv = Lists.newArrayList();
 		rv.add( root );
 		for( int i = 0; i != root.getChildCount(); ++i ) {
 			rv.addAll( getListFromRoot( (TypeNode)root.getChildAt( i ) ) );

@@ -9,7 +9,7 @@ public class ArrowKeyEvent extends AbstractKeyEvent {
 		UP_DOWN_LEFT_RIGHT;
 	};
 
-	public static final java.util.List<Key> ARROWS = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
+	public static final java.util.List<Key> ARROWS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
 
 	public ArrowKeyEvent( java.awt.event.KeyEvent e ) {
 		super( e );

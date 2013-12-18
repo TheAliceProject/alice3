@@ -57,7 +57,7 @@ public final class EnumConstantResourceKeyListData extends org.lgna.croquet.data
 		if( this.classResourceKey != null ) {
 			Class<? extends org.lgna.story.resources.ModelResource> cls = this.classResourceKey.getModelResourceCls();
 			if( cls.isEnum() ) {
-				java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( org.lgna.story.resources.ModelResource e : cls.getEnumConstants() ) {
 					rv.add( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)e ) );
 				}

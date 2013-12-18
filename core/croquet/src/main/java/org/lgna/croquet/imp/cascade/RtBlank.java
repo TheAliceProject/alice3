@@ -137,8 +137,8 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 		if( this.itemChildrenAndComboOffsetsPair != null ) {
 			//pass
 		} else {
-			java.util.List<Integer> comboOffsets = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List<RtItem> baseRtItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<Integer> comboOffsets = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<RtItem> baseRtItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( CascadeBlankChild blankChild : this.getElement().getFilteredChildren( this.getNode() ) ) {
 				final int N = blankChild.getItemCount();
 				switch( N ) {

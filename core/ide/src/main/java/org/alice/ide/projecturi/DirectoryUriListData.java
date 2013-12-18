@@ -68,7 +68,7 @@ public final class DirectoryUriListData extends org.lgna.croquet.data.Refreshabl
 					uris[ i ] = null;
 				}
 			}
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( uris );
 		} else {
 			return java.util.Collections.emptyList();
 		}

@@ -96,7 +96,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 							if( list != null ) {
 								//pass
 							} else {
-								list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+								list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 								map.put( returnType, list );
 							}
 							list.add( method );
@@ -111,9 +111,9 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( map.keySet() );
+		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( map.keySet() );
 		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( types.size() );
+		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( types.size() );
 		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
 			subComposite.setMethods( map.get( type ) );

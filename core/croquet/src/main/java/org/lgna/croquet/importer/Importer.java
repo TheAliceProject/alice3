@@ -58,7 +58,7 @@ public abstract class Importer<T> {
 		this.initialDirectory = initialDirectory;
 		this.initialFileText = initialFileText;
 		this.filenameFilter = filenameFilter;
-		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseExtensions ) );
+		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Sets.newHashSet( lowerCaseExtensions ) );
 	}
 
 	protected abstract T createFromFile( java.io.File file ) throws java.io.IOException;

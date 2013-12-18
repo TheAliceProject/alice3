@@ -96,7 +96,7 @@ public class Solver {
 		}
 	}
 
-	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<Constraint> constraints = new java.util.ArrayList<Solver.Constraint>();
 
 	private Map<Bone, Map<Axis, Vector3[]>> jacobianColumns;

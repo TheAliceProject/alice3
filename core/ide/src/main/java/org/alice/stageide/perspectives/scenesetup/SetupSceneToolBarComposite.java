@@ -58,7 +58,7 @@ public class SetupSceneToolBarComposite extends org.alice.ide.toolbar.croquet.Id
 
 	private SetupSceneToolBarComposite() {
 		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( list );
 		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( list );
 		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( list );

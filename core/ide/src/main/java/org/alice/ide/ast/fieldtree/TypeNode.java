@@ -49,8 +49,8 @@ package org.alice.ide.ast.fieldtree;
 public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 	private final int collapseThreshold;
 	private final int collapseThresholdForDescendants;
-	private final java.util.List<TypeNode> typeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<FieldNode> fieldNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<TypeNode> typeNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<FieldNode> fieldNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public static TypeNode createAndAddToParent( TypeNode parent, org.lgna.project.ast.AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
 		TypeNode rv = new TypeNode( parent, type, collapseThreshold, collapseThresholdForDescendants );

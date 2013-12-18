@@ -70,8 +70,8 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 	}
 
 	private int row = 0;
-	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private static String getTitleText( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite ) {
 		return composite.getOuterComposite().getIsExpandedState().getTrueText();

@@ -52,7 +52,7 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -61,8 +61,8 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newConcurrentHashMap();
-	protected Map<Object, Map<Object, Boolean>> isFiringMap = Collections.newConcurrentHashMap();
+	protected Map<Object, MultipleEventPolicy> policyMap = Maps.newConcurrentHashMap();
+	protected Map<Object, Map<Object, Boolean>> isFiringMap = Maps.newConcurrentHashMap();
 	private CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
 	private Object NULL_OBJECT = new Object();
 	protected SceneImp scene;

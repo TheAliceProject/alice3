@@ -181,7 +181,7 @@ public class BlockStatementGenerator {
 						org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 						org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
 
-						java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+						java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 						prepModels.add( org.alice.ide.croquet.models.ast.keyed.JavaKeyedArgumentFillIn.getInstance( argument.getKeyMethod() ) );
 
 						org.alice.ide.croquet.models.MenuBarComposite menuBarComposite = null;

@@ -67,7 +67,7 @@ import org.lgna.ik.poser.pose.Pose;
 public class TimeLineView extends Panel {
 
 	private JTimeLineView jView;
-	private final Map<KeyFrameData, JTimeLinePoseMarker> map = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+	private final Map<KeyFrameData, JTimeLinePoseMarker> map = edu.cmu.cs.dennisc.java.util.Maps.newConcurrentHashMap();
 
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite );

@@ -120,16 +120,16 @@ public final class GraphicsContext {
 		}
 	}
 
-	private final java.util.Stack<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
-	private final java.util.Stack<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private final java.util.Stack<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private final java.util.Stack<java.awt.Font> fontStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private final java.util.Stack<java.awt.Shape> clipStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private final java.util.Stack<java.awt.geom.AffineTransform> transformStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.Stack<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.Stack<java.awt.Font> fontStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.Stack<java.awt.Shape> clipStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.Stack<java.awt.geom.AffineTransform> transformStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
-	private final java.util.Stack<Object> antialiasingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private final java.util.Stack<Object> textAntialiasingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<Object> antialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.Stack<Object> textAntialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public GraphicsContext() {
 	}

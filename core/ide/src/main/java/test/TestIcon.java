@@ -51,7 +51,7 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		testCroquet.initialize( args );
 
 		org.lgna.croquet.views.FlowPanel flowPanel = new org.lgna.croquet.views.FlowPanel();
-		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
 		//				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
 		//				org.alice.stageide.icons.SphereIconFactory.getInstance(),
 		//				org.alice.stageide.icons.ConeIconFactory.getInstance(),

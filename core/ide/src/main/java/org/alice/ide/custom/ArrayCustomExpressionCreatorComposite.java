@@ -121,7 +121,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		java.util.List<org.lgna.project.ast.Expression> items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Expression> items = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {

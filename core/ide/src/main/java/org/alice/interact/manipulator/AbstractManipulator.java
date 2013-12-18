@@ -69,7 +69,7 @@ public abstract class AbstractManipulator {
 	protected boolean hasDoneUpdate = false;
 
 	protected ManipulationEvent mainManipulationEvent;
-	protected List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	protected List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable )
 	{
