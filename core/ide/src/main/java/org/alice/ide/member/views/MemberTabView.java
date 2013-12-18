@@ -46,7 +46,7 @@ package org.alice.ide.member.views;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
-	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.views.SwingComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.views.SwingComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final org.lgna.croquet.views.PopupButton popupButton;
 	private final org.lgna.croquet.views.ComboBox<String> comboBox;

@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryResourceMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryResourceMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized GalleryResourceMenu getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		GalleryResourceMenu rv = map.get( type );

@@ -49,6 +49,7 @@ import java.util.Map;
 import org.lgna.common.resources.AudioResource;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -70,7 +71,7 @@ public class AudioMuxer {
 	}
 
 	private void convertAudioStreamsToWav() {
-		Map<AudioResource, AudioResource> wavResouces = Collections.newHashMap();
+		Map<AudioResource, AudioResource> wavResouces = Maps.newHashMap();
 		for( ScheduledAudioStream stream : this.scheduledStreams ) {
 			if( !wavResouces.containsKey( stream.getAudioResource() ) ) {
 				AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary( stream.getAudioResource() );

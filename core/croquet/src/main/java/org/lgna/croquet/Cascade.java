@@ -269,7 +269,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			}
 		}
 
-		private java.util.Map<org.lgna.croquet.views.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private java.util.Map<org.lgna.croquet.views.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		@Override
 		protected String findDefaultLocalizedText() {

@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldsComposite extends FieldsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized UnmanagedFieldsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		UnmanagedFieldsComposite rv = map.get( type );

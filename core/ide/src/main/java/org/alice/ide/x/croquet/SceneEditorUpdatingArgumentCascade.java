@@ -46,7 +46,7 @@ package org.alice.ide.x.croquet;
  * @author Dennis Cosgrove
  */
 public class SceneEditorUpdatingArgumentCascade extends org.alice.ide.croquet.models.ast.cascade.AbstractArgumentCascade {
-	private static java.util.Map<org.lgna.project.ast.SimpleArgument, SceneEditorUpdatingArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.SimpleArgument, SceneEditorUpdatingArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized SceneEditorUpdatingArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
 		SceneEditorUpdatingArgumentCascade rv = map.get( argument );

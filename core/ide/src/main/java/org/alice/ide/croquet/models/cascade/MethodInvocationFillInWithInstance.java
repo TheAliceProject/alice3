@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static MethodInvocationFillInWithInstance getInstance( org.lgna.project.ast.JavaMethod code ) {
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance>() {

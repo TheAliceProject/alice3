@@ -54,14 +54,14 @@ import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereFillIn;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
  */
 public class TypeNodeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<TypeNode, Void> {
 
-	private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Collections.newHashMap();
+	private static final Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Maps.newHashMap();
 	private final TypeNode value;
 	private final Integer indent;
 

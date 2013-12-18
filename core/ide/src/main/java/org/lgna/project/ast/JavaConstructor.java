@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaConstructor extends AbstractConstructor {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {

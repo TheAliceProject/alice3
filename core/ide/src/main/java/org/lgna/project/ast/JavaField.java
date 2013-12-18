@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaField extends AbstractField {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {

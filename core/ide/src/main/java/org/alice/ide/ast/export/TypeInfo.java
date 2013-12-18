@@ -52,17 +52,17 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 
 	public TypeInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserType<?> type ) {
 		super( projectInfo, type );
-		java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( org.lgna.project.ast.UserConstructor constructor : type.getDeclaredConstructors() ) {
 			mapC.put( constructor, new ConstructorInfo( projectInfo, constructor ) );
 		}
 		this.constructorInfoMap = java.util.Collections.unmodifiableMap( mapC );
-		java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> mapM = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> mapM = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( org.lgna.project.ast.UserMethod method : type.methods ) {
 			mapM.put( method, new MethodInfo( projectInfo, method ) );
 		}
 		this.methodInfoMap = java.util.Collections.unmodifiableMap( mapM );
-		java.util.Map<org.lgna.project.ast.UserField, FieldInfo> mapF = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserField, FieldInfo> mapF = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( org.lgna.project.ast.UserField field : type.fields ) {
 			mapF.put( field, new FieldInfo( projectInfo, field ) );
 		}

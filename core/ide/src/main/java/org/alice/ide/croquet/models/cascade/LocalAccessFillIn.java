@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.LocalAccess> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static LocalAccessFillIn getInstance( org.lgna.project.ast.UserLocal value ) {
 		synchronized( map ) {

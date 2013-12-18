@@ -51,7 +51,7 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 public class PickContext extends Context {
 	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
 		synchronized( m_pickNameMap ) {

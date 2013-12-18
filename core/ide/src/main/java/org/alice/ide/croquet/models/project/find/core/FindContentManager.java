@@ -65,6 +65,7 @@ import org.lgna.project.ast.UserParameter;
 import org.lgna.project.ast.UserType;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
@@ -216,7 +217,7 @@ public class FindContentManager {
 	private List<SearchResult> sortByRelevance( String string, List<SearchResult> searchResults ) {
 		List<SearchResult> unsortedList = Collections.newArrayList( searchResults );
 		List<SearchResult> rv = Collections.newArrayList();
-		Map<SearchResult, Double> scoreMap = Collections.newHashMap();
+		Map<SearchResult, Double> scoreMap = Maps.newHashMap();
 		for( SearchResult obj : unsortedList ) {
 			scoreMap.put( obj, score( obj, string ) );
 		}

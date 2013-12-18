@@ -174,7 +174,7 @@ public abstract class ApiConfigurationManager {
 	//		return rv;
 	//	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, String> mapTypeToText = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, String> mapTypeToText = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static String createExampleText( String examples ) {
 		return "<html><em>examples:</em> " + examples + "</html>";

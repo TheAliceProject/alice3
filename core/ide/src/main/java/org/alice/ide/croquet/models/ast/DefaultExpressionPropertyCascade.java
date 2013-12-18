@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade {
-	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> projectGroupMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> inheritGroupMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> projectGroupMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> inheritGroupMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDesiredType( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
 		if( desiredType != null ) {

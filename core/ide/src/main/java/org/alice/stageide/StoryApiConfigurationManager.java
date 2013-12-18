@@ -118,7 +118,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 		SINGLETON;
 		private static final double DEFAULT_VALUE = 50.0;
-		private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		TypeComparator() {
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );

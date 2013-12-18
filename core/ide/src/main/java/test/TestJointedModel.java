@@ -135,7 +135,7 @@ class TestScene extends SScene {
  * @author Dennis Cosgrove
  */
 class TestJointedModel extends SProgram {
-	private static java.util.Map<Integer, org.lgna.story.resources.JointId> mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Integer, org.lgna.story.resources.JointId> mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	static {
 		for( org.lgna.story.resources.JointId rootJointId : org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS ) {
 			fillInMap( rootJointId );

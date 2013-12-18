@@ -97,7 +97,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 					}
 				}
 
-				edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, TypeListPair> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+				edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, TypeListPair> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 				java.util.List<TypeListPair> typeListPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 				java.util.List<DeclarationComposite> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( data.toArray() );

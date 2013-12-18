@@ -54,6 +54,7 @@ import org.lgna.story.AnimationStyle;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.Orientation;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
@@ -287,7 +288,7 @@ public class TimeLine {
 		//		if( true || ( !key1.getEventStyle().getIsSlowOutDesired() && !key2.getEventStyle().getIsSlowInDesired() ) ) {
 		Pose<?> init = getInitPoseIfNecessary( key1, key2 );
 		Pose<?> pose2 = key2.getPoseActual();
-		Map<JointId, BeginAndEndOrientationPair> map = Collections.newInitializingIfAbsentHashMap();
+		Map<JointId, BeginAndEndOrientationPair> map = Maps.newInitializingIfAbsentHashMap();
 		for( JointId key : usedIds ) {
 			map.put( key, new BeginAndEndOrientationPair( lgnaOrientationForId( key, init ), null ) );
 		}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static TypeExpressionCascadeMenu getInstance( org.lgna.project.ast.AbstractType type ) {
 		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu>() {

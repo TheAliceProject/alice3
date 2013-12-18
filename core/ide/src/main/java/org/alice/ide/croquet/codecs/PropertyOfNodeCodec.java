@@ -47,7 +47,7 @@ package org.alice.ide.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, PropertyOfNodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Class<?>, PropertyOfNodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized <T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance( Class<T> cls ) {
 		PropertyOfNodeCodec<?> rv = map.get( cls );

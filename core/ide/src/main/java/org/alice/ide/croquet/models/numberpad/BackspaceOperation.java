@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class BackspaceOperation extends NumberPadOperation {
-	private static java.util.Map<NumberModel<?>, BackspaceOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<NumberModel<?>, BackspaceOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized BackspaceOperation getInstance( NumberModel<?> model ) {
 		BackspaceOperation rv = map.get( model );

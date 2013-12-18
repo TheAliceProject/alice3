@@ -193,7 +193,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
 
-	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
 	private boolean handleVisibility;

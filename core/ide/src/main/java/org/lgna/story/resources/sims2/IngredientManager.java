@@ -43,7 +43,7 @@
 package org.lgna.story.resources.sims2;
 
 public abstract class IngredientManager<E> {
-	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	protected void add( Class<? extends E> interfaceCls, Class<? extends E>... implementingClses ) {
 		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );

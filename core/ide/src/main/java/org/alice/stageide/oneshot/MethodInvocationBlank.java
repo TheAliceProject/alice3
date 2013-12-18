@@ -47,7 +47,7 @@ package org.alice.stageide.oneshot;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodInvocationEditFactory> {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static MethodInvocationBlank getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {

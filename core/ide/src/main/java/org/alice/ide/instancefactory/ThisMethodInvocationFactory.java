@@ -47,7 +47,7 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactory extends MethodInvocationFactory {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;

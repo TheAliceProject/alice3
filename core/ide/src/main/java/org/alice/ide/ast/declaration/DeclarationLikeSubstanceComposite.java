@@ -459,7 +459,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return this.initializerState != null ? this.initializerState.isEnabled() : false;
 	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.State.ValueListener<Boolean> isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();

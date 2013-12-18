@@ -49,7 +49,7 @@ package org.alice.stageide.ast;
 public class JointedTypeInfo {
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedTypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedTypeInfo> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( type ) ) {

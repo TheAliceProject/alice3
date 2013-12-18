@@ -63,7 +63,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	};
 	//todo: map AbstractCode to Stack< InstanceFactory >
-	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private InstanceFactory value;
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {

@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  * @author Dennis Cosgrove
  */
 public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static java.util.Map<org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static class VisualData implements org.lgna.story.implementation.JointedModelImp.VisualData {
 		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances;

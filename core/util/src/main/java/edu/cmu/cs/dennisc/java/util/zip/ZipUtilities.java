@@ -59,7 +59,7 @@ public class ZipUtilities {
 	}
 
 	public static java.util.Map<String, byte[]> extractZipInputStream( java.util.zip.ZipInputStream zis, java.util.Collection<String> entryNameFilter ) throws java.io.IOException {
-		java.util.Map<String, byte[]> filenameToBytesMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<String, byte[]> filenameToBytesMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		java.util.zip.ZipEntry zipEntry;
 		while( ( zipEntry = zis.getNextEntry() ) != null ) {
 			String name = zipEntry.getName();

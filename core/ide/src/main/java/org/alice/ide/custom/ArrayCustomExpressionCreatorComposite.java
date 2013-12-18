@@ -48,7 +48,7 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.ArrayCustomExpressionCreatorView> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType ) {
 		synchronized( map ) {

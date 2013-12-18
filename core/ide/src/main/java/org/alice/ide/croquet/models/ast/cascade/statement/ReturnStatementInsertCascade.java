@@ -58,7 +58,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		return null;
 	}
 
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;

@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
  * @author Dennis Cosgrove
  */
 public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.NamedUserType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized TypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		if( type != null ) {

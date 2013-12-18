@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldState extends FieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized UnmanagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		UnmanagedFieldState rv = map.get( type );

@@ -152,7 +152,7 @@ public class UserInstance {
 		if( this.inverseFieldMap != null ) {
 			//pass
 		} else {
-			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			for( UserField field : this.fieldMap.keySet() ) {
 				Object value = this.fieldMap.get( field );
 				this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );

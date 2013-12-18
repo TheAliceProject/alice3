@@ -55,6 +55,7 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -63,7 +64,7 @@ public class TypeNodeSelectionState extends CustomItemStateWithInternalBlank<Typ
 
 	private TypeNode value;
 	private final List<TypeNode> possibleStates;
-	private final Map<TypeNode, Integer> nodeToIndentLevelMap = Collections.newHashMap();
+	private final Map<TypeNode, Integer> nodeToIndentLevelMap = Maps.newHashMap();
 
 	public TypeNodeSelectionState( Group group, TypeNode initialValue, TypeNode typeSelectionRoot ) {
 		super( group, java.util.UUID.fromString( "2ed5d986-95a8-460a-8636-9af46071e966" ), initialValue, new ItemCodec<TypeNode>() {

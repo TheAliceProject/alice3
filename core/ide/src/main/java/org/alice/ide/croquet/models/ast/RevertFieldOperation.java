@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  * 
  */
 public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.UserField, RevertFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, RevertFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized RevertFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
 		RevertFieldOperation rv = map.get( field );

@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.Statement, IsStatementEnabledState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.Statement, IsStatementEnabledState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized IsStatementEnabledState getInstance( org.lgna.project.ast.Statement statement ) {
 		IsStatementEnabledState rv = map.get( statement );

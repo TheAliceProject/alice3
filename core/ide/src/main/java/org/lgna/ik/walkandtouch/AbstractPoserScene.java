@@ -71,6 +71,7 @@ import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 
 /**
@@ -84,8 +85,8 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	protected ArrayList<JointSelectionSphere> jssArr;
 	protected final ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
-	protected final Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
-	protected final Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
+	protected final Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Maps.newHashMap();
+	protected final Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Maps.newHashMap();
 	protected final List<PoserSphereManipulatorListener> dragListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 

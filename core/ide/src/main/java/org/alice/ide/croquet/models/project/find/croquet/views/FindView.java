@@ -72,7 +72,7 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.TextField;
 import org.lgna.croquet.views.Tree;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
@@ -86,8 +86,8 @@ public class FindView extends BorderPanel {
 	private final Object right;
 	private final Tree<SearchTreeNode> referencesTreeList;
 	private final List<SearchResult> searchResultsList;
-	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Collections.newHashMap();
-	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
+	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Maps.newHashMap();
+	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Maps.newHashMap();
 	private final FindReferencesTreeState referenceResults;
 	private final SingleSelectListState<SearchResult> searchResults;
 	boolean listIsSelected = true;

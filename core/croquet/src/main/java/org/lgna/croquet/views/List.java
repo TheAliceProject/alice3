@@ -61,7 +61,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 	private static class DefaultEmptyListPainter<T> implements edu.cmu.cs.dennisc.java.awt.Painter<List<T>> {
 		private static final java.util.Map<java.awt.font.TextAttribute, Object> mapDeriveFont;
 		static {
-			mapDeriveFont = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			mapDeriveFont = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			mapDeriveFont.put( java.awt.font.TextAttribute.POSTURE, java.awt.font.TextAttribute.POSTURE_OBLIQUE );
 			mapDeriveFont.put( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
 		}

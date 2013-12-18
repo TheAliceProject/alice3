@@ -153,7 +153,7 @@ public class GlDrawableUtilities {
 
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			mapPixelBufferToDimension = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			mapPixelBufferToDimension = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		} else {
 			mapPixelBufferToDimension = null;
 		}

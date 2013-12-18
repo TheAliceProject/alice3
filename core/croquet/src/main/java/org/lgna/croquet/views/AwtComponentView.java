@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public abstract class AwtComponentView<J extends java.awt.Component> extends ScreenElement {
-	private static java.util.Map<java.awt.Component, AwtComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private static java.util.Map<java.awt.Component, AwtComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 
 	private static class InternalAwtContainerAdapter extends AwtContainerView<java.awt.Container> {
 		private java.awt.Container awtContainer;

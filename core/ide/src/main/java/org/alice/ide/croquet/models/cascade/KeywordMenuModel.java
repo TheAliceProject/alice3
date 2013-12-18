@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, KeywordMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, KeywordMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static KeywordMenuModel getInstance( org.lgna.project.ast.AbstractMethod value ) {
 		synchronized( map ) {

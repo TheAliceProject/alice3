@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class FunctionState extends MethodState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized FunctionState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		FunctionState rv = map.get( type );

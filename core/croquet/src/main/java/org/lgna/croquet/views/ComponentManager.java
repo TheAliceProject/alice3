@@ -54,7 +54,7 @@ public class ComponentManager {
 		throw new AssertionError();
 	}
 
-	public static final java.util.Map<Model, java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static final java.util.Map<Model, java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> getComponents( Model model ) {
 		synchronized( map ) {

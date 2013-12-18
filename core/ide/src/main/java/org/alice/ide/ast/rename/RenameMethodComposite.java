@@ -46,7 +46,7 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameMethodComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserMethod> {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, RenameMethodComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, RenameMethodComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized RenameMethodComposite getInstance( org.lgna.project.ast.UserMethod method ) {
 		assert method != null;

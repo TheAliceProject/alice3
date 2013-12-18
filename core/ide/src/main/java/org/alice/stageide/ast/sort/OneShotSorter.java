@@ -58,7 +58,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 			return rv;
 		}
 	};
-	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static final org.lgna.project.ast.JavaMethod TURN_METHOD;
 	public static final org.lgna.project.ast.JavaMethod ROLL_METHOD;

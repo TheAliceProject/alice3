@@ -369,7 +369,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return ( ( expression instanceof org.lgna.project.ast.TypeExpression ) || ( expression instanceof org.lgna.project.ast.ResourceExpression ) ) == false;
 	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();

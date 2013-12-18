@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ManagedFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ManagedFieldState rv = map.get( type );

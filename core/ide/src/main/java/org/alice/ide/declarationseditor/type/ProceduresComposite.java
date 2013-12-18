@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ProceduresComposite extends MethodsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ProceduresComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ProceduresComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ProceduresComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ProceduresComposite rv = map.get( type );

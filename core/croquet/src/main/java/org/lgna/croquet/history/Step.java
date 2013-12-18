@@ -103,7 +103,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 	}
 
-	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
 		return this.dataMap.containsKey( key );

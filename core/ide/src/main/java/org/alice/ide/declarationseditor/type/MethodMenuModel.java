@@ -48,7 +48,7 @@ import org.lgna.ik.poser.AbstractAnimatorInputDialogComposite;
  * @author Dennis Cosgrove
  */
 public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static MethodMenuModel getInstance( final org.lgna.project.ast.UserMethod method ) {
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {

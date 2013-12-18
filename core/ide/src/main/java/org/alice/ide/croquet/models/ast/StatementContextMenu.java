@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class StatementContextMenu extends org.lgna.croquet.MenuModel {
-	private static java.util.Map<org.lgna.project.ast.Statement, StatementContextMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.Statement, StatementContextMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized StatementContextMenu getInstance( org.lgna.project.ast.Statement statement ) {
 		StatementContextMenu rv = map.get( statement );

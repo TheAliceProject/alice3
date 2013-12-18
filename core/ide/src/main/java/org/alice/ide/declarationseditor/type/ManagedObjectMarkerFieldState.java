@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * 
  */
 public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ManagedObjectMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ManagedObjectMarkerFieldState rv = map.get( type );

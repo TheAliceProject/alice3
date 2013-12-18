@@ -47,7 +47,7 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldArrayAtIndexDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldArrayAtIndexDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static FieldArrayAtIndexDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldArrayAtIndexDragModel>() {

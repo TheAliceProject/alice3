@@ -109,7 +109,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( "dpiState", new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
 	private final org.lgna.croquet.BooleanState isAlphaChannelState = this.createPreferenceBooleanState( "isAlphaChannelState", false );
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	private ImageCaptureComposite() {
 		super( java.util.UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );

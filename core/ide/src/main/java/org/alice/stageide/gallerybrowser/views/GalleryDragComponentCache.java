@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponentCache {
-	private final java.util.Map<org.alice.stageide.modelresource.ResourceKey, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.alice.stageide.modelresource.ResourceKey, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();

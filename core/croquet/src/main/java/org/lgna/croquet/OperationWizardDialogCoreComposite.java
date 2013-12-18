@@ -48,7 +48,7 @@ package org.lgna.croquet;
  */
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.views.Panel> {
 	private final OwnedByCompositeOperation launchOperation;
-	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );

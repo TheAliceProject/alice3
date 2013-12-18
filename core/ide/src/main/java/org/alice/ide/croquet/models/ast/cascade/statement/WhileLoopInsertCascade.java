@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;

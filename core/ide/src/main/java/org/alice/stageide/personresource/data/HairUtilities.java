@@ -80,7 +80,7 @@ public class HairUtilities {
 	}
 
 	private static java.util.List<HairHatStyle> createHairInfos( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairClsHatNameCombo, HairColorNameHairCombo> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairClsHatNameCombo, HairColorNameHairCombo> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
 		Class<? extends org.lgna.story.resources.sims2.Hair>[] clses = org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
 		for( Class<? extends org.lgna.story.resources.sims2.Hair> cls : clses ) {
 			if( cls.isEnum() ) {

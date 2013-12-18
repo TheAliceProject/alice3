@@ -47,7 +47,7 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class LocalAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized LocalAccessFactory getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;

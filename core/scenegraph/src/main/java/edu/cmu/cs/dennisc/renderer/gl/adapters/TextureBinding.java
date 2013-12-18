@@ -121,7 +121,7 @@ public final class TextureBinding implements ForgettableBinding {
 		}
 	}
 
-	private final java.util.Map<RenderContext, Data> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<RenderContext, Data> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private Data getData( RenderContext rc ) {
 		Data rv = this.map.get( rc );
