@@ -108,13 +108,13 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		} else {
 			javax.swing.JComponent component = this.getMenuProxy( node );
 			if( component != null ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( component );
+				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( component );
+				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( component );
 
 				java.awt.Dimension size = component.getPreferredSize();
 				if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
+					this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createIcon( component );
 				} else {
 					this.icon = null;
 				}

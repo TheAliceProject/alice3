@@ -121,7 +121,7 @@ public class TypeIcon implements javax.swing.Icon {
 
 	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {
 		if( text != null ) {
-			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
 			java.awt.FontMetrics fm;
 			if( font != null ) {
 				fm = g.getFontMetrics( font );
