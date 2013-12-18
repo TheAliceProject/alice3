@@ -85,7 +85,7 @@ public class JZoomView extends javax.swing.JComponent {
 		if( e != null ) {
 			java.awt.Component c = e.getComponent();
 
-			javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJFrame( c );
+			javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootJFrame( c );
 			javax.swing.JRootPane jRootPane = jFrame.getRootPane();
 			javax.swing.JMenuBar jMenuBar = jRootPane.getJMenuBar();
 			java.awt.Container jContentPane = jRootPane.getContentPane();

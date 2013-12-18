@@ -518,7 +518,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, ScreenElement destination ) {
-		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getAwtComponent(), e, destination.getAwtComponent() );
+		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.getAwtComponent(), e, destination.getAwtComponent() );
 	}
 
 	@Deprecated

@@ -51,6 +51,39 @@ public class IconUtilities {
 		throw new AssertionError();
 	}
 
+	private static final boolean IS_PRINT_USED = true;
+	private static final java.awt.Container privateContainer = new java.awt.Container();
+
+	public static javax.swing.Icon createIcon( java.awt.Component component ) {
+		javax.swing.Icon rv;
+		java.awt.Dimension size = component.getPreferredSize();
+		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
+			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( size.width, size.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+			java.awt.Graphics g = image.getGraphics();
+			if( IS_PRINT_USED ) {
+				component.print( g );
+			} else {
+				javax.swing.SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
+			}
+			g.dispose();
+			rv = new javax.swing.ImageIcon( image );
+		} else {
+			rv = new javax.swing.Icon() {
+				public int getIconWidth() {
+					return 24;
+				}
+
+				public int getIconHeight() {
+					return 12;
+				}
+
+				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				}
+			};
+		}
+		return rv;
+	}
+
 	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
 		if( url != null ) {
 			return new javax.swing.ImageIcon( url );

@@ -78,8 +78,8 @@ public abstract class JProxy extends javax.swing.JPanel {
 		if( subject.getParent() != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( subject );
-			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( subject );
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( subject );
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( subject );
 		}
 		return subject.getSize();
 	}

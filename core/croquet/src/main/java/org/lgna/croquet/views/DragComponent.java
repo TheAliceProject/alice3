@@ -394,7 +394,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 				dx -= mousePressedEvent.getX();
 				dy -= mousePressedEvent.getY();
 
-				boolean isCopyDesired = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
+				boolean isCopyDesired = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e );
 				int x = e.getX() + dx;
 				int y = e.getY() + dy;
 				this.dragProxy.setCopyDesired( isCopyDesired );

@@ -77,7 +77,7 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 	}
 
 	public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e ) {
-		if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+		if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 			this.adjustableFontSizeOceanTheme.adjustSizeDelta( e.getWheelRotation() * scaleFactor );
 			if( this.isLookAndFeelUpdated ) {
 				//pass

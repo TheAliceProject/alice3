@@ -170,7 +170,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 				this.setCurrentUnder( nextUnder, source.getDropProxySize() );
 				if( this.currentUnder != null ) {
 					boolean isDropProxyAlreadyUpdated = false;
-					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+					if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						//pass
 					} else {
 						org.lgna.croquet.views.AwtComponentView<?> subject = source.getSubject();
@@ -314,7 +314,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 						edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 						if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 							BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
-							boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource );
+							boolean isCopy = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( eSource );
 							if( isCopy ) {
 								rv = org.alice.ide.clipboard.CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
 							} else {
@@ -337,7 +337,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 
 							org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
 							org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
-							if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+							if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 								org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 								org.lgna.project.ast.Statement copy = ide.createCopy( statement );
 								rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );

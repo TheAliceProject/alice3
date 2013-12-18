@@ -114,7 +114,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	}
 
 	private void updateBorder() {
-		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+		java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics( this.getFont() );
 		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth() + 2, 0, 0 ) );

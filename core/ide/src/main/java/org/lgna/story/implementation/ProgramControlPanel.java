@@ -103,7 +103,7 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 			}
 
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+				if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 					//pass
 				} else {
 					ProgramControlPanel.this.boundedRangeModel.setValue( 1 );

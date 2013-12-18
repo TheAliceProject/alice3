@@ -68,4 +68,12 @@ public class InputEventUtilities {
 			return java.awt.event.InputEvent.CTRL_MASK;
 		}
 	}
+
+	public static boolean isQuoteControlUnquoteDown( java.awt.event.InputEvent e ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			return e.isAltDown();
+		} else {
+			return e.isControlDown();
+		}
+	}
 }

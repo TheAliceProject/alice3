@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-import edu.cmu.cs.dennisc.javax.swing.SwingUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +54,7 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 			java.awt.Dimension rv = super.getPreferredSize();
 			java.awt.Font font = this.getFont();
 			if( font != null ) {
-				java.awt.Graphics g = SwingUtilities.getGraphics();
+				java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
 				java.awt.FontMetrics fm = g.getFontMetrics( font );
 				for( String s : new String[] { JExpandPane.this.getExpandedButtonText(), JExpandPane.this.getCollapsedButtonText() } ) {
 					java.awt.geom.Rectangle2D bounds = fm.getStringBounds( s, g );
