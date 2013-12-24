@@ -52,19 +52,20 @@ import org.lgna.story.SThing;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
  */
 public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
 
-	private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newConcurrentHashMap();
+	private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Maps.newConcurrentHashMap();
 
 	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
 		registerIsFiringMap( transformationlistener );
 		registerPolicyMap( transformationlistener, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( shouldListenTo );
+		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( shouldListenTo );
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );

@@ -47,7 +47,7 @@ package org.alice.stageide.joint;
  * @author Dennis Cosgrove
  */
 public class JointsSubMenuManager {
-	private static final java.util.Map<org.lgna.project.ast.JavaType, Class<? extends JointsSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.project.ast.JavaType, Class<? extends JointsSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	static {
 		addToMap( org.lgna.story.SBiped.class, OtherSBipedJointsSubMenu.class );
 		addToMap( org.lgna.story.SQuadruped.class, OtherSQuadrupedJointsSubMenu.class );

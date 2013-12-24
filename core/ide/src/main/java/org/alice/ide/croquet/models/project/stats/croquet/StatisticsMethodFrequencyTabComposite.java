@@ -49,25 +49,26 @@ import java.util.Map;
 
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsMethodFrequencyView;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
  */
 public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<StatisticsMethodFrequencyView> {
 
-	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
-	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
-	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
+	private final BooleanState showFunctionsState = this.createBooleanState( "areFunctionsShowing", true );
+	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
+	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
 
-	private final ListSelectionState<UserMethod> userMethodListState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final SingleSelectListState<UserMethod> userMethodListState = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod root = new UserMethod();
 	private Integer maximum;
 
@@ -184,7 +185,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		return new StatisticsMethodFrequencyView( this );
 	}
 
-	public ListSelectionState<UserMethod> getUserMethodList() {
+	public SingleSelectListState<UserMethod> getUserMethodList() {
 		return this.userMethodListState;
 	}
 
@@ -205,7 +206,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
+		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
@@ -215,7 +216,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				if( list != null ) {
 					list.add( methodInvocation );
 				} else {
-					list = Collections.newLinkedList( methodInvocation );
+					list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( methodInvocation );
 					this.mapMethodToInvocations.put( method, list );
 				}
 			}
@@ -296,7 +297,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	public static class InvocationCounts {
-		private List<MethodCountPair> methodCountPairs = Collections.newLinkedList();
+		private List<MethodCountPair> methodCountPairs = Lists.newLinkedList();
 
 		public void addInvocation( MethodInvocation invocation ) {
 			addMethod( invocation.method.getValue() );

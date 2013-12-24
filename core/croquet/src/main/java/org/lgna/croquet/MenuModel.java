@@ -81,7 +81,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 
 		@Override
 		public Iterable<? extends org.lgna.croquet.Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
+			return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( this.menuModel );
 		}
 
 		@Override

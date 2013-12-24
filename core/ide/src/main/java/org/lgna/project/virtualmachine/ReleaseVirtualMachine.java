@@ -55,10 +55,10 @@ import org.lgna.project.ast.UserParameter;
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
 		private final Frame owner;
-		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		//note: concurrent hashmaps cannot contain null
-		//private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+		//private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentHashMap();
 
 		public AbstractFrame( Frame owner ) {
 			this.owner = owner;
@@ -339,7 +339,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 
-	private final java.util.Map<Thread, Frame> mapThreadToFrame = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+	private final java.util.Map<Thread, Frame> mapThreadToFrame = edu.cmu.cs.dennisc.java.util.Maps.newConcurrentHashMap();
 
 	private Frame getCurrentFrame() {
 		Frame rv = this.mapThreadToFrame.get( Thread.currentThread() );
@@ -361,7 +361,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		if( frame != null ) {
 			//a bit of double negative logic
 			//push onto stack from top of runtime stack to get the order we want
-			java.util.Stack<LgnaStackTraceElement> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			java.util.Stack<LgnaStackTraceElement> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 			do {
 				stack.push( frame );
 				frame = frame.getOwner();

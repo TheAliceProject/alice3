@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
+public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.CompletionModel> {
 	private org.lgna.project.ast.UserType<?> declaringType;
 	private final String methodName;
 	private org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
@@ -90,7 +90,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 	}
 
 	@Override
-	protected void postCopy( org.lgna.croquet.edits.Edit<?> result ) {
+	protected void postCopy( org.lgna.croquet.edits.AbstractEdit<?> result ) {
 		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.body );
 		super.postCopy( result );
 	}
@@ -156,7 +156,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			org.lgna.project.ast.AbstractType<?, ?, ?> originalReturnType = this.getReturnType();
@@ -176,7 +176,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 					return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() );
 				}
 			} else {
-				org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
+				org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
 				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( originalReturnType ) + "</strong></html>" );
 			}
 		} else {
@@ -203,7 +203,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;

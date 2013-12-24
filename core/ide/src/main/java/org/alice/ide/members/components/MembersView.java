@@ -159,7 +159,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			return MembersView.this;
 		}
 
-		public org.lgna.croquet.views.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return MembersView.this;
 		}
 

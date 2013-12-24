@@ -103,9 +103,9 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.sear
 	}
 
 	private org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker worker;
-	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
-	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
-	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
+	private final org.lgna.croquet.StringState filterState = this.createStringState( "filterState" );
+	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );
+	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( "noEntryLabel" );
 	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			SearchTab.this.handleFilterChanged( e.getNextValue() );

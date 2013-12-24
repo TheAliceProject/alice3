@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserParameter> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserCode, AddParameterComposite>() {
@@ -56,8 +56,8 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 		} );
 	}
 
-	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( this.createKey( "isRequirementToUpdateInvocationsUnderstoodState" ), false );
-	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( this.createKey( "hasNotAgreedToUpdateInvocationsStatus" ) );
+	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( "isRequirementToUpdateInvocationsUnderstoodState", false );
+	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( "hasNotAgreedToUpdateInvocationsStatus" );
 	private final org.lgna.project.ast.UserCode code;
 	//todo: remove
 	private final org.alice.ide.name.validators.ParameterNameValidator parameterNameValidator;
@@ -133,7 +133,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( completionStep, this.code, this.createParameter() );
 	}
 

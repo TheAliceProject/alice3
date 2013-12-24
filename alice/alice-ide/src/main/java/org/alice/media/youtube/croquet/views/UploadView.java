@@ -54,16 +54,16 @@ public class UploadView extends org.lgna.croquet.views.BorderPanel {
 		org.lgna.croquet.views.MigPanel loginPanel = new org.lgna.croquet.views.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
 		loginPanel.addComponent( composite.getLoginComposite().getView(), "wrap" );
 
-		org.lgna.croquet.views.JComponent<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.views.SwingComponentView<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
 		org.lgna.croquet.views.TextField titleTextField = composite.getTitleState().createTextField();
 
-		org.lgna.croquet.views.JComponent<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.views.SwingComponentView<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
 		org.lgna.croquet.views.TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
 		descriptionTextArea.getAwtComponent().setRows( 4 );
 		//description.getAwtComponent().setLineWrap( true );
 		org.lgna.croquet.views.ScrollPane descriptionScrollPane = new org.lgna.croquet.views.ScrollPane( descriptionTextArea );
 
-		org.lgna.croquet.views.JComponent<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.views.SwingComponentView<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
 		org.lgna.croquet.views.TextArea tagsTextArea = composite.getTagsState().createTextArea();
 		tagsTextArea.getAwtComponent().setRows( 2 );
 		//tags.getAwtComponent().setLineWrap( true );

@@ -42,37 +42,10 @@
  */
 package org.lgna.croquet;
 
-import java.util.Iterator;
-
-/*package-private*/final class WizardDialogContentPanel extends GatedCommitDialogContentPanel<WizardDialogContentComposite> {
-	public WizardDialogContentPanel( WizardDialogContentComposite composite ) {
-		super( composite );
-		WizardDialogCoreComposite coreComposite = (WizardDialogCoreComposite)composite.getCoreComposite();
-		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
-		this.getControlLine().addComponent( coreComposite.getPrevOperation().createButton() );
-		this.getControlLine().addComponent( coreComposite.getNextOperation().createButton() );
-		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
-		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
-		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
-		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
-	}
-}
-
-/* package-private */final class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPanel> {
-	public WizardDialogContentComposite( WizardDialogCoreComposite coreComposite ) {
-		super( java.util.UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
-	}
-
-	@Override
-	protected WizardDialogContentPanel createView() {
-		return new WizardDialogContentPanel( this );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.views.Panel, WizardDialogContentComposite> {
+public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.croquet.imp.dialog.WizardDialogContentComposite> {
 	private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
 		public InternalWizardDialogOperation( java.util.UUID id, WizardDialogCoreComposite composite ) {
 			super( id, composite );
@@ -145,7 +118,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	}
 
-	private final PlainStringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
+	private final PlainStringValue stepsLabel = this.createStringValue( "stepsLabel" );
 	private int index = 0;
 
 	private int getIndex() {
@@ -248,7 +221,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final javax.swing.DefaultListSelectionModel listSelectionModel = new javax.swing.DefaultListSelectionModel();
 	private final org.lgna.croquet.views.Label stepLabel = new org.lgna.croquet.views.Label( "todo" );
 
-	private final WizardDialogContentComposite contentComposite = new WizardDialogContentComposite( this );
+	private final org.lgna.croquet.imp.dialog.WizardDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.WizardDialogContentComposite( this );
 	private final WizardCardOwnerComposite cardComposite;
 
 	public WizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>[] wizardPages ) {
@@ -257,7 +230,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	@Override
-	protected org.lgna.croquet.WizardDialogContentComposite getDialogContentComposite() {
+	protected org.lgna.croquet.imp.dialog.WizardDialogContentComposite getDialogContentComposite() {
 		return this.contentComposite;
 	}
 
@@ -281,11 +254,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
-	private org.lgna.croquet.views.MigPanel createAdornmentPanel( org.lgna.croquet.views.JComponent<?> header ) {
+	private org.lgna.croquet.views.MigPanel createAdornmentPanel( org.lgna.croquet.views.SwingComponentView<?> header ) {
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "fill, inset 16", "", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
 		rv.addComponent( header, "wrap" );
-		rv.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), "growx, wrap" );
+		rv.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 		return rv;
 	}
 
@@ -387,7 +360,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.index = -1;
 		this.next( true );
 		this.cardComposite.handlePreActivation();
-		Iterator<WizardPageComposite<?, ?>> itr = getWizardPageIterator();
+		java.util.Iterator<WizardPageComposite<?, ?>> itr = getWizardPageIterator();
 		while( itr.hasNext() ) {
 			WizardPageComposite<?, ?> next = itr.next();
 			next.resetData();

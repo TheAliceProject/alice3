@@ -51,7 +51,7 @@ public class ProjectStack {
 		throw new AssertionError();
 	}
 
-	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public static org.lgna.project.Project peekProject() {
 		if( projectStack.size() > 0 ) {

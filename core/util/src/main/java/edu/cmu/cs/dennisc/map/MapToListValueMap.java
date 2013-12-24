@@ -53,7 +53,7 @@ public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, java.util
 	public java.util.List<E> getInitializingIfAbsentToLinkedList( A a, B b ) {
 		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
 			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			}
 		} );
 	}
@@ -61,7 +61,7 @@ public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, java.util
 	public java.util.List<E> getInitializingIfAbsentToArrayList( A a, B b ) {
 		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
 			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+				return edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			}
 		} );
 	}
@@ -69,7 +69,7 @@ public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, java.util
 	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( A a, B b ) {
 		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
 			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+				return edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 			}
 		} );
 	}

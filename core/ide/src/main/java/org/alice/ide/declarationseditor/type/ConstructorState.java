@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ConstructorState extends FilteredMemberState<org.lgna.project.ast.NamedUserConstructor> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ConstructorState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ConstructorState rv = map.get( type );

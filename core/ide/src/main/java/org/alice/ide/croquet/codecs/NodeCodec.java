@@ -46,7 +46,7 @@ package org.alice.ide.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, NodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Class<?>, NodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized <T extends org.lgna.project.ast.Node> NodeCodec<T> getInstance( Class<T> cls ) {
 		NodeCodec<?> rv = map.get( cls );
@@ -58,7 +58,7 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		return (NodeCodec<T>)rv;
 	}
 
-	private static java.util.Map<java.util.UUID, org.lgna.project.ast.Node> mapIdToNode = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private static java.util.Map<java.util.UUID, org.lgna.project.ast.Node> mapIdToNode = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 
 	public static void addNodeToGlobalMap( org.lgna.project.ast.Node node ) {
 		mapIdToNode.put( node.getId(), node );

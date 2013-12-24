@@ -48,7 +48,7 @@ package org.alice.stageide.gallerybrowser.uri;
 public final class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
 	//public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
 
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
 		return map.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriGalleryDragModel>() {
@@ -296,7 +296,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			Class<?> thingCls = this.getThingCls();
 			if( modelResourceClass != null ) {
 				if( modelResourceClass.isEnum() ) {
-					java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 					for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
 						rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ), thingCls, this.uri ) );
 					}

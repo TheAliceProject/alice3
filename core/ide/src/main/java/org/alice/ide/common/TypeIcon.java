@@ -87,7 +87,7 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	private String getTypeText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
 		return formatter.getTextForType( this.type );
 	}
 
@@ -121,7 +121,7 @@ public class TypeIcon implements javax.swing.Icon {
 
 	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {
 		if( text != null ) {
-			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
 			java.awt.FontMetrics fm;
 			if( font != null ) {
 				fm = g.getFontMetrics( font );

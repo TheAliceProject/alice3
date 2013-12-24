@@ -57,7 +57,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		if( m_listPropertyListeners != null ) {
 			//pass
 		} else {
-			m_listPropertyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+			m_listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		}
 		synchronized( m_listPropertyListeners ) {
 			m_listPropertyListeners.add( l );
@@ -176,7 +176,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public java.util.List<E> subListCopy( int fromIndex, int upToButExcludingIndex ) {
-		java.util.ArrayList<E> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		java.util.ArrayList<E> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		rv.ensureCapacity( ( ( upToButExcludingIndex - fromIndex ) + 1 ) - 1 );
 		rv.addAll( this.subList( fromIndex, upToButExcludingIndex ) );
 		return rv;

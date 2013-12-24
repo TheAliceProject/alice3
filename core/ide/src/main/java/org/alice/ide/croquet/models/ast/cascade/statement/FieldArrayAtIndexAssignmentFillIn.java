@@ -48,7 +48,7 @@ import org.alice.ide.ast.EmptyExpression;
  * @author Dennis Cosgrove
  */
 public final class FieldArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map<org.lgna.project.ast.UserField, FieldArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, FieldArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized FieldArrayAtIndexAssignmentFillIn getInstance( org.lgna.project.ast.UserField field ) {
 		FieldArrayAtIndexAssignmentFillIn rv = map.get( field );

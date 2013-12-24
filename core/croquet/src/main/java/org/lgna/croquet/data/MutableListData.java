@@ -50,17 +50,17 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 
 	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	}
 
 	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, T[] values ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( values );
 	}
 
 	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( values );
 	}
 
 	@Override

@@ -52,7 +52,7 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
@@ -64,7 +64,7 @@ import edu.wustl.lookingglass.media.FFmpegProcess;
  */
 public class ExecutionPermissionFailedDialogComposite extends MessageDialogComposite<ExecutionPermissionFailedDialogView> {
 
-	private final StringValue explanation = createStringValue( createKey( "explanation" ) );
+	private final StringValue explanation = createStringValue( "explanation" );
 	private boolean isFixed = false;
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
 	private final File ffmpegFile;
@@ -74,10 +74,10 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 		this.ffmpegFile = f;
 	}
 
-	private final ActionOperation troubleShootAction = createActionOperation( createKey( "troubleShoot" ), new Action() {
+	private final ActionOperation troubleShootAction = createActionOperation( "troubleShoot", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
 			if( SystemUtilities.isMac() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
 				isFixed = ( ffmpegFile != null ) && ffmpegFile.canExecute();

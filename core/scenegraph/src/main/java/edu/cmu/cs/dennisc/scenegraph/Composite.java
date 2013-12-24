@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
-	private final java.util.List<Component> children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Component> children = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> childrenListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {

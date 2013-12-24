@@ -64,7 +64,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
 
 	private static java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> createUnmodifiableSubCompositeList( org.alice.ide.member.FilteredJavaMethodsSubComposite... subComposites ) {
-		return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( subComposites ) );
+		return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( subComposites ) );
 	}
 
 	private StoryApiConfigurationManager() {
@@ -118,7 +118,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 		SINGLETON;
 		private static final double DEFAULT_VALUE = 50.0;
-		private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		TypeComparator() {
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
@@ -314,7 +314,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.views.SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 		if( ( fieldExpression instanceof org.lgna.project.ast.ThisExpression ) || ( fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) ) {
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();

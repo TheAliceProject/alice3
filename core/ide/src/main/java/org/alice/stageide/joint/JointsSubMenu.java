@@ -47,12 +47,12 @@ package org.alice.stageide.joint;
  * @author Dennis Cosgrove
  */
 public abstract class JointsSubMenu<FB> extends org.lgna.croquet.CascadeMenuModel<FB> {
-	private final java.util.List<org.lgna.croquet.CascadeFillIn<FB, ?>> fillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.lgna.croquet.CascadeFillIn<FB, ?>> fillIns = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private final java.util.List<String> methodNames;
 
 	public JointsSubMenu( java.util.UUID migrationId, Class<?> cls, String... methodNames ) {
 		super( migrationId );
-		this.methodNames = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( methodNames );
+		this.methodNames = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
 	}
 
 	public boolean consumeIfAppropriate( org.lgna.project.ast.Method method, org.lgna.croquet.CascadeFillIn<FB, ?> fillIn ) {

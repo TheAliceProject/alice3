@@ -45,7 +45,7 @@ package org.alice.media.youtube.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewVideoView extends org.lgna.croquet.views.JComponent<javax.swing.AbstractButton> {
+public class PreviewVideoView extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
 	private static class PlayIcon extends org.alice.stageide.icons.ShapeIcon {
 		private final java.awt.Stroke stroke;
 

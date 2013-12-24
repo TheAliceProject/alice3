@@ -65,7 +65,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
+		protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 			T[] items = this.data.toArray();
 			items[ this.index ] = values[ 0 ];
 			this.data.internalSetAllItems( items );
@@ -283,7 +283,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 	}
 
 	@Override
-	protected org.lgna.croquet.views.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
 		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
 

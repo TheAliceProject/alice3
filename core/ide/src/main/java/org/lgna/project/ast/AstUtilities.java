@@ -112,7 +112,7 @@ public class AstUtilities {
 	}
 
 	public static Iterable<JavaMethod> getKeyMethods( AbstractParameter parameter ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
 		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
@@ -165,13 +165,13 @@ public class AstUtilities {
 	}
 
 	public static Iterable<JavaMethod> getDeclaredPersistentPropertyGetters( JavaType javaType ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		updatePersistentPropertyGetters( rv, javaType );
 		return rv;
 	}
 
 	public static Iterable<JavaMethod> getPersistentPropertyGetters( AbstractType<?, ?, ?> type ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
 			if( javaType != null ) {
@@ -665,7 +665,7 @@ public class AstUtilities {
 	}
 
 	public static java.util.Set<UserMethod> getAllInvokedMethods( UserMethod seed ) {
-		java.util.Set<UserMethod> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		java.util.Set<UserMethod> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		addInvokedMethods( set, seed );
 		return set;
 	}

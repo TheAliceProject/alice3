@@ -49,7 +49,7 @@ import org.lgna.project.ast.AbstractMethod;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectionState<DeclarationComposite> {
+public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationComposite> {
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();
@@ -70,7 +70,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 			} else {
 				class TypeListPair {
 					private final org.lgna.project.ast.NamedUserType type;
-					private final java.util.List<DeclarationComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					private final java.util.List<DeclarationComposite> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 					public TypeListPair( org.lgna.project.ast.NamedUserType type ) {
 						this.type = type;
@@ -97,13 +97,13 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 					}
 				}
 
-				edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, TypeListPair> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-				java.util.List<TypeListPair> typeListPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, TypeListPair> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+				java.util.List<TypeListPair> typeListPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-				java.util.List<DeclarationComposite> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( data.toArray() );
+				java.util.List<DeclarationComposite> prevItems = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( data.toArray() );
 				prevItems.add( declarationComposite );
 
-				java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( DeclarationComposite<?, ?> item : prevItems ) {
 					if( item != null ) {
 						org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)item.getType();
@@ -124,7 +124,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 						}
 					}
 				}
-				java.util.List<DeclarationComposite> nextItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<DeclarationComposite> nextItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				boolean isTypeRequired = true; //typeListPairs.size() > 1;
 				boolean isSeparatorDesired = false;
 				for( TypeListPair typeListPair : typeListPairs ) {
@@ -223,7 +223,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 	private void handleAstChangeThatCouldBeOfInterest() {
 		org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = this.getValue();
 		if( declarationComposite != null ) {
-			org.lgna.croquet.views.View view = declarationComposite.getView();
+			org.lgna.croquet.views.CompositeView view = declarationComposite.getView();
 			if( view instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
 				org.alice.ide.declarationseditor.code.components.CodeDeclarationView codeDeclarationView = (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)view;
 				org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = codeDeclarationView.getCodePanelWithDropReceptor();
@@ -236,7 +236,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 	}
 
 	public void removeAllOrphans() {
-		java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( DeclarationComposite<?, ?> composite : this ) {
 			if( composite != null ) {
 				org.lgna.project.ast.AbstractDeclaration declaration = composite.getDeclaration();

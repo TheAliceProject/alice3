@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ShapesTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ShapesTabView> {
-	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
 			org.alice.stageide.gallerybrowser.shapes.DiscDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.ConeDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance(),

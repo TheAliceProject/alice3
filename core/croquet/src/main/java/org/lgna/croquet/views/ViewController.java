@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewController<J extends javax.swing.JComponent, M extends org.lgna.croquet.Model> extends JComponent<J> {
+public abstract class ViewController<J extends javax.swing.JComponent, M extends org.lgna.croquet.Model> extends SwingComponentView<J> {
 	private final M model;
 
 	public ViewController( M model ) {
@@ -124,7 +124,7 @@ public abstract class ViewController<J extends javax.swing.JComponent, M extends
 	//	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		M model = this.getModel();
 		if( model != null ) {
@@ -133,7 +133,7 @@ public abstract class ViewController<J extends javax.swing.JComponent, M extends
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		M model = this.getModel();
 		if( model != null ) {
 			org.lgna.croquet.views.ComponentManager.removeComponent( model, this );

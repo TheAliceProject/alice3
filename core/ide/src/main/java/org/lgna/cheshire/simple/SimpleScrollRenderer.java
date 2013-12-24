@@ -61,7 +61,7 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.views.ScreenElement root, org.lgna.croquet.views.TrackableShape trackableShape ) {
 		org.lgna.croquet.views.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 		if( scrollPane != null ) {
-			org.lgna.croquet.views.Component<?> view = scrollPane.getViewportView();
+			org.lgna.croquet.views.AwtComponentView<?> view = scrollPane.getViewportView();
 
 			java.awt.Shape shape = trackableShape.getShape( view, null );
 			if( shape != null ) {

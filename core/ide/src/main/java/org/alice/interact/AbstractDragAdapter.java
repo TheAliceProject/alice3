@@ -74,7 +74,7 @@ import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
@@ -193,7 +193,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
 
-	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
 
@@ -501,10 +501,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	//		}
 	//	}
 
-	protected abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState();
+	protected abstract SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState();
 
 	private void updateHandleSelection( AbstractTransformableImp selected ) {
-		ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
+		SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
 		if( handleStyleListSelectionState != null ) {
 			org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
 			InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
@@ -976,7 +976,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			return null;
 		}
-		org.lgna.croquet.views.Component lgc = org.lgna.croquet.views.Component.lookup( c );
+		org.lgna.croquet.views.AwtComponentView lgc = org.lgna.croquet.views.AwtComponentView.lookup( c );
 		if( lgc instanceof ManipulationHandle )
 		{
 			return (ManipulationHandle)lgc;

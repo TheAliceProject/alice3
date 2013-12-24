@@ -78,7 +78,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
 		if( expressions.size() > 0 ) {
 			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), dropTrigger );
-			java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
 			for( org.lgna.project.ast.Expression expression : expressions ) {
 				org.lgna.croquet.CascadeFillIn fillIn = org.lgna.cheshire.ast.ExpressionFillInGenerator.generateFillInForExpression( expression, bufferForCompletionStepSubTransactionHistory );
@@ -122,7 +122,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.AbstractEdit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit originalInsertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)originalEdit;
 		org.lgna.project.ast.Expression[] values = originalInsertStatementEdit.getInitialExpressions();
 		org.lgna.project.ast.Expression[] retargetedValues = new org.lgna.project.ast.Expression[ values.length ];

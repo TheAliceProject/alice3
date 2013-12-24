@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
  * @author Dennis Cosgrove
  */
 public class ConditionalExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.ConditionalInfixExpression> {
-	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ConditionalExpressionLeftAndRightOperandsFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ConditionalExpressionLeftAndRightOperandsFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ConditionalExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {

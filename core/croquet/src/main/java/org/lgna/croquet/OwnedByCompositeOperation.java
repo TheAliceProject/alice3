@@ -129,25 +129,25 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		super.pushGeneratedContexts( edit );
 		this.composite.pushGeneratedContexts( edit );
 	}
 
 	@Override
-	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		this.composite.popGeneratedContexts( edit );
 		super.popGeneratedContexts( edit );
 	}
 
 	@Override
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException {
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
 
 	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		this.composite.appendTutorialStepText( text, step, edit );
 	}
 

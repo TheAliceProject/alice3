@@ -47,21 +47,21 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
-	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+	private final org.lgna.croquet.Operation randomize = this.createActionOperation( "randomize", new Action() {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			return createRandomEdit( step );
 		}
 	} );
 
-	private final org.lgna.croquet.BoundedDoubleState obesityLevelState = this.createBoundedDoubleState( this.createKey( "obesityLevelState" ), new BoundedDoubleDetails() );
+	private final org.lgna.croquet.BoundedDoubleState obesityLevelState = this.createBoundedDoubleState( "obesityLevelState", new BoundedDoubleDetails() );
 	private final FullBodyOutfitTabComposite bodyTab = new FullBodyOutfitTabComposite();
 	private final TopAndBottomOutfitTabComposite topAndBottomTab = new TopAndBottomOutfitTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, org.lgna.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ELDER, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createSingleSelectListState( "lifeStageState", org.lgna.story.resources.sims2.LifeStage.class, org.lgna.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ELDER, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER );
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.Gender> genderState = this.createSingleSelectListStateForEnum( "genderState", org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabSelectionState( this.createKey( "bodyHeadHairTabState" ), 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
+	private final org.lgna.croquet.TabState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabState( "bodyHeadHairTabState", 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
 
 	private org.alice.stageide.personresource.OutfitTabComposite<? extends org.alice.stageide.personresource.views.OutfitTabView> lastActiveOutfitTab = null;
 
@@ -178,7 +178,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
 
-	private final java.util.List<org.alice.stageide.personresource.data.HairColorName> hairColorNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.stageide.personresource.data.HairColorName> hairColorNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
@@ -253,15 +253,15 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.randomize;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> getLifeStageState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.LifeStage> getLifeStageState() {
 		return this.lifeStageState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> getGenderState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.Gender> getGenderState() {
 		return this.genderState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
 		return this.faceTab.getBaseFaceState();
 	}
 
@@ -269,27 +269,27 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.skinColorState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairHatStyle> getHairHatStyleState() {
+	public org.lgna.croquet.SingleSelectListState<org.alice.stageide.personresource.data.HairHatStyle> getHairHatStyleState() {
 		return this.hairTab.getHairHatStyleState();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
+	public org.lgna.croquet.SingleSelectListState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
 		return this.hairTab.getHairColorNameState();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
 		return this.faceTab.getBaseEyeColorState();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
 		return this.bodyTab.getFullBodyOutfitState();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
 		return this.topAndBottomTab.getTopPieceState();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
 		return this.topAndBottomTab.getBottomPieceState();
 	}
 
@@ -297,7 +297,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.obesityLevelState;
 	}
 
-	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getBodyHeadHairTabState() {
+	public org.lgna.croquet.TabState<org.lgna.croquet.SimpleTabComposite> getBodyHeadHairTabState() {
 		return this.bodyHeadHairTabState;
 	}
 
@@ -313,7 +313,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.faceTab;
 	}
 
-	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
+	private org.lgna.croquet.edits.AbstractEdit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.story.resources.sims2.LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
 			lifeStage = null;

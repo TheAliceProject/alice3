@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
+public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPanel> {
 
 	private class MutableListLayout implements java.awt.LayoutManager {
 		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
@@ -157,7 +157,7 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 	}
 
 	private final org.lgna.croquet.data.MutableListData<E> data;
-	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup buttonGroup = new edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup();
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {

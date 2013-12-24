@@ -45,7 +45,7 @@ package org.alice.stageide.type.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneFieldsState extends org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> {
+public final class SceneFieldsState extends org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> {
 	public SceneFieldsState( org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
 	}

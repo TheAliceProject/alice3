@@ -54,7 +54,7 @@ public class DeclarationCompositeHistory {
 		return SingletonHolder.instance;
 	}
 
-	private java.util.List<DeclarationComposite> history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<DeclarationComposite> history = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private int index = -1;
 	private final org.lgna.croquet.event.ValueListener<DeclarationComposite> declarationListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<DeclarationComposite> e ) {

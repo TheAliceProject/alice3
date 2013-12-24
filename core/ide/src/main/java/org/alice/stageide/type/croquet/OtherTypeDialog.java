@@ -54,19 +54,19 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return SingletonHolder.instance;
 	}
 
-	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final TypeTreeState typeTreeState = new TypeTreeState();
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
 	};
 	private final org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData = new org.alice.stageide.type.croquet.data.SceneFieldListData();
-	private final org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+	private final org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
 
 	private final AssignableTab assignableTab = new AssignableTab( this );
 	private final ContainsTab containsTab = new ContainsTab( this );
-	private final org.lgna.croquet.TabSelectionState tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.assignableTab, this.containsTab );
+	private final org.lgna.croquet.TabState tabState = this.createTabState( "tabState", 0, this.assignableTab, this.containsTab );
 
-	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
 
 	private boolean isInTheMidstOfLowestCommonAncestorSetting;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
@@ -108,15 +108,15 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return 600;
 	}
 
-	public org.lgna.croquet.TabSelectionState getTabState() {
+	public org.lgna.croquet.TabState getTabState() {
 		return this.tabState;
 	}
 
-	public org.lgna.croquet.MultipleSelectionState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+	public org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> getSceneFieldsState() {
 		return this.sceneFieldsState;
 	}
 
-	public org.lgna.croquet.TreeSelectionState<TypeNode> getTypeTreeState() {
+	public org.lgna.croquet.SingleSelectTreeState<TypeNode> getTypeTreeState() {
 		return this.typeTreeState;
 	}
 
@@ -335,7 +335,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
 			//
 		} else {
-			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> fields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			if( type != null ) {
 				synchronized( data ) {
 					final int N = data.getItemCount();

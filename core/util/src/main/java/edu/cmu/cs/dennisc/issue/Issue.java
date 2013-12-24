@@ -113,7 +113,7 @@ public class Issue {
 		private String reportedBy;
 		private String emailAddress;
 
-		private java.util.List<Attachment> attachments = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List<Attachment> attachments = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	}
 
 	private Issue( Builder builder ) {

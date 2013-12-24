@@ -45,11 +45,11 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class Note extends org.lgna.croquet.views.JComponent<javax.swing.JPanel> {
+public class Note extends org.lgna.croquet.views.SwingComponentView<javax.swing.JPanel> {
 	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
 
-	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final javax.swing.text.html.HTMLDocument document = new javax.swing.text.html.HTMLDocument();
 
 	public String getText() {
@@ -84,7 +84,7 @@ public class Note extends org.lgna.croquet.views.JComponent<javax.swing.JPanel> 
 		return this.features;
 	}
 
-	public java.awt.Point calculateLocation( org.lgna.croquet.views.Container<?> container ) {
+	public java.awt.Point calculateLocation( org.lgna.croquet.views.AwtContainerView<?> container ) {
 		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
@@ -218,7 +218,7 @@ public class Note extends org.lgna.croquet.views.JComponent<javax.swing.JPanel> 
 			for( Feature feature : this.features ) {
 				feature.updateTrackableShapeIfNecessary();
 			}
-			org.lgna.croquet.views.Container<?> container = this.getParent();
+			org.lgna.croquet.views.AwtContainerView<?> container = this.getParent();
 			if( container != null ) {
 				container.repaint();
 			}

@@ -58,7 +58,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		return null;
 	}
 
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -80,7 +80,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ReturnStatement : statement;
 		org.lgna.project.ast.ReturnStatement returnStatement = (org.lgna.project.ast.ReturnStatement)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( returnStatement.expression.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( returnStatement.expression.getValue() );
 	}
 
 	@Override

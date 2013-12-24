@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.views.MenuBar> {
-	private final java.util.List<StandardMenuItemPrepModel> items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<StandardMenuItemPrepModel> items = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public MenuBarComposite( java.util.UUID id ) {
 		super( id );

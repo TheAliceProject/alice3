@@ -49,7 +49,7 @@ package org.alice.stageide.ast;
 public class JointedTypeInfo {
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedTypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedTypeInfo> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( type ) ) {
@@ -71,7 +71,7 @@ public class JointedTypeInfo {
 	}
 
 	public static java.util.List<JointedTypeInfo> getInstances( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		java.util.List<JointedTypeInfo> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JointedTypeInfo> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.lgna.project.ast.AbstractType<?, ?, ?> t = type;
 		while( JOINTED_MODEL_TYPE.isAssignableFrom( t ) ) {
 			JointedTypeInfo jointedTypeInfo = getDeclarationInstance( t );
@@ -100,7 +100,7 @@ public class JointedTypeInfo {
 	}
 
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
-	private final java.util.List<org.lgna.project.ast.AbstractMethod> jointGetters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.lgna.project.ast.AbstractMethod> jointGetters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private JointedTypeInfo( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
@@ -122,7 +122,7 @@ public class JointedTypeInfo {
 	public static class Node {
 		private final Node parent;
 		private final org.lgna.project.ast.AbstractMethod method;
-		private final java.util.List<Node> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<Node> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		public static Node createAndAddToParent( Node parent, org.lgna.project.ast.AbstractMethod method ) {
 			Node rv = new Node( parent, method );

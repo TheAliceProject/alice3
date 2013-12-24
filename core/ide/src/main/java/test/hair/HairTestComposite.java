@@ -82,7 +82,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 	@Override
 	protected org.lgna.croquet.views.Panel createView() {
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairColorName, String> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairColorName, String> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
 			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
 				for( HairHatStyle hairHatStyle : HairUtilities.getHairHatStyles( lifeStage, gender ) ) {
@@ -128,7 +128,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 			java.util.List<String> paths = map.get( hairColorName );
 			if( paths != null ) {
 				panel.addComponent( new org.lgna.croquet.views.Label( hairColorName.name(), hairColorName.getIcon() ) );
-				org.lgna.croquet.ListSelectionState<String> state = this.createListSelectionState( this.createKey( "unused" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, -1, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( paths, String.class ) );
+				org.lgna.croquet.SingleSelectListState<String> state = this.createSingleSelectListState( "unused", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, -1, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( paths, String.class ) );
 				org.lgna.croquet.views.List<String> listView = state.createList();
 				listView.setCellRenderer( new HairPathListCellRenderer() );
 				listView.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
@@ -141,7 +141,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 
 		outerPanel.addCenterComponent( scrollPane );
 		javax.swing.KeyStroke keyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 );
-		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.views.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
 
 		return outerPanel;
 	}

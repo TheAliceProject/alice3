@@ -49,7 +49,7 @@ public class ImageRecordView extends org.lgna.croquet.views.MigPanel {
 	private final org.lgna.croquet.views.BorderPanel lookingGlassContainer = new org.lgna.croquet.views.BorderPanel();
 	private final TimeLabel timeLabel;
 
-	private final org.lgna.croquet.views.Component<?> listPane;
+	private final org.lgna.croquet.views.AwtComponentView<?> listPane;
 
 	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );

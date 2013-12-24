@@ -69,7 +69,7 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.views.ComboBox;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SpringPanel.Horizontal;
@@ -189,7 +189,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			return StorytellingSceneEditor.this;
 		}
 
-		public org.lgna.croquet.views.JComponent<?> getViewController() {
+		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return StorytellingSceneEditor.this;
 		}
 	}
@@ -304,7 +304,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	};
 
-	private ListSelectionState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	private SingleSelectListState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
 
 	private boolean selectionIsFromInstanceSelector = false;
 	private boolean selectionIsFromMain = false;
@@ -619,12 +619,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void setSelectedObjectMarker( UserField objectMarkerField ) {
-		org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
+		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( objectMarkerField ) );
 	}
 
 	public void setSelectedCameraMarker( UserField cameraMarkerField ) {
-		org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
+		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( cameraMarkerField ) );
 	}
 
@@ -1083,7 +1083,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getUndoStatementsForAddField( org.lgna.project.ast.UserField field ) {
-		java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		undoStatements.add( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 
@@ -1092,7 +1092,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getDoStatementsForRemoveField( org.lgna.project.ast.UserField field ) {
-		java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		doStatements.add( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 

@@ -96,7 +96,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 					int transactionCount = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
 					if( transactionCount > 0 ) {
 						org.lgna.croquet.history.Transaction lastTransaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
-						org.lgna.croquet.edits.Edit lastEdit = lastTransaction.getEdit();
+						org.lgna.croquet.edits.AbstractEdit lastEdit = lastTransaction.getEdit();
 						if( lastEdit instanceof org.alice.interact.operations.GetAGoodLookAtEdit ) {
 							org.alice.interact.operations.GetAGoodLookAtEdit edit = (org.alice.interact.operations.GetAGoodLookAtEdit)lastEdit;
 							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {

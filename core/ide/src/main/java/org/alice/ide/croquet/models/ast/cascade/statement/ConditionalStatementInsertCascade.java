@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
@@ -71,7 +71,7 @@ public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStat
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ConditionalStatement : statement;
 		org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
 	}
 
 	@Override

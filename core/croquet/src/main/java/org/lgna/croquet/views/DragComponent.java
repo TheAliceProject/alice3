@@ -351,7 +351,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		}
 	}
 
-	public JComponent<?> getSubject() {
+	public SwingComponentView<?> getSubject() {
 		return this;
 	}
 
@@ -394,7 +394,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 				dx -= mousePressedEvent.getX();
 				dy -= mousePressedEvent.getY();
 
-				boolean isCopyDesired = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
+				boolean isCopyDesired = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e );
 				int x = e.getX() + dx;
 				int y = e.getY() + dy;
 				this.dragProxy.setCopyDesired( isCopyDesired );
@@ -405,7 +405,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		}
 	}
 
-	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
+	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, AwtComponentView<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );
 

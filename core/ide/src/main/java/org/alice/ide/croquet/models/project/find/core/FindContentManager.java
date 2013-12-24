@@ -64,7 +64,8 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
 import org.lgna.project.ast.UserType;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
@@ -72,8 +73,8 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  */
 public class FindContentManager {
 
-	private final List<SearchResult> objectList = Collections.newArrayList();
-	private final List<Object> superTypeList = Collections.newArrayList();
+	private final List<SearchResult> objectList = Lists.newArrayList();
+	private final List<Object> superTypeList = Lists.newArrayList();
 
 	public void initialize( UserType sceneType, List<Criterion> criteria ) {
 		//		this.sceneType = sceneType;
@@ -162,7 +163,7 @@ public class FindContentManager {
 	}
 
 	public List<SearchResult> getResultsForString( String nextValue ) {
-		List<SearchResult> rv = Collections.newArrayList();
+		List<SearchResult> rv = Lists.newArrayList();
 		String check = nextValue;
 		//all these characters break regex
 		check = check.replaceAll( "\\*", ".*" );
@@ -199,7 +200,7 @@ public class FindContentManager {
 
 	public List<SearchResult> getResultsForField( UserField field ) {
 		List<SearchResult> resultsForString = getResultsForString( field.getName() );
-		List<SearchResult> rv = Collections.newArrayList();
+		List<SearchResult> rv = Lists.newArrayList();
 		for( SearchResult obj : resultsForString ) {
 			if( obj.getDeclaration().equals( field ) ) {
 				rv.add( obj );
@@ -213,9 +214,9 @@ public class FindContentManager {
 	}
 
 	private List<SearchResult> sortByRelevance( String string, List<SearchResult> searchResults ) {
-		List<SearchResult> unsortedList = Collections.newArrayList( searchResults );
-		List<SearchResult> rv = Collections.newArrayList();
-		Map<SearchResult, Double> scoreMap = Collections.newHashMap();
+		List<SearchResult> unsortedList = Lists.newArrayList( searchResults );
+		List<SearchResult> rv = Lists.newArrayList();
+		Map<SearchResult, Double> scoreMap = Maps.newHashMap();
 		for( SearchResult obj : unsortedList ) {
 			scoreMap.put( obj, score( obj, string ) );
 		}

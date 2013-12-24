@@ -46,12 +46,12 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public final class ConstructorMenuModel extends MemberMenuModel<org.lgna.project.ast.NamedUserConstructor> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static ConstructorMenuModel getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		return map.getInitializingIfAbsent( constructor, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel>() {
 			public ConstructorMenuModel initialize( org.lgna.project.ast.NamedUserConstructor key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
 				return new ConstructorMenuModel( key, prepModels );

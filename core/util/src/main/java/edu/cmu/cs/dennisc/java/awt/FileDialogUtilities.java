@@ -177,7 +177,7 @@ public class FileDialogUtilities {
 
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static FileDialog createFileDialog( java.awt.Component root, String title, int mode ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {

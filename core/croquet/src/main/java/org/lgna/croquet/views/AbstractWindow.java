@@ -48,7 +48,7 @@ package org.lgna.croquet.views;
  */
 //todo: better name
 public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
-	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 
 	/* package-private */static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
@@ -237,7 +237,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	private static Button lookupButton( javax.swing.JButton jButton ) {
-		Component<?> component = Component.lookup( jButton );
+		AwtComponentView<?> component = AwtComponentView.lookup( jButton );
 		if( component instanceof Button ) {
 			Button button = (Button)component;
 			return button;
@@ -260,7 +260,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		if( this.defaultJButtonStack != null ) {
 			//pass
 		} else {
-			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 		}
 		this.defaultJButtonStack.push( this.getJRootPane().getDefaultButton() );
 		this.setDefaultButton( button );

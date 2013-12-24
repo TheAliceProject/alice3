@@ -46,7 +46,7 @@ import java.io.File;
 
 import org.alice.media.youtube.croquet.codecs.EventScriptEventCodec;
 import org.lgna.common.RandomUtilities;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.StringValue;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
@@ -59,9 +59,9 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );
-	private final StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
-	private final StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
-	private final ListSelectionState<EventScriptEvent> eventList = createListSelectionState( createKey( "eventList" ), EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
+	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
+	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
+	private final SingleSelectListState<EventScriptEvent> eventList = createSingleSelectListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
 	private org.lgna.project.Project project;
 	private EventScript eventScript;
@@ -75,7 +75,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		this.addPage( this.uploadComposite );
 	}
 
-	public ListSelectionState<EventScriptEvent> getEventList() {
+	public SingleSelectListState<EventScriptEvent> getEventList() {
 		return this.eventList;
 	}
 
@@ -134,7 +134,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
 

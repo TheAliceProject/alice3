@@ -48,7 +48,7 @@ package org.lgna.croquet.views;
  */
 public final class Window extends AbstractWindow<javax.swing.JWindow> {
 
-	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
+	private static javax.swing.JWindow createJWindow( AwtComponentView<?> owner ) {
 		javax.swing.JWindow rv;
 		if( owner != null ) {
 			AbstractWindow<?> root = owner.getRoot();
@@ -72,7 +72,7 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 		this( null );
 	}
 
-	public Window( Component<?> owner ) {
+	public Window( AwtComponentView<?> owner ) {
 		super( Window.createJWindow( owner ) );
 	}
 

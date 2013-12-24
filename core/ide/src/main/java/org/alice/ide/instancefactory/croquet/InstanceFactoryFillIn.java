@@ -61,7 +61,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	};
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static InstanceFactoryFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
@@ -153,7 +153,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( "<strong>" );
 		text.append( this.value );
 		text.append( "</strong>" );

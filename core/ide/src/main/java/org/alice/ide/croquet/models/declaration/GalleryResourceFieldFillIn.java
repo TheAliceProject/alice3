@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized GalleryResourceFieldFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
 		GalleryResourceFieldFillIn rv = map.get( field );

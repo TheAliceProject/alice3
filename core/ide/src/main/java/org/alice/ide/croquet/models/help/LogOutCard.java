@@ -55,7 +55,7 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 		usernameLabel.setText( welcome.getText() + str );
 	}
 
-	private StringValue welcome = createStringValue( createKey( "welcome" ) );
+	private StringValue welcome = createStringValue( "welcome" );
 	private Label usernameLabel = new Label();
 	private ActionOperation logoutOperation;
 

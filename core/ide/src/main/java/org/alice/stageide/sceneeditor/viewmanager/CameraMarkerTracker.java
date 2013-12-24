@@ -70,8 +70,8 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 	private org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 	private CameraMarkerImp activeMarker = null;
 
-	private java.util.Map<org.alice.stageide.sceneeditor.View, CameraMarkerImp> mapViewToMarker = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.Map<CameraMarkerImp, org.alice.stageide.sceneeditor.View> mapMarkerToView = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<org.alice.stageide.sceneeditor.View, CameraMarkerImp> mapViewToMarker = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<CameraMarkerImp, org.alice.stageide.sceneeditor.View> mapMarkerToView = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public CameraMarkerTracker( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor, Animator animator )
 	{

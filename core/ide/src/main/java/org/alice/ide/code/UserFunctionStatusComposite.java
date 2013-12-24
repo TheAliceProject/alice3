@@ -62,9 +62,9 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 	}
 
 	private final org.lgna.croquet.PlainStringValue metaStringValue = new UnlocalizedPlainStringValue( UNVIEWED_TEXT );
-	private final ErrorStatus noReturnStatementError = this.createErrorStatus( this.createKey( "noReturnStatementError" ) );
-	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( this.createKey( "notAllPathsEndInReturnStatementError" ) );
-	private final ErrorStatus unreachableCodeError = this.createErrorStatus( this.createKey( "unreachableCodeError" ) );
+	private final ErrorStatus noReturnStatementError = this.createErrorStatus( "noReturnStatementError" );
+	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( "notAllPathsEndInReturnStatementError" );
+	private final ErrorStatus unreachableCodeError = this.createErrorStatus( "unreachableCodeError" );
 
 	private final org.lgna.project.ast.UserMethod method;
 	private ErrorStatus errorStatus;

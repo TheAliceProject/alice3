@@ -71,9 +71,9 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayListOfSingleArrayList( this.menuPrepModel );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
 		} else {
 			return java.util.Collections.emptyList();
 		}
@@ -107,7 +107,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	//	}
 	//
 	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		this.initializeIfNecessary();
 		text.append( " <strong>" );
 		String name = this.getName();
@@ -183,7 +183,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return false;
 	}
 
@@ -213,7 +213,7 @@ public abstract class Operation extends AbstractCompletionModel {
 
 		@Override
 		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.operation );
 		}
 
 		@Override
@@ -254,7 +254,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 			this.operation.appendTutorialStepText( text, step, edit );
 		}
 	}

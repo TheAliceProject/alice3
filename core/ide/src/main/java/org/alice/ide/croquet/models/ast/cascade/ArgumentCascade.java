@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade;
  * @author Dennis Cosgrove
  */
 public class ArgumentCascade extends AbstractArgumentCascade {
-	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
 		ArgumentCascade rv = map.get( argument );

@@ -50,7 +50,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 		public String customize( String localization, T value );
 	}
 
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Class, EnumCodec> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Class, EnumCodec> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized <T extends Enum<T>> EnumCodec<T> createInstance( Class<T> valueCls, final LocalizationCustomizer<T> localizationCustomizer ) {
 		return new EnumCodec<T>( valueCls, localizationCustomizer );
@@ -95,7 +95,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 			if( this.mapValueToLocalization != null ) {
 				//pass
 			} else {
-				this.mapValueToLocalization = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				this.mapValueToLocalization = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 				String bundleName = this.valueCls.getPackage().getName() + ".croquet";
 				try {
 					java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );

@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
  * @author Dennis Cosgrove
  */
 public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ConditionalInfixExpression> {
-	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {

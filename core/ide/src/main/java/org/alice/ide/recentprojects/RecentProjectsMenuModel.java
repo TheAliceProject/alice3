@@ -45,8 +45,8 @@ package org.alice.ide.recentprojects;
 import org.lgna.croquet.views.CascadeMenu;
 import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.CheckBoxMenuItem;
-import org.lgna.croquet.views.Component;
-import org.lgna.croquet.views.Container;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.AwtContainerView;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuItem;
 import org.lgna.croquet.views.MenuTextSeparator;
@@ -72,7 +72,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.net.URI currentUri = ide.getUri();
 		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.net.URI uri : uris ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
 				//pass
@@ -115,11 +115,11 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 				}
 
-				public Component<?> getMenuComponent( int i ) {
+				public AwtComponentView<?> getMenuComponent( int i ) {
 					javax.swing.MenuElement menuElement = jPopupMenu.getSubElements()[ i ];
 					if( menuElement instanceof java.awt.Component ) {
 						java.awt.Component awtComponent = (java.awt.Component)menuElement;
-						return Component.lookup( awtComponent );
+						return AwtComponentView.lookup( awtComponent );
 					} else {
 						return null;
 					}
@@ -129,16 +129,16 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 					return jPopupMenu.getSubElements().length;
 				}
 
-				public synchronized Component<?>[] getMenuComponents() {
+				public synchronized AwtComponentView<?>[] getMenuComponents() {
 					final int N = this.getMenuComponentCount();
-					Component<?>[] rv = new Component<?>[ N ];
+					AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 					for( int i = 0; i < N; i++ ) {
 						rv[ i ] = this.getMenuComponent( i );
 					}
 					return rv;
 				}
 
-				public Container<?> getParent() {
+				public AwtContainerView<?> getParent() {
 					return null;
 				}
 

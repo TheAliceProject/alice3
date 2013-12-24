@@ -46,14 +46,14 @@ package org.alice.ide.ast.type.merge.croquet.views;
  * @author Dennis Cosgrove
  */
 public class IsAddDesiredListener implements org.lgna.croquet.event.ValueListener<Boolean> {
-	private final org.lgna.croquet.views.Component<?>[] components;
+	private final org.lgna.croquet.views.AwtComponentView<?>[] components;
 
-	public IsAddDesiredListener( org.lgna.croquet.views.Component<?>... components ) {
+	public IsAddDesiredListener( org.lgna.croquet.views.AwtComponentView<?>... components ) {
 		this.components = components;
 	}
 
 	public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
-		for( org.lgna.croquet.views.Component<?> component : this.components ) {
+		for( org.lgna.croquet.views.AwtComponentView<?> component : this.components ) {
 			synchronized( component.getTreeLock() ) {
 				component.setVisible( e.getNextValue() );
 			}

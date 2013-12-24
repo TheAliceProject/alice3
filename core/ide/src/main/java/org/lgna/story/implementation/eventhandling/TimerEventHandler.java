@@ -52,7 +52,8 @@ import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.WhileContingencyListener;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
@@ -62,10 +63,10 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
  */
 public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
-	private final Map<TimeListener, Double> freqMap = Collections.newConcurrentHashMap();
-	private final List<TimeListener> timerList = Collections.newCopyOnWriteArrayList();
-	private final Map<TimeListener, Double> mostRecentFire = Collections.newConcurrentHashMap();
-	private final Map<TimeListener, Boolean> activationMap = Collections.newConcurrentHashMap();
+	private final Map<TimeListener, Double> freqMap = Maps.newConcurrentHashMap();
+	private final List<TimeListener> timerList = Lists.newCopyOnWriteArrayList();
+	private final Map<TimeListener, Double> mostRecentFire = Maps.newConcurrentHashMap();
+	private final Map<TimeListener, Boolean> activationMap = Maps.newConcurrentHashMap();
 	private Double currentTime;
 	private boolean isEnabled = false;
 	private boolean isActivated = false;

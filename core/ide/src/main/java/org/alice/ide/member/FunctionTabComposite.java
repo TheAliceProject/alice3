@@ -48,14 +48,14 @@ package org.alice.ide.member;
 public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide.member.views.FunctionTabView> {
 	private static final String GROUP_BY_RETURN_TYPE = "group by return type";
 
-	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
+	private final org.lgna.croquet.SingleSelectListState<String> sortState = this.createSingleSelectListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
 
 	public FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
 	}
 
 	@Override
-	public org.lgna.croquet.ListSelectionState<String> getSortState() {
+	public org.lgna.croquet.SingleSelectListState<String> getSortState() {
 		return this.sortState;
 	}
 
@@ -80,7 +80,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	private java.util.List<MethodsSubComposite> getByReturnTypeSubComposites() {
-		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory != null ) {
@@ -96,7 +96,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 							if( list != null ) {
 								//pass
 							} else {
-								list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+								list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 								map.put( returnType, list );
 							}
 							list.add( method );
@@ -111,9 +111,9 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( map.keySet() );
+		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( map.keySet() );
 		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( types.size() );
+		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( types.size() );
 		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
 			subComposite.setMethods( map.get( type ) );

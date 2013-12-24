@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupCoreComposite<V extends org.lgna.croquet.views.View> extends AbstractComposite<V> {
+public abstract class PopupCoreComposite<V extends org.lgna.croquet.views.CompositeView> extends AbstractComposite<V> {
 	private final HoverPopupElement hoverPopupElement = new HoverPopupElement( this );
 
 	public PopupCoreComposite( java.util.UUID migrationId ) {

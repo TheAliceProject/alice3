@@ -46,7 +46,7 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		synchronized( map ) {

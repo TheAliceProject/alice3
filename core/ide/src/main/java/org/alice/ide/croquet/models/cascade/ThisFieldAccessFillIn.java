@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.FieldAccess> {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, ThisFieldAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, ThisFieldAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ThisFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractField value ) {
 		synchronized( map ) {

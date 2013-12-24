@@ -110,7 +110,7 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 	protected java.util.List<org.alice.stageide.modelresource.ResourceNode> do_onBackgroundThread() throws java.lang.Exception {
 		if( filter.length() > 0 ) {
 			org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-			java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			String lcFilter = filter.toLowerCase();
 			for( boolean isTag : new boolean[] { false, true } ) {
 				appendMatches( matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag );

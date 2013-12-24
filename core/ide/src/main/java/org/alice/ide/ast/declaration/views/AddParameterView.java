@@ -71,7 +71,7 @@ public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserP
 	}
 
 	@Override
-	public org.lgna.croquet.views.JComponent<?> createPreviewSubComponent() {
+	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );

@@ -47,10 +47,10 @@ package org.alice.ide.ast.export;
  */
 public class MemberInfo<D extends org.lgna.project.ast.Member> extends DeclarationInfo<D> {
 	private class Dependencies implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private final java.util.List<TypeInfo> typeInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<MethodInfo> methodInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<ConstructorInfo> constructorInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<TypeInfo> typeInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<MethodInfo> methodInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<ConstructorInfo> constructorInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable == MemberInfo.this.getDeclaration() ) {

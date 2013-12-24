@@ -46,8 +46,8 @@ package org.alice.stageide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( this.createKey( "paintState" ), org.lgna.story.Color.WHITE, org.lgna.story.SModel.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> opacityState = this.createInitialPropertyValueExpressionState( this.createKey( "opacityState" ), 1.0, org.lgna.story.SModel.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", org.lgna.story.Color.WHITE, org.lgna.story.SModel.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> opacityState = this.createInitialPropertyValueExpressionState( "opacityState", 1.0, org.lgna.story.SModel.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
 
 	public AddModelManagedFieldComposite( java.util.UUID id, Class<? extends org.lgna.story.SModel> cls ) {
 		super( id, cls );

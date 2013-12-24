@@ -54,7 +54,7 @@ public class AliceFormatter extends Formatter {
 		return SingletonHolder.instance;
 	}
 
-	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private AliceFormatter() {
 		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );

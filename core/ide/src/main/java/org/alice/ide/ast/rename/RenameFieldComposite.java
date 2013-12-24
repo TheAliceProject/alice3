@@ -47,7 +47,7 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
-	private static java.util.Map<org.lgna.project.ast.UserField, RenameFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, RenameFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
 		assert field != null;

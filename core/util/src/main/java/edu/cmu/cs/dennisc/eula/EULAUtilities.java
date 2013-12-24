@@ -56,7 +56,7 @@ public class EULAUtilities {
 			if( alreadyClearedPreferences != null ) {
 				//pass
 			} else {
-				alreadyClearedPreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				alreadyClearedPreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			}
 			if( alreadyClearedPreferences.contains( preferencesCls ) ) {
 				//pass

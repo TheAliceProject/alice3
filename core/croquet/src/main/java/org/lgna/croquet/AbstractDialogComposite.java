@@ -45,10 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.View<?, ?>> extends AbstractWindowComposite<V> {
+public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractWindowComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
-	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.views.View<?, ?>> {
+	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.views.CompositeView<?, ?>> {
 		private final AbstractDialogComposite<?> composite;
 
 		public DialogOwner( AbstractDialogComposite<?> composite ) {
@@ -59,11 +59,11 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.V
 			return this.composite.isModal;
 		}
 
-		public org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view ) {
+		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
 			this.composite.releaseView( step, view );
 		}
 
@@ -119,9 +119,9 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.V
 	}
 
 	//todo
-	protected abstract org.lgna.croquet.views.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
 
-	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.View<?, ?> view );
+	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view );
 
 	//todo: remove?
 	protected final boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
@@ -170,9 +170,9 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.V
 		return true;
 	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 	}
 }

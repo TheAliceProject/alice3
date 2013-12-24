@@ -59,7 +59,7 @@ import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -68,8 +68,8 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
 	private final Map<Object, CopyOnWriteArrayList<Object>> keyToListenersMap = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
 	private final Object empty = new Object();
-	private final Map<Object, HeldKeyPolicy> heldKeyMap = Collections.newConcurrentHashMap();
-	private final Map<Object, Map<Key, Boolean>> firePolicyMap = Collections.newConcurrentHashMap();
+	private final Map<Object, HeldKeyPolicy> heldKeyMap = Maps.newConcurrentHashMap();
+	private final Map<Object, Map<Key, Boolean>> firePolicyMap = Maps.newConcurrentHashMap();
 	private long sleepTime = 500;
 
 	public KeyPressedHandler() {

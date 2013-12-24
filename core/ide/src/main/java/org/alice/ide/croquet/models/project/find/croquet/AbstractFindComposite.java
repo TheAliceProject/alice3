@@ -56,11 +56,11 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
-import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -70,7 +70,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
@@ -80,8 +79,8 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	public static final org.lgna.croquet.Group FIND_COMPOSITE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	private final FindContentManager manager = new FindContentManager();
-	private final StringState searchState = createStringState( createKey( "searchState" ) );
-	private final BooleanState isNavigationEnabledState = createBooleanState( createKey( "isNavigationEnabledState" ), true );
+	private final StringState searchState = createStringState( "searchState" );
+	private final BooleanState isNavigationEnabledState = createBooleanState( "isNavigationEnabledState", true );
 	private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
 	private boolean isActive;
 	private boolean showGenerated = false;
@@ -143,9 +142,9 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	};
-	private final ActionOperation howToAddOperation = createActionOperation( createKey( "howToAdd" ), new Action() {
+	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {
 				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
@@ -159,7 +158,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	} );
-	private final ListSelectionState<SearchResult> searchResultsState = createListSelectionState( createKey( "searchResultsState" ), data, -1 );
+	private final SingleSelectListState<SearchResult> searchResultsState = createSingleSelectListState( "searchResultsState", data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {
@@ -206,7 +205,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		return this.searchState;
 	}
 
-	public ListSelectionState<SearchResult> getSearchResults() {
+	public SingleSelectListState<SearchResult> getSearchResults() {
 		return this.searchResultsState;
 	}
 
@@ -223,7 +222,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	}
 
 	public List<Criterion> getCriteria() {
-		List<Criterion> rv = Collections.newArrayList();
+		List<Criterion> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		if( !showGenerated ) {
 			rv.add( AcceptIfNotGenerated.getInstance() );
 		}

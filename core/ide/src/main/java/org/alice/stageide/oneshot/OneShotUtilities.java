@@ -51,7 +51,7 @@ public class OneShotUtilities {
 	}
 
 	public static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createMenuItemPrepModels( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
 		models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
 		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {

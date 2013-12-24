@@ -85,7 +85,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	//TODO: contemplate passing context factories on construction
 	public AbstractModel( java.util.UUID id/* , ContextFactory<?>... contextFactories */) {
@@ -122,15 +122,15 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
-			for( org.lgna.croquet.views.JComponent<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+			for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}
 	}
 
-	protected abstract void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
+	protected abstract void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit );
 
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step<?> step, String triggerText, org.lgna.croquet.edits.Edit<?> edit ) {
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step<?> step, String triggerText, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( triggerText );
 		sb.append( " " );

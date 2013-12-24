@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
-	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
+	private final org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerListState;
 
 	private org.lgna.project.ast.NamedUserType sceneType = null;
 
@@ -85,15 +85,15 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 
 	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId, false );
-		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
-		org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective().getSceneTypeMetaState().addAndInvokeValueListener( this.sceneTypeListener );
+		this.markerListState = this.createSingleSelectListState( "markerListState", markerFieldData, -1 );
+		org.alice.stageide.project.SceneTypeMetaState.getInstance().addAndInvokeValueListener( this.sceneTypeListener );
 	}
 
 	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
 
 	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
+	public org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> getMarkerListState() {
 		return this.markerListState;
 	}
 

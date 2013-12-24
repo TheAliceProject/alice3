@@ -63,7 +63,7 @@ public class ProjectHistoryManager {
 			}
 		};
 		projectDocument.getRootTransactionHistory().addListener( this.listener );
-		this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		this.map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	}
 
 	public org.lgna.croquet.undo.UndoHistory getGroupHistory( org.lgna.croquet.Group group ) {
@@ -83,7 +83,7 @@ public class ProjectHistoryManager {
 		return rv;
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
+	private void handleEditCommitted( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		assert edit != null;
 		org.lgna.croquet.undo.UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
 		if( projectHistory != null ) {

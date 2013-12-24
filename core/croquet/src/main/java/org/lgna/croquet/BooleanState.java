@@ -72,7 +72,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 		@Override
 		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.booleanState );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.booleanState );
 		}
 
 		@Override
@@ -106,7 +106,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 
 		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 			this.booleanState.appendTutorialStepText( text, step, edit );
 		}
 	}
@@ -187,9 +187,9 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayListOfSingleArrayList( this.menuPrepModel );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
 		} else {
 			return java.util.Collections.emptyList();
 		}

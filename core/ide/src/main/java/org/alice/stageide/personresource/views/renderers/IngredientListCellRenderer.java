@@ -50,7 +50,7 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 	private static final java.io.File GALLERY_ROOT = org.lgna.story.resourceutilities.StorytellingResources.getGalleryRootDirectory();
 	private static final java.io.File IMAGE_ROOT = new java.io.File( GALLERY_ROOT, "ide/person" );
 
-	private static final java.util.Map<java.net.URL, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<java.net.URL, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static javax.swing.Icon getIconForPath( int width, int height, String path ) {
 		java.net.URL urlForIcon;

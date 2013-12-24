@@ -45,14 +45,14 @@ package org.alice.ide.ast.type.merge.help.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.views.View, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croquet.views.CompositeView, M extends org.lgna.project.ast.Member, N extends org.alice.ide.ast.type.merge.croquet.PotentialNameChanger> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	//private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
 	private final org.lgna.croquet.HtmlStringValue header = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "77e35d67-a35a-4a89-875d-7fab232445d5" ) ) {
 	};
 
-	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( this.createKey( "importNameText" ) );
-	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( this.createKey( "projectNameText" ) );
-	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( this.createKey( "nameChangeRequiredError" ) );
+	private final org.lgna.croquet.PlainStringValue importNameText = this.createStringValue( "importNameText" );
+	private final org.lgna.croquet.PlainStringValue projectNameText = this.createStringValue( "projectNameText" );
+	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( "nameChangeRequiredError" );
 	private final N potentialNameChanger;
 
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
@@ -149,7 +149,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 	}
 
 	@Override
-	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	protected final org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		return null;
 	}
 

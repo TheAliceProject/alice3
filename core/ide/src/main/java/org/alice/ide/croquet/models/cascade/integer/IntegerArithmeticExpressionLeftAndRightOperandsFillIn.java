@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.integer;
  * @author Dennis Cosgrove
  */
 public class IntegerArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
-	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionLeftAndRightOperandsFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionLeftAndRightOperandsFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static IntegerArithmeticExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {

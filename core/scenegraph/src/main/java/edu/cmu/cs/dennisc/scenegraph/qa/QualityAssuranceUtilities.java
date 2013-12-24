@@ -89,7 +89,7 @@ public class QualityAssuranceUtilities {
 	}
 
 	public static java.util.List<Problem> inspect( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		java.util.List<Problem> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<Problem> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		appendProblems( rv, sgComponent );
 		return rv;
 	}

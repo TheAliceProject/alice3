@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class KeyedBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.JavaKeyedArgument> {
-	private static java.util.Map<org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument>, KeyedBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument>, KeyedBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized KeyedBlank getInstance( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
 		KeyedBlank rv = map.get( argumentListProperty );

@@ -58,11 +58,11 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	private final ObjectPropertiesToolPalette objectPropertiesTab = new ObjectPropertiesToolPalette();
 	private final ObjectMarkersToolPalette objectMarkersTab = new ObjectMarkersToolPalette();
 	private final CameraMarkersToolPalette cameraMarkersTab = new CameraMarkersToolPalette();
-	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
+	private final org.lgna.croquet.SingleSelectListState<HandleStyle> handleStyleState = this.createSingleSelectListStateForEnum( "handleStyleState", HandleStyle.class, HandleStyle.DEFAULT );
 
-	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
+	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( "isSnapEnabledState", false );
 
-	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
+	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( "areJointsShowingState", false );
 
 	public SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
@@ -107,7 +107,7 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return this.isSnapEnabledState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<HandleStyle> getHandleStyleState() {
+	public org.lgna.croquet.SingleSelectListState<HandleStyle> getHandleStyleState() {
 		return this.handleStyleState;
 	}
 

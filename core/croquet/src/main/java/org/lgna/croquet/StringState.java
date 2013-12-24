@@ -89,7 +89,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	private final DocumentListener documentListener = new DocumentListener();
 
 	public static class SwingModel {
-		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
 
 		private SwingModel() {
@@ -128,7 +128,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 
@@ -197,7 +197,7 @@ public abstract class StringState extends SimpleValueState<String> {
 
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
-		for( org.lgna.croquet.views.JComponent<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.lgna.croquet.views.TextComponent<?> ) {
 				org.lgna.croquet.views.TextComponent<?> textComponent = (org.lgna.croquet.views.TextComponent<?>)component;
 				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
@@ -245,7 +245,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	public void requestFocus() {
-		for( org.lgna.croquet.views.Component<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+		for( org.lgna.croquet.views.AwtComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
 			//todo: find the most appropriate candidate?
 			component.requestFocus();
 		}

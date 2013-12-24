@@ -48,9 +48,9 @@ package org.alice.ide.cascade;
 public abstract class ExpressionCascadeManager {
 	private final org.alice.ide.cascade.fillerinners.BooleanFillerInner booleanFillerInner = new org.alice.ide.cascade.fillerinners.BooleanFillerInner();
 	private final org.alice.ide.cascade.fillerinners.StringFillerInner stringFillerInner = new org.alice.ide.cascade.fillerinners.StringFillerInner();
-	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public ExpressionCascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
@@ -161,7 +161,7 @@ public abstract class ExpressionCascadeManager {
 				this.updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementParent, index );
 			} else if( statementParent instanceof org.lgna.project.ast.CountLoop ) {
 				org.lgna.project.ast.CountLoop countLoopParent = (org.lgna.project.ast.CountLoop)statementParent;
-				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
+				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
 					rv.add( countLoopParent.constant.getValue() );
@@ -179,7 +179,7 @@ public abstract class ExpressionCascadeManager {
 	}
 
 	public Iterable<org.lgna.project.ast.UserLocal> getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		java.util.LinkedList<org.lgna.project.ast.UserLocal> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.LinkedList<org.lgna.project.ast.UserLocal> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex() );
 		updateAccessibleLocals( rv, blockStatementIndexPair.getBlockStatement() );
 		return rv;
@@ -263,7 +263,7 @@ public abstract class ExpressionCascadeManager {
 		java.util.List<org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn> arrayLengthFillIns;
 		if( blankNode.isTop() ) {
 			if( ( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) || ( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && ( prevExpression != null ) ) ) {
-				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			} else {
 				arrayLengthFillIns = null;
 			}
@@ -426,7 +426,7 @@ public abstract class ExpressionCascadeManager {
 			}
 
 			if( isOtherTypeMenuDesired ) {
-				java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> otherTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> otherTypes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				this.appendOtherTypes( otherTypes );
 				for( org.lgna.project.ast.AbstractType<?, ?, ?> otherType : otherTypes ) {
 					if( type == otherType ) {

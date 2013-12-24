@@ -62,7 +62,7 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTree
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
@@ -72,7 +72,7 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.TextField;
 import org.lgna.croquet.views.Tree;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
@@ -86,10 +86,10 @@ public class FindView extends BorderPanel {
 	private final Object right;
 	private final Tree<SearchTreeNode> referencesTreeList;
 	private final List<SearchResult> searchResultsList;
-	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Collections.newHashMap();
-	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Collections.newHashMap();
+	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Maps.newHashMap();
+	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Maps.newHashMap();
 	private final FindReferencesTreeState referenceResults;
-	private final ListSelectionState<SearchResult> searchResults;
+	private final SingleSelectListState<SearchResult> searchResults;
 	boolean listIsSelected = true;
 
 	public FindView( AbstractFindComposite composite ) {
@@ -152,7 +152,7 @@ public class FindView extends BorderPanel {
 	private final TreeExpansionListener treeListener = new TreeExpansionListener() {
 
 		public void treeExpanded( TreeExpansionEvent event ) {
-			ListSelectionState<SearchResult> searchResults = getComposite().getSearchResults();
+			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
@@ -161,7 +161,7 @@ public class FindView extends BorderPanel {
 		}
 
 		public void treeCollapsed( TreeExpansionEvent event ) {
-			ListSelectionState<SearchResult> searchResults = getComposite().getSearchResults();
+			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );

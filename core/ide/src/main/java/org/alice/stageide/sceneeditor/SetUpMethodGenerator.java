@@ -218,7 +218,7 @@ public class SetUpMethodGenerator {
 
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform )
 	{
-		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = field.getValueType();
 		org.lgna.project.ast.JavaType javaType = abstractType.getFirstEncounteredJavaType();
@@ -325,7 +325,7 @@ public class SetUpMethodGenerator {
 
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForInstance( boolean isThis, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance, boolean captureFullState )
 	{
-		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		if( instance != null )
 		{

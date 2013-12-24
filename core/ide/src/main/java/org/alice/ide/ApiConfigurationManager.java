@@ -120,19 +120,19 @@ public abstract class ApiConfigurationManager {
 	}
 
 	public final java.util.List<org.lgna.project.ast.JavaType> getPrimeTimeSelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
 
 	public final java.util.List<org.lgna.project.ast.JavaType> getSecondarySelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
 	}
 
 	//	public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
-	//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	//		this.addAliceTypes( rv, true );
 	//		return rv;
 	//	}
@@ -174,7 +174,7 @@ public abstract class ApiConfigurationManager {
 	//		return rv;
 	//	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, String> mapTypeToText = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, String> mapTypeToText = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static String createExampleText( String examples ) {
 		return "<html><em>examples:</em> " + examples + "</html>";
@@ -218,7 +218,7 @@ public abstract class ApiConfigurationManager {
 
 	public abstract org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType );
 
-	public abstract org.lgna.croquet.views.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
+	public abstract org.lgna.croquet.views.SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
 
 	public abstract org.lgna.croquet.CascadeItem<?, ?> getCustomFillInFor( org.lgna.project.annotations.ValueDetails<?> valueDetails );
 

@@ -84,26 +84,26 @@ public class TypeXmlUtitlities {
 			} else {
 				resourceInfo = null;
 			}
-			java.util.List<String> hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<String> hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.w3c.dom.NodeList hierarchyElementList = xmlElement.getElementsByTagName( HIERARCHY_ELEMENT_TAG );
 			for( int i = 0; i < hierarchyElementList.getLength(); i++ ) {
 				org.w3c.dom.Element procedureElement = (org.w3c.dom.Element)hierarchyElementList.item( i );
 				hierarchyClassNames.add( procedureElement.getAttribute( NAME_ATTRIBUTE ) );
 			}
 
-			java.util.List<String> procedureNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<String> procedureNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.w3c.dom.NodeList procedureElementList = xmlElement.getElementsByTagName( PROCEDURE_ELEMENT_TAG );
 			for( int i = 0; i < procedureElementList.getLength(); i++ ) {
 				org.w3c.dom.Element procedureElement = (org.w3c.dom.Element)procedureElementList.item( i );
 				procedureNames.add( procedureElement.getAttribute( NAME_ATTRIBUTE ) );
 			}
-			java.util.List<FunctionInfo> functionInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<FunctionInfo> functionInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.w3c.dom.NodeList functionElementList = xmlElement.getElementsByTagName( FUNCTION_ELEMENT_TAG );
 			for( int i = 0; i < functionElementList.getLength(); i++ ) {
 				org.w3c.dom.Element functionElement = (org.w3c.dom.Element)functionElementList.item( i );
 				functionInfos.add( new FunctionInfo( functionElement.getAttribute( RETURN_CLASS_NAME_ATTRIBUTE ), functionElement.getAttribute( NAME_ATTRIBUTE ) ) );
 			}
-			java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.w3c.dom.NodeList fieldElementList = xmlElement.getElementsByTagName( FIELD_ELEMENT_TAG );
 			for( int i = 0; i < fieldElementList.getLength(); i++ ) {
 				org.w3c.dom.Element fieldElement = (org.w3c.dom.Element)fieldElementList.item( i );
@@ -170,11 +170,11 @@ public class TypeXmlUtitlities {
 		TypeSummary typeSummary = new TypeSummary(
 				TypeSummary.CURRENT_VERSION,
 				"Bunny",
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "Biped", "org.lgna.story.SBiped" ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "Biped", "org.lgna.story.SBiped" ),
 				new ResourceInfo( "org.lgna.story.resources.biped.BunnyResource", "DEFAULT" ),
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "hop", "skip", "jump" ),
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new FunctionInfo( "java.lang.Boolean", "isHappy" ), new FunctionInfo( "Hurdle", "getClosestHurdle" ) ),
-				edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new FieldInfo( "java.lang.Integer", "coinCount" ) )
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "hop", "skip", "jump" ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new FunctionInfo( "java.lang.Boolean", "isHappy" ), new FunctionInfo( "Hurdle", "getClosestHurdle" ) ),
+				edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new FieldInfo( "java.lang.Integer", "coinCount" ) )
 				);
 		org.w3c.dom.Document xmlDocument = encode( typeSummary );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, System.out );

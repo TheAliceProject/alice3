@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
@@ -71,7 +71,7 @@ public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.WhileLoop : statement;
 		org.lgna.project.ast.WhileLoop whileLoop = (org.lgna.project.ast.WhileLoop)statement;
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( whileLoop.conditional.getValue() );
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( whileLoop.conditional.getValue() );
 	}
 
 	@Override

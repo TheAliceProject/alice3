@@ -61,7 +61,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 				completionStep,
 				this.blockStatementIndexPair,
@@ -72,7 +72,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 		if( selectedType != null ) {
-			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 				if( field instanceof org.lgna.project.ast.UserField ) {
 					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
@@ -94,7 +94,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.UserLocal> nonFinalLocals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.UserLocal> nonFinalLocals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( org.lgna.project.ast.UserLocal local : org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
 			if( local.isFinal.getValue() ) {
 				//pass

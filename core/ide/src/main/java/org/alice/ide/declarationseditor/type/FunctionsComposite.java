@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class FunctionsComposite extends MethodsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized FunctionsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		FunctionsComposite rv = map.get( type );

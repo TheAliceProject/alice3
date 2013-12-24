@@ -52,7 +52,7 @@ public class FontUtilities {
 
 	public static java.awt.Font deriveFont( java.awt.Font font, java.awt.font.TextAttribute attribute, Object value ) {
 		if( font != null ) {
-			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			map.put( attribute, value );
 			return font.deriveFont( map );
 		} else {
@@ -62,7 +62,7 @@ public class FontUtilities {
 
 	public static java.awt.Font deriveFont( java.awt.Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
 		if( font != null ) {
-			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			map.put( attributeA, valueA );
 			map.put( attributeB, valueB );
 			return font.deriveFont( map );
@@ -73,7 +73,7 @@ public class FontUtilities {
 
 	public static java.awt.Font deriveFont( java.awt.Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
 		if( font != null ) {
-			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<java.awt.font.TextAttribute, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			map.put( attributeA, valueA );
 			map.put( attributeB, valueB );
 			map.put( attributeC, valueC );

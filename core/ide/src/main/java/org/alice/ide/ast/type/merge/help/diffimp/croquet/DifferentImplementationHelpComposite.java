@@ -56,11 +56,11 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		}
 	};
 
-	private final org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> choiceState = this.createListSelectionStateForEnum( this.createKey( "choiceStates" ), DifferentImplementationChoice.class, this.localizationCustomizer, null );
+	private final org.lgna.croquet.SingleSelectListState<DifferentImplementationChoice> choiceState = this.createSingleSelectListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
 
-	private final ErrorStatus noTopLevelError = this.createErrorStatus( this.createKey( "noTopLevelError" ) );
+	private final ErrorStatus noTopLevelError = this.createErrorStatus( "noTopLevelError" );
 
-	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( this.createKey( "selectOneHeader" ) );
+	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( "selectOneHeader" );
 
 	private final org.lgna.croquet.event.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentImplementationChoice>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
@@ -106,7 +106,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		return this.selectOneHeader;
 	}
 
-	public org.lgna.croquet.ListSelectionState<DifferentImplementationChoice> getChoiceState() {
+	public org.lgna.croquet.SingleSelectListState<DifferentImplementationChoice> getChoiceState() {
 		return this.choiceState;
 	}
 

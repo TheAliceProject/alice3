@@ -45,7 +45,7 @@ package org.alice.ide.ast.type.merge.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeEdit extends org.lgna.croquet.edits.Edit {
+public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final org.lgna.project.ast.NamedUserType existingType;
 	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd;

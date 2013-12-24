@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite<V extends org.lgna.croquet.views.View<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
+public abstract class WizardPageComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
 	private final O owner;
 	private String name;
 	private String title;

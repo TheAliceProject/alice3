@@ -48,7 +48,7 @@ package org.alice.stageide.sceneeditor;
  */
 public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanState {
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static ShowJointedModelJointAxesState getInstance( org.lgna.project.ast.AbstractField value ) {
 		synchronized( map ) {

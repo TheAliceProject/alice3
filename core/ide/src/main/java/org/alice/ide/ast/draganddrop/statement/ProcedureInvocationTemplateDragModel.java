@@ -47,7 +47,7 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ProcedureInvocationTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		ProcedureInvocationTemplateDragModel rv = map.get( method );

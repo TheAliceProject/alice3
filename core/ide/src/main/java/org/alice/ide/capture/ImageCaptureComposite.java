@@ -67,8 +67,8 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		} );
 	}
 
-	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( this.createKey( "captureEntireWindow" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
@@ -81,8 +81,8 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		}
 	} );
 
-	private final org.lgna.croquet.Operation captureEntireContentPaneOperation = this.createActionOperation( this.createKey( "captureEntireContentPane" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+	private final org.lgna.croquet.Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
@@ -94,8 +94,8 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		}
 	} );
 
-	private final org.lgna.croquet.Operation captureRectangleOperation = this.createActionOperation( this.createKey( "captureRectangle" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+	private final org.lgna.croquet.Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
+		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
 			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
@@ -104,12 +104,12 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		}
 	} );
 
-	private final org.lgna.croquet.PlainStringValue operationsHeader = this.createStringValue( this.createKey( "operationsHeader" ) );
-	private final org.lgna.croquet.PlainStringValue propertiesHeader = this.createStringValue( this.createKey( "propertiesHeader" ) );
-	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( this.createKey( "dpiState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
-	private final org.lgna.croquet.BooleanState isAlphaChannelState = this.createPreferenceBooleanState( this.createKey( "isAlphaChannelState" ), false );
+	private final org.lgna.croquet.PlainStringValue operationsHeader = this.createStringValue( "operationsHeader" );
+	private final org.lgna.croquet.PlainStringValue propertiesHeader = this.createStringValue( "propertiesHeader" );
+	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( "dpiState", new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
+	private final org.lgna.croquet.BooleanState isAlphaChannelState = this.createPreferenceBooleanState( "isAlphaChannelState", false );
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	private ImageCaptureComposite() {
 		super( java.util.UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );

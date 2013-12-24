@@ -66,7 +66,7 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
 		return this.isPreview;
 	}
 
-	protected void addComponent( org.lgna.croquet.views.Component<?> component ) {
+	protected void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

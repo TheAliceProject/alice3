@@ -43,13 +43,13 @@
 
 package org.lgna.croquet.views;
 
-import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SingleSelectListState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.ListSelectionState.InternalPrepModel<E>> {
-	public ComboBox( org.lgna.croquet.ListSelectionState.InternalPrepModel<E> model ) {
+public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListState.InternalPrepModel<E>> {
+	public ComboBox( org.lgna.croquet.SingleSelectListState.InternalPrepModel<E> model ) {
 		super( model );
 		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
@@ -181,7 +181,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 			java.awt.Component view = this.getView();
 			if( view != null ) {
 				java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-				ListSelectionState<E> listSelectionState = ComboBox.this.getModel().getListSelectionState();
+				SingleSelectListState<E> listSelectionState = ComboBox.this.getModel().getListSelectionState();
 				final int N = listSelectionState.getItemCount();
 				int index = listSelectionState.indexOf( item );
 				if( index != -1 ) {

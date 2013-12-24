@@ -52,6 +52,6 @@ public abstract class SelectedResourceOperation extends ResourceOperation {
 
 	@Override
 	protected final org.lgna.common.Resource getResource() {
-		return ResourceTableRowSelectionState.getInstance().getValue();
+		return ResourceSingleSelectTableRowState.getInstance().getValue();
 	}
 }

@@ -51,7 +51,7 @@ package org.alice.imageeditor.croquet;
 
 	private Object selectedItem;
 
-	private final java.util.List<javax.swing.event.ListDataListener> listDataListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<javax.swing.event.ListDataListener> listDataListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public int getSize() {
 		int isWorkingDelta = this.isWorking ? 1 : 0;
@@ -90,7 +90,7 @@ package org.alice.imageeditor.croquet;
 
 	public void prologue() {
 		this.isWorking = true;
-		this.data = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		this.data = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		this.fireContentsChanged( 0, 0 );
 	}
 

@@ -47,7 +47,7 @@ package org.alice.stageide.oneshot;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodInvocationEditFactory> {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static MethodInvocationBlank getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
@@ -81,7 +81,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
-		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );

@@ -81,7 +81,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 
 		@Override
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.views.JComponent<?> view = FocusWindowComposite.this.getRootComponent();
+			org.lgna.croquet.views.SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
 			if( view.getParent() == null ) {
 				window.getContentPane().addCenterComponent( view );
 			}

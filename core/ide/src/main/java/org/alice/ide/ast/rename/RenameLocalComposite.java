@@ -47,7 +47,7 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserLocal> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, RenameLocalComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, RenameLocalComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized RenameLocalComposite getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;

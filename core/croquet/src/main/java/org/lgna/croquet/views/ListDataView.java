@@ -64,7 +64,7 @@ public abstract class ListDataView<T> extends Panel {
 		super( composite );
 	}
 
-	protected abstract JComponent<?> createComponentForItem( T item );
+	protected abstract SwingComponentView<?> createComponentForItem( T item );
 
 	@Override
 	protected void internalRefresh() {

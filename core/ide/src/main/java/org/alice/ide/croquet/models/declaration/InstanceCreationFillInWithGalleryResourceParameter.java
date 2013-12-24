@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public final class InstanceCreationFillInWithGalleryResourceParameter extends org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn {
-	private static java.util.Map<org.lgna.project.ast.AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance( org.lgna.project.ast.AbstractConstructor constructor ) {
 		InstanceCreationFillInWithGalleryResourceParameter rv = map.get( constructor );

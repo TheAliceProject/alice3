@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class StatusLabel extends JComponent<javax.swing.JLabel> {
+public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 	private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
 
 	public StatusLabel() {

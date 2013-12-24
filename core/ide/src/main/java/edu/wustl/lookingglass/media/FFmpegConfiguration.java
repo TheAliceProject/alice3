@@ -49,19 +49,19 @@ public class FFmpegConfiguration {
 	public static void main( String[] args ) throws Exception {
 		System.out.println( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is32Bit() ? 32 : 64 );
 		ProcessBuilder versionProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-version" );
-		java.util.List<String> versionOutList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<String> versionOutList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( versionProcessBuilder, versionOutList, null );
 		for( String line : versionOutList ) {
 			System.out.println( line );
 		}
 
 		ProcessBuilder codecsProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-codecs", "-loglevel", "quiet" );
-		java.util.List<String> codecsOutList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<String> codecsOutList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( codecsProcessBuilder, codecsOutList, null );
 
 		final String SEPARATOR = "-------";
 		boolean hasFoundSeparator = false;
-		java.util.List<FFmpegCodec> codecs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<FFmpegCodec> codecs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( String line : codecsOutList ) {
 			line = line.trim();
 			if( hasFoundSeparator ) {

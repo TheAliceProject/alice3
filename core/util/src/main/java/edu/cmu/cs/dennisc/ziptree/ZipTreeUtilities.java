@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.ziptree;
  */
 public class ZipTreeUtilities {
 	public static DirectoryZipTreeNode createTreeNode( java.util.zip.ZipInputStream zis, boolean isDataExtractionDesired ) throws java.io.IOException {
-		java.util.Map<String, DirectoryZipTreeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<String, DirectoryZipTreeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		DirectoryZipTreeNode rv = new DirectoryZipTreeNode( null );
 		map.put( "", rv );
 		java.util.zip.ZipEntry zipEntry;

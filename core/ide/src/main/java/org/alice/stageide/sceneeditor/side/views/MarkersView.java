@@ -120,7 +120,7 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		}
 
-		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
@@ -128,18 +128,18 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		};
 
-		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
+		public MarkerListView( org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> model ) {
 			super( model );
 		}
 
 		@Override
-		protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+		protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 			super.handleAddedTo( parent );
 			this.getModel().addNewSchoolValueListener( this.selectionListener );
 		}
 
 		@Override
-		protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+		protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 			this.getModel().removeNewSchoolValueListener( this.selectionListener );
 			super.handleRemovedFrom( parent );
 		}
@@ -224,13 +224,13 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		this.addMouseListener( this.mouseListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.Component<?> parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		this.removeMouseListener( this.mouseListener );
 		super.handleRemovedFrom( parent );
 	}

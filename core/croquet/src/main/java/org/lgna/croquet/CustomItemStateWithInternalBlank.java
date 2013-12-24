@@ -58,7 +58,7 @@ public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemStat
 		}
 	}
 
-	private final java.util.List<CustomBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new CustomBlank() ) );
+	private final java.util.List<CustomBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new CustomBlank() ) );
 
 	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue, itemCodec );

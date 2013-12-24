@@ -75,8 +75,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 
-	public ResourceTableRowSelectionState getResourceState() {
-		return ResourceTableRowSelectionState.getInstance();
+	public ResourceSingleSelectTableRowState getResourceState() {
+		return ResourceSingleSelectTableRowState.getInstance();
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 			javax.swing.table.TableModel resourceTableModel = this.getResourceState().getSwingModel().getTableModel();
 			javax.swing.ListSelectionModel listSelectionModel = this.getResourceState().getSwingModel().getListSelectionModel();
 
-			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX );
+			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
 			renameAndReplaceToolTipText = null;
 			if( isReferenced ) {
 				removeToolTipText = null;

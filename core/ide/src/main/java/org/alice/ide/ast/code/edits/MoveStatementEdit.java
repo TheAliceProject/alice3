@@ -114,7 +114,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		if( ( this.count > 1 ) && ( from == to ) ) {
 			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
+				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
 				statementListProperty.removeExclusive( fromIndex, fromIndex + count );
 				statementListProperty.addAll( toIndex, l );
 			} else {
@@ -140,7 +140,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		if( ( this.count > 1 ) && ( from == to ) ) {
 			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
+				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
 				statementListProperty.removeExclusive( toIndex, toIndex + count );
 				statementListProperty.addAll( fromIndex, l );
 			} else {
@@ -161,7 +161,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		MoveStatementEdit replacementEdit = (MoveStatementEdit)edit;
 		retargeter.addKeyValuePair( this.fromLocation, replacementEdit.fromLocation );
 		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
@@ -174,7 +174,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof MoveStatementEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {

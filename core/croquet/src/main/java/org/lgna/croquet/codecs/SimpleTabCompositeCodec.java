@@ -47,7 +47,7 @@ package org.lgna.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec<C> {
-	private static java.util.Map<Class<?>, SimpleTabCompositeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Class<?>, SimpleTabCompositeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized <T extends org.lgna.croquet.SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance( Class<T> cls ) {
 		SimpleTabCompositeCodec<?> rv = map.get( cls );

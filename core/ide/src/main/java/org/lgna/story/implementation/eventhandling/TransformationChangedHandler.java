@@ -48,7 +48,7 @@ import org.lgna.story.SThing;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  */
 public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
 
-	private final List<SThing> modelList = Collections.newCopyOnWriteArrayList();
+	private final List<SThing> modelList = Lists.newCopyOnWriteArrayList();
 
 	public final void fireAllTargeted( SThing changedEntity ) {
 		if( shouldFire ) {

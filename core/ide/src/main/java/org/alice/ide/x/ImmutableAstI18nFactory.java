@@ -47,12 +47,12 @@ package org.alice.ide.x;
  */
 public abstract class ImmutableAstI18nFactory extends IdeAstI18nFactory {
 	@Override
-	protected final org.lgna.croquet.views.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+	protected final org.lgna.croquet.views.SwingComponentView<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.x.components.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 
 	@Override
-	protected final org.lgna.croquet.views.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+	protected final org.lgna.croquet.views.SwingComponentView<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
 		//todo
 		return new org.lgna.croquet.views.Label();
 	}

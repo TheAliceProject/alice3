@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ParameterArrayLengthFillIn getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		assert parameter != null;

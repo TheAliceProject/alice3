@@ -50,7 +50,7 @@ public abstract class ImmutableCascade<T> extends Cascade<T> {
 
 	public ImmutableCascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T>... blanks ) {
 		super( group, id, componentType );
-		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( blanks ) );
+		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( blanks ) );
 	}
 
 	@Override

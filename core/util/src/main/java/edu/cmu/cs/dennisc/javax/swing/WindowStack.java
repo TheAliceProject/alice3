@@ -51,7 +51,7 @@ public class WindowStack {
 	}
 
 	private static final javax.swing.JFrame rootFrame = new javax.swing.JFrame();
-	private static final java.util.Stack<java.awt.Window> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private static final java.util.Stack<java.awt.Window> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public static javax.swing.JFrame getRootFrame() {
 		return rootFrame;

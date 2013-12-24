@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class ImportTabView extends GalleryTabView {
-	private final java.util.Map<java.net.URI, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> mapUriToDragComponent = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<java.net.URI, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> mapUriToDragComponent = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( java.net.URI uri ) {
 		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = this.mapUriToDragComponent.get( uri );

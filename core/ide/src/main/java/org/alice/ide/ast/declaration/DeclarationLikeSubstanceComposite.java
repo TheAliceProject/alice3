@@ -123,7 +123,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	private final org.lgna.croquet.StringState nameState;
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState;
 
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
 	private final Details details;
 
@@ -181,7 +181,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		this.details = details;
 
 		if( details.isFinalStatus.isApplicable() ) {
-			this.isFinalState = this.createBooleanState( this.createKey( "isFinalState" ), details.inFinalInitialValue );
+			this.isFinalState = this.createBooleanState( "isFinalState", details.inFinalInitialValue );
 			if( details.isFinalStatus.isDisplayed() ) {
 				this.isFinalState.setEnabled( details.valueComponentTypeStatus.isEditable() );
 			}
@@ -190,7 +190,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 
 		if( details.valueComponentTypeStatus.isApplicable() ) {
-			this.valueComponentTypeState = this.createCustomItemState( this.createKey( "valueComponentTypeState" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), details.valueComponentTypeInitialValue, new ValueComponentTypeCustomizer() );
+			this.valueComponentTypeState = this.createCustomItemState( "valueComponentTypeState", org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), details.valueComponentTypeInitialValue, new ValueComponentTypeCustomizer() );
 			if( details.valueComponentTypeStatus.isDisplayed() ) {
 				this.valueComponentTypeState.setEnabled( details.valueComponentTypeStatus.isEditable() );
 			}
@@ -199,7 +199,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 
 		if( details.valueIsArrayTypeStatus.isApplicable() ) {
-			this.valueIsArrayTypeState = this.createBooleanState( this.createKey( "valueIsArrayTypeState" ), details.valueIsArrayTypeInitialValue );
+			this.valueIsArrayTypeState = this.createBooleanState( "valueIsArrayTypeState", details.valueIsArrayTypeInitialValue );
 			if( details.valueIsArrayTypeStatus.isDisplayed() ) {
 				this.valueIsArrayTypeState.setEnabled( details.valueIsArrayTypeStatus.isEditable() );
 			}
@@ -208,7 +208,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 
 		if( details.nameStatus.isApplicable() ) {
-			this.nameState = this.createStringState( this.createKey( "nameState" ), details.nameInitialValue );
+			this.nameState = this.createStringState( "nameState", details.nameInitialValue );
 			if( details.nameStatus.isDisplayed() ) {
 				this.nameState.setEnabled( details.nameStatus.isEditable() );
 			}
@@ -255,7 +255,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	protected final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitializerState( org.lgna.project.ast.Expression initialValue ) {
-		return this.createCustomItemState( this.createKey( "initializerState" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue, this.createInitializerCustomizer() );
+		return this.createCustomItemState( "initializerState", org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue, this.createInitializerCustomizer() );
 	}
 
 	public org.lgna.croquet.BooleanState getIsFinalState() {
@@ -459,7 +459,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return this.initializerState != null ? this.initializerState.isEnabled() : false;
 	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.State.ValueListener<Boolean> isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.map;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMapToMap<A, B, V> {
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> outerMap = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> outerMap = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static interface Initializer<A, B, V> {
 		public V initialize( A a, B b );
@@ -54,7 +54,7 @@ public abstract class AbstractMapToMap<A, B, V> {
 
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> mapInitializer = new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
 		public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+			return edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 		}
 	};
 
@@ -79,14 +79,14 @@ public abstract class AbstractMapToMap<A, B, V> {
 	public final void put( A a, B b, V value ) {
 		java.util.Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
 			public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
-				return edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+				return edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 			}
 		} );
 		innerMap.put( b, value );
 	}
 
 	public final java.util.Collection<V> values() {
-		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.util.Map<B, V> innerMap : this.outerMap.values() ) {
 			rv.addAll( innerMap.values() );
 		}

@@ -46,15 +46,13 @@ import java.util.List;
 
 import org.lgna.project.ast.MethodInvocation;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 /**
  * @author Matt May
  */
 public class SearchTreeNode {
 
 	private final SearchTreeNode parent;
-	private final List<SearchTreeNode> children = Collections.newArrayList();
+	private final List<SearchTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 
 	public SearchTreeNode( SearchTreeNode parent ) {
 		this.parent = parent;

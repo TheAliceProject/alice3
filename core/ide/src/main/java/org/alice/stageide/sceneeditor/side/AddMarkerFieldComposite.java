@@ -55,7 +55,7 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 		super( migrationId, cls );
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> colorIdState = this.createInitialPropertyValueExpressionState( this.createKey( "colorIdState" ), org.lgna.story.Color.RED, org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class, null );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> colorIdState = this.createInitialPropertyValueExpressionState( "colorIdState", org.lgna.story.Color.RED, org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class, null );
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getColorIdState() {
 		return this.colorIdState;

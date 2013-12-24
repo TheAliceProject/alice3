@@ -55,7 +55,7 @@ public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
 	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
 		super( composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]" );
 		this.addComponent( this.toBeReplacedHeaderLabel );
-		this.addComponent( new org.lgna.croquet.views.VerticalSeparator(), "spany 3, growy" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingLeftFromRight(), "spany 3, growy" );
 		this.addComponent( composite.getNextHeader().createLabel(), "wrap" );
 		this.addComponent( this.toBeReplacedImageView, "grow, shrink" );
 		this.addComponent( this.nextImageView, "skip 1, grow, shrink, wrap" );

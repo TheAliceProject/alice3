@@ -48,11 +48,11 @@ package org.lgna.croquet.views;
  */
 @Deprecated
 public abstract class RowsSpringPanel extends SpringPanel {
-	private java.util.List<Component<?>[]> componentRows;
+	private java.util.List<AwtComponentView<?>[]> componentRows;
 	private int xPad;
 	private int yPad;
 
-	protected abstract java.util.List<Component<?>[]> updateComponentRows( java.util.List<Component<?>[]> rv );
+	protected abstract java.util.List<AwtComponentView<?>[]> updateComponentRows( java.util.List<AwtComponentView<?>[]> rv );
 
 	public RowsSpringPanel() {
 		this( null );
@@ -79,7 +79,7 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		if( this.componentRows != null ) {
 			//pass
 		} else {
-			this.componentRows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.componentRows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			this.updateComponentRows( this.componentRows );
 			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}

@@ -47,7 +47,7 @@ package test.ik.croquet;
  * @author Dennis Cosgrove
  */
 public class JointIdFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.story.resources.JointId, Void> {
-	private static final java.util.Map<org.lgna.story.resources.JointId, JointIdFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.story.resources.JointId, JointIdFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized JointIdFillIn getInstance( org.lgna.story.resources.JointId jointId ) {
 		JointIdFillIn rv = map.get( jointId );

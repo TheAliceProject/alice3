@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation> {
+public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation> {
 	public RemoveKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		super( completionStep );
 	}

@@ -65,13 +65,13 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		return header;
 	}
 
-	private static org.lgna.croquet.views.HorizontalSeparator createSeparator() {
-		return new org.lgna.croquet.views.HorizontalSeparator();
+	private static org.lgna.croquet.views.Separator createSeparator() {
+		return org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom();
 	}
 
 	private int row = 0;
-	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private static String getTitleText( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite ) {
 		return composite.getOuterComposite().getIsExpandedState().getTrueText();
@@ -232,7 +232,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		this.startIndicesOfRowPairs.add( this.row );
 	}
 
-	private void addToRow( org.lgna.croquet.views.Component<?> component ) {
+	private void addToRow( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		while( this.rows.size() <= this.row ) {
 			this.rows.add( new java.util.LinkedList<java.awt.Component>() );
 		}
@@ -240,13 +240,13 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.Component<?> component ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		super.addComponent( component );
 		this.addToRow( component );
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.Component<?> component, String constraint ) {
+	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component, String constraint ) {
 		super.addComponent( component, constraint );
 		if( constraint.contains( "spany" ) ) {
 			//pass

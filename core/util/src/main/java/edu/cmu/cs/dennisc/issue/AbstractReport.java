@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractReport {
-	private final java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
 		this.attachments.add( attachment );

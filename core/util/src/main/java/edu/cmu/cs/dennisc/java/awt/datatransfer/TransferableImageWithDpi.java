@@ -110,7 +110,7 @@ public class TransferableImageWithDpi implements java.awt.datatransfer.Transfera
 	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
 		if( java.awt.datatransfer.DataFlavor.javaFileListFlavor.equals( flavor ) ) {
 			String ext = "png";
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.createFile( ext ) );
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.createFile( ext ) );
 		} else if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
 			return image;
 		} else if( PNG_IMAGE_FLAVOR.equals( flavor ) ) {

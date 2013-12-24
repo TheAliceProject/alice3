@@ -47,7 +47,7 @@ package org.alice.stageide.sceneeditor.views;
  * @author Dennis Cosgrove
  */
 public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
-	private static final class InternalButton extends org.lgna.croquet.views.JComponent<javax.swing.AbstractButton> {
+	private static final class InternalButton extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -148,7 +148,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 
 	private static final class InternalPanel extends org.lgna.croquet.views.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		public InternalPanel() {
 			this.setBackgroundColor( null );
@@ -169,7 +169,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.removeAllComponents();
-			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
 			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 			org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();

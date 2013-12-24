@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, PreviousExpressionItselfFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, PreviousExpressionItselfFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static PreviousExpressionItselfFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		synchronized( map ) {

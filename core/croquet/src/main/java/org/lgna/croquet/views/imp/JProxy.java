@@ -69,7 +69,7 @@ public abstract class JProxy extends javax.swing.JPanel {
 		return this.dragComponent;
 	}
 
-	protected org.lgna.croquet.views.JComponent<?> getSubject() {
+	protected org.lgna.croquet.views.SwingComponentView<?> getSubject() {
 		return this.dragComponent.getSubject();
 	}
 
@@ -78,8 +78,8 @@ public abstract class JProxy extends javax.swing.JPanel {
 		if( subject.getParent() != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( subject );
-			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( subject );
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( subject );
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( subject );
 		}
 		return subject.getSize();
 	}
@@ -92,7 +92,7 @@ public abstract class JProxy extends javax.swing.JPanel {
 	//	}
 
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		org.lgna.croquet.views.JComponent<?> subject = this.getSubject();
+		org.lgna.croquet.views.SwingComponentView<?> subject = this.getSubject();
 		int x = 0;
 		int y = 0;
 		int width = subject.getWidth();

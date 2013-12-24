@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
  * @author Dennis Cosgrove
  */
 public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<org.lgna.common.resources.ImageResource> {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, ImageResourceExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.common.resources.ImageResource, ImageResourceExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ImageResourceExpressionFillIn getInstance( org.lgna.common.resources.ImageResource resource ) {
 		assert resource != null;

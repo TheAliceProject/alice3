@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static JavaKeyedArgumentFillIn getInstance( org.lgna.project.ast.JavaMethod value ) {
 		synchronized( map ) {

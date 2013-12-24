@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, ThisOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, ThisOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ThisOperation getInstance( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert expressionProperty != null;

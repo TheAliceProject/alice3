@@ -47,7 +47,7 @@ package org.alice.ide.project;
  */
 public enum ProjectChangeOfInterestManager {
 	SINGLETON;
-	private final java.util.List<org.alice.ide.project.events.ProjectChangeOfInterestListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.alice.ide.project.events.ProjectChangeOfInterestListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public void addProjectChangeOfInterestListener( org.alice.ide.project.events.ProjectChangeOfInterestListener listener ) {
 		this.listeners.add( listener );

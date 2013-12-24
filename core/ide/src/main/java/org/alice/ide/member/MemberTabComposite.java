@@ -118,7 +118,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 	};
 
-	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final AddMethodMenuModel addMethodMenuModel;
 
 	public MemberTabComposite( java.util.UUID migrationId, AddMethodMenuModel addMethodMenuModel ) {
@@ -136,7 +136,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
-	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
+	public abstract org.lgna.croquet.SingleSelectListState<String> getSortState();
 
 	@Override
 	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
@@ -174,9 +174,9 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
 
 	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory != null ) {
@@ -214,7 +214,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		} else {
 			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
 			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
 				while( methodIterator.hasNext() ) {
 					org.lgna.project.ast.JavaMethod method = methodIterator.next();
@@ -231,11 +231,11 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			}
 		}
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> postSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> postSubComposites = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
 		for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
 			while( methodIterator.hasNext() ) {
 				org.lgna.project.ast.JavaMethod method = methodIterator.next();

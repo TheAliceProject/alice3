@@ -47,7 +47,7 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -66,7 +66,7 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
 		org.lgna.project.ast.Statement copy = org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
 	}

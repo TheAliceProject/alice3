@@ -46,7 +46,7 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class FieldInitializerInstanceCreationArgument0State extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, FieldInitializerInstanceCreationArgument0State> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, FieldInitializerInstanceCreationArgument0State> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static FieldInitializerInstanceCreationArgument0State getInstance( org.lgna.project.ast.UserField field ) {
 		if( field != null ) {

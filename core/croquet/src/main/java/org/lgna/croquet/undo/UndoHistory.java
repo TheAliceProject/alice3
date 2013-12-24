@@ -47,7 +47,7 @@ package org.lgna.croquet.undo;
  */
 public class UndoHistory {
 
-	private java.util.Stack<org.lgna.croquet.edits.Edit<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack<org.lgna.croquet.edits.AbstractEdit<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
@@ -59,11 +59,11 @@ public class UndoHistory {
 		return this.group;
 	}
 
-	public java.util.Stack<org.lgna.croquet.edits.Edit<?>> getStack() {
+	public java.util.Stack<org.lgna.croquet.edits.AbstractEdit<?>> getStack() {
 		return this.stack;
 	}
 
-	public void push( org.lgna.croquet.edits.Edit<?> edit ) {
+	public void push( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			org.lgna.croquet.undo.event.HistoryPushEvent historyPushEvent = new org.lgna.croquet.undo.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
@@ -80,7 +80,7 @@ public class UndoHistory {
 
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
-			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
+			org.lgna.croquet.edits.AbstractEdit<?> edit = this.stack.get( this.insertionIndex - 1 );
 			if( edit.canUndo() ) {
 				edit.undo();
 				this.insertionIndex--;
@@ -94,7 +94,7 @@ public class UndoHistory {
 
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
-			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex );
+			org.lgna.croquet.edits.AbstractEdit<?> edit = this.stack.get( this.insertionIndex );
 			if( edit != null ) {
 				if( edit.canRedo() ) {
 					edit.doOrRedo( false );
@@ -224,7 +224,7 @@ public class UndoHistory {
 		}
 	}
 
-	public org.lgna.croquet.edits.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
+	public org.lgna.croquet.edits.AbstractEdit<?> createDoIgnoringCompositeEdit( String presentation ) {
 		//		synchronized( this.stack ) {
 		//			final int N = this.insertionIndex;
 		//			if( N > 0 ) {

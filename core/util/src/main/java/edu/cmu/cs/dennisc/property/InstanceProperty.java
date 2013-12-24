@@ -50,7 +50,7 @@ public class InstanceProperty<E> implements Property<E> {
 	private String m_name;
 	private transient E m_value;
 	//private boolean m_isLocked = false;
-	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public InstanceProperty( InstancePropertyOwner owner, E value ) {
 		m_owner = owner;

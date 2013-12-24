@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class ConvertDoInOrderToDoTogetherOperation extends ConvertStatementWithBodyOperation {
-	private static java.util.Map<org.lgna.project.ast.DoInOrder, ConvertDoInOrderToDoTogetherOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.DoInOrder, ConvertDoInOrderToDoTogetherOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized ConvertDoInOrderToDoTogetherOperation getInstance( org.lgna.project.ast.DoInOrder doInOrder ) {
 		ConvertDoInOrderToDoTogetherOperation rv = map.get( doInOrder );

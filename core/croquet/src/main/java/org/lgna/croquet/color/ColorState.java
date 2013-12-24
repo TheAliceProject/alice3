@@ -52,7 +52,7 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	public class SwingModel {
 		private java.awt.Color value;
 
-		private final java.util.List<javax.swing.event.ChangeListener> changeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		private final java.util.List<javax.swing.event.ChangeListener> changeListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 		public SwingModel( java.awt.Color initialValue ) {
 			this.value = initialValue;
@@ -145,7 +145,7 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
 	}
 

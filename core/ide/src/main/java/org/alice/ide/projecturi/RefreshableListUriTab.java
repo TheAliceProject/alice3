@@ -46,11 +46,11 @@ package org.alice.ide.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableListUriTab extends ListUriTab {
-	private final org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI> listState;
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<java.net.URI> listState;
 
 	public RefreshableListUriTab( java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<java.net.URI> data ) {
 		super( migrationId );
-		this.listState = this.createListSelectionState( this.createKey( "listState" ), data, -1 );
+		this.listState = this.createSingleSelectListState( "listState", data, -1 );
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public abstract class RefreshableListUriTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState() {
+	public org.lgna.croquet.SingleSelectListState<java.net.URI> getListSelectionState() {
 		return this.listState;
 	}
 

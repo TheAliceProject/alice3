@@ -46,6 +46,21 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class GraphicsUtilities {
+	private GraphicsUtilities() {
+		throw new Error();
+	}
+
+	private static java.awt.image.BufferedImage s_bufferedImage = null;
+
+	public static java.awt.Graphics getGraphics() {
+		if( s_bufferedImage != null ) {
+			//pass
+		} else {
+			s_bufferedImage = new java.awt.image.BufferedImage( 1, 1, java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
+		}
+		return s_bufferedImage.getGraphics();
+	}
+
 	public static void setRenderingHint( java.awt.Graphics g, java.awt.RenderingHints.Key key, Object value ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setRenderingHint( key, value );

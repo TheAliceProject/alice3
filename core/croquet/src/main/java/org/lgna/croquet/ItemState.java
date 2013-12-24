@@ -222,7 +222,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		if( mapItemCallableToItemSelectedState != null ) {
 			//pass
 		} else {
-			this.mapItemCallableToItemSelectedState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			this.mapItemCallableToItemSelectedState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		}
 		InternalItemSelectedState<T> rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
 		if( rv != null ) {
@@ -248,14 +248,14 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			if( mapItemCallableToSelectionOperationAlternate != null ) {
 				//pass
 			} else {
-				this.mapItemCallableToSelectionOperationAlternate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				this.mapItemCallableToSelectionOperationAlternate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperationAlternate;
 		} else {
 			if( mapItemCallableToSelectionOperation != null ) {
 				//pass
 			} else {
-				this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperation;
 		}

@@ -66,7 +66,7 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 		}
 		this.description = sb.toString();
 		this.areDirectoriesAccepted = areDirectoriesAccepted;
-		this.extensions = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( extensions );
+		this.extensions = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( extensions );
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public abstract class AbstractStatementDragModel extends org.alice.ide.ast.draga
 
 	//	@Override
 	//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-	//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 	//		if( ide != null ) {
 	//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
+public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	private final org.lgna.project.ast.Expression nextExpression;
 	private final org.lgna.project.ast.Expression prevExpression;
@@ -106,7 +106,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		ExpressionPropertyEdit replacementEdit = (ExpressionPropertyEdit)edit;
 		retargeter.addKeyValuePair( this.expressionProperty, replacementEdit.expressionProperty );

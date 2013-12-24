@@ -51,7 +51,7 @@ public class BlockStatementGenerator {
 		throw new AssertionError();
 	}
 
-	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>, StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>, StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	static {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
@@ -181,7 +181,7 @@ public class BlockStatementGenerator {
 						org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 						org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
 
-						java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+						java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 						prepModels.add( org.alice.ide.croquet.models.ast.keyed.JavaKeyedArgumentFillIn.getInstance( argument.getKeyMethod() ) );
 
 						org.alice.ide.croquet.models.MenuBarComposite menuBarComposite = null;

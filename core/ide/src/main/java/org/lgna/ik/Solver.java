@@ -47,7 +47,7 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Solver {
-	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public void addChain( Chain chain ) {
 		this.chains.add( chain );

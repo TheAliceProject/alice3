@@ -60,7 +60,8 @@ import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
@@ -74,7 +75,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo ) {
 		registerIsFiringMap( occlusionEventListener );
 		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
-		List<SModel> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
+		List<SModel> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		if( ( groupOne.size() > 0 ) && ( groupOne.get( 0 ) != null ) && ( camera == null ) ) {
 			camera = EmployeesOnly.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
@@ -107,9 +108,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 
 	private class OcclusionEventHandler {
 
-		private final Map<SModel, CopyOnWriteArrayList<SModel>> checkMap = Collections.newConcurrentHashMap();
-		private final Map<SModel, Map<SModel, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
-		private final Map<SModel, Map<SModel, Boolean>> wereOccluded = Collections.newConcurrentHashMap();
+		private final Map<SModel, CopyOnWriteArrayList<SModel>> checkMap = Maps.newConcurrentHashMap();
+		private final Map<SModel, Map<SModel, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
+		private final Map<SModel, Map<SModel, Boolean>> wereOccluded = Maps.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			if( camera == null ) {
@@ -123,7 +124,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 					for( SModel m : checkMap.get( t ) ) {
 						for( Object occList : eventMap.get( t ).get( m ) ) {
 							if( check( occList, t, m ) ) {
-								CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
+								CopyOnWriteArrayList<SModel> models = Lists.newCopyOnWriteArrayList();
 								if( camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( t ) ) ) {
 									models.add( m );
 									models.add( t );
@@ -149,7 +150,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 				for( SModel m : checkMap.get( changedEntity ) ) {
 					for( Object occList : eventMap.get( changedEntity ).get( m ) ) {
 						if( check( occList, (SModel)changedEntity, m ) ) {
-							CopyOnWriteArrayList<SModel> models = Collections.newCopyOnWriteArrayList();
+							CopyOnWriteArrayList<SModel> models = Lists.newCopyOnWriteArrayList();
 							if( camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)EmployeesOnly.getImplementation( changedEntity ) ) ) {
 								models.add( m );
 								models.add( (SModel)changedEntity );

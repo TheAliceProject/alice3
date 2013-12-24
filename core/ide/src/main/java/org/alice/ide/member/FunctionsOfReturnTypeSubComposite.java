@@ -47,7 +47,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type != null ) {

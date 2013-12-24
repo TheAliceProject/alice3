@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade.literals;
  * @author Dennis Cosgrove
  */
 public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.StringLiteral> {
-	private static java.util.Map<String, StringLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<String, StringLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static StringLiteralFillIn getInstance( String value ) {
 		synchronized( map ) {

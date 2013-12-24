@@ -63,7 +63,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	};
 	//todo: map AbstractCode to Stack< InstanceFactory >
-	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private InstanceFactory value;
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
@@ -156,7 +156,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;
@@ -211,7 +211,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				//pass
 			} else {
 				java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
-				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( org.lgna.project.ast.UserField field : fields ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
 						filteredFields.add( field );
@@ -247,8 +247,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
 
-				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				boolean containsVariable = false;
 				boolean containsConstant = false;
 				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;

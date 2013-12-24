@@ -61,9 +61,9 @@ public class DefaultNode<T> implements Node<T> {
 	private DefaultNode( T value, boolean isCopyOnWrite ) {
 		this.value = value;
 		if( isCopyOnWrite ) {
-			this.children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+			this.children = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		} else {
-			this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		}
 	}
 

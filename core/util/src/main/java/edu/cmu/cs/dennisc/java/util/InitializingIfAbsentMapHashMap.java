@@ -49,7 +49,7 @@ public class InitializingIfAbsentMapHashMap<K, K2, E2> extends InitializingIfAbs
 	public java.util.Map<K2, E2> getInitializingIfAbsentToHashMap( K key ) {
 		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.Map<K2, E2>>() {
 			public java.util.Map<K2, E2> initialize( K key ) {
-				return Collections.newHashMap();
+				return Maps.newHashMap();
 			}
 		} );
 	}

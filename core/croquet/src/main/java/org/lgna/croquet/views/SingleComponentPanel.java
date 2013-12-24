@@ -79,7 +79,7 @@ public abstract class SingleComponentPanel extends Panel {
 		}
 	}
 
-	public SingleComponentPanel( Component<?> component ) {
+	public SingleComponentPanel( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

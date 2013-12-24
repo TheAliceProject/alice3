@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite> implements MenuItemContainer {
+public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite> implements MenuItemContainer {
 	public MenuBar( org.lgna.croquet.MenuBarComposite composite ) {
 		super( composite );
 		for( org.lgna.croquet.StandardMenuItemPrepModel item : composite.getChildren() ) {
@@ -89,17 +89,17 @@ public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBar
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
 	}
 
-	public Component<?> getMenuComponent( int i ) {
-		return Component.lookup( this.getAwtComponent().getMenu( i ) );
+	public AwtComponentView<?> getMenuComponent( int i ) {
+		return AwtComponentView.lookup( this.getAwtComponent().getMenu( i ) );
 	}
 
 	public int getMenuComponentCount() {
 		return this.getAwtComponent().getMenuCount();
 	}
 
-	public synchronized Component<?>[] getMenuComponents() {
+	public synchronized AwtComponentView<?>[] getMenuComponents() {
 		final int N = this.getMenuComponentCount();
-		Component<?>[] rv = new Component<?>[ N ];
+		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 		for( int i = 0; i < N; i++ ) {
 			rv[ i ] = this.getMenuComponent( i );
 		}

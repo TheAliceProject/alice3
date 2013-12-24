@@ -92,7 +92,7 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 				if( curr == this.componentWithMouseFocus ) {
 					//pass
 				} else {
-					e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( curr, me, this.componentWithMouseFocus );
+					e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( curr, me, this.componentWithMouseFocus );
 				}
 			}
 		}

@@ -49,7 +49,7 @@ package org.alice.stageide.ast.sort;
 public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	SINGLETON {
 		public <T extends org.lgna.project.ast.AbstractMember> java.util.List<T> createSortedList( java.util.List<T> src ) {
-			java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( src );
+			java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( src );
 			java.util.Collections.sort( rv, new java.util.Comparator<T>() {
 				public int compare( T o1, T o2 ) {
 					return Double.compare( getValue( o1 ), getValue( o2 ) );
@@ -58,7 +58,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 			return rv;
 		}
 	};
-	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static final org.lgna.project.ast.JavaMethod TURN_METHOD;
 	public static final org.lgna.project.ast.JavaMethod ROLL_METHOD;

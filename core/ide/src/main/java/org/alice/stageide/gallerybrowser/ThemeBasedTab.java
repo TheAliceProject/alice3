@@ -51,7 +51,7 @@ public class ThemeBasedTab extends TreeOwningGalleryTab {
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	public org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeState.getInstance();
 	}
 }

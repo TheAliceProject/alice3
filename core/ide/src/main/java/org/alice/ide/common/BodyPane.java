@@ -43,7 +43,7 @@
 package org.alice.ide.common;
 
 public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-	public BodyPane( org.lgna.croquet.views.Component<?> statementListComponent ) {
+	public BodyPane( org.lgna.croquet.views.AwtComponentView<?> statementListComponent ) {
 		super( null, org.lgna.project.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 		this.addComponent( new org.lgna.croquet.views.Label( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );

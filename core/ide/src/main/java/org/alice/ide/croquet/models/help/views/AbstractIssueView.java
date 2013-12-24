@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.help.views;
  * @author Dennis Cosgrove
  */
 public class AbstractIssueView extends org.lgna.croquet.views.BorderPanel {
-	protected static org.lgna.croquet.views.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+	protected static org.lgna.croquet.views.SwingComponentView<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
 		org.lgna.croquet.views.TextArea textArea = stringState.createTextArea();
 		textArea.getAwtComponent().setLineWrap( true );
 		textArea.getAwtComponent().setWrapStyleWord( true );
@@ -65,7 +65,7 @@ public class AbstractIssueView extends org.lgna.croquet.views.BorderPanel {
 		org.lgna.croquet.views.FlowPanel submitPanel = new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.CENTER );
 		submitPanel.addComponent( submitButton );
 
-		org.lgna.croquet.views.PageAxisPanel pageEndPanel = new org.lgna.croquet.views.PageAxisPanel( new org.lgna.croquet.views.HorizontalSeparator(), org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		org.lgna.croquet.views.PageAxisPanel pageEndPanel = new org.lgna.croquet.views.PageAxisPanel( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
 		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addPageEndComponent( pageEndPanel );

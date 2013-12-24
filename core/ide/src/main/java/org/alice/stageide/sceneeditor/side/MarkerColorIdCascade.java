@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, MarkerColorIdCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, MarkerColorIdCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static MarkerColorIdCascade getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, MarkerColorIdCascade>() {
@@ -64,7 +64,7 @@ public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		assert values.length == 1;
 		return new org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
 	}

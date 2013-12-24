@@ -91,7 +91,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		if( tempDropModel instanceof org.lgna.croquet.OwnedByCompositeOperation ) {
 			org.lgna.croquet.OwnedByCompositeOperation ownedByCompositeOperation = (org.lgna.croquet.OwnedByCompositeOperation)tempDropModel;
 			org.lgna.croquet.history.CompletionStep completionStep = null;
-			org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions );
+			org.lgna.croquet.edits.AbstractEdit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions );
 			org.lgna.croquet.history.Transaction transaction = ownedByCompositeOperation.addGeneratedTransaction( history, org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair ), edit, null );
 			org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance() );
 		} else {

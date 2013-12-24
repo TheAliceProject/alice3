@@ -327,7 +327,7 @@ public class FileUtilities {
 	}
 
 	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter, int depth ) {
-		java.util.List<java.io.File> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<java.io.File> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		appendDescendants( list, root, fileFilter, depth );
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, java.io.File.class );
 	}

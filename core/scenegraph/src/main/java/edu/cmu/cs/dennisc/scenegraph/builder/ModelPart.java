@@ -19,7 +19,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.geometryID = binaryDecoder.decodeInt();
 		this.textureID = binaryDecoder.decodeInt();
 		final int N = binaryDecoder.decodeInt();
-		java.util.ArrayList<ModelPart> arrayList = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		java.util.ArrayList<ModelPart> arrayList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		arrayList.ensureCapacity( N );
 		for( int i = 0; i < N; i++ ) {
 			ModelPart modelPart = binaryDecoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
@@ -43,7 +43,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		ModelPart rv = new ModelPart();
 		rv.name = parent.getName();
 		rv.localTransformation = parent.localTransformation.getValue();
-		rv.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		rv.children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.getComponents() ) {
 			if( component instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {

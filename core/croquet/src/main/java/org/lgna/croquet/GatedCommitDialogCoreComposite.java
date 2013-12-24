@@ -42,54 +42,11 @@
  */
 package org.lgna.croquet;
 
-/*package-private*/abstract class GatedCommitDialogContentPanel<CC extends GatedCommitDialogContentComposite> extends DialogContentPanel<CC> {
-	private final org.lgna.croquet.views.StatusLabel statusLabel = new org.lgna.croquet.views.StatusLabel();
-	private final org.lgna.croquet.views.LineAxisPanel controlLine = new org.lgna.croquet.views.LineAxisPanel();
-
-	public GatedCommitDialogContentPanel( CC composite ) {
-		super( composite );
-		controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-
-		org.lgna.croquet.views.GridBagPanel pageEndPanel = new org.lgna.croquet.views.GridBagPanel();
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.anchor = java.awt.GridBagConstraints.NORTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 1.0;
-		gbc.weighty = 0.0;
-		GatedCommitDialogCoreComposite coreComposite = (GatedCommitDialogCoreComposite)composite.getCoreComposite();
-		if( coreComposite.isStatusLineDesired() ) {
-			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
-		}
-		pageEndPanel.addComponent( new org.lgna.croquet.views.HorizontalSeparator(), gbc );
-		pageEndPanel.addComponent( controlLine, gbc );
-		controlLine.setBackgroundColor( null );
-
-		this.addPageEndComponent( pageEndPanel );
-
-		this.statusLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
-	}
-
-	protected org.lgna.croquet.views.LineAxisPanel getControlLine() {
-		return this.controlLine;
-	}
-
-	public org.lgna.croquet.views.StatusLabel getStatusLabel() {
-		return this.statusLabel;
-	}
-}
-
-/* package-private */abstract class GatedCommitDialogContentComposite<V extends GatedCommitDialogContentPanel> extends DialogContentComposite<V> {
-	public GatedCommitDialogContentComposite( java.util.UUID migrationId, GatedCommitDialogCoreComposite coreComposite ) {
-		super( migrationId, coreComposite );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V, CC> {
-	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends DialogCoreComposite<V, DCC> {
+	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
@@ -186,11 +143,11 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		completionStep.cancel();
 	}
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
-		org.lgna.croquet.edits.Edit<?> commitEdit = null;
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException {
+		org.lgna.croquet.edits.AbstractEdit<?> commitEdit = null;
 		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit, null );
 	}
 
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> edit ) throws UnsupportedGenerationException {
 	}
 }

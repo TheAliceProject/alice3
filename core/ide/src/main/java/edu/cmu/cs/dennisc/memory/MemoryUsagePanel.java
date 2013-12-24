@@ -42,10 +42,10 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-class MemoryUsageGraph extends org.lgna.croquet.views.JComponent<javax.swing.JComponent> {
+class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.swing.JComponent> {
 	private static final long K = 1024;
 	//private static final long M = K*K;
-	private java.util.List<java.lang.management.MemoryUsage> samples = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<java.lang.management.MemoryUsage> samples = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public MemoryUsageGraph() {
 		this.setBackgroundColor( java.awt.Color.BLACK );

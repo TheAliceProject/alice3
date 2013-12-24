@@ -223,7 +223,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable;
 
-	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory<R> factory ) {
 		this.abstraction = abstraction;
@@ -295,7 +295,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	//	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
 	//		if (factory != this.factory) {
-	//			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	//			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
 	//				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
 	//			}
@@ -310,7 +310,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	public void setNewResource( JointedModelResource resource ) {
 		if( resource != this.getResource() ) {
-			java.util.Map<org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion> mapIdToOriginalRotation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion> mapIdToOriginalRotation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			for( java.util.Map.Entry<org.lgna.story.resources.JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet() ) {
 				mapIdToOriginalRotation.put( jointEntry.getKey(), jointEntry.getValue().getOriginalOrientation() );
 			}
@@ -323,7 +323,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			org.lgna.story.Paint originalPaint = this.paint.getValue();
 			this.visualData = this.factory.createVisualData();
 			org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
-			java.util.Map<org.lgna.story.resources.JointId, JointImp> newJoints = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map<org.lgna.story.resources.JointId, JointImp> newJoints = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			if( rootIds.length == 0 ) {
 				//pass
 			} else {
@@ -356,7 +356,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public Iterable<JointImp> getJoints() {
-		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.treeWalk( new TreeWalkObserver() {
 			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 				//todo: remove null check?
@@ -403,7 +403,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private void matchNewDataToExistingJoints( java.util.Map<org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion> mapIdToOriginalRotation, java.util.Map<org.lgna.story.resources.JointId, JointImp> newJoints ) {
-		java.util.List<org.lgna.story.resources.JointId> toRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.story.resources.JointId> toRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.util.Map.Entry<org.lgna.story.resources.JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet() ) {
 			if( newJoints.containsKey( jointEntry.getKey() ) ) {
 				JointImp newJoint = newJoints.get( jointEntry.getKey() );
@@ -708,7 +708,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public java.util.List<JointImp> getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
-		java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( jointA == jointB ) {
 			//?
 			rv.add( jointA );
@@ -776,7 +776,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private static class StraightenTreeWalkObserver implements TreeWalkObserver {
-		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		public void pushJoint( JointImp jointImp ) {
 			if( jointImp != null ) {

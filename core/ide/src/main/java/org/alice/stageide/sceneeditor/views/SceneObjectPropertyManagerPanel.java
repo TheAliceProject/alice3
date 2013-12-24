@@ -70,7 +70,7 @@ import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Component;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.project.annotations.Visibility;
@@ -162,7 +162,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		return new Label( labelText, 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	}
 
-	private void addNameAndControllerToPanel( Component<?> label, Component<?> controllerPanel, GridBagPanel panel, int index )
+	private void addNameAndControllerToPanel( AwtComponentView<?> label, AwtComponentView<?> controllerPanel, GridBagPanel panel, int index )
 	{
 		panel.addComponent( label, new GridBagConstraints(
 				0, //gridX
@@ -481,7 +481,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					}
 
 					if( selectedField != null ) {
-						org.lgna.croquet.views.JComponent<?> initializerComponent = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
+						org.lgna.croquet.views.SwingComponentView<?> initializerComponent = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
 						initializerComponent.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.LIGHT_GRAY ) );
 
 						this.addComponent( initializerComponent, new GridBagConstraints(

@@ -51,7 +51,7 @@ public class PreserveAspectRatioPanel extends Panel {
 
 	private Dimension dimension;
 
-	public PreserveAspectRatioPanel( Component<?> centerPanel, Dimension dimension ) {
+	public PreserveAspectRatioPanel( AwtComponentView<?> centerPanel, Dimension dimension ) {
 		this.dimension = dimension;
 		this.internalAddComponent( centerPanel );
 	}

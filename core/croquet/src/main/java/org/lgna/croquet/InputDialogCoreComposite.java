@@ -42,38 +42,18 @@
  */
 package org.lgna.croquet;
 
-/*package-private*/final class InputDialogContentPanel extends GatedCommitDialogContentPanel<InputDialogContentComposite> {
-	public InputDialogContentPanel( InputDialogContentComposite composite ) {
-		super( composite );
-		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
-		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
-		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
-	}
-}
-
-/* package-private */final class InputDialogContentComposite extends GatedCommitDialogContentComposite<InputDialogContentPanel> {
-	public InputDialogContentComposite( InputDialogCoreComposite coreComposite ) {
-		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
-	}
-
-	@Override
-	protected InputDialogContentPanel createView() {
-		return new InputDialogContentPanel( this );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.View<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
-	private final InputDialogContentComposite contentComposite = new InputDialogContentComposite( this );
+public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, org.lgna.croquet.imp.dialog.InputDialogContentComposite> {
+	private final org.lgna.croquet.imp.dialog.InputDialogContentComposite contentComposite = new org.lgna.croquet.imp.dialog.InputDialogContentComposite( this );
 
 	public InputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
-	protected InputDialogContentComposite getDialogContentComposite() {
+	protected org.lgna.croquet.imp.dialog.InputDialogContentComposite getDialogContentComposite() {
 		return this.contentComposite;
 	}
 

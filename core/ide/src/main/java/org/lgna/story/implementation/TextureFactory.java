@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, edu.cmu.cs.dennisc.texture.BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.common.resources.ImageResource, edu.cmu.cs.dennisc.texture.BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}

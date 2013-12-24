@@ -48,15 +48,15 @@ package org.alice.ide.ast.type.merge.croquet;
 public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.croquet.views.MembersView, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
 	private final java.net.URI uriForDescriptionPurposesOnly;
 	private final java.util.List<M> unusedProjectMembers;
-	private final java.util.List<ImportOnly<M>> importOnlys = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentSignature<M>> differentSignatures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<DifferentImplementation<M>> differentImplementations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<ImportOnly<M>> importOnlys = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<DifferentSignature<M>> differentSignatures = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<DifferentImplementation<M>> differentImplementations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private java.util.List<ProjectOnly<M>> projectOnlys;
 
-	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( this.createKey( "fromImportHeader" ) );
-	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( this.createKey( "alreadyInProjectHeader" ) );
-	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( this.createKey( "resultHeader" ) );
+	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( "fromImportHeader" );
+	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( "alreadyInProjectHeader" );
+	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( "resultHeader" );
 
 	public MembersToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
 		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
@@ -100,7 +100,7 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 	}
 
 	public void reifyProjectOnly() {
-		this.projectOnlys = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.projectOnlys = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( M method : this.unusedProjectMembers ) {
 			this.projectOnlys.add( new ProjectOnly<M>( method ) );
 		}

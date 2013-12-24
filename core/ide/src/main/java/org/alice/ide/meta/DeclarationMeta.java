@@ -61,8 +61,8 @@ public class DeclarationMeta {
 		}
 	};
 
-	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration>> declarationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>>> typeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration>> declarationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>>> typeListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private static org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	static {

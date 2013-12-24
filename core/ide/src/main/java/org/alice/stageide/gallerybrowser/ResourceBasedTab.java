@@ -52,7 +52,7 @@ public class ResourceBasedTab extends TreeOwningGalleryTab {
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
+	public org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+		return org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance();
 	}
 }

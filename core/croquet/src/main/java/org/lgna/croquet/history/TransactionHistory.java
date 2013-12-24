@@ -50,12 +50,12 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 
 	public TransactionHistory() {
 		super( (CompletionStep<?>)null );
-		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		this.transactions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	}
 
 	public TransactionHistory( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
+		this.transactions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
 		for( Transaction transaction : this.transactions ) {
 			transaction.setOwner( this );
 		}

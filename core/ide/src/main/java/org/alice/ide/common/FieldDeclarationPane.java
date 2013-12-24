@@ -82,7 +82,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 
-		org.lgna.croquet.views.Component<?> component;
+		org.lgna.croquet.views.AwtComponentView<?> component;
 		if( isDropDownDesired ) {
 			component = new org.alice.ide.croquet.components.ExpressionDropDown( org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ), org.alice.ide.x.DialogAstI18nFactory.getInstance() );
 		} else {
@@ -98,7 +98,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 	private void updateFinalLabel() {
 		String text;
 		if( field.isFinal() ) {
-			text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
+			text = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getFinalText() + " ";
 		} else {
 			text = "";
 		}

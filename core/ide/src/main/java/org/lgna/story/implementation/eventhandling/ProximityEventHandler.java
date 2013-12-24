@@ -56,7 +56,8 @@ import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.ProximityExitListener;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -68,7 +69,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance ) {
 		registerIsFiringMap( pEList );
 		registerPolicyMap( pEList, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
+		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
 			if( !getModelList().contains( m ) ) {
@@ -97,11 +98,11 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 
 	protected class ProximityEventManager {
 
-		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Collections.newConcurrentHashMap();
-		private final Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = Collections.newConcurrentHashMap();
-		private final Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = Collections.newConcurrentHashMap();
-		private final Map<Object, Double> distMap = Collections.newConcurrentHashMap();
-		private final Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
+		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
+		private final Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
+		private final Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
+		private final Map<Object, Double> distMap = Maps.newConcurrentHashMap();
+		private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {

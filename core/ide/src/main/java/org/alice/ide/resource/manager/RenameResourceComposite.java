@@ -60,7 +60,7 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 	}
 
 	private org.lgna.common.Resource getResource() {
-		return ResourceTableRowSelectionState.getInstance().getValue();
+		return ResourceSingleSelectTableRowState.getInstance().getValue();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.common.Resource resource = this.getResource();
 		if( resource != null ) {
 			return new org.alice.ide.resource.manager.edits.RenameResourceEdit( completionStep, resource, resource.getName(), this.getNameState().getValue() );
@@ -86,7 +86,7 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.common.Resource resource = ResourceTableRowSelectionState.getInstance().getValue();
+		org.lgna.common.Resource resource = ResourceSingleSelectTableRowState.getInstance().getValue();
 		( (org.alice.ide.name.validators.ResourceNameValidator)this.getNameValidator() ).setResource( resource );
 		this.getView().setResource( resource );
 		super.handlePreShowDialog( step );

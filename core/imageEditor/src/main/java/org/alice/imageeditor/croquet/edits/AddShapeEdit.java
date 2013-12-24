@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class AddShapeEdit extends org.lgna.croquet.edits.Edit {
+public final class AddShapeEdit extends org.lgna.croquet.edits.AbstractEdit {
 	private final java.awt.Shape shape;
 	private final org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame;
 

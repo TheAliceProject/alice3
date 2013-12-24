@@ -55,14 +55,14 @@ public abstract class AbstractElement implements Element {
 
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
-			mapMigrationIdToCls = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			mapMigrationIdToCls = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		} else {
 			mapMigrationIdToCls = null;
 		}
 		final boolean IS_NULL_LOCALIZATION_OUTPUT_DESIRED = false;
 		if( IS_NULL_LOCALIZATION_OUTPUT_DESIRED ) {
-			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
+			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
 		} else {
 			ignoredLocalizationSubkeys = null;
 		}
