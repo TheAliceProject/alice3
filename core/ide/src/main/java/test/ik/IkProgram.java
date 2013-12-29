@@ -60,7 +60,6 @@ import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.JointId;
 
-import test.ik.croquet.SceneComposite;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -478,9 +477,11 @@ class IkProgram extends SProgram {
 	}
 
 	public static void main( String[] args ) {
+
+		test.ik.croquet.IkSplitComposite ikSplitComposite = new test.ik.croquet.IkSplitComposite();
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
+		app.getFrame().setMainComposite( ikSplitComposite );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE;
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST;
@@ -493,7 +494,7 @@ class IkProgram extends SProgram {
 
 		IkProgram program = new IkProgram();
 
-		new SceneComposite().getView().initializeInAwtContainer( program );
+		ikSplitComposite.getSceneComposite().getView().initializeInAwtContainer( program );
 		program.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );

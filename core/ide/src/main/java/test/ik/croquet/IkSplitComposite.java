@@ -51,6 +51,14 @@ public class IkSplitComposite extends org.lgna.croquet.SplitComposite {
 		super( java.util.UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), new SceneComposite() );
 	}
 
+	public ControlsComposite getControlsComposite() {
+		return (ControlsComposite)this.getLeadingComposite();
+	}
+
+	public SceneComposite getSceneComposite() {
+		return (SceneComposite)this.getTrailingComposite();
+	}
+
 	@Override
 	protected org.lgna.croquet.views.SplitPane createView() {
 		return new org.lgna.croquet.views.HorizontalSplitPane( this );
