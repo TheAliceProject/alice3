@@ -40,26 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet.views;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlExceptionView extends org.lgna.croquet.views.MigPanel {
-	public static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
+public final class AttemptToFixGraphicsOperation extends org.lgna.croquet.ActionOperation {
+	private static class SingletonHolder {
+		private static AttemptToFixGraphicsOperation instance = new AttemptToFixGraphicsOperation();
+	}
 
-	public GlExceptionView( org.alice.ide.issue.croquet.GlExceptionComposite composite ) {
-		super( composite, "", "", "[top][top]" );
+	public static AttemptToFixGraphicsOperation getInstance() {
+		return SingletonHolder.instance;
+	}
 
-		this.addComponent( new org.lgna.croquet.views.Label( ICON ), "span 1 2" );
-		this.addComponent( new org.lgna.croquet.views.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.alice.ide.croquet.models.help.views.GraphicsHelpView(), "wrap" );
-		this.addComponent( new org.lgna.croquet.views.LineAxisPanel(
-				new org.lgna.croquet.views.Label( "If you have updated your video drivers and the problem still persists please " ),
-				new org.lgna.croquet.views.Label( "submit a bug report", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-				new org.lgna.croquet.views.Label( "." )
-				), "wrap, span 2" );
+	private AttemptToFixGraphicsOperation() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "34fb0683-dc63-4dfa-adad-0d026e831e89" ) );
+	}
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		ProcessBuilder processBuilder = new ProcessBuilder( "control", "/name", "Microsoft.PerformanceInformationAndTools" );
+		try {
+			Process process = processBuilder.start();
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+		step.finish();
 	}
 }

@@ -92,8 +92,13 @@ public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 		sb.append( "." );
 		final int LEVEL_1 = 16;
 		final int LEVEL_2 = 32;
+
 		this.addComponent( new org.lgna.croquet.views.Label( "The most common way to fix graphics problems is to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 		this.addComponent( new org.lgna.croquet.views.Label( "Where to go for help:" ), "wrap, gapleft " + LEVEL_1 );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			org.alice.ide.croquet.models.help.AttemptToFixGraphicsOperation operation = org.alice.ide.croquet.models.help.AttemptToFixGraphicsOperation.getInstance();
+			this.addComponent( operation.createButton(), "wrap, gapleft " + LEVEL_2 );
+		}
 		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( org.alice.ide.issue.croquet.GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( new org.lgna.croquet.views.Label( "About your computer:" ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
