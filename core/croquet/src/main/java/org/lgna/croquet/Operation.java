@@ -274,8 +274,12 @@ public abstract class Operation extends AbstractCompletionModel {
 		return new org.lgna.croquet.views.Button( this );
 	}
 
-	public org.lgna.croquet.views.Hyperlink createHyperlink() {
-		return new org.lgna.croquet.views.Hyperlink( this );
+	public org.lgna.croquet.views.Hyperlink createHyperlink( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.views.Hyperlink( this, fontScalar, textAttributes );
+	}
+
+	public org.lgna.croquet.views.Hyperlink createHyperlink( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return this.createHyperlink( 1.0f, textAttributes );
 	}
 
 	public org.lgna.croquet.views.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {

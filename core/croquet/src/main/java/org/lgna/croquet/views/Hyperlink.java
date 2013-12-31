@@ -51,6 +51,16 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 		super( model );
 	}
 
+	public Hyperlink( org.lgna.croquet.Operation model, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( model );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
+	}
+
+	public Hyperlink( org.lgna.croquet.Operation model, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( model, 1.0f, textAttributes );
+	}
+
 	public boolean isUnderlinedOnlyWhenRolledOver() {
 		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
 		return ui.isUnderlinedOnlyWhenRolledOver();
