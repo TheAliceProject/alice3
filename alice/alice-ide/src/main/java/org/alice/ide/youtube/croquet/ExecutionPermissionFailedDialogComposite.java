@@ -66,7 +66,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 
 	private final StringValue explanation = createStringValue( "explanation" );
 	private boolean isFixed = false;
-	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), "http://help.alice.org/w/page/68664600/FFmpeg_execute_permission" );
+	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC + "w/page/68664600/FFmpeg_execute_permission" );
 	private final File ffmpegFile;
 
 	public ExecutionPermissionFailedDialogComposite( File f ) {

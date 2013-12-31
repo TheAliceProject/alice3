@@ -40,21 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.system.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AttemptToFixGraphicsOperation extends org.lgna.croquet.ActionOperation {
+public final class StartPerformanceInformationAndToolsOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
-		private static AttemptToFixGraphicsOperation instance = new AttemptToFixGraphicsOperation();
+		private static StartPerformanceInformationAndToolsOperation instance = new StartPerformanceInformationAndToolsOperation();
 	}
 
-	public static AttemptToFixGraphicsOperation getInstance() {
+	public static StartPerformanceInformationAndToolsOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private AttemptToFixGraphicsOperation() {
+	private StartPerformanceInformationAndToolsOperation() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "34fb0683-dc63-4dfa-adad-0d026e831e89" ) );
 	}
 
