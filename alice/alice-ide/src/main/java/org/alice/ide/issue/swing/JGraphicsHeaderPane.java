@@ -70,7 +70,8 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		String searchGraphicsDriverUrlSpec = sbSearchGraphicsDriverUrlSpec.toString();
 
 		StringBuilder sbGraphicsHelpUrlSpec = new StringBuilder();
-		sbGraphicsHelpUrlSpec.append( "http://help.alice.org/w/page/" );
+		sbGraphicsHelpUrlSpec.append( org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC );
+		sbGraphicsHelpUrlSpec.append( "w/page/" );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			sbGraphicsHelpUrlSpec.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
 		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {

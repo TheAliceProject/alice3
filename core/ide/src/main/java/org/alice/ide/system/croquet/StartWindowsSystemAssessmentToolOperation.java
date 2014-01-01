@@ -40,37 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet;
+package org.alice.ide.system.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public final class StartWindowsSystemAssessmentToolOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
-		private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
+		private static StartWindowsSystemAssessmentToolOperation instance = new StartWindowsSystemAssessmentToolOperation();
 	}
 
-	public static GraphicsDriverHelpOperation getInstance() {
+	public static StartWindowsSystemAssessmentToolOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private static String getSpec() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC );
-		sb.append( "w/page/" );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			sb.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			sb.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
-		} else {
-			sb.append( "54959364/Updating%20Video%20Drivers" );
-		}
-		return sb.toString();
+	private StartWindowsSystemAssessmentToolOperation() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "a822cfb5-bec7-4077-9102-1a3eaecf84eb" ) );
 	}
 
-	private GraphicsDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		ProcessBuilder processBuilder = new ProcessBuilder( "winsat", "formal" );
+		try {
+			Process process = processBuilder.start();
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+		step.finish();
 	}
 }
