@@ -60,9 +60,12 @@ public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWith
 		this.publish( FIRST_CHUNK );
 		byte[] buffer = new byte[ 256 ];
 
-		this.processBuilder.redirectErrorStream( true );
-		assert this.processBuilder.redirectErrorStream() : this;
-
+		if( this.processBuilder.redirectErrorStream() ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", this );
+			this.processBuilder.redirectErrorStream( true );
+		}
 		while( true ) {
 			if( this.isCancelled() ) {
 				process.destroy();
