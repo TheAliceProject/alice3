@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,65 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.views;
+package edu.cmu.cs.dennisc.worker.process;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController<J, org.lgna.croquet.StringState> {
-	private final javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
-	private final edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
-	private final javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
+public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Integer, String> {
+	private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
+	private final ProcessBuilder processBuilder;
 
-	private final java.awt.event.FocusListener selectAllFocusListener = new java.awt.event.FocusListener() {
-		public void focusGained( java.awt.event.FocusEvent e ) {
-			getAwtComponent().selectAll();
+	public ProcessWorker( ProcessBuilder processBuilder ) {
+		this.processBuilder = processBuilder;
+	}
+
+	@Override
+	protected Integer do_onBackgroundThread() throws Exception {
+		Process process = this.processBuilder.start();
+		java.io.InputStream standardOutAndStandardError = process.getInputStream();
+		this.publish( FIRST_CHUNK );
+		byte[] buffer = new byte[ 256 ];
+
+		this.processBuilder.redirectErrorStream( true );
+		assert this.processBuilder.redirectErrorStream() : this;
+
+		while( true ) {
+			if( this.isCancelled() ) {
+				process.destroy();
+			} else {
+				int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
+				if( count != -1 ) {
+					this.publish( new String( buffer, 0, count ) );
+				} else {
+					break;
+				}
+			}
 		}
+		return process.exitValue();
+	}
 
-		public void focusLost( java.awt.event.FocusEvent e ) {
+	protected abstract void handleStart_onEventDispatchThread();
+
+	protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s );
+
+	@Override
+	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+		StringBuilder sb = new StringBuilder();
+		for( String chunk : chunks ) {
+			if( FIRST_CHUNK.equals( chunk ) ) {
+				this.handleStart_onEventDispatchThread();
+			} else {
+				sb.append( chunk );
+			}
 		}
-	};
-
-	public TextComponent( org.lgna.croquet.StringState model ) {
-		super( model );
-		J jTextComponent = this.getAwtComponent();
-		model.getSwingModel().install( this );
-		jTextComponent.setBorder( this.border );
-		jTextComponent.setEnabled( model.isEnabled() );
-		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
-		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
+		this.handleProcessStandardOutAndStandardError_onEventDispatchThread( sb.toString() );
 	}
-
-	public boolean isEditable() {
-		return this.getAwtComponent().isEditable();
-	}
-
-	public void setEditable( boolean isEditable ) {
-		this.getAwtComponent().setEditable( isEditable );
-	}
-
-	public void enableSelectAllWhenFocusGained() {
-		this.getAwtComponent().addFocusListener( this.selectAllFocusListener );
-	}
-
-	public void disableSelectAllWhenFocusGained() {
-		this.getAwtComponent().removeFocusListener( this.selectAllFocusListener );
-	}
-
-	public java.awt.Insets getMargin() {
-		//return this.getAwtComponent().getMargin();
-		return this.insideBorder.getBorderInsets();
-	}
-
-	public void setMargin( java.awt.Insets margin ) {
-		//this.getAwtComponent().setMargin( margin );
-		this.insideBorder.setBorderInsets( margin );
-	}
-
-	public void selectAll() {
-		this.getAwtComponent().selectAll();
-	}
-
-	public abstract void updateTextForBlankCondition( String textForBlankCondition );
 }

@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.system.croquet;
+package org.alice.ide.system.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class StartWindowsSystemAssessmentToolOperation extends org.lgna.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static StartWindowsSystemAssessmentToolOperation instance = new StartWindowsSystemAssessmentToolOperation();
-	}
+public class WindowsSystemAssessmentToolPane extends org.lgna.croquet.views.MigPanel {
+	public WindowsSystemAssessmentToolPane( org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite composite ) {
+		super( composite, "fill", "[grow]", "[grow 0, shrink 0][grow 0, shrink 0][grow 100, shrink 100]" );
+		this.addComponent( composite.getHeader().createLabel(), "wrap" );
+		this.addComponent( composite.getExecuteWinsatOperation().createButton(), "wrap" );
 
-	public static StartWindowsSystemAssessmentToolOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+		org.lgna.croquet.views.TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
+		textArea.setEditable( false );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( textArea );
 
-	private StartWindowsSystemAssessmentToolOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "a822cfb5-bec7-4077-9102-1a3eaecf84eb" ) );
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		ProcessBuilder processBuilder = new ProcessBuilder( "winsat", "formal" );
-		try {
-			Process process = processBuilder.start();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-		step.finish();
+		this.addComponent( scrollPane, "grow" );
 	}
 }
