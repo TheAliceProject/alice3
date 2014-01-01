@@ -28,7 +28,8 @@ public class SwingThreadSafetyChecker {
 
 	@Before( "swingMethods() && !safeSwingMethods() && !within(SwingThreadSafetyChecker)" )
 	public void checkCallingThread( final JoinPoint.StaticPart thisJoinPointStatic ) {
-		if( !java.awt.EventQueue.isDispatchThread() ) {
+		boolean internalTesting = Boolean.valueOf( System.getProperty( "org.alice.ide.internalTesting", "false" ) );
+		if( internalTesting && !java.awt.EventQueue.isDispatchThread() ) {
 			System.err.println( "warning: Swing EDT violation: " + thisJoinPointStatic.getSignature() + " (" + thisJoinPointStatic.getSourceLocation() + ")" );
 		}
 	}
