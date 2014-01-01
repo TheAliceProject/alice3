@@ -88,12 +88,12 @@
 						<target>${maven.compiler.target}</target>
 						<complianceLevel>${java.version}</complianceLevel>
 						<outxml>true</outxml>
-						<aspectLibraries>
-							<aspectLibrary>
-								<groupId>org.alice</groupId>
-								<artifactId>util</artifactId>
-							</aspectLibrary>
-						</aspectLibraries>
+						<!-- <aspectLibraries> -->
+						<!-- <aspectLibrary> -->
+						<!-- <groupId>org.alice</groupId> -->
+						<!-- <artifactId>util</artifactId> -->
+						<!-- </aspectLibrary> -->
+						<!-- </aspectLibraries> -->
 					</configuration>
 					<executions>
 						<execution>
