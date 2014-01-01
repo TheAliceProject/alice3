@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
-public class SwingEDTSafetyCheck {
+public class SwingThreadSafetyChecker {
 
 	@Pointcut( "call (* javax.swing..*.*(..)) || "
 			+ "call (javax.swing..*.new(..))" )
@@ -26,7 +26,7 @@ public class SwingEDTSafetyCheck {
 	public void safeSwingMethods() {
 	}
 
-	@Before( "swingMethods() && !safeSwingMethods() && !within(SwingEDTSafetyCheck)" )
+	@Before( "swingMethods() && !safeSwingMethods() && !within(SwingThreadSafetyChecker)" )
 	public void checkCallingThread( final JoinPoint.StaticPart thisJoinPointStatic ) {
 		if( !java.awt.EventQueue.isDispatchThread() ) {
 			System.err.println( "warning: Swing EDT violation: " + thisJoinPointStatic.getSignature() + " (" + thisJoinPointStatic.getSourceLocation() + ")" );
