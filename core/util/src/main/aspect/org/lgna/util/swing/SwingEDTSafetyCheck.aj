@@ -1,4 +1,4 @@
-package org.lgna.aspects;
+package org.lgna.util.swing;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
