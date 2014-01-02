@@ -74,30 +74,31 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Plain
 				isAbleToRunWinsatDirectly = false;
 			}
 
-			isAbleToRunWinsatDirectly = false;
-			ProcessBuilder processBuilder;
+			//isAbleToRunWinsatDirectly = false;
+			ProcessBuilder[] processBuilders;
 			if( isAbleToRunWinsatDirectly ) {
-				processBuilder = new ProcessBuilder( "winsat", "d3d" );
+				processBuilders = new ProcessBuilder[] {
+						new ProcessBuilder( "winsat", "dwm" ),
+						new ProcessBuilder( "winsat", "d3d" )
+				};
 			} else {
 				try {
 					java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
 					tempFile.deleteOnExit();
 					StringBuilder sb = new StringBuilder();
-					sb.append( "winsat d3d" );
+					sb.append( "winsat dwm\n" );
+					sb.append( "winsat d3d\n" );
 					edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
-					processBuilder = new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() );
+					processBuilders = new ProcessBuilder[] {
+							new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() )
+					};
 				} catch( java.io.IOException ioe ) {
-					throw new RuntimeException( ioe );
+					throw new RuntimeException( "cannot create temp file", ioe );
 				}
 			}
 			final javax.swing.text.AttributeSet attributeSet = null;
-			edu.cmu.cs.dennisc.worker.process.ProcessWorker processWorker = new edu.cmu.cs.dennisc.worker.process.ProcessWorker( processBuilder ) {
-				@Override
-				protected void handleStart_onEventDispatchThread() {
-				}
-
-				@Override
-				protected void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s ) {
+			edu.cmu.cs.dennisc.worker.process.ProcessWorker processWorker = new edu.cmu.cs.dennisc.worker.process.ProcessWorker( processBuilders ) {
+				private void appendText( String s ) {
 					javax.swing.text.Document document = stardardOutAndStandardErrorState.getSwingModel().getDocument();
 					try {
 						document.insertString( document.getLength(), s, attributeSet );
@@ -107,7 +108,23 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Plain
 				}
 
 				@Override
+				protected void handleStart_onEventDispatchThread() {
+					//this.appendText( "start\n" );
+				}
+
+				@Override
+				protected void handleStartProcess_onEventDispatchThread( int i ) {
+					this.appendText( "start process " + this.getProcessBuilders()[ i ].command() + "\n" );
+				}
+
+				@Override
+				protected void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s ) {
+					this.appendText( s );
+				}
+
+				@Override
 				protected void handleDone_onEventDispatchThread( Integer value ) {
+					this.appendText( "done." );
 				}
 			};
 			processWorker.execute();

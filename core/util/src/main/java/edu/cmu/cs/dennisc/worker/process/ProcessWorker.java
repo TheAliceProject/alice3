@@ -47,41 +47,54 @@ package edu.cmu.cs.dennisc.worker.process;
  */
 public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Integer, String> {
 	private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
-	private final ProcessBuilder processBuilder;
+	private static final String FIRST_CHUNK_FOR_PROCESS = "__PROCESS_WORKER_FIRST_CHUNK_FOR_PROCESS__";
+	private final ProcessBuilder[] processBuilders;
 
-	public ProcessWorker( ProcessBuilder processBuilder ) {
-		this.processBuilder = processBuilder;
+	public ProcessWorker( ProcessBuilder... processBuilders ) {
+		this.processBuilders = processBuilders;
+	}
+
+	public ProcessBuilder[] getProcessBuilders() {
+		return this.processBuilders;
 	}
 
 	@Override
 	protected Integer do_onBackgroundThread() throws Exception {
-		if( this.processBuilder.redirectErrorStream() ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", this );
-			this.processBuilder.redirectErrorStream( true );
-		}
-		Process process = this.processBuilder.start();
-		java.io.InputStream standardOutAndStandardError = process.getInputStream();
+		int rv = 0; //?
 		this.publish( FIRST_CHUNK );
-		byte[] buffer = new byte[ 256 ];
-
-		while( true ) {
-			if( this.isCancelled() ) {
-				process.destroy();
+		int i = 0;
+		for( ProcessBuilder processBuilder : this.processBuilders ) {
+			if( processBuilder.redirectErrorStream() ) {
+				//pass
 			} else {
-				int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
-				if( count != -1 ) {
-					this.publish( new String( buffer, 0, count ) );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", processBuilder );
+				processBuilder.redirectErrorStream( true );
+			}
+			Process process = processBuilder.start();
+			this.publish( FIRST_CHUNK_FOR_PROCESS + i );
+			java.io.InputStream standardOutAndStandardError = process.getInputStream();
+			byte[] buffer = new byte[ 256 ];
+			while( true ) {
+				if( this.isCancelled() ) {
+					process.destroy();
 				} else {
-					break;
+					int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
+					if( count != -1 ) {
+						this.publish( new String( buffer, 0, count ) );
+					} else {
+						break;
+					}
 				}
 			}
+			rv = process.exitValue();
+			i++;
 		}
-		return process.exitValue();
+		return rv;
 	}
 
 	protected abstract void handleStart_onEventDispatchThread();
+
+	protected abstract void handleStartProcess_onEventDispatchThread( int i );
 
 	protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s );
 
@@ -89,10 +102,16 @@ public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWith
 	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
 		StringBuilder sb = new StringBuilder();
 		for( String chunk : chunks ) {
-			if( FIRST_CHUNK.equals( chunk ) ) {
-				this.handleStart_onEventDispatchThread();
-			} else {
-				sb.append( chunk );
+			if( chunk != null ) {
+				if( FIRST_CHUNK.equals( chunk ) ) {
+					this.handleStart_onEventDispatchThread();
+				} else if( chunk.startsWith( FIRST_CHUNK_FOR_PROCESS ) ) {
+					//todo
+					String nText = chunk.substring( FIRST_CHUNK_FOR_PROCESS.length() );
+					this.handleStartProcess_onEventDispatchThread( Integer.parseInt( nText ) );
+				} else {
+					sb.append( chunk );
+				}
 			}
 		}
 		this.handleProcessStandardOutAndStandardError_onEventDispatchThread( sb.toString() );
