@@ -40,21 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.system.croquet.views;
+package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WindowsSystemAssessmentToolPane extends org.lgna.croquet.views.MigPanel {
-	public WindowsSystemAssessmentToolPane( org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite composite ) {
-		super( composite, "fill", "[grow]", "[grow 0, shrink 0][grow 0, shrink 0][grow 100, shrink 100]" );
-		this.addComponent( composite.getHeader().createLabel(), "wrap" );
-		this.addComponent( composite.getExecuteWinsatOperation().createButton(), "wrap" );
+public class ProcessStartException extends Exception {
+	public ProcessStartException( java.io.IOException cause ) {
+		super( cause );
+	}
 
-		org.lgna.croquet.views.TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
-		textArea.setEditable( false );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( textArea );
-		scrollPane.setMinimumPreferredHeight( 300 );
-		this.addComponent( scrollPane, "grow" );
+	@Override
+	public synchronized java.io.IOException getCause() {
+		return (java.io.IOException)super.getCause();
 	}
 }

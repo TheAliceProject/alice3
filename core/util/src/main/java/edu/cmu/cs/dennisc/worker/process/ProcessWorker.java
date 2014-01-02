@@ -55,17 +55,17 @@ public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWith
 
 	@Override
 	protected Integer do_onBackgroundThread() throws Exception {
-		Process process = this.processBuilder.start();
-		java.io.InputStream standardOutAndStandardError = process.getInputStream();
-		this.publish( FIRST_CHUNK );
-		byte[] buffer = new byte[ 256 ];
-
 		if( this.processBuilder.redirectErrorStream() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", this );
 			this.processBuilder.redirectErrorStream( true );
 		}
+		Process process = this.processBuilder.start();
+		java.io.InputStream standardOutAndStandardError = process.getInputStream();
+		this.publish( FIRST_CHUNK );
+		byte[] buffer = new byte[ 256 ];
+
 		while( true ) {
 			if( this.isCancelled() ) {
 				process.destroy();

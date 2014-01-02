@@ -58,7 +58,38 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Plain
 	private final org.lgna.croquet.StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
 	private final org.lgna.croquet.Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			ProcessBuilder processBuilder = new ProcessBuilder( "winsat", "formal" );
+			boolean isAbleToRunWinsatDirectly;
+			try {
+				StringBuilder sb = new StringBuilder();
+				int result = edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndDrainStandardOutAndStandardError( new ProcessBuilder( "winsat", "-?" ), sb );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "result:", result );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb.toString() );
+				isAbleToRunWinsatDirectly = result == 0;
+			} catch( edu.cmu.cs.dennisc.java.lang.ProcessStartException pse ) {
+				//User Account Control?
+				pse.printStackTrace();
+				isAbleToRunWinsatDirectly = false;
+			} catch( java.io.IOException ioe ) {
+				ioe.printStackTrace();
+				isAbleToRunWinsatDirectly = false;
+			}
+
+			isAbleToRunWinsatDirectly = false;
+			ProcessBuilder processBuilder;
+			if( isAbleToRunWinsatDirectly ) {
+				processBuilder = new ProcessBuilder( "winsat", "d3d" );
+			} else {
+				try {
+					java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
+					tempFile.deleteOnExit();
+					StringBuilder sb = new StringBuilder();
+					sb.append( "winsat d3d" );
+					edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
+					processBuilder = new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() );
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( ioe );
+				}
+			}
 			final javax.swing.text.AttributeSet attributeSet = null;
 			edu.cmu.cs.dennisc.worker.process.ProcessWorker processWorker = new edu.cmu.cs.dennisc.worker.process.ProcessWorker( processBuilder ) {
 				@Override
@@ -103,5 +134,12 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Plain
 	@Override
 	protected org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane createView() {
 		return new org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane( this );
+	}
+
+	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().fire();
+		System.exit( 0 );
 	}
 }
