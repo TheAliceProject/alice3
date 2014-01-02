@@ -82,19 +82,22 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Plain
 						new ProcessBuilder( "winsat", "d3d" )
 				};
 			} else {
-				try {
-					java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
-					tempFile.deleteOnExit();
-					StringBuilder sb = new StringBuilder();
-					sb.append( "winsat dwm\n" );
-					sb.append( "winsat d3d\n" );
-					edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
-					processBuilders = new ProcessBuilder[] {
-							new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() )
-					};
-				} catch( java.io.IOException ioe ) {
-					throw new RuntimeException( "cannot create temp file", ioe );
-				}
+				//				try {
+				//					java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
+				//					tempFile.deleteOnExit();
+				//					StringBuilder sb = new StringBuilder();
+				//					sb.append( "winsat dwm\n" );
+				//					sb.append( "winsat d3d\n" );
+				//					edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
+				//					processBuilders = new ProcessBuilder[] {
+				//						new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() )
+				//					};
+				//				} catch( java.io.IOException ioe ) {
+				//					throw new RuntimeException( "cannot create temp file", ioe );
+				//				}
+				processBuilders = new ProcessBuilder[] {
+						new ProcessBuilder( "cmd", "/c", "winsat.exe dwm & winsat.exe d3d" )
+				};
 			}
 			final javax.swing.text.AttributeSet attributeSet = null;
 			edu.cmu.cs.dennisc.worker.process.ProcessWorker processWorker = new edu.cmu.cs.dennisc.worker.process.ProcessWorker( processBuilders ) {
