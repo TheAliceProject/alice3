@@ -46,6 +46,34 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class ProcessUtilities {
+	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder, StringBuilder sb ) throws ProcessStartException, java.io.IOException {
+		if( processBuilder.redirectErrorStream() ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", processBuilder );
+			processBuilder.redirectErrorStream( true );
+		}
+		Process process = processBuilder.start();
+		java.io.InputStream standardOutAndStandardError = process.getInputStream();
+		byte[] buffer = new byte[ 256 ];
+
+		while( true ) {
+			int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
+			if( count != -1 ) {
+				if( sb != null ) {
+					sb.append( new String( buffer, 0, count ) );
+				}
+			} else {
+				break;
+			}
+		}
+		return process.exitValue();
+	}
+
+	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder ) throws ProcessStartException, java.io.IOException {
+		return startAndDrainStandardOutAndStandardError( processBuilder, null );
+	}
+
 	private static int startAndWaitFor( ProcessBuilder processBuilder, DrainInputStreamThread.LineAppender outLineAppender, DrainInputStreamThread.LineAppender errLineAppender ) throws java.io.IOException, InterruptedException {
 		Process process = processBuilder.start();
 		java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 3 );

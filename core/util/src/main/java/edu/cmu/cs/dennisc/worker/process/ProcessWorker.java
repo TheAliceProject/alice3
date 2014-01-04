@@ -40,33 +40,80 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.system.croquet;
+package edu.cmu.cs.dennisc.worker.process;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class StartWindowsSystemAssessmentToolOperation extends org.lgna.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static StartWindowsSystemAssessmentToolOperation instance = new StartWindowsSystemAssessmentToolOperation();
+public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Integer, String> {
+	private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
+	private static final String FIRST_CHUNK_FOR_PROCESS = "__PROCESS_WORKER_FIRST_CHUNK_FOR_PROCESS__";
+	private final ProcessBuilder[] processBuilders;
+
+	public ProcessWorker( ProcessBuilder... processBuilders ) {
+		this.processBuilders = processBuilders;
 	}
 
-	public static StartWindowsSystemAssessmentToolOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private StartWindowsSystemAssessmentToolOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "a822cfb5-bec7-4077-9102-1a3eaecf84eb" ) );
+	public ProcessBuilder[] getProcessBuilders() {
+		return this.processBuilders;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		ProcessBuilder processBuilder = new ProcessBuilder( "winsat", "formal" );
-		try {
+	protected Integer do_onBackgroundThread() throws Exception {
+		int rv = 0; //?
+		this.publish( FIRST_CHUNK );
+		int i = 0;
+		for( ProcessBuilder processBuilder : this.processBuilders ) {
+			if( processBuilder.redirectErrorStream() ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", processBuilder );
+				processBuilder.redirectErrorStream( true );
+			}
 			Process process = processBuilder.start();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
+			this.publish( FIRST_CHUNK_FOR_PROCESS + i );
+			java.io.InputStream standardOutAndStandardError = process.getInputStream();
+			byte[] buffer = new byte[ 256 ];
+			while( true ) {
+				if( this.isCancelled() ) {
+					process.destroy();
+				} else {
+					int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
+					if( count != -1 ) {
+						this.publish( new String( buffer, 0, count ) );
+					} else {
+						break;
+					}
+				}
+			}
+			rv = process.exitValue();
+			i++;
 		}
-		step.finish();
+		return rv;
+	}
+
+	protected abstract void handleStart_onEventDispatchThread();
+
+	protected abstract void handleStartProcess_onEventDispatchThread( int i );
+
+	protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s );
+
+	@Override
+	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+		StringBuilder sb = new StringBuilder();
+		for( String chunk : chunks ) {
+			if( chunk != null ) {
+				if( FIRST_CHUNK.equals( chunk ) ) {
+					this.handleStart_onEventDispatchThread();
+				} else if( chunk.startsWith( FIRST_CHUNK_FOR_PROCESS ) ) {
+					//todo
+					String nText = chunk.substring( FIRST_CHUNK_FOR_PROCESS.length() );
+					this.handleStartProcess_onEventDispatchThread( Integer.parseInt( nText ) );
+				} else {
+					sb.append( chunk );
+				}
+			}
+		}
+		this.handleProcessStandardOutAndStandardError_onEventDispatchThread( sb.toString() );
 	}
 }
