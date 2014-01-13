@@ -104,35 +104,6 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.v
 		this( migrationId, operationGroup, true );
 	}
 
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKey ) {
-		if( subKey != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.getLaunchOperation();
-		}
-	}
-
-	public InternalCloseOperation getCloseOperation() {
-		return this.closeOperation;
-	}
-
-	@Override
-	protected String getName() {
-		return this.getLaunchOperation().getName();
-	}
-
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
-
 	@Override
 	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
@@ -161,7 +132,29 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.v
 		this.handlePostDeactivation();
 	}
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public InternalCloseOperation getCloseOperation() {
+		return this.closeOperation;
+	}
+
+	@Override
+	protected String getName() {
+		return this.launchOperation.getName();
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+		if( subKeyText != null ) {
+			throw new RuntimeException( "todo" );
+		} else {
+			return this.launchOperation;
+		}
+	}
+
+	@Deprecated
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
+	}
+
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
 			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
@@ -171,11 +164,19 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.v
 		}, completionStep );
 	}
 
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
+		return defaultValue;
+	}
+
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+		return text;
+	}
+
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: generate close transaction" );
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public void appendTutorialStepText( OwnedByCompositeOperationSubKey subKey, StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 }

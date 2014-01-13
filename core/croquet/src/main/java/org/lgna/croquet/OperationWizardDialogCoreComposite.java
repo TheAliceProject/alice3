@@ -47,48 +47,44 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.views.Panel> {
-	private final OwnedByCompositeOperation launchOperation;
 	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Group operationGroup;
 
 	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
-		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
+		this.operationGroup = operationGroup;
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation() {
-		return this.getLaunchOperation( null );
+	public Group getOperationGroup() {
+		return this.operationGroup;
 	}
 
-	public OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKey, Initializer<? extends OperationWizardDialogCoreComposite> initializer ) {
-		assert subKey != null : initializer;
-		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKey ) == false : subKey;
-		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.launchOperation.getGroup(), this, subKey );
-		this.mapSubKeyToInitializerLaunchOperation.put( subKey, rv );
+	public OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, Initializer<? extends OperationWizardDialogCoreComposite> initializer ) {
+		assert subKeyText != null : initializer;
+		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
+		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this, subKeyText );
+		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.operationGroup, this, subKey );
+		this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
 		return rv;
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation( String subKey ) {
-		if( subKey != null ) {
-			return this.mapSubKeyToInitializerLaunchOperation.get( subKey );
+	public OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+		if( subKeyText != null ) {
+			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
 		} else {
-			return this.launchOperation;
+			return null;
 		}
 	}
 
-	@Override
-	protected String getName() {
-		return this.getLaunchOperation().getName();
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public void appendTutorialStepText( OwnedByCompositeOperationSubKey subKey, StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 
-	public String modifyNameIfNecessary( String text ) {
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
 
@@ -111,7 +107,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		}
 	}
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
 			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();

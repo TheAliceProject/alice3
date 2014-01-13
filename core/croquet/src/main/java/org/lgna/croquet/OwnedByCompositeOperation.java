@@ -47,41 +47,42 @@ package org.lgna.croquet;
  */
 public final class OwnedByCompositeOperation extends ActionOperation {
 	public static final class Resolver extends IndirectResolver<OwnedByCompositeOperation, OperationOwningComposite<?>> {
-		private final String subKey;
+		private final String subKeyText;
 
-		private Resolver( OperationOwningComposite<?> indirect, String subKey ) {
+		private Resolver( OperationOwningComposite<?> indirect, String subKeyText ) {
 			super( indirect );
-			this.subKey = subKey;
+			this.subKeyText = subKeyText;
 		}
 
 		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
-			this.subKey = binaryDecoder.decodeString();
+			this.subKeyText = binaryDecoder.decodeString();
 		}
 
 		@Override
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			super.encode( binaryEncoder );
-			binaryEncoder.encode( this.subKey );
+			binaryEncoder.encode( this.subKeyText );
 		}
 
 		@Override
 		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
-			return indirect.getLaunchOperation( this.subKey );
+			return indirect.getLaunchOperation( this.subKeyText );
 		}
 	}
 
 	private final OperationOwningComposite composite;
-	private final String subKey;
+	private final OwnedByCompositeOperationSubKey subKey;
 
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, String subKey ) {
+	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
+		assert subKey != null : composite;
 		this.composite = composite;
 		this.subKey = subKey;
 	}
 
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
-		this( group, composite, null );
+		this( group, composite, new OwnedByCompositeOperationSubKey( composite, null ) );
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 	@Override
 	public boolean isToolBarTextClobbered() {
-		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
+		return this.composite.isToolBarTextClobbered( this.subKey, super.isToolBarTextClobbered() );
 	}
 
 	public OperationOwningComposite getComposite() {
@@ -107,20 +108,20 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 	@Override
 	protected String getSubKeyForLocalization() {
-		return this.subKey;
+		return this.subKey.getText();
 	}
 
 	//todo: pass subKey into composite methods
 
 	@Override
 	protected String modifyNameIfNecessary( String text ) {
-		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
+		return this.composite.modifyNameIfNecessary( this.subKey, super.modifyNameIfNecessary( text ) );
 	}
 
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		this.composite.perform( completionStep );
+		this.composite.perform( this.subKey, completionStep );
 	}
 
 	@Override
@@ -148,11 +149,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 	@Override
 	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		this.composite.appendTutorialStepText( text, step, edit );
+		this.composite.appendTutorialStepText( this.subKey, text, step, edit );
 	}
 
 	@Override
 	protected Resolver createResolver() {
-		return new Resolver( this.composite, this.subKey );
+		return new Resolver( this.composite, this.subKey.getText() );
 	}
 }

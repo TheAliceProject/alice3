@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
-	public ExportDeclarationComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.alice.ide.IDE.EXPORT_GROUP );
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+public class Objects {
+	public static boolean equals( Object a, Object b ) {
+		if( a != null ) {
+			return a.equals( b );
+		} else {
+			return b == null;
+		}
 	}
 }

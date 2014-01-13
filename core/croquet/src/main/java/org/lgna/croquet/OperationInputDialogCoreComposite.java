@@ -47,54 +47,50 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final OwnedByCompositeOperation launchOperation;
 	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Group operationGroup;
 
 	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
-		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
+		this.operationGroup = operationGroup;
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation() {
-		return this.getLaunchOperation( null );
+	public Group getOperationGroup() {
+		return this.operationGroup;
 	}
 
-	public OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKey, Initializer<? extends OperationInputDialogCoreComposite> initializer ) {
-		assert subKey != null : initializer;
-		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKey ) == false : subKey;
-		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.launchOperation.getGroup(), this, subKey );
-		this.mapSubKeyToInitializerLaunchOperation.put( subKey, rv );
+	protected OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, Initializer<? extends OperationInputDialogCoreComposite> initializer ) {
+		assert subKeyText != null : initializer;
+		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
+		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this, subKeyText );
+		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.operationGroup, this, subKey );
+		this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
 		return rv;
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation( String subKey ) {
-		if( subKey != null ) {
-			return this.mapSubKeyToInitializerLaunchOperation.get( subKey );
+	public OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+		if( subKeyText != null ) {
+			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
 		} else {
-			return this.launchOperation;
+			return null;
 		}
 	}
 
-	@Override
-	protected String getName() {
-		return this.getLaunchOperation().getName();
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
-	public String modifyNameIfNecessary( String text ) {
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
 
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public void appendTutorialStepText( OwnedByCompositeOperationSubKey subKey, StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		text.append( this.getName() );
 	}
 
 	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
 			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

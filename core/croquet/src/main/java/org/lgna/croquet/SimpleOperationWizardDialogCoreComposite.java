@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
-	public ExportDeclarationComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.alice.ide.IDE.EXPORT_GROUP );
+public abstract class SimpleOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
+	private final OwnedByCompositeOperation launchOperation;
+
+	public SimpleOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId, operationGroup );
+		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
+	protected String getName() {
+		return this.launchOperation.getName();
 	}
 
-	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
 	}
 }

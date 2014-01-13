@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.export;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
-	public ExportDeclarationComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.alice.ide.IDE.EXPORT_GROUP );
+public final class OwnedByCompositeOperationSubKey {
+	private final OperationOwningComposite<?> composite;
+	private final String text;
+
+	public OwnedByCompositeOperationSubKey( OperationOwningComposite<?> composite, String text ) {
+		this.composite = composite;
+		this.text = text;
+	}
+
+	public OperationOwningComposite<?> getComposite() {
+		return this.composite;
+	}
+
+	public String getText() {
+		return this.text;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj instanceof OwnedByCompositeOperationSubKey ) {
+			OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey)obj;
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.composite, other.composite )
+					&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.text, other.text );
+		}
+		return false;
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+	public int hashCode() {
+		int rv = 17;
+		if( this.composite != null ) {
+			rv = ( 37 * rv ) + this.composite.hashCode();
+		}
+		if( this.text != null ) {
+			rv = ( 37 * rv ) + this.text.hashCode();
+		}
+		return rv;
 	}
 }
