@@ -83,9 +83,4 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
-	}
 }

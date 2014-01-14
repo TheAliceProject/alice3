@@ -102,23 +102,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		return false;
 	}
 
-	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
-	//		return "Press " + this.getTutorialNoteText( step, userInformation );
-	//	}
-	//
-	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		this.initializeIfNecessary();
-		text.append( " <strong>" );
-		String name = this.getName();
-		if( name != null ) {
-			text.append( name );
-		} else {
-			text.append( this.getClass().getSimpleName() );
-		}
-		text.append( "</strong>" );
-	}
-
 	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
@@ -180,11 +163,6 @@ public abstract class Operation extends AbstractCompletionModel {
 	//	}
 	protected void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-	}
-
-	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		return false;
 	}
 
 	public static class InternalMenuPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, Operation> {
@@ -251,11 +229,6 @@ public abstract class Operation extends AbstractCompletionModel {
 			super.appendRepr( sb );
 			sb.append( "operation=" );
 			sb.append( this.getOperation() );
-		}
-
-		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-			this.operation.appendTutorialStepText( text, step, edit );
 		}
 	}
 

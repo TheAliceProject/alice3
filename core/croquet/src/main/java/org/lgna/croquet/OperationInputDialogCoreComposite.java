@@ -84,10 +84,6 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return text;
 	}
 
-	public void appendTutorialStepText( OwnedByCompositeOperationSubKey subKey, StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		text.append( this.getName() );
-	}
-
 	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {

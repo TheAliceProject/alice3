@@ -48,31 +48,18 @@ package org.lgna.croquet.triggers;
  */
 public class MouseEventTrigger extends AbstractMouseEventTrigger {
 	public static MouseEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
-		return new MouseEventTrigger( Origin.USER, viewController, mouseEvent );
+		return new MouseEventTrigger( viewController, mouseEvent );
 	}
 
 	public static MouseEventTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
 		return createUserInstance( null, mouseEvent );
 	}
 
-	public static MouseEventTrigger createGeneratorInstance() {
-		return new MouseEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	public static MouseEventTrigger createRecoveryInstance() {
-		return new MouseEventTrigger( Origin.RECOVERY, null, null );
-	}
-
-	private MouseEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
-		super( origin, viewController, mouseEvent );
+	private MouseEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( viewController, mouseEvent );
 	}
 
 	public MouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Click";
 	}
 }

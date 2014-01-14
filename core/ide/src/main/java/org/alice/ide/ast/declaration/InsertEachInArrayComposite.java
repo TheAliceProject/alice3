@@ -49,18 +49,4 @@ public abstract class InsertEachInArrayComposite<S extends org.lgna.project.ast.
 	public InsertEachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		super( migrationId, blockStatementIndexPair, isEnveloping );
 	}
-
-	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
-		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
-		org.lgna.project.ast.EachInArrayStatement eachInArrayStatement = (org.lgna.project.ast.EachInArrayStatement)statement;
-
-		org.lgna.project.ast.UserLocal local = eachInArrayStatement.getItemProperty().getValue();
-		this.getValueComponentTypeState().addGeneratedStateChangeTransaction( subTransactionHistory, null, local.getValueType() );
-		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", local.name.getValue() );
-		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, eachInArrayStatement.getArrayProperty().getValue() );
-
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-	}
 }

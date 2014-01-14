@@ -50,8 +50,6 @@ public interface Model extends Element, org.lgna.croquet.resolvers.RuntimeResolv
 
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	public String getTutorialNoteText( org.lgna.croquet.history.Step<?> step, String triggerText, org.lgna.croquet.edits.AbstractEdit<?> edit );
-
 	public boolean isEnabled();
 
 	public void setEnabled( boolean isEnabled );

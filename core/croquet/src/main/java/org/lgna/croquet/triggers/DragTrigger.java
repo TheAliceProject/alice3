@@ -48,27 +48,18 @@ package org.lgna.croquet.triggers;
  */
 public class DragTrigger extends AbstractMouseEventTrigger {
 	public static DragTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
-		return new DragTrigger( Origin.USER, viewController, mouseEvent );
+		return new DragTrigger( viewController, mouseEvent );
 	}
 
 	public static DragTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
 		return createUserInstance( null, mouseEvent );
 	}
 
-	public static DragTrigger createGeneratorInstance() {
-		return new DragTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private DragTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
-		super( origin, viewController, mouseEvent );
+	private DragTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( viewController, mouseEvent );
 	}
 
 	public DragTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Press and Drag";
 	}
 }

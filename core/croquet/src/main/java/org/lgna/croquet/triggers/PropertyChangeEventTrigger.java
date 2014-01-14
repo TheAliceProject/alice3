@@ -47,15 +47,11 @@ package org.lgna.croquet.triggers;
  */
 public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.PropertyChangeEvent> {
 	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
-		return new PropertyChangeEventTrigger( Origin.USER, viewController, propertyChangeEvent );
+		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent );
 	}
 
-	public static PropertyChangeEventTrigger createGeneratorInstance() {
-		return new PropertyChangeEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private PropertyChangeEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
-		super( origin, viewController, propertyChangeEvent );
+	private PropertyChangeEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+		super( viewController, propertyChangeEvent );
 	}
 
 	public PropertyChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -65,10 +61,5 @@ public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.Pr
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Click";
 	}
 }

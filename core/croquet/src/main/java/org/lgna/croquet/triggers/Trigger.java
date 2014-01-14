@@ -47,35 +47,18 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public static enum Origin {
-		USER,
-		RECOVERY,
-		GENERATOR
-	}
-
-	private final Origin origin;
-
-	public Trigger( Origin origin ) {
-		this.origin = origin;
+	public Trigger() {
 	}
 
 	public Trigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.origin = binaryDecoder.decodeEnum();
 	}
 
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.origin );
-	}
-
-	public Origin getOrigin() {
-		return this.origin;
 	}
 
 	public abstract org.lgna.croquet.views.ViewController<?, ?> getViewController();
 
 	public abstract void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu );
-
-	public abstract String getNoteText();
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
@@ -85,8 +68,7 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 
 	public void appendRepr( StringBuilder repr ) {
 		repr.append( this.getClass().getSimpleName() );
-		repr.append( "[origin=" );
-		repr.append( this.origin );
+		repr.append( "[" );
 		this.appendReprInternal( repr );
 		repr.append( "]" );
 	}

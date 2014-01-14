@@ -77,13 +77,6 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 
 	@Override
-	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
-		assert statement instanceof org.lgna.project.ast.ReturnStatement : statement;
-		org.lgna.project.ast.ReturnStatement returnStatement = (org.lgna.project.ast.ReturnStatement)statement;
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( returnStatement.expression.getValue() );
-	}
-
-	@Override
 	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
 	}

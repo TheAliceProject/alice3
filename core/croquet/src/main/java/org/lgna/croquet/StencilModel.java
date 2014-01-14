@@ -54,17 +54,8 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 	}
 
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		return false;
-	}
-
-	@Override
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
-	}
-
-	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
 	@Override

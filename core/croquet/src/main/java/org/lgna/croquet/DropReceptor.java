@@ -67,8 +67,6 @@ public interface DropReceptor {
 
 	public void dragStopped( org.lgna.croquet.history.DragStep step );
 
-	public String getTutorialNoteText( Model model, org.lgna.croquet.edits.AbstractEdit<?> edit );
-
 	public void addDropRejector( DropRejector dropRejector );
 
 	public void removeDropRejector( DropRejector dropRejector );

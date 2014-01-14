@@ -48,15 +48,11 @@ package org.lgna.croquet.triggers;
  */
 public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.event.TreeSelectionEvent> {
 	public static TreeSelectionEventTrigger createUserInstance( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
-		return new TreeSelectionEventTrigger( Origin.USER, null, treeSelectionEvent );
+		return new TreeSelectionEventTrigger( null, treeSelectionEvent );
 	}
 
-	public static TreeSelectionEventTrigger createGeneratorInstance() {
-		return new TreeSelectionEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
-		super( origin, viewController, treeSelectionEvent );
+	private TreeSelectionEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+		super( viewController, treeSelectionEvent );
 	}
 
 	public TreeSelectionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -66,10 +62,5 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Select";
 	}
 }

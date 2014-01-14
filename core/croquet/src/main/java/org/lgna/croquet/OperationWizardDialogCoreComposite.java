@@ -80,10 +80,6 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return defaultValue;
 	}
 
-	public void appendTutorialStepText( OwnedByCompositeOperationSubKey subKey, StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		text.append( this.getName() );
-	}
-
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}

@@ -50,8 +50,7 @@ public abstract class EventObjectTrigger<E extends java.util.EventObject> extend
 	private final transient org.lgna.croquet.views.ViewController<?, ?> viewController;
 	private final transient E event;
 
-	public EventObjectTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, E event ) {
-		super( origin );
+	public EventObjectTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, E event ) {
 		this.viewController = viewController;
 		this.event = event;
 	}

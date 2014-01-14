@@ -86,9 +86,4 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFillIn> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFillIn>( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.field.getValue().getName();
-	}
 }

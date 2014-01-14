@@ -168,13 +168,4 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		menuItemContainer.addMenu( rv );
 		return rv;
 	}
-
-	protected String getTutorialNoteName() {
-		return this.getName();
-	}
-
-	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		text.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
-	}
 }

@@ -71,7 +71,6 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 
 	@Override
 	public org.lgna.story.SMarker getAbstraction() {
-		// TODO Auto-generated method stub
 		return this.abstraction;
 	}
 
