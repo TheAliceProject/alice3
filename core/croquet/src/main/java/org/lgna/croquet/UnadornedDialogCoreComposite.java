@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointedModelImp;
+package org.lgna.croquet;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SProp extends SJointedModel {
-
-	private final org.lgna.story.implementation.JointedModelImp implementation;
-
-	public SProp( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
+public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
+	public UnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, isModal );
 	}
 
 	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
+	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//todo
+		return this.getView();
 	}
 
+	@Override
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
+		super.releaseView();
+		//todo
+	}
+
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		//todo
+		return null;
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePreActivation();
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePostDeactivation();
+	}
+
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
+				completionStep.finish();
+			}
+		}, completionStep );
+	}
+
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
+		return defaultValue;
+	}
+
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+		return text;
+	}
 }

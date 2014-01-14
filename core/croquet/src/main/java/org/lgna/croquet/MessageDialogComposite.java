@@ -54,19 +54,9 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 	public MessageDialogComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType ) {
 		super( migrationId );
 		this.messageType = messageType;
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this );
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
-
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKey ) {
-		if( subKey != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.getLaunchOperation();
-		}
+		String text = null;
+		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this, text );
+		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey );
 	}
 
 	@Override
@@ -75,7 +65,27 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	public String modifyNameIfNecessary( String text ) {
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+		if( subKeyText != null ) {
+			throw new RuntimeException( "todo" );
+		} else {
+			return this.launchOperation;
+		}
+	}
+
+	@Deprecated
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.launchOperation;
+	}
+
+	public final void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		java.awt.Component awtComponent = null; //todo
+		//todo: Icon
+		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
+		completionStep.finish();
+	}
+
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
 
@@ -83,26 +93,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		return true;
 	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
-	}
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	}
-
-	public void appendTutorialStepText( java.lang.StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-	}
-
-	public final void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
 	}
 }

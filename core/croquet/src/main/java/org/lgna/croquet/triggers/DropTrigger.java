@@ -48,21 +48,17 @@ package org.lgna.croquet.triggers;
  */
 public class DropTrigger extends AbstractMouseEventTrigger {
 	public static DropTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
+		return new DropTrigger( viewController, mouseEvent, dropSite );
 	}
 
 	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
 		return createUserInstance( null, mouseEvent, dropSite );
 	}
 
-	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
-	}
-
 	private org.lgna.croquet.DropSite dropSite;
 
-	private DropTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( origin, viewController, e );
+	private DropTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
+		super( viewController, e );
 		if( dropSite != null ) {
 			//pass
 		} else {
@@ -90,11 +86,6 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.dropSite = this.dropSite.createReplacement( retargeter );
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Drop";
 	}
 
 	@Override

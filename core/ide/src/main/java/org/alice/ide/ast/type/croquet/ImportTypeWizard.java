@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.preview.croquet.PreviewPage;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeWizard extends org.lgna.croquet.OperationWizardDialogCoreComposite {
+public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDialogCoreComposite {
 	private final AddMembersPage addMembersPage;
 	private final PreviewPage previewPage;
 

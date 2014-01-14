@@ -46,14 +46,14 @@ package org.lgna.croquet.imp.dialog;
  * @author Dennis Cosgrove
  */
 public abstract class DialogContentComposite<V extends org.lgna.croquet.imp.dialog.views.DialogContentPane> extends org.lgna.croquet.SimpleComposite<V> {
-	private final org.lgna.croquet.DialogCoreComposite<?, ?> coreComposite;
+	private final org.lgna.croquet.AdornedDialogCoreComposite<?, ?> coreComposite;
 
-	public DialogContentComposite( java.util.UUID migrationId, org.lgna.croquet.DialogCoreComposite<?, ?> coreComposite ) {
+	public DialogContentComposite( java.util.UUID migrationId, org.lgna.croquet.AdornedDialogCoreComposite<?, ?> coreComposite ) {
 		super( migrationId );
 		this.coreComposite = coreComposite;
 	}
 
-	public org.lgna.croquet.DialogCoreComposite<?, ?> getCoreComposite() {
+	public org.lgna.croquet.AdornedDialogCoreComposite<?, ?> getCoreComposite() {
 		return this.coreComposite;
 	}
 

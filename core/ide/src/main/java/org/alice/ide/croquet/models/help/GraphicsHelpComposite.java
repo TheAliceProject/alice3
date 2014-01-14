@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsHelpComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.GraphicsHelpView> {
+public class GraphicsHelpComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.GraphicsHelpView> {
 	private static class SingletonHolder {
 		private static GraphicsHelpComposite instance = new GraphicsHelpComposite();
 	}

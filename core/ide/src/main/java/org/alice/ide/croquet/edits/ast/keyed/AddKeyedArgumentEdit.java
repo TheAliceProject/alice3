@@ -108,11 +108,6 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
 	}
 
 	@Override
-	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
-		this.appendDescription( sbTitle, DescriptionStyle.TERSE );
-	}
-
-	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;

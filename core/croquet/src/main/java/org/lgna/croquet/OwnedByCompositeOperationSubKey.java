@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointedModelImp;
+package org.lgna.croquet;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SProp extends SJointedModel {
+public final class OwnedByCompositeOperationSubKey {
+	private final OperationOwningComposite<?> composite;
+	private final String text;
 
-	private final org.lgna.story.implementation.JointedModelImp implementation;
+	public OwnedByCompositeOperationSubKey( OperationOwningComposite<?> composite, String text ) {
+		this.composite = composite;
+		this.text = text;
+	}
 
-	public SProp( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
+	public OperationOwningComposite<?> getComposite() {
+		return this.composite;
+	}
+
+	public String getText() {
+		return this.text;
 	}
 
 	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj instanceof OwnedByCompositeOperationSubKey ) {
+			OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey)obj;
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.composite, other.composite )
+					&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.text, other.text );
+		}
+		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.composite != null ) {
+			rv = ( 37 * rv ) + this.composite.hashCode();
+		}
+		if( this.text != null ) {
+			rv = ( 37 * rv ) + this.text.hashCode();
+		}
+		return rv;
+	}
 }

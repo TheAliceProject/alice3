@@ -46,23 +46,13 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface OperationOwningComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getLaunchOperation();
-
-	public OwnedByCompositeOperation getLaunchOperation( String subKey );
-
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
-
-	public boolean isToolBarTextClobbered( boolean defaultValue );
+	public OwnedByCompositeOperation getLaunchOperation( String subKeyText );
 
 	public boolean isSubTransactionHistoryRequired();
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit );
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep );
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException;
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue );
 
-	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit );
-
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit );
-
-	public String modifyNameIfNecessary( String text );
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text );
 }

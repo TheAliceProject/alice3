@@ -67,11 +67,6 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	protected String getTutorialItemText() {
-		return this.type.getName();
-	}
-
-	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<TypeFillIn> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<TypeFillIn>( this, org.lgna.project.ast.AbstractType.class, this.type );
 	}

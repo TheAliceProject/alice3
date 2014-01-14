@@ -48,21 +48,12 @@ package org.lgna.croquet.triggers;
  */
 public class DocumentEventTrigger extends Trigger {
 	public static DocumentEventTrigger createUserInstance( javax.swing.event.DocumentEvent documentEvent ) {
-		return new DocumentEventTrigger( Origin.USER, documentEvent );
-	}
-
-	public static DocumentEventTrigger createGeneratorInstance() {
-		return new DocumentEventTrigger( Origin.GENERATOR, null );
-	}
-
-	public static DocumentEventTrigger createRecoveryInstance() {
-		return new DocumentEventTrigger( Origin.RECOVERY, null );
+		return new DocumentEventTrigger( documentEvent );
 	}
 
 	private final transient javax.swing.event.DocumentEvent documentEvent;
 
-	private DocumentEventTrigger( Origin origin, javax.swing.event.DocumentEvent documentEvent ) {
-		super( origin );
+	private DocumentEventTrigger( javax.swing.event.DocumentEvent documentEvent ) {
 		this.documentEvent = documentEvent;
 	}
 
@@ -79,10 +70,5 @@ public class DocumentEventTrigger extends Trigger {
 	@Override
 	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Type";
 	}
 }

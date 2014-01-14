@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends DialogCoreComposite<V, DCC> {
+public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
 	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
@@ -141,13 +141,5 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 
 	protected void cancel( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.cancel();
-	}
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws UnsupportedGenerationException {
-		org.lgna.croquet.edits.AbstractEdit<?> commitEdit = null;
-		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit, null );
-	}
-
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> edit ) throws UnsupportedGenerationException {
 	}
 }

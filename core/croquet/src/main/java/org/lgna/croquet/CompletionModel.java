@@ -49,17 +49,5 @@ package org.lgna.croquet;
 public interface CompletionModel extends Model {
 	public Group getGroup();
 
-	public String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step );
-
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit );
-
-	public org.lgna.croquet.edits.AbstractEdit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger );
-
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit );
-
-	public static interface AddGeneratedTransactionObserver {
-		public void prePopGeneratedContexts() throws org.lgna.croquet.UnsupportedGenerationException;
-	}
-
-	public org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.AbstractEdit<?> edit, AddGeneratedTransactionObserver observer ) throws UnsupportedGenerationException;
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointedModelImp;
+package org.lgna.croquet;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SProp extends SJointedModel {
-
-	private final org.lgna.story.implementation.JointedModelImp implementation;
-
-	public SProp( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
+public abstract class SimpleOperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationInputDialogCoreComposite<V> {
+	public SimpleOperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId, operationGroup );
+		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
 
 	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
+	protected String getName() {
+		Operation launchOperation = this.getLaunchOperation();
+		return launchOperation != null ? launchOperation.getName() : null;
 	}
 
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.getImp().getLaunchOperation( null );
+	}
 }

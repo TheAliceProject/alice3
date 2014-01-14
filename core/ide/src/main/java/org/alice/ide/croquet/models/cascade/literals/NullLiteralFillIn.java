@@ -69,9 +69,4 @@ public class NullLiteralFillIn extends org.alice.ide.croquet.models.cascade.Expr
 	public org.lgna.project.ast.NullLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.NullLiteral();
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return "null";
-	}
 }

@@ -46,11 +46,11 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
+public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
-	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, DialogCoreComposite> {
-		private InternalCommitOperationResolver( DialogCoreComposite indirect ) {
+	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, AdornedDialogCoreComposite> {
+		private InternalCommitOperationResolver( AdornedDialogCoreComposite indirect ) {
 			super( indirect );
 		}
 
@@ -59,13 +59,13 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 		}
 
 		@Override
-		protected InternalCommitOperation getDirect( DialogCoreComposite indirect ) {
+		protected InternalCommitOperation getDirect( AdornedDialogCoreComposite indirect ) {
 			return indirect.commitOperation;
 		}
 	}
 
-	public static final class InternalCancelOperationResolver extends IndirectResolver<InternalCancelOperation, DialogCoreComposite> {
-		private InternalCancelOperationResolver( DialogCoreComposite indirect ) {
+	public static final class InternalCancelOperationResolver extends IndirectResolver<InternalCancelOperation, AdornedDialogCoreComposite> {
+		private InternalCancelOperationResolver( AdornedDialogCoreComposite indirect ) {
 			super( indirect );
 		}
 
@@ -74,20 +74,20 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 		}
 
 		@Override
-		protected InternalCancelOperation getDirect( DialogCoreComposite indirect ) {
+		protected InternalCancelOperation getDirect( AdornedDialogCoreComposite indirect ) {
 			return indirect.cancelOperation;
 		}
 	}
 
 	protected static abstract class InternalDialogOperation extends ActionOperation {
-		private final DialogCoreComposite coreComposite;
+		private final AdornedDialogCoreComposite coreComposite;
 
-		public InternalDialogOperation( java.util.UUID id, DialogCoreComposite coreComposite ) {
+		public InternalDialogOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.coreComposite = coreComposite;
 		}
 
-		public DialogCoreComposite getDialogCoreComposite() {
+		public AdornedDialogCoreComposite getDialogCoreComposite() {
 			return this.coreComposite;
 		}
 
@@ -100,7 +100,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 	private static abstract class InternalFinishOperation extends InternalDialogOperation {
 		private final boolean isCommit;
 
-		public InternalFinishOperation( java.util.UUID id, DialogCoreComposite coreComposite, boolean isCommit ) {
+		public InternalFinishOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
 			super( id, coreComposite );
 			this.isCommit = isCommit;
 		}
@@ -109,7 +109,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			if( ( this.isCommit == false ) || this.getDialogCoreComposite().isClearedForCommit() ) {
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-				DialogCoreComposite coreComposite = this.getDialogCoreComposite();
+				AdornedDialogCoreComposite coreComposite = this.getDialogCoreComposite();
 				assert coreComposite != null : this;
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 				assert dialogStep != null : transaction;
@@ -126,7 +126,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 	}
 
 	private static final class InternalCommitOperation extends InternalFinishOperation {
-		private InternalCommitOperation( DialogCoreComposite coreComposite ) {
+		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
 
@@ -162,7 +162,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 	}
 
 	private static final class InternalCancelOperation extends InternalFinishOperation {
-		private InternalCancelOperation( DialogCoreComposite coreComposite ) {
+		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
 		}
 
@@ -197,7 +197,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.views.Compo
 	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
-	public DialogCoreComposite( java.util.UUID migrationId ) {
+	public AdornedDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId, true );
 	}
 

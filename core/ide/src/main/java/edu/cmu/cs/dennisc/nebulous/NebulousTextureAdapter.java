@@ -80,20 +80,19 @@ public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.ne
 		return this.nebulousBinding;
 	}
 
-	@Override
-	public void initialize( NebulousTexture element ) {
-		// TODO Auto-generated method stub
-		super.initialize( element );
-		//		if (m_element != null) {
-		//			m_element.addReference();
-		//		}
-	}
-
-	@Override
-	public void handleReleased() {
-		super.handleReleased();
-		//		if (m_element != null) {
-		//			m_element.removeReference();
-		//		}
-	}
+	//	@Override
+	//	public void initialize( NebulousTexture element ) {
+	//		super.initialize( element );
+	//		if( m_element != null ) {
+	//			m_element.addReference();
+	//		}
+	//	}
+	//
+	//	@Override
+	//	public void handleReleased() {
+	//		super.handleReleased();
+	//		if( m_element != null ) {
+	//			m_element.removeReference();
+	//		}
+	//	}
 }

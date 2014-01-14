@@ -349,23 +349,18 @@ public class HandleManager implements ManipulationListener {
 	}
 
 	public void deactivate( ManipulationEvent event ) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void addCondition( ManipulationEventCriteria condition ) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public boolean matches( ManipulationEvent event ) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void removeCondition( ManipulationEventCriteria condition ) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

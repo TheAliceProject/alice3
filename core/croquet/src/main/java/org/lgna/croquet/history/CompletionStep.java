@@ -170,15 +170,6 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		this.fireChanged( e );
 	}
 
-	public String getTutorialTransactionTitle() {
-		org.lgna.croquet.CompletionModel model = this.getModel();
-		if( model != null ) {
-			return model.getTutorialTransactionTitle( this );
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv = super.updateRepr( rv );

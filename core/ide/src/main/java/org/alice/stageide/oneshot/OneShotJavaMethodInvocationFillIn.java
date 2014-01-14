@@ -78,9 +78,4 @@ public abstract class OneShotJavaMethodInvocationFillIn extends org.lgna.croquet
 	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
 		return null;
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.method.getValue().getName();
-	}
 }

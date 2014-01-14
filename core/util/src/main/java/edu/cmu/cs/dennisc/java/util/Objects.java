@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointedModelImp;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SProp extends SJointedModel {
-
-	private final org.lgna.story.implementation.JointedModelImp implementation;
-
-	public SProp( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
+public class Objects {
+	public static boolean equals( Object a, Object b ) {
+		if( a != null ) {
+			return a.equals( b );
+		} else {
+			return b == null;
+		}
 	}
-
-	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
-	}
-
 }

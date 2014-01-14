@@ -47,19 +47,10 @@ package org.lgna.croquet.triggers;
  */
 public class IterationTrigger extends Trigger {
 	public static IterationTrigger createUserInstance() {
-		return new IterationTrigger( Origin.USER );
+		return new IterationTrigger();
 	}
 
-	public static IterationTrigger createGeneratorInstance() {
-		return new IterationTrigger( Origin.GENERATOR );
-	}
-
-	public static IterationTrigger createRecoveryInstance() {
-		return new IterationTrigger( Origin.RECOVERY );
-	}
-
-	private IterationTrigger( Origin origin ) {
-		super( origin );
+	private IterationTrigger() {
 	}
 
 	public IterationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -74,10 +65,5 @@ public class IterationTrigger extends Trigger {
 	@Override
 	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
-	}
-
-	@Override
-	public String getNoteText() {
-		return "iteration";
 	}
 }

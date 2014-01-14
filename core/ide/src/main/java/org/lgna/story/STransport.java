@@ -9,7 +9,6 @@ public class STransport extends SJointedModel {
 
 	@Override
 	org.lgna.story.implementation.TransportImp getImplementation() {
-		// TODO Auto-generated method stub
 		return implementation;
 	}
 }

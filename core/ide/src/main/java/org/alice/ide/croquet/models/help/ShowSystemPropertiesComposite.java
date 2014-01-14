@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowSystemPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView> {
+public class ShowSystemPropertiesComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView> {
 	private static class SingletonHolder {
 		private static ShowSystemPropertiesComposite instance = new ShowSystemPropertiesComposite();
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplateDragModel extends AbstractStatementDragModel implements org.lgna.cheshire.ast.StatementGenerator {
+public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
 	private final Class<? extends org.lgna.project.ast.Statement> statementCls;
 	private final org.lgna.project.ast.Statement possiblyIncompleteStatement;
 
@@ -82,37 +82,5 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 
 	public Class<? extends org.lgna.project.ast.Statement> getStatementCls() {
 		return this.statementCls;
-	}
-
-	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) throws org.lgna.croquet.UnsupportedGenerationException {
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
-		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
-		org.lgna.croquet.Model tempDropModel = this.getDropModel( null, blockStatementIndexPair );
-		if( tempDropModel instanceof org.lgna.croquet.OwnedByCompositeOperation ) {
-			org.lgna.croquet.OwnedByCompositeOperation ownedByCompositeOperation = (org.lgna.croquet.OwnedByCompositeOperation)tempDropModel;
-			org.lgna.croquet.history.CompletionStep completionStep = null;
-			org.lgna.croquet.edits.AbstractEdit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions );
-			org.lgna.croquet.history.Transaction transaction = ownedByCompositeOperation.addGeneratedTransaction( history, org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair ), edit, null );
-			org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance() );
-		} else {
-			org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
-			org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance() );
-			org.lgna.croquet.Model dropModel = this.getDropModel( dragStep, blockStatementIndexPair );
-			history.addTransaction( transaction );
-			if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
-				org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
-				java.util.List<org.lgna.project.ast.Expression> expressionList = statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement, blockStatementIndexPair );
-				initialExpressions = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressionList, org.lgna.project.ast.Expression.class );
-			} else if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
-				org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
-				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
-			} else {
-				throw new org.lgna.cheshire.ast.UnsupportedNodeGenerationException( statement );
-			}
-			org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
-			if( completionStep != null ) {
-				completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions ) );
-			}
-		}
 	}
 }

@@ -187,19 +187,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		return null;
 	}
 
-	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
-	}
-
-	public final String getTutorialTransactionTitle() {
-		StringBuilder sb = new StringBuilder();
-		this.appendTutorialTransactionTitle( sb );
-		if( sb.length() == 0 ) {
-			return null;
-		} else {
-			return sb.toString();
-		}
-	}
-
 	protected static enum DescriptionStyle {
 		TERSE( false, false ),
 		DETAILED( true, false ),

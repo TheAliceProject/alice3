@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointedModelImp;
+package org.lgna.croquet;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SProp extends SJointedModel {
+public abstract class SimpleOperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
+	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, operationGroup, isModal );
+		this.getImp().createAndRegisterNullKeyLaunchOperation();
+	}
 
-	private final org.lgna.story.implementation.JointedModelImp implementation;
-
-	public SProp( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
+	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+		this( migrationId, operationGroup, true );
 	}
 
 	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
+	protected String getName() {
+		Operation launchOperation = this.getLaunchOperation();
+		return launchOperation != null ? launchOperation.getName() : null;
 	}
 
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.getImp().getLaunchOperation( null );
+	}
 }
