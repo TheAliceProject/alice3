@@ -81,10 +81,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		this.subKey = subKey;
 	}
 
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
-		this( group, composite, new OwnedByCompositeOperationSubKey( composite, null ) );
-	}
-
 	@Override
 	protected void initialize() {
 		this.composite.initializeIfNecessary();

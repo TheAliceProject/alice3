@@ -46,19 +46,18 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationInputDialogCoreComposite<V> {
-	private final OwnedByCompositeOperation launchOperation;
-
 	public SimpleOperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
-		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
+		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
 
 	@Override
 	protected String getName() {
-		return this.launchOperation.getName();
+		Operation launchOperation = this.getLaunchOperation();
+		return launchOperation != null ? launchOperation.getName() : null;
 	}
 
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
+		return this.getImp().getLaunchOperation( null );
 	}
 }

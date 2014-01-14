@@ -47,33 +47,19 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final Group operationGroup;
+	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
 
 	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
-		this.operationGroup = operationGroup;
+		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
 	}
 
-	public Group getOperationGroup() {
-		return this.operationGroup;
+	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+		return this.imp;
 	}
 
-	protected OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, Initializer<? extends OperationInputDialogCoreComposite> initializer ) {
-		assert subKeyText != null : initializer;
-		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
-		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this, subKeyText );
-		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.operationGroup, this, subKey );
-		this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
-		return rv;
-	}
-
-	public OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
-		if( subKeyText != null ) {
-			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
-		} else {
-			return null;
-		}
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+		return this.imp.getLaunchOperation( subKeyText );
 	}
 
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {

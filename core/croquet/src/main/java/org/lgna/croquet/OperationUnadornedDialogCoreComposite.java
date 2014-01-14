@@ -46,17 +46,18 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends UnadornedDialogCoreComposite<V> implements OperationOwningComposite<V> {
+	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
+
 	public OperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
 		super( migrationId, operationGroup, isModal );
+		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
 	}
 
-	protected abstract org.lgna.croquet.OwnedByCompositeOperation getLaunchOperationForNull();
+	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+		return this.imp;
+	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
-		if( subKeyText != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.getLaunchOperationForNull();
-		}
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+		return this.imp.getLaunchOperation( subKeyText );
 	}
 }

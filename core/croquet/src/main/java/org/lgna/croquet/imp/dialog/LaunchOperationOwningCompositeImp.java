@@ -40,60 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.dialog;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType;
-	private String title;
-
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		String text = null;
-		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this, text );
-		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey );
+public final class LaunchOperationOwningCompositeImp {
+	public LaunchOperationOwningCompositeImp( org.lgna.croquet.OperationOwningComposite<?> composite, org.lgna.croquet.Group operationGroup ) {
+		this.composite = composite;
+		this.operationGroup = operationGroup;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
+	public org.lgna.croquet.OperationOwningComposite<?> getComposite() {
+		return this.composite;
+	}
+
+	public org.lgna.croquet.Group getOperationGroup() {
+		return this.operationGroup;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<? extends org.lgna.croquet.OperationOwningComposite> initializer ) {
+		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this.composite, subKeyText );
+		org.lgna.croquet.OwnedByCompositeOperation rv = new org.lgna.croquet.OwnedByCompositeOperation( this.operationGroup, this.composite, subKey );
+		if( subKeyText != null ) {
+			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
+			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
+		} else {
+			assert this.nullKeyLaunchOperation == null : this;
+			this.nullKeyLaunchOperation = rv;
+		}
+		return rv;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterNullKeyLaunchOperation() {
+		return this.createAndRegisterLaunchOperation( null, null );
 	}
 
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
-			throw new RuntimeException( "todo" );
+			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
 		} else {
-			return this.launchOperation;
+			return this.nullKeyLaunchOperation;
 		}
 	}
 
-	@Deprecated
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
+	private final org.lgna.croquet.OperationOwningComposite<?> composite;
+	private final org.lgna.croquet.Group operationGroup;
 
-	public final void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
-	}
-
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
-		return text;
-	}
-
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
+	private final java.util.Map<String, org.lgna.croquet.OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private org.lgna.croquet.OwnedByCompositeOperation nullKeyLaunchOperation;
 }
