@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,79 +45,18 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
-	private final OwnedByCompositeOperation launchOperation;
-
-	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
-		super( migrationId, isModal );
-		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
+public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends UnadornedDialogCoreComposite<V> implements OperationOwningComposite<V> {
+	public OperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, operationGroup, isModal );
 	}
 
-	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
-		this( migrationId, operationGroup, true );
-	}
-
-	@Override
-	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
-		//todo
-		return this.getView();
-	}
-
-	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
-		super.releaseView();
-		//todo
-	}
-
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		//todo
-		return null;
-	}
-
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.handlePreActivation();
-	}
-
-	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.handlePostDeactivation();
-	}
-
-	@Override
-	protected String getName() {
-		return this.launchOperation.getName();
-	}
+	protected abstract org.lgna.croquet.OwnedByCompositeOperation getLaunchOperationForNull();
 
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
 			throw new RuntimeException( "todo" );
 		} else {
-			return this.launchOperation;
+			return this.getLaunchOperationForNull();
 		}
-	}
-
-	@Deprecated
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
-
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-				super.handlePostHideDialog( completionStep );
-				completionStep.finish();
-			}
-		}, completionStep );
-	}
-
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
-		return text;
 	}
 }

@@ -40,30 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowPathPropertyComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
-	private final String propertyName;
+public abstract class SimpleOperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
+	private final OwnedByCompositeOperation launchOperation;
 
-	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
-		this.propertyName = propertyName;
+	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, operationGroup, isModal );
+		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 
-	public String getPropertyName() {
-		return this.propertyName;
-	}
-
-	@Override
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return "System Property: " + this.propertyName;
+	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+		this( migrationId, operationGroup, true );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowPathPropertyView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowPathPropertyView( this );
+	protected String getName() {
+		return this.launchOperation.getName();
+	}
+
+	@Override
+	protected org.lgna.croquet.OwnedByCompositeOperation getLaunchOperationForNull() {
+		return this.launchOperation;
+	}
+
+	@Deprecated
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.getLaunchOperationForNull();
 	}
 }

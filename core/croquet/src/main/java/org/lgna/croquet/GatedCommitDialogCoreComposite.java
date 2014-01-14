@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends DialogCoreComposite<V, DCC> {
+public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
 	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {

@@ -45,7 +45,7 @@ package org.alice.ide.issue.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.GlExceptionView> {
+public final class GlExceptionComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.GlExceptionView> {
 	private final javax.media.opengl.GLException glException;
 
 	public GlExceptionComposite( javax.media.opengl.GLException glException ) {

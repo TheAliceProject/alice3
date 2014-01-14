@@ -45,7 +45,7 @@ package org.alice.stageide.run;
 /**
  * @author Dennis Cosgrove
  */
-public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.stageide.run.views.RunView> {
+public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.run.views.RunView> {
 	private static class SingletonHolder {
 		private static RunComposite instance = new RunComposite();
 	}

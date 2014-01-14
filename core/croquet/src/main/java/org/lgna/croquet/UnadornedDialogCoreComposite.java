@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowPathPropertyComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
-	private final String propertyName;
-
-	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
-		this.propertyName = propertyName;
-	}
-
-	public String getPropertyName() {
-		return this.propertyName;
+public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
+	public UnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, isModal );
 	}
 
 	@Override
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return "System Property: " + this.propertyName;
+	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//todo
+		return this.getView();
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowPathPropertyView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowPathPropertyView( this );
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
+		super.releaseView();
+		//todo
+	}
+
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		//todo
+		return null;
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePreActivation();
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePostDeactivation();
+	}
+
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
+				completionStep.finish();
+			}
+		}, completionStep );
+	}
+
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
+		return defaultValue;
+	}
+
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+		return text;
 	}
 }
