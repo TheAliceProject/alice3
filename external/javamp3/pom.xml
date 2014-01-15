@@ -2,25 +2,48 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.alice.external</groupId>
+		<artifactId>external</artifactId>
+		<version>1.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
 	<groupId>com.sun</groupId>
 	<artifactId>javamp3</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<name>JMF MP3 Plugin</name>
 	<url>http://www.oracle.com/technetwork/java/javase/download-137625.html</url>
 
 	<!-- Deploy Command -->
-	<!-- mvn deploy:deploy-file -DpomFile=pom.xml -Dfile=javamp3.jar -DrepositoryId=org.alice.external -Durl=scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/external -->
+	<!-- mvn deploy -->
 
 	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>1.0</version>
-			</extension>
-		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>javamp3.jar</file>
+									<type>jar</type>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
