@@ -16,7 +16,6 @@
 		<dependency>
 			<groupId>org.alice</groupId>
 			<artifactId>croquet</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

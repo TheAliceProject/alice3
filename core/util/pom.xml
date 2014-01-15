@@ -16,12 +16,10 @@
 		<dependency>
 			<groupId>javax.media</groupId>
 			<artifactId>jmf</artifactId>
-			<version>2.1.1e</version>
 		</dependency>
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
-			<version>4.2</version>
 		</dependency>
 
 		<!-- TODO: Move this out to another project -->
