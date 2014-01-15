@@ -4,24 +4,24 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
+		<relativePath>../../</relativePath>
 	</parent>
 
-	<artifactId>alice-ide</artifactId>
+	<artifactId>aspects</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>ide</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>com.google.gdata</groupId>
-			<artifactId>core</artifactId>
-			<version>1.47.1</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
 		</dependency>
 	</dependencies>
 

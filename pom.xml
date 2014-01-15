@@ -26,6 +26,7 @@
 	</properties>
 
 	<modules>
+		<module>core/aspects</module>
 		<module>core/util</module>
 		<module>core/croquet</module>
 		<module>core/scenegraph</module>
@@ -33,24 +34,39 @@
 		<module>core/issueReporting</module>
 		<module>core/ide</module>
 		<module>core/resources</module>
+
 		<module>distribution</module>
 
-		<!-- All Alice Modules go here -->
 		<module>alice/alice-ide</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Modules -->
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>aspects</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<!-- Third Party Libraries -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjtools</artifactId>
+				<version>${aspectj.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<pluginManagement>
@@ -88,12 +104,6 @@
 						<target>${maven.compiler.target}</target>
 						<complianceLevel>${java.version}</complianceLevel>
 						<outxml>true</outxml>
-						<!-- <aspectLibraries> -->
-						<!-- <aspectLibrary> -->
-						<!-- <groupId>org.alice</groupId> -->
-						<!-- <artifactId>util</artifactId> -->
-						<!-- </aspectLibrary> -->
-						<!-- </aspectLibraries> -->
 					</configuration>
 					<executions>
 						<execution>
@@ -104,6 +114,11 @@
 						</execution>
 					</executions>
 					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjrt</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
 						<dependency>
 							<groupId>org.aspectj</groupId>
 							<artifactId>aspectjtools</artifactId>

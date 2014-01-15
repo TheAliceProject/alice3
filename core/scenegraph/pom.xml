@@ -4,14 +4,13 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../</relativePath>
+		<relativePath>../../core/</relativePath>
 	</parent>
 
 	<artifactId>scenegraph</artifactId>
 	<packaging>jar</packaging>
-	<name>scenegraph</name>
 
 	<dependencies>
 		<dependency>
@@ -20,7 +19,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<!-- JOGL -->
 		<dependency>
 			<groupId>org.jogamp.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
@@ -30,13 +28,6 @@
 			<groupId>org.jogamp.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

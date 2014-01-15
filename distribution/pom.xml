@@ -12,8 +12,6 @@
 	<artifactId>distribution</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Distribution</name>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>

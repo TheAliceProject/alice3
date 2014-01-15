@@ -4,20 +4,15 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../</relativePath>
+		<relativePath>../../core/</relativePath>
 	</parent>
 
 	<artifactId>resources</artifactId>
 	<!-- Note: The packaging should really be pom; jar is wrong. -->
 	<!-- m2eclipse won't build the platform directory needed without this hack. -->
 	<packaging>jar</packaging>
-
-	<name>Resources</name>
-
-	<!-- TODO: gallery and sound-gallery need to become their own artifacts 
-		which we extract during resource-generation. -->
 
 	<properties>
 		<project.resources.directory>${project.build.directory}/distribution</project.resources.directory>
