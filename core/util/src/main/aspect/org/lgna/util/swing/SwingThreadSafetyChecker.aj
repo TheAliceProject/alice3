@@ -1,6 +1,8 @@
 package org.lgna.util.swing;
 
 public aspect SwingThreadSafetyChecker {
+	
+	private static final boolean isInternalTesting = Boolean.valueOf( System.getProperty( "org.alice.ide.internalTesting", "false" ) );
 
 	pointcut swingMethods() : call (* javax.swing..*.*(..)) || 
 		call (javax.swing..*.new(..));
@@ -17,9 +19,19 @@ public aspect SwingThreadSafetyChecker {
 		call (void javax.swing.JComponent.setText(java.lang.String));
 
 	before() : swingMethods() && !safeSwingMethods() && !within(SwingThreadSafetyChecker) {
-		boolean internalTesting = Boolean.valueOf( System.getProperty( "org.alice.ide.internalTesting", "false" ) );
-		if( internalTesting && !java.awt.EventQueue.isDispatchThread() ) {
-			System.err.println( "warning: Swing EDT violation: " + thisJoinPoint.getSignature() + " (" + thisJoinPoint.getSourceLocation() + ")" );
+		if( SwingThreadSafetyChecker.isInternalTesting && !java.awt.EventQueue.isDispatchThread() ) {
+			StringBuilder edtWarning = new StringBuilder();
+			edtWarning.append( "warning: Swing EDT violation: " ).append( thisJoinPointStaticPart.getSignature() ).append( "\n" );
+			
+			boolean firstSkipped = false;
+			for ( StackTraceElement element : new Throwable().getStackTrace() ) {
+				if ( firstSkipped ) {
+					edtWarning.append( "\t at " ).append( element.toString() ).append( "\n" );
+				} else {
+					firstSkipped = true;
+				}
+			}
+			System.err.print( edtWarning );
 		}
 	}
 }
