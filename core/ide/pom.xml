@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>imageEditor</artifactId>
+			<artifactId>image-editor</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>issueReporting</artifactId>
+			<artifactId>issue-reporting</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
