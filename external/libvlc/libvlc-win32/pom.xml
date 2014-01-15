@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>org.videolan</groupId>
-		<artifactId>libvlc-parent</artifactId>
+		<artifactId>libvlc</artifactId>
 		<version>1.0</version>
 		<relativePath>../</relativePath>
 	</parent>
