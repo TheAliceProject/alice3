@@ -59,9 +59,9 @@ public final class LaunchOperationOwningCompositeImp {
 		return this.operationGroup;
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<? extends org.lgna.croquet.OperationOwningComposite> initializer ) {
+	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
 		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this.composite, subKeyText );
-		org.lgna.croquet.OwnedByCompositeOperation rv = new org.lgna.croquet.OwnedByCompositeOperation( this.operationGroup, this.composite, subKey );
+		org.lgna.croquet.OwnedByCompositeOperation rv = new org.lgna.croquet.OwnedByCompositeOperation( this.operationGroup, this.composite, subKey, initializer );
 		if( subKeyText != null ) {
 			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
 			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
