@@ -42,45 +42,11 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import org.lgna.croquet.StringState;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.models.help.views.AbstractIssueView> extends org.lgna.croquet.OperationUnadornedDialogCoreComposite<V> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
 	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
-
-	private final org.lgna.croquet.StringState stepsState = createStringState( "stepsState" );
-
-	private final org.lgna.croquet.StringState environmentState = createStringState( "environmentState", org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
-
-	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
-
-		public org.lgna.croquet.edits.AbstractEdit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			submitBugOperation.setEnabled( false );
-			try {
-				if( isClearedToSubmitBug() ) {
-					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
-					org.lgna.croquet.views.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
-					if( root != null ) {
-						if( progressPane.isDone() ) {
-							if( progressPane.isSuccessful() ) {
-								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
-								root.setVisible( false );
-							} else {
-								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
-							}
-						} else {
-							root.setVisible( false );
-						}
-					}
-				}
-			} finally {
-				submitBugOperation.setEnabled( true );
-			}
-			return null;
-		}
-	} );
 
 	public AbstractIssueComposite( java.util.UUID migrationId, boolean isModal ) {
 		super( migrationId, ISSUE_GROUP, isModal );
@@ -91,11 +57,11 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return this.stepsState.getValue();
 	}
 
-	public StringState getStepsState() {
+	public org.lgna.croquet.StringState getStepsState() {
 		return this.stepsState;
 	}
 
-	public StringState getEnvironmentState() {
+	public org.lgna.croquet.StringState getEnvironmentState() {
 		return this.environmentState;
 	}
 
@@ -206,4 +172,33 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		};
 	}
 
+	private final org.lgna.croquet.StringState stepsState = createStringState( "stepsState" );
+	private final org.lgna.croquet.StringState environmentState = createStringState( "environmentState", org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
+	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
+
+		public org.lgna.croquet.edits.AbstractEdit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			submitBugOperation.setEnabled( false );
+			try {
+				if( isClearedToSubmitBug() ) {
+					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
+					org.lgna.croquet.views.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
+					if( root != null ) {
+						if( progressPane.isDone() ) {
+							if( progressPane.isSuccessful() ) {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
+								root.setVisible( false );
+							} else {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+							}
+						} else {
+							root.setVisible( false );
+						}
+					}
+				}
+			} finally {
+				submitBugOperation.setEnabled( true );
+			}
+			return null;
+		}
+	} );
 }
