@@ -52,30 +52,41 @@ import org.lgna.croquet.event.ValueListener;
 /**
  * @author Matt May
  */
-public abstract class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
-	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+public final class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
+	private static class SingletonHolder {
+		private static ReportIssueComposite instance = new ReportIssueComposite();
+	}
 
-	private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
-	private final SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
-	private final StringState summaryState = createStringState( "summaryState" );
-	private final StringState descriptionState = createStringState( "descriptionState" );
-	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
-	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
-	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
+	public static ReportIssueComposite getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	private final ValueListener<String> adapter = new ValueListener<String>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
-			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
+	private static class IssueTypeInitializer implements org.lgna.croquet.Initializer<ReportIssueComposite> {
+		private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
+
+		public IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
+			this.initialReportTypeValue = initialReportTypeValue;
 		}
 
-	};
+		public void initialize( ReportIssueComposite value ) {
+			value.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
+		}
+	}
 
-	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
-		super( migrationId, false );
-		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createSingleSelectListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, this.initialReportTypeValue );
+	private ReportIssueComposite() {
+		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), false );
+		this.reportTypeState = createSingleSelectListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
 		this.registerSubComposite( logInOutComposite );
 		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
+		this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "reportBug", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.BUG ) );
+		this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "requestNewFeature", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE ) );
+		this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "suggestImprovement", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT ) );
+	}
+
+	@Override
+	protected String getName() {
+		//todo
+		return null;
 	}
 
 	@Override
@@ -169,7 +180,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.descriptionState.setValueTransactionlessly( "" );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.attachmentState.setValueTransactionlessly( null );
-		this.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 
 		this.summaryState.addAndInvokeNewSchoolValueListener( this.adapter );
 		super.handlePreActivation();
@@ -180,4 +190,34 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super.handlePostDeactivation();
 		this.summaryState.removeNewSchoolValueListener( this.adapter );
 	}
+
+	public org.lgna.croquet.Operation getReportBugLaunchOperation() {
+		return this.reportBugLaunchOperation;
+	}
+
+	public org.lgna.croquet.Operation getRequestNewFeatureLaunchOperation() {
+		return this.requestNewFeatureLaunchOperation;
+	}
+
+	public org.lgna.croquet.Operation getSuggestImprovementLaunchOperation() {
+		return this.suggestImprovementLaunchOperation;
+	}
+
+	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+
+	private final SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
+	private final StringState summaryState = createStringState( "summaryState" );
+	private final StringState descriptionState = createStringState( "descriptionState" );
+	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
+	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
+	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
+	private final org.lgna.croquet.Operation reportBugLaunchOperation;
+	private final org.lgna.croquet.Operation requestNewFeatureLaunchOperation;
+	private final org.lgna.croquet.Operation suggestImprovementLaunchOperation;
+
+	private final ValueListener<String> adapter = new ValueListener<String>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
+		}
+	};
 }
