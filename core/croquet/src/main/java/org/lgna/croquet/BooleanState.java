@@ -104,11 +104,6 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 			menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
 			return checkBoxMenuItem;
 		}
-
-		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-			this.booleanState.appendTutorialStepText( text, step, edit );
-		}
 	}
 
 	private InternalMenuItemPrepModel menuPrepModel;

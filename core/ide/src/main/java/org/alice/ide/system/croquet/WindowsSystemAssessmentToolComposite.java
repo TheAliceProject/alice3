@@ -45,7 +45,7 @@ package org.alice.ide.system.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane> {
+public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane> {
 	private static class SingletonHolder {
 		private static WindowsSystemAssessmentToolComposite instance = new WindowsSystemAssessmentToolComposite();
 	}

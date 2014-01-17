@@ -4,33 +4,22 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>util</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Utilities</name>
-
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.media</groupId>
 			<artifactId>jmf</artifactId>
-			<version>2.1.1e</version>
 		</dependency>
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
-			<version>4.2</version>
 		</dependency>
 
 		<!-- TODO: Move this out to another project -->

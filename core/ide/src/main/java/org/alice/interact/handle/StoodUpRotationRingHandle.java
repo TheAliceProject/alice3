@@ -145,7 +145,6 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	}
 
 	public void propertyChanging( PropertyEvent e ) {
-		// TODO Auto-generated method stub
 
 	}
 }

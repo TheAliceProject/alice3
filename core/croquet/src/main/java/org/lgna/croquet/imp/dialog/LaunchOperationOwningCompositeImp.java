@@ -40,19 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.cheshire.ast;
+package org.lgna.croquet.imp.dialog;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnsupportedNodeGenerationException extends org.lgna.croquet.UnsupportedGenerationException {
-	private final org.lgna.project.ast.Node node;
-
-	public UnsupportedNodeGenerationException( org.lgna.project.ast.Node node ) {
-		this.node = node;
+public final class LaunchOperationOwningCompositeImp {
+	public LaunchOperationOwningCompositeImp( org.lgna.croquet.OperationOwningComposite<?> composite, org.lgna.croquet.Group operationGroup ) {
+		this.composite = composite;
+		this.operationGroup = operationGroup;
 	}
 
-	public org.lgna.project.ast.Node getNode() {
-		return this.node;
+	public org.lgna.croquet.OperationOwningComposite<?> getComposite() {
+		return this.composite;
 	}
+
+	public org.lgna.croquet.Group getOperationGroup() {
+		return this.operationGroup;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<? extends org.lgna.croquet.OperationOwningComposite> initializer ) {
+		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this.composite, subKeyText );
+		org.lgna.croquet.OwnedByCompositeOperation rv = new org.lgna.croquet.OwnedByCompositeOperation( this.operationGroup, this.composite, subKey );
+		if( subKeyText != null ) {
+			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
+			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
+		} else {
+			assert this.nullKeyLaunchOperation == null : this;
+			this.nullKeyLaunchOperation = rv;
+		}
+		return rv;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation createAndRegisterNullKeyLaunchOperation() {
+		return this.createAndRegisterLaunchOperation( null, null );
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+		if( subKeyText != null ) {
+			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
+		} else {
+			return this.nullKeyLaunchOperation;
+		}
+	}
+
+	private final org.lgna.croquet.OperationOwningComposite<?> composite;
+	private final org.lgna.croquet.Group operationGroup;
+
+	private final java.util.Map<String, org.lgna.croquet.OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private org.lgna.croquet.OwnedByCompositeOperation nullKeyLaunchOperation;
 }

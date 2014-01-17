@@ -69,67 +69,6 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	}
 
 	@Override
-	public void pushGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
-		super.pushGeneratedContexts( ownerEdit );
-		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
-		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
-
-		org.lgna.project.ast.UserType<?> declaringType = declareMethodEdit.getDeclaringType();
-		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
-		} else {
-			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-			if( sceneType == declaringType ) {
-				instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
-			} else {
-				instanceFactory = null;
-				for( org.lgna.project.ast.UserField field : sceneType.fields ) {
-					if( declaringType.isAssignableFrom( field.getValueType() ) ) {
-						instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-					}
-				}
-			}
-			assert instanceFactory != null : ownerEdit;
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-
-			org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
-			membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
-		}
-	}
-
-	@Override
-	public void popGeneratedContexts( org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) {
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().popGeneratedValue();
-		} else {
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.members.MembersComposite.getInstance().getTabState().popGeneratedValue();
-		}
-		super.popGeneratedContexts( ownerEdit );
-	}
-
-	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.AbstractEdit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
-		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
-		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
-
-		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", declareMethodEdit.getMethodName() );
-
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-	}
-
-	//	@Override
-	//	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws org.lgna.croquet.UnsupportedGenerationException {
-	//		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-	//		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
-	//		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
-	//		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
-	//		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
-	//	}
-
-	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite>( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
 	}

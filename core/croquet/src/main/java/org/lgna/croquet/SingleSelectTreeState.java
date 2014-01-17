@@ -102,11 +102,6 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super T, Void> node ) {
 		throw new AssertionError();
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.node.toString();
-	}
 }
 
 class TreeNodeMenu<T> extends CascadeMenuModel<T> {

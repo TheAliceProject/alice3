@@ -46,7 +46,7 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EulaComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.stageide.about.views.EulaView> {
+public abstract class EulaComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.EulaView> {
 	private final String eulaText;
 
 	public EulaComposite( java.util.UUID migrationId, String text ) {

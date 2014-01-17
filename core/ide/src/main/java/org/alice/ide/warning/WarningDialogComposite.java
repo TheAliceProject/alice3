@@ -45,7 +45,7 @@ package org.alice.ide.warning;
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.warning.components.WarningView> {
+public class WarningDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.warning.components.WarningView> {
 	private static class SingletonHolder {
 		private static WarningDialogComposite instance = new WarningDialogComposite();
 	}

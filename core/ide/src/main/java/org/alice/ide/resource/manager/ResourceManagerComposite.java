@@ -46,7 +46,7 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
+public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
 	private static class SingletonHolder {
 		private static ResourceManagerComposite instance = new ResourceManagerComposite();
 	}

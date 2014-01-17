@@ -227,22 +227,6 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	}
 
 	@Override
-	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
-		sbTitle.append( "insert " );
-		sbTitle.append( statement.getRepr() );
-	}
-
-	//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {
-	//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-	//		retargeter.addKeyValuePair( this.statement, replacementStatement );
-	//		final int N = this.initialExpressions.length;
-	//
-	//		org.lgna.project.ast.Expression[] replacementExpressions = this.initialExpressions;
-	//		
-	//		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
-	//	}
-	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.blockStatement = retargeter.retarget( this.blockStatement );

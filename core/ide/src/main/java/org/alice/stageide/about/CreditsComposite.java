@@ -46,7 +46,7 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public class CreditsComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.lgna.croquet.views.Panel> {
+public class CreditsComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.lgna.croquet.views.Panel> {
 	private static class SingletonHolder {
 		private static CreditsComposite instance = new CreditsComposite();
 	}

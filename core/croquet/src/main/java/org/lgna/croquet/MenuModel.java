@@ -93,27 +93,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 			return this.menuModel;
 		}
 
-		//		@Override
-		//		public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-		//			if( successfulCompletionEvent != null ) {
-		//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-		//				return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
-		//			} else {
-		//				return super.getTutorialStepTitle( modelContext, edit, userInformation );
-		//			}
-		//		}
-		//		@Override
-		//		public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-		//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-		//			if( successfulCompletionEvent != null ) {
-		//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-		//				return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
-		//			} else {
-		//				return super.getTutorialNoteText( modelContext, edit, userInformation );
-		//			}
-		//		}
-
 		@Override
 		protected InternalPopupPrepModelResolver createResolver() {
 			return new InternalPopupPrepModelResolver( this.menuModel );

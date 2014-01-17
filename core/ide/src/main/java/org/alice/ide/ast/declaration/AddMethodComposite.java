@@ -67,8 +67,8 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	public String modifyNameIfNecessary( String text ) {
-		text = super.modifyNameIfNecessary( text );
+	public String modifyNameIfNecessary( org.lgna.croquet.OwnedByCompositeOperationSubKey key, String text ) {
+		text = super.modifyNameIfNecessary( key, text );
 		if( text != null ) {
 			String declaringTypeName;
 			if( this.declaringType != null ) {

@@ -45,7 +45,7 @@ package org.alice.ide.help;
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.help.views.HelpView> {
+public final class HelpComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.help.views.HelpView> {
 	private static class SingletonHolder {
 		private static HelpComposite instance = new HelpComposite();
 	}

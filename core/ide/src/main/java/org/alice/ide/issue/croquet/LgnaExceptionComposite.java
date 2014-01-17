@@ -45,7 +45,7 @@ package org.alice.ide.issue.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.LgnaExceptionView> {
+public class LgnaExceptionComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.LgnaExceptionView> {
 	private final Thread thread;
 	private final org.lgna.common.LgnaRuntimeException lgnaRuntimeException;
 

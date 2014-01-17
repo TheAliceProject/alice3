@@ -86,9 +86,4 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.pr
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessFillIn> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessFillIn>( this, org.lgna.project.ast.UserLocal.class, this.transientValue.local.getValue() );
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.local.getValue().getName();
-	}
 }

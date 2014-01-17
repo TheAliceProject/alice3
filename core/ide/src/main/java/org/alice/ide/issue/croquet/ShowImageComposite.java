@@ -45,7 +45,7 @@ package org.alice.ide.issue.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowImageComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.ShowImageView> {
+public abstract class ShowImageComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.ShowImageView> {
 	public ShowImageComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
 	}

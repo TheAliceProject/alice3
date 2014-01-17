@@ -45,7 +45,7 @@ package org.alice.ide.ast.export;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
 	public ExportDeclarationComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.alice.ide.IDE.EXPORT_GROUP );
 	}

@@ -151,11 +151,6 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	}
 
 	@Override
-	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
-		this.appendDescription( sbTitle, DescriptionStyle.TERSE );
-	}
-
-	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
@@ -183,14 +178,6 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" );
 		}
 	}
-
-	//	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-	//		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
-	//		org.lgna.project.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
-	//		retargeter.addKeyValuePair( this.method, replacementMethod );
-	//		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
-	//		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
-	//	}
 
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {

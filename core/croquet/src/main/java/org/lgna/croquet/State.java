@@ -54,7 +54,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<ValueListener<T>> oldSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	private T previousValue;
 
@@ -141,39 +140,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 	}
 
-	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-			org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-			T a = this.getValue();
-			T b = stateEdit.getNextValue();
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( a, b );
-		} else {
-			return false;
-		}
-	}
-
-	public void pushGeneratedValue( T value ) {
-		this.generatorValueStack.push( value );
-	}
-
-	public T popGeneratedValue() {
-		return this.generatorValueStack.pop();
-	}
-
-	public org.lgna.croquet.StateContext<T> createContext( org.lgna.croquet.triggers.Trigger.Origin origin ) {
-		T value;
-		if( origin == org.lgna.croquet.triggers.Trigger.Origin.GENERATOR ) {
-			assert this.generatorValueStack.isEmpty() == false : this;
-			value = this.generatorValueStack.peek();
-		} else {
-			value = this.getValue();
-		}
-		return new StateContext<T>( this, value );
-	}
-
-	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {
-		return this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ), null );
+	public org.lgna.croquet.StateContext<T> createContext() {
+		return new StateContext<T>( this, this.getValue() );
 	}
 
 	@Override
@@ -198,37 +166,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			this.handleTruthAndBeautyValueChange( nextValue );
 		}
 		return edit;
-	}
-
-	//	@Override
-	//	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		org.lgna.croquet.edits.Edit<?> rv = super.commitTutorialCompletionEdit( step, originalEdit, retargeter, trigger );
-	//		org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)rv;
-	//		this.changeValueTransactionlessly( stateEdit.getNextValue(), IsAdjusting.FALSE );
-	//		return rv;
-	//	}
-
-	@Override
-	public final org.lgna.croquet.edits.StateEdit<T> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.AbstractEdit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-		assert originalEdit instanceof org.lgna.croquet.edits.StateEdit;
-		org.lgna.croquet.edits.StateEdit<T> originalStateEdit = (org.lgna.croquet.edits.StateEdit<T>)originalEdit;
-		T prevRetargetValue = retargeter.retarget( originalStateEdit.getPreviousValue() );
-		T nextRetargetValue = retargeter.retarget( originalStateEdit.getNextValue() );
-		org.lgna.croquet.edits.StateEdit<T> stateEdit = this.commitStateEdit( prevRetargetValue, nextRetargetValue, IsAdjusting.FALSE, trigger );
-		this.changeValueTransactionlessly( nextRetargetValue, IsAdjusting.FALSE );
-		return stateEdit;
-	}
-
-	@Override
-	protected final void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-			org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-			text.append( " <strong>" );
-			this.appendRepresentation( text, stateEdit.getNextValue() );
-			text.append( "</strong>." );
-		} else {
-			text.append( "UNKNOWN EDIT: " + edit );
-		}
 	}
 
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {

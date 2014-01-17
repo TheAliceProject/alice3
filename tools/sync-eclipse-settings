@@ -21,9 +21,10 @@ def process_dir( directory )
   end
 end
 
+# tools/sync-eclipse-settings core/ide/.settings .
 begin
-  WORKING_DIR = ARGV[0]
-  SETTINGS_DIR = ARGV[1]
+  SETTINGS_DIR = ARGV[0]
+  WORKING_DIR = ARGV[1]
 
   SETTING_FILES = [ "org.eclipse.jdt.core.prefs", "org.eclipse.jdt.ui.prefs" ]
 

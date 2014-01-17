@@ -171,13 +171,10 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	}
 
 	public AbstractTransformable getManipulatedObject() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public PickHint getPickHint() {
@@ -251,8 +248,6 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	}
 
 	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public boolean matches( ManipulationEvent event )

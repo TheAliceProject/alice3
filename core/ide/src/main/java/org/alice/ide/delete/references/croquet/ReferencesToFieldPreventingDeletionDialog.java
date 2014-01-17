@@ -42,7 +42,7 @@
  */
 package org.alice.ide.delete.references.croquet;
 
-import org.lgna.croquet.OperationInputDialogCoreComposite;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
@@ -51,7 +51,7 @@ import org.lgna.project.ast.UserField;
 /**
  * @author Matt May
  */
-public class ReferencesToFieldPreventingDeletionDialog extends OperationInputDialogCoreComposite<org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane> {
+public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationInputDialogCoreComposite<org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane> {
 
 	private final UserField field;
 	private final java.util.List<org.lgna.project.ast.FieldAccess> references;
