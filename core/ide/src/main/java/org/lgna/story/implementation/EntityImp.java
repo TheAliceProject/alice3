@@ -633,7 +633,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			return;
 		} else {
 			javax.swing.SwingUtilities.getRoot( this.getProgram().getOnscreenLookingGlass().getAWTComponent() ).setVisible( false );
-			throw new org.lgna.common.ProgramClosedException();
+			throw new org.lgna.common.ProgramClosedException( "user dialog" );
 		}
 	}
 
