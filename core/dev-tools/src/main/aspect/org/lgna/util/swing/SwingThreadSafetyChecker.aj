@@ -48,9 +48,9 @@ package org.lgna.util.swing;
  */
 public aspect SwingThreadSafetyChecker {
 	
-	private static final boolean isInternalTesting = Boolean.valueOf( System.getProperty( "org.alice.ide.internalTesting", "false" ) );
-	pointcut isInternalTesting() :
-		if( SwingThreadSafetyChecker.isInternalTesting );
+	private static final boolean checkActivated = Boolean.valueOf( System.getProperty( SwingThreadSafetyChecker.class.getName(), "false" ) );
+	pointcut isCheckActivated() :
+		if( SwingThreadSafetyChecker.checkActivated );
 
 	pointcut swingMethods() :
 		call (* javax.swing..*.*(..)) ||
@@ -67,7 +67,7 @@ public aspect SwingThreadSafetyChecker {
 		call (* javax.swing.SwingUtilities.invoke*(..)) ||
 		call (* javax.swing.SwingUtilities.isEventDispatchThread());
 
-	before() : isInternalTesting() && swingMethods() && !safeSwingMethods() && !within(SwingThreadSafetyChecker) {
+	before() : isCheckActivated() && swingMethods() && !safeSwingMethods() && !within(SwingThreadSafetyChecker) {
 		if( !java.awt.EventQueue.isDispatchThread() ) {
 			StringBuilder warningMessage = new StringBuilder();
 			warningMessage.append( "warning: Swing Thread Safety Violation: " ).append( thisJoinPointStaticPart.getSignature() ).append( "\n" );

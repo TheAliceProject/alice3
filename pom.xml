@@ -298,6 +298,14 @@
 				<!-- TODO: add the nebulous stuff here. -->
 			</dependencies>
 		</profile>
+
+		<!-- Development Debug Tools -->
+		<profile>
+			<id>dev-tools</id>
+			<modules>
+				<module>core/dev-tools</module>
+			</modules>
+		</profile>
 	</profiles>
 
 </project>

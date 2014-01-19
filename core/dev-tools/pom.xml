@@ -9,7 +9,7 @@
 		<relativePath>../../</relativePath>
 	</parent>
 
-	<artifactId>aspects</artifactId>
+	<artifactId>dev-tools</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -24,34 +24,5 @@
 			<artifactId>aspectjrt</artifactId>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>dev-tools</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.alice</groupId>
-					<artifactId>dev-tools</artifactId>
-					<version>0.0.1-SNAPSHOT</version>
-				</dependency>
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>aspectj-maven-plugin</artifactId>
-						<configuration>
-							<aspectLibraries>
-								<aspectLibrary>
-									<groupId>org.alice</groupId>
-									<artifactId>dev-tools</artifactId>
-								</aspectLibrary>
-							</aspectLibraries>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
