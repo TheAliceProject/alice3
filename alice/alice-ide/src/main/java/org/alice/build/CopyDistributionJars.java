@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.build;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureComposite extends ReportIssueComposite {
-	private static class SingletonHolder {
-		private static RequestNewFeatureComposite instance = new RequestNewFeatureComposite();
-	}
-
-	public static RequestNewFeatureComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RequestNewFeatureComposite() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ), edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE );
+public class CopyDistributionJars {
+	public static void main( String[] args ) throws Exception {
+		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
+		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/distribution/lib" );
+		java.io.File mavenRepositoryRootDirectory = new java.io.File( userDirectory, ".m2/repository" );
+		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		for( String pathname : edu.cmu.cs.dennisc.java.lang.SystemUtilities.getClassPath() ) {
+			java.io.File file = new java.io.File( pathname );
+			if( file.isDirectory() ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping directory:", file );
+			} else {
+				if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "jar" ) ) {
+					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
+						jarFiles.add( file );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non descendant:", file );
+					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non jar:", file );
+				}
+			}
+		}
+		System.err.flush();
+		edu.cmu.cs.dennisc.java.io.FileUtilities.delete( distributionRootDirectory );
+		java.util.Collections.sort( jarFiles );
+		for( java.io.File jarFile : jarFiles ) {
+			java.io.File distibutionFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile( jarFile, mavenRepositoryRootDirectory, distributionRootDirectory );
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( jarFile, distibutionFile );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( distibutionFile );
+		}
 	}
 }

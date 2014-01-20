@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.lgna.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.GraphicsHelpComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportIssueComposite.getInstance().getReportBugLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ReportIssueComposite.getInstance().getSuggestImprovementLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ReportIssueComposite.getInstance().getRequestNewFeatureLaunchOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
-				);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
-	private static class SingletonHolder {
-		private static HelpMenuModel instance = new HelpMenuModel();
-	}
-
-	public static HelpMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private HelpMenuModel() {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels() );
-	}
+public interface IssueReportingLoginObserver {
+	void loginAttemptCompleted( boolean isConnectionSuccessful, IssueReportRemoteUser user );
 }

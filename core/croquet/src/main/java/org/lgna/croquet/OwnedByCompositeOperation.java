@@ -71,14 +71,12 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		}
 	}
 
-	private final OperationOwningComposite composite;
-	private final OwnedByCompositeOperationSubKey subKey;
-
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey ) {
+	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		assert subKey != null : composite;
 		this.composite = composite;
 		this.subKey = subKey;
+		this.initializer = initializer;
 	}
 
 	@Override
@@ -117,6 +115,9 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		if( this.initializer != null ) {
+			this.initializer.initialize( this.composite );
+		}
 		this.composite.perform( this.subKey, completionStep );
 	}
 
@@ -129,4 +130,8 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	protected Resolver createResolver() {
 		return new Resolver( this.composite, this.subKey.getText() );
 	}
+
+	private final OperationOwningComposite composite;
+	private final OwnedByCompositeOperationSubKey subKey;
+	private final org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer;
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SuggestImprovementComposite extends ReportIssueComposite {
-	private static class SingletonHolder {
-		private static SuggestImprovementComposite instance = new SuggestImprovementComposite();
+public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub {
+	public void login( String username, String password, org.lgna.issue.IssueReportingLoginObserver observer ) {
+		//todo
 	}
 
-	public static SuggestImprovementComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SuggestImprovementComposite() {
-		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT );
-	}
-
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new org.alice.stageide.StageIDE();
-		try {
-			SuggestImprovementComposite.getInstance().getLaunchOperation().fire();
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
+	public void logout() {
+		//todo
 	}
 }

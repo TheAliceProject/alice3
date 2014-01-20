@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReportBugComposite extends ReportIssueComposite {
-	private static class SingletonHolder {
-		private static ReportBugComposite instance = new ReportBugComposite();
-	}
+public interface IssueReportingHub {
+	void login( String username, String password, org.lgna.issue.IssueReportingLoginObserver observer );
 
-	public static ReportBugComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ReportBugComposite() {
-		super( java.util.UUID.fromString( "616fa02a-f9f4-4b94-ae69-1da9f8beb515" ), edu.cmu.cs.dennisc.issue.IssueType.BUG );
-	}
+	void logout();
 }

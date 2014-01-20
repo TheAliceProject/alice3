@@ -42,6 +42,8 @@
  */
 package org.alice.ide.issue.croquet;
 
+import org.lgna.croquet.Operation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,6 +84,17 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		g.fillRect( 0, 0, this.applicationContentPanelImage.getWidth(), this.applicationContentPanelImage.getHeight() );
 		contentPane.getAwtComponent().printAll( g );
 		g.dispose();
+		this.getImp().createAndRegisterNullKeyLaunchOperation();
+	}
+
+	@Override
+	protected String getName() {
+		Operation launchOperation = this.getLaunchOperation();
+		return launchOperation != null ? launchOperation.getName() : null;
+	}
+
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+		return this.getImp().getLaunchOperation( null );
 	}
 
 	@Override
