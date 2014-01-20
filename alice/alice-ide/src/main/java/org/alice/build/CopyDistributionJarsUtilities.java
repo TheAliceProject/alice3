@@ -45,10 +45,9 @@ package org.alice.build;
 /**
  * @author Dennis Cosgrove
  */
-public class CopyDistributionJars {
-	public static void main( String[] args ) throws Exception {
+public class CopyDistributionJarsUtilities {
+	public static void copyDistributionJars( java.io.File distributionRootDirectory ) throws java.io.IOException {
 		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
-		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/distribution/lib" );
 		java.io.File mavenRepositoryRootDirectory = new java.io.File( userDirectory, ".m2/repository" );
 		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( String pathname : edu.cmu.cs.dennisc.java.lang.SystemUtilities.getClassPath() ) {
@@ -75,5 +74,11 @@ public class CopyDistributionJars {
 			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( jarFile, distibutionFile );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( distibutionFile );
 		}
+	}
+
+	public static void main( String[] args ) throws Exception {
+		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
+		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/distribution/lib" );
+		copyDistributionJars( distributionRootDirectory );
 	}
 }
