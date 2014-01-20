@@ -94,6 +94,17 @@ public class FileUtilities {
 		return s_defaultDirectory;
 	}
 
+	public static java.io.File getUserDirectory() {
+		java.io.File defaultDirectory = getDefaultDirectory();
+		java.io.File rv;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			rv = defaultDirectory.getParentFile();
+		} else {
+			rv = defaultDirectory;
+		}
+		return rv;
+	}
+
 	public static boolean isValidFile( java.io.File file ) {
 		if( file != null ) {
 			try {
