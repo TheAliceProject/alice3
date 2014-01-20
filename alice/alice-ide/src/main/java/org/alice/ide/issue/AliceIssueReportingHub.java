@@ -46,14 +46,15 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub {
-	public void login( String username, String password, org.lgna.issue.IssueReportingLoginObserver observer ) {
+	public void checkRemoteUser( java.lang.String username, java.lang.String password, org.lgna.issue.IssueReportingRemoteUserObserver observer ) {
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = null;
 		try {
 			java.net.URL url = new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
 			service = jiraSoapServiceLocator.getJirasoapserviceV2( url );
-		} catch( java.net.MalformedURLException murl ) {
-			murl.printStackTrace();
+		} catch( java.net.MalformedURLException murle ) {
+			// error
+			murle.printStackTrace();
 		} catch( javax.xml.rpc.ServiceException se ) {
 			se.printStackTrace();
 		}
@@ -67,12 +68,20 @@ public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub 
 					com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser = service.getUser( token, username );
 					if( jiraRemoteUser != null ) {
 						user = new AliceIssueReportRemoteUser( jiraRemoteUser );
+						//todo?
 						//edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, jiraRemoteUser.getFullname() );
 					}
 				} catch( com.atlassian.jira.rpc.soap.client.RemotePermissionException rpe ) {
 					rpe.printStackTrace();
 				} catch( java.rmi.RemoteException re ) {
 					re.printStackTrace();
+				} finally {
+					try {
+						service.logout( token );
+					} catch( java.rmi.RemoteException re ) {
+						//todo?
+						re.printStackTrace();
+					}
 				}
 			} catch( com.atlassian.jira.rpc.soap.client.RemoteException jirare ) {
 				//could not log in
@@ -83,10 +92,6 @@ public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub 
 		} else {
 			isConnectionSeeminglyPossible = false;
 		}
-		observer.loginAttemptCompleted( isConnectionSeeminglyPossible, user );
-	}
-
-	public void logout() {
-		//todo
+		observer.remoteUserAttemptCompleted( isConnectionSeeminglyPossible, user );
 	}
 }

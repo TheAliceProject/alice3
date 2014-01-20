@@ -46,7 +46,5 @@ package org.lgna.issue;
  * @author Dennis Cosgrove
  */
 public interface IssueReportingHub {
-	void login( String username, String password, org.lgna.issue.IssueReportingLoginObserver observer );
-
-	void logout();
+	void checkRemoteUser( String username, String password, org.lgna.issue.IssueReportingRemoteUserObserver observer );
 }
