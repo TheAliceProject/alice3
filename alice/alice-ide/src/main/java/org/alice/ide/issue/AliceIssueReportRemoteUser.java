@@ -40,11 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.issue;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface IssueReportingLoginObserver {
-	void loginAttemptCompleted( boolean isConnectionSeeminglyPossible, IssueReportRemoteUser user );
+public class AliceIssueReportRemoteUser implements org.lgna.issue.IssueReportRemoteUser {
+	private final com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser;
+
+	public AliceIssueReportRemoteUser( com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser ) {
+		this.jiraRemoteUser = jiraRemoteUser;
+	}
+
+	public String getAccountId() {
+		return this.jiraRemoteUser.getName();
+	}
+
+	public String getFullName() {
+		return this.jiraRemoteUser.getFullname();
+	}
+
 }
