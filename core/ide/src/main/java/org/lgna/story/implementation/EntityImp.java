@@ -610,6 +610,33 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 	}
 
+	private void promptUserWithOptionToCancel() {
+		String optionA = "return to the previous dialog";
+		String optionB = "exit the running program";
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Invalid dialog input.\n\nWould you like to:\n    " );
+		sb.append( optionA );
+		sb.append( "\n        or\n    " );
+		sb.append( optionB );
+		sb.append( "\n?" );
+		int returnResult;
+		Object[] options;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			returnResult = javax.swing.JOptionPane.YES_OPTION;
+			options = new Object[] { optionA, optionB };
+		} else {
+			returnResult = javax.swing.JOptionPane.NO_OPTION;
+			options = new Object[] { optionB, optionA };
+		}
+		int result = javax.swing.JOptionPane.showOptionDialog( this.getParentComponent(), sb.toString(), "Invalid Dialog Input", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, options, optionA );
+		if( result == returnResult ) {
+			return;
+		} else {
+			javax.swing.SwingUtilities.getRoot( this.getProgram().getOnscreenLookingGlass().getAWTComponent() ).setVisible( false );
+			throw new org.lgna.common.ProgramClosedException( "user dialog" );
+		}
+	}
+
 	public double getDoubleFromUser( String message ) {
 		String title = null;
 		DoubleNumberModel model = new DoubleNumberModel( message );
@@ -621,6 +648,8 @@ public abstract class EntityImp implements ReferenceFrame {
 			Double value = model.getValue();
 			if( value != null ) {
 				return value;
+			} else {
+				this.promptUserWithOptionToCancel();
 			}
 		}
 	}
@@ -636,6 +665,8 @@ public abstract class EntityImp implements ReferenceFrame {
 			Integer value = model.getValue();
 			if( value != null ) {
 				return value;
+			} else {
+				this.promptUserWithOptionToCancel();
 			}
 		}
 	}
@@ -653,6 +684,8 @@ public abstract class EntityImp implements ReferenceFrame {
 				return true;
 			case javax.swing.JOptionPane.NO_OPTION:
 				return false;
+			default:
+				this.promptUserWithOptionToCancel();
 			}
 		}
 	}
@@ -679,7 +712,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			dialog.setVisible( true );
 			Object value = optionPane.getInputValue();
 			if( javax.swing.JOptionPane.UNINITIALIZED_VALUE.equals( value ) ) {
-				//pass
+				this.promptUserWithOptionToCancel();
 			} else {
 				dialog.dispose();
 				return (String)value;

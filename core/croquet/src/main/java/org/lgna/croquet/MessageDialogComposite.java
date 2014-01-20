@@ -56,7 +56,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		this.messageType = messageType;
 		String text = null;
 		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this, text );
-		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey );
+		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey, null );
 	}
 
 	@Override
