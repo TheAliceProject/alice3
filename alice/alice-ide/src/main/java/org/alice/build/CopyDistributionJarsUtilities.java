@@ -42,6 +42,8 @@
  */
 package org.alice.build;
 
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -74,6 +76,10 @@ public class CopyDistributionJarsUtilities {
 			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( jarFile, distibutionFile );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( distibutionFile );
 		}
+	}
+
+	public static void copyDistributionJars( String path ) throws IOException {
+		copyDistributionJars( new java.io.File( path ) );
 	}
 
 	public static void main( String[] args ) throws Exception {
