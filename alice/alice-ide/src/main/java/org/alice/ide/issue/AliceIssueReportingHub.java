@@ -47,7 +47,43 @@ package org.alice.ide.issue;
  */
 public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub {
 	public void login( String username, String password, org.lgna.issue.IssueReportingLoginObserver observer ) {
-		//todo
+		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+		com.atlassian.jira.rpc.soap.client.JiraSoapService service = null;
+		try {
+			java.net.URL url = new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
+			service = jiraSoapServiceLocator.getJirasoapserviceV2( url );
+		} catch( java.net.MalformedURLException murl ) {
+			murl.printStackTrace();
+		} catch( javax.xml.rpc.ServiceException se ) {
+			se.printStackTrace();
+		}
+		boolean isConnectionSeeminglyPossible;
+		org.lgna.issue.IssueReportRemoteUser user = null;
+		if( service != null ) {
+			isConnectionSeeminglyPossible = true;
+			try {
+				String token = service.login( username, password );
+				try {
+					com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser = service.getUser( token, username );
+					if( jiraRemoteUser != null ) {
+						user = new AliceIssueReportRemoteUser( jiraRemoteUser );
+						//edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, jiraRemoteUser.getFullname() );
+					}
+				} catch( com.atlassian.jira.rpc.soap.client.RemotePermissionException rpe ) {
+					rpe.printStackTrace();
+				} catch( java.rmi.RemoteException re ) {
+					re.printStackTrace();
+				}
+			} catch( com.atlassian.jira.rpc.soap.client.RemoteException jirare ) {
+				//could not log in
+			} catch( java.rmi.RemoteException re ) {
+				//could not connect
+				isConnectionSeeminglyPossible = false;
+			}
+		} else {
+			isConnectionSeeminglyPossible = false;
+		}
+		observer.loginAttemptCompleted( isConnectionSeeminglyPossible, user );
 	}
 
 	public void logout() {
