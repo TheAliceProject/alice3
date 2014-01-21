@@ -192,6 +192,8 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return this.textSteps.getText();
 	}
 
+	protected abstract Thread getThread();
+
 	protected abstract Throwable getThrowable();
 
 	protected abstract String[] getAffectsVersions();
@@ -222,28 +224,32 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
-		rv.setProjectKey( this.getJIRAProjectKey() );
-		rv.setType( this.getIssueType() );
-		rv.setSummary( this.getSummaryText() );
-		rv.setDescription( this.getDescriptionText() );
-		rv.setEnvironment( this.getEnvironmentText() );
-		rv.setSteps( this.getStepsText() );
-		rv.setException( this.getExceptionText() );
-		rv.setAffectsVersions( this.getAffectsVersions() );
-		rv.setReportedBy( this.getSMTPReplyToPersonal() );
-		rv.setEmailAddress( this.getSMTPReplyTo() );
+	private edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
+		return new edu.cmu.cs.dennisc.issue.Issue.Builder()
+				.type( this.getIssueType() )
+				.summary( this.getSummaryText() )
+				.description( this.getDescriptionText() )
+				.environment( this.getEnvironmentText() )
+				.steps( this.getStepsText() )
+				.threadAndThrowable( this.getThread(), this.getThrowable() )
+				.version( org.lgna.project.ProjectVersion.getCurrentVersionText() )
+				.reportedBy( this.getSMTPReplyToPersonal() )
+				.emailAddress( this.getSMTPReplyTo() );
+	}
+
+	private edu.cmu.cs.dennisc.jira.JIRAReport createJiraReport() {
+		edu.cmu.cs.dennisc.issue.Issue.Builder builder = this.createIssueBuilder();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport( builder.build(), this.getJIRAProjectKey() );
 		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );
 		return rv;
 	}

@@ -90,6 +90,11 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 	}
 
 	@Override
+	protected Thread getThread() {
+		return null;
+	}
+
+	@Override
 	protected Throwable getThrowable() {
 		return null;
 	}

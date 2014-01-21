@@ -266,6 +266,11 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	}
 
 	@Override
+	protected Thread getThread() {
+		return this.paneException.getThread();
+	}
+
+	@Override
 	protected int getPreferredDescriptionHeight() {
 		return 64;
 	}
