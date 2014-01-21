@@ -35,8 +35,6 @@
 		<module>core/ide</module>
 		<module>core/resources</module>
 
-		<module>distribution</module>
-
 		<module>alice/alice-ide</module>
 	</modules>
 

@@ -42,16 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.net.MalformedURLException;
-
-import javax.xml.rpc.ServiceException;
-
 import org.alice.ide.croquet.models.help.views.LoginView;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
-
-import com.atlassian.jira.rpc.soap.client.RemoteException;
-import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
-import com.atlassian.jira.rpc.soap.client.RemoteUser;
 
 /**
  * @author Matt May
@@ -69,9 +61,9 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
 	}
 
-	protected RemoteUser remoteUser;
+	private com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser;
 
-	public RemoteUser getRemoteUser() {
+	public com.atlassian.jira.rpc.soap.client.RemoteUser getRemoteUser() {
 		return this.remoteUser;
 	}
 
@@ -85,9 +77,11 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 			String token;
 			try {
 				token = service.login( username, password );
-			} catch( RemoteException e ) {
+			} catch( com.atlassian.jira.rpc.soap.client.RemoteException e ) {
+				//could not log in
 				return false;
 			} catch( java.rmi.RemoteException e ) {
+				//could not connect
 				this.setConnectionFailed( true );
 				return false;
 			}
@@ -95,7 +89,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 			try {
 				try {
 					remoteUser = service.getUser( token, username );
-				} catch( RemotePermissionException e ) {
+				} catch( com.atlassian.jira.rpc.soap.client.RemotePermissionException e ) {
 					e.printStackTrace();
 				} catch( java.rmi.RemoteException e ) {
 					e.printStackTrace();
@@ -109,9 +103,9 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 				}
 			}
 			return true;
-		} catch( MalformedURLException e1 ) {
+		} catch( java.net.MalformedURLException e1 ) {
 			e1.printStackTrace();
-		} catch( ServiceException e1 ) {
+		} catch( javax.xml.rpc.ServiceException e1 ) {
 			e1.printStackTrace();
 		}
 		return false;
