@@ -76,21 +76,21 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		return this.exportToYouTubeWizardDialogComposite;
 	}
 
-	protected void perform() {
-		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
-		if( fileKnownToBeNotExecuable != null ) {
-			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
-			composite.getLaunchOperation().fire();
-		} else {
-			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
-			wizard.setProject( ProjectStack.peekProject() );
-			try {
-				wizard.getLaunchOperation().fire();
-			} finally {
-				wizard.setProject( null );
-			}
-		}
-	}
+	//	protected void perform() {
+	//		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+	//		if( fileKnownToBeNotExecuable != null ) {
+	//			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
+	//			composite.getLaunchOperation().fire();
+	//		} else {
+	//			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+	//			wizard.setProject( ProjectStack.peekProject() );
+	//			try {
+	//				wizard.getLaunchOperation().fire();
+	//			} finally {
+	//				wizard.setProject( null );
+	//			}
+	//		}
+	//	}
 
 	private java.io.File getFFmpegFileIfNotExecutable() {
 		java.io.File fileKnownToBeNotExecuable;
@@ -115,6 +115,10 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 
 	private Model getWizardModel() {
 		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+		IDE ide = IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getUpToDateProgramType();
+		}
 		wizard.setProject( ProjectStack.peekProject() );
 		return wizard.getLaunchOperation();
 	}
