@@ -129,6 +129,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		//new org.alice.stageide.StageIDE();
 		try {
 			new BugLoginComposite().getLaunchOperation().fire();
