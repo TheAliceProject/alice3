@@ -42,7 +42,7 @@
  */
 package org.alice.stageide;
 
-public class StageIDE extends org.alice.ide.IDE {
+public abstract class StageIDE extends org.alice.ide.IDE {
 	static {
 		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
 	}
@@ -55,8 +55,8 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
-	public StageIDE( org.lgna.croquet.Operation... uploadOperations ) {
-		super( uploadOperations );
+	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration ) {
+		super( ideConfiguration );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
