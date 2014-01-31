@@ -188,11 +188,11 @@ public abstract class ProgramImp {
 		return this.toggleFullScreenAction;
 	}
 
-	public java.awt.Rectangle getNormalDialogBounds( javax.swing.JDialog dialog ) {
+	public java.awt.Rectangle getNormalDialogBounds( java.awt.Component awtComponent ) {
 		if( this.toggleFullScreenAction.prevNormalBounds != null ) {
 			return this.toggleFullScreenAction.prevNormalBounds;
 		} else {
-			return dialog.getBounds();
+			return awtComponent.getBounds();
 		}
 	}
 

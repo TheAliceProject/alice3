@@ -45,7 +45,9 @@ package org.alice.stageide.run;
 /**
  * @author Dennis Cosgrove
  */
-public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.run.views.RunView> {
+public class RunComposite extends
+		//org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.run.views.RunView> {
+		org.lgna.croquet.SimpleModalFrameComposite<org.alice.stageide.run.views.RunView> {
 	private static class SingletonHolder {
 		private static RunComposite instance = new RunComposite();
 	}
@@ -119,7 +121,7 @@ public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialo
 	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
 	private void startProgram() {
-		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getName() ).start();
+		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getName() ).start();
 	}
 
 	private void stopProgram() {
@@ -147,31 +149,29 @@ public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialo
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowWindow( org.lgna.croquet.views.Frame frame ) {
+		super.handlePreShowWindow( frame );
 		this.startProgram();
 		if( this.size != null ) {
 			//pas
 		} else {
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
-			org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-			dialog.pack();
+			frame.pack();
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( dialog.getAwtComponent() );
+	protected void handlePostHideWindow( org.lgna.croquet.views.Frame frame ) {
+		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( frame.getAwtComponent() );
 		this.location = bounds.getLocation();
 		this.size = bounds.getSize();
-		super.handlePostHideDialog( step );
+		super.handlePostHideWindow( frame );
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
+	protected void handleFinally() {
 		this.stopProgram();
-		super.handleFinally( step, dialog );
+		super.handleFinally();
 	}
 
 	@Override
