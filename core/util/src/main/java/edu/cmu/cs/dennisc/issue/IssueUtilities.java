@@ -79,4 +79,13 @@ public class IssueUtilities {
 		}
 		return sb.toString();
 	}
+
+	public static final String getThrowableText( Throwable throwable ) {
+		if( throwable != null ) {
+			return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable );
+		} else {
+			return "";
+		}
+	}
+
 }

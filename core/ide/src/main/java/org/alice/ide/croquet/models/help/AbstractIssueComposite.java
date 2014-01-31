@@ -87,16 +87,9 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 
 	protected abstract String getDescriptionText();
 
-	protected abstract Throwable getThrowable();
+	protected abstract Thread getThread();
 
-	private String getExceptionText() {
-		Throwable throwable = this.getThrowable();
-		if( throwable != null ) {
-			return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable );
-		} else {
-			return "";
-		}
-	}
+	protected abstract Throwable getThrowable();
 
 	protected abstract boolean isProjectAttachmentDesired();
 
@@ -105,21 +98,25 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
 	}
 
-	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
-		rv.setProjectKey( this.getProjectKey() );
-		rv.setType( this.getReportType() );
-		rv.setSummary( this.getSummaryText() );
-		rv.setDescription( this.getDescriptionText() );
-		rv.setEnvironment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() );
-		rv.setSteps( this.getStepsText() );
-		rv.setException( this.getExceptionText() );
-		rv.setAffectsVersions( new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() } );
+	private edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
+		return new edu.cmu.cs.dennisc.issue.Issue.Builder()
+				.type( this.getReportType() )
+				.summary( this.getSummaryText() )
+				.description( this.getDescriptionText() )
+				.environment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() )
+				.steps( this.getStepsText() )
+				.threadAndThrowable( this.getThread(), this.getThrowable() )
+				.version( org.lgna.project.ProjectVersion.getCurrentVersionText() );
+	}
+
+	private edu.cmu.cs.dennisc.jira.JIRAReport createJiraReport() {
+		edu.cmu.cs.dennisc.issue.Issue.Builder builder = this.createIssueBuilder();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport( builder.build(), this.getProjectKey() );
 		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		return rv;
 	}
 
@@ -135,7 +132,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	}
 
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
+		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );
 		return rv;
 	}

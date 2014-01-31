@@ -80,7 +80,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private java.io.File projectFileToLoadOnWindowOpened;
 
-	public IDE( org.lgna.croquet.Operation... uploadOperations ) {
+	private final IdeConfiguration ideConfiguration;
+
+	public IDE( IdeConfiguration ideConfiguration ) {
+		this.ideConfiguration = ideConfiguration;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Please Submit Bug Report: " );
 		sb.append( getApplicationName() );
@@ -93,11 +96,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, uploadOperations );
+		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, ideConfiguration.getUploadOperations() );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( aliceMenuBar );
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( aliceMenuBar );
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
+	}
+
+	public IdeConfiguration getIdeConfiguration() {
+		return this.ideConfiguration;
 	}
 
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {

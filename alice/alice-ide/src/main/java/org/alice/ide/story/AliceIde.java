@@ -47,6 +47,6 @@ package org.alice.ide.story;
  */
 public class AliceIde extends org.alice.stageide.StageIDE {
 	public AliceIde() {
-		super( new org.alice.ide.youtube.croquet.UploadOperation() );
+		super( new AliceIdeConfiguration() );
 	}
 }

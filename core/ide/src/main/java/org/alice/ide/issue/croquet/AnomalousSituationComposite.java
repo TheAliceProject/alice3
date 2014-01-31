@@ -56,6 +56,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		}
 	}
 
+	private final Thread thread;
 	private final Throwable throwable;
 	private final java.awt.image.BufferedImage applicationContentPanelImage;
 
@@ -71,6 +72,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 
 	private AnomalousSituationComposite( Throwable throwable, String description ) {
 		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), true );
+		this.thread = Thread.currentThread();
 		this.throwable = throwable;
 		this.description = description;
 
@@ -95,6 +97,11 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
+	}
+
+	@Override
+	protected Thread getThread() {
+		return this.thread;
 	}
 
 	@Override

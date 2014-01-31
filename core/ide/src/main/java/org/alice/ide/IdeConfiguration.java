@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide;
 
-package edu.cmu.cs.dennisc.login;
+/**
+ * @author Dennis Cosgrove
+ */
+public interface IdeConfiguration {
+	org.lgna.croquet.Operation[] getUploadOperations();
 
-public class AccountInformation {
-	public AccountInformation( String id, String password, String fullName ) {
-		this.id = id;
-		this.password = password;
-		this.fullName = fullName;
-	}
-
-	public String getID() {
-		return this.id;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public String getFullName() {
-		return this.fullName;
-	}
-
-	private final String id;
-	private final String password;
-	private final String fullName;
+	org.lgna.issue.IssueReportingHub getIssueReportingHub();
 }
