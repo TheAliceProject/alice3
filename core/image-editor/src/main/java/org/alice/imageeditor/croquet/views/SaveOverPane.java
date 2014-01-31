@@ -85,23 +85,27 @@ public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
 	public void handleCompositePreActivation() {
 		org.alice.imageeditor.croquet.ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
 		java.io.File file = frame.getFile();
-		java.awt.Image toBeReplacedImage = edu.cmu.cs.dennisc.image.ImageUtilities.read( file );
-		java.awt.Image nextImage = frame.getView().render();
-		this.toBeReplacedImageView.setImage( toBeReplacedImage );
-		this.nextImageView.setImage( nextImage );
+		try {
+			java.awt.Image toBeReplacedImage = edu.cmu.cs.dennisc.image.ImageUtilities.read( file );
+			java.awt.Image nextImage = frame.getView().render();
+			this.toBeReplacedImageView.setImage( toBeReplacedImage );
+			this.nextImageView.setImage( nextImage );
 
-		java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
-		java.text.DateFormat timeFormat = java.text.DateFormat.getTimeInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
-		java.util.Date date = new java.util.Date( file.lastModified() );
-		this.toBeReplacedHeaderLabel.setText( this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format( date ) + " " + timeFormat.format( date ) + ")" );
-		this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
-		this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
-		super.handleCompositePreActivation();
-		org.lgna.croquet.views.AbstractWindow<?> window = this.getRoot();
-		if( window instanceof org.lgna.croquet.views.Dialog ) {
-			org.lgna.croquet.views.Dialog dialog = (org.lgna.croquet.views.Dialog)window;
-			dialog.setTitle( "Save Over " + file );
-			dialog.pack();
+			java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
+			java.text.DateFormat timeFormat = java.text.DateFormat.getTimeInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
+			java.util.Date date = new java.util.Date( file.lastModified() );
+			this.toBeReplacedHeaderLabel.setText( this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format( date ) + " " + timeFormat.format( date ) + ")" );
+			this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
+			this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
+			super.handleCompositePreActivation();
+			org.lgna.croquet.views.AbstractWindow<?> window = this.getRoot();
+			if( window instanceof org.lgna.croquet.views.Dialog ) {
+				org.lgna.croquet.views.Dialog dialog = (org.lgna.croquet.views.Dialog)window;
+				dialog.setTitle( "Save Over " + file );
+				dialog.pack();
+			}
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}
 }

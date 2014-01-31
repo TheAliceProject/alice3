@@ -819,10 +819,14 @@ public class ASG {
 								}
 							} else {
 								java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-								edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, image );
-								String filename = image.hashCode() + ".png";
-								xmlProperty.setAttribute( "filename", filename );
-								filenameToStreamMap.put( filename, baos );
+								try {
+									edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, image );
+									String filename = image.hashCode() + ".png";
+									xmlProperty.setAttribute( "filename", filename );
+									filenameToStreamMap.put( filename, baos );
+								} catch( java.io.IOException ioe ) {
+									throw new RuntimeException( ioe );
+								}
 							}
 						} else if( edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom( propertyValueClass ) ) {
 							xmlProperty.setAttribute( "class", "edu.cmu.cs.dennisc.color.Color4f" );

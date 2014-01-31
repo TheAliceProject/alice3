@@ -49,7 +49,7 @@ public class ImageAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
 	private final byte[] bytes;
 	private final String fileName;
 
-	public ImageAttachment( java.awt.Image image, String baseName ) {
+	public ImageAttachment( java.awt.Image image, String baseName ) throws java.io.IOException {
 		this.bytes = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
 		this.fileName = baseName + ".png";
 	}

@@ -149,7 +149,12 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	protected void addAttachments( edu.cmu.cs.dennisc.jira.JIRAReport report ) {
 		super.addAttachments( report );
 		if( this.areProjectAndImageAttachmentsDesired.getValue() ) {
-			report.addAttachment( new org.alice.ide.issue.ImageAttachment( this.applicationContentPanelImage, "snapshot" ) );
+			try {
+				org.alice.ide.issue.ImageAttachment imageAttachment = new org.alice.ide.issue.ImageAttachment( this.applicationContentPanelImage, "snapshot" );
+				report.addAttachment( imageAttachment );
+			} catch( java.io.IOException ioe ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe, this.applicationContentPanelImage );
+			}
 		}
 	}
 
