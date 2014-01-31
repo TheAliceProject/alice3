@@ -279,12 +279,12 @@ public class ImageUtilities {
 			bufferedImage.setRGB( 0, 0, width, height, pixels, 0, width );
 			renderedImage = bufferedImage;
 		}
-		try {
-			javax.imageio.ImageIO.write( renderedImage, codecName, outputStream );
-			outputStream.flush();
-		} catch( java.lang.IndexOutOfBoundsException ioobe ) {
-			throw new RuntimeException( ioobe );
-		}
+		//try {
+		javax.imageio.ImageIO.write( renderedImage, codecName, outputStream );
+		outputStream.flush();
+		//} catch( IndexOutOfBoundsException ioobe ) {
+		//todo: throw new IoException???
+		//}
 
 		// if( imageEncodeParam == null ) {
 		// if( codecName.equals( PNG_CODEC_NAME ) ) {
