@@ -69,7 +69,11 @@ public class BufferedImageTexture extends Texture {
 		//todo
 		assert m_bufferedImage != null;
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
+		try {
+			edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( binaryEncoder.toString(), ioe );
+		}
 		binaryEncoder.encode( baos.toByteArray() );
 	}
 

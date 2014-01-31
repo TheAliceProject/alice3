@@ -247,17 +247,26 @@ public abstract class AbstractThumbnailMaker {
 		return true;
 	}
 
-	protected static final boolean DEBUG_SAVE_TEST_IMAGES = false;
-	protected static final String THUMBNAIL_SCRATCH_SPACE = "C:/batchOutput/thumbnailScratchSpace/";
+	private static final boolean DEBUG_SAVE_TEST_IMAGES = false;
+	private static final String THUMBNAIL_SCRATCH_SPACE = "C:/batchOutput/thumbnailScratchSpace/";
+
+	protected static void writeDebugImageIfAppropriate( String filename, java.awt.image.BufferedImage image ) {
+		if( DEBUG_SAVE_TEST_IMAGES ) {
+			String path = THUMBNAIL_SCRATCH_SPACE + filename;
+			try {
+				ImageUtilities.write( path, image );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( path, ioe );
+			}
+		}
+	}
 
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, java.awt.Color colorKey ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
 
-		if( DEBUG_SAVE_TEST_IMAGES ) {
-			ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "rawFinal.png", rv );
-		}
+		writeDebugImageIfAppropriate( "rawFinal.png", rv );
 
 		if( trimWhitespace ) {
 			int topBorder = getTopBorder( rv );
