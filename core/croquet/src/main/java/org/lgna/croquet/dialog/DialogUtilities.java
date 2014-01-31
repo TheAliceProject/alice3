@@ -136,6 +136,5 @@ public class DialogUtilities {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
 			}
 		}
-
 	}
 }
