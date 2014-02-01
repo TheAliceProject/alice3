@@ -45,9 +45,7 @@ package org.alice.stageide.run;
 /**
  * @author Dennis Cosgrove
  */
-public class RunComposite extends
-		//org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.run.views.RunView> {
-		org.lgna.croquet.SimpleModalFrameComposite<org.alice.stageide.run.views.RunView> {
+public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org.alice.stageide.run.views.RunView> {
 	private static class SingletonHolder {
 		private static RunComposite instance = new RunComposite();
 	}
@@ -122,6 +120,9 @@ public class RunComposite extends
 
 	private void startProgram() {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getName() ).start();
+		if( this.fastForwardToStatementOperation != null ) {
+			this.fastForwardToStatementOperation.pre( this.programContext );
+		}
 	}
 
 	private void stopProgram() {
@@ -157,9 +158,6 @@ public class RunComposite extends
 		} else {
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
 			frame.pack();
-		}
-		if( this.fastForwardToStatementOperation != null ) {
-			this.fastForwardToStatementOperation.pre( this.programContext );
 		}
 	}
 

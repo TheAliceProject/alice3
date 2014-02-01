@@ -59,38 +59,38 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOper
 
 	public void pre( org.alice.stageide.program.RunProgramContext runProgramContext ) {
 		this.runProgramContext = runProgramContext;
-		this.isFirstTime = true;
-		this.runProgramContext.getVirtualMachine().addStatementListeners( this.statementListener );
+		this.runProgramContext.getVirtualMachine().addStatementListener( this.statementListener );
+		this.runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
 	}
 
 	public void post() {
-		this.runProgramContext.getVirtualMachine().removeStatementListeners( this.statementListener );
-		this.isFirstTime = false;
-		this.runProgramContext = null;
+		//todo: removeStatementListener without locking
+		if( this.runProgramContext != null ) {
+			runProgramContext.getVirtualMachine().removeStatementListener( this.statementListener );
+			runProgramContext = null;
+		}
 	}
 
 	private final org.lgna.project.virtualmachine.events.StatementListener statementListener = new org.lgna.project.virtualmachine.events.StatementListener() {
 		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
-			boolean isStatement = statementEvent.getStatement() == statement;
-			if( isFirstTime ) {
-				if( isStatement ) {
-					//pass
-				} else {
-					runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
+			if( statementEvent.getStatement() == statement ) {
+				if( runProgramContext != null ) {
+					org.lgna.story.implementation.ProgramImp programImp = runProgramContext.getProgramImp();
+					if( programImp != null ) {
+						programImp.setSimulationSpeedFactor( 1.0 );
+					}
+					runProgramContext.getVirtualMachine().removeStatementListener( this );
+					runProgramContext = null;
 				}
-				isFirstTime = false;
+				//} else {
+				//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
 			}
-			if( isStatement ) {
-				runProgramContext.getProgramImp().setSimulationSpeedFactor( 1.0 );
-			}
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
 		}
 
 		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
 		}
 	};
 
-	private boolean isFirstTime;
 	private final org.lgna.project.ast.Statement statement;
 	private org.alice.stageide.program.RunProgramContext runProgramContext;
 }
