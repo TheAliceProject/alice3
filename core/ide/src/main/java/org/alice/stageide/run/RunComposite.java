@@ -158,6 +158,9 @@ public class RunComposite extends
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
 			frame.pack();
 		}
+		if( this.fastForwardToStatementOperation != null ) {
+			this.fastForwardToStatementOperation.pre( this.programContext );
+		}
 	}
 
 	@Override
@@ -170,6 +173,10 @@ public class RunComposite extends
 
 	@Override
 	protected void handleFinally() {
+		if( this.fastForwardToStatementOperation != null ) {
+			this.fastForwardToStatementOperation.post();
+			this.fastForwardToStatementOperation = null;
+		}
 		this.stopProgram();
 		super.handleFinally();
 	}
@@ -178,4 +185,11 @@ public class RunComposite extends
 	protected org.alice.stageide.run.views.RunView createView() {
 		return new org.alice.stageide.run.views.RunView( this );
 	}
+
+	public void setFastForwardToStatementOperation( FastForwardToStatementOperation fastForwardToStatementOperation ) {
+		this.fastForwardToStatementOperation = fastForwardToStatementOperation;
+	}
+
+	private FastForwardToStatementOperation fastForwardToStatementOperation;
+
 }
