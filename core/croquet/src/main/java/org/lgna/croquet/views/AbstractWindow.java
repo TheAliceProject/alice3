@@ -193,6 +193,18 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		return this.getShape( asSeenBy, insets );
 	}
 
+	public boolean isAlwaysOnTopSupported() {
+		return this.getAwtComponent().isAlwaysOnTopSupported();
+	}
+
+	public boolean isAlwaysOnTop() {
+		return this.getAwtComponent().isAlwaysOnTop();
+	}
+
+	public void setAlwaysOnTop( boolean isAlwaysOnTop ) {
+		this.getAwtComponent().setAlwaysOnTop( isAlwaysOnTop );
+	}
+
 	public ScrollPane getScrollPaneAncestor() {
 		return null;
 	}
