@@ -66,7 +66,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
 	private static final int DEFAULT_WIDTH = 640;
 	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
-	private java.awt.Point location = new java.awt.Point( 100, 100 );
+	private java.awt.Point location = null;
 	private java.awt.Dimension size = null;
 
 	@Override
@@ -154,10 +154,15 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		super.handlePreShowWindow( frame );
 		this.startProgram();
 		if( this.size != null ) {
-			//pas
+			frame.setSize( this.size );
 		} else {
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
 			frame.pack();
+		}
+		if( this.location != null ) {
+			frame.setLocation( this.location );
+		} else {
+			frame.getAwtComponent().setLocationByPlatform( true );
 		}
 	}
 
