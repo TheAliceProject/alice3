@@ -129,7 +129,8 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends Abstrac
 
 		@Override
 		public void updateUI() {
-			this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+			//this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+			this.setUI( new org.lgna.croquet.views.imp.DropDownButtonUI( (javax.swing.AbstractButton)this ) );
 		}
 
 		@Override
