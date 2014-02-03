@@ -62,24 +62,25 @@ public class StorytellingResources {
 	}
 
 	public static File getGalleryRootDirectory() {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.rootDirectory", "user.dir" }, new String[] { "application/gallery" } );
-		if( ( rootGallery != null ) && rootGallery.exists() ) {
-			return rootGallery;
-		}
-		return null;
+		//		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.rootDirectory", "user.dir" }, new String[] { "application/gallery" } );
+		//		if( ( rootGallery != null ) && rootGallery.exists() ) {
+		//			return rootGallery;
+		//		}
+		//		return null;
+		return org.alice.ide.IdeDirectoryUtilities.getModelGalleryDirectory();
 	}
 
-	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
-		for( String propertyKey : propertyKeys ) {
-			for( String subPath : subPaths ) {
-				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
-				if( rv.exists() ) {
-					return rv;
-				}
-			}
-		}
-		return null;
-	}
+	//	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
+	//		for( String propertyKey : propertyKeys ) {
+	//			for( String subPath : subPaths ) {
+	//				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
+	//				if( rv.exists() ) {
+	//					return rv;
+	//				}
+	//			}
+	//		}
+	//		return null;
+	//	}
 
 	private static File findResourcePath( String relativePath ) {
 		File rootGallery = getGalleryRootDirectory();
