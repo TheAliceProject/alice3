@@ -71,13 +71,22 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		//super.uninstallListeners( b );
 	}
 
+	private void dispatchToAncestor( java.awt.event.MouseEvent e ) {
+		java.awt.EventQueue eventQueue = java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue();
+		eventQueue.postEvent( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.button, e, this.ancestor ) );
+	}
+
 	private void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		javax.swing.ButtonModel buttonModel = this.button.getModel();
 		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 			//pass
 		} else {
 			if( this.button.isEnabled() ) {
-				buttonModel.setRollover( true );
+				if( this.dispatchState != null ) {
+					//pass
+				} else {
+					buttonModel.setRollover( true );
+				}
 			}
 		}
 	}
@@ -91,10 +100,13 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 
 	private void handleMousePressed( java.awt.event.MouseEvent e ) {
 		javax.swing.ButtonModel buttonModel = this.button.getModel();
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.dispatchState, this );
 		if( this.button.isEnabled() ) {
 			buttonModel.setPressed( true );
+			this.mousePressedEvent = e;
 			this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON;
 		} else {
+			this.mousePressedEvent = null;
 			this.dispatchState = null;
 		}
 	}
@@ -105,8 +117,28 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 			buttonModel.setArmed( true );
 			buttonModel.setPressed( false );
 			buttonModel.setArmed( false );
+		} else {
+			if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
+				this.dispatchToAncestor( e );
+			}
+			buttonModel.setPressed( false );
 		}
+		buttonModel.setRollover( false );
+		this.mousePressedEvent = null;
 		this.dispatchState = null;
+	}
+
+	private static JDragView findDraggableJDragView( java.awt.Component awtComponent ) {
+		JDragView jDragView = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findFirstAncestor( awtComponent, false, JDragView.class );
+		if( jDragView != null ) {
+			if( jDragView.isActuallyDraggable() ) {
+				return jDragView;
+			} else {
+				return findDraggableJDragView( jDragView );
+			}
+		} else {
+			return null;
+		}
 	}
 
 	private void handleMouseDragged( java.awt.event.MouseEvent e ) {
@@ -117,12 +149,23 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 			} else {
 				buttonModel.setPressed( false );
 				buttonModel.setRollover( false );
-				this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR;
+				this.ancestor = findDraggableJDragView( this.button );
+				if( this.ancestor != null ) {
+					this.dispatchToAncestor( this.mousePressedEvent );
+					this.dispatchToAncestor( e );
+					this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR;
+				} else {
+					this.dispatchState = null;
+				}
 			}
+		} else if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
+			this.dispatchToAncestor( e );
 		}
 	}
 
 	private DropDownButtonUIDispatchState dispatchState;
+	private java.awt.event.MouseEvent mousePressedEvent;
+	private JDragView ancestor;
 
 	private final javax.swing.AbstractButton button;
 
