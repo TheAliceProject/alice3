@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,10 +57,6 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 		@Override
 		protected void installDefaults() {
 			super.installDefaults();
-			this.incrGap = 0;
-			this.decrGap = 0;
-			//todo: use ui defaults
-			this.thumbColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 140 );
 			this.thumbRolloverColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 100 );
 			this.thumbPressedColor = new java.awt.Color( 100, 140, 255 );
 		}
@@ -67,19 +64,23 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 		@Override
 		protected void paintThumb( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds ) {
 			//super.paintThumb( g, c, thumbBounds );
-			int arc = this.scrollBarWidth - INSET - INSET;
-			java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
-			java.awt.Paint paint;
-			if( this.isDragging ) {
-				paint = this.thumbPressedColor;
-			} else {
-				paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
+			if( c instanceof javax.swing.JScrollBar ) {
+				javax.swing.JScrollBar jScrollBar = (javax.swing.JScrollBar)c;
+				int span = jScrollBar.getOrientation() == javax.swing.JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
+				int arc = span - INSET - INSET;
+				java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
+				java.awt.Paint paint;
+				if( this.isDragging ) {
+					paint = this.thumbPressedColor;
+				} else {
+					paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
+				}
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				g2.setPaint( paint );
+				g2.fill( shape );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 			}
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setPaint( paint );
-			g2.fill( shape );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 		}
 
 		@Override
