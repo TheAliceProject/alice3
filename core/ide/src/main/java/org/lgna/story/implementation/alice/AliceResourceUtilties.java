@@ -55,9 +55,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.modelresource.EnumConstantResourceKey;
-import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
@@ -124,7 +121,7 @@ public class AliceResourceUtilties {
 
 	}
 
-	private AliceResourceUtilties() {
+	/*private*/protected AliceResourceUtilties() {
 	}
 
 	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
@@ -498,7 +495,7 @@ public class AliceResourceUtilties {
 		return modelName.toLowerCase() + "." + MODEL_RESOURCE_EXTENSION;
 	}
 
-	private static java.net.URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {
+	/*private*/protected static java.net.URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {
 		String thumbnailName = getThumbnailResourceFileName( modelResource, resourceName );
 		return getThumbnailURLInternalFromFilename( modelResource, thumbnailName );
 	}
@@ -679,7 +676,7 @@ public class AliceResourceUtilties {
 		return name;
 	}
 
-	private static BufferedImage getThumbnailInternal( Class<?> modelResource, String resourceName )
+	/*private*/protected static BufferedImage getThumbnailInternal( Class<?> modelResource, String resourceName )
 	{
 		URL resourceURL = getThumbnailURLInternal( modelResource, resourceName );
 		if( resourceURL == null ) {
@@ -708,11 +705,6 @@ public class AliceResourceUtilties {
 		return getThumbnailInternal( modelResource, null );
 	}
 
-	public static BufferedImage getThumbnail( ResourceKey key )
-	{
-		return getThumbnailInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
 	public static java.net.URL getThumbnailURL( Class<?> modelResource )
 	{
 		return getThumbnailURLInternal( modelResource, null );
@@ -724,39 +716,7 @@ public class AliceResourceUtilties {
 		return getThumbnailURLInternal( modelResource, instanceName );
 	}
 
-	public static java.net.URL getThumbnailURL( ResourceKey key )
-	{
-		return getThumbnailURLInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
-	public static Class<?> getClassFromKey( ResourceKey key ) {
-		if( key instanceof ClassResourceKey ) {
-			ClassResourceKey clsKey = (ClassResourceKey)key;
-			return clsKey.getModelResourceCls();
-		}
-		else if( key instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
-			return enumKey.getEnumConstant().getDeclaringClass();
-		}
-		return null;
-	}
-
-	public static String getEnumNameFromKey( ResourceKey key ) {
-		if( key instanceof ClassResourceKey ) {
-			return null;
-		}
-		else if( key instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
-			return enumKey.getEnumConstant().name();
-		}
-		return null;
-	}
-
-	private static String getKey( ResourceKey key ) {
-		return getKey( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
-	private static String getKey( Class<?> modelResource, String resourceName ) {
+	/*private*/protected static String getKey( Class<?> modelResource, String resourceName ) {
 		if( resourceName != null ) {
 			return modelResource.getName() + resourceName;
 		}
@@ -822,13 +782,6 @@ public class AliceResourceUtilties {
 		return getModelResourceInfo( modelResource, null );
 	}
 
-	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo( ResourceKey key ) {
-		if( key == null ) {
-			return null;
-		}
-		return getModelResourceInfo( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
 	public static AxisAlignedBox getBoundingBox( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -847,10 +800,6 @@ public class AliceResourceUtilties {
 	public static AxisAlignedBox getBoundingBox( Class<?> modelResource )
 	{
 		return getBoundingBox( modelResource, null );
-	}
-
-	public static AxisAlignedBox getBoundingBox( ResourceKey key ) {
-		return getBoundingBox( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getDefaultInitialTransform( Class<?> modelResource ) {
@@ -880,16 +829,12 @@ public class AliceResourceUtilties {
 		return false;
 	}
 
-	public static boolean getPlaceOnGround( ResourceKey key ) {
-		return getPlaceOnGround( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
 	public static boolean getPlaceOnGround( Class<?> modelResource )
 	{
 		return getPlaceOnGround( modelResource, null );
 	}
 
-	private static String getModelName( Class<?> modelResource, String resourceName, Locale locale )
+	/*private*/protected static String getModelName( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
@@ -904,15 +849,7 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	public static String getModelName( ResourceKey key ) {
-		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ), null );
-	}
-
-	public static String getModelName( ResourceKey key, Locale locale ) {
-		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
-	}
-
-	private static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale )
+	/*private*/protected static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, null );
 		String className;
@@ -936,14 +873,6 @@ public class AliceResourceUtilties {
 			}
 			return localizedText;
 		}
-	}
-
-	public static String getModelClassName( ResourceKey key ) {
-		return getModelClassName( getClassFromKey( key ), getEnumNameFromKey( key ), null );
-	}
-
-	public static String getModelClassName( ResourceKey key, Locale locale ) {
-		return getModelClassName( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
 	public static String getJavaCode( Class<?> modelResource ) {
@@ -987,10 +916,6 @@ public class AliceResourceUtilties {
 		return getCreator( modelResource, null );
 	}
 
-	public static String getCreator( ResourceKey key ) {
-		return getCreator( getClassFromKey( key ), getEnumNameFromKey( key ) );
-	}
-
 	public static int getCreationYear( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -1003,11 +928,6 @@ public class AliceResourceUtilties {
 	public static int getCreationYear( Class<?> modelResource )
 	{
 		return getCreationYear( modelResource, null );
-	}
-
-	public static int getCreationYear( ResourceKey key )
-	{
-		return getCreationYear( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
@@ -1067,16 +987,6 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	public static String[] getTags( ResourceKey key )
-	{
-		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
-	}
-
-	public static String[] getTags( ResourceKey key, Locale locale )
-	{
-		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
-	}
-
 	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -1091,16 +1001,6 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	public static String[] getGroupTags( ResourceKey key )
-	{
-		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
-	}
-
-	public static String[] getGroupTags( ResourceKey key, Locale locale )
-	{
-		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
-	}
-
 	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -1113,16 +1013,6 @@ public class AliceResourceUtilties {
 			}
 		}
 		return null;
-	}
-
-	public static String[] getThemeTags( ResourceKey key )
-	{
-		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
-	}
-
-	public static String[] getThemeTags( ResourceKey key, Locale locale )
-	{
-		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
 	public static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type )

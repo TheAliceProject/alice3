@@ -271,7 +271,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
-			return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( resourceKey );
+			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( resourceKey );
 		} else {
 			return null;
 		}
@@ -281,7 +281,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	public boolean placeOnGround() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
-			return org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( resourceKey );
+			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( resourceKey );
 		} else {
 			return false;
 		}
