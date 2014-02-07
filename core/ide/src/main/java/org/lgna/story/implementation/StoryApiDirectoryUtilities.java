@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package org.lgna.story.implementation;
 
 import org.lgna.story.resourceutilities.FindResourcesPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IdeDirectoryUtilities {
+public class StoryApiDirectoryUtilities {
 	private static final String MODEL_GALLERY_PREFRENCE_KEY = "MODEL_GALLERY_PREFRENCE_KEY";
 	private static final String MODEL_GALLERY_NAME = "application/gallery";
 	private static final String SOUND_GALLERY_NAME = "application/sound-gallery";
 
-	private IdeDirectoryUtilities() {
+	private StoryApiDirectoryUtilities() {
 		throw new AssertionError();
 	}
 
@@ -84,17 +84,17 @@ public class IdeDirectoryUtilities {
 	private static java.io.File modelGalleryDirectory;
 
 	public static java.io.File getModelGalleryDirectory() {
-		if( IdeDirectoryUtilities.modelGalleryDirectory != null ) {
+		if( StoryApiDirectoryUtilities.modelGalleryDirectory != null ) {
 			//pass
 		} else {
 			java.io.File installDirectory = getInstallDirectory();
 			if( installDirectory != null ) {
 				java.io.File file = new java.io.File( installDirectory, MODEL_GALLERY_NAME );
 				if( file.isDirectory() ) {
-					IdeDirectoryUtilities.modelGalleryDirectory = file;
+					StoryApiDirectoryUtilities.modelGalleryDirectory = file;
 					try {
 						java.util.prefs.Preferences preferences = java.util.prefs.Preferences.userRoot();
-						preferences.put( MODEL_GALLERY_PREFRENCE_KEY, IdeDirectoryUtilities.modelGalleryDirectory.getAbsolutePath() );
+						preferences.put( MODEL_GALLERY_PREFRENCE_KEY, StoryApiDirectoryUtilities.modelGalleryDirectory.getAbsolutePath() );
 					} catch( Throwable t ) {
 						t.printStackTrace();
 					}
@@ -105,7 +105,7 @@ public class IdeDirectoryUtilities {
 						if( path != null ) {
 							java.io.File fileFromPreference = new java.io.File( path );
 							if( fileFromPreference.isDirectory() ) {
-								IdeDirectoryUtilities.modelGalleryDirectory = fileFromPreference;
+								StoryApiDirectoryUtilities.modelGalleryDirectory = fileFromPreference;
 							}
 						}
 					} catch( Throwable t ) {
@@ -115,18 +115,18 @@ public class IdeDirectoryUtilities {
 			}
 		}
 
-		if( IdeDirectoryUtilities.modelGalleryDirectory != null ) {
+		if( StoryApiDirectoryUtilities.modelGalleryDirectory != null ) {
 			//pass
 		} else {
 			FindResourcesPanel.getInstance().show( null );
 			java.io.File fileFromUser = FindResourcesPanel.getInstance().getGalleryDir();
 			if( fileFromUser != null ) {
-				IdeDirectoryUtilities.modelGalleryDirectory = fileFromUser;
+				StoryApiDirectoryUtilities.modelGalleryDirectory = fileFromUser;
 			} else {
 				throw new RuntimeException();
 			}
 		}
-		return IdeDirectoryUtilities.modelGalleryDirectory;
+		return StoryApiDirectoryUtilities.modelGalleryDirectory;
 	}
 
 	public static java.io.File getSoundGalleryDirectory() {

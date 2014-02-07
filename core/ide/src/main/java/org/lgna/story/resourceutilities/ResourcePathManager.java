@@ -1,4 +1,4 @@
-package org.alice.ide;
+package org.lgna.story.resourceutilities;
 
 public class ResourcePathManager {
 
