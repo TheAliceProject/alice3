@@ -42,10 +42,8 @@
  */
 package org.alice.interact.handle;
 
-import org.alice.ide.IDE;
 import org.alice.interact.MovementDirection;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -64,7 +62,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	{
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
@@ -81,7 +79,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	{
 		super( rotationAxisDirection );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
@@ -91,7 +89,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	{
 		super( rotationAxisDirection, handlePosition );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}

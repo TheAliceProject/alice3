@@ -49,7 +49,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group RUN_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
 	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
-	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 	private static org.alice.ide.issue.DefaultExceptionHandler exceptionHandler;
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.DefaultExceptionHandler();
