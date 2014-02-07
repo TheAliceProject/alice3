@@ -40,10 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact;
+package org.alice.stageide.personresource.views;
 
 import java.awt.event.KeyEvent;
 
+import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementKey;
+import org.alice.interact.MovementType;
+import org.alice.interact.PickHint;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
@@ -61,8 +66,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 /**
  * @author David Culyba
  */
-public class CreateASimDragAdapter extends AbstractDragAdapter {
-	public CreateASimDragAdapter() {
+public class CreateAPersonDragAdapter extends AbstractDragAdapter {
+	public CreateAPersonDragAdapter() {
 		this.setUpControls();
 	}
 	private void setUpControls() {

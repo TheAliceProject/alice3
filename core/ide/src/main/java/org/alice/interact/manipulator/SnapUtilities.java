@@ -47,11 +47,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.SnapLine;
 import org.alice.interact.SnapSphere;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.stageide.sceneeditor.GlobalDragAdapter;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

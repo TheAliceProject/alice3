@@ -41,12 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact;
+package org.alice.stageide.sceneeditor;
 
 import java.awt.event.KeyEvent;
 
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.InteractionGroup;
+import org.alice.interact.ModifierMask;
+import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementKey;
+import org.alice.interact.MovementType;
+import org.alice.interact.PickHint;
 import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.DragAndDropCondition;
