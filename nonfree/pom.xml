@@ -11,7 +11,7 @@
 	<!-- mvn deploy -->
 
 	<modules>
-		<module>nebulous</module>
+		<module>nebulous-natives</module>
 		<module>nebulous-model-resources</module>
 		<module>nebulous-model-source</module>
 	</modules>
