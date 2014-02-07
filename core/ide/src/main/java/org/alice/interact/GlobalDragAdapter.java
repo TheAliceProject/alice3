@@ -102,18 +102,20 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 
 	TargetManipulator dropTargetManipulator;
 
+	private final AbstractSceneEditor sceneEditor;
+
 	public GlobalDragAdapter( AbstractSceneEditor sceneEditor )
 	{
-		super( sceneEditor );
-	}
-
-	public GlobalDragAdapter()
-	{
-		super();
+		this.sceneEditor = sceneEditor;
+		this.setUpControls();
 	}
 
 	@Override
-	protected void setUpControls()
+	public boolean hasSceneEditor() {
+		return this.sceneEditor != null;
+	}
+
+	private void setUpControls()
 	{
 		if( ENABLE_SELECTION_ONLY_MODE ) {
 			//Selection visual handle

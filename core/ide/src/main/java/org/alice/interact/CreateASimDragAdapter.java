@@ -62,9 +62,10 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author David Culyba
  */
 public class CreateASimDragAdapter extends AbstractDragAdapter {
-
-	@Override
-	protected void setUpControls() {
+	public CreateASimDragAdapter() {
+		this.setUpControls();
+	}
+	private void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
 				new MovementKey( KeyEvent.VK_PAGE_UP, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), .1d ),
