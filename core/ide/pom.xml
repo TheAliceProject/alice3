@@ -57,10 +57,6 @@
 			<artifactId>mmsc</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>javamp3</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
