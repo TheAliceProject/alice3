@@ -47,8 +47,34 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class RandomPersonUtilities {
+	private static final String ELDER_HAIR_COLOR = "GREY";
+
 	private RandomPersonUtilities() {
 		throw new AssertionError();
+	}
+
+	public static org.lgna.story.resources.sims2.Hair getRandomHair( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		while( true ) {
+			Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomClass( lifeStage, gender );
+			if( hairCls.isEnum() ) {
+				org.lgna.story.resources.sims2.Hair[] hairs = hairCls.getEnumConstants();
+				if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+					for( org.lgna.story.resources.sims2.Hair hair : hairs ) {
+						Enum<? extends org.lgna.story.resources.sims2.Hair> hairEnum = (Enum<? extends org.lgna.story.resources.sims2.Hair>)hair;
+						if( ELDER_HAIR_COLOR.equals( hairEnum.name() ) ) {
+							return hair;
+						}
+					}
+				} else {
+					Enum<? extends org.lgna.story.resources.sims2.Hair> hairEnum = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( (Class<Enum<? extends org.lgna.story.resources.sims2.Hair>>)hairCls );
+					if( ELDER_HAIR_COLOR.equals( hairEnum.name() ) ) {
+						//pass
+					} else {
+						return (org.lgna.story.resources.sims2.Hair)hairEnum;
+					}
+				}
+			}
+		}
 	}
 
 	public static org.lgna.story.resources.sims2.PersonResource createRandomResource( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
@@ -63,7 +89,7 @@ public class RandomPersonUtilities {
 		org.lgna.story.Color skinColor = org.lgna.story.EmployeesOnly.createColor( skinTone.getColor() );
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
 		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
-		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Hair hair = getRandomHair( lifeStage, gender );
 		org.lgna.story.resources.sims2.Face face = org.lgna.story.resources.sims2.BaseFace.getRandom();
 		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinColor, eyeColor, hair, obesityLevel, outfit, face );
