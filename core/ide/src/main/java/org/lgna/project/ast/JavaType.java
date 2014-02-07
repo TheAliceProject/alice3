@@ -446,8 +446,11 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public boolean isPrimitive() {
 		Class<?> cls = this.classReflectionProxy.getReification();
-		assert cls != null : this.classReflectionProxy;
-		return cls.isPrimitive();
+		if( cls != null ) {
+			return cls.isPrimitive();
+		} else {
+			return false;
+		}
 	}
 
 	@Override
