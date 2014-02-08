@@ -71,7 +71,7 @@ public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.proj
 	private final org.lgna.project.ast.MethodInvocation nextMethodInvocation;
 
 	private MoreCascade( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (org.lgna.project.ast.ExpressionStatement)this.methodInvocation.getParent();
@@ -90,7 +90,7 @@ public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.proj
 
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-	//		return org.alice.ide.IDE.PROJECT_GROUP;
+	//		return org.lgna.croquet.Application.PROJECT_GROUP;
 	//	}
 
 	public org.lgna.project.ast.ExpressionStatement getExpressionStatement() {

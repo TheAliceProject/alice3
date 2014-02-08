@@ -54,7 +54,7 @@ public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDial
 	private final PreviewPage previewPage;
 
 	public ImportTypeWizard( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
-		super( java.util.UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), org.alice.ide.IDE.PROJECT_GROUP );
+		super( java.util.UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), org.lgna.croquet.Application.PROJECT_GROUP );
 		this.addMembersPage = new AddMembersPage( this, uriForDescriptionPurposesOnly, importedRootType, importedResources, srcType, dstType );
 		this.previewPage = new PreviewPage( this );
 		this.addPage( this.addMembersPage );

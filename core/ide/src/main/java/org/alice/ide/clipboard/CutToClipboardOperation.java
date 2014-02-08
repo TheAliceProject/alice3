@@ -64,7 +64,7 @@ public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
 	private final org.lgna.project.ast.Statement statement;
 
 	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.statement = statement;
 	}
 

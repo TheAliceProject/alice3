@@ -56,7 +56,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 
 	private TemplateAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), org.lgna.project.ast.Expression.class );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), org.lgna.project.ast.Expression.class );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 

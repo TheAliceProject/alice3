@@ -69,7 +69,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	private MoveToImageIcon imageIcon;
 
 	protected ObjectMarkerMoveActionOperation( java.util.UUID id ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.selectedField = null;
 		this.imageIcon = new MoveToImageIcon();

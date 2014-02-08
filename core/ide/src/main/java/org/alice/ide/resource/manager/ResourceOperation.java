@@ -48,7 +48,7 @@ package org.alice.ide.resource.manager;
  */
 public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation {
 	public ResourceOperation( java.util.UUID migrationId ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
 	}
 
 	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );

@@ -63,7 +63,7 @@ public class ProceduresCascade extends org.lgna.croquet.ImmutableCascade<MethodI
 	}
 
 	private ProceduresCascade( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
 	}
 
 	@Override

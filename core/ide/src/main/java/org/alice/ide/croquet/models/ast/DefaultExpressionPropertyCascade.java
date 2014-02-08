@@ -61,7 +61,7 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
 		desiredType = getDesiredType( expressionProperty, desiredType );
 		java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> map;
-		if( group == org.alice.ide.IDE.PROJECT_GROUP ) {
+		if( group == org.lgna.croquet.Application.PROJECT_GROUP ) {
 			map = projectGroupMap;
 		} else if( group == org.lgna.croquet.Application.INHERIT_GROUP ) {
 			map = inheritGroupMap;

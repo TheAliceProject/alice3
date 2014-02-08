@@ -59,7 +59,7 @@ public final class UriResourceKeyIteratingOperation extends org.lgna.croquet.Sin
 	private java.net.URI uri;
 
 	private UriResourceKeyIteratingOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0f54aa06-c973-47dd-8a6f-3f608a075853" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "0f54aa06-c973-47dd-8a6f-3f608a075853" ) );
 	}
 
 	public org.alice.stageide.modelresource.ResourceKey getResourceKey() {

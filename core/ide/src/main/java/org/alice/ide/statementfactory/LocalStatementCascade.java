@@ -61,7 +61,7 @@ public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalB
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 
 	private LocalStatementCascade( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), org.lgna.project.ast.Expression.class );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), org.lgna.project.ast.Expression.class );
 		this.local = local;
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}

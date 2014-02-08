@@ -49,7 +49,7 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	private final org.lgna.project.ast.NamedUserType dstType;
 
 	public ImportTypeIteratingOperation( org.lgna.project.ast.NamedUserType dstType ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
 		this.dstType = dstType;
 		this.setButtonIcon( new edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL, org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL.getIconWidth(), org.alice.ide.icons.Icons.FOLDER_ICON_SMALL.getIconHeight() ) ) ) );
 	}

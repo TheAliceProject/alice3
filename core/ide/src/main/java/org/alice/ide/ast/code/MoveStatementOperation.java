@@ -68,7 +68,7 @@ public final class MoveStatementOperation extends org.lgna.croquet.ActionOperati
 	private final boolean isMultiple;
 
 	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;

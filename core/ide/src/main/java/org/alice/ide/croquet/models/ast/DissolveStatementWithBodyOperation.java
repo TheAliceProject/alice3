@@ -63,7 +63,7 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 	private org.lgna.project.ast.AbstractStatementWithBody statementWithBody;
 
 	private DissolveStatementWithBodyOperation( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.statementWithBody = statementWithBody;
 	}
 

@@ -72,7 +72,7 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 
 	private DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 		this.lifeStage = lifeStage;
 	}
 

@@ -63,7 +63,7 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 	private final org.lgna.project.ast.UserField field;
 
 	private FieldInitializerState( org.lgna.project.ast.UserField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue(), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue(), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
 		this.field = field;
 	}
 

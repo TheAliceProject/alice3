@@ -56,6 +56,6 @@ public class ProjectHistoryComposite extends HistoryComposite {
 	}
 
 	private ProjectHistoryComposite() {
-		super( java.util.UUID.fromString( "ed880fda-17fb-4109-bed2-6e1eb9f12823" ), org.alice.ide.IDE.PROJECT_GROUP );
+		super( java.util.UUID.fromString( "ed880fda-17fb-4109-bed2-6e1eb9f12823" ), org.lgna.croquet.Application.PROJECT_GROUP );
 	}
 }
