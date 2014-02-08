@@ -26,10 +26,10 @@
 	</properties>
 
 	<modules>
+		<module>core</module>
 		<module>core/aspects</module>
 		<module>core/util</module>
 		<module>core/ast</module>
-
 		<module>core/croquet</module>
 		<module>core/scenegraph</module>
 		<module>core/image-editor</module>
@@ -44,6 +44,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<!-- Modules -->
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>aspects</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>util</artifactId>
