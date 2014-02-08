@@ -41,12 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.utilities;
+package org.lgna.story.implementation;
 
 import org.lgna.story.EmployeesOnly;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
