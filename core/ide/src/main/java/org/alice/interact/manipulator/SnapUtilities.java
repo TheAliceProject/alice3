@@ -51,7 +51,6 @@ import org.alice.interact.SnapLine;
 import org.alice.interact.SnapSphere;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
-import org.alice.stageide.sceneeditor.GlobalDragAdapter;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -222,7 +221,7 @@ public class SnapUtilities
 		AxisAlignedBox boundingBox = null;
 		if( t != null )
 		{
-			Object bbox = t.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
+			Object bbox = t.getBonusDataFor( AbstractDragAdapter.BOUNDING_BOX_KEY );
 			if( bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox )
 			{
 				boundingBox = new AxisAlignedBox( (edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox );

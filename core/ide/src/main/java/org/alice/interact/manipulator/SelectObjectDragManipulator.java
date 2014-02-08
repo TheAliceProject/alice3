@@ -46,7 +46,6 @@ import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
-import org.alice.stageide.sceneeditor.GlobalDragAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
@@ -54,12 +53,9 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class SelectObjectDragManipulator extends AbstractManipulator {
-
-	protected GlobalDragAdapter globalDragAdapter;
-
-	public SelectObjectDragManipulator( GlobalDragAdapter globalDragAdapter )
+	public SelectObjectDragManipulator( org.alice.interact.AbstractDragAdapter dragAdapter )
 	{
-		this.globalDragAdapter = globalDragAdapter;
+		this.dragAdapter = dragAdapter;
 	}
 
 	@Override
@@ -95,14 +91,14 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		PickHint clickedObjectType = startInput.getClickPickHint();
 		if( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ) )
 		{
-			this.globalDragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable( true ) );
+			this.dragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable( true ) );
 		}
 		else if( clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
 		{
 			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable( true );
 			if( pickedHandle instanceof RotationRingHandle )
 			{
-				this.globalDragAdapter.triggerSgObjectSelection( ( (RotationRingHandle)pickedHandle ).getManipulatedObject() );
+				this.dragAdapter.triggerSgObjectSelection( ( (RotationRingHandle)pickedHandle ).getManipulatedObject() );
 			}
 		}
 		else if( clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) )
@@ -111,7 +107,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		}
 		else
 		{
-			this.globalDragAdapter.triggerImplementationSelection( null );
+			this.dragAdapter.triggerImplementationSelection( null );
 		}
 		return true;
 
@@ -128,4 +124,5 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		return null;
 	}
 
+	private final org.alice.interact.AbstractDragAdapter dragAdapter;
 }
