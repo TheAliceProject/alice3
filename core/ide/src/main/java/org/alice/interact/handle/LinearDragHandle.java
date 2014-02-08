@@ -42,12 +42,10 @@
  */
 package org.alice.interact.handle;
 
-import org.alice.ide.IDE;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -83,12 +81,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	{
 		super();
 		this.standUpReference.setName( "Linear StandUp Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 		this.snapReference.setName( "Linear Snap Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.snapReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}

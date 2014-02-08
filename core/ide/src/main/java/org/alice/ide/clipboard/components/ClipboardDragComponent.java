@@ -157,8 +157,8 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 	private static final org.alice.ide.clipboard.icons.ClipboardIcon ICON = new org.alice.ide.clipboard.icons.ClipboardIcon();
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+	protected org.lgna.croquet.views.imp.JDragView createAwtComponent() {
+		org.lgna.croquet.views.imp.JDragView rv = new org.lgna.croquet.views.imp.JDragView() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return new java.awt.Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );

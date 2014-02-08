@@ -542,7 +542,7 @@ public class AstUtilities {
 
 	public static AbstractMethod getSingleAbstractMethod( AbstractType<?, ?, ?> type ) {
 		java.util.ArrayList<? extends AbstractMethod> methods = type.getDeclaredMethods();
-		assert methods.size() == 1;
+		assert methods.size() == 1 : type;
 		AbstractMethod singleAbstractMethod = methods.get( 0 );
 		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
 		return singleAbstractMethod;

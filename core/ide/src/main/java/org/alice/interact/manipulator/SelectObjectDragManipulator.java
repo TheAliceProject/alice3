@@ -42,11 +42,11 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.stageide.sceneeditor.GlobalDragAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 

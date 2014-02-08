@@ -68,7 +68,7 @@ public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.id
 	//	}
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
+		//org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		//ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 

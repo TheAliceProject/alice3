@@ -20,6 +20,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>ast</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>croquet</artifactId>
 		</dependency>
 		<dependency>
@@ -32,21 +36,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>story-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>issue-reporting</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
 			<artifactId>resources</artifactId>
-		</dependency>
-
-		<!-- Gallery/Models -->
-		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>alice-model-source</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.alice.nonfree</groupId>
-			<artifactId>nebulous-model-source</artifactId>
 		</dependency>
 
 		<!-- External -->
@@ -58,10 +56,6 @@
 			<groupId>uk.co.mmscomputing</groupId>
 			<artifactId>mmsc</artifactId>
 			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>javamp3</artifactId>
 		</dependency>
 	</dependencies>
 

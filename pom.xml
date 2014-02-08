@@ -28,10 +28,13 @@
 	<modules>
 		<module>core/aspects</module>
 		<module>core/util</module>
+		<module>core/ast</module>
+
 		<module>core/croquet</module>
 		<module>core/scenegraph</module>
 		<module>core/image-editor</module>
 		<module>core/issue-reporting</module>
+		<module>core/story-api</module>
 		<module>core/ide</module>
 		<module>core/resources</module>
 
@@ -43,12 +46,12 @@
 			<!-- Modules -->
 			<dependency>
 				<groupId>org.alice</groupId>
-				<artifactId>aspects</artifactId>
+				<artifactId>util</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
-				<artifactId>util</artifactId>
+				<artifactId>ast</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -69,6 +72,11 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>issue-reporting</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>story-api</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

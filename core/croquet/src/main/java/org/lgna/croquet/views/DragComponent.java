@@ -42,7 +42,7 @@
  */
 package org.lgna.croquet.views;
 
-public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extends ViewController<javax.swing.JPanel, M> {
+public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extends ViewController<org.lgna.croquet.views.imp.JDragView, M> {
 	private static final float DEFAULT_CLICK_THRESHOLD = 5.0f;
 
 	private final java.awt.event.MouseListener mouseListener;

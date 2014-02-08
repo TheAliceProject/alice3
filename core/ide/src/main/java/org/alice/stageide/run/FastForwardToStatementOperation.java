@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.image;
+package org.alice.stageide.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImageCache {
-	private static java.util.Map<String, java.awt.image.BufferedImage> s_pathToImageMap = new java.util.HashMap<String, java.awt.image.BufferedImage>();
-	private static java.util.Set<String> s_pathNullSet = new java.util.HashSet<String>();
-
-	public static java.awt.image.BufferedImage getBufferedImage( String path ) {
-		java.awt.image.BufferedImage image;
-		if( path != null ) {
-			image = s_pathToImageMap.get( path );
-			if( image != null ) {
-				//pass
-			} else {
-				if( s_pathNullSet.contains( path ) ) {
-					//pass
-				} else {
-					image = edu.cmu.cs.dennisc.image.ImageUtilities.read( path );
-					if( image != null ) {
-						s_pathToImageMap.put( path, image );
-					} else {
-						s_pathNullSet.add( path );
-					}
-				}
-			}
-		} else {
-			image = null;
-		}
-		return image;
+public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOperation {
+	public FastForwardToStatementOperation( org.lgna.project.ast.Statement statement ) {
+		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
+		this.statement = statement;
 	}
 
-	//todo:
-	//public static void releaseMap
-	//public static void forgetSet
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		RunComposite.getInstance().setFastForwardToStatementOperation( this );
+		RunComposite.getInstance().getLaunchOperation().fire();
+	}
+
+	public void pre( org.alice.stageide.program.RunProgramContext runProgramContext ) {
+		this.runProgramContext = runProgramContext;
+		this.runProgramContext.getVirtualMachine().addStatementListener( this.statementListener );
+		this.runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
+	}
+
+	public void post() {
+		//todo: removeStatementListener without locking
+		if( this.runProgramContext != null ) {
+			runProgramContext.getVirtualMachine().removeStatementListener( this.statementListener );
+			runProgramContext = null;
+		}
+	}
+
+	private final org.lgna.project.virtualmachine.events.StatementListener statementListener = new org.lgna.project.virtualmachine.events.StatementListener() {
+		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
+			if( statementEvent.getStatement() == statement ) {
+				if( runProgramContext != null ) {
+					org.lgna.story.implementation.ProgramImp programImp = runProgramContext.getProgramImp();
+					if( programImp != null ) {
+						programImp.setSimulationSpeedFactor( 1.0 );
+					}
+					runProgramContext.getVirtualMachine().removeStatementListener( this );
+					runProgramContext = null;
+				}
+				//} else {
+				//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
+			}
+		}
+
+		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
+		}
+	};
+
+	private final org.lgna.project.ast.Statement statement;
+	private org.alice.stageide.program.RunProgramContext runProgramContext;
 }

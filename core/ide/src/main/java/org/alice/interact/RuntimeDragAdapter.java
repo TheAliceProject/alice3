@@ -48,6 +48,10 @@ import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.CameraMoveDragManipulator;
+import org.alice.interact.manipulator.CameraOrbitDragManipulator;
+import org.alice.interact.manipulator.CameraPanDragManipulator;
+import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
@@ -56,9 +60,11 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
  * @author David Culyba
  */
 public class RuntimeDragAdapter extends AbstractDragAdapter {
+	public RuntimeDragAdapter() {
+		this.setUpControls();
+	}
 
-	@Override
-	protected void setUpControls()
+	private void setUpControls()
 	{
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
@@ -79,6 +85,31 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		{
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
+
+		//Camera mouse control
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
+		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
+
+		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
+		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
+		cameraOrbit.addCondition( middleMouseAndAnything );
+		this.manipulators.add( cameraOrbit );
+
+		ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet( new CameraTiltDragManipulator() );
+		cameraTilt.addCondition( rightMouseAndNonInteractive );
+		cameraTilt.addCondition( leftAndControl );
+		this.manipulators.add( cameraTilt );
+
+		ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet( new CameraMoveDragManipulator() );
+		cameraMouseTranslate.addCondition( leftAndNoModifiers );
+		this.manipulators.add( cameraMouseTranslate );
+
+		ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet( new CameraPanDragManipulator() );
+		cameraMousePan.addCondition( leftAndShift );
+		this.manipulators.add( cameraMousePan );
 	}
 
 	@Override

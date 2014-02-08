@@ -58,7 +58,7 @@ public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<or
 	private AudioResourceImporter() {
 		super(
 				java.util.UUID.randomUUID(),
-				org.alice.ide.IdeDirectoryUtilities.getSoundGalleryDirectory(),
+				org.lgna.story.implementation.StoryApiDirectoryUtilities.getSoundGalleryDirectory(),
 				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
 				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
 				"mp3", "wav", "au" );

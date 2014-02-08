@@ -45,7 +45,7 @@ package org.alice.stageide.run;
 /**
  * @author Dennis Cosgrove
  */
-public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.run.views.RunView> {
+public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org.alice.stageide.run.views.RunView> {
 	private static class SingletonHolder {
 		private static RunComposite instance = new RunComposite();
 	}
@@ -66,7 +66,7 @@ public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialo
 	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
 	private static final int DEFAULT_WIDTH = 640;
 	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
-	private java.awt.Point location = new java.awt.Point( 100, 100 );
+	private java.awt.Point location = null;
 	private java.awt.Dimension size = null;
 
 	@Override
@@ -119,7 +119,10 @@ public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialo
 	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
 	private void startProgram() {
-		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getName() ).start();
+		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getName() ).start();
+		if( this.fastForwardToStatementOperation != null ) {
+			this.fastForwardToStatementOperation.pre( this.programContext );
+		}
 	}
 
 	private void stopProgram() {
@@ -147,35 +150,57 @@ public class RunComposite extends org.lgna.croquet.SimpleOperationUnadornedDialo
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowWindow( org.lgna.croquet.views.Frame frame ) {
+		super.handlePreShowWindow( frame );
+		if( frame.isAlwaysOnTopSupported() ) {
+			frame.setAlwaysOnTop( true );
+		}
 		this.startProgram();
 		if( this.size != null ) {
-			//pas
+			frame.setSize( this.size );
 		} else {
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
-			org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-			dialog.pack();
+			frame.pack();
+		}
+		if( this.location != null ) {
+			frame.setLocation( this.location );
+		} else {
+			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getFrame();
+			if( documentFrame != null ) {
+				frame.setLocationRelativeTo( documentFrame );
+			} else {
+				frame.setLocationByPlatform( true );
+			}
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( dialog.getAwtComponent() );
+	protected void handlePostHideWindow( org.lgna.croquet.views.Frame frame ) {
+		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( frame.getAwtComponent() );
 		this.location = bounds.getLocation();
 		this.size = bounds.getSize();
-		super.handlePostHideDialog( step );
+		super.handlePostHideWindow( frame );
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
+	protected void handleFinally() {
+		if( this.fastForwardToStatementOperation != null ) {
+			this.fastForwardToStatementOperation.post();
+			this.fastForwardToStatementOperation = null;
+		}
 		this.stopProgram();
-		super.handleFinally( step, dialog );
+		super.handleFinally();
 	}
 
 	@Override
 	protected org.alice.stageide.run.views.RunView createView() {
 		return new org.alice.stageide.run.views.RunView( this );
 	}
+
+	public void setFastForwardToStatementOperation( FastForwardToStatementOperation fastForwardToStatementOperation ) {
+		this.fastForwardToStatementOperation = fastForwardToStatementOperation;
+	}
+
+	private FastForwardToStatementOperation fastForwardToStatementOperation;
+
 }

@@ -75,6 +75,8 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		if( statement instanceof org.lgna.project.ast.Comment ) {
 			//pass
 		} else {
+			rv.add( new org.alice.stageide.run.FastForwardToStatementOperation( statement ).getMenuItemPrepModel() );
+			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 			rv.add( org.alice.ide.croquet.models.ast.IsStatementEnabledState.getInstance( statement ).getMenuItemPrepModel() );
 		}
 		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {

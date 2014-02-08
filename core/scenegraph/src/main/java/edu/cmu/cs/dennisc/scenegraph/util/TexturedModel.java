@@ -61,7 +61,7 @@ public class TexturedModel extends ModelTransformable {
 		m_bufferedImageTexture.setPotentiallyAlphaBlended( isAlphaBlended );
 	}
 
-	public void loadImage( String path ) {
+	public void loadImage( String path ) throws java.io.IOException {
 		m_bufferedImageTexture.setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( path ) );
 	}
 

@@ -379,13 +379,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			} else {
 				throw new NullPointerException();
 			}
+			final byte[] data = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, thumbnailImage );
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 				public String getName() {
 					return "thumbnail.png";
 				}
 
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, thumbnailImage );
+					os.write( data );
 				}
 			} };
 		} catch( Throwable t ) {

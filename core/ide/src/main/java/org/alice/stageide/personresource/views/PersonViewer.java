@@ -47,7 +47,7 @@ package org.alice.stageide.personresource.views;
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private final org.alice.stageide.personresource.PersonImp personImp = new org.alice.stageide.personresource.PersonImp();
-	private final org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
+	private final org.alice.stageide.personresource.views.CreateAPersonDragAdapter dragAdapter = new org.alice.stageide.personresource.views.CreateAPersonDragAdapter();
 
 	public PersonViewer() {
 		this.setMinimumPreferredWidth( 300 );

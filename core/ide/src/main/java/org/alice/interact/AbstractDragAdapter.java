@@ -57,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -97,9 +96,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  * @author David Culyba
  */
 public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
-
-	public enum CameraView
-	{
+	public static enum CameraView {
 		MAIN,
 		TOP_LEFT,
 		TOP_RIGHT,
@@ -161,8 +158,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	protected double mouseWheelTimeoutTime = 0;
 	protected Point mouseWheelStartLocation = null;
-
-	protected AbstractSceneEditor sceneEditor;
 
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 
@@ -229,24 +224,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	public AbstractDragAdapter()
-	{
-		this( null );
-	}
-
-	public AbstractDragAdapter( AbstractSceneEditor sceneEditor )
-	{
-		this.sceneEditor = sceneEditor;
-		this.setUpControls();
-	}
-
 	protected void preUndo()
 	{
 		stopMouseWheel();
 		handleStateChange();
 	}
-
-	protected abstract void setUpControls();
 
 	protected void handleCameraMoved()
 	{
@@ -255,7 +237,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	public boolean hasSceneEditor()
 	{
-		return this.sceneEditor != null;
+		return false;
 	}
 
 	//	public abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getInteractionSelectionStateList();
@@ -428,7 +410,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			if( this.selectedCameraMarker != null )
 			{
 				this.selectedCameraMarker.opacity.animateValue( 1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY );
-				if( ( this.sceneEditor != null ) && ( this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp ) )
+				if( this.hasSceneEditor() && ( this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp ) )
 				{
 					//TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
 					//					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);

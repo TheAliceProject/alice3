@@ -43,7 +43,6 @@
 
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -127,9 +126,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		testImageLG.clearAndRenderOffscreen();
 		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
-		if( DEBUG_SAVE_TEST_IMAGES ) {
-			ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "initial.png", testImage );
-		}
+		writeDebugImageIfAppropriate( "initial.png", testImage );
 
 		Point3 testPosition = getRecenterPositionBasedOnImage( testImage, cameraTransform.translation, bbox );
 		getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
@@ -151,9 +148,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
-			if( DEBUG_SAVE_TEST_IMAGES ) {
-				ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "test" + limitCount + ".png", testImage );
-			}
+			writeDebugImageIfAppropriate( "test" + limitCount + ".png", testImage );
 
 			framed = isFullyFramed( testImage );
 			if( framed )
@@ -176,9 +171,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
-			if( DEBUG_SAVE_TEST_IMAGES ) {
-				ImageUtilities.write( THUMBNAIL_SCRATCH_SPACE + "test" + ( firstLimit + limitCount ) + ".png", testImage );
-			}
+			writeDebugImageIfAppropriate( "test" + ( firstLimit + limitCount ) + ".png", testImage );
 
 			framed = isFullyFramed( testImage );
 			if( framed )

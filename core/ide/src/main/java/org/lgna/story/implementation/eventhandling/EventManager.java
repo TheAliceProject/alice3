@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
-import org.alice.interact.GlobalDragAdapter;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
@@ -157,7 +156,7 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private GlobalDragAdapter dragAdapter;
+	private org.alice.interact.AbstractDragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
@@ -284,8 +283,8 @@ public class EventManager {
 		if( this.dragAdapter != null ) {
 			//pass
 		} else {
-			//			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
-			this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
+			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			//this.dragAdapter = new org.alice.interact.GlobalDragAdapter( null );
 			OnscreenLookingGlass lookingGlass = this.scene.getProgram().getOnscreenLookingGlass();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {

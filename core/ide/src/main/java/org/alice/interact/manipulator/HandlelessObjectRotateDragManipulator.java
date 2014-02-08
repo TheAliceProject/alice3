@@ -44,7 +44,6 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.ide.IDE;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -54,7 +53,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
@@ -84,7 +82,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	public HandlelessObjectRotateDragManipulator() {
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
 		{
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}

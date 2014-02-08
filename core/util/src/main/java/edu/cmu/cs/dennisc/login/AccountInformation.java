@@ -44,40 +44,25 @@
 package edu.cmu.cs.dennisc.login;
 
 public class AccountInformation {
-	private String id;
-	private String password;
-	private String fullName;
-
-	public AccountInformation() {
-	}
-
 	public AccountInformation( String id, String password, String fullName ) {
-		setID( id );
-		setPassword( password );
-		setFullName( fullName );
+		this.id = id;
+		this.password = password;
+		this.fullName = fullName;
 	}
 
 	public String getID() {
 		return this.id;
 	}
 
-	public void setID( String id ) {
-		this.id = id;
-	}
-
 	public String getPassword() {
 		return this.password;
-	}
-
-	public void setPassword( String password ) {
-		this.password = password;
 	}
 
 	public String getFullName() {
 		return this.fullName;
 	}
 
-	public void setFullName( String fullName ) {
-		this.fullName = fullName;
-	}
+	private final String id;
+	private final String password;
+	private final String fullName;
 }

@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
@@ -67,7 +66,7 @@ public class StorytellingResources {
 		//			return rootGallery;
 		//		}
 		//		return null;
-		return org.alice.ide.IdeDirectoryUtilities.getModelGalleryDirectory();
+		return org.lgna.story.implementation.StoryApiDirectoryUtilities.getModelGalleryDirectory();
 	}
 
 	//	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {

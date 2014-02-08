@@ -233,7 +233,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		new org.alice.stageide.StageIDE();
+		//new org.alice.stageide.StageIDE();
 
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();

@@ -94,8 +94,8 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent );
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+	protected org.lgna.croquet.views.imp.JDragView createAwtComponent() {
+		org.lgna.croquet.views.imp.JDragView rv = new org.lgna.croquet.views.imp.JDragView() {
 			@Override
 			public boolean isOpaque() {
 				return false;

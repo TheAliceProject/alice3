@@ -1163,8 +1163,33 @@ public abstract class VirtualMachine {
 	}
 
 	protected void execute( org.lgna.project.ast.Statement statement ) throws ReturnException {
-		assert statement != null;
+		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
+			org.lgna.project.virtualmachine.events.StatementEvent statementEvent;
+			org.lgna.project.virtualmachine.events.StatementListener[] array;
+			synchronized( this.statementListeners ) {
+				//				synchronized( this.statementListenersMarkedForRemoval ) {
+				//					if( this.statementListenersMarkedForRemoval.size() > 0 ) {
+				//						for( org.lgna.project.virtualmachine.events.StatementListener statementListener : this.statementListenersMarkedForRemoval ) {
+				//							this.statementListeners.remove( statementListener );
+				//						}
+				//						this.statementListenersMarkedForRemoval.clear();
+				//					}
+				//				}
+				if( this.statementListeners.size() > 0 ) {
+					statementEvent = new org.lgna.project.virtualmachine.events.StatementEvent( this, statement );
+					array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.statementListeners, org.lgna.project.virtualmachine.events.StatementListener.class );
+				} else {
+					statementEvent = null;
+					array = null;
+				}
+			}
+			if( ( statementEvent != null ) && ( array != null ) ) {
+				for( org.lgna.project.virtualmachine.events.StatementListener statementListener : array ) {
+					statementListener.statementExecuting( statementEvent );
+				}
+			}
+			//todo: try?
 			if( statement instanceof org.lgna.project.ast.AssertStatement ) {
 				this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement );
 			} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
@@ -1198,6 +1223,40 @@ public abstract class VirtualMachine {
 			} else {
 				throw new RuntimeException();
 			}
+
+			//todo: finally?
+			if( ( statementEvent != null ) && ( array != null ) ) {
+				for( org.lgna.project.virtualmachine.events.StatementListener statementListener : array ) {
+					statementListener.statementExecuted( statementEvent );
+				}
+			}
 		}
 	}
+
+	public void addStatementListener( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
+		synchronized( this.statementListeners ) {
+			this.statementListeners.add( statementListener );
+		}
+	}
+
+	public void removeStatementListener( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
+		synchronized( this.statementListeners ) {
+			this.statementListeners.remove( statementListener );
+		}
+	}
+
+	//	public void markStatementListenerForRemoval( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
+	//		synchronized( this.statementListenersMarkedForRemoval ) {
+	//			this.statementListenersMarkedForRemoval.add( statementListener );
+	//		}
+	//	}
+
+	public java.util.List<org.lgna.project.virtualmachine.events.StatementListener> getStatementListeners() {
+		synchronized( this.statementListeners ) {
+			return java.util.Collections.unmodifiableList( this.statementListeners );
+		}
+	}
+
+	private final java.util.List<org.lgna.project.virtualmachine.events.StatementListener> statementListeners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//	private final java.util.List<org.lgna.project.virtualmachine.events.StatementListener> statementListenersMarkedForRemoval = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }

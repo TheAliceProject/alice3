@@ -52,7 +52,12 @@ public class ImageEditor extends javax.swing.JFrame {
 		class MyFileTransferHandler extends edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler {
 			@Override
 			protected void handleFiles( java.util.List<java.io.File> files ) {
-				ImageEditor.this.load( files.get( 0 ) );
+				java.io.File file0 = files.get( 0 );
+				try {
+					ImageEditor.this.load( file0 );
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( file0.getAbsolutePath(), ioe );
+				}
 			}
 		}
 
@@ -61,7 +66,7 @@ public class ImageEditor extends javax.swing.JFrame {
 		getContentPane().add( m_imagePane, java.awt.BorderLayout.CENTER );
 	}
 
-	private void load( java.io.File file ) {
+	private void load( java.io.File file ) throws java.io.IOException {
 		m_imagePane.setImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( file ) );
 	}
 

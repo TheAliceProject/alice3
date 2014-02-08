@@ -47,95 +47,73 @@ package edu.cmu.cs.dennisc.jira;
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
-	private String projectKey;
-	private edu.cmu.cs.dennisc.issue.IssueType type;
-	private String summary;
-	private String description;
-	private String steps;
-	private String environment;
-	private String exception;
-	private String[] affectsVersions = new String[] {};
-	private String reportedBy;
-	private String emailAddress;
+	private final String projectKey;
+	private final edu.cmu.cs.dennisc.issue.IssueType type;
+	private final String summary;
+	private final String description;
+	private final String steps;
+	private final String environment;
+	private final String exception;
+	private final String[] affectsVersions;
+	private final String reportedBy;
+	private final String emailAddress;
+
+	public JIRAReport( edu.cmu.cs.dennisc.issue.Issue issue, String projectKey ) {
+		this.projectKey = projectKey;
+		this.type = issue.getType();
+		this.summary = issue.getSummary();
+		this.description = issue.getDescription();
+		this.steps = issue.getSteps();
+		this.environment = issue.getEnvironment();
+		this.exception = edu.cmu.cs.dennisc.issue.IssueUtilities.getThrowableText( issue.getThrowable() );
+		String versionText = issue.getVersion();
+		if( versionText != null ) {
+			this.affectsVersions = new String[] { versionText };
+		} else {
+			this.affectsVersions = new String[] {};
+		}
+		this.reportedBy = issue.getReportedBy();
+		this.emailAddress = issue.getEmailAddress();
+	}
 
 	public String getProjectKey() {
 		return this.projectKey;
-	}
-
-	public void setProjectKey( String projectKey ) {
-		this.projectKey = projectKey;
 	}
 
 	public edu.cmu.cs.dennisc.issue.IssueType getType() {
 		return this.type;
 	}
 
-	public void setType( edu.cmu.cs.dennisc.issue.IssueType type ) {
-		this.type = type;
-	}
-
 	public String getSummary() {
 		return this.summary;
-	}
-
-	public void setSummary( String summary ) {
-		this.summary = summary;
 	}
 
 	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription( String description ) {
-		this.description = description;
-	}
-
 	public String getSteps() {
 		return this.steps;
-	}
-
-	public void setSteps( String steps ) {
-		this.steps = steps;
 	}
 
 	public String getEnvironment() {
 		return this.environment;
 	}
 
-	public void setEnvironment( String environment ) {
-		this.environment = environment;
-	}
-
 	public String[] getAffectsVersions() {
 		return this.affectsVersions;
-	}
-
-	public void setAffectsVersions( String... affectsVersions ) {
-		this.affectsVersions = affectsVersions;
 	}
 
 	public String getException() {
 		return this.exception;
 	}
 
-	public void setException( String exception ) {
-		this.exception = exception;
-	}
-
 	public String getReportedBy() {
 		return this.reportedBy;
 	}
 
-	public void setReportedBy( String reportedBy ) {
-		this.reportedBy = reportedBy;
-	}
-
 	public String getEmailAddress() {
 		return this.emailAddress;
-	}
-
-	public void setEmailAddress( String emailAddress ) {
-		this.emailAddress = emailAddress;
 	}
 
 	public String getAffectsVersionText() {

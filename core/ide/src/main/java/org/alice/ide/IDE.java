@@ -49,7 +49,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group RUN_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
 	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
-	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 	private static org.alice.ide.issue.DefaultExceptionHandler exceptionHandler;
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.DefaultExceptionHandler();
@@ -80,7 +79,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private java.io.File projectFileToLoadOnWindowOpened;
 
-	public IDE( org.lgna.croquet.Operation... uploadOperations ) {
+	private final IdeConfiguration ideConfiguration;
+
+	public IDE( IdeConfiguration ideConfiguration ) {
+		this.ideConfiguration = ideConfiguration;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Please Submit Bug Report: " );
 		sb.append( getApplicationName() );
@@ -93,11 +95,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, uploadOperations );
+		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, ideConfiguration.getUploadOperations() );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( aliceMenuBar );
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( aliceMenuBar );
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
+	}
+
+	public IdeConfiguration getIdeConfiguration() {
+		return this.ideConfiguration;
 	}
 
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {

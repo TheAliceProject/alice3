@@ -9,7 +9,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>nebulous</artifactId>
+	<artifactId>nebulous-natives</artifactId>
 	<packaging>pom</packaging>
 
 	<!-- Deploy Command -->

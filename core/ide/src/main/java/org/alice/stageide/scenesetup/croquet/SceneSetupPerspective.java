@@ -77,16 +77,4 @@ public class SceneSetupPerspective extends org.alice.ide.perspectives.ProjectPer
 	}
 
 	private final SceneSetupMainComposite mainComposite = new SceneSetupMainComposite();
-
-	public static void main( String[] args ) {
-		//org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		//app.initialize( args );
-		org.alice.stageide.StageIDE app = new org.alice.stageide.StageIDE();
-		SceneSetupPerspective perspective = new SceneSetupPerspective( null );
-		app.setPerspective( perspective );
-		//org.alice.ide.MetaDeclarationFauxState.getInstance();
-		//app.getFrame().setMainComposite( fullSceneSetupComposite );
-		app.getFrame().pack();
-		app.getFrame().setVisible( true );
-	}
 }

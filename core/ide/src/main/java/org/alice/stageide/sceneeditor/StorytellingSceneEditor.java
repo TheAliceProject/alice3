@@ -277,7 +277,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
+	private org.alice.stageide.sceneeditor.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.views.Button expandButton;
@@ -731,7 +731,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
-			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter( this );
+			this.globalDragAdapter = new org.alice.stageide.sceneeditor.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener( this );
 			this.globalDragAdapter.setAnimator( animator );
@@ -1067,8 +1067,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			Point3 location;
 			if( resourceCls != null ) {
 				ClassResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
-				AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
-				boolean shouldPlaceOnGround = org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( childKey );
+				AxisAlignedBox box = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( childKey );
+				boolean shouldPlaceOnGround = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( childKey );
 				double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
 				location = new Point3( 0, y, 0 );
 			}
