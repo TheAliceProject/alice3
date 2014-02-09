@@ -57,6 +57,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.DragAndDropCondition;
+import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.InvertedSelectedObjectCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
@@ -82,9 +83,11 @@ import org.alice.interact.manipulator.CameraRotateKeyManipulator;
 import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
+import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.GetAGoodLookAtManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
+import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateKeyManipulator;
@@ -574,14 +577,20 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		}
 	}
 
+	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions ) {
+		ManipulatorConditionSet conditionSet = new ManipulatorConditionSet( new ClickAdapterManipulator( clickAdapter ) );
+		for( InputCondition condition : conditions ) {
+			conditionSet.addCondition( condition );
+		}
+		this.addManipulatorConditionSet( conditionSet );
+	}
+
 	@Override
 	protected org.lgna.croquet.SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
 		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
 	}
 
-	@Override
-	public AffineMatrix4x4 getDropTargetTransformation()
-	{
+	public AffineMatrix4x4 getDropTargetTransformation() {
 		return this.dropTargetManipulator.getTargetTransformation();
 	}
 

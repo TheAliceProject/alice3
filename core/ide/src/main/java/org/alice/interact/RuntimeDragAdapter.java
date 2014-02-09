@@ -112,15 +112,15 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public void mouseMoved( java.awt.event.MouseEvent e ) {
-		//Overridden to prevent picking every frame since there is no need for rollover events
-		this.currentInputState.setMouseLocation( e.getPoint() );
-		this.handleStateChange();
+	protected void handleMouseEntered( MouseEvent e ) {
+		//Overridden to do nothing
 	}
 
 	@Override
-	public void mouseEntered( MouseEvent e ) {
-		//Overridden to do nothing
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
+		//Overridden to prevent picking every frame since there is no need for rollover events
+		this.currentInputState.setMouseLocation( e.getPoint() );
+		this.fireStateChange();
 	}
 
 	@Override
