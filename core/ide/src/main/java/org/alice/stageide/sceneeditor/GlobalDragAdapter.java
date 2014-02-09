@@ -128,7 +128,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			//Selection visual handle
 			org.alice.interact.handle.ManipulationHandleIndirection selectionIndicator = new ManipulationHandleIndirection( new org.alice.interact.handle.SelectionIndicator() );
 			selectionIndicator.addToGroup( HandleSet.HandleGroup.SELECTION );
-			this.manipulationEventManager.addManipulationListener( selectionIndicator );
+			this.addManipulationListener( selectionIndicator );
 			selectionIndicator.setDragAdapterAndAddHandle( this );
 
 			//Selection manipulator
@@ -336,7 +336,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 
 			handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate, null, PickHint.getAnythingHint() ) );
 			handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, null, PickHint.getAnythingHint() ) );
-			this.manipulationEventManager.addManipulationListener( handleAxis );
+			this.addManipulationListener( handleAxis );
 			handleAxis.setDragAdapterAndAddHandle( this );
 
 			ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection( new StoodUpRotationRingHandle( MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ) );
@@ -352,7 +352,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate,
 							new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ),
 							PickHint.PickType.TURNABLE.pickHint() ) );
-			this.manipulationEventManager.addManipulationListener( rotateAboutYAxis );
+			this.addManipulationListener( rotateAboutYAxis );
 			rotateAboutYAxis.setDragAdapterAndAddHandle( this );
 
 			ManipulationHandleIndirection rotateAboutXAxis = new ManipulationHandleIndirection( new RotationRingHandle( MovementDirection.LEFT ) );
@@ -409,8 +409,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					ManipulationEvent.EventType.Translate,
 					new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ),
 					PickHint.PickType.MOVEABLE.pickHint() ) );
-			this.manipulationEventManager.addManipulationListener( translateUp );
-			this.manipulationEventManager.addManipulationListener( translateDown );
+			this.addManipulationListener( translateUp );
+			this.addManipulationListener( translateDown );
 			translateDown.setDragAdapterAndAddHandle( this );
 			translateUp.setDragAdapterAndAddHandle( this );
 
@@ -439,8 +439,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					ManipulationEvent.EventType.Translate,
 					new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ),
 					PickHint.PickType.MOVEABLE.pickHint() ) );
-			this.manipulationEventManager.addManipulationListener( translateXAxisRight );
-			this.manipulationEventManager.addManipulationListener( translateXAxisLeft );
+			this.addManipulationListener( translateXAxisRight );
+			this.addManipulationListener( translateXAxisLeft );
 			translateXAxisRight.setDragAdapterAndAddHandle( this );
 			translateXAxisLeft.setDragAdapterAndAddHandle( this );
 
@@ -468,8 +468,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					ManipulationEvent.EventType.Translate,
 					new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ),
 					PickHint.PickType.MOVEABLE.pickHint() ) );
-			this.manipulationEventManager.addManipulationListener( translateForward );
-			this.manipulationEventManager.addManipulationListener( translateBackward );
+			this.addManipulationListener( translateForward );
+			this.addManipulationListener( translateBackward );
 			translateForward.setDragAdapterAndAddHandle( this );
 			translateBackward.setDragAdapterAndAddHandle( this );
 

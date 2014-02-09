@@ -759,7 +759,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			initializeCameraMarkers();
 
-			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+			this.globalDragAdapter.addSelectionListener( new org.alice.interact.event.SelectionListener() {
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 				}
 
@@ -962,13 +962,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	@Override
 	public void preScreenCapture()
 	{
-		this.globalDragAdapter.setHandlVisibility( false );
+		this.globalDragAdapter.setHandleVisibility( false );
 	}
 
 	@Override
 	public void postScreenCapture()
 	{
-		this.globalDragAdapter.setHandlVisibility( true );
+		this.globalDragAdapter.setHandleVisibility( true );
 	}
 
 	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, boolean getFullFieldState ) {
