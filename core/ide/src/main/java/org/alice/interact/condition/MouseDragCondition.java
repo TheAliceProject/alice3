@@ -42,8 +42,6 @@
  */
 package org.alice.interact.condition;
 
-import java.awt.Point;
-
 import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
@@ -52,25 +50,20 @@ import org.alice.interact.ModifierMask;
  */
 public class MouseDragCondition extends MousePickBasedCondition {
 
-	protected static final double MIN_MOUSE_MOVE = 2.0d;
-	protected Point mouseDownLocation;
-	protected boolean hasStarted = false;
+	private static final double MIN_MOUSE_MOVE = 2.0d;
 
-	public MouseDragCondition( int mouseButton, PickCondition pickCondition )
-	{
+	public MouseDragCondition( int mouseButton, PickCondition pickCondition ) {
 		this( mouseButton, pickCondition, null );
 	}
 
-	public MouseDragCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
-	{
+	public MouseDragCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
 		super( mouseButton, pickCondition, modifierMask );
 	}
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
 		//Null out the cached mouseDownLocation when the current state becomes invalid
-		if( !testInputs( currentState ) )
-		{
+		if( !testInputs( currentState ) ) {
 			this.mouseDownLocation = null;
 		}
 		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
@@ -78,11 +71,7 @@ public class MouseDragCondition extends MousePickBasedCondition {
 
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {
-		if( this.hasStarted && testState( currentState ) && testState( previousState ) )
-		{
-			return true;
-		}
-		return false;
+		return this.hasStarted && testState( currentState ) && testState( previousState );
 	}
 
 	@Override
@@ -94,7 +83,7 @@ public class MouseDragCondition extends MousePickBasedCondition {
 		if( testClickVal && !testPreviousInputVal )
 		{
 			//			System.out.println("Setting mouseDownLocation: "+this.hashCode());
-			this.mouseDownLocation = new Point( currentState.getMouseLocation() );
+			this.mouseDownLocation = new java.awt.Point( currentState.getMouseLocation() );
 		}
 		boolean testCurrentInputs = testInputs( currentState );
 		//System.out.println("  current input: "+testCurrentInputs);
@@ -133,4 +122,6 @@ public class MouseDragCondition extends MousePickBasedCondition {
 		return false;
 	}
 
+	private java.awt.Point mouseDownLocation;
+	protected boolean hasStarted;
 }

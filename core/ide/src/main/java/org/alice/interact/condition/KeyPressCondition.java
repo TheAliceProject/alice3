@@ -51,30 +51,28 @@ import org.alice.interact.ModifierMask;
  * @author David Culyba
  */
 public class KeyPressCondition extends ModifierSensitiveCondition {
-
-	protected int keyValue = 0;
-
-	public KeyPressCondition( int keyValue )
-	{
+	public KeyPressCondition( int keyValue ) {
 		this( keyValue, null );
 	}
 
-	public KeyPressCondition( int keyValue, ModifierMask modifierMask )
-	{
+	public KeyPressCondition( int keyValue, ModifierMask modifierMask ) {
 		super( modifierMask );
 		this.keyValue = keyValue;
 	}
 
+	public int getKeyValue() {
+		return this.keyValue;
+	}
+
 	@Override
-	protected boolean testState( InputState state )
-	{
+	protected boolean testState( InputState state ) {
 		return ( super.testState( state ) && state.isKeyDown( this.keyValue ) );
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return KeyEvent.getKeyText( this.keyValue );
 	}
 
+	private final int keyValue;
 }
