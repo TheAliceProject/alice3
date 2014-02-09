@@ -52,10 +52,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
@@ -135,62 +131,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	protected final org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.HandleStyle> e ) {
-			setInteractionState( e.getNextValue() );
-		}
-	};
-
-	private AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
-
-		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent )
-		{
-			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera )
-			{
-				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();
-				AbstractDragAdapter.this.handleManager.updateCameraPosition( camera.getAbsoluteTransformation().translation );
-			}
-		}
-	};
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<edu.cmu.cs.dennisc.math.AxisAlignedBox> BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
 
 	private static double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
 	private static double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
 
-	protected double mouseWheelTimeoutTime = 0;
-	protected Point mouseWheelStartLocation = null;
-
-	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
-
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<edu.cmu.cs.dennisc.math.AxisAlignedBox> BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
-
-	protected java.util.Vector<ManipulatorConditionSet> manipulators = new java.util.Vector<ManipulatorConditionSet>();
-
-	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-	protected edu.cmu.cs.dennisc.animation.Animator animator;
-	private java.awt.Component lookingGlassComponent = null;
-
-	protected InputState currentInputState = new InputState();
-	protected InputState previousInputState = new InputState();
-	private double timePrev = Double.NaN;
-	private boolean hasSetCameraTransformables = false;
-
-	private boolean isInStageChange = false;
-	private AbstractTransformableImp toBeSelected = null;
-	private boolean hasObjectToBeSelected = false;
-
-	private Component currentRolloverComponent = null;
-
-	protected HandleManager handleManager = new HandleManager();
-	protected InteractionGroup currentInteractionState = null;
-	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-
-	private AbstractTransformableImp selectedObject = null;
-	private CameraMarkerImp selectedCameraMarker = null;
-	private ObjectMarkerImp selectedObjectMarker = null;
-
-	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
+	public HandleManager getHandleManager() {
+		return this.handleManager;
+	}
 
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
@@ -763,7 +711,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void makeCameraActive( AbstractCamera camera )
 	{
 		boolean activated = false;
-		for( Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet() )
+		for( java.util.Map.Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet() )
 		{
 			if( cameras.getValue().hasCamera( camera ) )
 			{
@@ -1107,24 +1055,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.handleStateChange();
 	}
 
-	public void keyPressed( java.awt.event.KeyEvent e ) {
-		this.currentInputState.setKeyState( e.getKeyCode(), true );
-		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( e );
-		handleStateChange();
-
-	}
-
-	public void keyReleased( java.awt.event.KeyEvent e ) {
-		this.currentInputState.setKeyState( e.getKeyCode(), false );
-		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( e );
-		handleStateChange();
-
-	}
-
 	public void mouseClicked( MouseEvent e ) {
 		// TODO Auto-generated method stub
 
@@ -1168,14 +1098,66 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	}
 
-	public HandleManager getHandleManager()
-	{
-		return this.handleManager;
+	public void keyPressed( java.awt.event.KeyEvent e ) {
+		this.currentInputState.setKeyState( e.getKeyCode(), true );
+		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
+		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent( e );
+		handleStateChange();
+
+	}
+
+	public void keyReleased( java.awt.event.KeyEvent e ) {
+		this.currentInputState.setKeyState( e.getKeyCode(), false );
+		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
+		this.currentInputState.setTimeCaptured();
+		this.currentInputState.setInputEvent( e );
+		handleStateChange();
+
 	}
 
 	public void keyTyped( KeyEvent e ) {
-		//System.out.println("Key typed!");
-
 	}
 
+	private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
+		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera ) {
+				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();
+				AbstractDragAdapter.this.handleManager.updateCameraPosition( camera.getAbsoluteTransformation().translation );
+			}
+		}
+	};
+	private double mouseWheelTimeoutTime = 0;
+	private Point mouseWheelStartLocation = null;
+
+	private java.util.Map<CameraView, CameraPair> cameraMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	protected final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.animation.Animator animator;
+	private java.awt.Component lookingGlassComponent = null;
+
+	protected InputState currentInputState = new InputState();
+	private InputState previousInputState = new InputState();
+	private double timePrev = Double.NaN;
+	private boolean hasSetCameraTransformables = false;
+
+	private boolean isInStageChange = false;
+	private AbstractTransformableImp toBeSelected = null;
+	private boolean hasObjectToBeSelected = false;
+
+	private Component currentRolloverComponent = null;
+
+	private final HandleManager handleManager = new HandleManager();
+	private InteractionGroup currentInteractionState = null;
+	protected final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
+
+	private AbstractTransformableImp selectedObject = null;
+	private CameraMarkerImp selectedCameraMarker = null;
+	private ObjectMarkerImp selectedObjectMarker = null;
+
+	protected final java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	private final java.util.List<SelectionListener> selectionListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

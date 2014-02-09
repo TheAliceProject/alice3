@@ -49,12 +49,11 @@ import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.ModifierMask;
+import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.ModifierMask.ModifierKey;
-import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.DoubleClickedObjectCondition;
 import org.alice.interact.condition.DragAndDropCondition;
@@ -586,4 +585,9 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		return this.dropTargetManipulator.getTargetTransformation();
 	}
 
+	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.HandleStyle> e ) {
+			setInteractionState( e.getNextValue() );
+		}
+	};
 }
