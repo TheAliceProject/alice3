@@ -140,6 +140,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.handleManager;
 	}
 
+	public void addManipulatorConditionSet( ManipulatorConditionSet manipulator ) {
+		this.manipulators.add( manipulator );
+	}
+
+	public Iterable<ManipulatorConditionSet> getManipulatorConditionSets() {
+		return this.manipulators;
+	}
+
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
 			this.selectionListeners.add( selectionListener );
@@ -860,11 +868,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return false;
 	}
 
-	public void addManipulator( ManipulatorConditionSet manipulator )
-	{
-		this.manipulators.add( manipulator );
-	}
-
 	public void addListeners( java.awt.Component component ) {
 		if( !this.isComponentListener( component ) )
 		{
@@ -1130,9 +1133,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private double mouseWheelTimeoutTime = 0;
 	private Point mouseWheelStartLocation = null;
 
-	private java.util.Map<CameraView, CameraPair> cameraMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	protected final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
@@ -1160,4 +1161,5 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected final java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final java.util.List<SelectionListener> selectionListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.Map<CameraView, CameraPair> cameraMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 }

@@ -134,14 +134,14 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			//Selection manipulator
 			ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator( this ) );
 			selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
-			this.manipulators.add( selectObject );
+			this.addManipulatorConditionSet( selectObject );
 
 			//Ability to drag stuff in from gallery
 			OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
 			this.dropTargetManipulator = boundingBoxManipulator;
 			ManipulatorConditionSet dragFromGallery = new ManipulatorConditionSet( boundingBoxManipulator, "Bounding Box Translate" );
 			dragFromGallery.addCondition( new DragAndDropCondition() );
-			this.manipulators.add( dragFromGallery );
+			this.addManipulatorConditionSet( dragFromGallery );
 
 			if( this.sceneEditor != null )
 			{
@@ -216,21 +216,21 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKey.keyValue, noModifiers ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 				cameraTranslate.addCondition( keyAndNotSelected );
 			}
-			//	this.manipulators.add( cameraTranslate );
+			//	this.addManipulator( cameraTranslate );
 
 			ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet( new ObjectTranslateKeyManipulator( movementKeys ) );
 			for( MovementKey movementKey : movementKeys ) {
 				AndInputCondition keyAndSelected = new AndInputCondition( new KeyPressCondition( movementKey.keyValue ), new SelectedObjectCondition( PickHint.PickType.MOVEABLE.pickHint() ) );
 				objectTranslate.addCondition( keyAndSelected );
 			}
-			this.manipulators.add( objectTranslate );
+			this.addManipulatorConditionSet( objectTranslate );
 
 			ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet( new CameraRotateKeyManipulator( turnKeys ) );
 			for( MovementKey turnKey : turnKeys ) {
 				AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKey.keyValue ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 				cameraRotate.addCondition( keyAndNotSelected );
 			}
-			this.manipulators.add( cameraRotate );
+			this.addManipulatorConditionSet( cameraRotate );
 
 			//Camera mouse control
 			MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
@@ -242,27 +242,27 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 			//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
 			cameraOrbit.addCondition( middleMouseAndAnything );
-			this.manipulators.add( cameraOrbit );
+			this.addManipulatorConditionSet( cameraOrbit );
 
 			ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet( new CameraTiltDragManipulator() );
 			cameraTilt.addCondition( rightMouseAndNonInteractive );
 			cameraTilt.addCondition( leftAndControl );
-			this.manipulators.add( cameraTilt );
+			this.addManipulatorConditionSet( cameraTilt );
 
 			ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet( new CameraMoveDragManipulator() );
 			cameraMouseTranslate.addCondition( leftAndNoModifiers );
-			this.manipulators.add( cameraMouseTranslate );
+			this.addManipulatorConditionSet( cameraMouseTranslate );
 
 			ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet( new CameraPanDragManipulator() );
 			cameraMousePan.addCondition( leftAndShift );
-			this.manipulators.add( cameraMousePan );
+			this.addManipulatorConditionSet( cameraMousePan );
 
 			//Object Manipulation
 			OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
 			this.dropTargetManipulator = boundingBoxManipulator;
 			ManipulatorConditionSet dragFromGallery = new ManipulatorConditionSet( boundingBoxManipulator, "Bounding Box Translate" );
 			dragFromGallery.addCondition( new DragAndDropCondition() );
-			this.manipulators.add( dragFromGallery );
+			this.addManipulatorConditionSet( dragFromGallery );
 
 			MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 			MouseDragCondition leftClickTurnableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
@@ -270,59 +270,59 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 
 			ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
 			leftClickMouseTranslateObject.addCondition( leftClickMoveableObjects );
-			this.manipulators.add( leftClickMouseTranslateObject );
+			this.addManipulatorConditionSet( leftClickMouseTranslateObject );
 
 			ManipulatorConditionSet leftClickMouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
 			leftClickMouseRotateObjectLeftRight.addCondition( leftClickTurnableObjects );
 			//This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
 			leftClickMouseRotateObjectLeftRight.setEnabled( false );
-			this.manipulators.add( leftClickMouseRotateObjectLeftRight );
+			this.addManipulatorConditionSet( leftClickMouseRotateObjectLeftRight );
 
 			ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator( org.lgna.story.implementation.ModelImp.Resizer.UNIFORM, org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE, org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE, org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE ) );
 			leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
 			//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 			leftClickMouseResizeObject.setEnabled( false );
-			this.manipulators.add( leftClickMouseResizeObject );
+			this.addManipulatorConditionSet( leftClickMouseResizeObject );
 
 			ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
 			MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 			mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
-			this.manipulators.add( mouseUpDownTranslateObject );
+			this.addManipulatorConditionSet( mouseUpDownTranslateObject );
 
 			ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
 			MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
 			mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
-			this.manipulators.add( mouseRotateObjectLeftRight );
+			this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
 			ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
 			MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.THREE_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 			MouseCondition handleObjectClickCondition = new MouseCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 			mouseHandleDrag.addCondition( handleObjectCondition );
 			mouseHandleDrag.addCondition( handleObjectClickCondition );
-			this.manipulators.add( mouseHandleDrag );
+			this.addManipulatorConditionSet( mouseHandleDrag );
 
 			//		ManipulatorConditionSet mouseHandleClick = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
 			//		MousePressCondition handleObjectClickCondition = new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES));
 			//		System.out.println("Looking for condition: "+handleObjectCondition.hashCode()+", in set "+mouseHandleClick.hashCode());
 			//		mouseHandleClick.addCondition( handleObjectClickCondition );
-			//		this.manipulators.add( mouseHandleClick );
+			//		this.addManipulator( mouseHandleClick );
 
 			ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator( this ) );
 			selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
-			this.manipulators.add( selectObject );
+			this.addManipulatorConditionSet( selectObject );
 
 			ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator() );
 			getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.VIEWABLE.pickHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) ) );
-			this.manipulators.add( getAGoodLookAtObject );
+			this.addManipulatorConditionSet( getAGoodLookAtObject );
 
 			ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
 			MouseWheelCondition mouseWheelCondition = new MouseWheelCondition( new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 			mouseWheelCameraZoom.addCondition( mouseWheelCondition );
-			this.manipulators.add( mouseWheelCameraZoom );
+			this.addManipulatorConditionSet( mouseWheelCameraZoom );
 
-			for( int i = 0; i < this.manipulators.size(); i++ )
-			{
-				this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+			//todo: move down?
+			for( ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets() ) {
+				manipulatorConditionSet.getManipulator().setDragAdapter( this );
 			}
 
 			ManipulationHandleIndirection handleAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.ManipulationAxes() );
