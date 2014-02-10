@@ -153,9 +153,9 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
+		this.clearManipulationEvents();
 		if( this.rotateAxisDirection != null ) {
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP ), this.manipulatedTransformable ) );
+			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP ), this.manipulatedTransformable ) );
 		}
 	}
 

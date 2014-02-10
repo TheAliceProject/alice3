@@ -43,8 +43,6 @@
 
 package org.alice.interact.manipulator;
 
-import java.util.List;
-
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
@@ -61,20 +59,29 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author David Culyba
  */
 public abstract class AbstractManipulator {
+	public void clearManipulationEvents() {
+		this.manipulationEvents.clear();
+	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable = null;
-	protected AffineMatrix4x4 originalTransformation = null;
-	private boolean hasStarted = false;
-	protected AbstractDragAdapter dragAdapter;
-	protected boolean hasDoneUpdate = false;
+	public void addManipulationEvent( ManipulationEvent e ) {
+		this.manipulationEvents.add( e );
+	}
 
-	protected ManipulationEvent mainManipulationEvent;
-	protected List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	public void removeManipulationEvent( ManipulationEvent e ) {
+		this.manipulationEvents.remove( e );
+	}
 
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable )
-	{
-		if( manipulatedTransformable != this.manipulatedTransformable )
-		{
+	public Iterable<ManipulationEvent> getManipulationEvents() {
+		this.initializeEventMessages();
+		return this.manipulationEvents;
+	}
+
+	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable() {
+		return this.manipulatedTransformable;
+	}
+
+	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable ) {
+		if( manipulatedTransformable != this.manipulatedTransformable ) {
 			this.manipulatedTransformable = manipulatedTransformable;
 			if( this.manipulatedTransformable != null ) {
 				this.initializeEventMessages();
@@ -82,45 +89,33 @@ public abstract class AbstractManipulator {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable()
-	{
-		return this.manipulatedTransformable;
-	}
-
-	public boolean hasStarted()
-	{
+	public boolean hasStarted() {
 		return this.hasStarted;
 	}
 
-	public boolean hasUpdated()
-	{
+	public boolean hasUpdated() {
 		return this.hasDoneUpdate;
 	}
 
-	protected void setHasUpdated( boolean hasUpdated )
-	{
+	protected void setHasUpdated( boolean hasUpdated ) {
 		this.hasDoneUpdate = hasUpdated;
 	}
 
-	public void setDragAdapter( AbstractDragAdapter dragAdapter )
-	{
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
 	protected abstract HandleSet getHandleSetToEnable();
 
-	protected void initializeEventMessages()
-	{
+	protected void initializeEventMessages() {
 		this.manipulationEvents.clear();
 	}
 
-	public ManipulationEvent getMainManipulationEvent()
-	{
+	public ManipulationEvent getMainManipulationEvent() {
 		return this.mainManipulationEvent;
 	}
 
-	public boolean doesManipulatedObjectHaveHandles()
-	{
+	public boolean doesManipulatedObjectHaveHandles() {
 		if( this.manipulatedTransformable != null ) {
 			EntityImp entityImplementation = EntityImp.getInstance( this.manipulatedTransformable );
 			if( !( entityImplementation instanceof org.lgna.story.implementation.MarkerImp ) ) {
@@ -130,26 +125,16 @@ public abstract class AbstractManipulator {
 		return false;
 	}
 
-	public List<ManipulationEvent> getManipulationEvents()
-	{
-		this.initializeEventMessages();
-		return this.manipulationEvents;
-	}
-
-	public void triggerAllDeactivateEvents()
-	{
-		for( int i = 0; i < this.manipulationEvents.size(); i++ )
-		{
+	public void triggerAllDeactivateEvents() {
+		for( int i = 0; i < this.manipulationEvents.size(); i++ ) {
 			this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( i ), false );
 		}
-		if( this.mainManipulationEvent != null )
-		{
+		if( this.mainManipulationEvent != null ) {
 			this.dragAdapter.triggerManipulationEvent( this.mainManipulationEvent, false );
 		}
 	}
 
-	public boolean startManipulator( InputState startInput )
-	{
+	public boolean startManipulator( InputState startInput ) {
 		try {
 			this.hasStarted = doStartManipulator( startInput );
 		} catch( Throwable t ) {
@@ -157,19 +142,14 @@ public abstract class AbstractManipulator {
 			this.hasStarted = false;
 		}
 		setHasUpdated( false );
-		if( this.hasStarted )
-		{
+		if( this.hasStarted ) {
 			undoRedoBeginManipulation();
-			if( this.getMainManipulationEvent() != null )
-			{
+			if( this.getMainManipulationEvent() != null ) {
 				this.dragAdapter.triggerManipulationEvent( this.getMainManipulationEvent(), true );
 			}
-			if( this.doesManipulatedObjectHaveHandles() )
-			{
+			if( this.doesManipulatedObjectHaveHandles() ) {
 				HandleSet setToShow = this.getHandleSetToEnable();
-				if( ( setToShow != null ) && ( this.dragAdapter != null ) )
-				{
-					//				System.out.println("Push on start: "+setToShow);
+				if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
 					this.dragAdapter.pushHandleSet( setToShow );
 				}
 			}
@@ -177,42 +157,32 @@ public abstract class AbstractManipulator {
 		return this.hasStarted;
 	}
 
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput )
-	{
-		if( this.hasStarted )
-		{
+	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+		if( this.hasStarted ) {
 			doDataUpdateManipulator( currentInput, previousInput );
 			setHasUpdated( true );
 		}
 	}
 
-	public void timeUpdateManipulator( double dTime, InputState currentInput )
-	{
-		if( this.hasStarted )
-		{
+	public void timeUpdateManipulator( double dTime, InputState currentInput ) {
+		if( this.hasStarted ) {
 			doTimeUpdateManipulator( dTime, currentInput );
 			setHasUpdated( true );
 		}
 	}
 
-	public void clickManipulator( InputState clickInput, InputState previousInput )
-	{
-		if( startManipulator( clickInput ) )
-		{
+	public void clickManipulator( InputState clickInput, InputState previousInput ) {
+		if( startManipulator( clickInput ) ) {
 			doClickManipulator( clickInput, previousInput );
 			doEndManipulator( clickInput, previousInput );
-			if( isUndoable() )
-			{
+			if( isUndoable() ) {
 				undoRedoEndManipulation();
 			}
-			if( this.hasStarted )
-			{
+			if( this.hasStarted ) {
 				this.hasStarted = false;
-				if( this.doesManipulatedObjectHaveHandles() )
-				{
+				if( this.doesManipulatedObjectHaveHandles() ) {
 					HandleSet setToShow = this.getHandleSetToEnable();
-					if( ( setToShow != null ) && ( this.dragAdapter != null ) )
-					{
+					if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
 						this.dragAdapter.popHandleSet();
 					}
 				}
@@ -221,19 +191,14 @@ public abstract class AbstractManipulator {
 		}
 	}
 
-	public void endManipulator( InputState endInput, InputState previousInput )
-	{
-		try
-		{
+	public void endManipulator( InputState endInput, InputState previousInput ) {
+		try {
 			doEndManipulator( endInput, previousInput );
-		} catch( Throwable t )
-		{
+		} catch( Throwable t ) {
 			t.printStackTrace();
 		}
-		if( this.hasStarted )
-		{
-			if( isUndoable() )
-			{
+		if( this.hasStarted ) {
+			if( isUndoable() ) {
 				undoRedoEndManipulation();
 			}
 			//			else if (this.getManipulatedTransformable() != null)
@@ -245,11 +210,9 @@ public abstract class AbstractManipulator {
 			//				}
 			//			}
 			this.hasStarted = false;
-			if( this.doesManipulatedObjectHaveHandles() )
-			{
+			if( this.doesManipulatedObjectHaveHandles() ) {
 				HandleSet setToShow = this.getHandleSetToEnable();
-				if( ( setToShow != null ) && ( this.dragAdapter != null ) )
-				{
+				if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
 					//				System.out.println("Pop on manip end:");
 					this.dragAdapter.popHandleSet();
 				}
@@ -261,29 +224,18 @@ public abstract class AbstractManipulator {
 
 	public abstract String getUndoRedoDescription();
 
-	@Override
-	public String toString()
-	{
-		return this.getClass().toString() + ":" + this.hashCode();
-	}
-
-	public void undoRedoBeginManipulation()
-	{
-		if( this.getManipulatedTransformable() != null )
-		{
+	public void undoRedoBeginManipulation() {
+		if( this.getManipulatedTransformable() != null ) {
 			this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
 		}
 	}
 
-	public void undoRedoEndManipulation()
-	{
+	public void undoRedoEndManipulation() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgManipulatedTransformable = this.getManipulatedTransformable();
-		if( sgManipulatedTransformable != null )
-		{
+		if( sgManipulatedTransformable != null ) {
 			AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
 
-			if( newTransformation.equals( originalTransformation ) )
-			{
+			if( newTransformation.equals( originalTransformation ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the transformation." );
 			}
 			edu.cmu.cs.dennisc.animation.Animator animator;
@@ -292,8 +244,7 @@ public abstract class AbstractManipulator {
 			} else {
 				animator = null;
 			}
-			if( originalTransformation == null )
-			{
+			if( originalTransformation == null ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Ending manipulation where the original transformaion is null." );
 			}
 
@@ -316,8 +267,7 @@ public abstract class AbstractManipulator {
 		}
 	}
 
-	public boolean isUndoable()
-	{
+	public boolean isUndoable() {
 		return ( this.dragAdapter != null ) && this.dragAdapter.hasSceneEditor() && this.hasUpdated();
 	}
 
@@ -331,4 +281,17 @@ public abstract class AbstractManipulator {
 
 	public abstract void doClickManipulator( InputState endInput, InputState previousInput );
 
+	@Override
+	public String toString() {
+		return this.getClass().toString() + ":" + this.hashCode();
+	}
+
+	protected AbstractDragAdapter dragAdapter;
+	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable = null;
+	private AffineMatrix4x4 originalTransformation = null;
+	private boolean hasStarted = false;
+	protected boolean hasDoneUpdate = false;
+
+	protected ManipulationEvent mainManipulationEvent;
+	private final java.util.List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

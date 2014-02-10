@@ -94,7 +94,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	@Override
 	protected void initializeEventMessages()
 	{
-		this.manipulationEvents.clear();
+		this.clearManipulationEvents();
 	}
 
 	@Override

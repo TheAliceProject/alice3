@@ -211,28 +211,20 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.manipulatedTransformable.applyRotationAboutZAxis( new AngleInRadians( rotateVector.z ), getRotationReferenceFrame() );
 		}
 
-		for( ManipulationEvent event : this.manipulationEvents )
-		{
+		for( ManipulationEvent event : this.getManipulationEvents() ) {
 			Vector3 dotVector = null;
-			if( event.getType() == ManipulationEvent.EventType.Rotate )
-			{
+			if( event.getType() == ManipulationEvent.EventType.Rotate ) {
 				dotVector = rotateVector;
-			}
-			else if( event.getType() == ManipulationEvent.EventType.Translate )
-			{
+			} else if( event.getType() == ManipulationEvent.EventType.Translate ) {
 				dotVector = moveVector;
 			}
-			if( dotVector != null )
-			{
+			if( dotVector != null ) {
 				Vector3 normalizedDotVector = new Vector3( dotVector );
 				normalizedDotVector.normalize();
 				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), normalizedDotVector );
-				if( !Double.isNaN( dot ) && ( dot > 0.0d ) )
-				{
+				if( !Double.isNaN( dot ) && ( dot > 0.0d ) ) {
 					this.dragAdapter.triggerManipulationEvent( event, true );
-				}
-				else
-				{
+				} else {
 					this.dragAdapter.triggerManipulationEvent( event, false );
 				}
 			}

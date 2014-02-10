@@ -126,11 +126,11 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.clearManipulationEvents();
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 	}
 
 	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
@@ -232,10 +232,8 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && ( this.manipulatedTransformable != null ) )
-		{
-			if( !this.hasMoved )
-			{
+		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && ( this.manipulatedTransformable != null ) ) {
+			if( !this.hasMoved ) {
 				this.hasMoved = true;
 			}
 
@@ -245,21 +243,16 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation );
 			movementDif.normalize();
-			for( ManipulationEvent event : this.manipulationEvents )
-			{
+			for( ManipulationEvent event : this.getManipulationEvents() ) {
 				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), movementDif );
-				if( dot > 0.1d )
-				{
+				if( dot > 0.1d ) {
 					this.dragAdapter.triggerManipulationEvent( event, true );
-				}
-				else if( dot < -.07d )
-				{
+				} else if( dot < -.07d ) {
 					this.dragAdapter.triggerManipulationEvent( event, false );
 				}
 			}
 
-			if( newPosition != null )
-			{
+			if( newPosition != null ) {
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 			}
 		}

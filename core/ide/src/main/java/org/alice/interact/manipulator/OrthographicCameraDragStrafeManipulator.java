@@ -73,11 +73,11 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.LOCAL ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.LOCAL ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.clearManipulationEvents();
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), this.manipulatedTransformable ) );
 	}
 
 	@Override

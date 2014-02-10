@@ -170,10 +170,10 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
+		this.clearManipulationEvents();
 		if( rotationHandle != null ) {
 			org.alice.interact.MovementType type = this.rotationHandle instanceof org.alice.interact.handle.StoodUpRotationRingHandle ? org.alice.interact.MovementType.STOOD_UP : org.alice.interact.MovementType.LOCAL;
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotationHandle.getRotationDirection(), type ), this.manipulatedTransformable ) );
+			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotationHandle.getRotationDirection(), type ), this.manipulatedTransformable ) );
 		}
 	}
 

@@ -109,9 +109,9 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Zoom, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.clearManipulationEvents();
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
 	}
 
 	@Override
@@ -212,18 +212,13 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 		}
 	}
 
-	protected void applyZoom( double zoomAmount )
-	{
+	protected void applyZoom( double zoomAmount ) {
 		this.setCameraZoom( zoomAmount );
 
-		for( ManipulationEvent event : this.manipulationEvents )
-		{
-			if( event.getMovementDescription().direction == MovementDirection.FORWARD )
-			{
+		for( ManipulationEvent event : this.getManipulationEvents() ) {
+			if( event.getMovementDescription().direction == MovementDirection.FORWARD ) {
 				this.dragAdapter.triggerManipulationEvent( event, zoomAmount < 0.0d );
-			}
-			else if( event.getMovementDescription().direction == MovementDirection.BACKWARD )
-			{
+			} else if( event.getMovementDescription().direction == MovementDirection.BACKWARD ) {
 				this.dragAdapter.triggerManipulationEvent( event, zoomAmount >= 0.0d );
 			}
 		}

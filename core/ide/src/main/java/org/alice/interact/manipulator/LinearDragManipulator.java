@@ -124,13 +124,13 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
+		this.clearManipulationEvents();
 		if( this.linearHandle != null ) {
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
 			MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
 			if( oppositeDirection != this.linearHandle.getMovementDescription().direction )
 			{
-				this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( oppositeDirection, this.linearHandle.getMovementDescription().type ), this.manipulatedTransformable ) );
+				this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( oppositeDirection, this.linearHandle.getMovementDescription().type ), this.manipulatedTransformable ) );
 			}
 		}
 	}
@@ -203,7 +203,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 
 		Vector3 movementDif = new Vector3( movementVector );
 		movementDif.normalize();
-		for( ManipulationEvent event : this.manipulationEvents )
+		for( ManipulationEvent event : this.getManipulationEvents() )
 		{
 			double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), movementDif );
 			if( dot > 0.1d )

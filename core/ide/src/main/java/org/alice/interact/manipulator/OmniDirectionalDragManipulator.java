@@ -153,11 +153,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.clearManipulationEvents();
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 	}
 
 	protected Plane createCameraPickPlane( Point3 clickPoint )
@@ -330,8 +330,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	{
 		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && ( this.manipulatedTransformable != null ) )
 		{
-			if( !this.hasMoved )
-			{
+			if( !this.hasMoved ) {
 				this.hasMoved = true;
 				this.hideCursor();
 			}
@@ -344,25 +343,19 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
 			//Send manipulation events
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation );
-			if( movementDif.x > .1 )
-			{
+			if( movementDif.x > .1 ) {
 				movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
 			}
 			movementDif.normalize();
-			for( ManipulationEvent event : this.manipulationEvents )
-			{
+			for( ManipulationEvent event : this.getManipulationEvents() ) {
 				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), movementDif );
-				if( dot > 0.1d )
-				{
+				if( dot > 0.1d ) {
 					this.dragAdapter.triggerManipulationEvent( event, true );
-				}
-				else if( dot < -.07d )
-				{
+				} else if( dot < -.07d ) {
 					this.dragAdapter.triggerManipulationEvent( event, false );
 				}
 			}
-			if( newPosition != null )
-			{
+			if( newPosition != null ) {
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 				planeTransitionPointDebugSphere.setLocalTranslation( newPosition );
 				//				Point awtPoint = getMouseCursorPositionInLookingGlass();

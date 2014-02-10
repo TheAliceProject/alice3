@@ -63,9 +63,9 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
+		this.clearManipulationEvents();
 		if( this.linearHandle != null ) {
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
 		}
 
 	}
