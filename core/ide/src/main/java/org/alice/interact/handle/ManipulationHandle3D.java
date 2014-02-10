@@ -84,28 +84,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public static final Key<Object> DEBUG_PARENT_TRACKER_KEY = Key.createInstance( "DEBUG_PARENT_TRACKER_KEY" );
 
-	public static final double ANIMATION_DURATION = .25;
+	protected static final double ANIMATION_DURATION = .25;
 
-	protected Visual sgVisual = new Visual();
-	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-	protected AbstractTransformable manipulatedObject;
-	protected Animator animator;
-	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
-
-	protected HandleState state = new HandleState();
-	protected HandleManager handleManager = null;
-	protected HandleSet handleSet = new HandleSet();
-
-	protected DoubleInterruptibleAnimation opacityAnimation;
-	protected Color4fInterruptibleAnimation colorAnimation;
-
-	protected AbstractManipulator manipulation = null;
-	protected AbstractDragAdapter dragAdapter = null;
-	protected boolean isPickable = false; //This is false until a manipulation is set on the handle
-
-	protected float cameraRelativeOpacity = 1.0f;
-
-	public static Criterion<Component> NOT_3D_HANDLE_CRITERION = new Criterion<Component>() {
+	public static final Criterion<Component> NOT_3D_HANDLE_CRITERION = new Criterion<Component>() {
 		protected boolean isHandle( Component c ) {
 			if( c == null ) {
 				return false;
@@ -123,137 +104,96 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	};
 
-	protected abstract class Color4fInterruptibleAnimation extends Color4fAnimation
-	{
+	protected static abstract class Color4fInterruptibleAnimation extends Color4fAnimation {
 		private boolean doEpilogue = true;
 		private boolean isActive = true;
 		private Color4f target;
 
-		public Color4fInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Color4f d0, Color4f d1 )
-		{
+		public Color4fInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Color4f d0, Color4f d1 ) {
 			super( duration, style, d0, d1 );
 			this.isActive = true;
 			this.target = d1;
 		}
 
 		@Override
-		protected void epilogue()
-		{
-			if( this.doEpilogue )
-			{
+		protected void epilogue() {
+			if( this.doEpilogue ) {
 				super.epilogue();
 			}
 			this.isActive = false;
 			this.target = null;
 		}
 
-		public boolean isActive()
-		{
+		public boolean isActive() {
 			return this.isActive;
 		}
 
-		public Color4f getTarget()
-		{
+		public Color4f getTarget() {
 			return this.target;
 		}
 
-		public boolean matchesTarget( Color4f target )
-		{
+		public boolean matchesTarget( Color4f target ) {
 			return ( ( this.target != null ) && this.target.equals( target ) );
 		}
 
-		public void cancel()
-		{
+		public void cancel() {
 			this.doEpilogue = false;
 			this.complete( null );
 			this.doEpilogue = true;
 		}
 	}
 
-	protected abstract class DoubleInterruptibleAnimation extends DoubleAnimation
-	{
+	protected static abstract class DoubleInterruptibleAnimation extends DoubleAnimation {
 		private boolean doEpilogue = true;
 		private boolean isActive = true;
 		private double target;
 
-		public DoubleInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Double d0, Double d1 )
-		{
+		public DoubleInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Double d0, Double d1 ) {
 			super( duration, style, d0, d1 );
 			this.isActive = true;
 			this.target = d1;
 		}
 
 		@Override
-		protected void epilogue()
-		{
-			if( this.doEpilogue )
-			{
+		protected void epilogue() {
+			if( this.doEpilogue ) {
 				super.epilogue();
 			}
 			this.isActive = false;
 			this.target = -1;
 		}
 
-		public boolean isActive()
-		{
+		public boolean isActive() {
 			return this.isActive;
 		}
 
-		public double getTarget()
-		{
+		public double getTarget() {
 			return this.target;
 		}
 
-		public boolean matchesTarget( double target )
-		{
+		public boolean matchesTarget( double target ) {
 			return this.target == target;
 			//			return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(this.target, target);
 		}
 
-		public void cancel()
-		{
+		public void cancel() {
 			this.doEpilogue = false;
 			this.complete( null );
 			this.doEpilogue = true;
 		}
 	}
 
-	protected class ScaleChangeListener implements PropertyListener
-	{
-		public void propertyChanged( PropertyEvent e ) {
-			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
-			ManipulationHandle3D.this.resizeToObject();
-			ManipulationHandle3D.this.positionRelativeToObject();
-		}
-
-		public void propertyChanging( PropertyEvent e ) {
-		}
-	}
-
-	protected ScaleChangeListener scaleListener = new ScaleChangeListener();
-
-	protected AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener()
-	{
-		public void absoluteTransformationChanged(
-				AbsoluteTransformationEvent absoluteTransformationEvent )
-		{
-			ManipulationHandle3D.this.updateCameraRelativeOpacity();
-		}
-	};
-
 	private Scalable getScalable( AbstractTransformable object ) {
 		Scalable scalable = null;
 		if( object instanceof Scalable ) {
 			scalable = (Scalable)object;
-		}
-		else if( object != null ) {
+		} else if( object != null ) {
 			scalable = object.getBonusDataFor( Scalable.KEY );
 		}
 		return scalable;
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		this.setManipulatedObject( null );
 		this.setParent( null );
 	}
@@ -262,31 +202,25 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
 	public void setManipulatedObject( AbstractTransformable manipulatedObjectIn ) {
-		if( this.manipulatedObject != null )
-		{
+		if( this.manipulatedObject != null ) {
 			Scalable s = getScalable( this.manipulatedObject );
 			if( s != null ) {
 				s.removeScaleListener( this.scaleListener );
 			}
 		}
-		if( this.manipulatedObject != manipulatedObjectIn )
-		{
+		if( this.manipulatedObject != manipulatedObjectIn ) {
 			this.manipulatedObject = manipulatedObjectIn;
 			this.criteriaManager.setTargetTransformable( this.manipulatedObject );
-			if( this.manipulatedObject != null )
-			{
+			if( this.manipulatedObject != null ) {
 				this.setParent( this.manipulatedObject );
 				//				this.setHandleShowing(true);
 				this.setScale( this.getObjectScale() );
-			}
-			else
-			{
+			} else {
 				//				this.setHandleShowing(false);
 			}
 
 		}
-		if( this.manipulatedObject != null )
-		{
+		if( this.manipulatedObject != null ) {
 			Scalable s = getScalable( this.manipulatedObject );
 			if( s != null ) {
 				s.addScaleListener( this.scaleListener );
@@ -305,19 +239,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
-		if( this.dragAdapter != null )
-		{
+		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
 		}
 	}
 
-	public void updateCameraRelativeOpacity()
-	{
-		if( ManipulationHandle3D.this.dragAdapter != null )
-		{
+	public void updateCameraRelativeOpacity() {
+		if( ManipulationHandle3D.this.dragAdapter != null ) {
 			AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
-			if( activeCamera instanceof SymmetricPerspectiveCamera )
-			{
+			if( activeCamera instanceof SymmetricPerspectiveCamera ) {
 				Point3 cameraLocation = ( (SymmetricPerspectiveCamera)activeCamera ).getAbsoluteTransformation().translation;
 				ManipulationHandle3D.this.setCameraPosition( cameraLocation );
 			}
@@ -329,8 +259,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected abstract void setScale( double scale );
 
-	protected void initFromHandle( ManipulationHandle3D handle )
-	{
+	protected void initFromHandle( ManipulationHandle3D handle ) {
 		this.manipulatedObject = handle.manipulatedObject;
 		this.state = new HandleState( handle.state );
 		this.handleSet.clear();
@@ -342,8 +271,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.manipulation = handle.manipulation;
 	}
 
-	public ManipulationHandle3D()
-	{
+	public ManipulationHandle3D() {
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		setCurrentColorInternal();
 		sgVisual.setParent( this );
@@ -358,30 +286,24 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgFrontFacingAppearance.opacity.setValue( new Float( this.getDesiredOpacity( renderState ) ) );
 	}
 
-	protected void initializeAppearance()
-	{
+	protected void initializeAppearance() {
 		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
 		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor( renderState ) );
 		sgFrontFacingAppearance.opacity.setValue( new Float( this.getDesiredOpacity( renderState ) ) );
 	}
 
-	protected void setTransformableScale( AbstractTransformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix )
-	{
+	protected void setTransformableScale( AbstractTransformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix ) {
 		Visual objectVisual = getSGVisualForTransformable( t );
 		objectVisual.scale.setValue( scaleMatrix );
 	}
 
-	protected Visual getSGVisualForTransformable( AbstractTransformable object )
-	{
-		if( object == null )
-		{
+	protected Visual getSGVisualForTransformable( AbstractTransformable object ) {
+		if( object == null ) {
 			return null;
 		}
-		for( int i = 0; i < object.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < object.getComponentCount(); i++ ) {
 			Component c = object.getComponentAt( i );
-			if( c instanceof Visual )
-			{
+			if( c instanceof Visual ) {
 				return (Visual)c;
 			}
 		}
@@ -394,48 +316,39 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.updateCameraRelativeOpacity();
 	}
 
-	public void addToSet( HandleSet set )
-	{
+	public void addToSet( HandleSet set ) {
 		this.handleSet.addSet( set );
 	}
 
-	public HandleSet getHandleSet()
-	{
+	public HandleSet getHandleSet() {
 		return this.handleSet;
 	}
 
-	public boolean isAlwaysVisible()
-	{
+	public boolean isAlwaysVisible() {
 		return false;
 	}
 
-	public void addToGroup( HandleSet.HandleGroup group )
-	{
+	public void addToGroup( HandleSet.HandleGroup group ) {
 		this.handleSet.addGroup( group );
 	}
 
-	public void addToGroups( HandleSet.HandleGroup... groups )
-	{
+	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.handleSet.addGroups( groups );
 	}
 
-	public boolean isMemberOf( HandleSet set )
-	{
+	public boolean isMemberOf( HandleSet set ) {
 		if( set == null ) {
 			return false;
-		}
-		else {
+		} else {
 			return set.intersects( this.handleSet ) || this.handleSet.intersects( set );
 		}
 	}
 
-	public boolean isMemberOf( HandleSet.HandleGroup group )
-	{
+	public boolean isMemberOf( HandleSet.HandleGroup group ) {
 		return this.handleSet.get( group.ordinal() );
 	}
 
-	public void setAnimator( Animator animator )
-	{
+	public void setAnimator( Animator animator ) {
 		assert animator != null;
 		this.animator = animator;
 	}
@@ -448,8 +361,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return sgFrontFacingAppearance;
 	}
 
-	public AbstractTransformable getManipulatedObject()
-	{
+	public AbstractTransformable getManipulatedObject() {
 		return this.manipulatedObject;
 		//		return (Transformable)this.getParent();
 	}
@@ -461,98 +373,79 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgFrontFacingAppearance.setName( name + ".sgFrontFacingAppearance" );
 	}
 
-	public ReferenceFrame getReferenceFrame()
-	{
+	public ReferenceFrame getReferenceFrame() {
 		return this.getParentTransformable();
 	}
 
 	public abstract ReferenceFrame getSnapReferenceFrame();
 
-	abstract public void positionRelativeToObject();
+	public abstract void positionRelativeToObject();
 
-	abstract public void resizeToObject();
+	public abstract void resizeToObject();
 
-	protected float getOpacity()
-	{
+	protected float getOpacity() {
 		return this.sgFrontFacingAppearance.opacity.getValue();
 	}
 
-	protected void setOpacity( float opacity )
-	{
+	protected void setOpacity( float opacity ) {
 		this.sgFrontFacingAppearance.opacity.setValue( opacity );
 	}
 
-	protected void setColor( Color4f color )
-	{
+	protected void setColor( Color4f color ) {
 		this.sgFrontFacingAppearance.diffuseColor.setValue( color );
 	}
 
-	protected void animateToOpacity( double targetOpacity )
-	{
+	protected void animateToOpacity( double targetOpacity ) {
 		double currentOpacity = this.getOpacity();
 		//Check to see if the animation is going to get us to the desired value
-		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() && this.opacityAnimation.matchesTarget( targetOpacity ) )
-		{
+		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() && this.opacityAnimation.matchesTarget( targetOpacity ) ) {
 			return;
 		}
 		//Stop any existing animation
-		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() )
-		{
+		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() ) {
 			this.opacityAnimation.cancel();
 		}
 		//The animation is not going to get us to the desired value, so see if we're already there
 		//		if (edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(currentOpacity, targetOpacity))
-		if( currentOpacity == targetOpacity )
-		{
+		if( currentOpacity == targetOpacity ) {
 			return;
 		}
 		//Make a new animation and launch it
-		this.opacityAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity )
-		{
+		this.opacityAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity ) {
 			@Override
-			protected void updateValue( Double v )
-			{
+			protected void updateValue( Double v ) {
 				ManipulationHandle3D.this.setOpacity( v.floatValue() );
 			}
 		};
 		this.animator.invokeLater( this.opacityAnimation, null );
 	}
 
-	protected void animateToColor( Color4f targetColor )
-	{
+	protected void animateToColor( Color4f targetColor ) {
 		Color4f currentColor = this.sgFrontFacingAppearance.diffuseColor.getValue();
 		//Check to see if the animation is going to get us to the desired value
-		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() && this.colorAnimation.matchesTarget( targetColor ) )
-		{
+		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() && this.colorAnimation.matchesTarget( targetColor ) ) {
 			return;
 		}
 		//Stop any existing animation
-		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() )
-		{
+		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() ) {
 			this.colorAnimation.cancel();
 		}
 		//The animation is not going to get us to the desired value, so see if we're already there
-		if( currentColor.equals( targetColor ) )
-		{
+		if( currentColor.equals( targetColor ) ) {
 			return;
 		}
 		//Make a new animation and launch it
-		this.colorAnimation = new Color4fInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor )
-		{
+		this.colorAnimation = new Color4fInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor ) {
 			@Override
-			protected void updateValue( Color4f v )
-			{
+			protected void updateValue( Color4f v ) {
 				ManipulationHandle3D.this.setColor( v );
-
 			}
 		};
 		this.animator.invokeLater( this.colorAnimation, null );
 	}
 
-	protected void updateVisibleState( HandleRenderState renderState )
-	{
-		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) )
-		{
+	protected void updateVisibleState( HandleRenderState renderState ) {
+		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) ) {
 			//			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
 			return;
 		}
@@ -562,44 +455,35 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.animateToOpacity( targetOpacity );
 		Color4f targetColor = this.getDesiredColor( renderState );
 		this.animateToColor( targetColor );
-
 	}
 
-	public boolean matches( ManipulationEvent event )
-	{
+	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
-	public void addCondition( ManipulationEventCriteria condition )
-	{
+	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
-	public void removeCondition( ManipulationEventCriteria condition )
-	{
+	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
-	public void activate( ManipulationEvent event )
-	{
+	public void activate( ManipulationEvent event ) {
 		this.setHandleActive( true );
 	}
 
-	public void deactivate( ManipulationEvent event )
-	{
+	public void deactivate( ManipulationEvent event ) {
 		this.setHandleActive( false );
 	}
 
-	protected Color4f getBaseColor()
-	{
+	protected Color4f getBaseColor() {
 		return Color4f.YELLOW;
 	}
 
-	protected Color4f getDesiredColor( HandleRenderState renderState )
-	{
+	protected Color4f getDesiredColor( HandleRenderState renderState ) {
 		Color4f baseColor = this.getBaseColor();
-		switch( renderState )
-		{
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			return baseColor;
 		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
@@ -615,43 +499,33 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
-	public void setCameraPosition( Point3 cameraPosition )
-	{
+	public void setCameraPosition( Point3 cameraPosition ) {
 		this.setCameraRelativeOpacity( this.calculateCameraRelativeOpacity( cameraPosition ) );
 	}
 
-	public float calculateCameraRelativeOpacity( Point3 cameraPosition )
-	{
-		if( ( this.getParentTransformable() != null ) && ( cameraPosition != null ) )
-		{
+	public float calculateCameraRelativeOpacity( Point3 cameraPosition ) {
+		if( ( this.getParentTransformable() != null ) && ( cameraPosition != null ) ) {
 			Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation;
 			double distance = Point3.calculateDistanceBetween( cameraPosition, handlePosition );
-			if( distance < .2 )
-			{
+			if( distance < .2 ) {
 				return 0.0f;
-			}
-			else if( distance < .5 )
-			{
+			} else if( distance < .5 ) {
 				return (float)( ( distance - .2f ) / ( .5 - .2 ) );
 			}
 		}
 		return 1;
 	}
 
-	public void setCameraRelativeOpacity( float cameraRelativeOpacity )
-	{
-		if( this.cameraRelativeOpacity != cameraRelativeOpacity )
-		{
+	public void setCameraRelativeOpacity( float cameraRelativeOpacity ) {
+		if( this.cameraRelativeOpacity != cameraRelativeOpacity ) {
 			this.cameraRelativeOpacity = cameraRelativeOpacity;
 			this.setOpacity( (float)this.getDesiredOpacity( HandleRenderState.getStateForHandle( this ) ) );
 		}
 	}
 
-	protected double getDesiredOpacity( HandleRenderState renderState )
-	{
+	protected double getDesiredOpacity( HandleRenderState renderState ) {
 		//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" camera opacity: "+this.cameraRelativeOpacity);
-		switch( renderState )
-		{
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			return 0.0d;
 		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
@@ -667,77 +541,62 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
-	public AffineMatrix4x4 getTransformationForAxis( Vector3 axis )
-	{
+	public AffineMatrix4x4 getTransformationForAxis( Vector3 axis ) {
 		double upDot = Vector3.calculateDotProduct( axis, Vector3.accessPositiveYAxis() );
 		AffineMatrix4x4 transform = new AffineMatrix4x4();
-		if( Math.abs( upDot ) != 1.0d )
-		{
+		if( Math.abs( upDot ) != 1.0d ) {
 			Vector3 rightAxis = Vector3.createCrossProduct( axis, Vector3.accessPositiveYAxis() );
 			rightAxis.normalize();
 			Vector3 upAxis = axis;
 			Vector3 backwardAxis = Vector3.createCrossProduct( rightAxis, upAxis );
 			backwardAxis.normalize();
 			transform.orientation.set( rightAxis, upAxis, backwardAxis );
-		}
-		else if( upDot == -1.0d )
-		{
+		} else if( upDot == -1.0d ) {
 			transform.applyRotationAboutXAxis( new AngleInRadians( Math.PI ) );
 		}
 		return transform;
 	}
 
-	public void setManipulation( AbstractManipulator manipulation )
-	{
+	public void setManipulation( AbstractManipulator manipulation ) {
 		this.manipulation = manipulation;
-		if( this.manipulation != null )
-		{
+		if( this.manipulation != null ) {
 			this.setPickable( true );
 		}
 	}
 
-	public AbstractManipulator getManipulation( InputState input )
-	{
+	public AbstractManipulator getManipulation( InputState input ) {
 		return this.manipulation;
 	}
 
-	public void setHandleManager( HandleManager handleManager )
-	{
+	public void setHandleManager( HandleManager handleManager ) {
 		this.handleManager = handleManager;
 	}
 
-	public HandleManager getHandleManager()
-	{
+	public HandleManager getHandleManager() {
 		return this.handleManager;
 	}
 
-	public HandleState getHandleStateCopy()
-	{
+	public HandleState getHandleStateCopy() {
 		return new HandleState( this.state );
 	}
 
 	public boolean isRenderable() {
-		if( this.manipulatedObject == null )
-		{
+		if( this.manipulatedObject == null ) {
 			return false;
 		}
-		if( this.isAlwaysVisible() )
-		{
+		if( this.isAlwaysVisible() ) {
 			return true;
 		}
 		return this.state.shouldRender();
 	}
 
-	protected double getObjectScale()
-	{
-		if( this.getManipulatedObject() == null )
-		{
+	protected double getObjectScale() {
+		if( this.getManipulatedObject() == null ) {
 			return 1.0d;
 		}
 		final double VOLUME_NORMALIZER = 1d;
 		AxisAlignedBox bbox = this.getManipulatedObjectBox();
-		if( ( bbox == null ) || bbox.isNaN() )
-		{
+		if( ( bbox == null ) || bbox.isNaN() ) {
 			return 1.0d;
 		}
 		Point3 max = bbox.getMaximum();
@@ -749,12 +608,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if( Double.isNaN( scale ) ) {
 			return 1;
 		}
-		if( scale < .25d )
-		{
+		if( scale < .25d ) {
 			scale = .25d;
 		}
-		if( scale > 2.0d )
-		{
+		if( scale > 2.0d ) {
 			scale = 2.0d;
 		}
 		return scale;
@@ -767,8 +624,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			return null;
 		}
 		Composite parent = this.getParent();
-		if( parent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable )
-		{
+		if( parent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) {
 			return (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)parent;
 		}
 		if( parent != null ) {
@@ -778,62 +634,87 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return null;
 	}
 
-	protected AxisAlignedBox getManipulatedObjectBox()
-	{
+	protected AxisAlignedBox getManipulatedObjectBox() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedObject = this.getManipulatedObject();
 		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject, false );
-		if( boundingBox == null )
-		{
+		if( boundingBox == null ) {
 			boundingBox = new AxisAlignedBox( new Point3( -1, 0, -1 ), new Point3( 1, 1, 1 ) );
 		}
 		return boundingBox;
 	}
 
-	public void setPickable( boolean isPickable )
-	{
+	public void setPickable( boolean isPickable ) {
 		this.isPickable = isPickable;
 	}
 
-	public boolean isPickable()
-	{
-		if( this.isPickable )
-		{
+	public boolean isPickable() {
+		if( this.isPickable ) {
 			return this.state.isVisible();
+		} else {
+			return false;
 		}
-		return false;
 	}
 
-	public void setHandleActive( boolean active )
-	{
+	public void setHandleActive( boolean active ) {
 		this.state.setActive( active );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
-
 	}
 
 	public void setHandleRollover( boolean rollover ) {
 		this.state.setRollover( rollover );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
-
 	}
 
-	public boolean isHandleVisible()
-	{
+	public boolean isHandleVisible() {
 		return this.state.isVisible() || this.isAlwaysVisible();
 	}
 
-	public void setHandleVisible( boolean visible )
-	{
+	public void setHandleVisible( boolean visible ) {
 		this.state.setVisible( visible );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
-	public void setVisualsShowing( boolean showing )
-	{
+	public void setVisualsShowing( boolean showing ) {
 		this.getSGVisual().isShowing.setValue( showing );
 	}
 
-	public PickHint getPickHint()
-	{
+	public PickHint getPickHint() {
 		return PickHint.PickType.THREE_D_HANDLE.pickHint();
 	}
+
+	private final PropertyListener scaleListener = new PropertyListener() {
+		public void propertyChanged( PropertyEvent e ) {
+			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
+			ManipulationHandle3D.this.resizeToObject();
+			ManipulationHandle3D.this.positionRelativeToObject();
+		}
+
+		public void propertyChanging( PropertyEvent e ) {
+		}
+	};
+
+	private final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
+		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+			ManipulationHandle3D.this.updateCameraRelativeOpacity();
+		}
+	};
+
+	protected Visual sgVisual = new Visual();
+	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
+	protected AbstractTransformable manipulatedObject;
+	protected Animator animator;
+	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
+
+	private HandleState state = new HandleState();
+	private HandleManager handleManager = null;
+	private HandleSet handleSet = new HandleSet();
+
+	private DoubleInterruptibleAnimation opacityAnimation;
+	private Color4fInterruptibleAnimation colorAnimation;
+
+	private AbstractManipulator manipulation = null;
+	private AbstractDragAdapter dragAdapter = null;
+	private boolean isPickable = false; //This is false until a manipulation is set on the handle
+
+	protected float cameraRelativeOpacity = 1.0f;
 }

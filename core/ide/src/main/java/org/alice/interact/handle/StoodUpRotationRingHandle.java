@@ -55,64 +55,50 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public class StoodUpRotationRingHandle extends RotationRingHandle implements PropertyListener {
-
-	protected Transformable standUpReference = new Transformable();
-
-	public StoodUpRotationRingHandle()
-	{
+	public StoodUpRotationRingHandle() {
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
-		{
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
 
-	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle )
-	{
+	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle ) {
 		this( handle.rotationAxisDirection, handle.handlePosition );
 		this.initFromHandle( handle );
 		this.handleOffset.set( handle.handleOffset );
 	}
 
-	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection )
-	{
+	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection ) {
 		super( rotationAxisDirection );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
-		{
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
 
-	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
-	{
+	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
 		super( rotationAxisDirection, handlePosition );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
-		{
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
 
 	@Override
-	public StoodUpRotationRingHandle clone()
-	{
+	public StoodUpRotationRingHandle clone() {
 		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle( this );
 		return newHandle;
 	}
 
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		if( this.manipulatedObject != manipulatedObject )
-		{
-			if( this.manipulatedObject instanceof Transformable )
-			{
+		if( this.manipulatedObject != manipulatedObject ) {
+			if( this.manipulatedObject instanceof Transformable ) {
 				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this );
 			}
 			super.setManipulatedObject( manipulatedObject );
-			if( this.manipulatedObject != null )
-			{
+			if( this.manipulatedObject != null ) {
 				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this );
 			}
 			positionRelativeToObject();
@@ -120,16 +106,15 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	}
 
 	@Override
-	public ReferenceFrame getReferenceFrame()
-	{
-		if( this.manipulatedObject != null )
-		{
+	public ReferenceFrame getReferenceFrame() {
+		if( this.manipulatedObject != null ) {
 			this.standUpReference.setParent( this.manipulatedObject );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 			this.standUpReference.setAxesOnlyToStandUp();
 			return this.standUpReference;
+		} else {
+			return this;
 		}
-		return this;
 	}
 
 	@Override
@@ -145,4 +130,6 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	public void propertyChanging( PropertyEvent e ) {
 
 	}
+
+	private final Transformable standUpReference = new Transformable();
 }

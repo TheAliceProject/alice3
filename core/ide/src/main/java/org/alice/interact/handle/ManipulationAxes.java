@@ -52,11 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 public class ManipulationAxes extends ManipulationHandle3D {
 	private static final double MIN_SIZE = .6;
 
-	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
-	private double diameterScale = 1;
-
-	public ManipulationAxes()
-	{
+	public ManipulationAxes() {
 		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1, 1.5 );
 		this.axis.setParent( this );
 	}
@@ -80,8 +76,7 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	}
 
 	@Override
-	public void positionRelativeToObject()
-	{
+	public void positionRelativeToObject() {
 		//Do nothing
 	}
 
@@ -102,8 +97,7 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	protected float getOpacity() {
 		if( this.axis != null ) {
 			return this.axis.getOpacity();
-		}
-		else {
+		} else {
 			return super.getOpacity();
 		}
 	}
@@ -118,10 +112,8 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	}
 
 	@Override
-	protected double getDesiredOpacity( HandleRenderState renderState )
-	{
-		switch( renderState )
-		{
+	protected double getDesiredOpacity( HandleRenderState renderState ) {
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			return 0.0d;
 		default:
@@ -130,20 +122,19 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	}
 
 	@Override
-	public void resizeToObject()
-	{
-		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) )
-		{
+	public void resizeToObject() {
+		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) ) {
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			double diagonal = boundingBox.getDiagonal();
 			if( Double.isNaN( diagonal ) || ( diagonal < MIN_SIZE ) ) {
 				diagonal = MIN_SIZE;
 			}
-			if( this.axis != null )
-			{
+			if( this.axis != null ) {
 				this.axis.resize( diagonal * .5, 1.5, this.diameterScale );
 			}
 		}
 	}
 
+	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+	private double diameterScale = 1;
 }

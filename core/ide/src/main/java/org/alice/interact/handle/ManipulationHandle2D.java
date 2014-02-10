@@ -62,27 +62,16 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label implements ManipulationHandle, ManipulationListener {
-	protected Animator animator;
-	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
-	protected HandleState state = new HandleState();
-	protected HandleManager handleManager = null;
-	protected HandleSet handleSet = new HandleSet();
-	protected AbstractManipulator manipulation = null;
-	protected AbstractDragAdapter dragAdapter = null;
-
-	public ManipulationHandle2D()
-	{
+	public ManipulationHandle2D() {
 		super();
 	}
 
 	@Override
-	public ManipulationHandle2D clone()
-	{
+	public ManipulationHandle2D clone() {
 		return null;
 	}
 
-	public Vector2 getCenter()
-	{
+	public Vector2 getCenter() {
 		java.awt.Rectangle ourSize = this.getBounds();
 		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
 	}
@@ -91,82 +80,66 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	public void setVisible( boolean flag ) {
 		boolean wasVisible = this.isVisible();
 		super.setVisible( flag );
-		if( ( wasVisible != flag ) && ( this.dragAdapter != null ) )
-		{
-			if( this.isVisible() )
-			{
+		if( ( wasVisible != flag ) && ( this.dragAdapter != null ) ) {
+			if( this.isVisible() ) {
 				this.dragAdapter.addListeners( this.getAwtComponent() );
 				this.dragAdapter.addManipulationListener( this );
-			}
-			else
-			{
+			} else {
 				this.dragAdapter.removeListeners( this.getAwtComponent() );
 				this.dragAdapter.removeManipulationListener( this );
 			}
 		}
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		this.setManipulatedObject( null );
 	}
 
-	public void setVisualsShowing( boolean showing )
-	{
+	public void setVisualsShowing( boolean showing ) {
 		//Do nothing
 	}
 
-	public void setDragAdapter( AbstractDragAdapter dragAdapter )
-	{
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
-		if( this.dragAdapter != null )
-		{
+		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
 			this.dragAdapter.addListeners( this.getAwtComponent() );
 		}
 	}
 
-	public void addToSet( HandleSet set )
-	{
+	public void addToSet( HandleSet set ) {
 		this.handleSet.addSet( set );
 	}
 
-	public HandleSet getHandleSet()
-	{
+	public HandleSet getHandleSet() {
 		return this.handleSet;
 	}
 
-	public boolean isAlwaysVisible()
-	{
+	public boolean isAlwaysVisible() {
 		return false;
 	}
 
-	public void addToGroup( HandleSet.HandleGroup group )
-	{
+	public void addToGroup( HandleSet.HandleGroup group ) {
 		this.handleSet.addGroup( group );
 	}
 
-	public void addToGroups( HandleSet.HandleGroup... groups )
-	{
+	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.handleSet.addGroups( groups );
 	}
 
-	public boolean isMemberOf( HandleSet set )
-	{
+	public boolean isMemberOf( HandleSet set ) {
 		return this.handleSet.intersects( set ) || set.intersects( this.handleSet );
 	}
 
-	public boolean isPickable()
-	{
+	public boolean isPickable() {
 		return true;
 	}
 
-	public boolean isMemberOf( HandleSet.HandleGroup group )
-	{
+	public boolean isMemberOf( HandleSet.HandleGroup group ) {
 		return this.handleSet.get( group.ordinal() );
 	}
 
@@ -181,42 +154,35 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 
-	public void setManipulation( AbstractManipulator manipulation )
-	{
+	public void setManipulation( AbstractManipulator manipulation ) {
 		this.manipulation = manipulation;
 	}
 
-	public AbstractManipulator getManipulation( InputState input )
-	{
+	public AbstractManipulator getManipulation( InputState input ) {
 		return this.manipulation;
 	}
 
-	public void setHandleManager( HandleManager handleManager )
-	{
+	public void setHandleManager( HandleManager handleManager ) {
 		this.handleManager = handleManager;
 	}
 
-	public HandleManager getHandleManager()
-	{
+	public HandleManager getHandleManager() {
 		return this.handleManager;
 	}
 
-	public HandleState getHandleStateCopy()
-	{
+	public HandleState getHandleStateCopy() {
 		return new HandleState( this.state );
 	}
 
 	public boolean isRenderable() {
-		if( this.isAlwaysVisible() )
-		{
+		if( this.isAlwaysVisible() ) {
 			return true;
+		} else {
+			return this.state.shouldRender();
 		}
-		return this.state.shouldRender();
 	}
 
-	protected void updateVisibleState( HandleRenderState renderState )
-	{
-
+	protected void updateVisibleState( HandleRenderState renderState ) {
 	}
 
 	public void activate( ManipulationEvent event ) {
@@ -232,8 +198,7 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
-	public boolean isHandleVisible()
-	{
+	public boolean isHandleVisible() {
 		return this.state.isVisible() || this.isAlwaysVisible();
 	}
 
@@ -250,18 +215,15 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
 	}
 
-	public boolean matches( ManipulationEvent event )
-	{
+	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
-	public void addCondition( ManipulationEventCriteria condition )
-	{
+	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
-	public void removeCondition( ManipulationEventCriteria condition )
-	{
+	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
@@ -269,8 +231,15 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		this.animator = animator;
 	}
 
-	public void setCameraPosition( Point3 cameraPosition )
-	{
+	public void setCameraPosition( Point3 cameraPosition ) {
 		//Do Nothing
 	}
+
+	private Animator animator;
+	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
+	protected HandleState state = new HandleState();
+	private HandleManager handleManager = null;
+	private HandleSet handleSet = new HandleSet();
+	private AbstractManipulator manipulation = null;
+	private AbstractDragAdapter dragAdapter = null;
 }

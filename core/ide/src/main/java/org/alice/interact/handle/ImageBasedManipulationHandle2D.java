@@ -46,8 +46,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-
 import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.math.Vector2;
@@ -56,17 +54,11 @@ import edu.cmu.cs.dennisc.math.Vector2;
  * @author David Culyba
  */
 public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2D {
-
-	protected interface ImageState
-	{
-		public ImageIcon getIcon();
+	protected static interface ImageState {
+		public javax.swing.Icon getIcon();
 	}
 
-	protected ImageState currentState;
-	private final BufferedImage imageMask;
-
-	public ImageBasedManipulationHandle2D( String maskResourceName )
-	{
+	public ImageBasedManipulationHandle2D( String maskResourceName ) {
 		BufferedImage image;
 		try {
 			image = edu.cmu.cs.dennisc.image.ImageUtilities.read( this.getClass().getResource( maskResourceName ) );
@@ -83,15 +75,11 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		this.getAwtComponent().setPreferredSize( size );
 	}
 
-	public Color getColor( int x, int y )
-	{
-		if( super.getAwtComponent().contains( x, y ) )
-		{
-			if( this.imageMask != null )
-			{
+	public Color getColor( int x, int y ) {
+		if( super.getAwtComponent().contains( x, y ) ) {
+			if( this.imageMask != null ) {
 				int colorInt = this.imageMask.getRGB( x, y );
-				Color color = new Color( colorInt, true );
-				return color;
+				return new Color( colorInt, true );
 			}
 		}
 		return null;
@@ -99,22 +87,17 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 
 	public boolean contains( int x, int y ) {
 		Color color = this.getColor( x, y );
-		if( color != null )
-		{
+		if( color != null ) {
 			return color.getAlpha() != 0;
-		}
-		else
-		{
+		} else {
 			return getAwtComponent().contains( x, y );
 		}
 	}
 
 	@Override
-	public Vector2 getCenter()
-	{
+	public Vector2 getCenter() {
 		Dimension ourSize = new Dimension();
-		if( this.currentState != null )
-		{
+		if( this.currentState != null ) {
 			ourSize.width = this.currentState.getIcon().getIconWidth();
 			ourSize.height = this.currentState.getIcon().getIconHeight();
 		}
@@ -122,16 +105,13 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 	}
 
 	@Override
-	protected void updateVisibleState( HandleRenderState renderState )
-	{
+	protected void updateVisibleState( HandleRenderState renderState ) {
 		this.setStateBasedOnManipulationStatus();
 	}
 
-	private void setStateBasedOnManipulationStatus()
-	{
+	private void setStateBasedOnManipulationStatus() {
 		ImageState newState = this.getStateForManipulationStatus();
-		if( newState != this.currentState )
-		{
+		if( newState != this.currentState ) {
 			this.currentState = newState;
 			this.setIcon( this.currentState.getIcon() );
 		}
@@ -152,4 +132,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 	protected abstract ImageState getStateForManipulationStatus();
 
 	protected abstract void setManipulationState( ManipulationEvent event, boolean isActive );
+
+	private ImageState currentState;
+	private final BufferedImage imageMask;
 }

@@ -61,60 +61,43 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class ManipulationHandleIndirection implements ManipulationListener, ManipulationHandle {
-	private ManipulationHandle currentHandle;
-	private ManipulationHandle nextHandle;
-
-	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
-	private HandleManager handleManager = null;
-	protected AbstractDragAdapter dragAdapter = null;
-
-	public ManipulationHandleIndirection( ManipulationHandle handle )
-	{
+	public ManipulationHandleIndirection( ManipulationHandle handle ) {
 		this.currentHandle = handle;
 		this.nextHandle = this.currentHandle.clone();
 	}
 
-	public void setAnimator( Animator animator )
-	{
+	public void setAnimator( Animator animator ) {
 		this.currentHandle.setAnimator( animator );
 		this.nextHandle.setAnimator( animator );
 	}
 
 	@Override
-	public ManipulationHandleIndirection clone()
-	{
+	public ManipulationHandleIndirection clone() {
 		ManipulationHandle newCurrent = this.currentHandle.clone();
 		ManipulationHandleIndirection newHandle = new ManipulationHandleIndirection( newCurrent );
 		newHandle.handleManager = this.handleManager;
 		return newHandle;
 	}
 
-	public void setDragAdapter( AbstractDragAdapter dragAdapter )
-	{
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
-		if( this.currentHandle != null )
-		{
+		if( this.currentHandle != null ) {
 			this.currentHandle.setDragAdapter( dragAdapter );
 		}
-		if( this.nextHandle != null )
-		{
+		if( this.nextHandle != null ) {
 			this.nextHandle.setDragAdapter( dragAdapter );
 		}
 	}
 
-	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter )
-	{
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
-		if( this.dragAdapter != null )
-		{
+		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
 		}
 	}
 
-	public void setSelectedObject( AbstractTransformable manipulatedObject )
-	{
-		if( this.currentHandle.getManipulatedObject() != manipulatedObject )
-		{
+	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
+		if( this.currentHandle.getManipulatedObject() != manipulatedObject ) {
 			//			if (this.isHandleVisible())
 			//				PrintUtilities.println("setting manipulated object to "+manipulatedObject+" on "+this);
 			//			PrintUtilities.println("Current selected = "+this.currentHandle.getManipulatedObject());
@@ -141,49 +124,39 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		//		}
 	}
 
-	public ManipulationHandle getCurrentHandle()
-	{
+	public ManipulationHandle getCurrentHandle() {
 		return this.currentHandle;
 	}
 
-	public ManipulationHandle getNextHandle()
-	{
+	public ManipulationHandle getNextHandle() {
 		return this.nextHandle;
 	}
 
-	public void activate( ManipulationEvent event )
-	{
-		if( this.currentHandle instanceof ManipulationListener )
-		{
+	public void activate( ManipulationEvent event ) {
+		if( this.currentHandle instanceof ManipulationListener ) {
 			( (ManipulationListener)this.currentHandle ).activate( event );
 		}
 	}
 
-	public void deactivate( ManipulationEvent event )
-	{
-		if( this.currentHandle instanceof ManipulationListener )
-		{
+	public void deactivate( ManipulationEvent event ) {
+		if( this.currentHandle instanceof ManipulationListener ) {
 			( (ManipulationListener)this.currentHandle ).deactivate( event );
 		}
 	}
 
-	public boolean matches( ManipulationEvent event )
-	{
+	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
-	public void addCondition( ManipulationEventCriteria condition )
-	{
+	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
-	public void removeCondition( ManipulationEventCriteria condition )
-	{
+	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
-	public void addToGroups( HandleSet.HandleGroup... groups )
-	{
+	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.currentHandle.addToGroups( groups );
 		this.nextHandle.addToGroups( groups );
 	}
@@ -196,7 +169,6 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 	public void addToSet( HandleSet handleSet ) {
 		this.currentHandle.addToSet( handleSet );
 		this.nextHandle.addToSet( handleSet );
-
 	}
 
 	public HandleManager getHandleManager() {
@@ -215,8 +187,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return this.currentHandle.getHandleSet();
 	}
 
-	public boolean isPickable()
-	{
+	public boolean isPickable() {
 		return this.currentHandle.isPickable();
 	}
 
@@ -228,18 +199,15 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return this.currentHandle.isMemberOf( group );
 	}
 
-	public boolean isMemberOf( HandleSet set )
-	{
+	public boolean isMemberOf( HandleSet set ) {
 		return this.currentHandle.isMemberOf( set );
 	}
 
-	public AbstractManipulator getManipulation( InputState input )
-	{
+	public AbstractManipulator getManipulation( InputState input ) {
 		return this.currentHandle.getManipulation( input );
 	}
 
-	public void setManipulation( AbstractManipulator manipulation )
-	{
+	public void setManipulation( AbstractManipulator manipulation ) {
 		this.currentHandle.setManipulation( manipulation );
 		this.nextHandle.setManipulation( manipulation );
 	}
@@ -256,25 +224,21 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		this.handleManager = handleManager;
 		this.currentHandle.setHandleManager( handleManager );
 		this.nextHandle.setHandleManager( handleManager );
-
 	}
 
 	public void setHandleRollover( boolean rollover ) {
 		this.currentHandle.setHandleRollover( rollover );
 	}
 
-	public boolean isHandleVisible()
-	{
+	public boolean isHandleVisible() {
 		return this.currentHandle.isHandleVisible();
 	}
 
-	public void setHandleVisible( boolean visible )
-	{
+	public void setHandleVisible( boolean visible ) {
 		this.currentHandle.setHandleVisible( visible );
 	}
 
-	public void setVisualsShowing( boolean showing )
-	{
+	public void setVisualsShowing( boolean showing ) {
 		this.currentHandle.setVisualsShowing( showing );
 	}
 
@@ -282,20 +246,16 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return this.currentHandle.getPickHint();
 	}
 
-	public void setCameraPosition( Point3 cameraPosition )
-	{
-		if( this.currentHandle != null )
-		{
+	public void setCameraPosition( Point3 cameraPosition ) {
+		if( this.currentHandle != null ) {
 			this.currentHandle.setCameraPosition( cameraPosition );
 		}
-		if( this.nextHandle != null )
-		{
+		if( this.nextHandle != null ) {
 			this.nextHandle.setCameraPosition( cameraPosition );
 		}
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		if( this.currentHandle != null ) {
 			this.currentHandle.clear();
 		}
@@ -305,26 +265,25 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String returnString = "";
-		if( this.currentHandle != null )
-		{
+		if( this.currentHandle != null ) {
 			returnString = "Current: " + this.currentHandle.getClass().getSimpleName() + ":" + this.currentHandle.hashCode() + "; ";
-		}
-		else
-		{
+		} else {
 			returnString = "Current: null; ";
 		}
-		if( this.nextHandle != null )
-		{
+		if( this.nextHandle != null ) {
 			returnString += "Next: " + this.nextHandle.getClass().getSimpleName() + ":" + this.nextHandle.hashCode();
-		}
-		else
-		{
+		} else {
 			returnString += "Next: null";
 		}
 		return returnString;
 	}
 
+	private ManipulationHandle currentHandle;
+	private ManipulationHandle nextHandle;
+
+	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
+	private HandleManager handleManager = null;
+	private AbstractDragAdapter dragAdapter = null;
 }

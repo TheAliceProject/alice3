@@ -52,12 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
  * @author Dave Culyba
  */
 public class SelectionIndicator extends ManipulationHandle3D {
-
-	private BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator( false );
-	private Transformable sgBoundingBoxOffsetTransformable = new Transformable();
-
-	public SelectionIndicator()
-	{
+	public SelectionIndicator() {
 		this.sgBoundingBoxOffsetTransformable.setParent( this );
 		AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
 		offsetTransform.translation.y = .01;
@@ -81,8 +76,7 @@ public class SelectionIndicator extends ManipulationHandle3D {
 	}
 
 	@Override
-	public void positionRelativeToObject()
-	{
+	public void positionRelativeToObject() {
 		//Do nothing
 	}
 
@@ -112,10 +106,8 @@ public class SelectionIndicator extends ManipulationHandle3D {
 	}
 
 	@Override
-	protected double getDesiredOpacity( HandleRenderState renderState )
-	{
-		switch( renderState )
-		{
+	protected double getDesiredOpacity( HandleRenderState renderState ) {
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			return 0.0d;
 		default:
@@ -124,13 +116,13 @@ public class SelectionIndicator extends ManipulationHandle3D {
 	}
 
 	@Override
-	public void resizeToObject()
-	{
-		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) )
-		{
+	public void resizeToObject() {
+		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) ) {
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			this.sgBoundingBoxDecorator.setBox( boundingBox );
 		}
 	}
 
+	private final BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator( false );
+	private final Transformable sgBoundingBoxOffsetTransformable = new Transformable();
 }

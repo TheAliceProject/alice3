@@ -43,34 +43,32 @@
 
 package org.alice.interact.handle;
 
-import javax.swing.ImageIcon;
-
 import org.alice.interact.event.ManipulationEvent;
 
-public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D
-{
-	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
-	{
+public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D {
+	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
 		Inactive( "images/zoom.png" ),
 		Highlighted( "images/zoomHighlight.png" ),
 		ZoomingIn( "images/zoomIn.png" ),
 		ZoomingOut( "images/zoomOut.png" );
 
-		private ImageIcon icon;
-
-		private ControlState( String resourceString )
-		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ) );
+		private ControlState( String resourceString ) {
+			javax.swing.Icon icon;
+			try {
+				icon = new javax.swing.ImageIcon( this.getClass().getResource( resourceString ) );
+			} catch( Exception e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot load", resourceString, this );
+				icon = null;
+			}
+			this.icon = icon;
 		}
 
-		public ImageIcon getIcon()
-		{
+		public javax.swing.Icon getIcon() {
 			return this.icon;
 		}
-	}
 
-	private boolean zoomingIn = false;
-	private boolean zoomingOut = false;
+		private final javax.swing.Icon icon;
+	}
 
 	public ManipulationHandle2CameraZoom() {
 		super( "images/zoomMask.png" );
@@ -78,31 +76,22 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 
 	@Override
 	protected ImageState getStateForManipulationStatus() {
-		if( this.zoomingIn )
-		{
+		if( this.zoomingIn ) {
 			return ControlState.ZoomingIn;
-		}
-		else if( this.zoomingOut )
-		{
+		} else if( this.zoomingOut ) {
 			return ControlState.ZoomingOut;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() )
-		{
+		else if( this.state.isRollover() ) {
 			return ControlState.Highlighted;
-		}
-		else
-		{
+		} else {
 			return ControlState.Inactive;
 		}
 	}
 
 	@Override
-	protected void setManipulationState( ManipulationEvent event,
-			boolean isActive )
-	{
-		switch( event.getMovementDescription().direction )
-		{
+	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
+		switch( event.getMovementDescription().direction ) {
 		case FORWARD:
 			this.zoomingIn = isActive;
 			break;
@@ -112,4 +101,6 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 		}
 	}
 
+	private boolean zoomingIn = false;
+	private boolean zoomingOut = false;
 }

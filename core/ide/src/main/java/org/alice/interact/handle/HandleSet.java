@@ -42,25 +42,22 @@
  */
 package org.alice.interact.handle;
 
-import java.util.BitSet;
-
 /**
  * @author David Culyba
  */
-public class HandleSet extends BitSet
-{
-	public static HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
-	public static HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS );
-	public static HandleSet DEFAULT_INTERACTION = new HandleSet( HandleGroup.DEFAULT, HandleGroup.INTERACTION, HandleGroup.SELECTION );
-	public static HandleSet SELECTION_ONLY = new HandleSet( HandleGroup.SELECTION );
-	public static HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
-	public static HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
-	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
-	public static HandleSet TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
-	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet( HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA );
-	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet( HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA );
+public class HandleSet extends java.util.BitSet {
+	public static final HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
+	public static final HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS );
+	public static final HandleSet DEFAULT_INTERACTION = new HandleSet( HandleGroup.DEFAULT, HandleGroup.INTERACTION, HandleGroup.SELECTION );
+	public static final HandleSet SELECTION_ONLY = new HandleSet( HandleGroup.SELECTION );
+	public static final HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
+	public static final HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static final HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static final HandleSet TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
+	public static final HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet( HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA );
+	public static final HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet( HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA );
 
-	public enum HandleGroup {
+	public static enum HandleGroup {
 		ROTATION,
 		TRANSLATION,
 		RESIZE,
@@ -87,86 +84,64 @@ public class HandleSet extends BitSet
 		BOTTOM_LEFT_CAMERA,
 		BOTTOM_RIGHT_CAMERA,
 		JOINT,
-
 	}
 
-	@Override
-	//HandleSet intersection is true if all of the bits passed in are set on this
-	//An empty set will never match
-	public boolean intersects( BitSet set )
-	{
-		if( set == null )
-		{
-			return false;
-		}
-		boolean intersection = false;
-		for( int i = 0; i < set.length(); i++ )
-		{
-			if( set.get( i ) && this.get( i ) )
-			{
-				intersection = true;
-			}
-			else if( set.get( i ) && !this.get( i ) )
-			{
-				return false;
-			}
-		}
-		return intersection;
-	}
-
-	public void addSet( HandleSet set )
-	{
-		this.or( set );
-	}
-
-	public static String getStringForSet( HandleSet set )
-	{
-		if( set == RESIZE_INTERACTION )
-		{
+	public static String getStringForSet( HandleSet set ) {
+		if( set == RESIZE_INTERACTION ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 			return resourceBundle.getString( "resize" );
-		}
-		else if( set == ROTATION_INTERACTION )
-		{
+		} else if( set == ROTATION_INTERACTION ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 			return resourceBundle.getString( "rotation" );
-		}
-		else if( set == TRANSLATION_INTERACTION )
-		{
+		} else if( set == TRANSLATION_INTERACTION ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 			return resourceBundle.getString( "translation" );
-		}
-		else if( set == DEFAULT_INTERACTION )
-		{
+		} else if( set == DEFAULT_INTERACTION ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 			return resourceBundle.getString( "default" );
-		}
-		else if( set == GROUND_TRANSLATION_VISUALIZATION )
-		{
+		} else if( set == GROUND_TRANSLATION_VISUALIZATION ) {
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 			return resourceBundle.getString( "groundTranslation" );
-		}
-		else
-		{
+		} else {
 			return "NO STRING SET";
 		}
 	}
 
-	public HandleSet( HandleGroup... groups )
-	{
+	public HandleSet( HandleGroup... groups ) {
 		addGroups( groups );
 	}
 
-	public void addGroup( HandleGroup group )
-	{
+	public void addGroup( HandleGroup group ) {
 		this.set( group.ordinal() );
 	}
 
-	public void addGroups( HandleGroup... groups )
-	{
+	public void addGroups( HandleGroup... groups ) {
 		for( HandleGroup group : groups ) {
 			this.set( group.ordinal() );
 		}
+	}
+
+	//HandleSet intersection is true if all of the bits passed in are set on this
+	//An empty set will never match
+	@Override
+	public boolean intersects( java.util.BitSet set ) {
+		if( set != null ) {
+			boolean intersection = false;
+			for( int i = 0; i < set.length(); i++ ) {
+				if( set.get( i ) && this.get( i ) ) {
+					intersection = true;
+				} else if( set.get( i ) && !this.get( i ) ) {
+					return false;
+				}
+			}
+			return intersection;
+		} else {
+			return false;
+		}
+	}
+
+	public void addSet( HandleSet set ) {
+		this.or( set );
 	}
 
 	@Override

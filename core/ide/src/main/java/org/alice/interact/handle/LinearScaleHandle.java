@@ -61,13 +61,6 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearScaleHandle extends LinearDragHandle {
-
-	protected Arrow arrow;
-	protected Color4f baseColor;
-	protected Transformable standUpReference = new Transformable();
-	protected boolean applyAlongAxis = false;
-	protected org.lgna.story.implementation.ModelImp.Resizer resizer;
-
 	public static LinearScaleHandle createFromResizer( org.lgna.story.implementation.ModelImp.Resizer resizer ) {
 		LinearScaleHandle toReturn = null;
 		switch( resizer ) {
@@ -104,21 +97,18 @@ public class LinearScaleHandle extends LinearDragHandle {
 		return toReturn;
 	}
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f color )
-	{
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f color ) {
 		this( dragDescription, color, false );
 	}
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f color, boolean applyAlongAxis )
-	{
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f color, boolean applyAlongAxis ) {
 		super( dragDescription );
 		this.baseColor = color;
 		this.applyAlongAxis = applyAlongAxis;
 		this.initializeAppearance();
 	}
 
-	public LinearScaleHandle( LinearScaleHandle handle )
-	{
+	public LinearScaleHandle( LinearScaleHandle handle ) {
 		super( handle );
 		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
@@ -127,14 +117,12 @@ public class LinearScaleHandle extends LinearDragHandle {
 	}
 
 	@Override
-	public LinearScaleHandle clone()
-	{
+	public LinearScaleHandle clone() {
 		LinearScaleHandle newHandle = new LinearScaleHandle( this );
 		return newHandle;
 	}
 
-	public boolean applyAlongAxis()
-	{
+	public boolean applyAlongAxis() {
 		return this.applyAlongAxis;
 	}
 
@@ -148,34 +136,27 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setParent( this );
 	}
 
-	public org.lgna.story.implementation.ModelImp.Resizer getResizer()
-	{
+	public org.lgna.story.implementation.ModelImp.Resizer getResizer() {
 		return this.resizer;
 	}
 
-	protected Vector3 getUniformResizeOffset()
-	{
+	protected Vector3 getUniformResizeOffset() {
 		AxisAlignedBox bbox = getManipulatedObjectBox();
 		Vector3 handleOffset;
-		if( bbox != null )
-		{
+		if( bbox != null ) {
 			handleOffset = new Vector3( bbox.getMaximum() );
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
-		}
-		else
-		{
+		} else {
 			handleOffset = new Vector3( 1, 1, 0 );
 		}
-		if( handleOffset.isZero() )
-		{
+		if( handleOffset.isZero() ) {
 			handleOffset = new Vector3( 1, 1, 0 );
 		}
 		return handleOffset;
 	}
 
-	protected Vector3 getUniformResizeDirection()
-	{
+	protected Vector3 getUniformResizeDirection() {
 		Vector3 direction = getUniformResizeOffset();
 		direction.normalize();
 		return direction;
@@ -183,13 +164,11 @@ public class LinearScaleHandle extends LinearDragHandle {
 
 	@Override
 	public void positionRelativeToObject() {
-		if( this.dragDescription.direction == MovementDirection.RESIZE )
-		{
+		if( this.dragDescription.direction == MovementDirection.RESIZE ) {
 			this.dragAxis = this.getUniformResizeDirection();
 		}
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
-		if( objectTransformation.isNaN() )
-		{
+		if( objectTransformation.isNaN() ) {
 			objectTransformation = this.getTransformationForAxis( this.dragAxis );
 			assert !objectTransformation.isNaN() : "Created NaN transformation from " + this.dragAxis;
 			objectTransformation = new AffineMatrix4x4();
@@ -201,21 +180,18 @@ public class LinearScaleHandle extends LinearDragHandle {
 	}
 
 	@Override
-	protected Color4f getBaseColor()
-	{
-		if( this.baseColor == null )
-		{
+	protected Color4f getBaseColor() {
+		if( this.baseColor == null ) {
 			return super.getBaseColor();
+		} else {
+			return this.baseColor;
 		}
-		return this.baseColor;
 	}
 
 	@Override
-	protected Color4f getDesiredColor( HandleRenderState renderState )
-	{
+	protected Color4f getDesiredColor( HandleRenderState renderState ) {
 		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
-		switch( renderState )
-		{
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			break; //Do nothing
 		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
@@ -237,8 +213,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 
 	@Override
 	protected void setScale( double scale ) {
-		if( this.arrow != null )
-		{
+		if( this.arrow != null ) {
 			this.arrow.setParent( null );
 		}
 		this.createShape( scale );
@@ -250,4 +225,9 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
+	private Arrow arrow;
+	private Color4f baseColor;
+	private Transformable standUpReference = new Transformable();
+	private boolean applyAlongAxis = false;
+	private org.lgna.story.implementation.ModelImp.Resizer resizer;
 }

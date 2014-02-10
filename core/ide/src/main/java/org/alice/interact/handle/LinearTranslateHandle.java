@@ -55,27 +55,20 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearTranslateHandle extends LinearDragHandle {
-
-	protected Color4f baseColor;
-	protected Arrow arrow;
-
-	public LinearTranslateHandle( MovementDescription dragDescription, Color4f color )
-	{
+	public LinearTranslateHandle( MovementDescription dragDescription, Color4f color ) {
 		super( dragDescription );
 		this.baseColor = color;
 		this.initializeAppearance();
 	}
 
-	public LinearTranslateHandle( LinearTranslateHandle handle )
-	{
+	public LinearTranslateHandle( LinearTranslateHandle handle ) {
 		super( handle );
 		this.baseColor = handle.baseColor;
 		this.initializeAppearance();
 	}
 
 	@Override
-	public LinearTranslateHandle clone()
-	{
+	public LinearTranslateHandle clone() {
 		LinearTranslateHandle newHandle = new LinearTranslateHandle( this );
 		return newHandle;
 	}
@@ -86,33 +79,27 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	}
 
 	protected void createShape( double scale ) {
-		if( this.arrow == null )
-		{
+		if( this.arrow == null ) {
 			this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
-		}
-		else
-		{
+		} else {
 			this.arrow.resize( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale );
 		}
 		this.arrow.setParent( this );
 	}
 
 	@Override
-	protected Color4f getBaseColor()
-	{
-		if( this.baseColor == null )
-		{
+	protected Color4f getBaseColor() {
+		if( this.baseColor == null ) {
 			return super.getBaseColor();
+		} else {
+			return this.baseColor;
 		}
-		return this.baseColor;
 	}
 
 	@Override
-	protected Color4f getDesiredColor( HandleRenderState renderState )
-	{
+	protected Color4f getDesiredColor( HandleRenderState renderState ) {
 		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
-		switch( renderState )
-		{
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			break; //Do nothing
 		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
@@ -134,8 +121,7 @@ public class LinearTranslateHandle extends LinearDragHandle {
 
 	@Override
 	protected void setScale( double scale ) {
-		if( this.arrow != null )
-		{
+		if( this.arrow != null ) {
 			this.arrow.setParent( null );
 		}
 		this.createShape( scale );
@@ -147,4 +133,6 @@ public class LinearTranslateHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
+	private final Color4f baseColor;
+	private Arrow arrow;
 }

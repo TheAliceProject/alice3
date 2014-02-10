@@ -42,10 +42,6 @@
  */
 package org.alice.interact.handle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
@@ -60,98 +56,77 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class HandleManager implements ManipulationListener {
-	private Stack<HandleSet> handleSetStack = new Stack<HandleSet>();
-	private List<ManipulationHandle> handles = new ArrayList<ManipulationHandle>();
-
-	private Point3 cameraPosition;
-
-	public void addHandle( ManipulationHandle handle )
-	{
+	public void addHandle( ManipulationHandle handle ) {
 		handles.add( handle );
 		handle.setHandleManager( this );
 		handle.setCameraPosition( this.cameraPosition );
 	}
 
-	public HandleSet getCurrentHandleSet()
-	{
-		if( this.handleSetStack.empty() )
-		{
-			return null;
-		}
-		else
-		{
-			return this.handleSetStack.peek();
+	public HandleSet getCurrentHandleSet() {
+		synchronized( this.handleSetStack ) {
+			if( this.handleSetStack.empty() ) {
+				return null;
+			} else {
+				return this.handleSetStack.peek();
+			}
 		}
 	}
 
-	public void updateCameraPosition( Point3 position )
-	{
-		if( position == null )
-		{
+	public void updateCameraPosition( Point3 position ) {
+		if( position == null ) {
 			this.cameraPosition = null;
-		}
-		else if( this.cameraPosition == null )
-		{
+		} else if( this.cameraPosition == null ) {
 			this.cameraPosition = new Point3( position );
-		}
-		else
-		{
+		} else {
 			this.cameraPosition.set( position );
 		}
-		for( ManipulationHandle handle : this.handles )
-		{
+		for( ManipulationHandle handle : this.handles ) {
 			handle.setCameraPosition( this.cameraPosition );
 		}
 
 	}
 
-	private void updateHandlesBasedOnHandleSet()
-	{
-		for( ManipulationHandle handle : this.handles )
-		{
-			if( !handle.isAlwaysVisible() )
-			{
-				if( handle.isMemberOf( this.getCurrentHandleSet() ) )
-				{
+	private void updateHandlesBasedOnHandleSet() {
+		for( ManipulationHandle handle : this.handles ) {
+			if( !handle.isAlwaysVisible() ) {
+				if( handle.isMemberOf( this.getCurrentHandleSet() ) ) {
 					handle.setHandleVisible( true );
-				}
-				else
-				{
+				} else {
 					handle.setHandleVisible( false );
 				}
 			}
 		}
 	}
 
-	public void setHandleSet( HandleSet handleSet )
-	{
-		if( !this.handleSetStack.empty() )
-		{
-			this.handleSetStack.pop();
+	public void setHandleSet( HandleSet handleSet ) {
+		synchronized( this.handleSetStack ) {
+			if( !this.handleSetStack.empty() ) {
+				this.handleSetStack.pop();
+			}
+			this.handleSetStack.push( handleSet );
 		}
-		this.handleSetStack.push( handleSet );
 		this.updateHandlesBasedOnHandleSet();
 	}
 
-	public void pushNewHandleSet( HandleSet handleSet )
-	{
-		this.handleSetStack.push( handleSet );
-		//		System.out.println("Pushed "+handleSet+":"+handleSet.hashCode()+", and size is now "+this.handleSetStack.size());
+	public void pushNewHandleSet( HandleSet handleSet ) {
+		synchronized( this.handleSetStack ) {
+			this.handleSetStack.push( handleSet );
+		}
 		this.updateHandlesBasedOnHandleSet();
 	}
 
-	public HandleSet popHandleSet()
-	{
-		if( this.handleSetStack.empty() )
-		{
-			System.err.println( "TRYING TO POP AN EMPTY HANDLE STACK!!!" );
-			Thread.dumpStack();
-			return null;
+	public HandleSet popHandleSet() {
+		synchronized( this.handleSetStack ) {
+			if( this.handleSetStack.empty() ) {
+				System.err.println( "TRYING TO POP AN EMPTY HANDLE STACK!!!" );
+				Thread.dumpStack();
+				return null;
+			} else {
+				HandleSet popped = this.handleSetStack.pop();
+				this.updateHandlesBasedOnHandleSet();
+				return popped;
+			}
 		}
-		HandleSet popped = this.handleSetStack.pop();
-		//		System.out.println("popped "+popped+" and current handle set is "+this.handleSetStack.peek());
-		this.updateHandlesBasedOnHandleSet();
-		return popped;
 	}
 
 	public static boolean canHaveHandles( AbstractTransformable object ) {
@@ -160,30 +135,26 @@ public class HandleManager implements ManipulationListener {
 				objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) ||
 				objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint() ) ||
 				objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) ) &&
-				!( objectPickHint.intersects( PickHint.PickType.SUN.pickHint() ) ) )
-		{
+				!( objectPickHint.intersects( PickHint.PickType.SUN.pickHint() ) ) ) {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
-	private static boolean canHaveHandle( AbstractTransformable selectedObject, ManipulationHandle handle )
-	{
+	private static boolean canHaveHandle( AbstractTransformable selectedObject, ManipulationHandle handle ) {
 		if( handle instanceof ManipulationHandleIndirection ) {
 			handle = ( (ManipulationHandleIndirection)handle ).getCurrentHandle();
 		}
 		PickHint objectPickHint = PickUtilities.getPickType( selectedObject );
 		if( handle instanceof SelectionIndicator ) {
 			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
-		}
-		else if( handle instanceof LinearTranslateHandle ) {
+		} else if( handle instanceof LinearTranslateHandle ) {
 			return ( objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) );
-		}
-		else if( handle instanceof RotationRingHandle ) {
+		} else if( handle instanceof RotationRingHandle ) {
 			boolean doJointsMatch = objectPickHint.intersects( PickHint.PickType.JOINT.pickHint() ) == handle.isMemberOf( HandleSet.HandleGroup.JOINT );
 			return doJointsMatch && objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint() );
-		}
-		else if( handle instanceof LinearScaleHandle ) {
+		} else if( handle instanceof LinearScaleHandle ) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
 			if( objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint() ) ) {
 				org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
@@ -206,119 +177,85 @@ public class HandleManager implements ManipulationListener {
 	}
 
 	public void clear() {
-		for( ManipulationHandle handle : this.handles )
-		{
+		for( ManipulationHandle handle : this.handles ) {
 			handle.clear();
 		}
 	}
 
-	public void setSelectedObject( AbstractTransformable selectedObject )
-	{
-		//		PrintUtilities.println("Setting handle selected object to "+selectedObject);
-		for( ManipulationHandle handle : this.handles )
-		{
+	public void setSelectedObject( AbstractTransformable selectedObject ) {
+		for( ManipulationHandle handle : this.handles ) {
 			if( canHaveHandle( selectedObject, handle ) ) {
 				handle.setSelectedObject( selectedObject );
-			}
-			else {
+			} else {
 				handle.setSelectedObject( null );
 			}
-
 		}
 	}
 
-	public static boolean isSelectable( AbstractTransformable object )
-	{
+	public static boolean isSelectable( AbstractTransformable object ) {
 		return canHaveHandles( object );
 	}
 
-	public AbstractTransformable getSelectedObject()
-	{
-		if( this.handles.size() == 0 )
-		{
+	public AbstractTransformable getSelectedObject() {
+		if( this.handles.size() == 0 ) {
 			return null;
-		}
-		AbstractTransformable selected = this.handles.get( 0 ).getManipulatedObject();
-		for( ManipulationHandle handle : this.handles )
-		{
-			if( ( handle.getManipulatedObject() != selected ) && !( handle instanceof ManipulationHandle2D ) )
-			{
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected );
+		} else {
+			AbstractTransformable selected = this.handles.get( 0 ).getManipulatedObject();
+			for( ManipulationHandle handle : this.handles ) {
+				if( ( handle.getManipulatedObject() != selected ) && !( handle instanceof ManipulationHandle2D ) ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected );
+				}
 			}
+			return selected;
 		}
-		return selected;
-
 	}
 
-	public void setHandlesShowing( boolean showing )
-	{
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "Setting handle showing to: " + showing );
-		for( ManipulationHandle handle : this.handles )
-		{
-			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "   Setting handle " + handle + ", which is visible? " + handle.isHandleVisible() );
+	public void setHandlesShowing( boolean showing ) {
+		for( ManipulationHandle handle : this.handles ) {
 			handle.setVisualsShowing( showing );
 		}
 	}
 
-	public void setAnimator( Animator animator )
-	{
-		for( ManipulationHandle handle : this.handles )
-		{
+	public void setAnimator( Animator animator ) {
+		for( ManipulationHandle handle : this.handles ) {
 			handle.setAnimator( animator );
 		}
 	}
 
-	public void setHandlesVisible( boolean visible )
-	{
-		for( ManipulationHandle handle : this.handles )
-		{
+	public void setHandlesVisible( boolean visible ) {
+		for( ManipulationHandle handle : this.handles ) {
 			handle.setHandleVisible( visible );
 		}
 	}
 
-	public boolean isHandleVisible( ManipulationHandle handle )
-	{
-		if( handle.isAlwaysVisible() )
-		{
+	public boolean isHandleVisible( ManipulationHandle handle ) {
+		if( handle.isAlwaysVisible() ) {
 			return true;
 		} else {
 			return handle.isMemberOf( this.getCurrentHandleSet() );
 		}
 	}
 
-	private List<ManipulationHandle> getSiblings( ManipulationHandle handle )
-	{
-		ArrayList<ManipulationHandle> siblings = new ArrayList<ManipulationHandle>();
+	private java.util.List<ManipulationHandle> getSiblings( ManipulationHandle handle ) {
+		java.util.List<ManipulationHandle> siblings = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		HandleSet toCheck;
-		if( handle.isAlwaysVisible() )
-		{
+		if( handle.isAlwaysVisible() ) {
 			toCheck = handle.getHandleSet();
-		}
-		else
-		{
-			if( handle.isMemberOf( this.getCurrentHandleSet() ) )
-			{
+		} else {
+			if( handle.isMemberOf( this.getCurrentHandleSet() ) ) {
 				toCheck = this.getCurrentHandleSet();
-			}
-			else
-			{
+			} else {
 				toCheck = new HandleSet();
 			}
 		}
-		for( ManipulationHandle otherHandle : this.handles )
-		{
-			if( otherHandle != handle )
-			{
-				if( handle.isAlwaysVisible() )
-				{
+		for( ManipulationHandle otherHandle : this.handles ) {
+			if( otherHandle != handle ) {
+				if( handle.isAlwaysVisible() ) {
 					//Handles that are always visible are siblings if their memberships are equal
-					if( otherHandle.getHandleSet().equals( toCheck ) )
-					{
+					if( otherHandle.getHandleSet().equals( toCheck ) ) {
 						siblings.add( otherHandle );
 					}
-				}
-				else if( otherHandle.isMemberOf( toCheck ) )
-				{
+				} else if( otherHandle.isMemberOf( toCheck ) ) {
 					siblings.add( otherHandle );
 				}
 			}
@@ -326,34 +263,27 @@ public class HandleManager implements ManipulationListener {
 		return siblings;
 	}
 
-	public boolean isASiblingActive( ManipulationHandle handle )
-	{
-		List<ManipulationHandle> siblings = this.getSiblings( handle );
-		for( ManipulationHandle sibling : siblings )
-		{
-			if( sibling.getHandleStateCopy().isActive() )
-			{
+	public boolean isASiblingActive( ManipulationHandle handle ) {
+		java.util.List<ManipulationHandle> siblings = this.getSiblings( handle );
+		for( ManipulationHandle sibling : siblings ) {
+			if( sibling.getHandleStateCopy().isActive() ) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void setHandleRollover( ManipulationHandle handle, boolean isRollover )
-	{
+	public void setHandleRollover( ManipulationHandle handle, boolean isRollover ) {
 		handle.setHandleRollover( isRollover );
 	}
 
 	public void activate( ManipulationEvent event ) {
-
 	}
 
 	public void deactivate( ManipulationEvent event ) {
-
 	}
 
 	public void addCondition( ManipulationEventCriteria condition ) {
-
 	}
 
 	public boolean matches( ManipulationEvent event ) {
@@ -363,4 +293,8 @@ public class HandleManager implements ManipulationListener {
 	public void removeCondition( ManipulationEventCriteria condition ) {
 	}
 
+	private final java.util.Stack<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final java.util.List<ManipulationHandle> handles = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+
+	private Point3 cameraPosition;
 }

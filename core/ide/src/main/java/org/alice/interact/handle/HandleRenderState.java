@@ -52,38 +52,25 @@ public enum HandleRenderState {
 	NOT_VISIBLE,
 	VISIBLE_AND_ROLLOVER;
 
-	public static HandleRenderState getStateForHandle( ManipulationHandle handle )
-	{
+	public static HandleRenderState getStateForHandle( ManipulationHandle handle ) {
 		boolean isSiblingActive = false;
-		if( handle.getHandleManager() != null )
-		{
+		if( handle.getHandleManager() != null ) {
 			isSiblingActive = handle.getHandleManager().isASiblingActive( handle );
 		}
 		HandleState handleState = handle.getHandleStateCopy();
-		if( handleState.isActive() )
-		{
+		if( handleState.isActive() ) {
 			return HandleRenderState.VISIBLE_AND_ACTIVE;
-		}
-		else if( handleState.isRollover() )
-		{
+		} else if( handleState.isRollover() ) {
 			return HandleRenderState.VISIBLE_AND_ROLLOVER;
-		}
-		else if( handle.isAlwaysVisible() )
-		{
+		} else if( handle.isAlwaysVisible() ) {
 			return JUST_VISIBLE;
-		}
-		else if( handleState.isVisible() )
-		{
-			if( isSiblingActive )
-			{
+		} else if( handleState.isVisible() ) {
+			if( isSiblingActive ) {
 				return VISIBLE_BUT_SIBLING_IS_ACTIVE;
-			}
-			else
-			{
+			} else {
 				return JUST_VISIBLE;
 			}
-		}
-		else
+		} else
 		{
 			return NOT_VISIBLE;
 		}

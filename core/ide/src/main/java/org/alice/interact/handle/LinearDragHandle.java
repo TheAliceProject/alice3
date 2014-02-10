@@ -61,24 +61,13 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class LinearDragHandle extends ManipulationHandle3D implements PropertyListener {
 
-	protected static final double MIN_LENGTH = .4d;
+	private static final double MIN_LENGTH = .4d;
 
-	protected double offsetPadding = 0.0d;
-	protected MovementDescription dragDescription;
-	protected Vector3 dragAxis;
-	protected double distanceFromOrigin;
-	protected Transformable standUpReference = new Transformable();
-	protected Transformable snapReference = new Transformable();
-
-	protected DoubleInterruptibleAnimation lengthAnimation;
-
-	public LinearDragHandle()
-	{
+	public LinearDragHandle() {
 		this( new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ) );
 	}
 
-	public LinearDragHandle( MovementDescription dragDescription )
-	{
+	public LinearDragHandle( MovementDescription dragDescription ) {
 		super();
 		this.standUpReference.setName( "Linear StandUp Reference" );
 		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
@@ -100,39 +89,32 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		createShape();
 	}
 
-	public LinearDragHandle( LinearDragHandle handle )
-	{
+	public LinearDragHandle( LinearDragHandle handle ) {
 		this( handle.dragDescription );
 		this.initFromHandle( handle );
 		this.distanceFromOrigin = handle.distanceFromOrigin;
 		this.offsetPadding = handle.offsetPadding;
 	}
 
-	public MovementDescription getMovementDescription()
-	{
+	public MovementDescription getMovementDescription() {
 		return this.dragDescription;
 	}
 
 	protected abstract void createShape();
 
-	protected void setSize( double size )
-	{
-		if( !Double.isInfinite( size ) )
-		{
+	protected void setSize( double size ) {
+		if( !Double.isInfinite( size ) ) {
 			this.distanceFromOrigin = size;
 			this.positionRelativeToObject();
 		}
 	}
 
-	protected double getSize()
-	{
+	protected double getSize() {
 		return this.distanceFromOrigin;
 	}
 
-	protected double getHandleLength()
-	{
-		if( this.getParentTransformable() != null )
-		{
+	protected double getHandleLength() {
+		if( this.getParentTransformable() != null ) {
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 
 			Vector3 desiredHandleValues = new Vector3( 0.0d, 0.0d, 0.0d );
@@ -168,51 +150,41 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		if( this.manipulatedObject != manipulatedObject )
-		{
-			if( this.manipulatedObject instanceof Transformable )
-			{
+		if( this.manipulatedObject != manipulatedObject ) {
+			if( this.manipulatedObject instanceof Transformable ) {
 				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this );
 			}
 			super.setManipulatedObject( manipulatedObject );
-			if( this.manipulatedObject instanceof Transformable )
-			{
+			if( this.manipulatedObject instanceof Transformable ) {
 				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this );
 			}
 		}
 	}
 
-	public double getCurrentHandleLength()
-	{
+	public double getCurrentHandleLength() {
 		return this.distanceFromOrigin;
 	}
 
-	protected void animateHandleToLength( double desiredLength )
-	{
-		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) )
-		{
+	protected void animateHandleToLength( double desiredLength ) {
+		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) ) {
 			return;
 		}
 		//		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredLength+" around "+this.manipulatedObject);
 		double currentLength = this.getSize();
 		//Check to see if the animation is going to get us to the desired value
-		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() && this.lengthAnimation.matchesTarget( desiredLength ) )
-		{
+		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() && this.lengthAnimation.matchesTarget( desiredLength ) ) {
 			return;
 		}
 		//Stop any existing animation
-		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() )
-		{
+		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() ) {
 			this.lengthAnimation.cancel();
 		}
 		//The animation is not going to get us to the desired value, so see if we're already there
-		if( currentLength == desiredLength )
-		{
+		if( currentLength == desiredLength ) {
 			return;
 		}
 		//Make a new animation and launch it
-		this.lengthAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength )
-		{
+		this.lengthAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength ) {
 			@Override
 			protected void updateValue( Double v )
 			{
@@ -223,40 +195,31 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	@Override
-	protected void updateVisibleState( HandleRenderState renderState )
-	{
+	protected void updateVisibleState( HandleRenderState renderState ) {
 		super.updateVisibleState( renderState );
 		double desiredLength = this.isRenderable() ? this.getHandleLength() : 0.0d;
 		animateHandleToLength( desiredLength );
 	}
 
-	public Vector3 getDragAxis()
-	{
+	public Vector3 getDragAxis() {
 		return this.dragAxis;
 	}
 
 	@Override
-	public ReferenceFrame getReferenceFrame()
-	{
-		if( this.getParentTransformable() != null )
-		{
-			if( this.dragDescription.type == MovementType.STOOD_UP )
-			{
+	public ReferenceFrame getReferenceFrame() {
+		if( this.getParentTransformable() != null ) {
+			if( this.dragDescription.type == MovementType.STOOD_UP ) {
 				this.standUpReference.setParent( this.getParentTransformable() );
 				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 				this.standUpReference.setAxesOnlyToStandUp();
 				return this.standUpReference;
-			}
-			else if( this.dragDescription.type == MovementType.ABSOLUTE )
-			{
+			} else if( this.dragDescription.type == MovementType.ABSOLUTE ) {
 				this.standUpReference.setParent( this.getParentTransformable().getRoot() );
 				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
 				location.translation.set( this.getParentTransformable().getTranslation( AsSeenBy.SCENE ) );
 				this.standUpReference.localTransformation.setValue( location );
 				return this.standUpReference;
-			}
-			else
-			{
+			} else {
 				return this.getParentTransformable();
 			}
 		}
@@ -264,27 +227,20 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	@Override
-	public ReferenceFrame getSnapReferenceFrame()
-	{
-		if( this.getParentTransformable() != null )
-		{
-			if( this.dragDescription.type == MovementType.STOOD_UP )
-			{
+	public ReferenceFrame getSnapReferenceFrame() {
+		if( this.getParentTransformable() != null ) {
+			if( this.dragDescription.type == MovementType.STOOD_UP ) {
 				this.snapReference.setParent( this.getParentTransformable().getRoot() );
 				this.snapReference.setTransformation( this.getParentTransformable().getAbsoluteTransformation(), AsSeenBy.SCENE );
 				this.snapReference.setAxesOnlyToStandUp();
 				this.snapReference.setTranslationOnly( 0, 0, 0, AsSeenBy.SCENE );
 				return this.snapReference;
-			}
-			else if( this.dragDescription.type == MovementType.ABSOLUTE )
-			{
+			} else if( this.dragDescription.type == MovementType.ABSOLUTE ) {
 				this.snapReference.setParent( this.getParentTransformable().getRoot() );
 				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
 				this.snapReference.localTransformation.setValue( location );
 				return this.snapReference;
-			}
-			else
-			{
+			} else {
 				this.snapReference.setParent( this.getParentTransformable().getRoot() );
 				this.snapReference.setTransformation( this.getParentTransformable().getAbsoluteTransformation(), AsSeenBy.SCENE );
 				this.snapReference.setTranslationOnly( 0, 0, 0, AsSeenBy.SCENE );
@@ -295,10 +251,8 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	@Override
-	public void positionRelativeToObject()
-	{
-		if( this.getParentTransformable() != null )
-		{
+	public void positionRelativeToObject() {
+		if( this.getParentTransformable() != null ) {
 			Vector3 translation = Vector3.createMultiplication( this.dragAxis, this.distanceFromOrigin + this.offsetPadding );
 			this.setTransformation( this.getTransformationForAxis( this.dragAxis ), this.getReferenceFrame() );
 			this.setTranslationOnly( translation, this.getReferenceFrame() );
@@ -306,12 +260,9 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	@Override
-	public void resizeToObject()
-	{
-		if( this.getParentTransformable() != null )
-		{
-			if( this.lengthAnimation != null )
-			{
+	public void resizeToObject() {
+		if( this.getParentTransformable() != null ) {
+			if( this.lengthAnimation != null ) {
 				this.lengthAnimation.complete( null );
 			}
 			double handleLength = this.getHandleLength();
@@ -326,4 +277,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	public void propertyChanging( PropertyEvent e ) {
 	}
 
+	private double offsetPadding = 0.0d;
+	protected MovementDescription dragDescription;
+	protected Vector3 dragAxis;
+	private double distanceFromOrigin;
+	private Transformable standUpReference = new Transformable();
+	private Transformable snapReference = new Transformable();
+
+	private DoubleInterruptibleAnimation lengthAnimation;
 }

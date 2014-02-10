@@ -42,68 +42,58 @@
  */
 package org.alice.interact.handle;
 
-import javax.swing.ImageIcon;
-
 import org.alice.interact.event.ManipulationEvent;
 
 /**
  * @author David Culyba
  */
 public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulationHandle2D {
-	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
-	{
+	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
 		Inactive( "images/tilt.png" ),
 		Highlighted( "images/tiltHighlight.png" ),
 		TurningForward( "images/tiltDown.png" ),
 		TurningBackward( "images/tiltUp.png" );
 
-		private ImageIcon icon;
-
-		private ControlState( String resourceString )
-		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ) );
+		private ControlState( String resourceString ) {
+			javax.swing.Icon icon;
+			try {
+				icon = new javax.swing.ImageIcon( this.getClass().getResource( resourceString ) );
+			} catch( Exception e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot load", resourceString, this );
+				icon = null;
+			}
+			this.icon = icon;
 		}
 
-		public ImageIcon getIcon()
-		{
+		public javax.swing.Icon getIcon() {
 			return this.icon;
 		}
-	}
 
-	private boolean turningForward = false;
-	private boolean turningBackward = false;
+		private final javax.swing.Icon icon;
+	}
 
 	public ManipulationHandle2DCameraTurnUpDown() {
 		super( "images/tiltMask.png" );
 	}
 
 	@Override
-	protected ControlState getStateForManipulationStatus()
-	{
-		if( this.turningForward )
-		{
+	protected ControlState getStateForManipulationStatus() {
+		if( this.turningForward ) {
 			return ControlState.TurningForward;
-		}
-		else if( this.turningBackward )
-		{
+		} else if( this.turningBackward ) {
 			return ControlState.TurningBackward;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() )
-		{
+		else if( this.state.isRollover() ) {
 			return ControlState.Highlighted;
-		}
-		else
-		{
+		} else {
 			return ControlState.Inactive;
 		}
 	}
 
 	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive )
-	{
-		switch( event.getMovementDescription().direction )
-		{
+	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
+		switch( event.getMovementDescription().direction ) {
 		case LEFT:
 			this.turningForward = isActive;
 			break;
@@ -113,4 +103,6 @@ public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulation
 		}
 	}
 
+	private boolean turningForward = false;
+	private boolean turningBackward = false;
 }

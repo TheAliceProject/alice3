@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -68,81 +67,53 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public class RotationRingHandle extends ManipulationHandle3D {
 
-	public enum HandlePosition
-	{
+	public static enum HandlePosition {
 		ORIGIN,
 		TOP,
 		BOTTOM,
 		MIDDLE,
 	}
 
-	protected static final double MIN_TORUS_RADIUS = .05d;
-	protected static final double MAX_TORUS_RADIUS = .1d;
+	private static final double MIN_TORUS_RADIUS = .05d;
+	private static final double MAX_TORUS_RADIUS = .1d;
 
-	protected static final double MINOR_RADIUS = .075d;
-	protected static final double MIN_RADIUS = .4d;
+	private static final double MINOR_RADIUS = .075d;
+	private static final double MIN_RADIUS = .4d;
 
-	protected static final Color4f ACTIVE_COLOR = new Color4f( .4f, 1.0f, 0.3f, 1.0f );
-	protected static final Color4f ROLLOVER_COLOR = new Color4f( 1.0f, 1.0f, 0.3f, 1.0f );
-	protected static final Color4f MUTED_COLOR = new Color4f( 0.5f, 0.5f, 0.4f, 1.0f );
-	protected static final Color4f BASE_COLOR = new Color4f( 0.7f, 0.7f, 0.3f, 1.0f );
+	private static final Color4f ACTIVE_COLOR = new Color4f( .4f, 1.0f, 0.3f, 1.0f );
+	private static final Color4f ROLLOVER_COLOR = new Color4f( 1.0f, 1.0f, 0.3f, 1.0f );
+	private static final Color4f MUTED_COLOR = new Color4f( 0.5f, 0.5f, 0.4f, 1.0f );
+	private static final Color4f BASE_COLOR = new Color4f( 0.7f, 0.7f, 0.3f, 1.0f );
 
-	protected Color4f activeColor = ACTIVE_COLOR;
-	protected Color4f baseColor = BASE_COLOR;
-	protected Color4f rolloverColor = ROLLOVER_COLOR;
-	protected Color4f mutedColor = MUTED_COLOR;
-
-	protected Torus sgTorus = new Torus();
-	protected Sphere sgSphere = new Sphere();
-	protected Transformable sphereTransformable = new Transformable();
-	protected Visual sgSphereVisual = new Visual();
-	protected Vector3 rotationAxis;
-	protected MovementDirection rotationAxisDirection;
-	protected Vector3 sphereDirection = new Vector3();
-	protected Vector3 handleOffset = new Vector3();
-
-	protected Transformable snapReference = new Transformable();
-
-	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
-
-	protected DoubleInterruptibleAnimation radiusAnimation;
-
-	public RotationRingHandle()
-	{
+	public RotationRingHandle() {
 		this( MovementDirection.UP, HandlePosition.ORIGIN );
 	}
 
-	public RotationRingHandle( MovementDirection rotationAxisDirection )
-	{
+	public RotationRingHandle( MovementDirection rotationAxisDirection ) {
 		this( rotationAxisDirection, HandlePosition.ORIGIN );
 	}
 
-	public RotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
-	{
+	public RotationRingHandle( MovementDirection rotationAxisDirection, Color4f color ) {
 		this( rotationAxisDirection, HandlePosition.ORIGIN, color );
 	}
 
-	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
-	{
+	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
 		this( rotationAxisDirection, handlePosition, BASE_COLOR, ACTIVE_COLOR, ROLLOVER_COLOR, MUTED_COLOR );
 	}
 
-	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
-	{
+	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color ) {
 		super();
 		this.init( rotationAxisDirection, handlePosition );
 		this.initColor( color );
 	}
 
-	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
-	{
+	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor ) {
 		super();
 		this.init( rotationAxisDirection, handlePosition );
 		this.initColors( baseColor, activeColor, rolloverColor, mutedColor );
 	}
 
-	private void init( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
-	{
+	private void init( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
 		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		this.sgSphereVisual.setParent( this.sphereTransformable );
 		this.sphereTransformable.setParent( this );
@@ -160,8 +131,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
 	}
 
-	public RotationRingHandle( RotationRingHandle handle )
-	{
+	public RotationRingHandle( RotationRingHandle handle ) {
 		this( handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor );
 		this.initFromHandle( handle );
 		this.baseColor = handle.baseColor;
@@ -189,23 +159,19 @@ public class RotationRingHandle extends ManipulationHandle3D {
 	}
 
 	@Override
-	public RotationRingHandle clone()
-	{
+	public RotationRingHandle clone() {
 		RotationRingHandle newHandle = new RotationRingHandle( this );
 		return newHandle;
 	}
 
-	protected void setPositionRelativeToObjectSize()
-	{
-		if( this.getParentTransformable() != null )
-		{
+	protected void setPositionRelativeToObjectSize() {
+		if( this.getParentTransformable() != null ) {
 			AxisAlignedBox bbox = this.getManipulatedObjectBox();
 
 			Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3( bbox.getMaximum() ), this.rotationAxis );
 			Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3( bbox.getMinimum() ), this.rotationAxis );
 			this.handleOffset.set( 0.0d, 0.0d, 0.0d );
-			switch( this.handlePosition )
-			{
+			switch( this.handlePosition ) {
 			case TOP: {
 				this.handleOffset.set( maxVector );
 				double handleSize = this.sgTorus.minorRadius.getValue();
@@ -231,65 +197,55 @@ public class RotationRingHandle extends ManipulationHandle3D {
 			}
 				break;
 			}
-			if( this.handleOffset.isNaN() )
-			{
+			if( this.handleOffset.isNaN() ) {
 				this.handleOffset.set( 0.0d, 0.0d, 0.0d );
 			}
 			this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
 		}
 	}
 
-	public void initializeSnapReferenceFrame()
-	{
+	public void initializeSnapReferenceFrame() {
 		this.snapReference.setParent( this.manipulatedObject.getRoot() );
 		this.snapReference.setTransformation( this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE );
 		this.snapReference.setTranslationOnly( 0, 0, 0, AsSeenBy.SCENE );
 	}
 
 	@Override
-	public ReferenceFrame getSnapReferenceFrame()
-	{
+	public ReferenceFrame getSnapReferenceFrame() {
 		return this.snapReference;
 	}
 
-	@Override
-	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		super.setManipulatedObject( manipulatedObject );
-		//		this.setPositionRelativeToObjectSize( );
-	}
+	//	@Override
+	//	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
+	//		super.setManipulatedObject( manipulatedObject );
+	//		//		this.setPositionRelativeToObjectSize( );
+	//	}
 
-	public void setSphereVisibility( boolean showSphere )
-	{
+	public void setSphereVisibility( boolean showSphere ) {
 		this.sgSphereVisual.isShowing.setValue( showSphere );
 	}
 
-	public void setSphereDirection( Vector3 direction )
-	{
+	public void setSphereDirection( Vector3 direction ) {
 		this.sphereDirection = direction;
 		placeSphere();
 	}
 
-	public Point3 getSphereLocation( ReferenceFrame referenceFrame )
-	{
+	public Point3 getSphereLocation( ReferenceFrame referenceFrame ) {
 		return this.sphereTransformable.getTranslation( referenceFrame );
 	}
 
-	public double getRadius()
-	{
+	public double getRadius() {
 		return this.sgTorus.majorRadius.getValue();
 	}
 
-	protected void placeSphere()
-	{
+	protected void placeSphere() {
 		this.sphereTransformable.setTranslationOnly( Point3.createMultiplication( this.sphereDirection, this.sgTorus.majorRadius.getValue() ), this );
 	}
 
-	protected void animateHandleToRadius( double desiredRadius )
-	{
+	protected void animateHandleToRadius( double desiredRadius ) {
 		if( desiredRadius == 0 ) {
 			return;
-		}
-		else {
+		} else {
 			this.setSize( desiredRadius );
 		}
 		/*
@@ -341,14 +297,12 @@ public class RotationRingHandle extends ManipulationHandle3D {
 	}
 
 	@Override
-	protected void updateVisibleState( HandleRenderState renderState )
-	{
+	protected void updateVisibleState( HandleRenderState renderState ) {
 		super.updateVisibleState( renderState );
 		double endRadius;
 		if( this.isRenderable() ) {
 			endRadius = this.getMajorAxisRadius();
-		}
-		else {
+		} else {
 			endRadius = 0.0d;
 		}
 		animateHandleToRadius( endRadius );
@@ -358,36 +312,38 @@ public class RotationRingHandle extends ManipulationHandle3D {
 	protected Color4f getBaseColor() {
 		if( this.baseColor == null ) {
 			return BASE_COLOR;
+		} else {
+			return this.baseColor;
 		}
-		return this.baseColor;
 	}
 
 	protected Color4f getMutedColor() {
 		if( this.mutedColor == null ) {
 			return MUTED_COLOR;
+		} else {
+			return this.mutedColor;
 		}
-		return this.mutedColor;
 	}
 
 	protected Color4f getActiveColor() {
 		if( this.activeColor == null ) {
 			return ACTIVE_COLOR;
+		} else {
+			return this.activeColor;
 		}
-		return this.activeColor;
 	}
 
 	protected Color4f getRolloverColor() {
 		if( this.rolloverColor == null ) {
 			return ROLLOVER_COLOR;
+		} else {
+			return this.rolloverColor;
 		}
-		return this.rolloverColor;
 	}
 
 	@Override
-	protected Color4f getDesiredColor( HandleRenderState renderState )
-	{
-		switch( renderState )
-		{
+	protected Color4f getDesiredColor( HandleRenderState renderState ) {
+		switch( renderState ) {
 		case NOT_VISIBLE:
 			return this.getBaseColor();
 		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
@@ -403,21 +359,17 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		}
 	}
 
-	private void setSize( double size )
-	{
+	private void setSize( double size ) {
 		RotationRingHandle.this.sgTorus.majorRadius.setValue( size );
 		this.placeSphere();
 	}
 
-	private double getSize()
-	{
+	private double getSize() {
 		return RotationRingHandle.this.sgTorus.majorRadius.getValue();
 	}
 
-	protected double getMajorAxisRadius()
-	{
-		if( this.getParentTransformable() != null )
-		{
+	protected double getMajorAxisRadius() {
+		if( this.getParentTransformable() != null ) {
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			Plane planeOfRotation = Plane.createInstance( Point3.createZero(), this.rotationAxis );
 			Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMinimum() );
@@ -425,8 +377,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
 			double minSize = minPlanePoint.calculateMagnitude();
 			double maxSize = maxPlanePoint.calculateMagnitude();
 			double radius = Math.max( minSize, maxSize ) + MIN_TORUS_RADIUS;
-			if( Double.isNaN( radius ) || ( radius < MIN_RADIUS ) )
-			{
+			if( Double.isNaN( radius ) || ( radius < MIN_RADIUS ) ) {
 				radius = MIN_RADIUS;
 			}
 			return radius;
@@ -434,13 +385,11 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		return 0.0d;
 	}
 
-	public Vector3 getRotationAxis()
-	{
+	public Vector3 getRotationAxis() {
 		return this.rotationAxis;
 	}
 
-	public MovementDirection getRotationDirection()
-	{
+	public MovementDirection getRotationDirection() {
 		return this.rotationAxisDirection;
 	}
 
@@ -450,10 +399,8 @@ public class RotationRingHandle extends ManipulationHandle3D {
 	}
 
 	@Override
-	public void resizeToObject()
-	{
-		if( this.radiusAnimation != null )
-		{
+	public void resizeToObject() {
+		if( this.radiusAnimation != null ) {
 			this.radiusAnimation.complete( null );
 		}
 		this.setPositionRelativeToObjectSize();
@@ -478,13 +425,31 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		if( torusRadius > getMaxTorusRadius() ) {
 			torusRadius = getMaxTorusRadius();
 		}
-		if( this.sgTorus != null )
-		{
+		if( this.sgTorus != null ) {
 			this.sgTorus.minorRadius.setValue( torusRadius );
 		}
-		if( this.sgSphere != null )
-		{
+		if( this.sgSphere != null ) {
 			this.sgSphere.radius.setValue( torusRadius * 2.0d );
 		}
 	}
+
+	protected Color4f activeColor = ACTIVE_COLOR;
+	protected Color4f baseColor = BASE_COLOR;
+	protected Color4f rolloverColor = ROLLOVER_COLOR;
+	protected Color4f mutedColor = MUTED_COLOR;
+
+	private final Torus sgTorus = new Torus();
+	private final Sphere sgSphere = new Sphere();
+	private final Transformable sphereTransformable = new Transformable();
+	private final Visual sgSphereVisual = new Visual();
+	protected Vector3 rotationAxis;
+	protected MovementDirection rotationAxisDirection;
+	private Vector3 sphereDirection = new Vector3();
+	protected Vector3 handleOffset = new Vector3();
+
+	private final Transformable snapReference = new Transformable();
+
+	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
+
+	private DoubleInterruptibleAnimation radiusAnimation;
 }

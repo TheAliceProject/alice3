@@ -42,8 +42,6 @@
  */
 package org.alice.interact.handle;
 
-import javax.swing.ImageIcon;
-
 import org.alice.interact.PickHint;
 import org.alice.interact.event.ManipulationEvent;
 
@@ -52,8 +50,7 @@ import org.alice.interact.event.ManipulationEvent;
  */
 public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHandle2D {
 
-	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
-	{
+	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
 		Inactive( "images/drive.png" ),
 		Highlighted( "images/driveHighlight.png" ),
 		Back( "images/driveBack.png" ),
@@ -65,23 +62,23 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 		Left( "images/driveLeft.png" ),
 		Right( "images/driveRight.png" );
 
-		private ImageIcon icon;
-
-		private ControlState( String resourceString )
-		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ) );
+		private ControlState( String resourceString ) {
+			javax.swing.Icon icon;
+			try {
+				icon = new javax.swing.ImageIcon( this.getClass().getResource( resourceString ) );
+			} catch( Exception e ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot load", resourceString, this );
+				icon = null;
+			}
+			this.icon = icon;
 		}
 
-		public ImageIcon getIcon()
-		{
+		public javax.swing.Icon getIcon() {
 			return this.icon;
 		}
-	}
 
-	private boolean turningLeft = false;
-	private boolean turningRight = false;
-	private boolean movingForward = false;
-	private boolean movingBackward = false;
+		private final javax.swing.Icon icon;
+	}
 
 	public ManipulationHandle2DCameraDriver() {
 		super( "images/driveMask.png" );
@@ -93,56 +90,35 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	}
 
 	@Override
-	protected ImageState getStateForManipulationStatus()
-	{
-		if( this.movingBackward && !this.turningLeft && !this.turningRight )
-		{
+	protected ImageState getStateForManipulationStatus() {
+		if( this.movingBackward && !this.turningLeft && !this.turningRight ) {
 			return ControlState.Back;
-		}
-		else if( this.movingBackward && this.turningLeft )
-		{
+		} else if( this.movingBackward && this.turningLeft ) {
 			return ControlState.BackLeft;
-		}
-		else if( this.movingBackward && this.turningRight )
-		{
+		} else if( this.movingBackward && this.turningRight ) {
 			return ControlState.BackRight;
-		}
-		else if( this.movingForward && !this.turningLeft && !this.turningRight )
-		{
+		} else if( this.movingForward && !this.turningLeft && !this.turningRight ) {
 			return ControlState.Forward;
-		}
-		else if( this.movingForward && this.turningLeft )
-		{
+		} else if( this.movingForward && this.turningLeft ) {
 			return ControlState.ForwardLeft;
-		}
-		else if( this.movingForward && this.turningRight )
-		{
+		} else if( this.movingForward && this.turningRight ) {
 			return ControlState.ForwardRight;
-		}
-		else if( this.turningLeft && !this.movingForward && !this.movingBackward )
-		{
+		} else if( this.turningLeft && !this.movingForward && !this.movingBackward ) {
 			return ControlState.Left;
-		}
-		else if( this.turningRight && !this.movingForward && !this.movingBackward )
-		{
+		} else if( this.turningRight && !this.movingForward && !this.movingBackward ) {
 			return ControlState.Right;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() )
-		{
+		else if( this.state.isRollover() ) {
 			return ControlState.Highlighted;
-		}
-		else
-		{
+		} else {
 			return ControlState.Inactive;
 		}
 	}
 
 	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive )
-	{
-		switch( event.getMovementDescription().direction )
-		{
+	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
+		switch( event.getMovementDescription().direction ) {
 		case BACKWARD:
 			this.movingBackward = isActive;
 			break;
@@ -158,4 +134,8 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 		}
 	}
 
+	private boolean turningLeft = false;
+	private boolean turningRight = false;
+	private boolean movingForward = false;
+	private boolean movingBackward = false;
 }
