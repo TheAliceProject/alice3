@@ -266,7 +266,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 
 	@Override
 	public String toString() {
-		String returnString = "";
+		String returnString;
 		if( this.currentHandle != null ) {
 			returnString = "Current: " + this.currentHandle.getClass().getSimpleName() + ":" + this.currentHandle.hashCode() + "; ";
 		} else {
@@ -277,7 +277,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		} else {
 			returnString += "Next: null";
 		}
-		return returnString;
+		return this.getClass().getSimpleName() + "[" + returnString + "]";
 	}
 
 	private ManipulationHandle currentHandle;
