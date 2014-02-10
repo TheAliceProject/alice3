@@ -61,7 +61,7 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 	private final org.lgna.project.ast.JavaKeyedArgument argument;
 
 	private RemoveKeyedArgumentOperation( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
 		this.argumentListProperty = argumentListProperty;
 		this.argument = argument;
 	}

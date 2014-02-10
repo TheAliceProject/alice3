@@ -157,7 +157,7 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
 		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
-		this.dragAdapter.addManipulator( mouseHandleDrag_Shift );
+		this.dragAdapter.addManipulatorConditionSet( mouseHandleDrag_Shift );
 
 		//ORTHOGRAPHIC STRAFE
 		//Create the new handle

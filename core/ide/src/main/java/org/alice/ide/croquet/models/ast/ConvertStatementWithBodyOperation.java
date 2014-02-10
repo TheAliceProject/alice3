@@ -50,7 +50,7 @@ public abstract class ConvertStatementWithBodyOperation extends org.lgna.croquet
 	private org.lgna.project.ast.AbstractStatementWithBody original;
 
 	public ConvertStatementWithBodyOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractStatementWithBody original ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
 		this.original = original;
 	}
 

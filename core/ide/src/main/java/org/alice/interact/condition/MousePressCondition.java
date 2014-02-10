@@ -54,29 +54,20 @@ public class MousePressCondition extends MouseDragCondition {
 
 	@Override
 	protected boolean testState( InputState state ) {
-		boolean inputTest = testInputs( state );
-		return inputTest;
+		return this.testInputs( state );
 	}
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		boolean currentStateStatus = testState( currentState );
-		boolean previousStateStatus = testState( previousState );
-		if( currentStateStatus != previousStateStatus )
-		{
-			return true;
-		}
-		return false;
+		return this.testState( currentState ) != this.testState( previousState );
 	}
 
 	@Override
 	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if( testState( currentState ) && !testState( previousState ) )
-		{
+		if( testState( currentState ) && !testState( previousState ) ) {
 			this.hasStarted = true;
 			return true;
 		}
 		return false;
 	}
-
 }

@@ -104,7 +104,7 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
+		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {

@@ -70,6 +70,7 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 	public CreateAPersonDragAdapter() {
 		this.setUpControls();
 	}
+
 	private void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
@@ -107,22 +108,21 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		for( MovementKey zoomKey : zoomKeys ) {
 			cameraTranslate.addCondition( new KeyPressCondition( zoomKey.keyValue ) );
 		}
-		this.manipulators.add( cameraTranslate );
+		this.addManipulatorConditionSet( cameraTranslate );
 
 		ManipulatorConditionSet objectRotate = new ManipulatorConditionSet( new ObjectRotateKeyManipulator( turnKeys ) );
 		for( MovementKey turnKey : turnKeys ) {
 			objectRotate.addCondition( new KeyPressCondition( turnKey.keyValue ) );
 		}
-		this.manipulators.add( objectRotate );
+		this.addManipulatorConditionSet( objectRotate );
 
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
 		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getAnythingHint() ) );
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
-		this.manipulators.add( mouseRotateObjectLeftRight );
+		this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
-		for( int i = 0; i < this.manipulators.size(); i++ )
-		{
-			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		for( ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets() ) {
+			manipulatorConditionSet.getManipulator().setDragAdapter( this );
 		}
 	}
 
@@ -142,11 +142,10 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		cameraMax.y = originalY + 1.5d;
 		cameraBounds.setMinimum( cameraMin );
 		cameraBounds.setMaximum( cameraMax );
-		for( int i = 0; i < this.manipulators.size(); i++ )
-		{
-			if( this.manipulators.get( i ).getManipulator() instanceof CameraTranslateKeyManipulator )
-			{
-				( (CameraTranslateKeyManipulator)this.manipulators.get( i ).getManipulator() ).setBounds( cameraBounds );
+		for( ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets() ) {
+			org.alice.interact.manipulator.AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
+			if( manipulator instanceof CameraTranslateKeyManipulator ) {
+				( (CameraTranslateKeyManipulator)manipulator ).setBounds( cameraBounds );
 			}
 		}
 	}

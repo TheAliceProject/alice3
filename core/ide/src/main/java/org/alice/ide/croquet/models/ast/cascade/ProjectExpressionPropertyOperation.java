@@ -50,7 +50,7 @@ public abstract class ProjectExpressionPropertyOperation extends org.lgna.croque
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 
 	public ProjectExpressionPropertyOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
 		this.expressionProperty = expressionProperty;
 	}
 

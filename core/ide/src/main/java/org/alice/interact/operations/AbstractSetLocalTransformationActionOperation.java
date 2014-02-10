@@ -104,7 +104,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
+		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {

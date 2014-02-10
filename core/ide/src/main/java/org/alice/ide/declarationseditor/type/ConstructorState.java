@@ -61,6 +61,6 @@ public class ConstructorState extends FilteredMemberState<org.lgna.project.ast.N
 	}
 
 	private ConstructorState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
 	}
 }

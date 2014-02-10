@@ -55,7 +55,7 @@ public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionO
 	}
 
 	private BreakProjectAddNullMethodOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
 	}
 
 	@Override

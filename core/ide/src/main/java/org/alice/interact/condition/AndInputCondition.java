@@ -49,30 +49,16 @@ import org.alice.interact.InputState;
  */
 public class AndInputCondition extends InputCondition {
 
-	private InputCondition[] requiredConditions;
-
-	public AndInputCondition( InputCondition conditionA, InputCondition conditionB )
-	{
-		InputCondition[] reqConds = { conditionA, conditionB };
-		this.setRequiredConditions( reqConds );
-	}
-
-	public AndInputCondition( InputCondition[] requiredConditions )
-	{
-		this.setRequiredConditions( requiredConditions );
-	}
-
-	public void setRequiredConditions( InputCondition[] requiredConditions )
-	{
+	public AndInputCondition( InputCondition... requiredConditions ) {
 		this.requiredConditions = requiredConditions;
 	}
 
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {
-		for( int i = 0; i < requiredConditions.length; i++ )
-		{
-			if( !requiredConditions[ i ].isRunning( currentState, previousState ) )
-			{
+		for( InputCondition requiredCondition : this.requiredConditions ) {
+			if( requiredCondition.isRunning( currentState, previousState ) ) {
+				//pass
+			} else {
 				return false;
 			}
 		}
@@ -82,8 +68,7 @@ public class AndInputCondition extends InputCondition {
 	@Override
 	public boolean justEnded( InputState currentState, InputState previousState ) {
 		for( InputCondition requiredCondition : requiredConditions ) {
-			if( requiredCondition.justEnded( currentState, previousState ) )
-			{
+			if( requiredCondition.justEnded( currentState, previousState ) ) {
 				return true;
 			}
 		}
@@ -96,29 +81,20 @@ public class AndInputCondition extends InputCondition {
 	 */
 	public boolean justStarted( InputState currentState, InputState previousState ) {
 		boolean anyStart = false;
-		for( int i = 0; i < requiredConditions.length; i++ )
-		{
-			if( requiredConditions[ i ].justStarted( currentState, previousState ) )
-			{
+		for( InputCondition requiredCondition : requiredConditions ) {
+			if( requiredCondition.justStarted( currentState, previousState ) ) {
 				anyStart = true;
-			}
-			else if( !requiredConditions[ i ].isRunning( currentState, previousState ) )
-			{
+			} else if( requiredCondition.isRunning( currentState, previousState ) == false ) {
 				return false;
 			}
 		}
-		if( anyStart )
-		{
-			return true;
-		}
-		return false;
+		return anyStart;
 	}
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
 		for( InputCondition requiredCondition : requiredConditions ) {
-			if( requiredCondition.stateChanged( currentState, previousState ) )
-			{
+			if( requiredCondition.stateChanged( currentState, previousState ) ) {
 				return true;
 			}
 		}
@@ -138,23 +114,16 @@ public class AndInputCondition extends InputCondition {
 	}
 
 	@Override
-	public String toString()
-	{
-		String string = "";
-		boolean isFirst = true;
-		for( InputCondition input : this.requiredConditions )
-		{
-			if( isFirst )
-			{
-				isFirst = false;
-			}
-			else
-			{
-				string += " AND ";
-			}
-			string += input;
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		String separator = "";
+		for( InputCondition requiredCondition : this.requiredConditions ) {
+			sb.append( separator );
+			sb.append( requiredCondition );
+			separator = " AND ";
 		}
-		return string;
+		return sb.toString();
 	}
 
+	private final InputCondition[] requiredConditions;
 }

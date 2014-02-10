@@ -128,7 +128,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
 
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

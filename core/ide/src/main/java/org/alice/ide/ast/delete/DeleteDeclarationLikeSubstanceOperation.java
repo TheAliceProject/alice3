@@ -50,7 +50,7 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 	private final N node;
 
 	public DeleteDeclarationLikeSubstanceOperation( java.util.UUID migrationId, N node ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
 		this.node = node;
 	}
 

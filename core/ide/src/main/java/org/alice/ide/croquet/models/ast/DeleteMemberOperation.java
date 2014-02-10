@@ -55,7 +55,7 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 	private transient int index = -1;
 
 	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.declaringType = declaringType;
 	}

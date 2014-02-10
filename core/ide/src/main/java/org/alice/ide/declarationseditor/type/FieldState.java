@@ -48,6 +48,6 @@ package org.alice.ide.declarationseditor.type;
  */
 public abstract class FieldState extends FilteredMemberState<org.lgna.project.ast.UserField> {
 	public FieldState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.FieldData data ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, data );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id, data );
 	}
 }

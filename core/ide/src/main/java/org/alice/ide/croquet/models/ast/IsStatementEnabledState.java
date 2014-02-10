@@ -70,7 +70,7 @@ public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
 	};
 
 	private IsStatementEnabledState( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.addNewSchoolValueListener( this.valueListener );
 	}

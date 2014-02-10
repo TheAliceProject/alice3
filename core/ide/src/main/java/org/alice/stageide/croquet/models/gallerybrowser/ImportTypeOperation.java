@@ -55,7 +55,7 @@ public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //to
 	}
 
 	private ImportTypeOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
 	}
 
 	@Override

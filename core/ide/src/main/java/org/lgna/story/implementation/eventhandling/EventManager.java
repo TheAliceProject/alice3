@@ -284,11 +284,9 @@ public class EventManager {
 			//pass
 		} else {
 			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
-			//this.dragAdapter = new org.alice.interact.GlobalDragAdapter( null );
 			OnscreenLookingGlass lookingGlass = this.scene.getProgram().getOnscreenLookingGlass();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
-			//				System.out.println("hi");
 			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
 			//				{
 			//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );

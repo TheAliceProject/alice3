@@ -171,7 +171,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			org.lgna.story.SThing aliceThing = ( (org.lgna.story.implementation.ModelImp)scalable ).getAbstraction();
 			org.lgna.project.ast.UserField scalableField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

@@ -24,7 +24,7 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 	}
 
 	private AddEventListenerCascade() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "dc90da69-a11f-4de4-8923-e410058762a3" ), MethodInvocation.class );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "dc90da69-a11f-4de4-8923-e410058762a3" ), MethodInvocation.class );
 	}
 
 	@Override

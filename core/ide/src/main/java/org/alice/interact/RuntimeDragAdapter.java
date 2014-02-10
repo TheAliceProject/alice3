@@ -69,22 +69,17 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 		mouseTranslateObject.addCondition( moveableObject );
-		this.manipulators.add( mouseTranslateObject );
+		this.addManipulatorConditionSet( mouseTranslateObject );
 
 		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
 		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
-		this.manipulators.add( mouseUpDownTranslateObject );
+		this.addManipulatorConditionSet( mouseUpDownTranslateObject );
 
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
 		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
-		this.manipulators.add( mouseRotateObjectLeftRight );
-
-		for( int i = 0; i < this.manipulators.size(); i++ )
-		{
-			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
-		}
+		this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
 		//Camera mouse control
 		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
@@ -96,32 +91,36 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
 		cameraOrbit.addCondition( middleMouseAndAnything );
-		this.manipulators.add( cameraOrbit );
+		this.addManipulatorConditionSet( cameraOrbit );
 
 		ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet( new CameraTiltDragManipulator() );
 		cameraTilt.addCondition( rightMouseAndNonInteractive );
 		cameraTilt.addCondition( leftAndControl );
-		this.manipulators.add( cameraTilt );
+		this.addManipulatorConditionSet( cameraTilt );
 
 		ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet( new CameraMoveDragManipulator() );
 		cameraMouseTranslate.addCondition( leftAndNoModifiers );
-		this.manipulators.add( cameraMouseTranslate );
+		this.addManipulatorConditionSet( cameraMouseTranslate );
 
 		ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet( new CameraPanDragManipulator() );
 		cameraMousePan.addCondition( leftAndShift );
-		this.manipulators.add( cameraMousePan );
+		this.addManipulatorConditionSet( cameraMousePan );
+
+		for( ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets() ) {
+			manipulatorConditionSet.getManipulator().setDragAdapter( this );
+		}
 	}
 
 	@Override
-	public void mouseMoved( java.awt.event.MouseEvent e ) {
+	protected void handleMouseEntered( MouseEvent e ) {
+		//Overridden to do nothing
+	}
+
+	@Override
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 		//Overridden to prevent picking every frame since there is no need for rollover events
 		this.currentInputState.setMouseLocation( e.getPoint() );
-		this.handleStateChange();
-	}
-
-	@Override
-	public void mouseEntered( MouseEvent e ) {
-		//Overridden to do nothing
+		this.fireStateChange();
 	}
 
 	@Override

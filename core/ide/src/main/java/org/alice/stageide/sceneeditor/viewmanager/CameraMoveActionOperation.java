@@ -72,7 +72,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	private MoveToImageIcon imageIcon;
 
 	protected CameraMoveActionOperation( java.util.UUID id ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.cameraMarker = null;
 		this.imageIcon = new MoveToImageIcon();

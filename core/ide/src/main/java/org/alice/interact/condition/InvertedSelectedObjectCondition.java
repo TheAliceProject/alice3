@@ -49,15 +49,12 @@ import org.alice.interact.PickHint;
  */
 public class InvertedSelectedObjectCondition extends SelectedObjectCondition {
 
-	public InvertedSelectedObjectCondition( PickHint acceptableType )
-	{
+	public InvertedSelectedObjectCondition( PickHint acceptableType ) {
 		this( acceptableType, ObjectSwitchBehavior.END_ON_SWITCH );
 	}
 
-	public InvertedSelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior )
-	{
-		super( acceptableType, switchBehavior );
-		this.isNot = true;
+	public InvertedSelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior ) {
+		super( acceptableType, switchBehavior, true );
 	}
 
 }

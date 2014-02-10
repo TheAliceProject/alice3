@@ -64,7 +64,7 @@ public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.Property
 	private final org.lgna.project.ast.UserField field;
 
 	private SceneEditorUpdatingPropertyState( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
 		this.field = field;
 	}
 

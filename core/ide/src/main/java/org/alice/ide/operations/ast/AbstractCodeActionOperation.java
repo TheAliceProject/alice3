@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractCodeActionOperation extends org.lgna.croquet.ActionOperation {
 	public AbstractCodeActionOperation( java.util.UUID individualId ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
 	}
 
 	protected abstract org.lgna.project.ast.UserCode getCode();

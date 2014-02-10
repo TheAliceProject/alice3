@@ -50,7 +50,7 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 
 	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 

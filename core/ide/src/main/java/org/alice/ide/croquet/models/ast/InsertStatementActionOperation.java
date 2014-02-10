@@ -52,7 +52,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	private org.lgna.project.ast.Statement statement;
 
 	public InsertStatementActionOperation( org.lgna.project.ast.BlockStatement blockStatement, int index, org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;

@@ -47,8 +47,6 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication {
-
-	public static final org.lgna.croquet.Group PROJECT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
@@ -83,7 +81,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void updateUndoRedoEnabled() {
-		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
+		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.lgna.croquet.Application.PROJECT_GROUP );
 		boolean isUndoEnabled;
 		boolean isRedoEnabled;
 		if( historyManager != null ) {
@@ -209,7 +207,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	@Deprecated
 	private final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
-		return this.getProjectHistory( IDE.PROJECT_GROUP );
+		return this.getProjectHistory( PROJECT_GROUP );
 	}
 
 	@Deprecated

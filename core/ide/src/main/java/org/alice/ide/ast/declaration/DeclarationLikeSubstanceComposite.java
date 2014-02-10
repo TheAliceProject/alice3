@@ -176,7 +176,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	public DeclarationLikeSubstanceComposite( java.util.UUID migrationId, Details details ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
+		super( migrationId, org.lgna.croquet.Application.PROJECT_GROUP );
 
 		this.details = details;
 

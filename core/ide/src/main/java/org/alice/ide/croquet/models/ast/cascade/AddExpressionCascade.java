@@ -64,7 +64,7 @@ public class AddExpressionCascade extends ExpressionsCascade {
 	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
 
 	public AddExpressionCascade( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> componentTypeProperty, org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
 		this.expressionListProperty = expressionListProperty;
 	}
 

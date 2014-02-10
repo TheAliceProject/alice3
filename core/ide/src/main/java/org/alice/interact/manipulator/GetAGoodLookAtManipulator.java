@@ -117,7 +117,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 					}
 
 					//Actually "get a good look at" the target
-					org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation( org.alice.ide.IDE.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
+					org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
 					lookAtOperation.fire();
 				}
 				else {

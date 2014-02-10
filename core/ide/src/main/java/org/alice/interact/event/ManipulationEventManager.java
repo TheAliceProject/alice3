@@ -42,52 +42,33 @@
  */
 package org.alice.interact.event;
 
-import java.util.List;
-
 /**
  * @author David Culyba
  */
 public class ManipulationEventManager {
-
-	private List<ManipulationListener> manipulationListeners = new java.util.LinkedList<ManipulationListener>();
-
-	public void addManipulationListener( ManipulationListener listener )
-	{
-		synchronized( this.manipulationListeners ) {
-			if( !this.manipulationListeners.contains( listener ) )
-			{
-				this.manipulationListeners.add( listener );
-			}
-			else
-			{
-				System.out.println( "REJECTED!" );
-			}
+	public void addManipulationListener( ManipulationListener listener ) {
+		if( !this.manipulationListeners.contains( listener ) ) {
+			this.manipulationListeners.add( listener );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( listener, "already in", this );
 		}
 	}
 
-	public void removeManipulationListener( ManipulationListener listener )
-	{
-		synchronized( this.manipulationListeners ) {
-			this.manipulationListeners.remove( listener );
-		}
+	public void removeManipulationListener( ManipulationListener listener ) {
+		this.manipulationListeners.remove( listener );
 	}
 
-	public void triggerEvent( ManipulationEvent event, boolean isActivate )
-	{
-		for( int i = 0; i < this.manipulationListeners.size(); i++ )
-		{
-			ManipulationListener currentListener = this.manipulationListeners.get( i );
-			if( currentListener.matches( event ) )
-			{
-				if( isActivate )
-				{
+	public void triggerEvent( ManipulationEvent event, boolean isActivate ) {
+		for( ManipulationListener currentListener : this.manipulationListeners ) {
+			if( currentListener.matches( event ) ) {
+				if( isActivate ) {
 					currentListener.activate( event );
-				}
-				else
-				{
+				} else {
 					currentListener.deactivate( event );
 				}
 			}
 		}
 	}
+
+	private final java.util.List<ManipulationListener> manipulationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

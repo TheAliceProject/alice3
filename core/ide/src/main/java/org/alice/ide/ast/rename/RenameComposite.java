@@ -51,7 +51,7 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
 	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
+		super( migrationId, org.lgna.croquet.Application.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
 	}
 
