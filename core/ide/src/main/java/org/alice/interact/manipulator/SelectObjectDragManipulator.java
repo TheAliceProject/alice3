@@ -53,21 +53,16 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class SelectObjectDragManipulator extends AbstractManipulator {
-	public SelectObjectDragManipulator( org.alice.interact.AbstractDragAdapter dragAdapter )
-	{
+	public SelectObjectDragManipulator( org.alice.interact.AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -89,24 +84,16 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 	public boolean doStartManipulator( InputState startInput ) {
 		//		PrintUtilities.println("SelectObjectDragManipulator!!!");
 		PickHint clickedObjectType = startInput.getClickPickHint();
-		if( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ) )
-		{
+		if( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ) ) {
 			this.dragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable( true ) );
-		}
-		else if( clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
-		{
+		} else if( clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) ) {
 			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable( true );
-			if( pickedHandle instanceof RotationRingHandle )
-			{
+			if( pickedHandle instanceof RotationRingHandle ) {
 				this.dragAdapter.triggerSgObjectSelection( ( (RotationRingHandle)pickedHandle ).getManipulatedObject() );
 			}
-		}
-		else if( clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) )
-		{
+		} else if( clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) ) {
 			//Do nothing since the 2D handles don't select anything right now
-		}
-		else
-		{
+		} else {
 			this.dragAdapter.triggerImplementationSelection( null );
 		}
 		return true;
@@ -115,8 +102,6 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

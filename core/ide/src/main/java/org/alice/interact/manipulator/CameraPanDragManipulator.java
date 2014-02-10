@@ -56,16 +56,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 public class CameraPanDragManipulator extends CameraManipulator {
 
-	protected static final double MOVEMENT_PER_PIXEL = .02d;
-
-	protected Point originalMousePoint;
-	protected Vector3 xDirection;
-	protected Vector3 yDirection;
-
-	public CameraPanDragManipulator()
-	{
-		super();
-	}
+	private static final double MOVEMENT_PER_PIXEL = .02d;
 
 	@Override
 	public String getUndoRedoDescription() {
@@ -73,14 +64,12 @@ public class CameraPanDragManipulator extends CameraManipulator {
 	}
 
 	@Override
-	public CameraView getDesiredCameraView()
-	{
+	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
 	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput )
-	{
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		double yDif = -( currentInput.getMouseLocation().y - previousInput.getMouseLocation().y );
 		double xDif = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
 
@@ -102,29 +91,26 @@ public class CameraPanDragManipulator extends CameraManipulator {
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) && ( this.camera instanceof SymmetricPerspectiveCamera ) )
-		{
+		if( super.doStartManipulator( startInput ) && ( this.camera instanceof SymmetricPerspectiveCamera ) ) {
 			boolean success = false;
 			AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 			this.yDirection = new Vector3( Vector3.accessPositiveYAxis() );
 			this.xDirection = new Vector3( cameraTransform.orientation.right );
 
 			double xDoty = Vector3.calculateDotProduct( this.yDirection, this.xDirection );
-			if( Math.abs( xDoty ) > EpsilonUtilities.REASONABLE_EPSILON )
-			{
-				//				System.out.println("Boom!");
+			if( Math.abs( xDoty ) > EpsilonUtilities.REASONABLE_EPSILON ) {
 				return false;
 			}
 			return true;
 		}
 		return false;
-
 	}
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
+	private Point originalMousePoint;
+	private Vector3 xDirection;
+	private Vector3 yDirection;
 }

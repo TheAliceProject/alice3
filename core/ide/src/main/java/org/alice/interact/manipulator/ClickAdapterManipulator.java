@@ -47,16 +47,11 @@ import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 
 public class ClickAdapterManipulator extends AbstractManipulator {
-
-	protected ManipulatorClickAdapter clickAdapter;
-
-	public ClickAdapterManipulator( ManipulatorClickAdapter clickAdapter )
-	{
+	public ClickAdapterManipulator( ManipulatorClickAdapter clickAdapter ) {
 		this.clickAdapter = clickAdapter;
 	}
 
-	public ManipulatorClickAdapter getClickAdapter()
-	{
+	public ManipulatorClickAdapter getClickAdapter() {
 		return this.clickAdapter;
 	}
 
@@ -66,19 +61,15 @@ public class ClickAdapterManipulator extends AbstractManipulator {
 	}
 
 	@Override
-	public void doClickManipulator( InputState endInput, InputState previousInput )
-	{
+	public void doClickManipulator( InputState endInput, InputState previousInput ) {
 	}
 
 	@Override
-	public void doDataUpdateManipulator( InputState currentInput,
-			InputState previousInput )
-	{
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 	}
 
 	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput )
-	{
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 	}
 
 	@Override
@@ -87,20 +78,18 @@ public class ClickAdapterManipulator extends AbstractManipulator {
 	}
 
 	@Override
-	public void doTimeUpdateManipulator( double dTime, InputState currentInput )
-	{
+	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
 	}
 
 	@Override
-	protected HandleSet getHandleSetToEnable()
-	{
+	protected HandleSet getHandleSetToEnable() {
 		return null;
 	}
 
 	@Override
-	public String getUndoRedoDescription()
-	{
+	public String getUndoRedoDescription() {
 		return null;
 	}
 
+	private final ManipulatorClickAdapter clickAdapter;
 }

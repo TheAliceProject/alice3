@@ -76,6 +76,10 @@ public abstract class AbstractManipulator {
 		return this.manipulationEvents;
 	}
 
+	protected void setMainManipulationEvent( ManipulationEvent mainManipulationEvent ) {
+		this.mainManipulationEvent = mainManipulationEvent;
+	}
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable() {
 		return this.manipulatedTransformable;
 	}
@@ -292,6 +296,6 @@ public abstract class AbstractManipulator {
 	private boolean hasStarted = false;
 	protected boolean hasDoneUpdate = false;
 
-	protected ManipulationEvent mainManipulationEvent;
+	private ManipulationEvent mainManipulationEvent;
 	private final java.util.List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

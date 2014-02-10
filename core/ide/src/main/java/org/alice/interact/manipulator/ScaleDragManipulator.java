@@ -56,18 +56,13 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	public static final double MIN_HANDLE_PULL = .1d;
 
-	private double initialScale;
-	private double accumulatedScale = 1.0d;
-
 	@Override
-	protected void initializeEventMessages()
-	{
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable );
+	protected void initializeEventMessages() {
+		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		if( this.linearHandle != null ) {
 			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
 		}
-
 	}
 
 	@Override
@@ -87,8 +82,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	}
 
 	@Override
-	protected void updateBasedOnHandlePull( double initialPull, double newPull )
-	{
+	protected void updateBasedOnHandlePull( double initialPull, double newPull ) {
 		double pullDif = newPull - initialPull;
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 		double scale = pullDif;
@@ -115,8 +109,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	@Override
 	public void undoRedoEndManipulation() {
-		if( this.getManipulatedTransformable() != null )
-		{
+		if( this.getManipulatedTransformable() != null ) {
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {
 				animator = this.dragAdapter.getAnimator();
@@ -143,4 +136,6 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		return new HandleSet( this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE );
 	}
 
+	private double initialScale;
+	private double accumulatedScale = 1.0d;
 }

@@ -58,19 +58,16 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author David Culyba
  */
 public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator {
+	private static final Color FORWARD = Color.RED;
+	private static final Color BACKWARD = Color.GREEN;
 
-	protected static final Color FORWARD = Color.RED;
-	protected static final Color BACKWARD = Color.GREEN;
-
-	public Camera2DDragUpDownRotateManipulator( ImageBasedManipulationHandle2D handle )
-	{
+	public Camera2DDragUpDownRotateManipulator( ImageBasedManipulationHandle2D handle ) {
 		super( handle );
 	}
 
 	@Override
-	protected void initializeEventMessages()
-	{
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
+	protected void initializeEventMessages() {
+		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( MovementDirection.LEFT, MovementType.LOCAL ), this.manipulatedTransformable ) );
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), this.manipulatedTransformable ) );
@@ -79,14 +76,10 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 	@Override
 	protected Vector3 getRotationVectorForColor( Color color ) {
 		Vector3 initialRotate = new Vector3( 0.0d, 0.0d, 0.0d );
-		if( color != null )
-		{
-			if( color.equals( FORWARD ) )
-			{
+		if( color != null ) {
+			if( color.equals( FORWARD ) ) {
 				initialRotate.x = -INITIAL_ROTATE_FACTOR;
-			}
-			else if( color.equals( BACKWARD ) )
-			{
+			} else if( color.equals( BACKWARD ) ) {
 				initialRotate.x = INITIAL_ROTATE_FACTOR;
 			}
 		}
@@ -99,14 +92,12 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 	}
 
 	@Override
-	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time ) {
 		return new Vector3( 0.0d, 0.0d, 0.0d );
 	}
 
 	@Override
-	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time ) {
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
 		double amountToRotateX = relativeMousePos.y * RADIANS_PER_PIXEL_SECONDS * time;
 		Vector3 amountToRotateMouse = new Vector3( amountToRotateX, 0.0d, 0.0d );
@@ -114,14 +105,12 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 	}
 
 	@Override
-	protected ReferenceFrame getRotationReferenceFrame()
-	{
+	protected ReferenceFrame getRotationReferenceFrame() {
 		return this.getManipulatedTransformable();
 	}
 
 	@Override
-	protected ReferenceFrame getMovementReferenceFrame()
-	{
+	protected ReferenceFrame getMovementReferenceFrame() {
 		return this.getManipulatedTransformable();
 	}
 

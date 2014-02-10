@@ -69,37 +69,22 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
  */
 public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
-	protected static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 8.0d / 360.0d );
-	protected static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
+	private static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 8.0d / 360.0d );
+	private static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
 
-	protected Point3 initialClickPoint = new Point3();
-	protected Point3 initialObjectPosition = new Point3();
-	protected Plane movementPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
-	protected Plane badAnglePlane = null;
-	protected Point3 offsetToOrigin = null;
-	protected Point initialMouseLocation = new Point();
-	protected Boolean hasMoved = false;
-
-	protected AbstractCamera camera = null;
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-
-	public AbstractCamera getCamera()
-	{
+	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
+	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) )
-		{
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
 			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
 		}
 
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
+	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
@@ -107,13 +92,11 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass()
-	{
+	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
-	{
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
 		this.onscreenLookingGlass = lookingGlass;
 	}
 
@@ -123,9 +106,8 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	protected void initializeEventMessages()
-	{
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
+	protected void initializeEventMessages() {
+		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
@@ -133,45 +115,35 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 	}
 
-	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
-	{
-		if( pickRay != null )
-		{
+	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay ) {
+		if( pickRay != null ) {
 			Point3 pointInPlane = PlaneUtilities.getPointInPlane( movementPlane, pickRay );
 			Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
 			newPosition.y = this.initialObjectPosition.y;
 			return newPosition;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation )
-	{
+	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation ) {
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
-		if( pickRay != null )
-		{
+		if( pickRay != null ) {
 			Plane toMoveIn = this.movementPlane;
 			double badAngleAmount = this.getBadAngleAmount( this.movementPlane, pickRay );
-			if( badAngleAmount > 0.0d )
-			{
+			if( badAngleAmount > 0.0d ) {
 				Vector3 newNormal = Vector3.createInterpolation( PlaneUtilities.getPlaneNormal( this.movementPlane ), PlaneUtilities.getPlaneNormal( this.badAnglePlane ), badAngleAmount );
 				newNormal.normalize();
 				toMoveIn = Plane.createInstance( this.initialClickPoint, newNormal );
 			}
 			Point3 newPosition = this.getPositionForPlane( toMoveIn, pickRay );
 			return newPosition;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	protected double getBadAngleAmount( Plane plane, Ray pickRay )
-	{
+	protected double getBadAngleAmount( Plane plane, Ray pickRay ) {
 		Vector3 cameraDirection = this.getCamera().getAbsoluteTransformation().orientation.backward;
 		double cameraDistanceFactor = Math.abs( PlaneUtilities.distanceToPlane( plane, this.getCamera().getAbsoluteTransformation().translation ) );
 		Vector3 planeNormal = PlaneUtilities.getPlaneNormal( plane );
@@ -181,52 +153,41 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		double scaledBadAngleThreshold = BAD_ANGLE_THRESHOLD / cameraDistanceFactor;
 		double scaledMinBadAngleThreshold = MIN_BAD_ANGLE_THRESHOLD / cameraDistanceFactor;
 
-		if( distanceToRightAngle < scaledBadAngleThreshold )
-		{
-			if( distanceToRightAngle < scaledMinBadAngleThreshold )
-			{
+		if( distanceToRightAngle < scaledBadAngleThreshold ) {
+			if( distanceToRightAngle < scaledMinBadAngleThreshold ) {
 				return 1.0d;
 			}
 			distanceToRightAngle -= scaledMinBadAngleThreshold;
 			double thresholdDif = scaledBadAngleThreshold - scaledMinBadAngleThreshold;
 			return ( thresholdDif - distanceToRightAngle ) / thresholdDif;
-		}
-		else
-		{
+		} else {
 			return 0.0d;
 		}
 	}
 
-	protected Plane createCameraFacingStoodUpPlane( Point3 clickPoint )
-	{
+	protected Plane createCameraFacingStoodUpPlane( Point3 clickPoint ) {
 		return Plane.createInstance( clickPoint, createCameraFacingStoodUpVector() );
 	}
 
-	protected Vector3 createCameraFacingStoodUpVector()
-	{
+	protected Vector3 createCameraFacingStoodUpVector() {
 		Vector3 cameraBackward = this.getCamera().getAxes( AsSeenBy.SCENE ).backward;
-		if( EpsilonUtilities.isWithinReasonableEpsilon( cameraBackward.y, 1.0d ) ) //handle case where camera is pointing down or up
-		{
+		if( EpsilonUtilities.isWithinReasonableEpsilon( cameraBackward.y, 1.0d ) ) { //handle case where camera is pointing down or up
 			return Vector3.createMultiplication( this.getCamera().getAbsoluteTransformation().orientation.up, -1.0d );
-		}
-		else
-		{
+		} else {
 			cameraBackward.y = 0.0f;
 			cameraBackward.normalize();
 			return cameraBackward;
 		}
 	}
 
-	protected Plane createBadAnglePlane( Point3 clickPoint )
-	{
+	protected Plane createBadAnglePlane( Point3 clickPoint ) {
 		Vector3 badPlaneNormal = createCameraFacingStoodUpVector();
 		badPlaneNormal.y += 2d; //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
 		badPlaneNormal.normalize();
 		return Plane.createInstance( clickPoint, badPlaneNormal );
 	}
 
-	protected Plane createPickPlane( Point3 clickPoint )
-	{
+	protected Plane createPickPlane( Point3 clickPoint ) {
 		return Plane.createInstance( clickPoint, Vector3.createPositiveYAxis() );
 	}
 
@@ -264,15 +225,13 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput )
-	{
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
-		if( this.manipulatedTransformable != null )
-		{
+		if( this.manipulatedTransformable != null ) {
 			this.initializeEventMessages();
 			this.initialMouseLocation.setLocation( startInput.getMouseLocation() );
 			this.hasMoved = false;
@@ -283,19 +242,15 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.badAnglePlane = createBadAnglePlane( this.initialClickPoint );
 
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
-			if( pickRay != null )
-			{
+			if( pickRay != null ) {
 				this.initialClickPoint = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );
 				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.initialClickPoint );
 				this.movementPlane = createPickPlane( this.initialClickPoint );
 				this.badAnglePlane = createBadAnglePlane( this.initialClickPoint );
-			}
-			else
-			{
+			} else {
 				this.setManipulatedTransformable( null );
 			}
-			if( this.manipulatedTransformable != null )
-			{
+			if( this.manipulatedTransformable != null ) {
 				return true;
 			}
 		}
@@ -304,8 +259,6 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -313,4 +266,14 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		return HandleSet.GROUND_TRANSLATION_VISUALIZATION;
 	}
 
+	private Point3 initialClickPoint = new Point3();
+	protected Point3 initialObjectPosition = new Point3();
+	private Plane movementPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	private Plane badAnglePlane = null;
+	protected Point3 offsetToOrigin = null;
+	private Point initialMouseLocation = new Point();
+	private Boolean hasMoved = false;
+
+	private AbstractCamera camera = null;
+	private OnscreenLookingGlass onscreenLookingGlass = null;
 }

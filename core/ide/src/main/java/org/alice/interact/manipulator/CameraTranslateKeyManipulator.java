@@ -51,30 +51,22 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author David Culyba
  */
 public class CameraTranslateKeyManipulator extends TranslateKeyManipulator implements CameraInformedManipulator {
-
-	protected AbstractCamera camera = null;
-
-	public CameraTranslateKeyManipulator( MovementKey[] directionKeys )
-	{
+	public CameraTranslateKeyManipulator( MovementKey[] directionKeys ) {
 		super( directionKeys );
 	}
 
-	public AbstractCamera getCamera()
-	{
+	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
+	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) )
-		{
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
 			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
 		}
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
+	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
@@ -82,4 +74,5 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 		return CameraView.ACTIVE_VIEW;
 	}
 
+	private AbstractCamera camera = null;
 }

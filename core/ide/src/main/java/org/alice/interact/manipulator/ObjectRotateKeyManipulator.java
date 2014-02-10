@@ -50,20 +50,16 @@ import org.alice.interact.MovementKey;
  */
 public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
 
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
-	{
+	public ObjectRotateKeyManipulator( MovementKey[] directionKeys ) {
 		super( directionKeys );
 	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		this.setManipulatedTransformable( startInput.getCurrentlySelectedObject() );
-		if( this.manipulatedTransformable != null )
-		{
+		if( this.manipulatedTransformable != null ) {
 			return super.doStartManipulator( startInput );
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

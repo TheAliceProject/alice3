@@ -106,61 +106,39 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 public class CameraTiltDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator {
 
-	private Plane cameraFacingPickPlane;
-	private Point3 pickPoint = null;
-
 	private static final boolean SHOW_PICK_POINT = false;
-	private DebugSphere pickPointDebugSphere = new DebugSphere();
 
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-
-	public CameraTiltDragManipulator()
-	{
-		super();
-	}
-
-	public OnscreenLookingGlass getOnscreenLookingGlass()
-	{
+	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
-	{
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
 		this.onscreenLookingGlass = lookingGlass;
 	}
 
-	private void addPickPointSphereToScene()
-	{
-		if( SHOW_PICK_POINT )
-		{
-			if( ( this.camera != null ) && ( this.pickPointDebugSphere.getParent() == null ) )
-			{
+	private void addPickPointSphereToScene() {
+		if( SHOW_PICK_POINT ) {
+			if( ( this.camera != null ) && ( this.pickPointDebugSphere.getParent() == null ) ) {
 				this.camera.getRoot().addComponent( this.pickPointDebugSphere );
 			}
 		}
 	}
 
-	private void removePickPointSphereFromScene()
-	{
-		if( SHOW_PICK_POINT )
-		{
-			if( ( this.camera != null ) && ( this.pickPointDebugSphere.getParent() == this.camera.getRoot() ) )
-			{
+	private void removePickPointSphereFromScene() {
+		if( SHOW_PICK_POINT ) {
+			if( ( this.camera != null ) && ( this.pickPointDebugSphere.getParent() == this.camera.getRoot() ) ) {
 				this.camera.getRoot().removeComponent( this.pickPointDebugSphere );
 			}
 		}
 	}
 
-	private void setPickPoint( Tuple3 position )
-	{
-		if( SHOW_PICK_POINT )
-		{
+	private void setPickPoint( Tuple3 position ) {
+		if( SHOW_PICK_POINT ) {
 			this.pickPointDebugSphere.setLocalTranslation( position );
 		}
 	}
 
-	public void setPlaneDiscPoint( Point3 planeDiscPoint )
-	{
+	public void setPlaneDiscPoint( Point3 planeDiscPoint ) {
 		this.pickPoint = planeDiscPoint;
 		setPickPoint( this.pickPoint );
 
@@ -172,20 +150,17 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 	}
 
 	@Override
-	public CameraView getDesiredCameraView()
-	{
+	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
 	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput )
-	{
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		Ray oldPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y );
 		Ray newPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 oldPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, oldPickRay );
 		Point3 newPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, newPickRay );
-		if( ( newPickPoint != null ) && ( oldPickPoint != null ) )
-		{
+		if( ( newPickPoint != null ) && ( oldPickPoint != null ) ) {
 			this.setPlaneDiscPoint( pickPoint );
 
 			Point3 oldPointInCamera = this.camera.transformFrom_New( oldPickPoint, this.camera.getRoot() );
@@ -200,13 +175,11 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			oldDirection.normalize();
 
 			Angle xAngle = VectorUtilities.getAngleBetweenVectors( oldDirection, xDif );
-			if( currentInput.getMouseLocation().x < previousInput.getMouseLocation().x )
-			{
+			if( currentInput.getMouseLocation().x < previousInput.getMouseLocation().x ) {
 				xAngle.setAsRadians( xAngle.getAsRadians() * -1 );
 			}
 			Angle yAngle = VectorUtilities.getAngleBetweenVectors( oldDirection, yDif );
-			if( currentInput.getMouseLocation().y < previousInput.getMouseLocation().y )
-			{
+			if( currentInput.getMouseLocation().y < previousInput.getMouseLocation().y ) {
 				yAngle.setAsRadians( yAngle.getAsRadians() * -1 );
 			}
 
@@ -233,7 +206,6 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 
 			this.cameraFacingPickPlane = Plane.createInstance( newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward );
 		}
-
 	}
 
 	@Override
@@ -248,8 +220,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) && ( this.camera instanceof SymmetricPerspectiveCamera ) )
-		{
+		if( super.doStartManipulator( startInput ) && ( this.camera instanceof SymmetricPerspectiveCamera ) ) {
 			boolean success = false;
 			Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
 			cameraForward.multiply( -10.0d );
@@ -262,21 +233,22 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			this.cameraFacingPickPlane = Plane.createInstance( planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward );
 
 			Point3 pickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, pickRay );
-			if( pickPoint != null )
-			{
+			if( pickPoint != null ) {
 				this.setPlaneDiscPoint( pickPoint );
 				success = true;
 			}
 			return success;
 		}
 		return false;
-
 	}
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
+	private final DebugSphere pickPointDebugSphere = new DebugSphere();
+
+	private Plane cameraFacingPickPlane;
+	private Point3 pickPoint = null;
+	private OnscreenLookingGlass onscreenLookingGlass = null;
 }

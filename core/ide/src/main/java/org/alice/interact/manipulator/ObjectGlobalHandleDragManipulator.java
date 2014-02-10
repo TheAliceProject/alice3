@@ -55,76 +55,51 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
-
-	protected AbstractManipulator activeManipulator;
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-	protected ManipulationHandle activeHandle = null;
-	protected AbstractCamera camera = null;
-
-	public AbstractCamera getCamera()
-	{
+	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
+	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) )
-		{
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
 			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
-		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) )
-		{
+		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) ) {
 			( (CameraInformedManipulator)this.activeManipulator ).setCamera( camera );
 		}
 
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
-		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) )
-		{
+	public void setDesiredCameraView( CameraView cameraView ) {
+		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) ) {
 			( (CameraInformedManipulator)this.activeManipulator ).setDesiredCameraView( cameraView );
-		}
-		else
-		{
+		} else {
 			//pass
 		}
 	}
 
 	public CameraView getDesiredCameraView() {
-		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) )
-		{
+		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) ) {
 			return ( (CameraInformedManipulator)this.activeManipulator ).getDesiredCameraView();
-		}
-		else
-		{
+		} else {
 			return CameraView.PICK_CAMERA;
 		}
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass()
-	{
+	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
-	{
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
 		this.onscreenLookingGlass = lookingGlass;
-		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator ) )
-		{
+		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator ) ) {
 			( (OnScreenLookingGlassInformedManipulator)this.activeManipulator ).setOnscreenLookingGlass( lookingGlass );
 		}
 	}
 
-	public ObjectGlobalHandleDragManipulator()
-	{
-	}
-
 	@Override
 	public String getUndoRedoDescription() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			return this.activeManipulator.getUndoRedoDescription();
 		}
 		return "Handle Drag";
@@ -132,8 +107,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	@Override
 	public boolean hasUpdated() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			return this.activeManipulator.hasUpdated();
 		}
 		return super.hasUpdated();
@@ -141,33 +115,25 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.undoRedoBeginManipulation();
-		}
-		else
-		{
+		} else {
 			super.undoRedoBeginManipulation();
 		}
 	}
 
 	@Override
 	public void undoRedoEndManipulation() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.undoRedoEndManipulation();
-		}
-		else
-		{
+		} else {
 			super.undoRedoEndManipulation();
 		}
 	}
 
 	@Override
-	protected void setHasUpdated( boolean hasUpdated )
-	{
-		if( this.activeManipulator != null )
-		{
+	protected void setHasUpdated( boolean hasUpdated ) {
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.setHasUpdated( hasUpdated );
 		}
 		super.setHasUpdated( hasUpdated );
@@ -175,50 +141,43 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	@Override
 	public AbstractTransformable getManipulatedTransformable() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			return this.activeManipulator.getManipulatedTransformable();
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.doDataUpdateManipulator( currentInput, previousInput );
 		}
-
 	}
 
 	@Override
-	public void triggerAllDeactivateEvents()
-	{
-		if( this.activeManipulator != null )
-		{
+	public void triggerAllDeactivateEvents() {
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.triggerAllDeactivateEvents();
 		}
 	}
 
 	@Override
 	public org.alice.interact.event.ManipulationEvent getMainManipulationEvent() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			return this.activeManipulator.getMainManipulationEvent();
+		} else {
+			return null;
 		}
-		return null;
 	}
 
-	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState )
-	{
+	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState ) {
 		manipulator.setDragAdapter( this.dragAdapter );
-		if( manipulator instanceof OnScreenLookingGlassInformedManipulator )
-		{
+		if( manipulator instanceof OnScreenLookingGlassInformedManipulator ) {
 			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
 			this.dragAdapter.setLookingGlassOnManipulator( lookingGlassManipulator );
 		}
-		if( manipulator instanceof CameraInformedManipulator )
-		{
+		if( manipulator instanceof CameraInformedManipulator ) {
 			CameraInformedManipulator cameraInformed = (CameraInformedManipulator)manipulator;
 			this.dragAdapter.setCameraOnManipulator( cameraInformed, startState );
 		}
@@ -227,11 +186,9 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	@Override
 	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
 		this.activeHandle = clickInput.getClickHandle();
-		if( this.activeHandle != null )
-		{
+		if( this.activeHandle != null ) {
 			this.activeManipulator = this.activeHandle.getManipulation( clickInput );
-			if( this.activeManipulator != null )
-			{
+			if( this.activeManipulator != null ) {
 				//Since the active manipulator was just set, we need to set its start state properly
 				setManipulatorStartState( this.activeManipulator, clickInput );
 				this.activeManipulator.doClickManipulator( clickInput, previousInput );
@@ -241,15 +198,13 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.doEndManipulator( endInput, previousInput );
 		}
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput )
-	{
+	public void endManipulator( InputState endInput, InputState previousInput ) {
 		super.endManipulator( endInput, previousInput );
 		this.activeManipulator = null;
 	}
@@ -257,39 +212,35 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		this.activeHandle = startInput.getClickHandle();
-		if( this.activeHandle != null )
-		{
+		if( this.activeHandle != null ) {
 			this.activeManipulator = this.activeHandle.getManipulation( startInput );
-			if( this.activeManipulator != null )
-			{
+			if( this.activeManipulator != null ) {
 				//Since the active manipulator was just set, we need to set its start state properly
 				setManipulatorStartState( this.activeManipulator, startInput );
 				return this.activeManipulator.doStartManipulator( startInput );
 			}
 		}
 		return false;
-
 	}
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			this.activeManipulator.doTimeUpdateManipulator( time, currentInput );
 		}
-
 	}
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		if( this.activeManipulator != null )
-		{
+		if( this.activeManipulator != null ) {
 			return this.activeManipulator.getHandleSetToEnable();
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
+	private AbstractManipulator activeManipulator;
+	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private ManipulationHandle activeHandle = null;
+	private AbstractCamera camera = null;
 }

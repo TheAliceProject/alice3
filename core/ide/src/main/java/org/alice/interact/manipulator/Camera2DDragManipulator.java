@@ -61,30 +61,20 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public abstract class Camera2DDragManipulator extends CameraManipulator2D {
-
 	protected static final double MIN_TIME = .001d;
 	protected static final double MAX_TIME = .1d;
-	protected static final double MIN_AMOUNT_TO_MOVE = .005d;
+	private static final double MIN_AMOUNT_TO_MOVE = .005d;
 	protected static final double WORLD_DISTANCE_PER_PIXEL_SECONDS = .08d;
 	protected static final double RADIANS_PER_PIXEL_SECONDS = .02d;
 	protected static final double MIN_PIXEL_MOVE_AMOUNT = 15.0d;
-	protected static final double OPPOSITE_DIRECTION_MIN_PIXEL_MOVE_AMOUNT = 5.0d;
+	private static final double OPPOSITE_DIRECTION_MIN_PIXEL_MOVE_AMOUNT = 5.0d;
 
-	protected Vector3 initialMoveFactor = new Vector3( 0.0d, 0.0d, 0.0d );
-	protected Vector3 initialRotateFactor = new Vector3( 0.0d, 0.0d, 0.0d );
 	protected static final double INITIAL_MOVE_FACTOR = 10.0d;
 	protected static final double INITIAL_ROTATE_FACTOR = 8.0d;
-	protected static final double MOVE_CLICK_FACTOR = .04d;
-	protected static final double ROTATE_CLICK_FACTOR = .006d;
+	private static final double MOVE_CLICK_FACTOR = .04d;
+	private static final double ROTATE_CLICK_FACTOR = .006d;
 
-	protected Transformable standUpReference = new Transformable();
-	protected Color initialHandleColor = null;
-	protected Vector2 initialMousePosition = new Vector2();
-	protected InputState mouseDownState = null;
-	protected AffineMatrix4x4 initialTransform;
-
-	public Camera2DDragManipulator( ImageBasedManipulationHandle2D handle )
-	{
+	public Camera2DDragManipulator( ImageBasedManipulationHandle2D handle ) {
 		super( handle );
 	}
 
@@ -96,20 +86,16 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	}
 
 	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput )
-	{
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		boolean wasClicked = false;
-		if( this.mouseDownState != null )
-		{
+		if( this.mouseDownState != null ) {
 			long elapseTime = endInput.getTimeCaptured() - mouseDownState.getTimeCaptured();
 			double mouseDistance = endInput.getMouseLocation().distance( mouseDownState.getMouseLocation() );
-			if( ( elapseTime <= ClickedObjectCondition.MAX_CLICK_TIME ) && ( mouseDistance <= ClickedObjectCondition.MAX_MOUSE_MOVE ) )
-			{
+			if( ( elapseTime <= ClickedObjectCondition.MAX_CLICK_TIME ) && ( mouseDistance <= ClickedObjectCondition.MAX_MOUSE_MOVE ) ) {
 				wasClicked = true;
 			}
 		}
-		if( wasClicked )
-		{
+		if( wasClicked ) {
 			this.doClickManipulator( endInput, previousInput );
 		}
 		this.mouseDownState = null;
@@ -133,8 +119,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) )
-		{
+		if( super.doStartManipulator( startInput ) ) {
 			this.mouseDownState = new InputState( startInput );
 			this.initializeEventMessages();
 			this.standUpReference.setParent( this.getCamera().getParent() );
@@ -143,8 +128,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.standUpReference.setAxesOnlyToStandUp();
 			this.initialMousePosition.x = startInput.getMouseLocation().x;
 			this.initialMousePosition.y = startInput.getMouseLocation().y;
-			if( this.handle instanceof ImageBasedManipulationHandle2D )
-			{
+			if( this.handle instanceof ImageBasedManipulationHandle2D ) {
 				this.initialHandleColor = ( (ImageBasedManipulationHandle2D)this.handle ).getColor( (int)this.initialMousePosition.x, (int)this.initialMousePosition.y );
 			}
 			this.initialMoveFactor = this.getMovementVectorForColor( this.initialHandleColor );
@@ -167,16 +151,14 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 
 	protected abstract ReferenceFrame getMovementReferenceFrame();
 
-	protected Vector3 getTotalMovementAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getTotalMovementAmount( Vector2 mousePos, double time ) {
 		Vector3 relativeMovementAmount = this.getRelativeMovementAmount( mousePos, time );
 		Vector3 amountToMoveInitial = Vector3.createMultiplication( this.initialMoveFactor, WORLD_DISTANCE_PER_PIXEL_SECONDS * time );
 		Vector3 amountToMove = Vector3.createAddition( relativeMovementAmount, amountToMoveInitial );
 		return amountToMove;
 	}
 
-	protected Vector3 getTotalRotationAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getTotalRotationAmount( Vector2 mousePos, double time ) {
 		Vector3 relativeRotationAmount = this.getRelativeRotationAmount( mousePos, time );
 		Vector3 amountToRotateInitial = Vector3.createMultiplication( this.initialRotateFactor, RADIANS_PER_PIXEL_SECONDS * time );
 		Vector3 amountToRotate = Vector3.createAddition( relativeRotationAmount, amountToRotateInitial );
@@ -231,4 +213,11 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		}
 	}
 
+	private Vector3 initialMoveFactor = new Vector3( 0.0d, 0.0d, 0.0d );
+	private Vector3 initialRotateFactor = new Vector3( 0.0d, 0.0d, 0.0d );
+	protected Transformable standUpReference = new Transformable();
+	protected Color initialHandleColor = null;
+	protected Vector2 initialMousePosition = new Vector2();
+	private InputState mouseDownState = null;
+	private AffineMatrix4x4 initialTransform;
 }

@@ -67,48 +67,23 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
 public class MouseRelativeObjectDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
-	private double PIXEL_DISTANCE_FACTOR = 200.0d;
+	private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
 
 	private static final double MAX_DISTANCE_PER_PIXEL = .1d;
 
-	private Point originalMousePoint;
-	private AffineMatrix4x4 originalLocalTransformation;
-	private Vector3 moveXVector;
-	private Vector3 moveYVector;
-	private double worldUnitsPerPixelX = .01d;
-	private double worldUnitsPerPixelY = .01d;
-	private double initialDistanceToGround;
-	private double initialCameraDotVertical;
-	private double pickDistance;
-	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
-	protected Point3 orthographicOffsetToOrigin = null;
-	protected Point3 originalPosition = null;
-	protected Boolean hasMoved = false;
-	protected Point3 offsetFromOrigin = null;
-	protected Plane horizontalPlacementPlane;
-
-	protected boolean hidCursor = false;
-
-	protected AbstractCamera camera = null;
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-
-	public MouseRelativeObjectDragManipulator()
-	{
+	public MouseRelativeObjectDragManipulator() {
 		super();
 	}
 
-	public AbstractCamera getCamera()
-	{
+	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
+	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
+	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be PICK_CAMERA
 	}
 
@@ -116,13 +91,11 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass()
-	{
+	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
-	{
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
 		this.onscreenLookingGlass = lookingGlass;
 	}
 
@@ -136,8 +109,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		return HandleSet.GROUND_TRANSLATION_VISUALIZATION;
 	}
 
-	private Vector3 getMouseMovementFromVector( InputState currentInput, InputState previousInput )
-	{
+	private Vector3 getMouseMovementFromVector( InputState currentInput, InputState previousInput ) {
 		int xChange = currentInput.getMouseLocation().x - originalMousePoint.x;
 		int yChange = currentInput.getMouseLocation().y - originalMousePoint.y;
 		yChange *= -1; //invert X
@@ -145,8 +117,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		Vector3 translationVector = new Vector3();
 
 		//		horizontalPlacementPlane = calculateCameraFacingPlane();
-		if( horizontalPlacementPlane != null )
-		{
+		if( horizontalPlacementPlane != null ) {
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 			Point3 pickPoint = PlaneUtilities.getPointInPlane( horizontalPlacementPlane, pickRay );
 			pickPoint.subtract( this.offsetFromOrigin );
@@ -154,9 +125,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			Vector3 translationX = Vector3.createSubtraction( pickPoint, this.originalPosition );
 			Vector3 translationY = Vector3.createMultiplication( moveYVector, yChange * worldUnitsPerPixelY );
 			translationVector = Vector3.createAddition( translationX, translationY );
-		}
-		else
-		{
+		} else {
 			Vector3 translationX = Vector3.createMultiplication( moveXVector, xChange * worldUnitsPerPixelX );
 			Vector3 translationY = Vector3.createMultiplication( moveYVector, yChange * worldUnitsPerPixelY );
 			translationVector = Vector3.createAddition( translationX, translationY );
@@ -164,8 +133,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		return translationVector;
 	}
 
-	private Vector3 getOthographicMovementVector( InputState currentInput, InputState previousInput )
-	{
+	private Vector3 getOthographicMovementVector( InputState currentInput, InputState previousInput ) {
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
 		Point3 newPosition = Point3.createAddition( pickPoint, this.orthographicOffsetToOrigin );
@@ -173,22 +141,17 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		return Vector3.createSubtraction( newPosition, this.originalPosition );
 	}
 
-	private Vector3 getMovementVectorBasedOnCamera( InputState currentInput, InputState previousInput )
-	{
-		if( this.getCamera() instanceof OrthographicCamera )
-		{
+	private Vector3 getMovementVectorBasedOnCamera( InputState currentInput, InputState previousInput ) {
+		if( this.getCamera() instanceof OrthographicCamera ) {
 			return getOthographicMovementVector( currentInput, previousInput );
-		}
-		else
-		{
+		} else {
 			return getMouseMovementFromVector( currentInput, previousInput );
 		}
 	}
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && ( this.manipulatedTransformable != null ) )
-		{
+		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && ( this.manipulatedTransformable != null ) ) {
 			if( !this.hasMoved ) {
 				this.hasMoved = true;
 			}
@@ -229,7 +192,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 	@Override
 	protected void initializeEventMessages() {
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
+		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
@@ -241,8 +204,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	public boolean doStartManipulator( InputState startInput ) {
 		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
 		hidCursor = false;
-		if( this.manipulatedTransformable != null )
-		{
+		if( this.manipulatedTransformable != null ) {
 			this.initializeEventMessages();
 
 			this.hasMoved = false;
@@ -261,28 +223,21 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
-			if( pickRay != null )
-			{
+			if( pickRay != null ) {
 				this.offsetFromOrigin = Point3.createSubtraction( initialClickPoint, this.originalPosition );
 			}
 
 			AffineMatrix4x4 cameraTransform = this.camera.getParent().getAbsoluteTransformation();
 			initialCameraDotVertical = Vector3.calculateDotProduct( cameraTransform.orientation.backward, Vector3.accessPositiveYAxis() );
 			initialCameraDotVertical = Math.abs( initialCameraDotVertical );
-			if( this.camera instanceof OrthographicCamera )
-			{
+			if( this.camera instanceof OrthographicCamera ) {
 				moveXVector = new Vector3( cameraTransform.orientation.right );
 				moveYVector = new Vector3( cameraTransform.orientation.up );
-			}
-			else
-			{
+			} else {
 
-				if( initialCameraDotVertical > .99999 )
-				{
+				if( initialCameraDotVertical > .99999 ) {
 					moveYVector = new Vector3( cameraTransform.orientation.up );
-				}
-				else
-				{
+				} else {
 					moveYVector = new Vector3( cameraTransform.orientation.backward );
 					moveYVector.multiply( -1 );
 				}
@@ -300,8 +255,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			Vector3 cameraForward = new Vector3( cameraTransform.orientation.backward );
 			cameraForward.multiply( -1.0d );
 			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
-			if( pickPoint != null )
-			{
+			if( pickPoint != null ) {
 				pickDistance = Point3.calculateDistanceBetween( pickPoint, cameraTransform.translation );
 			}
 
@@ -314,8 +268,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 	}
 
-	private void calculateMovementFactors( Point mousePoint )
-	{
+	private void calculateMovementFactors( Point mousePoint ) {
 		Ray centerRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
 		Ray oneUp = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y - 1 );
 		Ray oneDown = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y + 1 );
@@ -327,41 +280,32 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
 		Point3 centerPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, centerRay );
-		if( centerPoint != null )
-		{
+		if( centerPoint != null ) {
 			Point3 offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneUp );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerUpPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneDown );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerDownPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneRight );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerRightPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneLeft );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerLeftPixel = pixelDistance;
 				}
 			}
@@ -385,14 +329,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		return null;
 	}
 
-	private double calculateWorldUnitsPerPixelX()
-	{
+	private double calculateWorldUnitsPerPixelX() {
 		worldUnitsPerPixelX = initialDistanceToGround / 150.0d;
 		return worldUnitsPerPixelX;
 	}
 
-	private double calculateWorldUnitsPerPixelY()
-	{
+	private double calculateWorldUnitsPerPixelY() {
 		double parallelToGroundFactor = 30d;
 		double perpToGroundFactor = 200d;
 		double yFactor = parallelToGroundFactor + ( ( perpToGroundFactor - parallelToGroundFactor ) * initialCameraDotVertical );
@@ -402,18 +344,14 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
-	protected void hideCursor()
-	{
+	protected void hideCursor() {
 		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
 		this.hidCursor = true;
 	}
 
-	protected void showCursor()
-	{
+	protected void showCursor() {
 		try {
 			Point3 new3DPoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 
@@ -424,4 +362,25 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
 		}
 	}
+
+	private Point originalMousePoint;
+	private AffineMatrix4x4 originalLocalTransformation;
+	private Vector3 moveXVector;
+	private Vector3 moveYVector;
+	private double worldUnitsPerPixelX = .01d;
+	private double worldUnitsPerPixelY = .01d;
+	private double initialDistanceToGround;
+	private double initialCameraDotVertical;
+	private double pickDistance;
+	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	protected Point3 orthographicOffsetToOrigin = null;
+	protected Point3 originalPosition = null;
+	protected Boolean hasMoved = false;
+	protected Point3 offsetFromOrigin = null;
+	protected Plane horizontalPlacementPlane;
+
+	protected boolean hidCursor = false;
+
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
 }

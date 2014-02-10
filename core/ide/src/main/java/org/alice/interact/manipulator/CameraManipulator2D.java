@@ -48,12 +48,9 @@ import org.alice.interact.handle.ManipulationHandle2D;
  * @author David Culyba
  */
 public abstract class CameraManipulator2D extends CameraManipulator {
-
-	protected ManipulationHandle2D handle;
-
-	public CameraManipulator2D( ManipulationHandle2D handle )
-	{
+	public CameraManipulator2D( ManipulationHandle2D handle ) {
 		this.handle = handle;
 	}
 
+	protected final ManipulationHandle2D handle;
 }

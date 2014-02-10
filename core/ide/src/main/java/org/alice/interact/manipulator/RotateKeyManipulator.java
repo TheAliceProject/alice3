@@ -56,25 +56,24 @@ import edu.cmu.cs.dennisc.math.Vector3;
 /**
  * @author David Culyba
  */
-public class RotateKeyManipulator extends AbstractManipulator {
+public abstract class RotateKeyManipulator extends AbstractManipulator {
 
-	protected static double TURN_RATE = 5.0d;
-	protected static double CLICK_TIME = .1d;
-	protected static double CLICK_MOVE_AMOUNT = .2d;
+	private static final double TURN_RATE = 5.0d;
+	private static final double CLICK_TIME = .1d;
+	private static final double CLICK_MOVE_AMOUNT = .2d;
 
-	protected Point3 initialPoint = new Point3();
-	protected double startTime = 0.0d;
-	MovementKey[] rotationKeys;
-	java.util.Vector<MovementDirection> rotateAxes = new java.util.Vector<MovementDirection>();
-
-	public RotateKeyManipulator()
-	{
-		setKeys( new MovementKey[ 0 ] );
-	}
-
-	public RotateKeyManipulator( MovementKey[] directionKeys )
-	{
-		setKeys( directionKeys );
+	public RotateKeyManipulator( MovementKey[] directionKeys ) {
+		this.rotationKeys = directionKeys;
+		java.util.List<MovementDirection> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		for( MovementKey direction : directionKeys ) {
+			//necessary check?
+			if( list.contains( direction.movementDescription.direction ) ) {
+				//pass
+			} else {
+				list.add( direction.movementDescription.direction );
+			}
+		}
+		this.rotateAxes = java.util.Collections.unmodifiableList( list );
 	}
 
 	@Override
@@ -82,32 +81,16 @@ public class RotateKeyManipulator extends AbstractManipulator {
 		return "Object Rotate";
 	}
 
-	public void setKeys( MovementKey[] directionKeys )
-	{
-		this.rotationKeys = directionKeys;
-		for( MovementKey direction : directionKeys )
-		{
-			if( !this.rotateAxes.contains( direction.movementDescription.direction ) )
-			{
-				this.rotateAxes.add( direction.movementDescription.direction );
-			}
-		}
-	}
-
-	protected double[][] getRotateAmount( InputState input )
-	{
+	protected double[][] getRotateAmount( InputState input ) {
 		MovementType[] movementTypes = MovementType.values();
 		double[][] rotateDirs = new double[ this.rotateAxes.size() ][ movementTypes.length ];
-		for( int i = 0; i < rotateDirs.length; i++ )
-		{
-			for( int j = 0; j < rotateDirs[ i ].length; j++ )
-			{
+		for( int i = 0; i < rotateDirs.length; i++ ) {
+			for( int j = 0; j < rotateDirs[ i ].length; j++ ) {
 				rotateDirs[ i ][ j ] = 0.0d;
 			}
 		}
 		for( MovementKey rotationKey : this.rotationKeys ) {
-			if( input.isKeyDown( rotationKey.keyValue ) )
-			{
+			if( input.isKeyDown( rotationKey.keyValue ) ) {
 				int typeIndex = rotationKey.movementDescription.type.getIndex();
 				int axisIndex = this.rotateAxes.indexOf( rotationKey.movementDescription.direction );
 
@@ -117,19 +100,14 @@ public class RotateKeyManipulator extends AbstractManipulator {
 		return rotateDirs;
 	}
 
-	private void rotateTransformable( double[][] rotateAmounts )
-	{
-		for( int axisIndex = 0; axisIndex < rotateAmounts.length; axisIndex++ )
-		{
-			for( int typeIndex = 0; typeIndex < rotateAmounts[ axisIndex ].length; typeIndex++ )
-			{
-				if( rotateAmounts[ axisIndex ][ typeIndex ] != 0.0d )
-				{
+	private void rotateTransformable( double[][] rotateAmounts ) {
+		for( int axisIndex = 0; axisIndex < rotateAmounts.length; axisIndex++ ) {
+			for( int typeIndex = 0; typeIndex < rotateAmounts[ axisIndex ].length; typeIndex++ ) {
+				if( rotateAmounts[ axisIndex ][ typeIndex ] != 0.0d ) {
 					Vector3 rotateAxis = this.rotateAxes.get( axisIndex ).getVector();
 					Angle rotateAngle = new AngleInDegrees( rotateAmounts[ axisIndex ][ typeIndex ] );
 					MovementType movementType = MovementType.getMovementTypeForIndex( typeIndex );
-					if( movementType != null )
-					{
+					if( movementType != null ) {
 						movementType.applyRotation( this.manipulatedTransformable, rotateAxis, rotateAngle );
 					}
 				}
@@ -145,14 +123,11 @@ public class RotateKeyManipulator extends AbstractManipulator {
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		double currentTime = System.currentTimeMillis() * .001d;
-		if( ( currentTime - this.startTime ) < CLICK_TIME )
-		{
+		if( ( currentTime - this.startTime ) < CLICK_TIME ) {
 			double amountToRotate = CLICK_TIME * TURN_RATE;
 			double[][] rotateAmounts = getRotateAmount( previousInput );
-			for( int i = 0; i < rotateAmounts.length; i++ )
-			{
-				for( int j = 0; j < rotateAmounts[ i ].length; j++ )
-				{
+			for( int i = 0; i < rotateAmounts.length; i++ ) {
+				for( int j = 0; j < rotateAmounts[ i ].length; j++ ) {
 					rotateAmounts[ i ][ j ] *= amountToRotate;
 				}
 			}
@@ -163,14 +138,11 @@ public class RotateKeyManipulator extends AbstractManipulator {
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( this.manipulatedTransformable != null )
-		{
+		if( this.manipulatedTransformable != null ) {
 			this.startTime = System.currentTimeMillis() * .001d;
 			this.initialPoint.set( this.manipulatedTransformable.getAbsoluteTransformation().translation );
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -189,17 +161,13 @@ public class RotateKeyManipulator extends AbstractManipulator {
 
 	@Override
 	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
-		if( this.manipulatedTransformable != null )
-		{
+		if( this.manipulatedTransformable != null ) {
 			double[][] rotateAmounts = getRotateAmount( currentInput );
-			for( int i = 0; i < rotateAmounts.length; i++ )
-			{
-				for( int j = 0; j < rotateAmounts[ i ].length; j++ )
-				{
+			for( int i = 0; i < rotateAmounts.length; i++ ) {
+				for( int j = 0; j < rotateAmounts[ i ].length; j++ ) {
 					rotateAmounts[ i ][ j ] *= TURN_RATE * dTime;
 				}
 			}
-
 			rotateTransformable( rotateAmounts );
 		}
 
@@ -210,4 +178,8 @@ public class RotateKeyManipulator extends AbstractManipulator {
 		return null;
 	}
 
+	private Point3 initialPoint = new Point3();
+	private double startTime = 0.0d;
+	private final MovementKey[] rotationKeys;
+	private final java.util.List<MovementDirection> rotateAxes;
 }

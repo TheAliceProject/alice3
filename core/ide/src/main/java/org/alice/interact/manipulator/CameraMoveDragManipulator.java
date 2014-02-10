@@ -58,36 +58,15 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
-public class CameraMoveDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator
-{
+public class CameraMoveDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator {
+	private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
+	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
-	private double PIXEL_DISTANCE_FACTOR = 200.0d;
-	private double MAX_DISTANCE_PER_PIXEL = .05d;
-
-	private Point originalMousePoint;
-	private AffineMatrix4x4 originalLocalTransformation;
-	private Vector3 moveXVector;
-	private Vector3 moveYVector;
-	private double worldUnitsPerPixelX = .01d;
-	private double worldUnitsPerPixelY = .01d;
-	private double initialDistanceToGround;
-	private double initialCameraDotVertical;
-	private double pickDistance;
-
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-
-	public CameraMoveDragManipulator()
-	{
-		super();
-	}
-
-	public OnscreenLookingGlass getOnscreenLookingGlass()
-	{
+	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
-	{
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
 		this.onscreenLookingGlass = lookingGlass;
 	}
 
@@ -97,8 +76,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 	}
 
 	@Override
-	public CameraView getDesiredCameraView()
-	{
+	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
@@ -114,12 +92,10 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 		this.manipulatedTransformable.setLocalTransformation( this.originalLocalTransformation );
 		this.manipulatedTransformable.applyTranslation( translationX, AsSeenBy.SCENE );
 		this.manipulatedTransformable.applyTranslation( translationY, AsSeenBy.SCENE );
-
 	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-
 	}
 
 	@Override
@@ -129,27 +105,19 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) )
-		{
+		if( super.doStartManipulator( startInput ) ) {
 			this.originalLocalTransformation = new AffineMatrix4x4( manipulatedTransformable.getLocalTransformation() );
 			this.originalMousePoint = new Point( startInput.getMouseLocation() );
 			AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 			initialCameraDotVertical = Vector3.calculateDotProduct( absoluteTransform.orientation.backward, Vector3.accessPositiveYAxis() );
 			initialCameraDotVertical = Math.abs( initialCameraDotVertical );
-			if( this.camera instanceof OrthographicCamera )
-			{
+			if( this.camera instanceof OrthographicCamera ) {
 				moveXVector = new Vector3( absoluteTransform.orientation.right );
 				moveYVector = new Vector3( absoluteTransform.orientation.up );
-			}
-			else
-			{
-
-				if( initialCameraDotVertical > .99999 )
-				{
+			} else {
+				if( initialCameraDotVertical > .99999 ) {
 					moveYVector = new Vector3( absoluteTransform.orientation.up );
-				}
-				else
-				{
+				} else {
 					moveYVector = new Vector3( absoluteTransform.orientation.backward );
 					moveYVector.multiply( -1 );
 				}
@@ -165,8 +133,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 			Vector3 cameraForward = new Vector3( absoluteTransform.orientation.backward );
 			cameraForward.multiply( -1.0d );
 			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
-			if( pickPoint != null )
-			{
+			if( pickPoint != null ) {
 				pickDistance = Point3.calculateDistanceBetween( pickPoint, absoluteTransform.translation );
 			}
 			calculateMovementFactors( startInput.getMouseLocation() );
@@ -176,8 +143,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 
 	}
 
-	private void calculateMovementFactors( Point mousePoint )
-	{
+	private void calculateMovementFactors( Point mousePoint ) {
 		Ray centerRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
 		Ray oneUp = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y - 1 );
 		Ray oneDown = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y + 1 );
@@ -189,41 +155,32 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
 		Point3 centerPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, centerRay );
-		if( centerPoint != null )
-		{
+		if( centerPoint != null ) {
 			Point3 offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneUp );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerUpPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneDown );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerDownPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneRight );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerRightPixel = pixelDistance;
 				}
 			}
 			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneLeft );
-			if( offsetPoint != null )
-			{
+			if( offsetPoint != null ) {
 				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL )
-				{
+				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
 					distancePerLeftPixel = pixelDistance;
 				}
 			}
@@ -235,8 +192,17 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
+	private Point originalMousePoint;
+	private AffineMatrix4x4 originalLocalTransformation;
+	private Vector3 moveXVector;
+	private Vector3 moveYVector;
+	private double worldUnitsPerPixelX = .01d;
+	private double worldUnitsPerPixelY = .01d;
+	private double initialDistanceToGround;
+	private double initialCameraDotVertical;
+	private double pickDistance;
+
+	private OnscreenLookingGlass onscreenLookingGlass = null;
 }

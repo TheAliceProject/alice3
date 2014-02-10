@@ -53,55 +53,43 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
-
-	protected AbstractCamera camera = null;
-	protected CameraView desiredCameraView;
-
-	public AbstractCamera getCamera()
-	{
+	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
-		this.desiredCameraView = cameraView;
+	public void setCamera( AbstractCamera camera ) {
+		this.camera = camera;
+		this.setManipulatedTransformable( this.getManipulatedTransformableFromCamera() );
 	}
 
 	public CameraView getDesiredCameraView() {
 		return this.desiredCameraView;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
-		this.camera = camera;
-		this.setManipulatedTransformable( this.getManipulatedTransformableFromCamera() );
+	public void setDesiredCameraView( CameraView cameraView ) {
+		this.desiredCameraView = cameraView;
 	}
 
-	public Transformable getManipulatedTransformableFromCamera()
-	{
+	public Transformable getManipulatedTransformableFromCamera() {
 		AbstractCamera camera = this.getCamera();
-		if( ( camera != null ) && ( camera.getParent() instanceof Transformable ) )
-		{
+		if( ( camera != null ) && ( camera.getParent() instanceof Transformable ) ) {
 			return (Transformable)camera.getParent();
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	@Override
-	public boolean doStartManipulator( InputState startInput )
-	{
-		if( this.manipulatedTransformable != null )
-		{
-			return true;
-		}
-		return false;
+	public boolean doStartManipulator( InputState startInput ) {
+		return this.manipulatedTransformable != null;
 	}
 
 	@Override
 	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable()
-	{
+	protected HandleSet getHandleSetToEnable() {
 		return null;
 	}
 
+	protected AbstractCamera camera = null;
+	private CameraView desiredCameraView;
 }

@@ -52,9 +52,6 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator {
-
-	protected AbstractCamera camera;
-
 	public AbstractCamera getCamera() {
 		return camera;
 	}
@@ -63,26 +60,21 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		return CameraView.PICK_CAMERA;
 	}
 
-	public void setCamera( AbstractCamera camera )
-	{
+	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) )
-		{
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
 			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
 	}
 
-	public void setDesiredCameraView( CameraView cameraView )
-	{
+	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be PICK_CAMERA
 	}
 
 	@Override
-	public void doClickManipulator( InputState endInput, InputState previousInput )
-	{
+	public void doClickManipulator( InputState endInput, InputState previousInput ) {
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
-		if( ( toLookAt != null ) && ( this.camera != null ) )
-		{
+		if( ( toLookAt != null ) && ( this.camera != null ) ) {
 			org.lgna.story.SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement( toLookAt );
 			org.lgna.story.SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement( this.camera );
 
@@ -132,41 +124,30 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if( this.manipulatedTransformable != null )
-		{
-			return true;
-		}
-		return false;
+		return this.manipulatedTransformable != null;
 	}
 
 	@Override
 	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getUndoRedoDescription()
-	{
+	public String getUndoRedoDescription() {
 		return "Look At Object";
 	}
 
+	private AbstractCamera camera;
 }

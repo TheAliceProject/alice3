@@ -58,21 +58,18 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author David Culyba
  */
 public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
+	private static final Color UP = Color.RED;
+	private static final Color LEFT = Color.GREEN;
+	private static final Color RIGHT = Color.BLUE;
+	private static final Color DOWN = Color.WHITE;
 
-	protected static final Color UP = Color.RED;
-	protected static final Color LEFT = Color.GREEN;
-	protected static final Color RIGHT = Color.BLUE;
-	protected static final Color DOWN = Color.WHITE;
-
-	public Camera2DDragStrafeManipulator( ImageBasedManipulationHandle2D handle )
-	{
+	public Camera2DDragStrafeManipulator( ImageBasedManipulationHandle2D handle ) {
 		super( handle );
 	}
 
 	@Override
-	protected void initializeEventMessages()
-	{
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
+	protected void initializeEventMessages() {
+		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
 		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
@@ -83,22 +80,14 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 	@Override
 	protected Vector3 getMovementVectorForColor( Color color ) {
 		Vector3 initialMove = new Vector3( 0.0d, 0.0d, 0.0d );
-		if( color != null )
-		{
-			if( color.equals( UP ) )
-			{
+		if( color != null ) {
+			if( color.equals( UP ) ) {
 				initialMove.y = INITIAL_MOVE_FACTOR;
-			}
-			else if( color.equals( DOWN ) )
-			{
+			} else if( color.equals( DOWN ) ) {
 				initialMove.y = -INITIAL_MOVE_FACTOR;
-			}
-			else if( color.equals( LEFT ) )
-			{
+			} else if( color.equals( LEFT ) ) {
 				initialMove.x = -INITIAL_MOVE_FACTOR;
-			}
-			else if( color.equals( RIGHT ) )
-			{
+			} else if( color.equals( RIGHT ) ) {
 				initialMove.x = INITIAL_MOVE_FACTOR;
 			}
 		}
@@ -111,43 +100,26 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 	}
 
 	@Override
-	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time ) {
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
-		if( this.initialHandleColor != null )
-		{
-			if( this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ) )
-			{
-				if( Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT )
-				{
+		if( this.initialHandleColor != null ) {
+			if( this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ) ) {
+				if( Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT ) {
 					relativeMousePos.y = 0.0d;
-				}
-				else
-				{
-					if( relativeMousePos.y < 0.0d )
-					{
+				} else {
+					if( relativeMousePos.y < 0.0d ) {
 						relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
-					}
-					else
-					{
+					} else {
 						relativeMousePos.y = MIN_PIXEL_MOVE_AMOUNT;
 					}
 				}
-			}
-			else if( this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ) )
-			{
-				if( Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT )
-				{
+			} else if( this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ) ) {
+				if( Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT ) {
 					relativeMousePos.x = 0.0d;
-				}
-				else
-				{
-					if( relativeMousePos.x < 0.0d )
-					{
+				} else {
+					if( relativeMousePos.x < 0.0d ) {
 						relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
-					}
-					else
-					{
+					} else {
 						relativeMousePos.x = MIN_PIXEL_MOVE_AMOUNT;
 					}
 				}
@@ -163,21 +135,17 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 	}
 
 	@Override
-	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time )
-	{
+	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time ) {
 		return new Vector3( 0.0d, 0.0d, 0.0d );
 	}
 
 	@Override
-	protected ReferenceFrame getRotationReferenceFrame()
-	{
+	protected ReferenceFrame getRotationReferenceFrame() {
 		return this.standUpReference;
 	}
 
 	@Override
-	protected ReferenceFrame getMovementReferenceFrame()
-	{
+	protected ReferenceFrame getMovementReferenceFrame() {
 		return this.standUpReference;
 	}
-
 }
