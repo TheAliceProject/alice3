@@ -46,9 +46,6 @@ package org.alice.interact;
 import java.awt.Point;
 
 import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.event.ManipulationEventManager;
-import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
@@ -117,11 +114,6 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	public boolean hasSceneEditor() {
 		return false;
-	}
-
-	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate ) {
-		event.setInputState( this.currentInputState );
-		this.manipulationEventManager.triggerEvent( event, isActivate );
 	}
 
 	public void clear() {
@@ -402,14 +394,6 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	public void addManipulationListener( ManipulationListener listener ) {
-		this.manipulationEventManager.addManipulationListener( listener );
-	}
-
-	public void removeManipulationListener( ManipulationListener listener ) {
-		this.manipulationEventManager.removeManipulationListener( listener );
-	}
-
 	public void addHandle( ManipulationHandle handle ) {
 		this.handleManager.addHandle( handle );
 	}
@@ -461,7 +445,6 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	private boolean hasSetCameraTransformables = false;
 
 	private InteractionGroup currentInteractionState = null;
-	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;

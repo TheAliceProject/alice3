@@ -130,8 +130,8 @@ public abstract class AbstractManipulator {
 	}
 
 	public void triggerAllDeactivateEvents() {
-		for( int i = 0; i < this.manipulationEvents.size(); i++ ) {
-			this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( i ), false );
+		for( ManipulationEvent manipulationEvent : this.manipulationEvents ) {
+			this.dragAdapter.triggerManipulationEvent( manipulationEvent, false );
 		}
 		if( this.mainManipulationEvent != null ) {
 			this.dragAdapter.triggerManipulationEvent( this.mainManipulationEvent, false );

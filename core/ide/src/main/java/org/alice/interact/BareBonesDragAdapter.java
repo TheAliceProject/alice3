@@ -43,6 +43,9 @@
 package org.alice.interact;
 
 import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.event.ManipulationEventManager;
+import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
@@ -98,6 +101,19 @@ public abstract class BareBonesDragAdapter {
 			component.removeKeyListener( this.keyListener );
 			component.removeMouseWheelListener( this.mouseWheelListener );
 		}
+	}
+
+	public void addManipulationListener( ManipulationListener listener ) {
+		this.manipulationEventManager.addManipulationListener( listener );
+	}
+
+	public void removeManipulationListener( ManipulationListener listener ) {
+		this.manipulationEventManager.removeManipulationListener( listener );
+	}
+
+	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate ) {
+		event.setInputState( this.currentInputState );
+		this.manipulationEventManager.triggerEvent( event, isActivate );
 	}
 
 	public void addManipulatorConditionSet( ManipulatorConditionSet manipulator ) {
@@ -461,6 +477,7 @@ public abstract class BareBonesDragAdapter {
 	};
 
 	protected/*private*/final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	private java.awt.Component lookingGlassComponent = null;
 	private java.awt.Component currentRolloverComponent = null;
