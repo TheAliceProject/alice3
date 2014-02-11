@@ -48,20 +48,17 @@ import org.alice.interact.condition.MovementDescription;
  * @author David Culyba
  */
 public class MovementKey {
-
-	public MovementDescription movementDescription;
-	public double directionMultiplier;
-	public int keyValue;
-
-	public MovementKey( int keyValue, MovementDescription description )
-	{
+	public MovementKey( int keyValue, MovementDescription description ) {
 		this( keyValue, description, 1.0d );
 	}
 
-	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier )
-	{
+	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier ) {
 		this.keyValue = keyValue;
 		this.movementDescription = description;
 		this.directionMultiplier = directionMultiplier;
 	}
+
+	public final MovementDescription movementDescription;
+	public final double directionMultiplier;
+	public final int keyValue;
 }

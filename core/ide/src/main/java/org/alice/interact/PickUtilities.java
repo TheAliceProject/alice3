@@ -42,7 +42,6 @@
  */
 package org.alice.interact;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.handle.ManipulationHandle3D;
@@ -59,32 +58,24 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  */
 public class PickUtilities {
 
-	public static Component getFirstClassFromComponent( Component object )
-	{
-		if( object == null )
-		{
+	public static Component getFirstClassFromComponent( Component object ) {
+		if( object == null ) {
 			return null;
 		}
-		if( object instanceof ManipulationHandle3D )
-		{
+		if( object instanceof ManipulationHandle3D ) {
 			return object;
 		}
-		if( EntityImp.getInstance( object ) != null )
-		{
+		if( EntityImp.getInstance( object ) != null ) {
 			return object;
 		}
 		return getFirstClassFromComponent( object.getParent() );
 	}
 
-	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
-	{
+	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject ) {
 		boolean isNull = ( pickObject == null ) || ( pickObject.getGeometry() == null ) || ( pickObject.getVisual() == null );
-		if( isNull )
-		{
+		if( isNull ) {
 			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
+		} else {
 			PickHint pickType = getPickType( pickObject.getVisual() );
 			return pickType;
 		}
@@ -94,29 +85,29 @@ public class PickUtilities {
 		if( object != null ) {
 			if( cls.isAssignableFrom( object.getClass() ) ) {
 				return cls.cast( object );
+			} else {
+				return getParentOfClass( object.getParent(), cls );
 			}
-			return getParentOfClass( object.getParent(), cls );
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public static EntityImp getEntityImpFromPickedObject( edu.cmu.cs.dennisc.scenegraph.Component pickedObject ) {
-		if( pickedObject != null )
-		{
+		if( pickedObject != null ) {
 			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = PickUtilities.getFirstClassFromComponent( pickedObject );
 			EntityImp entityImplementation = EntityImp.getInstance( mainComponent );
 			return entityImplementation;
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public static SThing getEntityFromPickedObject( edu.cmu.cs.dennisc.scenegraph.Component pickedObject ) {
-		if( pickedObject != null )
-		{
+		if( pickedObject != null ) {
 			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = PickUtilities.getFirstClassFromComponent( pickedObject );
 			EntityImp entityImplementation = EntityImp.getInstance( mainComponent );
-			if( entityImplementation != null )
-			{
+			if( entityImplementation != null ) {
 				return entityImplementation.getAbstraction();
 			}
 		}
@@ -124,52 +115,39 @@ public class PickUtilities {
 	}
 
 	public static PickHint getPickHintForEntity( SThing entity ) {
-		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
-		if( entity != null )
-		{
-			if( entity instanceof org.lgna.story.STurnable )
-			{
+		List<PickHint.PickType> pickTypes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		if( entity != null ) {
+			if( entity instanceof org.lgna.story.STurnable ) {
 				pickTypes.add( PickHint.PickType.TURNABLE );
 			}
-			if( entity instanceof org.lgna.story.SMovableTurnable )
-			{
+			if( entity instanceof org.lgna.story.SMovableTurnable ) {
 				pickTypes.add( PickHint.PickType.MOVEABLE );
 			}
-			if( entity instanceof org.lgna.story.Resizable )
-			{
+			if( entity instanceof org.lgna.story.Resizable ) {
 				pickTypes.add( PickHint.PickType.RESIZABLE );
 			}
-			if( ( entity instanceof org.lgna.story.SCamera ) || ( entity instanceof org.lgna.story.SModel ) || ( entity instanceof org.lgna.story.SMarker ) )
-			{
+			if( ( entity instanceof org.lgna.story.SCamera ) || ( entity instanceof org.lgna.story.SModel ) || ( entity instanceof org.lgna.story.SMarker ) ) {
 				pickTypes.add( PickHint.PickType.SELECTABLE );
 			}
-			if( entity instanceof org.lgna.story.SMovableTurnable )
-			{
+			if( entity instanceof org.lgna.story.SMovableTurnable ) {
 				pickTypes.add( PickHint.PickType.VIEWABLE );
 			}
-			if( entity instanceof org.lgna.story.CameraMarker )
-			{
+			if( entity instanceof org.lgna.story.CameraMarker ) {
 				pickTypes.add( PickHint.PickType.CAMERA_MARKER );
 			}
-			if( entity instanceof org.lgna.story.SThingMarker )
-			{
+			if( entity instanceof org.lgna.story.SThingMarker ) {
 				pickTypes.add( PickHint.PickType.OBJECT_MARKER );
 			}
-			if( entity instanceof org.lgna.story.SSun )
-			{
+			if( entity instanceof org.lgna.story.SSun ) {
 				pickTypes.add( PickHint.PickType.SUN );
 			}
-			if( entity instanceof org.lgna.story.SJoint )
-			{
+			if( entity instanceof org.lgna.story.SJoint ) {
 				pickTypes.add( PickHint.PickType.JOINT );
 			}
 		}
-		if( pickTypes.size() == 0 )
-		{
+		if( pickTypes.size() == 0 ) {
 			return new PickHint();
-		}
-		else
-		{
+		} else {
 			return new PickHint( pickTypes.toArray( new PickHint.PickType[ pickTypes.size() ] ) );
 		}
 	}
@@ -177,59 +155,42 @@ public class PickUtilities {
 	public static PickHint getPickTypeForImp( EntityImp imp ) {
 		if( imp != null ) {
 			return getPickHintForEntity( imp.getAbstraction() );
-		}
-		else {
+		} else {
 			return getPickHintForEntity( (SThing)null );
 		}
 	}
 
-	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
-	{
+	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject ) {
 		PickHint returnHint = null;
-		if( pickedObject != null )
-		{
+		if( pickedObject != null ) {
 			SThing entity = getEntityFromPickedObject( pickedObject );
 			returnHint = getPickHintForEntity( entity );
 
-			if( pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite )
-			{
+			if( pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
-				for( edu.cmu.cs.dennisc.scenegraph.Component c : ( (edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject ).getComponents() )
-				{
-					if( c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera )
-					{
+				for( edu.cmu.cs.dennisc.scenegraph.Component c : ( (edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject ).getComponents() ) {
+					if( c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera ) {
 						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
 					}
 				}
-				if( camera != null )
-				{
-					if( camera instanceof SymmetricPerspectiveCamera )
-					{
+				if( camera != null ) {
+					if( camera instanceof SymmetricPerspectiveCamera ) {
 						returnHint.addPickType( PickHint.PickType.PERSPECTIVE_CAMERA );
-					}
-					else if( camera instanceof OrthographicCamera )
-					{
+					} else if( camera instanceof OrthographicCamera ) {
 						returnHint.addPickType( PickHint.PickType.ORTHOGRAPHIC_CAMERA );
 					}
-				}
-				else
-				{
+				} else {
 					ManipulationHandle3D handle3D = getParentOfClass( pickedObject, ManipulationHandle3D.class );
-					if( handle3D != null )
-					{
+					if( handle3D != null ) {
 						returnHint.addPickType( PickHint.PickType.THREE_D_HANDLE );
 					}
 				}
 			}
 		}
-		if( ( returnHint == null ) || returnHint.isEmpty() )
-		{
+		if( ( returnHint == null ) || returnHint.isEmpty() ) {
 			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
+		} else {
 			return returnHint;
 		}
 	}
-
 }

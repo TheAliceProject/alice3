@@ -49,9 +49,8 @@ import edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities;
 /**
  * @author David Culyba
  */
-public class ModifierMask {
-	enum TestType
-	{
+public final class ModifierMask {
+	private static enum TestType {
 		ALL_MUST_BE_VALID,
 		ANY_MAY_BE_VALID,
 	}
@@ -61,8 +60,7 @@ public class ModifierMask {
 	public static ModifierKey[] JUST_CONTROL = { ModifierKey.CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT };
 	public static ModifierKey[] JUST_ALT = { ModifierKey.NOT_CONTROL, ModifierKey.ALT, ModifierKey.NOT_SHIFT };
 
-	public enum ModifierKey
-	{
+	public static enum ModifierKey {
 		CONTROL( KeyEventUtilities.getQuoteControlUnquoteKey(), false ),
 		NOT_CONTROL( KeyEventUtilities.getQuoteControlUnquoteKey(), true ),
 		ALT( KeyEventUtilities.getQuoteAltUnquoteKey(), false ),
@@ -70,96 +68,69 @@ public class ModifierMask {
 		SHIFT( KeyEvent.VK_SHIFT, false ),
 		NOT_SHIFT( KeyEvent.VK_SHIFT, true );
 
-		private int keyValue;
-		private boolean inverted;
-
-		private ModifierKey( int keyValue, boolean inverted )
-		{
+		private ModifierKey( int keyValue, boolean inverted ) {
 			this.keyValue = keyValue;
 			this.inverted = inverted;
 		}
 
-		public int getKeyValue()
-		{
+		public int getKeyValue() {
 			return this.keyValue;
 		}
 
-		public boolean testKey( InputState state )
-		{
+		public boolean testKey( InputState state ) {
 			boolean isDown = state.isKeyDown( this.keyValue );
-			if( this.inverted )
-			{
+			if( this.inverted ) {
 				return !isDown;
+			} else {
+				return isDown;
 			}
-			return isDown;
 		}
 
+		private final int keyValue;
+		private final boolean inverted;
 	}
 
-	private ModifierKey[] keys;
-	private TestType testType;
-
-	public ModifierMask()
-	{
-		this.testType = TestType.ALL_MUST_BE_VALID;
-		setKeys( new ModifierKey[ 0 ] );
+	public ModifierMask() {
+		this( new ModifierKey[ 0 ], TestType.ALL_MUST_BE_VALID );
 	}
 
-	public ModifierMask( ModifierKey[] keys, TestType testType )
-	{
+	public ModifierMask( ModifierKey[] keys, TestType testType ) {
 		this.testType = testType;
-		setKeys( keys );
-	}
-
-	public ModifierMask( ModifierKey[] keys )
-	{
-		this( keys, TestType.ALL_MUST_BE_VALID );
-	}
-
-	public ModifierMask( ModifierKey key )
-	{
-		this( key, TestType.ALL_MUST_BE_VALID );
-	}
-
-	public ModifierMask( ModifierKey key, TestType testType )
-	{
-		ModifierKey[] keyArray = { key };
-		setKeys( keyArray );
-		this.testType = testType;
-	}
-
-	public void setKeys( ModifierKey[] keys )
-	{
 		this.keys = keys;
 	}
 
-	public boolean anyValid( InputState state )
-	{
+	public ModifierMask( ModifierKey[] keys ) {
+		this( keys, TestType.ALL_MUST_BE_VALID );
+	}
+
+	public ModifierMask( ModifierKey key ) {
+		this( key, TestType.ALL_MUST_BE_VALID );
+	}
+
+	public ModifierMask( ModifierKey key, TestType testType ) {
+		this( new ModifierKey[] { key }, testType );
+	}
+
+	public boolean anyValid( InputState state ) {
 		for( ModifierKey key : this.keys ) {
-			if( key.testKey( state ) )
-			{
+			if( key.testKey( state ) ) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean allValid( InputState state )
-	{
-		for( int i = 0; i < this.keys.length; i++ )
-		{
-			if( !this.keys[ i ].testKey( state ) )
-			{
+	public boolean allValid( InputState state ) {
+		for( int i = 0; i < this.keys.length; i++ ) {
+			if( !this.keys[ i ].testKey( state ) ) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public boolean test( InputState state )
-	{
-		switch( this.testType )
-		{
+	public boolean test( InputState state ) {
+		switch( this.testType ) {
 		case ANY_MAY_BE_VALID:
 			return anyValid( state );
 		case ALL_MUST_BE_VALID:
@@ -169,4 +140,6 @@ public class ModifierMask {
 		}
 	}
 
+	private final ModifierKey[] keys;
+	private final TestType testType;
 }

@@ -49,18 +49,9 @@ import edu.cmu.cs.dennisc.animation.FrameObserver;
  */
 public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 
-	protected static final double DEFAULT_SPEED = 12.0d;
+	private static final double DEFAULT_SPEED = 12.0d;
 	protected static final double MIN_DISTANCE_TO_DONE = .001d;
 	private static final double MAX_FRAME_LENGTH = .1d;
-
-	protected E targetValue;
-	protected E currentValue;
-	protected double speed;
-	protected double timeOfLastFrame = Double.NaN;
-	protected double deltaSinceLastFrame = Double.NaN;
-	private boolean isDone = true;
-
-	private final Object syncLock = new Object();
 
 	public TargetBasedFrameObserver() {
 		speed = DEFAULT_SPEED;
@@ -93,8 +84,7 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 		}
 	}
 
-	public E getCurrentValue()
-	{
+	public E getCurrentValue() {
 		return this.currentValue;
 	}
 
@@ -162,4 +152,12 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 		}
 	}
 
+	protected E targetValue;
+	protected E currentValue;
+	protected double speed;
+	private double timeOfLastFrame = Double.NaN;
+	private double deltaSinceLastFrame = Double.NaN;
+	private boolean isDone = true;
+
+	private final Object syncLock = new Object();
 }

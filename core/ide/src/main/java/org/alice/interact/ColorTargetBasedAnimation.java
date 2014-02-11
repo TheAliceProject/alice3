@@ -49,23 +49,19 @@ import edu.cmu.cs.dennisc.color.Color4f;
  */
 public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver<Color4f> {
 
-	public ColorTargetBasedAnimation( Color4f currentValue )
-	{
+	public ColorTargetBasedAnimation( Color4f currentValue ) {
 		super( currentValue );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, double speed )
-	{
+	public ColorTargetBasedAnimation( Color4f currentValue, double speed ) {
 		super( currentValue, speed );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue )
-	{
+	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue ) {
 		super( currentValue, targetValue );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue, double speed )
-	{
+	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue, double speed ) {
 		super( currentValue, targetValue, speed );
 	}
 

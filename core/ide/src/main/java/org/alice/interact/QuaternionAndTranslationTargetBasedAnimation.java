@@ -51,39 +51,29 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 
 	private static final double CUSTOM_SPEED = 5.0d;
 
-	private boolean shouldAnimate = false;
-
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue )
-	{
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue ) {
 		this( currentValue, currentValue, CUSTOM_SPEED );
 	}
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, double speed )
-	{
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, double speed ) {
 		this( currentValue, currentValue, speed );
 	}
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue )
-	{
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue ) {
 		this( currentValue, targetValue, CUSTOM_SPEED );
 	}
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed )
-	{
+	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed ) {
 		super( currentValue, targetValue, speed );
-		if( isCloseEnoughToBeDone() )
-		{
+		if( isCloseEnoughToBeDone() ) {
 			this.shouldAnimate = true;
-		}
-		else
-		{
+		} else {
 			this.shouldAnimate = false;
 		}
 	}
 
 	@Override
-	protected boolean isCloseEnoughToBeDone()
-	{
+	protected boolean isCloseEnoughToBeDone() {
 		edu.cmu.cs.dennisc.math.UnitQuaternion currentQ = this.currentValue.getQuaternion();
 		edu.cmu.cs.dennisc.math.UnitQuaternion targetQ = this.targetValue.getQuaternion();
 
@@ -107,8 +97,7 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 	//	}
 
 	@Override
-	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate )
-	{
+	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate ) {
 		float portion = (float)( deltaSinceLastUpdate * this.speed );
 		portion = Math.min( portion, 1.0f );
 		portion = Math.max( -1.0f, portion );
@@ -127,4 +116,6 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 	protected QuaternionAndTranslation newE( QuaternionAndTranslation other ) {
 		return new QuaternionAndTranslation( other );
 	}
+
+	private boolean shouldAnimate = false;
 }

@@ -61,7 +61,6 @@ public class InfiniteLineVisualization extends Visual {
 	}
 
 	public InfiniteLineVisualization( Vector3 line ) {
-
 		Vertex[] vertices = new Vertex[ 2 ];
 
 		Point3 lineEnd1 = Point3.createMultiplication( line, LINE_DISTANCE );
@@ -75,8 +74,7 @@ public class InfiniteLineVisualization extends Visual {
 		frontFacingAppearance.setValue( s_sgFrontFacingAppearance );
 	}
 
-	public void setLine( Vector3 line )
-	{
+	public void setLine( Vector3 line ) {
 		LineArray lines = (LineArray)( geometries.getValue()[ 0 ] );
 		Vertex[] vertices = lines.vertices.getValue();
 		Point3 lineEnd1 = Point3.createMultiplication( line, LINE_DISTANCE );
@@ -89,8 +87,7 @@ public class InfiniteLineVisualization extends Visual {
 		vertices[ 1 ].position.z = lineEnd2.z;
 	}
 
-	public void setColor( Color4f color )
-	{
+	public void setColor( Color4f color ) {
 		s_sgFrontFacingAppearance.setDiffuseColor( color );
 	}
 

@@ -59,37 +59,28 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * 
  */
 public class SnapSphere extends Transformable {
+	private static final double DEFAULT_RADIUS = .06d;
 
-	public static final double DEFAULT_RADIUS = .06d;
-
-	private Sphere sgSphere = new Sphere();
-	private Visual sgSphereVisual = new Visual();
-	private LineArray sgLineArray = new LineArray();
-	private SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-
-	public SnapSphere()
-	{
+	public SnapSphere() {
 		this( DEFAULT_RADIUS );
 	}
 
 	public SnapSphere( double radius ) {
 		this.sgSphere.radius.setValue( radius );
-		sgFrontFacingAppearance.shadingStyle.setValue( ShadingStyle.NONE );
-		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.GREEN );
-		sgFrontFacingAppearance.opacity.setValue( new Float( 1f ) );
+		this.sgFrontFacingAppearance.shadingStyle.setValue( ShadingStyle.NONE );
+		this.sgFrontFacingAppearance.diffuseColor.setValue( Color4f.GREEN );
+		this.sgFrontFacingAppearance.opacity.setValue( new Float( 1f ) );
 		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere, this.sgLineArray } );
 		this.sgSphereVisual.setParent( this );
 	}
 
-	public void setColor( Color4f color )
-	{
+	public void setColor( Color4f color ) {
 		sgFrontFacingAppearance.setDiffuseColor( color );
 	}
 
 	//Since this visual is rooted at the location of the sphere (and is therefore centered on the rotation ring), we need to make the line extend back to the center of the ring
-	public void setLineDirection( Point3 rootOrigin, Point3 sphereEndPoint )
-	{
+	public void setLineDirection( Point3 rootOrigin, Point3 sphereEndPoint ) {
 		Vertex[] vertices = new Vertex[ 2 ];
 		Vector3 lineOffset = Vector3.createSubtraction( rootOrigin, sphereEndPoint );
 		vertices[ 0 ] = Vertex.createXYZ( 0, 0, 0 );
@@ -98,4 +89,8 @@ public class SnapSphere extends Transformable {
 		this.sgLineArray.vertices.setValue( vertices );
 	}
 
+	private final Sphere sgSphere = new Sphere();
+	private final Visual sgSphereVisual = new Visual();
+	private final LineArray sgLineArray = new LineArray();
+	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 }

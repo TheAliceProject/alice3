@@ -57,28 +57,30 @@ public enum MovementType {
 	LOCAL( 1 ),
 	ABSOLUTE( 2 );
 
-	private int index;
+	public static MovementType getMovementTypeForIndex( int index ) {
+		MovementType[] types = MovementType.values();
+		for( MovementType currentType : types ) {
+			if( currentType.isIndex( index ) ) {
+				return currentType;
+			}
+		}
+		return null;
+	}
 
 	private MovementType( int index ) {
 		this.index = index;
 	}
 
-	/**
-	 * @return the index
-	 */
 	public int getIndex() {
 		return this.index;
 	}
 
-	public boolean isIndex( int index )
-	{
+	public boolean isIndex( int index ) {
 		return ( this.index == index );
 	}
 
-	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount )
-	{
-		switch( this )
-		{
+	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
+		switch( this ) {
 		case STOOD_UP: {
 			StandIn standIn = new StandIn();
 			standIn.setVehicle( transformable );
@@ -97,10 +99,8 @@ public enum MovementType {
 		}
 	}
 
-	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation )
-	{
-		switch( this )
-		{
+	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
+		switch( this ) {
 		case STOOD_UP: {
 			StandIn standIn = new StandIn();
 			standIn.setVehicle( transformable );
@@ -119,17 +119,5 @@ public enum MovementType {
 		}
 	}
 
-	public static MovementType getMovementTypeForIndex( int index )
-	{
-		MovementType[] types = MovementType.values();
-		for( MovementType currentType : types )
-		{
-			if( currentType.isIndex( index ) )
-			{
-				return currentType;
-			}
-		}
-		return null;
-	}
-
+	private final int index;
 }

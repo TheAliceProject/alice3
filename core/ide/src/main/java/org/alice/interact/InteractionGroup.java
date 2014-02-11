@@ -43,57 +43,34 @@
 
 package org.alice.interact;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.handle.HandleSet;
 
-public class InteractionGroup
-{
-	private HandleSet handleSet;
-	private List<ManipulatorConditionSet> manipulators = new ArrayList<ManipulatorConditionSet>();
-	private PickHint acceptableTypes;
-
-	public InteractionGroup( HandleSet handleSet, ManipulatorConditionSet... manipulators )
-	{
+public final class InteractionGroup {
+	public InteractionGroup( HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes ) {
 		this.handleSet = handleSet;
-		for( ManipulatorConditionSet manipulator : manipulators )
-		{
-			this.manipulators.add( manipulator );
-		}
+		this.manipulator = manipulator;
+		this.pickHint = new PickHint( acceptableTypes );
 	}
 
-	public InteractionGroup( HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes )
-	{
-		this.handleSet = handleSet;
-		this.manipulators.add( manipulator );
-		setAcceptableTypes( acceptableTypes );
-	}
-
-	public HandleSet getHandleSet()
-	{
+	public HandleSet getHandleSet() {
 		return this.handleSet;
 	}
 
 	public boolean canUseIteractionGroup( PickHint pickType ) {
-		return this.acceptableTypes.intersects( pickType );
+		return this.pickHint.intersects( pickType );
 	}
 
-	public void setAcceptableTypes( org.alice.interact.PickHint.PickType... types ) {
-		acceptableTypes = new PickHint( types );
-	}
-
-	public void enabledManipulators( boolean enabled )
-	{
-		for( ManipulatorConditionSet manipulator : this.manipulators )
-		{
-			manipulator.setEnabled( enabled );
-		}
+	public void enabledManipulators( boolean enabled ) {
+		manipulator.setEnabled( enabled );
 	}
 
 	@Override
 	public String toString() {
 		return HandleSet.getStringForSet( this.handleSet );
 	}
+
+	private final HandleSet handleSet;
+	private final ManipulatorConditionSet manipulator;
+	private final PickHint pickHint;
 }

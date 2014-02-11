@@ -54,15 +54,14 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 public class PlaneUtilities {
 	public static edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
 		double t = plane.intersect( ray );
-		if( Double.isNaN( t ) || ( t < 0 ) )
-		{
+		if( Double.isNaN( t ) || ( t < 0 ) ) {
 			return null;
+		} else {
+			return ray.getPointAlong( t );
 		}
-		return ray.getPointAlong( t );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera, int xPixel, int yPixel )
-	{
+	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera, int xPixel, int yPixel ) {
 		edu.cmu.cs.dennisc.math.Ray ray = onscreenLookingGlass.getRayAtPixel( xPixel, yPixel, camera );
 
 		//So this is a little crazy
@@ -76,22 +75,19 @@ public class PlaneUtilities {
 		return ray;
 	}
 
-	public static double distanceToPlane( Plane plane, Point3 point )
-	{
+	public static double distanceToPlane( Plane plane, Point3 point ) {
 		double[] equation = plane.getEquation();
 		double topVal = ( equation[ 0 ] * point.x ) + ( equation[ 1 ] * point.y ) + ( equation[ 2 ] * point.z ) + equation[ 3 ];
 		double bottomVal = Math.sqrt( ( equation[ 0 ] * equation[ 0 ] ) + ( equation[ 1 ] * equation[ 1 ] ) + ( equation[ 2 ] * equation[ 2 ] ) );
 		return topVal / bottomVal;
 	}
 
-	public static Vector3 getPlaneNormal( Plane plane )
-	{
+	public static Vector3 getPlaneNormal( Plane plane ) {
 		double[] equation = plane.getEquation();
 		return new Vector3( equation[ 0 ], equation[ 1 ], equation[ 2 ] );
 	}
 
-	public static Point3 projectPointIntoPlane( Plane plane, Point3 point )
-	{
+	public static Point3 projectPointIntoPlane( Plane plane, Point3 point ) {
 		double distanceToPlane = distanceToPlane( plane, point );
 		Vector3 offsetVector = Vector3.createMultiplication( getPlaneNormal( plane ), -distanceToPlane );
 		return Point3.createAddition( point, offsetVector );

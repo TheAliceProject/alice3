@@ -64,8 +64,7 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		this.setUpControls();
 	}
 
-	private void setUpControls()
-	{
+	private void setUpControls() {
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 		mouseTranslateObject.addCondition( moveableObject );
