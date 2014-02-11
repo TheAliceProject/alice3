@@ -46,7 +46,6 @@ import org.alice.interact.MovementDirection;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -54,7 +53,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class StoodUpRotationRingHandle extends RotationRingHandle implements PropertyListener {
+public class StoodUpRotationRingHandle extends RotationRingHandle {
 	public StoodUpRotationRingHandle() {
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
@@ -87,19 +86,18 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 
 	@Override
 	public StoodUpRotationRingHandle clone() {
-		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle( this );
-		return newHandle;
+		return new StoodUpRotationRingHandle( this );
 	}
 
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		if( this.manipulatedObject != manipulatedObject ) {
 			if( this.manipulatedObject instanceof Transformable ) {
-				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this );
+				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this.propertyListener );
 			}
 			super.setManipulatedObject( manipulatedObject );
 			if( this.manipulatedObject != null ) {
-				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this );
+				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this.propertyListener );
 			}
 			positionRelativeToObject();
 		}
@@ -123,13 +121,14 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
 	}
 
-	public void propertyChanged( PropertyEvent e ) {
-		this.positionRelativeToObject();
-	}
+	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanged( PropertyEvent e ) {
+			positionRelativeToObject();
+		}
 
-	public void propertyChanging( PropertyEvent e ) {
+		public void propertyChanging( PropertyEvent e ) {
 
-	}
-
+		}
+	};
 	private final Transformable standUpReference = new Transformable();
 }

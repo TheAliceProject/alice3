@@ -42,12 +42,9 @@
  */
 package org.alice.interact.handle;
 
-import java.awt.Color;
-
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
@@ -55,22 +52,19 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearTranslateHandle extends LinearDragHandle {
-	public LinearTranslateHandle( MovementDescription dragDescription, Color4f color ) {
-		super( dragDescription );
-		this.baseColor = color;
+	public LinearTranslateHandle( MovementDescription dragDescription, Color4f baseColor ) {
+		super( dragDescription, baseColor );
 		this.initializeAppearance();
 	}
 
 	public LinearTranslateHandle( LinearTranslateHandle handle ) {
 		super( handle );
-		this.baseColor = handle.baseColor;
 		this.initializeAppearance();
 	}
 
 	@Override
 	public LinearTranslateHandle clone() {
-		LinearTranslateHandle newHandle = new LinearTranslateHandle( this );
-		return newHandle;
+		return new LinearTranslateHandle( this );
 	}
 
 	@Override
@@ -88,38 +82,6 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	}
 
 	@Override
-	protected Color4f getBaseColor() {
-		if( this.baseColor == null ) {
-			return super.getBaseColor();
-		} else {
-			return this.baseColor;
-		}
-	}
-
-	@Override
-	protected Color4f getDesiredColor( HandleRenderState renderState ) {
-		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
-		switch( renderState ) {
-		case NOT_VISIBLE:
-			break; //Do nothing
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-			ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d );
-			break;
-		case VISIBLE_AND_ACTIVE:
-			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d );
-			break;
-		case VISIBLE_AND_ROLLOVER:
-			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d );
-			break;
-		case JUST_VISIBLE:
-			break; //Do nothing
-		default:
-			break; //Do nothing
-		}
-		return new Color4f( desiredColor );
-	}
-
-	@Override
 	protected void setScale( double scale ) {
 		if( this.arrow != null ) {
 			this.arrow.setParent( null );
@@ -133,6 +95,5 @@ public class LinearTranslateHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
-	private final Color4f baseColor;
 	private Arrow arrow;
 }

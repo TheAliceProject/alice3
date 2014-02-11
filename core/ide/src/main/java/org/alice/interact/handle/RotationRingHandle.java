@@ -160,8 +160,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
 
 	@Override
 	public RotationRingHandle clone() {
-		RotationRingHandle newHandle = new RotationRingHandle( this );
-		return newHandle;
+		return new RotationRingHandle( this );
 	}
 
 	protected void setPositionRelativeToObjectSize() {

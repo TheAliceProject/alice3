@@ -85,8 +85,7 @@ public class JointRotationRingHandle extends RotationRingHandle {
 
 	@Override
 	public JointRotationRingHandle clone() {
-		JointRotationRingHandle newHandle = new JointRotationRingHandle( this );
-		return newHandle;
+		return new JointRotationRingHandle( this );
 	}
 
 	@Override

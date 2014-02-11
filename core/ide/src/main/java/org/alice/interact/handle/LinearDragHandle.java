@@ -42,10 +42,13 @@
  */
 package org.alice.interact.handle;
 
-import org.alice.interact.MovementDirection;
+import java.awt.Color;
+
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -60,26 +63,17 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public abstract class LinearDragHandle extends ManipulationHandle3D implements PropertyListener {
-
-	private static final double MIN_LENGTH = .4d;
-
-	public LinearDragHandle() {
-		this( new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ) );
-	}
-
-	public LinearDragHandle( MovementDescription dragDescription ) {
-		super();
+	public LinearDragHandle( MovementDescription dragDescription, Color4f baseColor ) {
+		this.dragDescription = dragDescription;
+		this.baseColor = baseColor;
 		this.standUpReference.setName( "Linear StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
-		{
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 		this.snapReference.setName( "Linear Snap Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() )
-		{
+		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
 			this.snapReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
-		this.dragDescription = dragDescription;
 		this.dragAxis = new Vector3( this.dragDescription.direction.getVector() );
 		if( this.dragAxis.isNaN() ) {
 			this.dragAxis = new Vector3( this.dragDescription.direction.getVector() );
@@ -90,7 +84,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	public LinearDragHandle( LinearDragHandle handle ) {
-		this( handle.dragDescription );
+		this( handle.dragDescription, handle.baseColor );
 		this.initFromHandle( handle );
 		this.distanceFromOrigin = handle.distanceFromOrigin;
 		this.offsetPadding = handle.offsetPadding;
@@ -98,6 +92,39 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 
 	public MovementDescription getMovementDescription() {
 		return this.dragDescription;
+	}
+
+	@Override
+	protected Color4f getBaseColor() {
+		if( this.baseColor == null ) {
+			return super.getBaseColor();
+		} else {
+			return this.baseColor;
+		}
+	}
+
+	@Override
+	protected Color4f getDesiredColor( HandleRenderState renderState ) {
+		Color4f baseColor = this.getBaseColor();
+		Color desiredColor = baseColor.getAsAWTColor();
+		switch( renderState ) {
+		case NOT_VISIBLE:
+			break; //Do nothing
+		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d );
+			break;
+		case VISIBLE_AND_ACTIVE:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d );
+			break;
+		case VISIBLE_AND_ROLLOVER:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d );
+			break;
+		case JUST_VISIBLE:
+			break; //Do nothing
+		default:
+			break; //Do nothing
+		}
+		return new Color4f( desiredColor );
 	}
 
 	protected abstract void createShape();
@@ -277,8 +304,10 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	public void propertyChanging( PropertyEvent e ) {
 	}
 
+	protected final MovementDescription dragDescription;
+	private final Color4f baseColor;
+
 	private double offsetPadding = 0.0d;
-	protected MovementDescription dragDescription;
 	protected Vector3 dragAxis;
 	private double distanceFromOrigin;
 	private Transformable standUpReference = new Transformable();

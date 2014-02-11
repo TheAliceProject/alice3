@@ -192,15 +192,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.addAbsoluteTransformationListener( this.absoluteTransformationListener );
 	}
 
-	private Scalable getScalable( AbstractTransformable object ) {
-		Scalable scalable = null;
-		if( object instanceof Scalable ) {
-			scalable = (Scalable)object;
-		} else if( object != null ) {
-			scalable = object.getBonusDataFor( Scalable.KEY );
-		}
-		return scalable;
-	}
+	@Override
+	public abstract ManipulationHandle3D clone();
 
 	protected void initFromHandle( ManipulationHandle3D handle ) {
 		this.manipulatedObject = handle.manipulatedObject;
@@ -212,6 +205,16 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.criteriaManager = handle.criteriaManager;
 		this.handleManager = handle.handleManager;
 		this.manipulation = handle.manipulation;
+	}
+
+	private Scalable getScalable( AbstractTransformable object ) {
+		Scalable scalable = null;
+		if( object instanceof Scalable ) {
+			scalable = (Scalable)object;
+		} else if( object != null ) {
+			scalable = object.getBonusDataFor( Scalable.KEY );
+		}
+		return scalable;
 	}
 
 	public void clear() {
@@ -272,21 +275,16 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
-	@Override
-	public abstract ManipulationHandle3D clone();
-
 	protected abstract void setScale( double scale );
 
-	protected void setCurrentColorInternal() {
+	protected final void setCurrentColorInternal() {
 		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
 		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor( renderState ) );
 		sgFrontFacingAppearance.opacity.setValue( new Float( this.getDesiredOpacity( renderState ) ) );
 	}
 
-	protected void initializeAppearance() {
-		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
-		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor( renderState ) );
-		sgFrontFacingAppearance.opacity.setValue( new Float( this.getDesiredOpacity( renderState ) ) );
+	protected final void initializeAppearance() {
+		this.setCurrentColorInternal();
 	}
 
 	protected void setTransformableScale( AbstractTransformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix ) {

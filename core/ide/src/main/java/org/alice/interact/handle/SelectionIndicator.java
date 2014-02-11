@@ -95,14 +95,14 @@ public class SelectionIndicator extends ManipulationHandle3D {
 
 	@Override
 	protected float getOpacity() {
-		return ( (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgBoundingBoxDecorator.frontFacingAppearance.getValue() ).opacity.getValue();
+		return this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.getValue();
 	}
 
 	@Override
 	protected void setOpacity( float opacity ) {
 		super.setOpacity( opacity );
-		( (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgBoundingBoxDecorator.frontFacingAppearance.getValue() ).opacity.setValue( opacity );
-		( (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgBoundingBoxDecorator.backFacingAppearance.getValue() ).opacity.setValue( opacity );
+		this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.setValue( opacity );
+		this.sgBoundingBoxDecorator.getSgBackAppearance().opacity.setValue( opacity );
 	}
 
 	@Override

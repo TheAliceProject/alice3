@@ -42,19 +42,15 @@
  */
 package org.alice.interact.handle;
 
-import java.awt.Color;
-
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
 /**
@@ -62,55 +58,44 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  */
 public class LinearScaleHandle extends LinearDragHandle {
 	public static LinearScaleHandle createFromResizer( org.lgna.story.implementation.ModelImp.Resizer resizer ) {
-		LinearScaleHandle toReturn = null;
+		LinearScaleHandle toReturn;
 		switch( resizer ) {
-		case UNIFORM: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RESIZE, MovementType.STOOD_UP ), Color4f.PINK );
+		case UNIFORM:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RESIZE, MovementType.STOOD_UP ), Color4f.PINK, false, resizer );
 			break;
-		}
-		case X_AXIS: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), Color4f.MAGENTA, true );
+		case X_AXIS:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), Color4f.MAGENTA, true, resizer );
 			break;
-		}
-		case Y_AXIS: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), Color4f.YELLOW, true );
+		case Y_AXIS:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), Color4f.YELLOW, true, resizer );
 			break;
-		}
-		case Z_AXIS: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), Color4f.CYAN, true );
+		case Z_AXIS:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), Color4f.CYAN, true, resizer );
 			break;
-		}
-		case XY_PLANE: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_RIGHT, MovementType.LOCAL ), Color4f.PINK );
+		case XY_PLANE:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_RIGHT, MovementType.LOCAL ), Color4f.PINK, false, resizer );
 			break;
-		}
-		case XZ_PLANE: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT_FORWARD, MovementType.LOCAL ), Color4f.PINK );
+		case XZ_PLANE:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT_FORWARD, MovementType.LOCAL ), Color4f.PINK, false, resizer );
 			break;
-		}
-		case YZ_PLANE: {
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_FORWARD, MovementType.LOCAL ), Color4f.PINK );
+		case YZ_PLANE:
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_FORWARD, MovementType.LOCAL ), Color4f.PINK, false, resizer );
 			break;
+		default:
+			toReturn = null;
 		}
-		}
-		toReturn.resizer = resizer;
 		return toReturn;
 	}
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f color ) {
-		this( dragDescription, color, false );
-	}
-
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f color, boolean applyAlongAxis ) {
-		super( dragDescription );
-		this.baseColor = color;
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, org.lgna.story.implementation.ModelImp.Resizer resizer ) {
+		super( dragDescription, baseColor );
 		this.applyAlongAxis = applyAlongAxis;
+		this.resizer = resizer;
 		this.initializeAppearance();
 	}
 
 	public LinearScaleHandle( LinearScaleHandle handle ) {
 		super( handle );
-		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
 		this.resizer = handle.resizer;
 		this.initializeAppearance();
@@ -118,8 +103,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 
 	@Override
 	public LinearScaleHandle clone() {
-		LinearScaleHandle newHandle = new LinearScaleHandle( this );
-		return newHandle;
+		return new LinearScaleHandle( this );
 	}
 
 	public boolean applyAlongAxis() {
@@ -131,7 +115,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		createShape( 1.0d );
 	}
 
-	protected void createShape( double scale ) {
+	private void createShape( double scale ) {
 		this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
 		this.arrow.setParent( this );
 	}
@@ -180,38 +164,6 @@ public class LinearScaleHandle extends LinearDragHandle {
 	}
 
 	@Override
-	protected Color4f getBaseColor() {
-		if( this.baseColor == null ) {
-			return super.getBaseColor();
-		} else {
-			return this.baseColor;
-		}
-	}
-
-	@Override
-	protected Color4f getDesiredColor( HandleRenderState renderState ) {
-		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
-		switch( renderState ) {
-		case NOT_VISIBLE:
-			break; //Do nothing
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-			ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d );
-			break;
-		case VISIBLE_AND_ACTIVE:
-			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d );
-			break;
-		case VISIBLE_AND_ROLLOVER:
-			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d );
-			break;
-		case JUST_VISIBLE:
-			break; //Do nothing
-		default:
-			break; //Do nothing
-		}
-		return new Color4f( desiredColor );
-	}
-
-	@Override
 	protected void setScale( double scale ) {
 		if( this.arrow != null ) {
 			this.arrow.setParent( null );
@@ -225,9 +177,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
+	private final org.lgna.story.implementation.ModelImp.Resizer resizer;
+	private final boolean applyAlongAxis;
 	private Arrow arrow;
-	private Color4f baseColor;
-	private Transformable standUpReference = new Transformable();
-	private boolean applyAlongAxis = false;
-	private org.lgna.story.implementation.ModelImp.Resizer resizer;
 }
