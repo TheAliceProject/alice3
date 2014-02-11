@@ -183,6 +183,15 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
+	public ManipulationHandle3D() {
+		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+		setCurrentColorInternal();
+		sgVisual.setParent( this );
+		this.setName( this.getClass().getSimpleName() );
+		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.PickType.THREE_D_HANDLE.pickHint() );
+		this.addAbsoluteTransformationListener( this.absoluteTransformationListener );
+	}
+
 	private Scalable getScalable( AbstractTransformable object ) {
 		Scalable scalable = null;
 		if( object instanceof Scalable ) {
@@ -193,14 +202,23 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return scalable;
 	}
 
+	protected void initFromHandle( ManipulationHandle3D handle ) {
+		this.manipulatedObject = handle.manipulatedObject;
+		this.state = new HandleState( handle.state );
+		this.handleSet.clear();
+		this.handleSet.addSet( handle.handleSet );
+		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( handle.localTransformation.getValue() ) );
+		this.animator = handle.animator;
+		this.criteriaManager = handle.criteriaManager;
+		this.handleManager = handle.handleManager;
+		this.manipulation = handle.manipulation;
+	}
+
 	public void clear() {
 		this.setManipulatedObject( null );
 		this.setParent( null );
 	}
 
-	/**
-	 * @param manipulatedObject the manipulatedObject to set
-	 */
 	public void setManipulatedObject( AbstractTransformable manipulatedObjectIn ) {
 		if( this.manipulatedObject != null ) {
 			Scalable s = getScalable( this.manipulatedObject );
@@ -258,27 +276,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	public abstract ManipulationHandle3D clone();
 
 	protected abstract void setScale( double scale );
-
-	protected void initFromHandle( ManipulationHandle3D handle ) {
-		this.manipulatedObject = handle.manipulatedObject;
-		this.state = new HandleState( handle.state );
-		this.handleSet.clear();
-		this.handleSet.addSet( handle.handleSet );
-		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( handle.localTransformation.getValue() ) );
-		this.animator = handle.animator;
-		this.criteriaManager = handle.criteriaManager;
-		this.handleManager = handle.handleManager;
-		this.manipulation = handle.manipulation;
-	}
-
-	public ManipulationHandle3D() {
-		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
-		setCurrentColorInternal();
-		sgVisual.setParent( this );
-		this.setName( this.getClass().getSimpleName() );
-		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.PickType.THREE_D_HANDLE.pickHint() );
-		this.addAbsoluteTransformationListener( this.absoluteTransformationListener );
-	}
 
 	protected void setCurrentColorInternal() {
 		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
@@ -618,8 +615,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getParentTransformable()
-	{
+	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getParentTransformable() {
 		if( this.manipulatedObject == null ) {
 			return null;
 		}
