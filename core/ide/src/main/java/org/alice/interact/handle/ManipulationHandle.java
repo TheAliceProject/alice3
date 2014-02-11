@@ -98,8 +98,6 @@ public interface ManipulationHandle extends Cloneable {
 
 	public HandleState getHandleStateCopy();
 
-	public ManipulationHandle clone();
-
 	public AbstractManipulator getManipulation( InputState input );
 
 	public void setManipulation( AbstractManipulator manipulation );

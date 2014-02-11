@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class ManipulationHandleIndirection implements ManipulationListener, ManipulationHandle {
-	public ManipulationHandleIndirection( ManipulationHandle handle ) {
+	public ManipulationHandleIndirection( ManipulationHandle3D handle ) {
 		this.currentHandle = handle;
 		this.nextHandle = this.currentHandle.clone();
 	}
@@ -73,7 +73,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 
 	@Override
 	public ManipulationHandleIndirection clone() {
-		ManipulationHandle newCurrent = this.currentHandle.clone();
+		ManipulationHandle3D newCurrent = this.currentHandle.clone();
 		ManipulationHandleIndirection newHandle = new ManipulationHandleIndirection( newCurrent );
 		newHandle.handleManager = this.handleManager;
 		return newHandle;
@@ -113,7 +113,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 			//then make the next handle marked as part of the active group.
 			//Do not copy more state than this in case there is rollover or other active stateness lingering
 			this.nextHandle.setHandleVisible( currentHandleState.isVisible() );
-			ManipulationHandle tempHandle = this.currentHandle;
+			ManipulationHandle3D tempHandle = this.currentHandle;
 			this.currentHandle = this.nextHandle;
 			this.nextHandle = tempHandle;
 			this.criteriaManager.setTargetTransformable( manipulatedObject );
@@ -280,8 +280,8 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return this.getClass().getSimpleName() + "[" + returnString + "]";
 	}
 
-	private ManipulationHandle currentHandle;
-	private ManipulationHandle nextHandle;
+	private ManipulationHandle3D currentHandle;
+	private ManipulationHandle3D nextHandle;
 
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 	private HandleManager handleManager = null;

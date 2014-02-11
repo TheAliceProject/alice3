@@ -66,11 +66,6 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		super();
 	}
 
-	@Override
-	public ManipulationHandle2D clone() {
-		return null;
-	}
-
 	public Vector2 getCenter() {
 		java.awt.Rectangle ourSize = this.getBounds();
 		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
