@@ -113,6 +113,16 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		this.initColors( baseColor, activeColor, rolloverColor, mutedColor );
 	}
 
+	public RotationRingHandle( RotationRingHandle handle ) {
+		this( handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor );
+		this.initFromHandle( handle );
+		this.baseColor = handle.baseColor;
+		this.activeColor = handle.activeColor;
+		this.rolloverColor = handle.rolloverColor;
+		this.mutedColor = handle.mutedColor;
+		this.handleOffset.set( handle.handleOffset );
+	}
+
 	private void init( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
 		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		this.sgSphereVisual.setParent( this.sphereTransformable );
@@ -129,16 +139,6 @@ public class RotationRingHandle extends ManipulationHandle3D {
 		this.handlePosition = handlePosition;
 		this.localTransformation.setValue( this.getTransformationForAxis( this.rotationAxis ) );
 		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
-	}
-
-	public RotationRingHandle( RotationRingHandle handle ) {
-		this( handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor );
-		this.initFromHandle( handle );
-		this.baseColor = handle.baseColor;
-		this.activeColor = handle.activeColor;
-		this.rolloverColor = handle.rolloverColor;
-		this.mutedColor = handle.mutedColor;
-		this.handleOffset.set( handle.handleOffset );
 	}
 
 	protected void initColor( Color4f color ) {
