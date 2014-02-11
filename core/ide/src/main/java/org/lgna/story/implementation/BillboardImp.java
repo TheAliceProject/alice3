@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -153,8 +155,8 @@ public class BillboardImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS };
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS };
 	}
 
 	@Override

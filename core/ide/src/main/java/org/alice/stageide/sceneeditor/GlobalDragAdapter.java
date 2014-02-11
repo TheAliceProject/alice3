@@ -281,7 +281,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			leftClickMouseRotateObjectLeftRight.setEnabled( false );
 			this.addManipulatorConditionSet( leftClickMouseRotateObjectLeftRight );
 
-			ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator( org.lgna.story.implementation.ModelImp.Resizer.UNIFORM, org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE, org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE, org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE ) );
+			ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) );
 			leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
 			//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 			leftClickMouseResizeObject.setEnabled( false );
@@ -476,7 +476,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			translateForward.setDragAdapterAndAddHandle( this );
 			translateBackward.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleUniform = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.UNIFORM );
+			LinearScaleHandle scaleUniform = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM );
 			ManipulationHandleIndirection scaleAxis = new ManipulationHandleIndirection( scaleUniform );
 			scaleAxis.setManipulation( new ScaleDragManipulator() );
 			scaleAxis.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -487,7 +487,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxis.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleX = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.X_AXIS );
+			LinearScaleHandle scaleX = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS );
 			ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection( scaleX );
 			scaleAxisX.setManipulation( new ScaleDragManipulator() );
 			scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -498,7 +498,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisX.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleY = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.Y_AXIS );
+			LinearScaleHandle scaleY = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS );
 			ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection( scaleY );
 			scaleAxisY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -509,7 +509,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisY.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleZ = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.Z_AXIS );
+			LinearScaleHandle scaleZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS );
 			ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection( scaleZ );
 			scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -520,7 +520,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisZ.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleXY = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE );
+			LinearScaleHandle scaleXY = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE );
 			ManipulationHandleIndirection scaleAxisXY = new ManipulationHandleIndirection( scaleXY );
 			scaleAxisXY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXY.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -531,7 +531,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisXY.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleXZ = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE );
+			LinearScaleHandle scaleXZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE );
 			ManipulationHandleIndirection scaleAxisXZ = new ManipulationHandleIndirection( scaleXZ );
 			scaleAxisXZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXZ.addToSet( HandleSet.RESIZE_INTERACTION );
@@ -542,7 +542,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 					PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisXZ.setDragAdapterAndAddHandle( this );
 
-			LinearScaleHandle scaleYZ = LinearScaleHandle.createFromResizer( org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE );
+			LinearScaleHandle scaleYZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE );
 			ManipulationHandleIndirection scaleAxisYZ = new ManipulationHandleIndirection( scaleYZ );
 			scaleAxisYZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisYZ.addToSet( HandleSet.RESIZE_INTERACTION );

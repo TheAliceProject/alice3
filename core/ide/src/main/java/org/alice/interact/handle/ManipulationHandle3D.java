@@ -50,7 +50,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.manipulator.Scalable;
 import org.lgna.story.implementation.BoundingBoxUtilities;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -76,6 +75,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 
 /**
  * @author David Culyba

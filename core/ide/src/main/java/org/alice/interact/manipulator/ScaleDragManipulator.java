@@ -49,6 +49,8 @@ import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
+import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
+
 /**
  * @author David Culyba
  */
@@ -73,7 +75,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				org.lgna.story.implementation.ModelImp.Resizer resizer = scaleHandle.getResizer();
+				edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer = scaleHandle.getResizer();
 				this.initialScale = scalable.getValueForResizer( resizer );
 			}
 		}

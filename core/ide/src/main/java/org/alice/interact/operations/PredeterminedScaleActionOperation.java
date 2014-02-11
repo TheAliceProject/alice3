@@ -42,19 +42,20 @@
  */
 package org.alice.interact.operations;
 
-import org.alice.interact.manipulator.Scalable;
 import org.lgna.croquet.Group;
+
+import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipulationActionOperation {
-	private org.lgna.story.implementation.ModelImp.Resizer resizer;
+	private edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer;
 	private double redoScale;
 	private double undoScale;
 	private edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion;
 
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField scalableField, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField scalableField, edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ), isDoRequired, animator, scalableField, editPresentationKey );
 		this.resizer = resizer;
 
@@ -72,7 +73,7 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 		return modelImp;
 	}
 
-	private org.lgna.story.implementation.ModelImp.Resizer getResizer() {
+	private edu.cmu.cs.dennisc.scenegraph.scale.Resizer getResizer() {
 		return this.resizer;
 	}
 

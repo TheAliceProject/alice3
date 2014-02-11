@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearScaleHandle extends LinearDragHandle {
-	public static LinearScaleHandle createFromResizer( org.lgna.story.implementation.ModelImp.Resizer resizer ) {
+	public static LinearScaleHandle createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
 		LinearScaleHandle toReturn;
 		switch( resizer ) {
 		case UNIFORM:
@@ -87,7 +87,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		return toReturn;
 	}
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, org.lgna.story.implementation.ModelImp.Resizer resizer ) {
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
 		super( dragDescription, baseColor );
 		this.applyAlongAxis = applyAlongAxis;
 		this.resizer = resizer;
@@ -120,7 +120,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setParent( this );
 	}
 
-	public org.lgna.story.implementation.ModelImp.Resizer getResizer() {
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer getResizer() {
 		return this.resizer;
 	}
 
@@ -177,7 +177,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
-	private final org.lgna.story.implementation.ModelImp.Resizer resizer;
+	private final edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer;
 	private final boolean applyAlongAxis;
 	private Arrow arrow;
 }

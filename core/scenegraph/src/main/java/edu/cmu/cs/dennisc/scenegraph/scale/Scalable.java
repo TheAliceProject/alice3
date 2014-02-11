@@ -40,9 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
-
-import org.lgna.story.implementation.ModelImp.Resizer;
+package edu.cmu.cs.dennisc.scenegraph.scale;
 
 /**
  * @author Dennis Cosgrove

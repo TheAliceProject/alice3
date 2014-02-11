@@ -67,19 +67,19 @@ public class BoxImp extends ShapeImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS };
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS };
 	}
 
 	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.UNIFORM ) {
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == Resizer.X_AXIS ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
 			return this.sgBox.xMaximum.getValue();
-		} else if( resizer == Resizer.Y_AXIS ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == Resizer.Z_AXIS ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
 			return this.sgBox.zMaximum.getValue();
 		} else {
 			assert false : resizer;
@@ -88,9 +88,9 @@ public class BoxImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
 		if( value > 0.0 ) {
-			if( resizer == Resizer.UNIFORM ) {
+			if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 				double prevValue = this.sgBox.yMaximum.getValue();
 				double ratio = value / prevValue;
 				double x = this.sgBox.xMaximum.getValue() * ratio;
@@ -102,12 +102,12 @@ public class BoxImp extends ShapeImp {
 				this.sgBox.zMaximum.setValue( z );
 				this.sgBox.zMinimum.setValue( -z );
 
-			} else if( resizer == Resizer.X_AXIS ) {
+			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
 				this.sgBox.xMaximum.setValue( value );
 				this.sgBox.xMinimum.setValue( -value );
-			} else if( resizer == Resizer.Y_AXIS ) {
+			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 				this.sgBox.yMaximum.setValue( value );
-			} else if( resizer == Resizer.Z_AXIS ) {
+			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
 				this.sgBox.zMaximum.setValue( value );
 				this.sgBox.zMinimum.setValue( -value );
 			} else {

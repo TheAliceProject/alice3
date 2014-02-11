@@ -46,28 +46,18 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImp extends TransformableImp implements org.alice.interact.manipulator.Scalable {
-	public static enum Resizer {
-		X_AXIS,
-		Y_AXIS,
-		Z_AXIS,
-		XY_PLANE,
-		XZ_PLANE,
-		YZ_PLANE,
-		UNIFORM
-	};
-
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.UNIFORM };
+public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.dennisc.scenegraph.scale.Scalable {
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
 	}
 
-	public double getValueForResizer( Resizer resizer ) {
-		assert resizer == Resizer.UNIFORM : resizer;
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		return this.getScale().x;
 	}
 
-	public void setValueForResizer( Resizer resizer, double value ) {
-		assert resizer == Resizer.UNIFORM : resizer;
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
 	}
 
@@ -108,7 +98,7 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 	};
 
 	public ModelImp() {
-		this.getSgComposite().putBonusDataFor( org.alice.interact.manipulator.Scalable.KEY, this );
+		this.getSgComposite().putBonusDataFor( edu.cmu.cs.dennisc.scenegraph.scale.Scalable.KEY, this );
 	}
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances();

@@ -103,15 +103,15 @@ public class TorusImp extends ShapeImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XZ_PLANE, Resizer.Y_AXIS };
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS };
 	}
 
 	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XZ_PLANE ) {
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 			return this.outerRadius.getValue();
-		} else if( resizer == Resizer.Y_AXIS ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 			return this.sgTorus.minorRadius.getValue();
 		} else {
 			assert false : resizer;
@@ -120,10 +120,10 @@ public class TorusImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.XZ_PLANE ) {
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 			this.outerRadius.setValue( value );
-		} else if( resizer == Resizer.Y_AXIS ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 			this.sgTorus.minorRadius.setValue( value );
 		} else {
 			assert false : resizer;

@@ -77,13 +77,13 @@ public class SphereImp extends ShapeImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.UNIFORM };
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
 	}
 
 	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.UNIFORM ) {
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 			return this.radius.getValue();
 		} else {
 			assert false : resizer;
@@ -92,8 +92,8 @@ public class SphereImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.UNIFORM ) {
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 			this.radius.setValue( value );
 		} else {
 			assert false : resizer;

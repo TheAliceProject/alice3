@@ -160,8 +160,8 @@ public class HandleManager implements ManipulationListener {
 				org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
 				if( entityImp instanceof org.lgna.story.implementation.ModelImp ) {
 					org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)entityImp;
-					org.lgna.story.implementation.ModelImp.Resizer[] resizers = modelImp.getResizers();
-					for( org.lgna.story.implementation.ModelImp.Resizer r : resizers ) {
+					edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] resizers = modelImp.getResizers();
+					for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer r : resizers ) {
 						if( r == scaleHandle.getResizer() ) {
 							return true;
 						}

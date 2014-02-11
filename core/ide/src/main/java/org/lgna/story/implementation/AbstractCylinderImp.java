@@ -77,17 +77,17 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.Y_AXIS, Resizer.XZ_PLANE, Resizer.UNIFORM };
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
 	}
 
 	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.Y_AXIS ) {
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 			return this.length.getValue();
-		} else if( resizer == Resizer.XZ_PLANE ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 			return this.sgCylinder.bottomRadius.getValue();
-		} else if( resizer == Resizer.UNIFORM ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 			return this.length.getValue();
 		} else {
 			assert false : resizer;
@@ -96,13 +96,13 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
 		assert value > 0.0 : value;
-		if( resizer == Resizer.Y_AXIS ) {
+		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 			this.length.setValue( value );
-		} else if( resizer == Resizer.XZ_PLANE ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 			this.setXZ( value );
-		} else if( resizer == Resizer.UNIFORM ) {
+		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 			double prevValue = this.sgCylinder.length.getValue();
 			this.length.setValue( value );
 			if( prevValue != 0.0 ) {

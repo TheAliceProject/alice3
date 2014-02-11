@@ -696,18 +696,18 @@ public class GroundImp extends SimpleModelImp {
 	}
 
 	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] {};
+	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
+		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] {};
 	}
 
 	@Override
-	public double getValueForResizer( Resizer resizer ) {
+	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
 		assert false : resizer;
 		return Double.NaN;
 	}
 
 	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
+	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
 		assert false : resizer;
 	}
 
