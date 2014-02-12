@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.interact.handle;
 
 /**
  * @author Dennis Cosgrove

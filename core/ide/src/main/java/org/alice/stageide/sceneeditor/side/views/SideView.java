@@ -71,9 +71,9 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 
 		org.lgna.croquet.views.MigPanel migPanel = new org.lgna.croquet.views.MigPanel( null, "fill, insets 0, aligny top", "", "" );
 
-		org.lgna.croquet.views.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.views.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
+		org.lgna.croquet.views.AbstractRadioButtons<org.alice.interact.handle.HandleStyle> radioButtons = new org.lgna.croquet.views.DefaultRadioButtons<org.alice.interact.handle.HandleStyle>( composite.getHandleStyleState(), false ) {
 			@Override
-			protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.sceneeditor.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
+			protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.interact.handle.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
 				org.lgna.croquet.views.PushButton b = itemSelectedState.createPushButton();
 				b.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.BOTTOM );
 				b.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.CENTER );

@@ -220,18 +220,18 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	//		}
 	//	}
 
-	protected abstract SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState();
+	protected abstract SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState();
 
 	@Override
 	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-		SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
+		SingleSelectListState<org.alice.interact.handle.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
 		if( handleStyleListSelectionState != null ) {
-			org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
+			org.alice.interact.handle.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
 			InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
 			if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
 				PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
 				if( !selectedState.canUseIteractionGroup( pickHint ) ) {
-					for( org.alice.stageide.sceneeditor.HandleStyle handleStyle : handleStyleListSelectionState )
+					for( org.alice.interact.handle.HandleStyle handleStyle : handleStyleListSelectionState )
 					{
 						InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
 						if( interactionState.canUseIteractionGroup( pickHint ) )
@@ -245,7 +245,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	public void setInteractionState( org.alice.stageide.sceneeditor.HandleStyle handleStyle ) {
+	public void setInteractionState( org.alice.interact.handle.HandleStyle handleStyle ) {
 		if( this.currentInteractionState != null ) {
 			this.currentInteractionState.enabledManipulators( false );
 		}
@@ -451,7 +451,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	private int cameraIndex = 0;
 
-	protected final java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	protected final java.util.Map<org.alice.interact.handle.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final java.util.Map<CameraView, CameraPair> cameraMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 }

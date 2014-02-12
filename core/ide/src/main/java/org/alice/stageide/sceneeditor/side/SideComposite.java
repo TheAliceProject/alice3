@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.sceneeditor.side;
 
-import org.alice.stageide.sceneeditor.HandleStyle;
+import org.alice.interact.handle.HandleStyle;
 
 /**
  * @author Dennis Cosgrove

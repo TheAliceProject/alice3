@@ -123,7 +123,7 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
 		//todo
 		return null;
 	}

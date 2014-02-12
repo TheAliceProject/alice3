@@ -71,6 +71,7 @@ import org.alice.interact.condition.SelectedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
@@ -98,7 +99,6 @@ import org.alice.interact.manipulator.ResizeDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
-import org.alice.stageide.sceneeditor.HandleStyle;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -151,10 +151,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			{
 				InteractionGroup selectionOnly = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, selectObject, org.alice.interact.PickHint.PickType.MOVEABLE );
 
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.TRANSLATION, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.RESIZE, selectionOnly );
 
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
@@ -562,10 +562,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				InteractionGroup translationInteraction = new InteractionGroup( HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
 				InteractionGroup resizeInteraction = new InteractionGroup( HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE );
 
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, defaultInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, rotationInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.TRANSLATION, translationInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.RESIZE, resizeInteraction );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, defaultInteraction );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, rotationInteraction );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.TRANSLATION, translationInteraction );
+				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.RESIZE, resizeInteraction );
 				//			this.interactionSelectionState.addItem(defaultInteraction);
 				//			this.interactionSelectionState.addItem(rotationInteraction);
 				//			this.interactionSelectionState.addItem(translationInteraction);
@@ -587,7 +587,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
 		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
 	}
 
@@ -595,8 +595,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		return this.dropTargetManipulator.getTargetTransformation();
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.HandleStyle> e ) {
+	private final org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.interact.handle.HandleStyle> e ) {
 			setInteractionState( e.getNextValue() );
 		}
 	};
