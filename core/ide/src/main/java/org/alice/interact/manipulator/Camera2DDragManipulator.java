@@ -47,7 +47,7 @@ import java.awt.Color;
 import org.alice.interact.InputState;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.ImageBasedManipulationHandle2D;
+import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInRadians;

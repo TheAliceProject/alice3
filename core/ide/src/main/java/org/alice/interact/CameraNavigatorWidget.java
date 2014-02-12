@@ -49,15 +49,15 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
-import org.alice.interact.handle.ManipulationHandle2DCameraZoom;
-import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
-import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
-import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
 import org.alice.interact.manipulator.Camera2DDragDriveManipulator;
 import org.alice.interact.manipulator.Camera2DDragStrafeManipulator;
 import org.alice.interact.manipulator.Camera2DDragUpDownRotateManipulator;
 import org.alice.interact.manipulator.OrthographicCameraDragStrafeManipulator;
 import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraDriver;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraStrafe;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraTurnUpDown;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraZoom;
 
 /**
  * @author David Culyba

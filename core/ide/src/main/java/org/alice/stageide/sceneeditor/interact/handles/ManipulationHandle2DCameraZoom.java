@@ -40,27 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.handle;
 
-import org.alice.interact.MovementDirection;
+package org.alice.stageide.sceneeditor.interact.handles;
+
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D.ImageState;
 
-/**
- * @author David Culyba
- */
-public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHandle2D {
-
+public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
 	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-		Inactive( "images/slide.png" ),
-		Highlighted( "images/slideHighlight.png" ),
-		Down( "images/slideDown.png" ),
-		DownLeft( "images/slideDownLeft.png" ),
-		DownRight( "images/slideDownRight.png" ),
-		Up( "images/slideUp.png" ),
-		UpLeft( "images/slideUpLeft.png" ),
-		UpRight( "images/slideUpRight.png" ),
-		Left( "images/slideLeft.png" ),
-		Right( "images/slideRight.png" );
+		Inactive( "images/zoom.png" ),
+		Highlighted( "images/zoomHighlight.png" ),
+		ZoomingIn( "images/zoomIn.png" ),
+		ZoomingOut( "images/zoomOut.png" );
 
 		private ControlState( String resourceString ) {
 			javax.swing.Icon icon;
@@ -80,45 +71,16 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 		private final javax.swing.Icon icon;
 	}
 
-	private MovementDirection handleUp = MovementDirection.UP;
-	private MovementDirection handleDown = MovementDirection.DOWN;
-	private MovementDirection handleRight = MovementDirection.RIGHT;
-	private MovementDirection handleLeft = MovementDirection.LEFT;
-
-	private boolean movingLeft = false;
-	private boolean movingRight = false;
-	private boolean movingUp = false;
-	private boolean movingDown = false;
-
-	public ManipulationHandle2DCameraStrafe() {
-		super( "images/slideMask.png" );
-	}
-
-	public void remapDirections( MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right ) {
-		this.handleUp = up;
-		this.handleDown = down;
-		this.handleLeft = left;
-		this.handleRight = right;
+	public ManipulationHandle2DCameraZoom() {
+		super( "images/zoomMask.png" );
 	}
 
 	@Override
 	protected ImageState getStateForManipulationStatus() {
-		if( this.movingDown && !this.movingLeft && !this.movingRight ) {
-			return ControlState.Down;
-		} else if( this.movingDown && this.movingLeft ) {
-			return ControlState.DownLeft;
-		} else if( this.movingDown && this.movingRight ) {
-			return ControlState.DownRight;
-		} else if( this.movingUp && !this.movingLeft && !this.movingRight ) {
-			return ControlState.Up;
-		} else if( this.movingUp && this.movingLeft ) {
-			return ControlState.UpLeft;
-		} else if( this.movingUp && this.movingRight ) {
-			return ControlState.UpRight;
-		} else if( this.movingLeft && !this.movingUp && !this.movingDown ) {
-			return ControlState.Left;
-		} else if( this.movingRight && !this.movingUp && !this.movingDown ) {
-			return ControlState.Right;
+		if( this.zoomingIn ) {
+			return ControlState.ZoomingIn;
+		} else if( this.zoomingOut ) {
+			return ControlState.ZoomingOut;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
 		else if( this.state.isRollover() ) {
@@ -130,14 +92,16 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 
 	@Override
 	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
-		if( event.getMovementDescription().direction == handleUp ) {
-			this.movingUp = isActive;
-		} else if( event.getMovementDescription().direction == handleDown ) {
-			this.movingDown = isActive;
-		} else if( event.getMovementDescription().direction == handleRight ) {
-			this.movingRight = isActive;
-		} else if( event.getMovementDescription().direction == handleLeft ) {
-			this.movingLeft = isActive;
+		switch( event.getMovementDescription().direction ) {
+		case FORWARD:
+			this.zoomingIn = isActive;
+			break;
+		case BACKWARD:
+			this.zoomingOut = isActive;
+			break;
 		}
 	}
+
+	private boolean zoomingIn = false;
+	private boolean zoomingOut = false;
 }

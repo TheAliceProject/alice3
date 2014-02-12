@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.handle;
+package org.alice.stageide.sceneeditor.interact.handles;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.handle.HandleRenderState;
 
 import edu.cmu.cs.dennisc.math.Vector2;
 

@@ -42,7 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.handle.ManipulationHandle2D;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2D;
 
 /**
  * @author David Culyba

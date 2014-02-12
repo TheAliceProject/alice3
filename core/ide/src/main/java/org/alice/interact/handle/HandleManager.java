@@ -47,6 +47,7 @@ import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
+import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;

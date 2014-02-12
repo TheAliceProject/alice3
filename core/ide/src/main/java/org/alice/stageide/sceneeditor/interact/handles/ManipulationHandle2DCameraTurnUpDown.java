@@ -40,9 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.handle;
+package org.alice.stageide.sceneeditor.interact.handles;
 
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D.ImageState;
 
 /**
  * @author David Culyba
