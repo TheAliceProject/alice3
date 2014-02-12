@@ -48,6 +48,7 @@ import java.awt.image.BufferedImage;
 
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
+import org.alice.interact.handle.ManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.Vector2;
 
