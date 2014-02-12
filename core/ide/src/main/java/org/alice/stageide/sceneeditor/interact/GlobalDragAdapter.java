@@ -125,16 +125,6 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		return this.sceneEditor != null;
 	}
 
-	@Override
-	public boolean shouldSnapToGround() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGround();
-	}
-
-	@Override
-	public boolean shouldSnapToGrid() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGrid();
-	}
-
 	private void setUpControls()
 	{
 		if( ENABLE_SELECTION_ONLY_MODE ) {
@@ -609,4 +599,29 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			setInteractionState( e.getNextValue() );
 		}
 	};
+
+	@Override
+	public boolean shouldSnapToRotation() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToRotation();
+	}
+
+	@Override
+	public boolean shouldSnapToGround() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGround();
+	}
+
+	@Override
+	public boolean shouldSnapToGrid() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGrid();
+	}
+
+	@Override
+	public double getGridSpacing() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().getGridSpacing();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().getRotationSnapAngle();
+	}
 }

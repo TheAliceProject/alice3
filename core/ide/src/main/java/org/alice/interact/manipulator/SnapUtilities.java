@@ -48,7 +48,6 @@ import org.alice.interact.SnapLine;
 import org.alice.interact.SnapSphere;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
-import org.alice.stageide.sceneeditor.snap.SnapState;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
@@ -392,7 +391,7 @@ public class SnapUtilities {
 				snapPosition = SnapUtilities.snapObjectToGround( t, currentPosition, referenceFrame );
 			}
 			if( dragAdapter.shouldSnapToGrid() ) {
-				snapPosition = SnapUtilities.snapObjectToGrid( t, snapPosition, SnapState.getInstance().getGridSpacing(), referenceFrame );
+				snapPosition = SnapUtilities.snapObjectToGrid( t, snapPosition, dragAdapter.getGridSpacing(), referenceFrame );
 			}
 			//Visualize any snapping that happened
 			if( camera != null ) {
@@ -502,8 +501,8 @@ public class SnapUtilities {
 		Angle snapAngle = new AngleInRadians( currentAngle );
 		//Try snapping to various snaps
 		if( dragAdapter != null ) {
-			if( SnapState.getInstance().shouldSnapToRotation() ) {
-				snapAngle = snapObjectToAngle( currentAngle, SnapState.getInstance().getRotationSnapAngle() );
+			if( dragAdapter.shouldSnapToRotation() ) {
+				snapAngle = snapObjectToAngle( currentAngle, dragAdapter.getRotationSnapAngle() );
 			}
 		}
 		return snapAngle;
