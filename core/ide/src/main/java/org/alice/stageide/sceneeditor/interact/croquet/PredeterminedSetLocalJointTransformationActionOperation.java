@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.operations;
+package org.alice.stageide.sceneeditor.interact.croquet;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
- * @author Dennis Cosgrove
+ * @author Dave Culyba
  */
-public abstract class AbstractPredeterminedSetLocalTransformationActionOperation extends AbstractSetLocalTransformationActionOperation {
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
+public class PredeterminedSetLocalJointTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
 
-	public AbstractPredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
-		this.prevLT = prevLT;
-		this.nextLT = nextLT;
-	}
+	private final org.lgna.story.resources.JointId jointId;
 
-	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation() {
-		return this.nextLT;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation() {
-		return this.prevLT;
+	public PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "5893d8da-19cc-4eb9-be05-dbd21dab1740" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
+		this.jointId = jointId;
 	}
 
 	@Override
 	protected AbstractTransformable getSGTransformable() {
-		org.lgna.story.implementation.EntityImp entityImp = getEntityImp();
-		return (AbstractTransformable)entityImp.getSgComposite();
+		org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource> jointedModelImp = (org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource>)getEntityImp();
+		return jointedModelImp.getJointImplementation( this.jointId ).getSgComposite();
 	}
 
 }

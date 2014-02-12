@@ -49,7 +49,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.operations.PredeterminedScaleActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedScaleActionOperation;
 
 public class ResizeDragManipulator extends AbstractManipulator {
 	private static final double RESIZE_SCALE = .005;

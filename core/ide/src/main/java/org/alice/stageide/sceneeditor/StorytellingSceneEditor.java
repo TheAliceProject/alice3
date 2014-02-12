@@ -279,7 +279,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private org.alice.stageide.sceneeditor.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
-	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
+	private org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.views.Button expandButton;
 	private org.lgna.croquet.views.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
@@ -740,7 +740,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				setSelectedFieldOnManipulator( this.getSelectedField() );
 			}
 
-			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
+			this.mainCameraNavigatorWidget = new org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
 
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			this.expandButton = ide.getSetToSetupScenePerspectiveOperation().createButton();

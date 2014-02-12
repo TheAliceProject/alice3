@@ -47,8 +47,8 @@ import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
-import org.alice.interact.operations.AbstractPredeterminedSetLocalTransformationActionOperation;
-import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -259,7 +259,7 @@ public abstract class AbstractManipulator {
 					org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( this.getManipulatedTransformable() );
 					org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
 					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
-					undoOperation = new org.alice.interact.operations.PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, getUndoRedoDescription() );
+					undoOperation = new org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, getUndoRedoDescription() );
 				} else {
 					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
 					undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, manipulatedField, originalTransformation, newTransformation, getUndoRedoDescription() );

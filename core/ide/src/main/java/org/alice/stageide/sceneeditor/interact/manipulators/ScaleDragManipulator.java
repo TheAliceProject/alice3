@@ -48,7 +48,7 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.LinearDragManipulator;
-import org.alice.interact.operations.PredeterminedScaleActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedScaleActionOperation;
 
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 

@@ -40,10 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact;
+package org.alice.stageide.sceneeditor.interact;
 
+import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.ModifierMask;
+import org.alice.interact.PickHint;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
@@ -52,12 +56,12 @@ import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.manipulator.Camera2DDragDriveManipulator;
 import org.alice.interact.manipulator.Camera2DDragStrafeManipulator;
 import org.alice.interact.manipulator.Camera2DDragUpDownRotateManipulator;
-import org.alice.interact.manipulator.OrthographicCameraDragStrafeManipulator;
-import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraDriver;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraStrafe;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraTurnUpDown;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraZoom;
+import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragStrafeManipulator;
+import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
 
 /**
  * @author David Culyba

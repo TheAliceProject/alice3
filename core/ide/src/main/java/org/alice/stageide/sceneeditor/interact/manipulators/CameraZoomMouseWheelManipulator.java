@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
@@ -51,7 +51,9 @@ import org.alice.interact.QuaternionAndTranslation;
 import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneActionOperation;
+import org.alice.interact.manipulator.AnimatorDependentManipulator;
+import org.alice.interact.manipulator.CameraManipulator;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

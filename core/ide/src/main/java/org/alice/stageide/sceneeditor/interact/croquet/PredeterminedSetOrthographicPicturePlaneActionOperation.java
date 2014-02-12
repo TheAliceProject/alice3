@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact.operations;
+package org.alice.stageide.sceneeditor.interact.croquet;
 
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;

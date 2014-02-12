@@ -40,26 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.operations;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+package org.alice.stageide.sceneeditor.interact.croquet;
 
 /**
  * @author Dave Culyba
  */
-public class PredeterminedSetLocalJointTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
-
-	private final org.lgna.story.resources.JointId jointId;
-
-	public PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "5893d8da-19cc-4eb9-be05-dbd21dab1740" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
-		this.jointId = jointId;
+public class PredeterminedSetLocalTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
+	public PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
 	}
-
-	@Override
-	protected AbstractTransformable getSGTransformable() {
-		org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource> jointedModelImp = (org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource>)getEntityImp();
-		return jointedModelImp.getJointImplementation( this.jointId ).getSgComposite();
-	}
-
 }
