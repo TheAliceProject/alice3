@@ -71,7 +71,6 @@ import org.alice.interact.condition.SelectedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
@@ -124,6 +123,16 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	@Override
 	public boolean hasSceneEditor() {
 		return this.sceneEditor != null;
+	}
+
+	@Override
+	public boolean shouldSnapToGround() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGround();
+	}
+
+	@Override
+	public boolean shouldSnapToGrid() {
+		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGrid();
 	}
 
 	private void setUpControls()

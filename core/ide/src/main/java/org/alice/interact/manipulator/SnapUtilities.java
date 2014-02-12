@@ -388,10 +388,10 @@ public class SnapUtilities {
 		Point3 snapPosition = new Point3( currentPosition );
 		if( dragAdapter != null ) {
 			//Try snapping to various snaps
-			if( SnapState.getInstance().shouldSnapToGround() ) {
+			if( dragAdapter.shouldSnapToGround() ) {
 				snapPosition = SnapUtilities.snapObjectToGround( t, currentPosition, referenceFrame );
 			}
-			if( SnapState.getInstance().shouldSnapToGrid() ) {
+			if( dragAdapter.shouldSnapToGrid() ) {
 				snapPosition = SnapUtilities.snapObjectToGrid( t, snapPosition, SnapState.getInstance().getGridSpacing(), referenceFrame );
 			}
 			//Visualize any snapping that happened

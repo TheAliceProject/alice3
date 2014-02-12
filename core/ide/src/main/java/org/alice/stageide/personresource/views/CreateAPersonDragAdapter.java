@@ -156,4 +156,13 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		return null;
 	}
 
+	@Override
+	public boolean shouldSnapToGround() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldSnapToGrid() {
+		return false;
+	}
 }

@@ -432,6 +432,10 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		this.currentInputState.setDragAndDropContext( null );
 	}
 
+	public abstract boolean shouldSnapToGround();
+
+	public abstract boolean shouldSnapToGrid();
+
 	private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
 		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera ) {

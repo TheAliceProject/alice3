@@ -127,4 +127,14 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		//todo
 		return null;
 	}
+
+	@Override
+	public boolean shouldSnapToGround() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldSnapToGrid() {
+		return false;
+	}
 }
