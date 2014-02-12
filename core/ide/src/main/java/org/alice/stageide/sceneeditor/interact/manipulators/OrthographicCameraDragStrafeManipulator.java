@@ -48,7 +48,6 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.manipulator.Camera2DDragManipulator;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.Vector2;
