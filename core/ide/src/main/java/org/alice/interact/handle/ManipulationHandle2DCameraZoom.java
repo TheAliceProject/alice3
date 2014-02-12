@@ -45,7 +45,7 @@ package org.alice.interact.handle;
 
 import org.alice.interact.event.ManipulationEvent;
 
-public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D {
+public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
 	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
 		Inactive( "images/zoom.png" ),
 		Highlighted( "images/zoomHighlight.png" ),
@@ -70,7 +70,7 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 		private final javax.swing.Icon icon;
 	}
 
-	public ManipulationHandle2CameraZoom() {
+	public ManipulationHandle2DCameraZoom() {
 		super( "images/zoomMask.png" );
 	}
 

@@ -49,7 +49,7 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
-import org.alice.interact.handle.ManipulationHandle2CameraZoom;
+import org.alice.interact.handle.ManipulationHandle2DCameraZoom;
 import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
 import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
 import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
@@ -167,7 +167,7 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 
 		//ORTHOGRAPHIC ZOOM
 		//Create the new handle
-		this.orthographicCameraControlZoom = new ManipulationHandle2CameraZoom();
+		this.orthographicCameraControlZoom = new ManipulationHandle2DCameraZoom();
 		//Create the manipulator
 		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator( this.orthographicCameraControlZoom );
 		//Set the desired view so the manipulator knows which camera to control 
@@ -252,5 +252,5 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 	private ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
 	private ManipulationHandle2DCameraStrafe cameraControlStrafe;
 	private ManipulationHandle2DCameraStrafe orthographicCameraControlStrafe;
-	private ManipulationHandle2CameraZoom orthographicCameraControlZoom;
+	private ManipulationHandle2DCameraZoom orthographicCameraControlZoom;
 }
