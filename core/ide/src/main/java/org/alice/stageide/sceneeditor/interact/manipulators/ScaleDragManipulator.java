@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.interact.manipulator.LinearDragManipulator;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;

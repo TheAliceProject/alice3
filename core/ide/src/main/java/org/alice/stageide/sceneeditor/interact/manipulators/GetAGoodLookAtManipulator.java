@@ -41,11 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;

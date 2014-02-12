@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Point;
 
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
 public class ResizeDragManipulator extends AbstractManipulator {

@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -49,6 +49,8 @@ import java.awt.Point;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
+import org.alice.interact.manipulator.TargetManipulator;
 import org.lgna.croquet.views.DragComponent;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
