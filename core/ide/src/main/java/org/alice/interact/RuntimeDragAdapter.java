@@ -56,6 +56,8 @@ import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author David Culyba
  */
@@ -151,5 +153,9 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	@Override
 	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
 		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
+	}
+
+	@Override
+	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 }

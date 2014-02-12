@@ -93,6 +93,8 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.GetAGoodLookAtManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.OmniDirectionalBoundingBoxManipulator;
@@ -623,5 +625,37 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	@Override
 	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
 		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().getRotationSnapAngle();
+	}
+
+	@Override
+	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgManipulatedTransformable = manipulator.getManipulatedTransformable();
+		if( sgManipulatedTransformable != null ) {
+			AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
+
+			if( newTransformation.equals( originalTransformation ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the transformation." );
+			}
+			if( originalTransformation == null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Ending manipulation where the original transformaion is null." );
+			}
+
+			org.lgna.story.SThing aliceThing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgManipulatedTransformable );
+			if( aliceThing != null ) {
+				AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
+				if( aliceThing instanceof org.lgna.story.SJoint ) {
+					org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( sgManipulatedTransformable );
+					org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
+					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
+					undoOperation = new org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
+				} else {
+					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+					undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
+				}
+				undoOperation.fire();
+			} else {
+				//note: currently this condition can occur for manipulations of the scene editor's orthographic camera views
+			}
+		}
 	}
 }

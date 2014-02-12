@@ -58,6 +58,7 @@ import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -179,5 +180,9 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 	@Override
 	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
 		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
+	}
+
+	@Override
+	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 }

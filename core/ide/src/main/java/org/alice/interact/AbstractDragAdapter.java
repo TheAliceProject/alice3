@@ -58,6 +58,7 @@ import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -441,6 +442,8 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	public abstract double getGridSpacing();
 
 	public abstract edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle();
+
+	public abstract void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation );
 
 	private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
 		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
