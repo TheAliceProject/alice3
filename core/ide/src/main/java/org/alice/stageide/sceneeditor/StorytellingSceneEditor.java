@@ -277,7 +277,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private org.alice.stageide.sceneeditor.GlobalDragAdapter globalDragAdapter;
+	private org.alice.stageide.sceneeditor.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.views.Button expandButton;
@@ -731,7 +731,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
-			this.globalDragAdapter = new org.alice.stageide.sceneeditor.GlobalDragAdapter( this );
+			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener( this );
 			this.globalDragAdapter.setAnimator( animator );

@@ -40,7 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.operations;
+package org.alice.stageide.sceneeditor.interact.croquet;
+
+import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
 
 /**
  * @author dculyba

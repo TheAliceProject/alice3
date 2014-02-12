@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.interact;
 
 import java.awt.event.KeyEvent;
 
@@ -98,6 +98,7 @@ import org.alice.interact.manipulator.ResizeDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.stageide.sceneeditor.HandleStyle;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
