@@ -71,7 +71,8 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		this.imageMask = image;
 
 		this.setStateBasedOnManipulationStatus();
-		Dimension size = new Dimension( this.getIcon().getIconWidth(), this.getIcon().getIconHeight() );
+		javax.swing.Icon icon = this.getIcon();
+		Dimension size = new Dimension( icon.getIconWidth(), icon.getIconHeight() );
 		this.getAwtComponent().setSize( size );
 		this.getAwtComponent().setMinimumSize( size );
 		this.getAwtComponent().setPreferredSize( size );
@@ -85,15 +86,6 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 			}
 		}
 		return null;
-	}
-
-	public boolean contains( int x, int y ) {
-		Color color = this.getColor( x, y );
-		if( color != null ) {
-			return color.getAlpha() != 0;
-		} else {
-			return getAwtComponent().contains( x, y );
-		}
 	}
 
 	@Override
