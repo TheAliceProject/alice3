@@ -50,8 +50,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
-
 /**
  * @author David Culyba
  */
@@ -72,7 +70,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 
 		this.setStateBasedOnManipulationStatus();
 		javax.swing.Icon icon = this.getIcon();
-		Dimension size = new Dimension( icon.getIconWidth(), icon.getIconHeight() );
+		Dimension size = edu.cmu.cs.dennisc.javax.swing.IconUtilities.newDimension( icon );
 		this.getAwtComponent().setSize( size );
 		this.getAwtComponent().setMinimumSize( size );
 		this.getAwtComponent().setPreferredSize( size );
@@ -86,16 +84,6 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public Vector2 getCenter() {
-		Dimension ourSize = new Dimension();
-		if( this.currentState != null ) {
-			ourSize.width = this.currentState.getIcon().getIconWidth();
-			ourSize.height = this.currentState.getIcon().getIconHeight();
-		}
-		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
 	}
 
 	@Override
