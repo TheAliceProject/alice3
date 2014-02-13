@@ -69,11 +69,12 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		this.imageMask = image;
 
 		this.setStateBasedOnManipulationStatus();
-		javax.swing.Icon icon = this.getIcon();
+		javax.swing.JLabel label = this.getAwtComponent();
+		javax.swing.Icon icon = label.getIcon();
 		Dimension size = edu.cmu.cs.dennisc.javax.swing.IconUtilities.newDimension( icon );
-		this.getAwtComponent().setSize( size );
-		this.getAwtComponent().setMinimumSize( size );
-		this.getAwtComponent().setPreferredSize( size );
+		label.setSize( size );
+		label.setMinimumSize( size );
+		label.setPreferredSize( size );
 	}
 
 	public Color getColor( int x, int y ) {
