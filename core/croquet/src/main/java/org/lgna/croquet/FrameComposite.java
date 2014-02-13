@@ -131,7 +131,7 @@ public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> ext
 			//pass
 		} else {
 			this.ownerFrameView = new org.lgna.croquet.views.Frame();
-			this.ownerFrameView.getContentPane().addCenterComponent( this.getView() );
+			this.ownerFrameView.getContentPane().addCenterComponent( this.getRootComponent() );
 			this.updateWindowSize( this.ownerFrameView );
 			this.ownerFrameView.addWindowListener( this.windowListener );
 		}

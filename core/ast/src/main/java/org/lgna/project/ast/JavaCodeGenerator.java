@@ -212,23 +212,25 @@ package org.lgna.project.ast;
 		codeStringBuilder.append( o );
 	}
 
-	/* package-private */String getText() {
+	/* package-private */String getText( boolean areImportsDesired ) {
 		StringBuilder rvStringBuilder = new StringBuilder();
-		for( JavaType typeToImport : this.typesToImport ) {
-			JavaPackage pack = typeToImport.getPackage();
-			if( "java.lang".contentEquals( pack.getName() ) ) {
-				//pass
-			} else {
-				rvStringBuilder.append( "import " );
-				rvStringBuilder.append( typeToImport.getPackage().getName() );
-				rvStringBuilder.append( '.' );
-				JavaType enclosingType = typeToImport.getEnclosingType();
-				if( enclosingType != null ) {
-					rvStringBuilder.append( enclosingType.getName() );
+		if( areImportsDesired ) {
+			for( JavaType typeToImport : this.typesToImport ) {
+				JavaPackage pack = typeToImport.getPackage();
+				if( "java.lang".contentEquals( pack.getName() ) ) {
+					//pass
+				} else {
+					rvStringBuilder.append( "import " );
+					rvStringBuilder.append( typeToImport.getPackage().getName() );
 					rvStringBuilder.append( '.' );
+					JavaType enclosingType = typeToImport.getEnclosingType();
+					if( enclosingType != null ) {
+						rvStringBuilder.append( enclosingType.getName() );
+						rvStringBuilder.append( '.' );
+					}
+					rvStringBuilder.append( typeToImport.getName() );
+					rvStringBuilder.append( ';' );
 				}
-				rvStringBuilder.append( typeToImport.getName() );
-				rvStringBuilder.append( ';' );
 			}
 		}
 		rvStringBuilder.append( this.codeStringBuilder );

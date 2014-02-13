@@ -117,12 +117,12 @@ public class UserMethod extends AbstractUserMethod {
 	public String generateHeaderJavaCode( boolean isLambdaSupported ) {
 		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
 		generator.appendMethodHeader( this );
-		return generator.getText();
+		return generator.getText( false );
 	}
 
 	public String generateJavaCode( boolean isLambdaSupported ) {
 		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
 		this.appendJava( generator );
-		return generator.getText();
+		return generator.getText( false );
 	}
 }

@@ -170,6 +170,6 @@ public final class UserField extends AbstractField implements UserMember {
 	public String generateJavaCode( boolean isLambdaSupported ) {
 		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
 		this.appendJava( generator );
-		return generator.getText();
+		return generator.getText( false );
 	}
 }
