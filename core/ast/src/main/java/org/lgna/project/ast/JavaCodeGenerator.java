@@ -66,9 +66,6 @@ package org.lgna.project.ast;
 
 	/* package-private */void appendChar( char c ) {
 		this.codeStringBuilder.append( c );
-		//		if( ( c == '{' ) || ( c == '}' ) || ( c == ';' ) ) {
-		//			this.codeStringBuilder.append( '\n' );
-		//		}
 	}
 
 	/* package-private */void appendInt( int n ) {
@@ -107,9 +104,6 @@ package org.lgna.project.ast;
 	}
 
 	/* package-private */void appendString( String s ) {
-		//s = s.replaceAll( "\\{", "\\{\n" );
-		//s = s.replaceAll( "\\}", "\\}\n" );
-		//s = s.replaceAll( ";", ";\n" );
 		this.codeStringBuilder.append( s );
 	}
 
@@ -212,10 +206,6 @@ package org.lgna.project.ast;
 		this.appendChar( ';' );
 	}
 
-	/* package-private */void appendNewline() {
-		this.appendChar( '\n' );
-	}
-
 	@Deprecated
 	/* package-private */void todo( Object o ) {
 		codeStringBuilder.append( "todo_" );
@@ -239,7 +229,6 @@ package org.lgna.project.ast;
 				}
 				rvStringBuilder.append( typeToImport.getName() );
 				rvStringBuilder.append( ';' );
-				rvStringBuilder.append( '\n' );
 			}
 		}
 		rvStringBuilder.append( this.codeStringBuilder );

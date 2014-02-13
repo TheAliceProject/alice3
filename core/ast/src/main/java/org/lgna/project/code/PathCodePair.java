@@ -40,39 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.codeconvert;
+package org.lgna.project.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeConverter {
+public final class PathCodePair {
 	public static class Builder {
-		public Builder isLambdaSupported( boolean isLambdaSupported ) {
-			this.isLambdaSupported = isLambdaSupported;
+		public Builder path( String path ) {
+			this.path = path;
 			return this;
 		}
 
-		public CodeConverter build() {
-			return new CodeConverter( this.isLambdaSupported );
+		public Builder code( String code ) {
+			this.code = code;
+			return this;
 		}
 
-		private boolean isLambdaSupported;
-	}
-
-	private CodeConverter( boolean isLambdaSupported ) {
-		this.isLambdaSupported = isLambdaSupported;
-	}
-
-	public Iterable<PathCodePair> convert( org.lgna.project.Project project ) {
-		java.util.List<PathCodePair> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.Set<org.lgna.project.ast.NamedUserType> set = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : set ) {
-			String path = type.getName() + ".java";
-			String code = type.generateJavaCode( this.isLambdaSupported );
-			rv.add( new PathCodePair.Builder().path( path ).code( code ).build() );
+		public PathCodePair build() {
+			assert this.path != null : this;
+			assert this.code != null : this;
+			return new PathCodePair( this.path, this.code );
 		}
-		return rv;
+
+		private String path;
+		private String code;
 	}
 
-	private final boolean isLambdaSupported;
+	private PathCodePair( String path, String code ) {
+		this.path = path;
+		this.code = code;
+	}
+
+	public String getPath() {
+		return this.path;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	private final String path;
+	private final String code;
 }

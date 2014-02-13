@@ -1,7 +1,7 @@
 package test;
 
-import org.lgna.project.codeconvert.CodeConverter;
-import org.lgna.project.codeconvert.PathCodePair;
+import org.lgna.project.code.CodeConverter;
+import org.lgna.project.code.PathCodePair;
 
 public class TestCodeConverter {
 	public static void main( String[] args ) throws Exception {
@@ -11,6 +11,7 @@ public class TestCodeConverter {
 		for( PathCodePair pathCodePair : pathCodePairs ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( pathCodePair.getPath() );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( pathCodePair.getCode() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( org.lgna.project.code.CodeFormatter.format( pathCodePair.getCode() ) );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		}
 	}
