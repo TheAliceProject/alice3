@@ -80,7 +80,8 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 
 	@Override
 	public void handlePreActivation() {
-		org.alice.ide.MetaDeclarationFauxState.getInstance().addAndInvokeValueListener( declarationListener );
+		org.alice.ide.MetaDeclarationFauxState.getInstance().addAndInvokeValueListener( this.declarationListener );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 		this.htmlView.addKeyListener( this.keyListener );
 		if( IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED ) {
 			this.htmlView.addMouseWheelListener( this.mouseWheelListener );
@@ -95,7 +96,8 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 			this.htmlView.removeMouseWheelListener( this.mouseWheelListener );
 		}
 		this.htmlView.removeKeyListener( this.keyListener );
-		org.alice.ide.MetaDeclarationFauxState.getInstance().removeValueListener( declarationListener );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		org.alice.ide.MetaDeclarationFauxState.getInstance().removeValueListener( this.declarationListener );
 	}
 
 	private void updateHtml() {
@@ -139,6 +141,12 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 		//			}
 		//		} );
 	}
+
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		public void projectChanged() {
+			updateHtml();
+		}
+	};
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
