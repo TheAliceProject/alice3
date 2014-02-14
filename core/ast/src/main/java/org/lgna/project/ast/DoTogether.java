@@ -68,9 +68,9 @@ public final class DoTogether extends AbstractStatementWithBody {
 		for( Statement statement : this.body.getValue().statements ) {
 			generator.appendString( prefix );
 			if( generator.isLambdaSupported() ) {
-				generator.appendString( "()-> {" );
+				generator.appendString( "()->{" );
 			} else {
-				generator.appendString( "new Runnable() { public void run() {" );
+				generator.appendString( "new Runnable(){public void run(){" );
 			}
 			if( statement instanceof DoInOrder ) {
 				DoInOrder doInOrder = (DoInOrder)statement;

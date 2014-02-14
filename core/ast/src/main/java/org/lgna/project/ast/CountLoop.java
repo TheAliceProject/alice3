@@ -124,7 +124,7 @@ public class CountLoop extends AbstractLoop {
 			generator.appendSemicolon();
 			isInline = false;
 		}
-		generator.appendString( "for( int " );
+		generator.appendString( "for(int " );
 		generator.appendString( variableName );
 		generator.appendString( "=0;" );
 		generator.appendString( variableName );
@@ -136,6 +136,6 @@ public class CountLoop extends AbstractLoop {
 		}
 		generator.appendString( ";" );
 		generator.appendString( variableName );
-		generator.appendString( "++ )" );
+		generator.appendString( "++)" );
 	}
 }

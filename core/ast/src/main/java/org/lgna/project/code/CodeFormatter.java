@@ -46,31 +46,70 @@ package org.lgna.project.code;
  * @author Dennis Cosgrove
  */
 public class CodeFormatter {
-	public static String format( String src, int indent ) {
-		String rv = src;
-		rv = rv.replace( ";", ";\n" );
-		rv = rv.replace( "{", "{\n" );
-		rv = rv.replace( "}", "\n}\n" );
+	private static String[] splitIntoLines( String src ) {
+		src = src.replace( ";", ";\n" );
+		src = src.replace( "{", "{\n" );
+		src = src.replace( "}", "\n}\n" );
+		return src.split( "\n" );
+	}
 
+	public static String format( String src, int indent ) {
 		StringBuilder sb = new StringBuilder();
-		String[] lines = rv.split( "\n" );
+		int tabSkipCount = 0;
+		int newLineSkipCount = 0;
+		String[] lines = splitIntoLines( src );
 		for( String line : lines ) {
 			line = line.trim();
 			if( line.length() > 0 ) {
 				if( line.startsWith( "}" ) ) {
 					indent--;
 				}
-				for( int i = 0; i < indent; i++ ) {
-					sb.append( '\t' );
+				if( tabSkipCount == 0 ) {
+					for( int i = 0; i < indent; i++ ) {
+						sb.append( '\t' );
+					}
+				} else {
+					tabSkipCount--;
+				}
+				if( line.startsWith( "for(" ) ) {
+					tabSkipCount = 2;
+					newLineSkipCount = 2;
 				}
 				if( line.endsWith( "{" ) ) {
 					indent++;
 				}
 				sb.append( line );
-				sb.append( '\n' );
+				if( newLineSkipCount == 0 ) {
+					sb.append( '\n' );
+				} else {
+					newLineSkipCount--;
+				}
 			}
 		}
-		return sb.toString();
+		String s = sb.toString();
+		s = s.replaceAll( "\\}\\s*,\\(", "},(" );
+		s = s.replaceAll( "\\}\\s*\\)", "})" );
+
+		// remove whitespace before else
+		s = s.replaceAll( "\\}\\s*else\\{", "}else{" );
+
+		s = s.replaceAll( "=", " = " );
+		s = s.replaceAll( ":", " : " );
+		s = s.replaceAll( ";", "; " );
+		s = s.replaceAll( ",", ", " );
+		s = s.replaceAll( "\\{", " { " );
+		s = s.replaceAll( "\\}", " } " );
+		s = s.replaceAll( "\\(", "( " );
+		s = s.replaceAll( "\\)", " )" );
+		s = s.replaceAll( "\\} ,", "}," );
+		// remove extra spaces
+		s = s.replaceAll( "  +", " " );
+		s = s.replaceAll( "\t +", "\t" );
+		// remove space from empty parens
+		s = s.replaceAll( "\\( \\)", "()" );
+		// remove whitespace from end of lines
+		s = s.replaceAll( "\\s*\n+", "\n" );
+		return s;
 	}
 
 	public static String format( String src ) {
