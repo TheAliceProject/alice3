@@ -123,14 +123,35 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		generator.appendTypeName( this.superType.getValue() );
 		generator.appendString( "{" );
 
-		for( UserField field : this.fields ) {
-			field.appendJava( generator );
-		}
 		for( NamedUserConstructor constructor : this.constructors ) {
 			constructor.appendJava( generator );
 		}
+
 		for( UserMethod method : this.methods ) {
-			method.appendJava( generator );
+			if( method.isStatic() ) {
+				//pass
+			} else {
+				method.appendJava( generator );
+			}
+		}
+
+		for( UserField field : this.fields ) {
+			field.getGetter().appendJava( generator );
+			if( field.isFinal() ) {
+				//pass
+			} else {
+				field.getSetter().appendJava( generator );
+			}
+		}
+
+		for( UserField field : this.fields ) {
+			field.appendJava( generator );
+		}
+
+		for( UserMethod method : this.methods ) {
+			if( method.isStatic() ) {
+				method.appendJava( generator );
+			}
 		}
 
 		generator.appendString( "}" );

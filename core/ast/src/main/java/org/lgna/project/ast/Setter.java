@@ -60,6 +60,13 @@ public class Setter extends AbstractMethodContainedByUserField {
 		return this.requiredParameters;
 	}
 
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendMethodHeader( this );
+		generator.appendChar( '{' );
+		generator.appendString( "\n//todo: generate setter\n" );
+		generator.appendChar( '}' );
+	}
+
 	@Override
 	public String getName() {
 		//todo: handle boolean and is

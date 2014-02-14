@@ -61,6 +61,15 @@ public class Getter extends AbstractMethodContainedByUserField {
 		return java.util.Collections.emptyList();
 	}
 
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendMethodHeader( this );
+		generator.appendChar( '{' );
+		generator.appendString( "return this." );
+		generator.appendString( field.name.getValue() );
+		generator.appendSemicolon();
+		generator.appendChar( '}' );
+	}
+
 	@Override
 	public String getName() {
 		//todo: handle boolean and is
