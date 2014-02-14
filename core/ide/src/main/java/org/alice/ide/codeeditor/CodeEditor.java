@@ -55,6 +55,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 
+	private final org.alice.ide.common.BodyPane bodyPane;
+
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode : this.code;
@@ -82,12 +84,11 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			statementListComponent = this.rootStatementListPropertyPane;
 		}
 
-		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
+		this.bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
 
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane() );
-
-		org.lgna.croquet.views.ScrollPane scrollPane = this.getScrollPane();
-		scrollPane.setViewportView( bodyPane );
+		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
+		this.addCenterComponent( scrollPane );
+		scrollPane.setViewportView( this.bodyPane );
 		//scrollPane.setBackgroundColor( null );
 		scrollPane.getAwtComponent().getViewport().setOpaque( false );
 		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
@@ -149,10 +150,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		this.setBackgroundColor( color );
 
 		this.handleAstChangeThatCouldBeOfInterest();
-	}
-
-	public org.lgna.croquet.views.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.views.ScrollPane)this.getCenterComponent();
 	}
 
 	public void handleAstChangeThatCouldBeOfInterest() {
@@ -437,13 +434,13 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 	@Override
 	protected org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy() {
-		return this.getScrollPane().getViewportView();
+		return this.bodyPane;
 	}
 
 	@Override
 	public java.awt.print.Printable getPrintable() {
 		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
-				.center( this.getScrollPane().getAwtComponent() )
+				.center( this.getCenterComponent().getAwtComponent() )
 				.pageStart( this.getPageStartComponent().getAwtComponent() )
 				.build();
 	}
