@@ -66,9 +66,6 @@ package org.lgna.project.ast;
 
 	/* package-private */void appendChar( char c ) {
 		this.codeStringBuilder.append( c );
-		//		if( ( c == '{' ) || ( c == '}' ) || ( c == ';' ) ) {
-		//			this.codeStringBuilder.append( '\n' );
-		//		}
 	}
 
 	/* package-private */void appendInt( int n ) {
@@ -107,9 +104,6 @@ package org.lgna.project.ast;
 	}
 
 	/* package-private */void appendString( String s ) {
-		//s = s.replaceAll( "\\{", "\\{\n" );
-		//s = s.replaceAll( "\\}", "\\}\n" );
-		//s = s.replaceAll( ";", ";\n" );
 		this.codeStringBuilder.append( s );
 	}
 
@@ -212,34 +206,31 @@ package org.lgna.project.ast;
 		this.appendChar( ';' );
 	}
 
-	/* package-private */void appendNewline() {
-		this.appendChar( '\n' );
-	}
-
 	@Deprecated
 	/* package-private */void todo( Object o ) {
 		codeStringBuilder.append( "todo_" );
 		codeStringBuilder.append( o );
 	}
 
-	/* package-private */String getText() {
+	/* package-private */String getText( boolean areImportsDesired ) {
 		StringBuilder rvStringBuilder = new StringBuilder();
-		for( JavaType typeToImport : this.typesToImport ) {
-			JavaPackage pack = typeToImport.getPackage();
-			if( "java.lang".contentEquals( pack.getName() ) ) {
-				//pass
-			} else {
-				rvStringBuilder.append( "import " );
-				rvStringBuilder.append( typeToImport.getPackage().getName() );
-				rvStringBuilder.append( '.' );
-				JavaType enclosingType = typeToImport.getEnclosingType();
-				if( enclosingType != null ) {
-					rvStringBuilder.append( enclosingType.getName() );
+		if( areImportsDesired ) {
+			for( JavaType typeToImport : this.typesToImport ) {
+				JavaPackage pack = typeToImport.getPackage();
+				if( "java.lang".contentEquals( pack.getName() ) ) {
+					//pass
+				} else {
+					rvStringBuilder.append( "import " );
+					rvStringBuilder.append( typeToImport.getPackage().getName() );
 					rvStringBuilder.append( '.' );
+					JavaType enclosingType = typeToImport.getEnclosingType();
+					if( enclosingType != null ) {
+						rvStringBuilder.append( enclosingType.getName() );
+						rvStringBuilder.append( '.' );
+					}
+					rvStringBuilder.append( typeToImport.getName() );
+					rvStringBuilder.append( ';' );
 				}
-				rvStringBuilder.append( typeToImport.getName() );
-				rvStringBuilder.append( ';' );
-				rvStringBuilder.append( '\n' );
 			}
 		}
 		rvStringBuilder.append( this.codeStringBuilder );

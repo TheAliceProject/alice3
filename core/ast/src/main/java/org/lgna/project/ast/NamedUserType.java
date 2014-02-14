@@ -156,6 +156,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 
 		generator.appendString( "}" );
 
-		return generator.getText();
+		return generator.getText( true );
 	}
 }

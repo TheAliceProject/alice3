@@ -50,8 +50,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
-
 /**
  * @author David Culyba
  */
@@ -71,10 +69,12 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 		this.imageMask = image;
 
 		this.setStateBasedOnManipulationStatus();
-		Dimension size = new Dimension( this.getIcon().getIconWidth(), this.getIcon().getIconHeight() );
-		this.getAwtComponent().setSize( size );
-		this.getAwtComponent().setMinimumSize( size );
-		this.getAwtComponent().setPreferredSize( size );
+		javax.swing.JLabel label = this.getAwtComponent();
+		javax.swing.Icon icon = label.getIcon();
+		Dimension size = edu.cmu.cs.dennisc.javax.swing.IconUtilities.newDimension( icon );
+		label.setSize( size );
+		label.setMinimumSize( size );
+		label.setPreferredSize( size );
 	}
 
 	public Color getColor( int x, int y ) {
@@ -85,25 +85,6 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 			}
 		}
 		return null;
-	}
-
-	public boolean contains( int x, int y ) {
-		Color color = this.getColor( x, y );
-		if( color != null ) {
-			return color.getAlpha() != 0;
-		} else {
-			return getAwtComponent().contains( x, y );
-		}
-	}
-
-	@Override
-	public Vector2 getCenter() {
-		Dimension ourSize = new Dimension();
-		if( this.currentState != null ) {
-			ourSize.width = this.currentState.getIcon().getIconWidth();
-			ourSize.height = this.currentState.getIcon().getIconHeight();
-		}
-		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
 	}
 
 	@Override

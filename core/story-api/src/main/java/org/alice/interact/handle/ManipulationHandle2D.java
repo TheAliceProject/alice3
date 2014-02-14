@@ -53,7 +53,6 @@ import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 //import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -64,11 +63,6 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label implements ManipulationHandle, ManipulationListener {
 	public ManipulationHandle2D() {
 		super();
-	}
-
-	public Vector2 getCenter() {
-		java.awt.Rectangle ourSize = this.getBounds();
-		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
 	}
 
 	@Override
@@ -223,18 +217,16 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	}
 
 	public void setAnimator( Animator animator ) {
-		this.animator = animator;
 	}
 
 	public void setCameraPosition( Point3 cameraPosition ) {
 		//Do Nothing
 	}
 
-	private Animator animator;
-	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
-	protected HandleState state = new HandleState();
+	private final EventCriteriaManager criteriaManager = new EventCriteriaManager();
+	protected final HandleState state = new HandleState();
 	private HandleManager handleManager = null;
-	private HandleSet handleSet = new HandleSet();
+	private final HandleSet handleSet = new HandleSet();
 	private AbstractManipulator manipulation = null;
 	private AbstractDragAdapter dragAdapter = null;
 }

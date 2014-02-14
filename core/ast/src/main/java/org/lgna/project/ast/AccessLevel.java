@@ -49,7 +49,7 @@ package org.lgna.project.ast;
 public enum AccessLevel {
 	PUBLIC( javax.lang.model.element.Modifier.PUBLIC, "public " ),
 	PROTECTED( javax.lang.model.element.Modifier.PROTECTED, "protected " ),
-	PRIVATE( javax.lang.model.element.Modifier.PRIVATE, "private  " ),
+	PRIVATE( javax.lang.model.element.Modifier.PRIVATE, "private " ),
 	PACKAGE( null, "/*package-private*/ " );
 
 	private final javax.lang.model.element.Modifier modifier;

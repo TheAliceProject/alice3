@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.project.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Comment extends Statement {
-	public edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-
-	public Comment() {
-	}
-
-	public Comment( String text ) {
-		this.text.setValue( text );
-	}
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
-			Comment other = (Comment)o;
-			return this.text.valueEquals( other.text );
+public class CodeConverter {
+	public static class Builder {
+		public Builder isLambdaSupported( boolean isLambdaSupported ) {
+			this.isLambdaSupported = isLambdaSupported;
+			return this;
 		}
-		return false;
+
+		public CodeConverter build() {
+			return new CodeConverter( this.isLambdaSupported );
+		}
+
+		private boolean isLambdaSupported;
 	}
 
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		String[] lines = this.text.getValue().split( "\n" );
-		for( String line : lines ) {
-			generator.appendString( "//" );
-			generator.appendString( line );
-			generator.appendChar( '\n' );
-		}
+	private CodeConverter( boolean isLambdaSupported ) {
+		this.isLambdaSupported = isLambdaSupported;
 	}
+
+	public Iterable<PathCodePair> convert( org.lgna.project.Project project ) {
+		java.util.List<PathCodePair> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.Set<org.lgna.project.ast.NamedUserType> set = project.getNamedUserTypes();
+		for( org.lgna.project.ast.NamedUserType type : set ) {
+			String path = type.getName() + ".java";
+			String code = type.generateJavaCode( this.isLambdaSupported );
+			rv.add( new PathCodePair.Builder().path( path ).code( code ).build() );
+		}
+		return rv;
+	}
+
+	private final boolean isLambdaSupported;
 }

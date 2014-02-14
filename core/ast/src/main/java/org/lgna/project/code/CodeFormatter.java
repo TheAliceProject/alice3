@@ -40,46 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.codeconvert;
+package org.lgna.project.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class PathCodePair {
-	public static class Builder {
-		public Builder path( String path ) {
-			this.path = path;
-			return this;
+public class CodeFormatter {
+	public static String format( String src, int indent ) {
+		String rv = src;
+		rv = rv.replace( ";", ";\n" );
+		rv = rv.replace( "{", "{\n" );
+		rv = rv.replace( "}", "\n}\n" );
+
+		StringBuilder sb = new StringBuilder();
+		String[] lines = rv.split( "\n" );
+		for( String line : lines ) {
+			line = line.trim();
+			if( line.length() > 0 ) {
+				if( line.startsWith( "}" ) ) {
+					indent--;
+				}
+				for( int i = 0; i < indent; i++ ) {
+					sb.append( '\t' );
+				}
+				if( line.endsWith( "{" ) ) {
+					indent++;
+				}
+				sb.append( line );
+				sb.append( '\n' );
+			}
 		}
-
-		public Builder code( String code ) {
-			this.code = code;
-			return this;
-		}
-
-		public PathCodePair build() {
-			assert this.path != null : this;
-			assert this.code != null : this;
-			return new PathCodePair( this.path, this.code );
-		}
-
-		private String path;
-		private String code;
+		return sb.toString();
 	}
 
-	private PathCodePair( String path, String code ) {
-		this.path = path;
-		this.code = code;
+	public static String format( String src ) {
+		return format( src, 0 );
 	}
-
-	public String getPath() {
-		return this.path;
-	}
-
-	public String getCode() {
-		return this.code;
-	}
-
-	private final String path;
-	private final String code;
 }
