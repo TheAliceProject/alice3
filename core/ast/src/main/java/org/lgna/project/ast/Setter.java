@@ -61,9 +61,14 @@ public class Setter extends AbstractMethodContainedByUserField {
 	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		UserField field = this.getField();
 		generator.appendMethodHeader( this );
 		generator.appendChar( '{' );
-		generator.appendString( "\n//todo: generate setter\n" );
+		generator.appendString( "this." );
+		generator.appendString( field.name.getValue() );
+		generator.appendChar( '=' );
+		generator.appendString( field.name.getValue() );
+		generator.appendSemicolon();
 		generator.appendChar( '}' );
 	}
 
