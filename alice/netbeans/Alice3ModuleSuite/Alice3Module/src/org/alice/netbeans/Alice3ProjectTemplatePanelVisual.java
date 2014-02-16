@@ -5,6 +5,8 @@
  */
 package org.alice.netbeans;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import java.awt.Color;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -29,6 +31,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		// Register listener on the textFields to make the automatic updates
 		projectNameTextField.getDocument().addDocumentListener(this);
 		projectLocationTextField.getDocument().addDocumentListener(this);
+        aliceWorldLocationTextField.getDocument().addDocumentListener(this);
 	}
 
 	public String getProjectName() {
@@ -50,6 +53,11 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
         browseButton = new javax.swing.JButton();
         createdFolderLabel = new javax.swing.JLabel();
         createdFolderTextField = new javax.swing.JTextField();
+        toNetBeansHeaderLabel = new javax.swing.JLabel();
+        aliceWorldLocationLabel = new javax.swing.JLabel();
+        aliceWorldLocationTextField = new javax.swing.JTextField();
+        aliceWorldBrowseButton = new javax.swing.JButton();
+        fromAliceHeaderLabel = new javax.swing.JLabel();
 
         projectNameLabel.setLabelFor(projectNameTextField);
         org.openide.awt.Mnemonics.setLocalizedText(projectNameLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.projectNameLabel.text")); // NOI18N
@@ -70,29 +78,69 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
         createdFolderTextField.setEditable(false);
 
+        toNetBeansHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(toNetBeansHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.toNetBeansHeaderLabel.text")); // NOI18N
+
+        aliceWorldLocationLabel.setLabelFor(aliceWorldLocationTextField);
+        org.openide.awt.Mnemonics.setLocalizedText(aliceWorldLocationLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldLocationLabel.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(aliceWorldBrowseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.text")); // NOI18N
+        aliceWorldBrowseButton.setActionCommand(org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.actionCommand")); // NOI18N
+        aliceWorldBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aliceWorldBrowseButtonActionPerformed(evt);
+            }
+        });
+
+        fromAliceHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(fromAliceHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.fromAliceHeaderLabel.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(projectNameLabel)
-                    .addComponent(projectLocationLabel)
-                    .addComponent(createdFolderLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(projectNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                    .addComponent(projectLocationTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                    .addComponent(createdFolderTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(browseButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(toNetBeansHeaderLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fromAliceHeaderLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(projectNameLabel)
+                                    .addComponent(projectLocationLabel)
+                                    .addComponent(createdFolderLabel)
+                                    .addComponent(aliceWorldLocationLabel))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(aliceWorldLocationTextField)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(aliceWorldBrowseButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(projectNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .addComponent(projectLocationTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .addComponent(createdFolderTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(browseButton)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(fromAliceHeaderLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aliceWorldLocationLabel)
+                    .addComponent(aliceWorldLocationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aliceWorldBrowseButton))
+                .addGap(18, 18, 18)
+                .addComponent(toNetBeansHeaderLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectNameLabel)
                     .addComponent(projectNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -105,7 +153,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createdFolderLabel)
                     .addComponent(createdFolderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(213, Short.MAX_VALUE))
+                .addGap(0, 137, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -131,15 +179,65 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		}
 
     }//GEN-LAST:event_browseButtonActionPerformed
+	private static java.io.File getMyProjectsDirectory() {
+		return new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects");
+	}
+
+	private static String getProjectNameForFile(String projectFile) {
+		int splitPoint = projectFile.lastIndexOf('.');
+		if (splitPoint > 0) {
+			return projectFile.substring(0, splitPoint);
+		} else {
+			return projectFile;
+		}
+	}
+
+	private static boolean isAliceFile(File worldFile) {
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension(worldFile);
+		return (extension != null && extension.equalsIgnoreCase(org.lgna.project.io.IoUtilities.PROJECT_EXTENSION));
+	}
+
+    private void aliceWorldBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliceWorldBrowseButtonActionPerformed
+		String command = evt.getActionCommand();
+		if ("BROWSE".equals(command)) {
+			JFileChooser chooser = new JFileChooser();
+			FileUtil.preventFileChooserSymlinkTraversal(chooser, null);
+			chooser.setDialogTitle("Select Alice Project to Import");
+			//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setCurrentDirectory(getMyProjectsDirectory());
+			String path = this.aliceWorldLocationTextField.getText();
+			if (path.length() > 0) {
+				File f = new File(path);
+				if (f.exists()) {
+					chooser.setSelectedFile(f);
+				}
+			}
+			if (JFileChooser.APPROVE_OPTION == chooser.showOpenDialog(this)) {
+				File aliceWorld = chooser.getSelectedFile();
+				if (aliceWorld.isFile() && isAliceFile(aliceWorld)) {
+					aliceWorldLocationTextField.setText(FileUtil.normalizeFile(aliceWorld).getAbsolutePath());
+					String projectName = getProjectNameForFile(aliceWorld.getName());
+					projectNameTextField.setText(projectName);
+				}
+			}
+			panel.fireChangeEvent();
+		}
+    }//GEN-LAST:event_aliceWorldBrowseButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aliceWorldBrowseButton;
+    private javax.swing.JLabel aliceWorldLocationLabel;
+    private javax.swing.JTextField aliceWorldLocationTextField;
     private javax.swing.JButton browseButton;
     private javax.swing.JLabel createdFolderLabel;
     private javax.swing.JTextField createdFolderTextField;
+    private javax.swing.JLabel fromAliceHeaderLabel;
     private javax.swing.JLabel projectLocationLabel;
     private javax.swing.JTextField projectLocationTextField;
     private javax.swing.JLabel projectNameLabel;
     private javax.swing.JTextField projectNameTextField;
+    private javax.swing.JLabel toNetBeansHeaderLabel;
     // End of variables declaration//GEN-END:variables
 
 	@Override
@@ -150,17 +248,27 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	}
 
 	boolean valid(WizardDescriptor wizardDescriptor) {
+		String aliceFile = aliceWorldLocationTextField.getText().trim();
+		if (aliceFile.length() == 0) {
+			//this.aliceWorldLocationLabel.setForeground(Color.RED);
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Alice Project Location is not set yet.");
+			return false;
+		}
+		File aliceWorldFile = new File(aliceFile);
+		if (!aliceWorldFile.exists()) {
+			//this.aliceWorldLocationLabel.setForeground(Color.RED);
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Alice Project " + aliceFile + " does not exist.");
+			return false;
+		}
 
 		if (projectNameTextField.getText().length() == 0) {
 			// TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_ERROR_MESSAGE:
-			wizardDescriptor.putProperty("WizardPanel_errorMessage",
-					"Project Name is not a valid folder name.");
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Name is not a valid folder name.");
 			return false; // Display name not specified
 		}
 		File f = FileUtil.normalizeFile(new File(projectLocationTextField.getText()).getAbsoluteFile());
 		if (!f.isDirectory()) {
-			String message = "Project Folder is not a valid path.";
-			wizardDescriptor.putProperty("WizardPanel_errorMessage", message);
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder is not a valid path.");
 			return false;
 		}
 		final File destFolder = FileUtil.normalizeFile(new File(createdFolderTextField.getText()).getAbsoluteFile());
@@ -170,22 +278,19 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 			projLoc = projLoc.getParentFile();
 		}
 		if (projLoc == null || !projLoc.canWrite()) {
-			wizardDescriptor.putProperty("WizardPanel_errorMessage",
-					"Project Folder cannot be created.");
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder cannot be created.");
 			return false;
 		}
 
 		if (FileUtil.toFileObject(projLoc) == null) {
-			String message = "Project Folder is not a valid path.";
-			wizardDescriptor.putProperty("WizardPanel_errorMessage", message);
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder is not a valid path.");
 			return false;
 		}
 
 		File[] kids = destFolder.listFiles();
 		if (destFolder.exists() && kids != null && kids.length > 0) {
 			// Folder exists and is not empty
-			wizardDescriptor.putProperty("WizardPanel_errorMessage",
-					"Project Folder already exists and is not empty.");
+			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder already exists and is not empty.");
 			return false;
 		}
 		wizardDescriptor.putProperty("WizardPanel_errorMessage", "");
@@ -193,9 +298,11 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	}
 
 	void store(WizardDescriptor d) {
+		String aliceFile = aliceWorldLocationTextField.getText().trim();
 		String name = projectNameTextField.getText().trim();
 		String folder = createdFolderTextField.getText().trim();
 
+		d.putProperty("aliceProjectFile", new File(aliceFile));
 		d.putProperty("projdir", new File(folder));
 		d.putProperty("name", name);
 	}
@@ -210,9 +317,9 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		this.projectLocationTextField.setText(projectLocation.getAbsolutePath());
 
 		String projectName = (String) settings.getProperty("name");
-		if (projectName == null) {
-			projectName = "Alice3ProjectTemplate";
-		}
+//		if (projectName == null) {
+//			projectName = "Alice3ProjectTemplate";
+//		}
 		this.projectNameTextField.setText(projectName);
 		this.projectNameTextField.selectAll();
 	}

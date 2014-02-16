@@ -43,8 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 // TODO define position attribute
-@TemplateRegistration(folder = "Project/Standard", displayName = "#Alice3ProjectTemplate_displayName", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/Alice3ProjectTemplate.png", content = "ProjectTemplate.zip")
-@Messages("Alice3ProjectTemplate_displayName=Alice 3 Project Template")
+@TemplateRegistration(folder = "Project/Standard", displayName = "Java Project from Existing Alice Project", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/aliceIcon.png", content = "ProjectTemplate.zip")
 public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
 	static {
 		IoLoggingHandler.initialize();
@@ -124,7 +123,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor./*P
 			ProjectChooser.setProjectsFolder(parent);
 		}
 
-		File aliceProjectFile = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
+		File aliceProjectFile = (File)wizardDescriptor.getProperty("aliceProjectFile");
 		File javaSrcDirectory = new File(dirF, "src");
 
 		try {
