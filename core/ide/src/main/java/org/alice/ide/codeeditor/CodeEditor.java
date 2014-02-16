@@ -86,12 +86,23 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		this.bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
-		this.addCenterComponent( scrollPane );
-		scrollPane.setViewportView( this.bodyPane );
-		//scrollPane.setBackgroundColor( null );
-		scrollPane.getAwtComponent().getViewport().setOpaque( false );
-		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+		final boolean IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME = false;
+		if( IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME ) {
+
+			edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane(
+					this.bodyPane.getAwtComponent(),
+					org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getView().getAwtComponent() );
+
+			org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().handlePreActivation();
+			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
+		} else {
+			org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
+			this.addCenterComponent( scrollPane );
+			scrollPane.setViewportView( this.bodyPane );
+			//scrollPane.setBackgroundColor( null );
+			scrollPane.getAwtComponent().getViewport().setOpaque( false );
+			scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+		}
 
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;

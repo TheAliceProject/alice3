@@ -116,7 +116,7 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 		if( code != null ) {
 			code = org.lgna.project.code.CodeFormatter.format( code );
 			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault();
-			javaSourceConversionOptions.setShowLineNumbers( true );
+			//javaSourceConversionOptions.setShowLineNumbers( true );
 			de.java2html.javasource.JavaSource javaSource = new de.java2html.javasource.JavaSourceParser().parse( code );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( javaSource.getClassification().length );
 			de.java2html.converter.JavaSource2HTMLConverter javaSource2HTMLConverter = new de.java2html.converter.JavaSource2HTMLConverter();
