@@ -51,30 +51,35 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		public void layoutContainer( java.awt.Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
 
+			java.awt.Insets insets = jSideBySideScrollPane.getInsets();
+
 			java.awt.Dimension parentSize = jSideBySideScrollPane.getSize();
 
 			java.awt.Dimension separatorPreferredSize = jSideBySideScrollPane.divider.getPreferredSize();
 			java.awt.Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
 			java.awt.Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
 
-			int w = parentSize.width - lineEndScrollBarPreferredSize.width - separatorPreferredSize.width;
-			int h = parentSize.height - pageEndScrollBarPreferredSize.height;
+			int w = parentSize.width - lineEndScrollBarPreferredSize.width - separatorPreferredSize.width - insets.left - insets.right;
+			int h = parentSize.height - pageEndScrollBarPreferredSize.height - insets.top - insets.bottom;
 
 			int leadingWidth = w / 2;
 			int trailingWidth = w - leadingWidth;
 
-			int x = 0;
-			jSideBySideScrollPane.leadingViewport.setBounds( x, 0, leadingWidth, h );
+			int x = insets.left;
+			int y = insets.top;
+			jSideBySideScrollPane.leadingViewport.setBounds( x, y, leadingWidth, h );
 			x += jSideBySideScrollPane.leadingViewport.getWidth();
 
-			jSideBySideScrollPane.divider.setBounds( x, 0, separatorPreferredSize.width, h );
+			jSideBySideScrollPane.divider.setBounds( x, y, separatorPreferredSize.width, h );
 			x += jSideBySideScrollPane.divider.getWidth();
 
-			jSideBySideScrollPane.trailingViewport.setBounds( x, 0, trailingWidth, h );
+			jSideBySideScrollPane.trailingViewport.setBounds( x, y, trailingWidth, h );
 			x += jSideBySideScrollPane.trailingViewport.getWidth();
 
-			jSideBySideScrollPane.verticalScrollBar.setBounds( x, 0, parentSize.width - x, h );
-			jSideBySideScrollPane.horizontalScrollBar.setBounds( 0, h, x, pageEndScrollBarPreferredSize.height );
+			jSideBySideScrollPane.verticalScrollBar.setBounds( x, y, parentSize.width - x, h );
+
+			y += h;
+			jSideBySideScrollPane.horizontalScrollBar.setBounds( insets.left, y, w, pageEndScrollBarPreferredSize.height );
 		}
 
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
@@ -194,6 +199,11 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 
 		@Override
+		public java.awt.Color getBackground() {
+			return JSideBySideScrollPane.this.getBackground();
+		}
+
+		@Override
 		public void updateUI() {
 			this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
 		}
@@ -205,18 +215,19 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			} else {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.Shape clip = g.getClip();
-				java.awt.Component component = trailingViewport.getView();
-				if( component != null ) {
-					//pass
-				} else {
-					component = leadingViewport.getView();
-					if( component != null ) {
-						//pass
-					} else {
-						component = JSideBySideScrollPane.this;
-					}
-				}
-				g2.setPaint( component.getBackground() );
+				//				java.awt.Component component = trailingViewport.getView();
+				//				if( component != null ) {
+				//					//pass
+				//				} else {
+				//					component = leadingViewport.getView();
+				//					if( component != null ) {
+				//						//pass
+				//					} else {
+				//						component = JSideBySideScrollPane.this;
+				//					}
+				//				}
+				//				g2.setPaint( component.getBackground() );
+				g2.setPaint( this.getBackground() );
 				g2.fill( clip );
 			}
 		}

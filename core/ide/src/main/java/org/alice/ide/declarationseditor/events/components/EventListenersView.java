@@ -11,7 +11,7 @@ import org.lgna.project.ast.UserCode;
 
 public class EventListenersView extends org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView {
 	private final EventsContentPanel eventsPanel;
-	private ScrollPane scroll;
+	private final ScrollPane scrollPane;
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement> statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement>() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
 		}
@@ -49,11 +49,11 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		//		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-		scroll = new org.lgna.croquet.views.ScrollPane( eventsPanel );
+		this.scrollPane = new org.lgna.croquet.views.ScrollPane( eventsPanel );
 		LineAxisPanel bottom = new LineAxisPanel( button );
-		final StickyBottomPanel panel = new StickyBottomPanel( scroll, bottom );
+		final StickyBottomPanel panel = new StickyBottomPanel( scrollPane, bottom );
 		this.addCenterComponent( panel );
-		scroll.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
+		scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				Object src = e.getSource();
 				if( src instanceof java.awt.Component ) {
@@ -71,7 +71,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );
-		scroll.setBackgroundColor( color );
+		this.scrollPane.setBackgroundColor( color );
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
 		}
@@ -82,7 +82,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		if( isScrollDesired ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					javax.swing.JScrollBar verticalScrollBar = EventListenersView.this.scroll.getAwtComponent().getVerticalScrollBar();
+					javax.swing.JScrollBar verticalScrollBar = EventListenersView.this.scrollPane.getAwtComponent().getVerticalScrollBar();
 					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
 				}
 			} );

@@ -53,8 +53,6 @@ public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
 		rv.add( org.alice.ide.croquet.models.ui.MemoryUsageComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( PreferencesMenuModel.getInstance() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
 			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );

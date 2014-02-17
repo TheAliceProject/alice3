@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.code.components;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeDeclarationView extends AbstractCodeDeclarationView {
-	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
-
-	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite );
-		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
-		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
-		if( org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getValue() ) {
-			edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane(
-					this.codeEditor.getAwtComponent(),
-					new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() ).getAwtComponent() );
-			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
-			jSideBySideScrollPane.setBackground( this.getBackgroundColor() );
-			jSideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
-		} else {
-			this.addCenterComponent( this.codeEditor );
-		}
+public class IsJavaCodeOnTheSideState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsJavaCodeOnTheSideState instance = new IsJavaCodeOnTheSideState();
 	}
 
-	@Deprecated
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
-		return this.codeEditor;
+	public static IsJavaCodeOnTheSideState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private IsJavaCodeOnTheSideState() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "cab8417a-b29f-4a27-93de-c89876312e25" ), false );
 	}
 }
