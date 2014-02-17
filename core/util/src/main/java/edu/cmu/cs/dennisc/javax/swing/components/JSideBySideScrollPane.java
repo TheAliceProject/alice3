@@ -113,6 +113,10 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			this.leadingViewport.setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
 			this.trailingViewport.setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
 		}
+		int inset = edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.INSET;
+		this.verticalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
+		this.horizontalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
+		this.divider.setBackground( java.awt.Color.DARK_GRAY );
 	}
 
 	@Override
@@ -145,10 +149,42 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		viewport.setViewPosition( viewPosition );
 	}
 
+	private void updateScrollBars() {
+		java.awt.Dimension leadingExtentSize = this.leadingViewport.getExtentSize();
+		java.awt.Dimension leadingViewSize = this.leadingViewport.getViewSize();
+		java.awt.Dimension trailingExtentSize = this.trailingViewport.getExtentSize();
+		java.awt.Dimension trailingViewSize = this.trailingViewport.getViewSize();
+
+		int extentHorizontal;
+		int maxHorizontal;
+		if( leadingViewSize.width > trailingViewSize.width ) {
+			extentHorizontal = leadingExtentSize.width;
+			maxHorizontal = leadingViewSize.width;
+		} else {
+			extentHorizontal = trailingExtentSize.width;
+			maxHorizontal = trailingViewSize.width;
+		}
+
+		int extentVertical;
+		int maxVertical;
+		if( leadingViewSize.height > trailingViewSize.height ) {
+			extentVertical = leadingExtentSize.height;
+			maxVertical = leadingViewSize.height;
+		} else {
+			extentVertical = trailingExtentSize.height;
+			maxVertical = trailingViewSize.height;
+		}
+
+		int horizontalValue = this.horizontalScrollBar.getValue();
+		int verticalValue = this.verticalScrollBar.getValue();
+		this.horizontalScrollBar.getModel().setRangeProperties( horizontalValue, extentHorizontal, 0, maxHorizontal, false );
+		this.verticalScrollBar.getModel().setRangeProperties( verticalValue, extentVertical, 0, maxVertical, false );
+	}
+
 	private static class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 8 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 4 );
 		}
 	}
 
@@ -164,7 +200,6 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: omit paint when appropriate" );
 			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) ) {
 				super.paintComponent( g );
 			} else {
@@ -196,7 +231,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 	private final javax.swing.event.ChangeListener viewportListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+			updateScrollBars();
 		}
 	};
 

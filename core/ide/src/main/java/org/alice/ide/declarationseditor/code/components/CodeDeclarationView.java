@@ -53,7 +53,15 @@ public class CodeDeclarationView extends AbstractCodeDeclarationView {
 		super( composite );
 		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
 		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
-		this.addCenterComponent( this.codeEditor );
+		final boolean IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME = false;
+		if( IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME ) {
+			edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane(
+					this.codeEditor.getAwtComponent(),
+					new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() ).getAwtComponent() );
+			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
+		} else {
+			this.addCenterComponent( this.codeEditor );
+		}
 	}
 
 	@Deprecated
