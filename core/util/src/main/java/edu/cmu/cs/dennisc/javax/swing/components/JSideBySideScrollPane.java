@@ -53,7 +53,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 			java.awt.Dimension parentSize = jSideBySideScrollPane.getSize();
 
-			java.awt.Dimension separatorPreferredSize = jSideBySideScrollPane.separator.getPreferredSize();
+			java.awt.Dimension separatorPreferredSize = jSideBySideScrollPane.divider.getPreferredSize();
 			java.awt.Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
 			java.awt.Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
 
@@ -67,8 +67,8 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			jSideBySideScrollPane.leadingViewport.setBounds( x, 0, leadingWidth, h );
 			x += jSideBySideScrollPane.leadingViewport.getWidth();
 
-			jSideBySideScrollPane.separator.setBounds( x, 0, separatorPreferredSize.width, h );
-			x += jSideBySideScrollPane.separator.getWidth();
+			jSideBySideScrollPane.divider.setBounds( x, 0, separatorPreferredSize.width, h );
+			x += jSideBySideScrollPane.divider.getWidth();
 
 			jSideBySideScrollPane.trailingViewport.setBounds( x, 0, trailingWidth, h );
 			x += jSideBySideScrollPane.trailingViewport.getWidth();
@@ -104,7 +104,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.leadingViewport.setView( leadingView );
 		this.trailingViewport.setView( trailingView );
 		this.add( this.leadingViewport );
-		this.add( this.separator );
+		this.add( this.divider );
 		this.add( this.trailingViewport );
 		this.add( this.verticalScrollBar );
 		this.add( this.horizontalScrollBar );
@@ -145,16 +145,54 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		viewport.setViewPosition( viewPosition );
 	}
 
-	private final javax.swing.JViewport leadingViewport = new javax.swing.JViewport();
-	private final javax.swing.JComponent separator = new javax.swing.JComponent() {
+	private static class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 8 );
 		}
-	};
+	}
+
+	private class JSideBySideScrollBar extends javax.swing.JScrollBar implements javax.swing.plaf.UIResource {
+		public JSideBySideScrollBar( int orientation ) {
+			super( orientation );
+		}
+
+		@Override
+		public void updateUI() {
+			this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
+		}
+
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: omit paint when appropriate" );
+			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) ) {
+				super.paintComponent( g );
+			} else {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.Shape clip = g.getClip();
+				java.awt.Component component = trailingViewport.getView();
+				if( component != null ) {
+					//pass
+				} else {
+					component = leadingViewport.getView();
+					if( component != null ) {
+						//pass
+					} else {
+						component = JSideBySideScrollPane.this;
+					}
+				}
+				g2.setPaint( component.getBackground() );
+				g2.fill( clip );
+			}
+		}
+	}
+
+	private final javax.swing.JViewport leadingViewport = new javax.swing.JViewport();
+	private final JSideBySideDivider divider = new JSideBySideDivider();
 	private final javax.swing.JViewport trailingViewport = new javax.swing.JViewport();
-	private final javax.swing.JScrollBar verticalScrollBar = new javax.swing.JScrollBar( javax.swing.JScrollBar.VERTICAL );
-	private final javax.swing.JScrollBar horizontalScrollBar = new javax.swing.JScrollBar( javax.swing.JScrollBar.HORIZONTAL );
+
+	private final JSideBySideScrollBar verticalScrollBar = new JSideBySideScrollBar( javax.swing.JScrollBar.VERTICAL );
+	private final JSideBySideScrollBar horizontalScrollBar = new JSideBySideScrollBar( javax.swing.JScrollBar.HORIZONTAL );
 
 	private final javax.swing.event.ChangeListener viewportListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -197,7 +235,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		trailingView.setPreferredSize( new java.awt.Dimension( 600, 1000 ) );
 
 		leadingView.setBackground( java.awt.Color.RED );
-		trailingView.setBackground( java.awt.Color.BLUE );
+		trailingView.setBackground( java.awt.Color.WHITE );
 
 		JSideBySideScrollPane jSideBySideScrollPane = new JSideBySideScrollPane( leadingView, trailingView );
 		jSideBySideScrollPane.setBackground( java.awt.Color.GREEN );

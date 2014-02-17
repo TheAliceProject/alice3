@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,41 +45,12 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	protected class PaintOmittingJScrollBar extends JViewBasedBackgroundColorScrollBar {
-		public PaintOmittingJScrollBar( int orientation ) {
-			super( orientation );
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && ScrollBarPaintUtilities.isPaintRequiredFor( otherScrollBar ) ) ) {
-				super.paint( g );
-			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
-				java.awt.Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
-				if( component != null ) {
-					//pass
-				} else {
-					component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
-				}
-				g2.setPaint( component.getBackground() );
-				g2.fill( clip );
-			}
-		}
-	}
-
-	protected boolean isPaintRequiredIfOtherRequiresIt() {
-		return true;
-	}
-
-	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
-			return this.getVerticalScrollBar();
+public class ScrollBarPaintUtilities {
+	public static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
+		if( jScrollBar != null ) {
+			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
 		} else {
-			return this.getHorizontalScrollBar();
+			return false;
 		}
 	}
 }

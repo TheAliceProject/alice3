@@ -88,11 +88,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		final boolean IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME = false;
 		if( IS_SIDE_BY_SCROLLING_READY_FOR_PRIME_TIME ) {
-
 			edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane(
 					this.bodyPane.getAwtComponent(),
-					org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getView().getAwtComponent() );
-
+					new org.alice.ide.javacode.croquet.views.JavaCodeView( code ).getAwtComponent() );
 			org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().handlePreActivation();
 			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
 		} else {

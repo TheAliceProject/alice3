@@ -40,60 +40,71 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.javacode.croquet;
+package edu.cmu.cs.dennisc.javax.swing.plaf;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.lgna.croquet.views.Panel> {
-	private static class SingletonHolder {
-		private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
-	}
+public class SmallerFootprintScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
+	public static final int INSET = 2;
 
-	public static JavaCodeFrameComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private JavaCodeFrameComposite() {
-		super( java.util.UUID.fromString( "7015e117-22dd-49a1-a194-55d5fe17f821" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+	public static javax.swing.plaf.ScrollBarUI createUI() {
+		return new SmallerFootprintScrollBarUI();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.views.ScrollPane();
+	protected void installDefaults() {
+		super.installDefaults();
+		this.thumbRolloverColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 100 );
+		this.thumbPressedColor = new java.awt.Color( 100, 140, 255 );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel.Builder()
-				//.center( this.stringValue.createImmutableEditorPane( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED ) )
-				.center( this.javaCodeView )
-				.build();
-	}
-
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromHeight() {
-		return 400;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		org.alice.ide.MetaDeclarationFauxState.getInstance().addAndInvokeValueListener( this.declarationListener );
-		super.handlePreActivation();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		org.alice.ide.MetaDeclarationFauxState.getInstance().removeValueListener( this.declarationListener );
-	}
-
-	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
-		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
-			javaCodeView.setDeclaration( nextValue );
+	protected void paintThumb( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds ) {
+		//super.paintThumb( g, c, thumbBounds );
+		if( c instanceof javax.swing.JScrollBar ) {
+			javax.swing.JScrollBar jScrollBar = (javax.swing.JScrollBar)c;
+			int span = jScrollBar.getOrientation() == javax.swing.JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
+			int arc = span - INSET - INSET;
+			java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
+			java.awt.Paint paint;
+			if( this.isDragging ) {
+				paint = this.thumbPressedColor;
+			} else {
+				paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
+			}
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setPaint( paint );
+			g2.fill( shape );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 		}
-	};
+	}
 
-	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView();
+	@Override
+	protected void paintTrack( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds ) {
+		//super.paintTrack( g, c, trackBounds );
+	}
 
+	private static javax.swing.JButton create0SizeButton() {
+		javax.swing.JButton rv = new javax.swing.JButton();
+		java.awt.Dimension size = new java.awt.Dimension( 0, 0 );
+		rv.setMinimumSize( size );
+		rv.setPreferredSize( size );
+		rv.setMaximumSize( size );
+		return rv;
+	}
+
+	@Override
+	protected javax.swing.JButton createIncreaseButton( int orientation ) {
+		return create0SizeButton();
+	}
+
+	@Override
+	protected javax.swing.JButton createDecreaseButton( int orientation ) {
+		return create0SizeButton();
+	}
+
+	private java.awt.Color thumbPressedColor;
+	private java.awt.Color thumbRolloverColor;
 }
