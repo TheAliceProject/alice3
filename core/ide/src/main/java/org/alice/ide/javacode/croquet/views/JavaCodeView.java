@@ -100,9 +100,15 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		if( code != null ) {
 			code = org.lgna.project.code.CodeFormatter.format( code );
 			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault();
+
+			final boolean IS_TAB_SIZE_WORKING = false;
+			if( IS_TAB_SIZE_WORKING ) {
+				javaSourceConversionOptions.setTabSize( 4 );
+			} else {
+				code = code.replaceAll( "\t", "    " );
+			}
 			//javaSourceConversionOptions.setShowLineNumbers( true );
 			de.java2html.javasource.JavaSource javaSource = new de.java2html.javasource.JavaSourceParser().parse( code );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( javaSource.getClassification().length );
 			de.java2html.converter.JavaSource2HTMLConverter javaSource2HTMLConverter = new de.java2html.converter.JavaSource2HTMLConverter();
 			java.io.StringWriter stringWriter = new java.io.StringWriter();
 			stringWriter.write( "<html><head><style type=\"text/css\">code { font-size:" + this.fontSize + "px; }</style></head><body>" );

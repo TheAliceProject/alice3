@@ -54,6 +54,7 @@ public class CodeFormatter {
 	}
 
 	public static String format( String src, int indent ) {
+		//todo: do not format comments
 		StringBuilder sb = new StringBuilder();
 		int tabSkipCount = 0;
 		int newLineSkipCount = 0;
@@ -91,14 +92,13 @@ public class CodeFormatter {
 		s = s.replaceAll( "\\}\\s*\\)", "})" );
 
 		// remove whitespace before else
-		s = s.replaceAll( "\\}\\s*else\\{", "}else{" );
+		s = s.replaceAll( "\\}\\s*else\\{", "} else{" );
 
 		s = s.replaceAll( "=", " = " );
 		s = s.replaceAll( ":", " : " );
 		s = s.replaceAll( ";", "; " );
 		s = s.replaceAll( ",", ", " );
 		s = s.replaceAll( "\\{", " { " );
-		s = s.replaceAll( "\\}", " } " );
 		s = s.replaceAll( "\\(", "( " );
 		s = s.replaceAll( "\\)", " )" );
 		s = s.replaceAll( "\\} ,", "}," );
