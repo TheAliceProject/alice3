@@ -87,8 +87,6 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
 		generator.appendTypeName( JavaType.getInstance( org.lgna.common.ThreadUtilities.class ) );
 		generator.appendString( ".eachInTogether(" );
-		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
-		generator.appendString( "," );
 		if( generator.isLambdaSupported() ) {
 			generator.appendString( "(" );
 			generator.appendTypeName( itemType );
@@ -112,6 +110,8 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		} else {
 			generator.appendString( "}" );
 		}
+		generator.appendString( "," );
+		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
 		generator.appendString( ");" );
 	}
 }
