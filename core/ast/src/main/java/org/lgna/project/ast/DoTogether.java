@@ -74,9 +74,13 @@ public final class DoTogether extends AbstractStatementWithBody {
 			}
 			if( statement instanceof DoInOrder ) {
 				DoInOrder doInOrder = (DoInOrder)statement;
-				statement = doInOrder.body.getValue();
+				BlockStatement blockStatement = doInOrder.body.getValue();
+				for( Statement subStatement : blockStatement.statements ) {
+					subStatement.appendJava( generator );
+				}
+			} else {
+				statement.appendJava( generator );
 			}
-			statement.appendJava( generator );
 			if( generator.isLambdaSupported() ) {
 				generator.appendString( "}" );
 			} else {
