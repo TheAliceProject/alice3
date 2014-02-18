@@ -47,17 +47,19 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class ClassUtilities {
-	private static java.util.HashMap<String, Class<?>> s_primativeTypeMap = new java.util.HashMap<String, Class<?>>();
+	private static final java.util.Map<String, Class<?>> s_primativeTypeMap;
 	static {
-		s_primativeTypeMap.put( Void.TYPE.getName(), Void.TYPE );
-		s_primativeTypeMap.put( Boolean.TYPE.getName(), Boolean.TYPE );
-		s_primativeTypeMap.put( Byte.TYPE.getName(), Byte.TYPE );
-		s_primativeTypeMap.put( Character.TYPE.getName(), Character.TYPE );
-		s_primativeTypeMap.put( Short.TYPE.getName(), Short.TYPE );
-		s_primativeTypeMap.put( Integer.TYPE.getName(), Integer.TYPE );
-		s_primativeTypeMap.put( Long.TYPE.getName(), Long.TYPE );
-		s_primativeTypeMap.put( Double.TYPE.getName(), Double.TYPE );
-		s_primativeTypeMap.put( Float.TYPE.getName(), Float.TYPE );
+		java.util.Map<String, Class<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		map.put( Void.TYPE.getName(), Void.TYPE );
+		map.put( Boolean.TYPE.getName(), Boolean.TYPE );
+		map.put( Byte.TYPE.getName(), Byte.TYPE );
+		map.put( Character.TYPE.getName(), Character.TYPE );
+		map.put( Short.TYPE.getName(), Short.TYPE );
+		map.put( Integer.TYPE.getName(), Integer.TYPE );
+		map.put( Long.TYPE.getName(), Long.TYPE );
+		map.put( Double.TYPE.getName(), Double.TYPE );
+		map.put( Float.TYPE.getName(), Float.TYPE );
+		s_primativeTypeMap = java.util.Collections.unmodifiableMap( map );
 	}
 
 	public static <E> E getInstance( Object o, Class<E> cls ) {
