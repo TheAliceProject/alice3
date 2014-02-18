@@ -2,23 +2,10 @@ package org.alice.ide.declarationseditor.events;
 
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.story.AddTimeListener;
-import org.lgna.story.SScene;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
+import org.lgna.story.ast.EventListenerMethodUtilities;
 
 public class TimeEventListenerMenu extends EventListenerMenuModel {
-	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addSceneActivationListener",
-			SceneActivationListener.class );
-	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addTimeListener",
-			TimeListener.class, Number.class, AddTimeListener.Detail[].class );
-
 	private static class SingletonHolder {
 		private static TimeEventListenerMenu instance = new TimeEventListenerMenu();
 	}
@@ -33,8 +20,8 @@ public class TimeEventListenerMenu extends EventListenerMenuModel {
 
 	@Override
 	protected void updateBlankChildren( java.util.List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
+		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
+		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD ) );
 	}
 
 }

@@ -62,13 +62,13 @@ public class MouseClickAstMigration extends org.lgna.project.migration.MethodInv
 						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
 					}
 					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
+					methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
 				} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
 					for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
 					}
 					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
+					methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
 				}
 			}
 		}

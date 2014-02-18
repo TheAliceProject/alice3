@@ -19,4 +19,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+  <modules>
+    <module>story-api-migration</module>
+  </modules>
 </project>

@@ -62,17 +62,17 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
 	private static final JavaMethod[] removeTheseDetails = {
-			org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu.MOVE_WITH_ARROWS,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_TRANSFORMATION_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_START_COLLISION_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_END_COLLISION_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
-			org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
+		org.lgna.story.ast.EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+		org.lgna.story.ast.EventListenerMethodUtilities.MOVE_WITH_ARROWS,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
 	};
 
 	public EventAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
@@ -90,7 +90,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 				if( methodName.equals( "addTimeListener" ) ) {
 					handleAddTimeListener( methodInvocation, javaMethod );
 				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
-					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_ENTER_PROXIMITY_LISTENER_METHOD : org.alice.ide.declarationseditor.events.TransformationEventListenerMenu.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
+					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD : org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
 					methodInvocation.method.setValue( newMethod );
 				} else if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
 					addMouseClickOnScreenEventParameter( methodInvocation );
@@ -142,6 +142,6 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 			duration = 0.0;
 		}
 		methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), new DoubleLiteral( duration ) ) );
-		methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_TIMER_EVENT_LISTENER_METHOD );
+		methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD );
 	}
 }
