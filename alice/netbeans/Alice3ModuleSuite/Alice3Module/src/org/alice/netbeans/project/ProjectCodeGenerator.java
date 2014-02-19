@@ -37,8 +37,8 @@ public class ProjectCodeGenerator {
 		//FileUtil.toFileObject( javaSrcDirectory );
 		
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
-		JavaCodeGenerator javaCodeGenerator = new JavaCodeGenerator.Builder().isLambdaSupported(true).build();
-		CodeConverter codeConverter = new CodeConverter(javaCodeGenerator);
+		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
+		CodeConverter codeConverter = new CodeConverter(javaCodeGeneratorBuilder);
 		Iterable<PathCodePair> pathCodePairs = codeConverter.convert(aliceProject);
 		
 		List<File> filesToFormat = Lists.newLinkedList();
