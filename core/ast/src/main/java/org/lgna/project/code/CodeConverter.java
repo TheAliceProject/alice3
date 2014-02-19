@@ -46,7 +46,7 @@ package org.lgna.project.code;
  * @author Dennis Cosgrove
  */
 public class CodeConverter {
-	private CodeConverter( org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator ) {
+	public CodeConverter( org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator ) {
 		this.javaCodeGenerator = javaCodeGenerator;
 	}
 
