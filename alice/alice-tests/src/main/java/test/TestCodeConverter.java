@@ -6,7 +6,7 @@ import org.lgna.project.code.PathCodePair;
 public class TestCodeConverter {
 	public static void main( String[] args ) throws Exception {
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-		CodeConverter codeConverter = new CodeConverter.Builder().isLambdaSupported( true ).build();
+		CodeConverter codeConverter = new CodeConverter( new org.lgna.project.ast.JavaCodeGenerator.Builder().isLambdaSupported( true ) );
 		Iterable<PathCodePair> pathCodePairs = codeConverter.convert( project );
 		for( PathCodePair pathCodePair : pathCodePairs ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( pathCodePair.getPath() );
