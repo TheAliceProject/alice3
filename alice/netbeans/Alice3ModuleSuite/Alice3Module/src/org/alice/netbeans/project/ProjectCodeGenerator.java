@@ -17,6 +17,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.code.CodeConverter;
 import org.lgna.project.code.PathCodePair;
 import org.lgna.project.io.IoUtilities;
@@ -36,7 +37,8 @@ public class ProjectCodeGenerator {
 		//FileUtil.toFileObject( javaSrcDirectory );
 		
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
-		CodeConverter codeConverter = new CodeConverter.Builder().isLambdaSupported(true).build();
+		JavaCodeGenerator javaCodeGenerator = new JavaCodeGenerator.Builder().isLambdaSupported(true).build();
+		CodeConverter codeConverter = new CodeConverter(javaCodeGenerator);
 		Iterable<PathCodePair> pathCodePairs = codeConverter.convert(aliceProject);
 		
 		List<File> filesToFormat = Lists.newLinkedList();

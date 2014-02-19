@@ -46,8 +46,8 @@ package org.lgna.project.code;
  * @author Dennis Cosgrove
  */
 public class CodeConverter {
-	public CodeConverter( org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator ) {
-		this.javaCodeGenerator = javaCodeGenerator;
+	public CodeConverter( org.lgna.project.ast.JavaCodeGenerator.Builder javaCodeGeneratorBuilder ) {
+		this.javaCodeGeneratorBuilder = javaCodeGeneratorBuilder;
 	}
 
 	public Iterable<PathCodePair> convert( org.lgna.project.Project project ) {
@@ -55,11 +55,11 @@ public class CodeConverter {
 		java.util.Set<org.lgna.project.ast.NamedUserType> set = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : set ) {
 			String path = type.getName() + ".java";
-			String code = type.generateJavaCode( this.javaCodeGenerator );
+			String code = type.generateJavaCode( this.javaCodeGeneratorBuilder.build() );
 			rv.add( new PathCodePair.Builder().path( path ).code( code ).build() );
 		}
 		return rv;
 	}
 
-	private final org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator;
+	private final org.lgna.project.ast.JavaCodeGenerator.Builder javaCodeGeneratorBuilder;
 }
