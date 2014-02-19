@@ -53,8 +53,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	private final AbstractCodeHeaderPane header;
 	private final StatementListPropertyView rootStatementListPropertyPane;
 
-	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
-
 	private final org.alice.ide.common.BodyPane bodyPane;
 
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
@@ -104,79 +102,10 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 		this.addPageStartComponent( this.header );
 
-		if( this.code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
-			if( method.isFunction() ) {
-				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
-			} else {
-				this.userFunctionStatusComposite = null;
-			}
-		} else {
-			this.userFunctionStatusComposite = null;
-		}
-
-		org.lgna.croquet.views.SwingComponentView<?> controlFlowComponent;
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
-		} else {
-			controlFlowComponent = null;
-		}
-
-		org.lgna.croquet.views.SwingComponentView<?> pageEndComponent;
-		if( this.userFunctionStatusComposite != null ) {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
-						.center( this.userFunctionStatusComposite.getView() )
-						.pageEnd( controlFlowComponent )
-						.build();
-			} else {
-				pageEndComponent = this.userFunctionStatusComposite.getView();
-			}
-		} else {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = controlFlowComponent;
-			} else {
-				pageEndComponent = null;
-			}
-		}
-
-		if( pageEndComponent != null ) {
-			this.addPageEndComponent( pageEndComponent );
-		}
-
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
 		//color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
-
-		this.handleAstChangeThatCouldBeOfInterest();
-	}
-
-	public void handleAstChangeThatCouldBeOfInterest() {
-		if( this.userFunctionStatusComposite != null ) {
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
-
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
-			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
-				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
-			} else {
-				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
-					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
-						nextErrorStatus = null;
-					} else {
-						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
-					}
-				} else {
-					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
-				}
-			}
-			if( prevErrorStatus != nextErrorStatus ) {
-				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
-				this.revalidateAndRepaint();
-			}
-
-		}
 	}
 
 	@Override
