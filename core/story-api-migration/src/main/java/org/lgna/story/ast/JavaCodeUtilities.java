@@ -40,26 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.code;
+package org.lgna.story.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeConverter {
-	private CodeConverter( org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator ) {
-		this.javaCodeGenerator = javaCodeGenerator;
+public class JavaCodeUtilities {
+	private JavaCodeUtilities() {
+		throw new AssertionError();
 	}
-
-	public Iterable<PathCodePair> convert( org.lgna.project.Project project ) {
-		java.util.List<PathCodePair> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.Set<org.lgna.project.ast.NamedUserType> set = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : set ) {
-			String path = type.getName() + ".java";
-			String code = type.generateJavaCode( this.javaCodeGenerator );
-			rv.add( new PathCodePair.Builder().path( path ).code( code ).build() );
-		}
-		return rv;
+	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+			.isLambdaSupported( true )
+			.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
+			.addImportStaticMethod( 
+					edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( 
+							org.lgna.common.ThreadUtilities.class, 
+							"doTogether", 
+							Runnable[].class ) )
+			.build();
 	}
-
-	private final org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator;
 }

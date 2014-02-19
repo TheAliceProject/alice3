@@ -86,14 +86,14 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 	}
 
 	private void updateHtml() {
-		boolean isLambdaSupported = true;
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
 		String code;
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
-			code = method.generateJavaCode( isLambdaSupported );
+			code = method.generateJavaCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
-			code = type.generateJavaCode( isLambdaSupported );
+			code = type.generateJavaCode( javaCodeGenerator );
 		} else {
 			code = null;
 		}

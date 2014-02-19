@@ -45,15 +45,41 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class JavaCodeGenerator {
-	private final boolean isLambdaSupported;
-	private final StringBuilder codeStringBuilder = new StringBuilder();
-	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+public class JavaCodeGenerator {
+	public static class Builder {
+		public Builder() {
+		}
 
-	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+		public Builder isLambdaSupported( boolean isLambdaSupported ) {
+			this.isLambdaSupported = isLambdaSupported;
+			return this;
+		}
 
-	/* package-private */JavaCodeGenerator( boolean isLambdaSupported ) {
-		this.isLambdaSupported = isLambdaSupported;
+		public Builder addImportOnDemandPackage( Package pckg ) {
+			this.importOnDemandPackages.add( JavaPackage.getInstance( pckg ) );
+			return this;
+		}
+
+		public Builder addImportStaticMethod( java.lang.reflect.Method mthd ) {
+			assert mthd != null;
+			assert java.lang.reflect.Modifier.isStatic( mthd.getModifiers() ) : mthd;
+			this.importStaticMethods.add( JavaMethod.getInstance( mthd ) );
+			return this;
+		}
+
+		public JavaCodeGenerator build() {
+			return new JavaCodeGenerator( this );
+		}
+
+		private boolean isLambdaSupported;
+		private final java.util.List<JavaPackage> importOnDemandPackages = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	};
+
+	private JavaCodeGenerator( Builder builder ) {
+		this.isLambdaSupported = builder.isLambdaSupported;
+		this.importOnDemandPackages = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
+		this.importStaticMethods = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
 
 	/* package-private */boolean isLambdaSupported() {
@@ -236,4 +262,12 @@ package org.lgna.project.ast;
 		rvStringBuilder.append( this.codeStringBuilder );
 		return rvStringBuilder.toString();
 	}
+
+	private final boolean isLambdaSupported;
+	private final StringBuilder codeStringBuilder = new StringBuilder();
+	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	private final java.util.List<JavaPackage> importOnDemandPackages;
+	private final java.util.List<JavaMethod> importStaticMethods;
+
+	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }
