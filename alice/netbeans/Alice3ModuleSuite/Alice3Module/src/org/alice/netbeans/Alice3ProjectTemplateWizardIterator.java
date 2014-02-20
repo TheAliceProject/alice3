@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -127,7 +129,8 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor./*P
 		File javaSrcDirectory = new File(dirF, "src");
 
 		try {
-			ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory);
+			Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory);
+			resultSet.addAll( filesToOpen );
 		} catch (IOException ioe) {
 			Logger.throwable(ioe);
 		} catch (VersionNotSupportedException vnse) {
