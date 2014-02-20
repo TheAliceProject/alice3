@@ -161,7 +161,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.method.getValue() );
 		localizer.appendText( "(" );
 		String separator = "";

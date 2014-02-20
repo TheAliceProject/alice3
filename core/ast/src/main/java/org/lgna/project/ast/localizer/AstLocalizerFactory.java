@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
-
-import org.lgna.project.ast.localizer.AstLocalizer;
+package org.lgna.project.ast.localizer;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SimpleArgument extends AbstractArgument {
-	public SimpleArgument() {
-	}
-
-	public SimpleArgument( AbstractParameter parameter, Expression expression ) {
-		super( parameter, expression );
-	}
-
-	@Override
-	protected AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType ) {
-		return parameterType;
-	}
-
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-	}
-
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-	}
+public interface AstLocalizerFactory {
+	public AstLocalizer createInstance( StringBuilder sb );
 }

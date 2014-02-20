@@ -55,7 +55,7 @@ public final class DoInOrder extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		localizer.appendLocalizedText( DoInOrder.class, "do in order" );
 		super.appendRepr( localizer );
 	}

@@ -70,6 +70,6 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 	}
 }

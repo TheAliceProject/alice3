@@ -40,37 +40,90 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.lgna.project.ast.localizer;
+
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.Node;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface AstLocalizer {
-	void appendDeclaration( Declaration declaration );
+public class DefaultAstLocalizer implements AstLocalizer {
+	public DefaultAstLocalizer( StringBuilder sb ) {
+		this.sb = sb;
+	}
 
-	void appendThis();
+	public void appendDeclaration( Declaration declaration ) {
+		String name = declaration.getName();
+		if( name != null ) {
+			sb.append( name );
+		} else {
+			//todo: constructor?
+		}
+	}
 
-	void appendNull();
+	public void appendBoolean( boolean value ) {
+		sb.append( value );
+	}
 
-	void appendNullLiteral();
+	public void appendChar( char value ) {
+		sb.append( value );
+	}
 
-	void appendSpace();
+	public void appendInt( int value ) {
+		sb.append( value );
+	}
 
-	void appendDot();
+	public void appendLong( long value ) {
+		sb.append( value );
+	}
 
-	void appendChar( char value );
+	public void appendFloat( float value ) {
+		sb.append( value );
+	}
 
-	void appendBoolean( boolean value );
+	public void appendDouble( double value ) {
+		sb.append( value );
+	}
 
-	void appendInt( int value );
+	public void appendNullLiteral() {
+		sb.append( "null" );
+	}
 
-	void appendLong( long value );
+	//			@Override
+	//			protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	//				//todo
+	//				if( "java".equals( locale.getVariant() ) ) {
+	//					rv.append( "null" );
+	//				} else {
+	//					rv.append( "None" );
+	//				}
+	//				return rv;
+	//			}
 
-	void appendFloat( float value );
+	public void appendNull() {
+		sb.append( "null" );
+	}
 
-	void appendDouble( double value );
+	public void appendThis() {
+		sb.append( "this" );
+	}
 
-	void appendText( String text );
+	public void appendSpace() {
+		sb.append( ' ' );
+	}
 
-	void appendLocalizedText( Class<? extends Node> cls, String subKey );
+	public void appendDot() {
+		sb.append( '.' );
+	}
+
+	public void appendText( String text ) {
+		sb.append( text );
+	}
+
+	public void appendLocalizedText( Class<? extends Node> cls, String subKey ) {
+		sb.append( subKey );
+	}
+
+	private final StringBuilder sb;
 }
