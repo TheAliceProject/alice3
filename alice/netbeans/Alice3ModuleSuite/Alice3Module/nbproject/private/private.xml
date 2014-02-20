@@ -4,9 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/Alice3ProjectTemplateWizardPanel.java</file>
-            <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/layer.xml</file>
             <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/project/ProjectCodeGenerator.java</file>
-            <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/Alice3Library.xml</file>
+            <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/Alice3ProjectTemplatePanelVisual.java</file>
+            <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/project/NetbeansJavaCodeGenerator.java</file>
+            <file>file:/C:/Users/muta/Documents/Gits/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/Alice3ProjectTemplateWizardIterator.java</file>
         </group>
     </open-files>
 </project-private>

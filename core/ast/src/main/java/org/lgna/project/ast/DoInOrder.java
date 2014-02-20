@@ -62,7 +62,7 @@ public final class DoInOrder extends AbstractStatementWithBody {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( "/*do in order*/" );
+		generator.appendString( "\n/*do in order*/ " );
 		this.body.getValue().appendJava( generator );
 	}
 }

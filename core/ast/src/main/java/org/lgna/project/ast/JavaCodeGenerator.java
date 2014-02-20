@@ -76,7 +76,7 @@ public class JavaCodeGenerator {
 		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	};
 
-	private JavaCodeGenerator( Builder builder ) {
+	protected JavaCodeGenerator( Builder builder ) {
 		this.isLambdaSupported = builder.isLambdaSupported;
 		this.importOnDemandPackages = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
 		this.importStaticMethods = java.util.Collections.unmodifiableList( builder.importStaticMethods );
@@ -261,6 +261,26 @@ public class JavaCodeGenerator {
 		}
 		rvStringBuilder.append( this.codeStringBuilder );
 		return rvStringBuilder.toString();
+	}
+
+	protected String getMethodPrefix( UserMethod method ) {
+		return "";
+	}
+
+	protected String getMethodPostfix( UserMethod method ) {
+		return "";
+	}
+
+	/* package-private */final void appendMethodPrefix( UserMethod method ) {
+		this.codeStringBuilder.append( this.getMethodPrefix( method ) );
+	}
+
+	/* package-private */final void appendMethodPostfix( UserMethod method ) {
+		this.codeStringBuilder.append( this.getMethodPostfix( method ) );
+	}
+
+	public Iterable<UserMethod> getMethods( UserType<?> type ) {
+		return type.methods;
 	}
 
 	private final boolean isLambdaSupported;

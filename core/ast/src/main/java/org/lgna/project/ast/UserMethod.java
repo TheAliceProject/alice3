@@ -110,8 +110,10 @@ public class UserMethod extends AbstractUserMethod {
 	//	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendMethodPrefix( this );
 		generator.appendMethodHeader( this );
 		this.body.getValue().appendJava( generator );
+		generator.appendMethodPostfix( this );
 	}
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {

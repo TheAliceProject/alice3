@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import org.lgna.project.Project;
@@ -20,8 +19,6 @@ import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.code.CodeConverter;
-import org.lgna.project.code.PathCodePair;
 import org.lgna.project.io.IoUtilities;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
@@ -33,14 +30,10 @@ import org.openide.loaders.DataObject;
 import org.openide.text.NbDocument;
 
 /**
- *
  * @author Dennis Cosgrove
  */
 public class ProjectCodeGenerator {
-
 	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory) throws IOException, VersionNotSupportedException {
-		//FileUtil.toFileObject( javaSrcDirectory );
-
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
 		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
 
@@ -49,7 +42,7 @@ public class ProjectCodeGenerator {
 		java.util.Set<org.lgna.project.ast.NamedUserType> set = aliceProject.getNamedUserTypes();
 		for (org.lgna.project.ast.NamedUserType type : set) {
 			String path = type.getName() + ".java";
-			String code = type.generateJavaCode(javaCodeGeneratorBuilder.build());
+			String code = type.generateJavaCode(new NetbeansJavaCodeGenerator( javaCodeGeneratorBuilder ));
 			File file = new File(javaSrcDirectory, path);
 			boolean isMarkedForOpen = false;
 			if (type.isAssignableTo(SProgram.class)) {
@@ -57,16 +50,6 @@ public class ProjectCodeGenerator {
 			} else {
 				if (type.isAssignableTo(SScene.class)) {
 					isMarkedForOpen = true;
-//					int index = code.indexOf( "private void performGeneratedSetUp()");
-//					if( index != 0 ) {
-//						StringBuilder sb = new StringBuilder();
-//						sb.append(code.substring(0, index ) );
-//						sb.append("\n" );
-//						sb.append("// <editor-fold defaultstate=\"collapsed\" desc=\"Generated Code\">\n" );
-//						sb.append("\n// </editor-fold>\n" );
-//						sb.append( code.substring(index));
-//						code = sb.toString();
-//					}
 				} else {
 					for (UserMethod method : type.methods) {
 						if (method.managementLevel.getValue() == ManagementLevel.NONE) {
