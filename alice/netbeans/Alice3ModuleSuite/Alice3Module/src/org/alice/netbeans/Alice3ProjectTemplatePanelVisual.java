@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -31,7 +32,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		// Register listener on the textFields to make the automatic updates
 		projectNameTextField.getDocument().addDocumentListener(this);
 		projectLocationTextField.getDocument().addDocumentListener(this);
-        aliceWorldLocationTextField.getDocument().addDocumentListener(this);
+		aliceWorldLocationTextField.getDocument().addDocumentListener(this);
 	}
 
 	public String getProjectName() {
@@ -243,8 +244,22 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	@Override
 	public void addNotify() {
 		super.addNotify();
+		if (true) {
+			final File file = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
+			if (file.exists()) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						aliceWorldLocationTextField.setText(file.getAbsolutePath());
+						String projectName = getProjectNameForFile(file.getName());
+						projectNameTextField.setText(projectName);
+					}
+				});
+			}
+		}
 		//same problem as in 31086, initial focus on Cancel button
 		projectNameTextField.requestFocus();
+		projectNameTextField.selectAll();
 	}
 
 	boolean valid(WizardDescriptor wizardDescriptor) {

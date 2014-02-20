@@ -51,16 +51,22 @@ public class ProjectCodeGenerator {
 			String path = type.getName() + ".java";
 			String code = type.generateJavaCode(javaCodeGeneratorBuilder.build());
 			File file = new File(javaSrcDirectory, path);
-			TextFileUtilities.write(file, code);
-			FileObject fo = FileUtil.toFileObject(file);
-			filesToFormat.add(fo);
-
 			boolean isMarkedForOpen = false;
 			if (type.isAssignableTo(SProgram.class)) {
 				//pass
 			} else {
 				if (type.isAssignableTo(SScene.class)) {
 					isMarkedForOpen = true;
+//					int index = code.indexOf( "private void performGeneratedSetUp()");
+//					if( index != 0 ) {
+//						StringBuilder sb = new StringBuilder();
+//						sb.append(code.substring(0, index ) );
+//						sb.append("\n" );
+//						sb.append("// <editor-fold defaultstate=\"collapsed\" desc=\"Generated Code\">\n" );
+//						sb.append("\n// </editor-fold>\n" );
+//						sb.append( code.substring(index));
+//						code = sb.toString();
+//					}
 				} else {
 					for (UserMethod method : type.methods) {
 						if (method.managementLevel.getValue() == ManagementLevel.NONE) {
@@ -70,6 +76,10 @@ public class ProjectCodeGenerator {
 					}
 				}
 			}
+
+			TextFileUtilities.write(file, code);
+			FileObject fo = FileUtil.toFileObject(file);
+			filesToFormat.add(fo);
 
 			if (isMarkedForOpen) {
 				filesToOpen.add(fo);
