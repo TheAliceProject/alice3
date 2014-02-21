@@ -40,7 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.migration.ast;
+
+import org.lgna.project.migration.AstMigration;
+
 
 /**
  * @author Dennis Cosgrove

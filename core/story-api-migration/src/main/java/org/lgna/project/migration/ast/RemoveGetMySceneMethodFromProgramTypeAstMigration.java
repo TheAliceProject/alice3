@@ -40,27 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.migration.ast;
+
+import org.lgna.project.migration.AstMigration;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationAstMigration extends AstMigration {
-	public MethodInvocationAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigration {
+	public RemoveGetMySceneMethodFromProgramTypeAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract void migrate( org.lgna.project.ast.MethodInvocation methodInvocation );
-
 	@Override
-	public final void migrate( org.lgna.project.ast.Node node ) {
-		node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
-					MethodInvocationAstMigration.this.migrate( methodInvocation );
+	public void migrate( org.lgna.project.ast.Node node ) {
+		if( node instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)node;
+			org.lgna.project.ast.UserMethod mainMethod = type.getDeclaredMethod( "main", String[].class );
+			if( mainMethod != null ) {
+				final org.lgna.project.ast.UserField mySceneField = type.getDeclaredField( "myScene" );
+				final org.lgna.project.ast.UserMethod getMySceneMethod = type.getDeclaredMethod( "getMyScene" );
+				if( ( mySceneField != null ) && ( getMySceneMethod != null ) ) {
+					node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+						public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+							if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
+								org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+								if( methodInvocation.method.getValue() == getMySceneMethod ) {
+									methodInvocation.method.setValue( mySceneField.getGetter() );
+									edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacing", getMySceneMethod, "with", mySceneField.getGetter() );
+								}
+							}
+						}
+					}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+					type.methods.remove( type.methods.indexOf( getMySceneMethod ) );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "removing", getMySceneMethod );
 				}
 			}
-		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+		}
 	}
 }
