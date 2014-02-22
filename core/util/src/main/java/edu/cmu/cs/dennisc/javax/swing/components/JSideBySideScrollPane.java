@@ -105,9 +105,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 	}
 
-	public JSideBySideScrollPane( java.awt.Component leadingView, java.awt.Component trailingView ) {
-		this.leadingViewport.setView( leadingView );
-		this.trailingViewport.setView( trailingView );
+	public JSideBySideScrollPane() {
 		this.add( this.leadingViewport );
 		this.add( this.divider );
 		this.add( this.trailingViewport );
@@ -128,6 +126,20 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.verticalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 		this.horizontalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 		this.divider.setBackground( java.awt.Color.DARK_GRAY );
+	}
+
+	public JSideBySideScrollPane( java.awt.Component leadingView, java.awt.Component trailingView ) {
+		this();
+		this.setLeadingView( leadingView );
+		this.setTrailingView( trailingView );
+	}
+
+	public void setLeadingView( java.awt.Component leadingView ) {
+		this.leadingViewport.setView( leadingView );
+	}
+
+	public void setTrailingView( java.awt.Component trailingView ) {
+		this.trailingViewport.setView( trailingView );
 	}
 
 	@Override
@@ -195,7 +207,6 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 	}
 
 	private void handleMouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 		int rotation = e.getWheelRotation();
 
 		javax.swing.BoundedRangeModel verticalModel = this.verticalScrollBar.getModel();

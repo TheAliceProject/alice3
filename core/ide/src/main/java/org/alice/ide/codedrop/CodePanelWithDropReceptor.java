@@ -406,8 +406,6 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 		}
 	}
 
-	protected final InternalDropReceptor dropReceptor = new InternalDropReceptor();
-
 	public CodePanelWithDropReceptor( org.lgna.croquet.Composite<?> composite ) {
 		super( composite );
 	}
@@ -420,7 +418,51 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 		return this.dropReceptor;
 	}
 
-	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
+	@Override
+	protected final javax.swing.JPanel createJPanel() {
+		final boolean IS_FEEDBACK_DESIRED = false;
+		javax.swing.JPanel rv;
+		if( IS_FEEDBACK_DESIRED ) {
+			rv = new javax.swing.JPanel() {
+				@Override
+				public void paint( java.awt.Graphics g ) {
+					super.paint( g );
+					if( CodePanelWithDropReceptor.this.statementListPropertyPaneInfos != null ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						int i = 0;
+						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodePanelWithDropReceptor.this.statementListPropertyPaneInfos ) {
+							if( statementListPropertyPaneInfo != null ) {
+								java.awt.Color color;
+								if( CodePanelWithDropReceptor.this.dropReceptor.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
+									color = new java.awt.Color( 0, 0, 0, 127 );
+								} else {
+									color = null;
+									//color = new java.awt.Color( 255, 0, 0, 31 );
+								}
+								java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+								bounds = javax.swing.SwingUtilities.convertRectangle( CodePanelWithDropReceptor.this.getAsSeenBy().getAwtComponent(), bounds, this );
+								if( color != null ) {
+									g2.setColor( color );
+									g2.fill( bounds );
+									g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
+									g2.draw( bounds );
+								}
+								g2.setColor( java.awt.Color.BLACK );
+								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
+							}
+							i++;
+						}
+					}
+				}
+			};
+		} else {
+			//todo: super.createJPanel() ?
+			rv = new javax.swing.JPanel();
+		}
+		return rv;
+	}
+
+	public abstract void setJavaCodeOnTheSide( boolean value, boolean isFirstTime );
 
 	protected abstract org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy();
 
@@ -430,4 +472,6 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 
 	public abstract java.awt.print.Printable getPrintable();
 
+	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
+	private final InternalDropReceptor dropReceptor = new InternalDropReceptor();
 }

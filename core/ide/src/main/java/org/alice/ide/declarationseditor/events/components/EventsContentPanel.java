@@ -114,6 +114,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 	}
 
 	@Override
+	public void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
+	}
+
+	@Override
 	public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
 		return null;

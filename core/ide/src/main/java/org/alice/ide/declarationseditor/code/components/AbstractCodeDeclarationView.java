@@ -46,8 +46,13 @@ package org.alice.ide.declarationseditor.code.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
-	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
+	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite, org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor ) {
 		super( composite );
+		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
+		this.javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() );
+		this.jSideBySideScrollPane.setBackground( this.getBackgroundColor() );
+		this.jSideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
+
 		org.lgna.project.ast.AbstractCode code = composite.getDeclaration();
 
 		org.lgna.croquet.views.SwingComponentView<?> controlFlowComponent;
@@ -89,11 +94,14 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		if( pageEndComponent != null ) {
 			this.addPageEndComponent( pageEndComponent );
 		}
+		this.setBackgroundColor( this.codePanelWithDropReceptor.getBackgroundColor() );
 		this.handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Deprecated
-	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
+	public final org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
+		return this.codePanelWithDropReceptor;
+	}
 
 	@Override
 	public java.awt.print.Printable getPrintable() {
@@ -170,5 +178,58 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		}
 	}
 
+	@Override
+	protected void handleDisplayable() {
+		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
+	}
+
+	protected abstract org.lgna.croquet.views.AwtComponentView<?> getMainComponent();
+
 	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
+
+	private void setJavaCodeOnTheSide( boolean value ) {
+		boolean isFirstTime = this.getCenterComponent() == null;
+		org.lgna.croquet.views.AwtComponentView<?> mainComponent = this.getMainComponent();
+		if( value ) {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.removeComponent( mainComponent );
+			}
+			this.jSideBySideScrollPane.setLeadingView( mainComponent.getAwtComponent() );
+			this.jSideBySideScrollPane.setTrailingView( this.javaCodeView.getAwtComponent() );
+			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
+		} else {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.getAwtComponent().remove( this.jSideBySideScrollPane );
+			}
+			this.jSideBySideScrollPane.setLeadingView( null );
+			this.jSideBySideScrollPane.setTrailingView( null );
+			this.addCenterComponent( mainComponent );
+		}
+		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
+		this.revalidateAndRepaint();
+	}
+
+	private final org.lgna.croquet.event.ValueListener<Boolean> isJavaCodeOnTheSideListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			synchronized( getTreeLock() ) {
+				setJavaCodeOnTheSide( e.getNextValue() );
+			}
+		}
+	};
+
+	private final edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane();
+	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
+	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView;
+
 }

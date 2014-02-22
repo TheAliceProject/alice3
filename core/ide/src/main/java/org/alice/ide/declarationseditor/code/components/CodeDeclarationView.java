@@ -47,27 +47,12 @@ package org.alice.ide.declarationseditor.code.components;
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
-	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
-
 	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite );
-		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
-		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
-		if( org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getValue() ) {
-			edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane(
-					this.codeEditor.getAwtComponent(),
-					new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() ).getAwtComponent() );
-			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
-			jSideBySideScrollPane.setBackground( this.getBackgroundColor() );
-			jSideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
-		} else {
-			this.addCenterComponent( this.codeEditor );
-		}
+		super( composite, new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() ) );
 	}
 
-	@Deprecated
 	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
-		return this.codeEditor;
+	protected org.lgna.croquet.views.AwtComponentView<?> getMainComponent() {
+		return this.getCodePanelWithDropReceptor();
 	}
 }
