@@ -190,12 +190,15 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
 	}
 
+	public org.lgna.croquet.views.SideBySideScrollPane getSideBySideScrollPane() {
+		return this.sideBySideScrollPane;
+	}
+
 	protected abstract org.lgna.croquet.views.AwtComponentView<?> getMainComponent();
 
 	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 
-	private void setJavaCodeOnTheSide( boolean value ) {
-		boolean isFirstTime = this.getCenterComponent() == null;
+	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
 		org.lgna.croquet.views.AwtComponentView<?> mainComponent = this.getMainComponent();
 		if( value ) {
 			if( isFirstTime ) {
@@ -217,13 +220,14 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			this.addCenterComponent( mainComponent );
 		}
 		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
-		this.revalidateAndRepaint();
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> isJavaCodeOnTheSideListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			synchronized( getTreeLock() ) {
-				setJavaCodeOnTheSide( e.getNextValue() );
+				boolean isFirstTime = getCenterComponent() == null;
+				setJavaCodeOnTheSide( e.getNextValue(), isFirstTime );
+				revalidateAndRepaint();
 			}
 		}
 	};

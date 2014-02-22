@@ -150,6 +150,14 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.trailingViewport.setView( trailingView );
 	}
 
+	public javax.swing.JScrollBar getVerticalScrollBar() {
+		return this.verticalScrollBar;
+	}
+
+	public javax.swing.JScrollBar getHorizontalScrollBar() {
+		return this.horizontalScrollBar;
+	}
+
 	@Override
 	public void addNotify() {
 		super.addNotify();

@@ -11,23 +11,23 @@ import org.lgna.project.ast.UserCode;
 public class EventListenersView extends org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView {
 	public EventListenersView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite, new EventsContentPanel( (org.lgna.project.ast.UserMethod)composite.getDeclaration() ) );
-		this.scrollPane = new org.lgna.croquet.views.ScrollPane( this.getCodePanelWithDropReceptor() );
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 		LineAxisPanel bottom = new LineAxisPanel( button );
-		this.stickyBottomPanel = new StickyBottomPanel( this.scrollPane, bottom );
-		this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				Object src = e.getSource();
-				if( src instanceof java.awt.Component ) {
-					java.awt.Component awtComponent = (java.awt.Component)src;
-					if( awtComponent.isValid() ) {
-						//pass
-					} else {
-						stickyBottomPanel.revalidateAndRepaint();
-					}
-				}
-			}
-		} );
+		this.stickyBottomPanel = new StickyBottomPanel();
+		this.stickyBottomPanel.addBottomView( bottom );
+		//		this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
+		//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		//				Object src = e.getSource();
+		//				if( src instanceof java.awt.Component ) {
+		//					java.awt.Component awtComponent = (java.awt.Component)src;
+		//					if( awtComponent.isValid() ) {
+		//						//pass
+		//					} else {
+		//						stickyBottomPanel.revalidateAndRepaint();
+		//					}
+		//				}
+		//			}
+		//		} );
 
 		this.stickyBottomPanel.setBackgroundColor( this.getBackgroundColor() );
 		this.stickyBottomPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
@@ -43,12 +43,20 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		return this.stickyBottomPanel;
 	}
 
+	private javax.swing.JScrollBar getJVerticalScrollBar() {
+		if( org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getValue() ) {
+			return this.getSideBySideScrollPane().getAwtComponent().getVerticalScrollBar();
+		} else {
+			return this.scrollPane.getAwtComponent().getVerticalScrollBar();
+		}
+	}
+
 	private void handleStatementsChanged( boolean isScrollDesired ) {
 		this.revalidateAndRepaint();
 		if( isScrollDesired ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					javax.swing.JScrollBar verticalScrollBar = EventListenersView.this.scrollPane.getAwtComponent().getVerticalScrollBar();
+					javax.swing.JScrollBar verticalScrollBar = getJVerticalScrollBar();
 					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
 				}
 			} );
@@ -69,6 +77,29 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );
 		super.handleRemovedFrom( parent );
+	}
+
+	@Override
+	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
+		super.setJavaCodeOnTheSide( value, isFirstTime );
+		org.lgna.croquet.views.SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
+		if( value ) {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.stickyBottomPanel.removeComponent( this.scrollPane );
+			}
+			this.scrollPane.setViewportView( null );
+			this.stickyBottomPanel.addTopView( codePanel );
+		} else {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.stickyBottomPanel.removeComponent( codePanel );
+			}
+			this.scrollPane.setViewportView( codePanel );
+			this.stickyBottomPanel.addTopView( this.scrollPane );
+		}
 	}
 
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement> statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement>() {
@@ -102,7 +133,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 
 	};
 
-	private final org.lgna.croquet.views.ScrollPane scrollPane;
+	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
 	private final StickyBottomPanel stickyBottomPanel;
 
 }
