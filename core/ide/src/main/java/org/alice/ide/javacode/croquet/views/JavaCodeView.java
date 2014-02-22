@@ -99,8 +99,23 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		}
 		if( code != null ) {
 			code = org.lgna.project.code.CodeFormatter.format( code );
-			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault();
+			de.java2html.options.JavaSourceStyleTable javaSourceStyleTable = de.java2html.options.JavaSourceStyleTable.getDefault().getClone();
 
+			de.java2html.util.RGB keywordRGB = new de.java2html.util.RGB( 0, 0, 230 );
+			de.java2html.util.RGB commentRGB = new de.java2html.util.RGB( 150, 150, 150 );
+			de.java2html.util.RGB stringRGB = new de.java2html.util.RGB( 206, 123, 0 );
+			de.java2html.util.RGB blackRGB = new de.java2html.util.RGB( 0, 0, 0 );
+
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.KEYWORD, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CODE_TYPE, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.STRING, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CHAR_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_LINE, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_BLOCK, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.NUM_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( blackRGB ) );
+
+			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault().getClone();
+			javaSourceConversionOptions.setStyleTable( javaSourceStyleTable );
 			final boolean IS_TAB_SIZE_WORKING = false;
 			if( IS_TAB_SIZE_WORKING ) {
 				javaSourceConversionOptions.setTabSize( 4 );
