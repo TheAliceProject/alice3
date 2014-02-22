@@ -45,8 +45,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 
 	public EventListenersView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
-		this.eventsPanel = new EventsContentPanel( composite.getDeclaration() );
-		//		BorderPanel panel = new BorderPanel();
+		this.eventsPanel = new EventsContentPanel( (org.lgna.project.ast.UserMethod)composite.getDeclaration() );
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
 		this.scrollPane = new org.lgna.croquet.views.ScrollPane( eventsPanel );

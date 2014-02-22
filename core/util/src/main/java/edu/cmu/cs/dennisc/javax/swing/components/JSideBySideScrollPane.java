@@ -113,6 +113,12 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.add( this.trailingViewport );
 		this.add( this.verticalScrollBar );
 		this.add( this.horizontalScrollBar );
+
+		this.horizontalScrollBar.setUnitIncrement( 12 );
+		this.verticalScrollBar.setUnitIncrement( 12 );
+		this.horizontalScrollBar.setBlockIncrement( 24 );
+		this.verticalScrollBar.setBlockIncrement( 24 );
+
 		this.setLayout( new SideBySideLayout() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			this.leadingViewport.setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
@@ -131,10 +137,12 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.trailingViewport.addChangeListener( this.viewportListener );
 		this.verticalScrollBar.getModel().addChangeListener( this.verticalScrollListener );
 		this.horizontalScrollBar.getModel().addChangeListener( this.horizontalScrollListener );
+		this.addMouseWheelListener( this.mouseWheelListener );
 	}
 
 	@Override
 	public void removeNotify() {
+		this.removeMouseWheelListener( this.mouseWheelListener );
 		this.horizontalScrollBar.getModel().removeChangeListener( this.horizontalScrollListener );
 		this.verticalScrollBar.getModel().removeChangeListener( this.verticalScrollListener );
 		this.trailingViewport.removeChangeListener( this.viewportListener );
@@ -184,6 +192,36 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		int verticalValue = this.verticalScrollBar.getValue();
 		this.horizontalScrollBar.getModel().setRangeProperties( horizontalValue, extentHorizontal, 0, maxHorizontal, false );
 		this.verticalScrollBar.getModel().setRangeProperties( verticalValue, extentVertical, 0, maxVertical, false );
+	}
+
+	private void handleMouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+		int rotation = e.getWheelRotation();
+
+		javax.swing.BoundedRangeModel verticalModel = this.verticalScrollBar.getModel();
+
+		boolean isVertical;
+		if( rotation > 0 ) {
+			isVertical = ( verticalModel.getValue() + verticalModel.getExtent() ) < verticalModel.getMaximum();
+		} else {
+			isVertical = verticalModel.getValue() > verticalModel.getMinimum();
+		}
+
+		javax.swing.JScrollBar scrollBar;
+		if( isVertical ) {
+			scrollBar = this.verticalScrollBar;
+		} else {
+			scrollBar = this.horizontalScrollBar;
+		}
+		int units = scrollBar.getUnitIncrement();
+		javax.swing.BoundedRangeModel model = scrollBar.getModel();
+		int value;
+		if( rotation > 0 ) {
+			value = Math.min( model.getValue() + ( rotation * units ), model.getMaximum() );
+		} else {
+			value = Math.max( model.getValue() + ( rotation * units ), model.getMinimum() );
+		}
+		model.setValue( value );
 	}
 
 	private static class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
@@ -262,6 +300,12 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			int trailingX = model.getValue(); //todo
 			updateViewX( leadingViewport, leadingX );
 			updateViewX( trailingViewport, trailingX );
+		}
+	};
+
+	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+			handleMouseWheelMoved( e );
 		}
 	};
 

@@ -49,12 +49,6 @@ import org.alice.ide.x.components.StatementListPropertyView;
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
-	private final org.lgna.project.ast.AbstractCode code;
-	private final AbstractCodeHeaderPane header;
-	private final StatementListPropertyView rootStatementListPropertyPane;
-
-	private final org.alice.ide.common.BodyPane bodyPane;
-
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode : this.code;
@@ -84,12 +78,16 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		this.bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
-		this.addCenterComponent( scrollPane );
-		scrollPane.setViewportView( this.bodyPane );
-		//scrollPane.setBackgroundColor( null );
-		scrollPane.getAwtComponent().getViewport().setOpaque( false );
-		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+		if( org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getValue() ) {
+			this.addCenterComponent( this.bodyPane );
+		} else {
+			org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
+			scrollPane.setViewportView( this.bodyPane );
+			//scrollPane.setBackgroundColor( null );
+			scrollPane.getAwtComponent().getViewport().setOpaque( false );
+			scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+			this.addCenterComponent( scrollPane );
+		}
 
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
@@ -373,4 +371,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 				.pageStart( this.getPageStartComponent().getAwtComponent() )
 				.build();
 	}
+
+	private final org.lgna.project.ast.AbstractCode code;
+	private final AbstractCodeHeaderPane header;
+	private final StatementListPropertyView rootStatementListPropertyPane;
+	private final org.alice.ide.common.BodyPane bodyPane;
 }
