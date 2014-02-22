@@ -134,8 +134,16 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.setTrailingView( trailingView );
 	}
 
+	public java.awt.Component getLeadingView() {
+		return this.leadingViewport.getView();
+	}
+
 	public void setLeadingView( java.awt.Component leadingView ) {
 		this.leadingViewport.setView( leadingView );
+	}
+
+	public java.awt.Component getTrailingView() {
+		return this.trailingViewport.getView();
 	}
 
 	public void setTrailingView( java.awt.Component trailingView ) {

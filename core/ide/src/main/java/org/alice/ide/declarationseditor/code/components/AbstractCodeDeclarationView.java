@@ -50,8 +50,8 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		super( composite );
 		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
 		this.javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() );
-		this.jSideBySideScrollPane.setBackground( this.getBackgroundColor() );
-		this.jSideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
+		this.sideBySideScrollPane.setBackgroundColor( this.getBackgroundColor() );
+		this.sideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
 
 		org.lgna.project.ast.AbstractCode code = composite.getDeclaration();
 
@@ -203,17 +203,17 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			} else {
 				this.removeComponent( mainComponent );
 			}
-			this.jSideBySideScrollPane.setLeadingView( mainComponent.getAwtComponent() );
-			this.jSideBySideScrollPane.setTrailingView( this.javaCodeView.getAwtComponent() );
-			this.getAwtComponent().add( jSideBySideScrollPane, java.awt.BorderLayout.CENTER );
+			this.sideBySideScrollPane.setLeadingView( mainComponent );
+			this.sideBySideScrollPane.setTrailingView( this.javaCodeView );
+			this.addCenterComponent( sideBySideScrollPane );
 		} else {
 			if( isFirstTime ) {
 				//pass
 			} else {
-				this.getAwtComponent().remove( this.jSideBySideScrollPane );
+				this.removeComponent( this.sideBySideScrollPane );
 			}
-			this.jSideBySideScrollPane.setLeadingView( null );
-			this.jSideBySideScrollPane.setTrailingView( null );
+			this.sideBySideScrollPane.setLeadingView( null );
+			this.sideBySideScrollPane.setTrailingView( null );
 			this.addCenterComponent( mainComponent );
 		}
 		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
@@ -228,7 +228,7 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane jSideBySideScrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane();
+	private final org.lgna.croquet.views.SideBySideScrollPane sideBySideScrollPane = new org.lgna.croquet.views.SideBySideScrollPane();
 	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
 	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView;
 
