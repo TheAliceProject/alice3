@@ -6,7 +6,6 @@
 package org.alice.netbeans;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import java.awt.Color;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-import org.alice.netbeans.Alice3ProjectTemplateWizardPanel;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;

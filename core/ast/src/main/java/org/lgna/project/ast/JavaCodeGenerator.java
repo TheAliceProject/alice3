@@ -255,9 +255,18 @@ public class JavaCodeGenerator {
 		codeStringBuilder.append( o );
 	}
 
+	protected String getImportsPrefix() {
+		return "";
+	}
+
+	protected String getImportsPostfix() {
+		return "";
+	}
+
 	/* package-private */String getText( boolean areImportsDesired ) {
 		StringBuilder rvStringBuilder = new StringBuilder();
 		if( areImportsDesired ) {
+			rvStringBuilder.append( this.getImportsPrefix() );
 			for( JavaType typeToImport : this.typesToImport ) {
 				JavaPackage pack = typeToImport.getPackage();
 				if( "java.lang".contentEquals( pack.getName() ) ) {
@@ -284,6 +293,7 @@ public class JavaCodeGenerator {
 				rvStringBuilder.append( methodToImportStatic.getName() );
 				rvStringBuilder.append( ';' );
 			}
+			rvStringBuilder.append( this.getImportsPostfix() );
 		}
 		rvStringBuilder.append( this.codeStringBuilder );
 		return rvStringBuilder.toString();

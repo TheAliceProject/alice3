@@ -5,7 +5,6 @@
  */
 package org.alice.netbeans;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.awt.Component;
 import java.io.ByteArrayInputStream;
@@ -18,7 +17,6 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -28,6 +26,7 @@ import javax.swing.event.ChangeListener;
 import org.alice.netbeans.logging.IoLoggingHandler;
 import org.alice.netbeans.project.ProjectCodeGenerator;
 import org.lgna.project.VersionNotSupportedException;
+import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.templates.TemplateRegistration;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
@@ -37,7 +36,6 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
-import org.openide.util.NbBundle.Messages;
 import org.openide.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,10 +44,12 @@ import org.xml.sax.InputSource;
 
 // TODO define position attribute
 @TemplateRegistration(folder = "Project/Standard", displayName = "Java Project from Existing Alice Project", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/aliceIcon.png", content = "ProjectTemplate.zip")
-public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
+public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.ProgressInstantiatingIterator {
+
 	static {
 		IoLoggingHandler.initialize();
 	}
+
 	public static Alice3ProjectTemplateWizardIterator createIterator() {
 		return new Alice3ProjectTemplateWizardIterator();
 	}
@@ -100,44 +100,57 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor./*P
 		this.panels = null;
 	}
 
-	public Set/*<FileObject>*/ instantiate(/*ProgressHandle handle*/) throws IOException {
-		Set<FileObject> resultSet = new LinkedHashSet<FileObject>();
-		File dirF = FileUtil.normalizeFile((File) wizardDescriptor.getProperty("projdir"));
-		dirF.mkdirs();
+	public Set<FileObject> instantiate() throws IOException {
+		return instantiate(null);
+	}
 
-		FileObject template = Templates.getTemplate(wizardDescriptor);
-		FileObject dir = FileUtil.toFileObject(dirF);
-		unZipFile(template.getInputStream(), dir);
+	public Set<FileObject> instantiate(ProgressHandle progressHandle) throws IOException {
+		if (progressHandle != null) {
+			progressHandle.start();
+		}
+		try {
+			Set<FileObject> resultSet = new LinkedHashSet<FileObject>();
+			File dirF = FileUtil.normalizeFile((File) wizardDescriptor.getProperty("projdir"));
+			dirF.mkdirs();
 
-		// Always open top dir as a project:
-		resultSet.add(dir);
-		// Look for nested projects to open as well:
-		Enumeration<? extends FileObject> e = dir.getFolders(true);
-		while (e.hasMoreElements()) {
-			FileObject subfolder = e.nextElement();
-			if (ProjectManager.getDefault().isProject(subfolder)) {
-				resultSet.add(subfolder);
+			FileObject template = Templates.getTemplate(wizardDescriptor);
+			FileObject dir = FileUtil.toFileObject(dirF);
+			unZipFile(template.getInputStream(), dir);
+
+			// Always open top dir as a project:
+			resultSet.add(dir);
+			// Look for nested projects to open as well:
+			Enumeration<? extends FileObject> e = dir.getFolders(true);
+			while (e.hasMoreElements()) {
+				FileObject subfolder = e.nextElement();
+				if (ProjectManager.getDefault().isProject(subfolder)) {
+					resultSet.add(subfolder);
+				}
+			}
+
+			File parent = dirF.getParentFile();
+			if (parent != null && parent.exists()) {
+				ProjectChooser.setProjectsFolder(parent);
+			}
+
+			File aliceProjectFile = (File) wizardDescriptor.getProperty("aliceProjectFile");
+			File javaSrcDirectory = new File(dirF, "src");
+
+			try {
+				Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory, progressHandle);
+				resultSet.addAll(filesToOpen);
+			} catch (IOException ioe) {
+				Logger.throwable(ioe);
+			} catch (VersionNotSupportedException vnse) {
+				Logger.throwable(vnse);
+			}
+
+			return resultSet;
+		} finally {
+			if (progressHandle != null) {
+				progressHandle.finish();
 			}
 		}
-
-		File parent = dirF.getParentFile();
-		if (parent != null && parent.exists()) {
-			ProjectChooser.setProjectsFolder(parent);
-		}
-
-		File aliceProjectFile = (File)wizardDescriptor.getProperty("aliceProjectFile");
-		File javaSrcDirectory = new File(dirF, "src");
-
-		try {
-			Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory);
-			resultSet.addAll( filesToOpen );
-		} catch (IOException ioe) {
-			Logger.throwable(ioe);
-		} catch (VersionNotSupportedException vnse) {
-			Logger.throwable(vnse);
-		}
-
-		return resultSet;
 	}
 
 	public String name() {

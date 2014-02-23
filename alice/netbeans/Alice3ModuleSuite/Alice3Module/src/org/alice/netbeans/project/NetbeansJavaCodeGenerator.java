@@ -4,6 +4,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import java.util.List;
 import java.util.Map;
+import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.UserMethod;
@@ -30,8 +31,10 @@ import org.lgna.story.SScene;
 	}
 
 	private String getCollapseText(UserMethod method) {
-		if (method.getDeclaringType().isAssignableTo(SScene.class)) {
-			return methodNamesToCollapse.get(method.name.getValue());
+		if( Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired() ) {
+			if (method.getDeclaringType().isAssignableTo(SScene.class)) {
+				return methodNamesToCollapse.get(method.name.getValue());
+			}
 		}
 		return null;
 	}
