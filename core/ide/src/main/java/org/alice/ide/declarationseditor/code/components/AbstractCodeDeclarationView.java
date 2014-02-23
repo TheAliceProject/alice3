@@ -49,9 +49,6 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite, org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor ) {
 		super( composite );
 		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
-		this.javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() );
-		this.sideBySideScrollPane.setBackgroundColor( this.getBackgroundColor() );
-		this.sideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
 
 		org.lgna.project.ast.AbstractCode code = composite.getDeclaration();
 
@@ -179,61 +176,11 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
-		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
-	}
-
-	public org.lgna.croquet.views.SideBySideScrollPane getSideBySideScrollPane() {
-		return this.sideBySideScrollPane;
-	}
-
-	protected abstract org.lgna.croquet.views.AwtComponentView<?> getMainComponent();
-
-	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
-
 	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		org.lgna.croquet.views.AwtComponentView<?> mainComponent = this.getMainComponent();
-		if( value ) {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.removeComponent( mainComponent );
-			}
-			this.sideBySideScrollPane.setLeadingView( mainComponent );
-			this.sideBySideScrollPane.setTrailingView( this.javaCodeView );
-			this.addCenterComponent( sideBySideScrollPane );
-		} else {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.removeComponent( this.sideBySideScrollPane );
-			}
-			this.sideBySideScrollPane.setLeadingView( null );
-			this.sideBySideScrollPane.setTrailingView( null );
-			this.addCenterComponent( mainComponent );
-		}
+		super.setJavaCodeOnTheSide( value, isFirstTime );
 		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
 	}
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> isJavaCodeOnTheSideListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
-			synchronized( getTreeLock() ) {
-				boolean isFirstTime = getCenterComponent() == null;
-				setJavaCodeOnTheSide( e.getNextValue(), isFirstTime );
-				revalidateAndRepaint();
-			}
-		}
-	};
-
-	private final org.lgna.croquet.views.SideBySideScrollPane sideBySideScrollPane = new org.lgna.croquet.views.SideBySideScrollPane();
+	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
-	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView;
-
 }
