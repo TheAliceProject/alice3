@@ -54,6 +54,8 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	public JavaCodeView( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		this.setDeclaration( declaration );
+		edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret caret = new edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret();
+		this.getAwtComponent().setCaret( caret );
 	}
 
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
@@ -139,12 +141,6 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			code = "";
 		}
 		this.setText( code );
-		//		final javax.swing.JScrollPane jScrollPane = this.getScrollPaneIfItExists().getAwtComponent();
-		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//			public void run() {
-		//				jScrollPane.getViewport().setLocation( 0, 0 );
-		//			}
-		//		} );
 	}
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
