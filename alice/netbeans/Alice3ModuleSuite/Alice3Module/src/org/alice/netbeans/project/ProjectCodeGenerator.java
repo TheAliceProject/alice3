@@ -6,6 +6,7 @@
 package org.alice.netbeans.project;
 
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
@@ -22,6 +23,7 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.io.IoUtilities;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
+import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.modules.editor.indent.api.Reformat;
 import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
@@ -33,16 +35,29 @@ import org.openide.text.NbDocument;
  * @author Dennis Cosgrove
  */
 public class ProjectCodeGenerator {
-	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory) throws IOException, VersionNotSupportedException {
+
+	private static void progress(ProgressHandle progressHandle, String prefix, FileObject fileObject, int workUnit) {
+		if (progressHandle != null) {
+			progressHandle.progress(prefix + fileObject.getNameExt(), workUnit);
+			//for testing progress
+			//ThreadUtilities.sleep(1000);
+		}
+	}
+
+	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory, ProgressHandle progressHandle) throws IOException, VersionNotSupportedException {
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
 		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
 
 		List<FileObject> filesToOpen = Lists.newLinkedList();
-		List<FileObject> filesToFormat = Lists.newLinkedList();
-		java.util.Set<org.lgna.project.ast.NamedUserType> set = aliceProject.getNamedUserTypes();
-		for (org.lgna.project.ast.NamedUserType type : set) {
+		List<FileObject> fileObjectsToFormat = Lists.newLinkedList();
+		java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = aliceProject.getNamedUserTypes();
+		if (progressHandle != null) {
+			progressHandle.switchToDeterminate(namedUserTypes.size());
+		}
+		int createWorkUnit = 0;
+		for (org.lgna.project.ast.NamedUserType type : namedUserTypes) {
 			String path = type.getName() + ".java";
-			String code = type.generateJavaCode(new NetbeansJavaCodeGenerator( javaCodeGeneratorBuilder ));
+			String code = type.generateJavaCode(new NetbeansJavaCodeGenerator(javaCodeGeneratorBuilder));
 			File file = new File(javaSrcDirectory, path);
 			boolean isMarkedForOpen = false;
 			if (type.isAssignableTo(SProgram.class)) {
@@ -61,17 +76,23 @@ public class ProjectCodeGenerator {
 			}
 
 			TextFileUtilities.write(file, code);
-			FileObject fo = FileUtil.toFileObject(file);
-			filesToFormat.add(fo);
+			FileObject fileObject = FileUtil.toFileObject(file);
+			fileObjectsToFormat.add(fileObject);
 
 			if (isMarkedForOpen) {
-				filesToOpen.add(fo);
+				filesToOpen.add(fileObject);
 			}
+			progress(progressHandle, "create: ", fileObject, createWorkUnit);
+			createWorkUnit++;
 		}
 
-		for (FileObject fileToFormat : filesToFormat) {
+		if (progressHandle != null) {
+			progressHandle.switchToDeterminate(fileObjectsToFormat.size());
+		}
+		int formatWorkUnit = 0;
+		for (FileObject fileObjectToFormat : fileObjectsToFormat) {
 			try {
-				DataObject dobj = DataObject.find(fileToFormat);
+				DataObject dobj = DataObject.find(fileObjectToFormat);
 				EditorCookie ec = dobj.getCookie(EditorCookie.class);
 				final StyledDocument doc = ec.openDocument();
 				final Reformat rf = Reformat.get(doc);
@@ -91,11 +112,13 @@ public class ProjectCodeGenerator {
 					rf.unlock();
 				}
 				ec.saveDocument();
+				progress(progressHandle, "format: ", fileObjectToFormat, formatWorkUnit);
 			} catch (BadLocationException ble) {
 				Logger.throwable(ble);
 			} catch (IOException ioe) {
 				Logger.throwable(ioe);
 			}
+			formatWorkUnit++;
 		}
 		return filesToOpen;
 	}
