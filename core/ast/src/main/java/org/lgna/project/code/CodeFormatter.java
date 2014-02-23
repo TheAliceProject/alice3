@@ -88,7 +88,7 @@ public class CodeFormatter {
 			}
 		}
 		String s = sb.toString();
-		s = s.replaceAll( "\\}\\s*,\\(", "},(" );
+		s = s.replaceAll( "\\}\\s*,", "}," ); //s = s.replaceAll( "\\}\\s*,\\(", "},(" );
 		s = s.replaceAll( "\\}\\s*\\)", "})" );
 
 		// remove whitespace before else
