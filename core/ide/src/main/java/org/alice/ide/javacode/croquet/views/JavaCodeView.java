@@ -66,9 +66,23 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		this.updateHtml();
 	}
 
+	private static org.lgna.croquet.undo.UndoHistory getProjectUndoHistory() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.alice.ide.ProjectDocument document = ide.getDocument();
+			if( document != null ) {
+				return document.getUndoHistory( org.alice.ide.IDE.PROJECT_GROUP );
+			}
+		}
+		return null;
+	}
+
 	@Override
 	protected void handleDisplayable() {
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		this.undoHistory = getProjectUndoHistory();
+		if( this.undoHistory != null ) {
+			this.undoHistory.addHistoryListener( this.historyListener );
+		}
 		this.addKeyListener( this.keyListener );
 		if( IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED ) {
 			this.addMouseWheelListener( this.mouseWheelListener );
@@ -82,11 +96,14 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			this.removeMouseWheelListener( this.mouseWheelListener );
 		}
 		this.removeKeyListener( this.keyListener );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		if( this.undoHistory != null ) {
+			this.undoHistory.removeHistoryListener( this.historyListener );
+		}
 		super.handleUndisplayable();
 	}
 
 	private void updateHtml() {
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updateHtml", this.declaration );
 		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
 		String code;
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
@@ -142,9 +159,27 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		this.setText( code );
 	}
 
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
-		public void projectChanged() {
+	private final org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		}
+
+		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		}
+
+		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		}
+
+		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+			//check not necessary
+			//if( e.getTypedSource().getGroup() == org.alice.ide.IDE.PROJECT_GROUP ) {
 			updateHtml();
+			//}
+		}
+
+		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		}
+
+		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 	};
 
@@ -182,6 +217,8 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
+
+	private org.lgna.croquet.undo.UndoHistory undoHistory;
 	private org.lgna.project.ast.AbstractDeclaration declaration;
 	private int fontSize = 14;
 }
