@@ -115,8 +115,17 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		} else {
 			generator.appendString( "}" );
 		}
-		generator.appendString( "," );
-		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
+		Expression arrayOrIterableExpression = this.getArrayOrIterableProperty().getValue();
+		if( arrayOrIterableExpression instanceof ArrayInstanceCreation ) {
+			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)arrayOrIterableExpression;
+			for( Expression variableLengthExpression : arrayInstanceCreation.expressions ) {
+				generator.appendString( "," );
+				generator.appendExpression( variableLengthExpression );
+			}
+		} else {
+			generator.appendString( "," );
+			generator.appendExpression( arrayOrIterableExpression );
+		}
 		generator.appendString( ");" );
 	}
 }
