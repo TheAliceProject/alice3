@@ -58,6 +58,14 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 		this.getAwtComponent().setText( text );
 	}
 
+	public javax.swing.text.Caret getCaret() {
+		return this.getAwtComponent().getCaret();
+	}
+
+	public void setCaret( javax.swing.text.Caret caret ) {
+		this.getAwtComponent().setCaret( caret );
+	}
+
 	public void setTextFromUrlLater( java.net.URL url ) {
 		this.getAwtComponent().setTextFromUrlLater( url );
 	}

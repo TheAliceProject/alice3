@@ -54,8 +54,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	public JavaCodeView( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		this.setDeclaration( declaration );
-		edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret caret = new edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret();
-		this.getAwtComponent().setCaret( caret );
+		this.setCaret( new edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret() ); // avoid scrolling on setText
 	}
 
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {

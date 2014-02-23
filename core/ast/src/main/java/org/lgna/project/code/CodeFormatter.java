@@ -109,6 +109,8 @@ public class CodeFormatter {
 		s = s.replaceAll( "\\( \\)", "()" );
 		// remove whitespace from end of lines
 		s = s.replaceAll( "\\s*\n+", "\n" );
+
+		s = s.replaceAll( "@Override ", "@Override\n\t" );
 		return s;
 	}
 
