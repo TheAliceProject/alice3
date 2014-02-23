@@ -40,17 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoOpAstMigrationStandIn extends AstMigration {
-	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
-		super( minimumVersion, resultVersion );
+public class SideBySideScrollPane extends SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane> {
+	public AwtComponentView<?> getLeadingView() {
+		return AwtComponentView.lookup( this.getAwtComponent().getLeadingView() );
+	}
+
+	public void setLeadingView( AwtComponentView<?> leadingView ) {
+		this.getAwtComponent().setLeadingView( leadingView != null ? leadingView.getAwtComponent() : null );
+	}
+
+	public AwtComponentView<?> getTrailingView() {
+		return AwtComponentView.lookup( this.getAwtComponent().getTrailingView() );
+	}
+
+	public void setTrailingView( AwtComponentView<?> trailingView ) {
+		this.getAwtComponent().setTrailingView( trailingView != null ? trailingView.getAwtComponent() : null );
 	}
 
 	@Override
-	public void migrate( org.lgna.project.ast.Node node ) {
+	protected edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane createAwtComponent() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane();
 	}
 }

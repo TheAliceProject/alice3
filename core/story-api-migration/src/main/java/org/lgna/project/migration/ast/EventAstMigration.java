@@ -54,7 +54,6 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.project.migration.MethodInvocationAstMigration;
 import org.lgna.story.event.MouseClickOnScreenEvent;
 
 /**

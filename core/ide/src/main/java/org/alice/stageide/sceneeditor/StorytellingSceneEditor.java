@@ -431,13 +431,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 				if( !this.selectionIsFromInstanceSelector )
 				{
+					org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 					if( field == this.getActiveSceneField() )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
+						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForScene() );
 					}
 					else if( field != null )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
 					}
 				}
 			}

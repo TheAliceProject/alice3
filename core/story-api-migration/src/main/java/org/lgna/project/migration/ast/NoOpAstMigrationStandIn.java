@@ -40,27 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.migration.ast;
+
+import org.lgna.project.migration.AstMigration;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldAccessAstMigration extends AstMigration {
-	public FieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+public class NoOpAstMigrationStandIn extends AstMigration {
+	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract void migrate( org.lgna.project.ast.FieldAccess fieldAccess );
-
 	@Override
-	public final void migrate( org.lgna.project.ast.Node root ) {
-		root.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.FieldAccess ) {
-					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)crawlable;
-					FieldAccessAstMigration.this.migrate( fieldAccess );
-				}
-			}
-		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+	public void migrate( org.lgna.project.ast.Node node ) {
 	}
 }

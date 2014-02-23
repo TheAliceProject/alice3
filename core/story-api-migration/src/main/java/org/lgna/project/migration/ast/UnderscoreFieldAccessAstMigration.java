@@ -40,66 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.migration.ast;
 
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMigrationManager implements MigrationManager {
-	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	private final org.lgna.project.Version currentVersion;
-
-	public AbstractMigrationManager( org.lgna.project.Version currentVersion ) {
-		this.currentVersion = currentVersion;
+public class UnderscoreFieldAccessAstMigration extends org.lgna.project.migration.ast.FieldAccessAstMigration {
+	public UnderscoreFieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract TextMigration[] getTextMigrations();
-
-	protected abstract AstMigration[] getAstMigrations();
-
-	public org.lgna.project.Version getCurrentVersion() {
-		return this.currentVersion;
-	}
-
-	public boolean isDevoidOfVersionIndependentMigrations() {
-		return versionIndependentMigrations.size() == 0;
-	}
-
-	public String migrate( String source, org.lgna.project.Version version ) {
-		String rv = source;
-		for( TextMigration textMigration : this.getTextMigrations() ) {
-			if( textMigration.isApplicable( version ) ) {
-				if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
-				}
-				rv = textMigration.migrate( rv );
-				version = textMigration.getResultVersion();
-			}
-		}
-		return rv;
-	}
-
-	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version ) {
-		for( AstMigration astMigration : this.getAstMigrations() ) {
-			if( astMigration != null ) {
-				if( astMigration.isApplicable( version ) ) {
-					if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
+	@Override
+	protected void migrate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+		if( field instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+			java.lang.reflect.Field reification = fieldReflectionProxy.getReification();
+			if( reification != null ) {
+				//pass
+			} else {
+				org.lgna.project.ast.JavaType declaringType = javaField.getDeclaringType();
+				Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
+				if( declaringCls != null ) {
+					String previousName = fieldReflectionProxy.getName();
+					for( java.lang.reflect.Field fld : declaringCls.getFields() ) {
+						String fldName = fld.getName();
+						if( fldName.replace( "_", "" ).contentEquals( fieldReflectionProxy.getName() ) ) {
+							org.lgna.project.ast.AbstractField replacementField = declaringType.findField( fldName );
+							fieldAccess.field.setValue( replacementField );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacing", javaField, "with", replacementField );
+							break;
+						}
 					}
-					astMigration.migrate( root );
-					version = astMigration.getResultVersion();
 				}
 			}
 		}
-	}
-
-	public void addVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.add( migration );
-	}
-
-	public void removeVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.remove( migration );
 	}
 }
