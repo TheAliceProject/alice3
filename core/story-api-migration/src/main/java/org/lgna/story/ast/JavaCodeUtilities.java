@@ -49,15 +49,22 @@ public class JavaCodeUtilities {
 	private JavaCodeUtilities() {
 		throw new AssertionError();
 	}
+
 	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
 		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
-			.isLambdaSupported( true )
-			.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
-			.addImportStaticMethod( 
-					edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( 
-							org.lgna.common.ThreadUtilities.class, 
-							"doTogether", 
-							Runnable[].class ) )
-			.build();
+				.isLambdaSupported( true )
+				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
+				.addImportStaticMethod(
+						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+								org.lgna.common.ThreadUtilities.class,
+								"doTogether",
+								Runnable[].class ) )
+				.addImportStaticMethod(
+						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+								org.lgna.common.ThreadUtilities.class,
+								"eachInTogether",
+								org.lgna.common.EachInTogetherRunnable.class,
+								Object[].class ) )
+				.build();
 	}
 }

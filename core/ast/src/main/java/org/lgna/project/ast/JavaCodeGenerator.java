@@ -78,8 +78,8 @@ public class JavaCodeGenerator {
 
 	protected JavaCodeGenerator( Builder builder ) {
 		this.isLambdaSupported = builder.isLambdaSupported;
-		this.importOnDemandPackages = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
-		this.importStaticMethods = java.util.Collections.unmodifiableList( builder.importStaticMethods );
+		this.packagesMarkedForOnDemandImport = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
+		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
 
 	/* package-private */boolean isLambdaSupported() {
@@ -149,6 +149,23 @@ public class JavaCodeGenerator {
 		}
 		//todo: handle imports
 		this.appendString( type.getName() );
+	}
+
+	/* packag-private */void appendCallerExpression( Expression callerExpression, AbstractMethod method ) {
+		boolean isImportStatic = false;
+		if( method instanceof JavaMethod ) {
+			if( method.isStatic() ) {
+				if( this.staticMethodsMarkedForImport.contains( method ) ) {
+					isImportStatic = true;
+				}
+			}
+		}
+		if( isImportStatic ) {
+			this.methodsToImportStatic.add( (JavaMethod)method );
+		} else {
+			this.appendExpression( callerExpression );
+			this.appendChar( '.' );
+		}
 	}
 
 	/* package-private */void appendExpression( Expression expression ) {
@@ -258,6 +275,15 @@ public class JavaCodeGenerator {
 					rvStringBuilder.append( ';' );
 				}
 			}
+			for( JavaMethod methodToImportStatic : this.methodsToImportStatic ) {
+				rvStringBuilder.append( "import static " );
+				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
+				rvStringBuilder.append( '.' );
+				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getName() );
+				rvStringBuilder.append( '.' );
+				rvStringBuilder.append( methodToImportStatic.getName() );
+				rvStringBuilder.append( ';' );
+			}
 		}
 		rvStringBuilder.append( this.codeStringBuilder );
 		return rvStringBuilder.toString();
@@ -286,8 +312,10 @@ public class JavaCodeGenerator {
 	private final boolean isLambdaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-	private final java.util.List<JavaPackage> importOnDemandPackages;
-	private final java.util.List<JavaMethod> importStaticMethods;
+	private final java.util.Set<JavaMethod> methodsToImportStatic = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+
+	private final java.util.List<JavaPackage> packagesMarkedForOnDemandImport;
+	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
 
 	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

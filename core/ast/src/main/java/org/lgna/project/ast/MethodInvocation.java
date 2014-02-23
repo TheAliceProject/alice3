@@ -175,9 +175,9 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendChar( '.' );
-		generator.appendString( this.method.getValue().getName() );
+		AbstractMethod method = this.method.getValue();
+		generator.appendCallerExpression( this.expression.getValue(), method );
+		generator.appendString( method.getName() );
 		generator.appendChar( '(' );
 		generator.appendArguments( this );
 		generator.appendChar( ')' );
