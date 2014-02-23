@@ -139,8 +139,13 @@ public class JavaCodeGenerator {
 			if( javaType.isPrimitive() ) {
 				//pass
 			} else {
-				if( javaType.getPackage() != null ) {
-					this.typesToImport.add( javaType );
+				JavaPackage javaPackage = javaType.getPackage();
+				if( javaPackage != null ) {
+					if( packagesMarkedForOnDemandImport.contains( javaPackage ) ) {
+						this.packagesToImportOnDemand.add( javaPackage );
+					} else {
+						this.typesToImport.add( javaType );
+					}
 				} else {
 					// should be covered already by the primitive check
 				}
@@ -267,6 +272,11 @@ public class JavaCodeGenerator {
 		StringBuilder rvStringBuilder = new StringBuilder();
 		if( areImportsDesired ) {
 			rvStringBuilder.append( this.getImportsPrefix() );
+			for( JavaPackage packageToImportOnDemand : this.packagesToImportOnDemand ) {
+				rvStringBuilder.append( "import " );
+				rvStringBuilder.append( packageToImportOnDemand.getName() );
+				rvStringBuilder.append( ".*;" );
+			}
 			for( JavaType typeToImport : this.typesToImport ) {
 				JavaPackage pack = typeToImport.getPackage();
 				if( "java.lang".contentEquals( pack.getName() ) ) {
@@ -321,6 +331,7 @@ public class JavaCodeGenerator {
 
 	private final boolean isLambdaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
+	private final java.util.Set<JavaPackage> packagesToImportOnDemand = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 	private final java.util.Set<JavaMethod> methodsToImportStatic = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
