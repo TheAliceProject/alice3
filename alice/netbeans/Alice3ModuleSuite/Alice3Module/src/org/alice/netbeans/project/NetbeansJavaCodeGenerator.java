@@ -4,7 +4,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.ast.ManagementLevel;
