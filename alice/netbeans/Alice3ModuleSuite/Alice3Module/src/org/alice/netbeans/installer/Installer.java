@@ -5,12 +5,14 @@
  */
 package org.alice.netbeans.installer;
 
+import org.alice.netbeans.logging.IoLoggingHandler;
 import org.openide.modules.ModuleInstall;
 
 public class Installer extends ModuleInstall {
 
 	@Override
 	public void restored() {
+		IoLoggingHandler.initialize();
 	}
 
 }

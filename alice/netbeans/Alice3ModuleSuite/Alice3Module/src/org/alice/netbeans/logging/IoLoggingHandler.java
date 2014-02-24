@@ -20,11 +20,20 @@ public class IoLoggingHandler extends java.util.logging.Handler {
 	private static final java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
 	private static final InputOutput io = IOProvider.getDefault().getIO( "Alice3 Plugin", true );
 
+	private static IoLoggingHandler ioLoggingHandler;
 	public static void initialize() {
-		IoLoggingHandler ioLoggingHandler = new IoLoggingHandler();
-		ioLoggingHandler.setFormatter( new ConsoleFormatter() );
+		if( ioLoggingHandler != null ) {
+			//pass
+		} else {
+			ioLoggingHandler = new IoLoggingHandler();
+			ioLoggingHandler.setFormatter( new ConsoleFormatter() );
+		}
 		Logger.getInstance().addHandler( ioLoggingHandler );
 		Logger.setLevel(Level.INFO);
+	}
+	
+	public static void uninitialize() {
+		Logger.getInstance().removeHandler( ioLoggingHandler );
 	}
 	
 	public static void printStackTrace( Throwable t ) {

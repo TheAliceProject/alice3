@@ -45,11 +45,6 @@ import org.xml.sax.InputSource;
 // TODO define position attribute
 @TemplateRegistration(folder = "Project/Standard", displayName = "Java Project from Existing Alice Project", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/aliceIcon.png", content = "ProjectTemplate.zip")
 public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.ProgressInstantiatingIterator {
-
-	static {
-		IoLoggingHandler.initialize();
-	}
-
 	public static Alice3ProjectTemplateWizardIterator createIterator() {
 		return new Alice3ProjectTemplateWizardIterator();
 	}
