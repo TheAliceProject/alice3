@@ -141,10 +141,18 @@ public class JavaCodeGenerator {
 			} else {
 				JavaPackage javaPackage = javaType.getPackage();
 				if( javaPackage != null ) {
-					if( packagesMarkedForOnDemandImport.contains( javaPackage ) ) {
-						this.packagesToImportOnDemand.add( javaPackage );
+					JavaType enclosingType = javaType.getEnclosingType();
+					//todo: choose EnclosingTypeName.ClassName instead?
+					boolean isTypeImportingDesired;
+					if( enclosingType != null ) {
+						isTypeImportingDesired = true;
 					} else {
+						isTypeImportingDesired = packagesMarkedForOnDemandImport.contains( javaPackage ) == false;
+					}
+					if( isTypeImportingDesired ) {
 						this.typesToImport.add( javaType );
+					} else {
+						this.packagesToImportOnDemand.add( javaPackage );
 					}
 				} else {
 					// should be covered already by the primitive check

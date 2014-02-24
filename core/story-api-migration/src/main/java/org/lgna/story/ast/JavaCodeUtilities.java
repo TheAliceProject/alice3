@@ -50,7 +50,7 @@ public class JavaCodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
 		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
 				.isLambdaSupported( true )
 				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
@@ -64,7 +64,10 @@ public class JavaCodeUtilities {
 								org.lgna.common.ThreadUtilities.class,
 								"eachInTogether",
 								org.lgna.common.EachInTogetherRunnable.class,
-								Object[].class ) )
-				.build();
+								Object[].class ) );
+	}
+
+	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+		return createJavaCodeGeneratorBuilder().build();
 	}
 }

@@ -6,7 +6,6 @@
 package org.alice.netbeans.project;
 
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
-import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
@@ -46,6 +45,7 @@ public class ProjectCodeGenerator {
 
 	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory, ProgressHandle progressHandle) throws IOException, VersionNotSupportedException {
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
+		//JavaCodeGenerator.Builder javaCodeGeneratorBuilder = JavaCodeUtilities.createJavaCodeGeneratorBuilder();
 		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
 
 		List<FileObject> filesToOpen = Lists.newLinkedList();

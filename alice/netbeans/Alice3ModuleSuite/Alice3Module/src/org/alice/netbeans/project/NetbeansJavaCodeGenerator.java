@@ -18,7 +18,8 @@ import org.lgna.story.SScene;
 
 	private static final Map<String, String> methodNamesToCollapse;
 	private static final String INDENT = "    "; //todo: query indent from netbeans format
-	private static final String BOILER_PLATE_CODE_TEXT = "Boiler Plate Code";
+	private static final String BOILER_PLATE_CODE_TEXT = "boiler plate code";
+	private static final String IMPORT_TEXT = "imports";
 
 	static {
 		methodNamesToCollapse = Maps.newHashMap();
@@ -30,7 +31,25 @@ import org.lgna.story.SScene;
 		super(javaCodeGeneratorBuilder);
 	}
 
-	private String getCollapseText(UserMethod method) {
+	@Override
+	protected String getImportsPrefix() {
+		if( Alice3OptionsPanelController.isImportCollapsingDesired() ) {
+			return "// <editor-fold defaultstate=\"collapsed\" desc=\"" + IMPORT_TEXT + "\">\n";
+		} else {
+			return super.getImportsPostfix();
+		}
+	}
+
+	@Override
+	protected String getImportsPostfix() {
+		if( Alice3OptionsPanelController.isImportCollapsingDesired() ) {
+			return "\n// </editor-fold>\n";
+		} else {
+			return super.getImportsPostfix();
+		}
+	}
+
+	private String getMethodCollapseText(UserMethod method) {
 		if( Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired() ) {
 			if (method.getDeclaringType().isAssignableTo(SScene.class)) {
 				return methodNamesToCollapse.get(method.name.getValue());
@@ -41,7 +60,7 @@ import org.lgna.story.SScene;
 
 	@Override
 	protected String getMethodPrefix(UserMethod method) {
-		String collapseText = this.getCollapseText(method);
+		String collapseText = this.getMethodCollapseText(method);
 		if (collapseText != null) {
 			return "\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" desc=\"" + collapseText + ": " + method.name.getValue() + "\">\n";
 		} else {
@@ -51,7 +70,7 @@ import org.lgna.story.SScene;
 
 	@Override
 	protected String getMethodPostfix(UserMethod method) {
-		String collapseText = this.getCollapseText(method);
+		String collapseText = this.getMethodCollapseText(method);
 		if (collapseText != null) {
 			return "\n" + INDENT + "// </editor-fold>\n";
 		} else {
