@@ -226,12 +226,18 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		int rotation = e.getWheelRotation();
 
 		javax.swing.BoundedRangeModel verticalModel = this.verticalScrollBar.getModel();
+		javax.swing.BoundedRangeModel horizontalModel = this.horizontalScrollBar.getModel();
 
 		boolean isVertical;
 		if( rotation > 0 ) {
 			isVertical = ( verticalModel.getValue() + verticalModel.getExtent() ) < verticalModel.getMaximum();
 		} else {
 			isVertical = verticalModel.getValue() > verticalModel.getMinimum();
+			if( horizontalModel.getValue() > horizontalModel.getMinimum() ) {
+				if( verticalModel.getValue() == ( verticalModel.getMaximum() - verticalModel.getExtent() ) ) {
+					isVertical = false;
+				}
+			}
 		}
 
 		javax.swing.JScrollBar scrollBar;
