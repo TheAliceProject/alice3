@@ -5,6 +5,7 @@
  */
 package org.alice.netbeans;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.awt.Component;
 import java.io.ByteArrayInputStream;
@@ -105,32 +106,39 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		}
 		try {
 			Set<FileObject> resultSet = new LinkedHashSet<FileObject>();
-			File dirF = FileUtil.normalizeFile((File) wizardDescriptor.getProperty("projdir"));
-			dirF.mkdirs();
+			File projectDirectory = FileUtil.normalizeFile((File) wizardDescriptor.getProperty("projdir"));
+			projectDirectory.mkdirs();
 
 			FileObject template = Templates.getTemplate(wizardDescriptor);
-			FileObject dir = FileUtil.toFileObject(dirF);
-			unZipFile(template.getInputStream(), dir);
-
+			FileObject projectDirectoryObject = FileUtil.toFileObject(projectDirectory);
+			unZipFile(template.getInputStream(), projectDirectoryObject);
+	
 			// Always open top dir as a project:
-			resultSet.add(dir);
-			// Look for nested projects to open as well:
-			Enumeration<? extends FileObject> e = dir.getFolders(true);
-			while (e.hasMoreElements()) {
-				FileObject subfolder = e.nextElement();
-				if (ProjectManager.getDefault().isProject(subfolder)) {
-					resultSet.add(subfolder);
+			resultSet.add(projectDirectoryObject);
+
+			final boolean IS_POTENTIAL_SUB_PROJECT = false;
+			if( IS_POTENTIAL_SUB_PROJECT ) {
+				// Look for nested projects to open as well:
+				Enumeration<? extends FileObject> e = projectDirectoryObject.getFolders(true);
+				while (e.hasMoreElements()) {
+					FileObject subfolder = e.nextElement();
+					if (ProjectManager.getDefault().isProject(subfolder)) {
+						resultSet.add(subfolder);
+					}
 				}
 			}
 
-			File parent = dirF.getParentFile();
+			File parent = projectDirectory.getParentFile();
 			if (parent != null && parent.exists()) {
 				ProjectChooser.setProjectsFolder(parent);
 			}
 
 			File aliceProjectFile = (File) wizardDescriptor.getProperty("aliceProjectFile");
-			File javaSrcDirectory = new File(dirF, "src");
+			File javaSrcDirectory = new File(projectDirectory, "src");
 
+			//open source folder: does not seem to work when there are no existing open projects
+			resultSet.add(FileUtil.toFileObject( javaSrcDirectory ) );
+			
 			try {
 				Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory, progressHandle);
 				resultSet.addAll(filesToOpen);
