@@ -54,7 +54,11 @@ public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resour
 	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
 				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				null
+				new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+					public boolean accept( org.lgna.story.resources.sims2.FullBodyOutfit e ) {
+						return org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
+					}
+				}
 				);
 	}
 }

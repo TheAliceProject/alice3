@@ -215,14 +215,20 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		}
 		super.handlePreShowDialog( completionStep );
 	}
 
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 		super.handleFinally( step, dialog );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().enableRendering();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().enableRendering();
+		}
 	}
 
 	@Override
@@ -234,6 +240,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
 		//new org.alice.stageide.StageIDE();
+		new org.lgna.croquet.simple.SimpleApplication();
 
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
