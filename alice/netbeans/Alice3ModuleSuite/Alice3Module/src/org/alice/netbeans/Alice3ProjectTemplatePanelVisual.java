@@ -21,7 +21,7 @@ import org.openide.filesystems.FileUtil;
 
 public class Alice3ProjectTemplatePanelVisual extends JPanel implements DocumentListener {
 
-	private static final boolean IS_DEBUG = "C:\\Users\\muta".contentEquals(System.getProperty("user.home"));
+	private static final boolean IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED = "C:\\Users\\muta".contentEquals(System.getProperty("user.home"));
 	public static final String PROP_PROJECT_NAME = "projectName";
 
 	private Alice3ProjectTemplateWizardPanel panel;
@@ -29,7 +29,6 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	public Alice3ProjectTemplatePanelVisual(Alice3ProjectTemplateWizardPanel panel) {
 		initComponents();
 		this.panel = panel;
-		Logger.severe(System.getProperty("user.home"));
 		// Register listener on the textFields to make the automatic updates
 		projectNameTextField.getDocument().addDocumentListener(this);
 		projectLocationTextField.getDocument().addDocumentListener(this);
@@ -276,7 +275,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		if (IS_DEBUG) {
+		if (IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED) {
 			final File file = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
 			if (file.exists()) {
 				SwingUtilities.invokeLater(new Runnable() {
