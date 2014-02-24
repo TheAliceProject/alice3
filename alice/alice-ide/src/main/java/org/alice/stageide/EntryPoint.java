@@ -132,10 +132,6 @@ public class EntryPoint {
 				}
 				ide.initialize( args );
 				ide.getFrame().setVisible( true );
-				//
-				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
-				//					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
-				//				}
 			}
 		} );
 	}
