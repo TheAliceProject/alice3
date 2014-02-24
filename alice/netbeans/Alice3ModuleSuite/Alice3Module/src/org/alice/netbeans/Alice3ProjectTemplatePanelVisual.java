@@ -6,6 +6,7 @@
 package org.alice.netbeans;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import org.openide.filesystems.FileUtil;
 
 public class Alice3ProjectTemplatePanelVisual extends JPanel implements DocumentListener {
 
+	private static final boolean IS_DEBUG = "C:\\Users\\muta".contentEquals(System.getProperty("user.home"));
 	public static final String PROP_PROJECT_NAME = "projectName";
 
 	private Alice3ProjectTemplateWizardPanel panel;
@@ -27,6 +29,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	public Alice3ProjectTemplatePanelVisual(Alice3ProjectTemplateWizardPanel panel) {
 		initComponents();
 		this.panel = panel;
+		Logger.severe(System.getProperty("user.home"));
 		// Register listener on the textFields to make the automatic updates
 		projectNameTextField.getDocument().addDocumentListener(this);
 		projectLocationTextField.getDocument().addDocumentListener(this);
@@ -35,6 +38,35 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
 	public String getProjectName() {
 		return this.projectNameTextField.getText();
+	}
+
+	private String getCreatedFolderPath(String projectFolder, String projectName) {
+		return projectFolder + File.separatorChar + projectName;
+	}
+
+	private String getAvailableProjectName(String baseProjectName) {
+		try {
+			String projectFolder = projectLocationTextField.getText();
+			String candidateProjectName;
+			for (int i = 1; i < 100; i++) {
+				if (i > 1) {
+					candidateProjectName = baseProjectName + i;
+				} else {
+					candidateProjectName = baseProjectName;
+				}
+				String createdFolderPath = this.getCreatedFolderPath(projectFolder, candidateProjectName);
+				File file = new File(createdFolderPath);
+				if (file.exists()) {
+					//pass
+				} else {
+					return candidateProjectName;
+				}
+			}
+			return baseProjectName;
+		} catch (Throwable t) { // should not happen
+			Logger.throwable(t, baseProjectName);
+			return baseProjectName;
+		}
 	}
 
 	/**
@@ -216,8 +248,10 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 				File aliceWorld = chooser.getSelectedFile();
 				if (aliceWorld.isFile() && isAliceFile(aliceWorld)) {
 					aliceWorldLocationTextField.setText(FileUtil.normalizeFile(aliceWorld).getAbsolutePath());
+
 					String projectName = getProjectNameForFile(aliceWorld.getName());
-					projectNameTextField.setText(projectName);
+					String availableProjectName = this.getAvailableProjectName(projectName);
+					projectNameTextField.setText(availableProjectName);
 				}
 			}
 			panel.fireChangeEvent();
@@ -242,7 +276,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		if (true) {
+		if (IS_DEBUG) {
 			final File file = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
 			if (file.exists()) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -250,7 +284,8 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 					public void run() {
 						aliceWorldLocationTextField.setText(file.getAbsolutePath());
 						String projectName = getProjectNameForFile(file.getName());
-						projectNameTextField.setText(projectName);
+						String availableProjectName = getAvailableProjectName(projectName);
+						projectNameTextField.setText(availableProjectName);
 					}
 				});
 			}
@@ -373,11 +408,11 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		if (doc == projectNameTextField.getDocument() || doc == projectLocationTextField.getDocument()) {
 			// Change in the project name
 
-			String projectName = projectNameTextField.getText();
 			String projectFolder = projectLocationTextField.getText();
+			String projectName = projectNameTextField.getText();
 
 			//if (projectFolder.trim().length() == 0 || projectFolder.equals(oldName)) {
-			createdFolderTextField.setText(projectFolder + File.separatorChar + projectName);
+			createdFolderTextField.setText(this.getCreatedFolderPath(projectFolder, projectName));
 			//}
 
 		}
