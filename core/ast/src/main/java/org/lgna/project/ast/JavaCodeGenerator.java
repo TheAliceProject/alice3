@@ -45,15 +45,41 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class JavaCodeGenerator {
-	private final boolean isLambdaSupported;
-	private final StringBuilder codeStringBuilder = new StringBuilder();
-	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+public class JavaCodeGenerator {
+	public static class Builder {
+		public Builder() {
+		}
 
-	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+		public Builder isLambdaSupported( boolean isLambdaSupported ) {
+			this.isLambdaSupported = isLambdaSupported;
+			return this;
+		}
 
-	/* package-private */JavaCodeGenerator( boolean isLambdaSupported ) {
-		this.isLambdaSupported = isLambdaSupported;
+		public Builder addImportOnDemandPackage( Package pckg ) {
+			this.importOnDemandPackages.add( JavaPackage.getInstance( pckg ) );
+			return this;
+		}
+
+		public Builder addImportStaticMethod( java.lang.reflect.Method mthd ) {
+			assert mthd != null;
+			assert java.lang.reflect.Modifier.isStatic( mthd.getModifiers() ) : mthd;
+			this.importStaticMethods.add( JavaMethod.getInstance( mthd ) );
+			return this;
+		}
+
+		public JavaCodeGenerator build() {
+			return new JavaCodeGenerator( this );
+		}
+
+		private boolean isLambdaSupported;
+		private final java.util.List<JavaPackage> importOnDemandPackages = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	};
+
+	protected JavaCodeGenerator( Builder builder ) {
+		this.isLambdaSupported = builder.isLambdaSupported;
+		this.packagesMarkedForOnDemandImport = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
+		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
 
 	/* package-private */boolean isLambdaSupported() {
@@ -113,8 +139,21 @@ package org.lgna.project.ast;
 			if( javaType.isPrimitive() ) {
 				//pass
 			} else {
-				if( javaType.getPackage() != null ) {
-					this.typesToImport.add( javaType );
+				JavaPackage javaPackage = javaType.getPackage();
+				if( javaPackage != null ) {
+					JavaType enclosingType = javaType.getEnclosingType();
+					//todo: choose EnclosingTypeName.ClassName instead?
+					boolean isTypeImportingDesired;
+					if( enclosingType != null ) {
+						isTypeImportingDesired = true;
+					} else {
+						isTypeImportingDesired = packagesMarkedForOnDemandImport.contains( javaPackage ) == false;
+					}
+					if( isTypeImportingDesired ) {
+						this.typesToImport.add( javaType );
+					} else {
+						this.packagesToImportOnDemand.add( javaPackage );
+					}
 				} else {
 					// should be covered already by the primitive check
 				}
@@ -123,6 +162,23 @@ package org.lgna.project.ast;
 		}
 		//todo: handle imports
 		this.appendString( type.getName() );
+	}
+
+	/* packag-private */void appendCallerExpression( Expression callerExpression, AbstractMethod method ) {
+		boolean isImportStatic = false;
+		if( method instanceof JavaMethod ) {
+			if( method.isStatic() ) {
+				if( this.staticMethodsMarkedForImport.contains( method ) ) {
+					isImportStatic = true;
+				}
+			}
+		}
+		if( isImportStatic ) {
+			this.methodsToImportStatic.add( (JavaMethod)method );
+		} else {
+			this.appendExpression( callerExpression );
+			this.appendChar( '.' );
+		}
 	}
 
 	/* package-private */void appendExpression( Expression expression ) {
@@ -212,9 +268,23 @@ package org.lgna.project.ast;
 		codeStringBuilder.append( o );
 	}
 
+	protected String getImportsPrefix() {
+		return "";
+	}
+
+	protected String getImportsPostfix() {
+		return "";
+	}
+
 	/* package-private */String getText( boolean areImportsDesired ) {
 		StringBuilder rvStringBuilder = new StringBuilder();
 		if( areImportsDesired ) {
+			rvStringBuilder.append( this.getImportsPrefix() );
+			for( JavaPackage packageToImportOnDemand : this.packagesToImportOnDemand ) {
+				rvStringBuilder.append( "import " );
+				rvStringBuilder.append( packageToImportOnDemand.getName() );
+				rvStringBuilder.append( ".*;" );
+			}
 			for( JavaType typeToImport : this.typesToImport ) {
 				JavaPackage pack = typeToImport.getPackage();
 				if( "java.lang".contentEquals( pack.getName() ) ) {
@@ -232,8 +302,49 @@ package org.lgna.project.ast;
 					rvStringBuilder.append( ';' );
 				}
 			}
+			for( JavaMethod methodToImportStatic : this.methodsToImportStatic ) {
+				rvStringBuilder.append( "import static " );
+				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
+				rvStringBuilder.append( '.' );
+				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getName() );
+				rvStringBuilder.append( '.' );
+				rvStringBuilder.append( methodToImportStatic.getName() );
+				rvStringBuilder.append( ';' );
+			}
+			rvStringBuilder.append( this.getImportsPostfix() );
 		}
 		rvStringBuilder.append( this.codeStringBuilder );
 		return rvStringBuilder.toString();
 	}
+
+	protected String getMethodPrefix( UserMethod method ) {
+		return "";
+	}
+
+	protected String getMethodPostfix( UserMethod method ) {
+		return "";
+	}
+
+	/* package-private */final void appendMethodPrefix( UserMethod method ) {
+		this.codeStringBuilder.append( this.getMethodPrefix( method ) );
+	}
+
+	/* package-private */final void appendMethodPostfix( UserMethod method ) {
+		this.codeStringBuilder.append( this.getMethodPostfix( method ) );
+	}
+
+	public Iterable<UserMethod> getMethods( UserType<?> type ) {
+		return type.methods;
+	}
+
+	private final boolean isLambdaSupported;
+	private final StringBuilder codeStringBuilder = new StringBuilder();
+	private final java.util.Set<JavaPackage> packagesToImportOnDemand = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	private final java.util.Set<JavaMethod> methodsToImportStatic = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+
+	private final java.util.List<JavaPackage> packagesMarkedForOnDemandImport;
+	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
+
+	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

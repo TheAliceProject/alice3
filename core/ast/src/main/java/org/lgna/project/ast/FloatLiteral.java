@@ -61,7 +61,7 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		Float value = this.value.getValue();
 		if( value != null ) {
 			localizer.appendFloat( value );

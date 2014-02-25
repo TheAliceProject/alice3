@@ -61,7 +61,7 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		Integer value = this.value.getValue();
 		if( value != null ) {
 			localizer.appendInt( value );

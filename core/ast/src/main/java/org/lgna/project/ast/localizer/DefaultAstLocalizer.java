@@ -40,41 +40,90 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.ast.localizer;
+
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.Node;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnderscoreFieldAccessAstMigration extends org.lgna.project.migration.FieldAccessAstMigration {
-	public UnderscoreFieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
-		super( minimumVersion, resultVersion );
+public class DefaultAstLocalizer implements AstLocalizer {
+	public DefaultAstLocalizer( StringBuilder sb ) {
+		this.sb = sb;
 	}
 
-	@Override
-	protected void migrate( org.lgna.project.ast.FieldAccess fieldAccess ) {
-		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-		if( field instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
-			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
-			java.lang.reflect.Field reification = fieldReflectionProxy.getReification();
-			if( reification != null ) {
-				//pass
-			} else {
-				org.lgna.project.ast.JavaType declaringType = javaField.getDeclaringType();
-				Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
-				if( declaringCls != null ) {
-					String previousName = fieldReflectionProxy.getName();
-					for( java.lang.reflect.Field fld : declaringCls.getFields() ) {
-						String fldName = fld.getName();
-						if( fldName.replace( "_", "" ).contentEquals( fieldReflectionProxy.getName() ) ) {
-							org.lgna.project.ast.AbstractField replacementField = declaringType.findField( fldName );
-							fieldAccess.field.setValue( replacementField );
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacing", javaField, "with", replacementField );
-							break;
-						}
-					}
-				}
-			}
+	public void appendDeclaration( Declaration declaration ) {
+		String name = declaration.getName();
+		if( name != null ) {
+			sb.append( name );
+		} else {
+			//todo: constructor?
 		}
 	}
+
+	public void appendBoolean( boolean value ) {
+		sb.append( value );
+	}
+
+	public void appendChar( char value ) {
+		sb.append( value );
+	}
+
+	public void appendInt( int value ) {
+		sb.append( value );
+	}
+
+	public void appendLong( long value ) {
+		sb.append( value );
+	}
+
+	public void appendFloat( float value ) {
+		sb.append( value );
+	}
+
+	public void appendDouble( double value ) {
+		sb.append( value );
+	}
+
+	public void appendNullLiteral() {
+		sb.append( "null" );
+	}
+
+	//			@Override
+	//			protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	//				//todo
+	//				if( "java".equals( locale.getVariant() ) ) {
+	//					rv.append( "null" );
+	//				} else {
+	//					rv.append( "None" );
+	//				}
+	//				return rv;
+	//			}
+
+	public void appendNull() {
+		sb.append( "null" );
+	}
+
+	public void appendThis() {
+		sb.append( "this" );
+	}
+
+	public void appendSpace() {
+		sb.append( ' ' );
+	}
+
+	public void appendDot() {
+		sb.append( '.' );
+	}
+
+	public void appendText( String text ) {
+		sb.append( text );
+	}
+
+	public void appendLocalizedText( Class<? extends Node> cls, String subKey ) {
+		sb.append( subKey );
+	}
+
+	private final StringBuilder sb;
 }

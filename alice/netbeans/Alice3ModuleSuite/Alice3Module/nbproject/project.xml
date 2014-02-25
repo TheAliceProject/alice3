@@ -7,12 +7,30 @@
             <suite-component/>
             <module-dependencies>
                 <dependency>
+                    <code-name-base>org.netbeans.api.progress</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.36.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.netbeans.modules.editor.indent</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
                         <release-version>2</release-version>
                         <specification-version>1.35.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.netbeans.modules.options.api</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.38.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -142,6 +160,10 @@
             <class-path-extension>
                 <runtime-relative-path>ext/story-api-0.0.1-SNAPSHOT.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/story-api-0.0.1-SNAPSHOT.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/story-api-migration-0.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-migration-0.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/util-0.0.1-SNAPSHOT.jar</runtime-relative-path>

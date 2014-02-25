@@ -66,7 +66,7 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		localizer.appendBoolean( this.value.getValue() );
 	}
 

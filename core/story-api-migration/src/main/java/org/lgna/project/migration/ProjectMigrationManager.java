@@ -42,6 +42,7 @@
  */
 package org.lgna.project.migration;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -5176,45 +5177,24 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			//			, EventAstMigration.getTextMigration() 
 	};
 
-	private static AstMigration createNotSupportedInPlugInMigration( String clsName, org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
-		try {
-			Class<?> cls = Class.forName( clsName );
-			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, org.lgna.project.Version.class, org.lgna.project.Version.class );
-			try {
-				return (AstMigration)cnstrctr.newInstance( minimumVersion, maximumVersion );
-			} catch( InstantiationException ie ) {
-				throw new RuntimeException( clsName, ie );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( clsName, iae );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
-				throw new RuntimeException( clsName, ite );
-			}
-		} catch( ClassNotFoundException cnfe ) {
-			// perhaps in netbeans plugin
-			return new NoOpAstMigrationStandIn( minimumVersion, maximumVersion );
-		}
-	}
-
 	private final AstMigration[] astMigrations = {
-			new NoOpAstMigrationStandIn(
+			new org.lgna.project.migration.ast.NoOpAstMigrationStandIn(
 					new org.lgna.project.Version( "3.1.0.0.0" ),
 					new org.lgna.project.Version( "3.1.38.0.0" )
 			),
-			createNotSupportedInPlugInMigration(
-					"org.lgna.project.migration.notsupportedinplugin.MouseClickAstMigration",
+			new org.lgna.project.migration.ast.MouseClickAstMigration(
 					new org.lgna.project.Version( "3.1.38.0.0" ),
 					new org.lgna.project.Version( "3.1.39.0.0" )
 			),
-			new UnderscoreFieldAccessAstMigration(
+			new org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration(
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 					new org.lgna.project.Version( "3.1.68.0.0" )
 			),
-			createNotSupportedInPlugInMigration(
-					"org.lgna.project.migration.notsupportedinplugin.EventAstMigration",
+			new org.lgna.project.migration.ast.EventAstMigration(
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.70.0.0" )
 			),
-			new RemoveGetMySceneMethodFromProgramTypeAstMigration(
+			new org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration(
 					new org.lgna.project.Version( "3.1.70.0.0" ),
 					new org.lgna.project.Version( "3.1.72.0.0" )
 			)

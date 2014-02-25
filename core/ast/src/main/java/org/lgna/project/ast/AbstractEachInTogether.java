@@ -83,10 +83,15 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
+		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", org.lgna.common.EachInTogetherRunnable.class, Object[].class );
+		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
+		generator.appendCallerExpression( callerExpression, eachInTogetherMethod );
+		generator.appendString( eachInTogetherMethod.getName() );
+		generator.appendString( "(" );
+
 		UserLocal itemValue = this.item.getValue();
 		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
-		generator.appendTypeName( JavaType.getInstance( org.lgna.common.ThreadUtilities.class ) );
-		generator.appendString( ".eachInTogether(" );
 		if( generator.isLambdaSupported() ) {
 			generator.appendString( "(" );
 			generator.appendTypeName( itemType );
@@ -110,8 +115,17 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		} else {
 			generator.appendString( "}" );
 		}
-		generator.appendString( "," );
-		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
+		Expression arrayOrIterableExpression = this.getArrayOrIterableProperty().getValue();
+		if( arrayOrIterableExpression instanceof ArrayInstanceCreation ) {
+			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)arrayOrIterableExpression;
+			for( Expression variableLengthExpression : arrayInstanceCreation.expressions ) {
+				generator.appendString( "," );
+				generator.appendExpression( variableLengthExpression );
+			}
+		} else {
+			generator.appendString( "," );
+			generator.appendExpression( arrayOrIterableExpression );
+		}
 		generator.appendString( ");" );
 	}
 }

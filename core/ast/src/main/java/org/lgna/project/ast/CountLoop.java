@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -124,7 +126,7 @@ public class CountLoop extends AbstractLoop {
 			generator.appendSemicolon();
 			isInline = false;
 		}
-		generator.appendString( "for(int " );
+		generator.appendString( "for(Integer " );
 		generator.appendString( variableName );
 		generator.appendString( "=0;" );
 		generator.appendString( variableName );

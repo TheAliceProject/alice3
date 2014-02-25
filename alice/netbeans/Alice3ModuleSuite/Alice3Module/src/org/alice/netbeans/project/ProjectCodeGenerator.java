@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.alice.netbeans.project;
 
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
@@ -11,15 +10,19 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.code.CodeConverter;
-import org.lgna.project.code.PathCodePair;
+import org.lgna.project.ast.JavaCodeGenerator;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.io.IoUtilities;
+import org.lgna.story.SProgram;
+import org.lgna.story.SScene;
+import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.modules.editor.indent.api.Reformat;
 import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
@@ -28,55 +31,95 @@ import org.openide.loaders.DataObject;
 import org.openide.text.NbDocument;
 
 /**
- *
  * @author Dennis Cosgrove
  */
 public class ProjectCodeGenerator {
-	public static void generateCode( File aliceProjectFile, File javaSrcDirectory ) throws IOException, VersionNotSupportedException {
-		//FileUtil.toFileObject( javaSrcDirectory );
-		
-		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
-		CodeConverter codeConverter = new CodeConverter.Builder().isLambdaSupported(true).build();
-		Iterable<PathCodePair> pathCodePairs = codeConverter.convert(aliceProject);
-		
-		List<File> filesToFormat = Lists.newLinkedList();
-		for( PathCodePair pathCodePair : pathCodePairs ) {
-			File file = new File( javaSrcDirectory, pathCodePair.getPath() );
-			TextFileUtilities.write(file, pathCodePair.getCode());
-			
-			filesToFormat.add( file );
-			//Logger.getInstance().log(Level.SEVERE, file.getAbsolutePath());
-			//FileObject fileObject = javaSrcDirectoryObject.createData(null)
+
+	private static void progress(ProgressHandle progressHandle, String prefix, FileObject fileObject, int workUnit) {
+		if (progressHandle != null) {
+			progressHandle.progress(prefix + fileObject.getNameExt(), workUnit);
+			//for testing progress
+			//ThreadUtilities.sleep(1000);
 		}
-		
-		for( File fileToFormat : filesToFormat ) {
-           try {
-                FileObject fo = FileUtil.toFileObject(fileToFormat);
-                DataObject dobj = DataObject.find(fo);
-                EditorCookie ec = dobj.getCookie(EditorCookie.class);
-                final StyledDocument doc = ec.openDocument();
-                final Reformat rf = Reformat.get(doc);
-                rf.lock();
-                try {
-                    NbDocument.runAtomicAsUser(doc, new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                rf.reformat(0, doc.getLength());
-                            } catch (BadLocationException ble) {
+	}
+
+	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory, ProgressHandle progressHandle) throws IOException, VersionNotSupportedException {
+		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
+		//JavaCodeGenerator.Builder javaCodeGeneratorBuilder = JavaCodeUtilities.createJavaCodeGeneratorBuilder();
+		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
+
+		List<FileObject> filesToOpen = Lists.newLinkedList();
+		List<FileObject> fileObjectsToFormat = Lists.newLinkedList();
+		java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = aliceProject.getNamedUserTypes();
+		if (progressHandle != null) {
+			progressHandle.switchToDeterminate(namedUserTypes.size());
+		}
+		int createWorkUnit = 0;
+		for (org.lgna.project.ast.NamedUserType type : namedUserTypes) {
+			String path = type.getName() + ".java";
+			String code = type.generateJavaCode(new NetbeansJavaCodeGenerator(javaCodeGeneratorBuilder));
+			File file = new File(javaSrcDirectory, path);
+			boolean isMarkedForOpen = false;
+			if (type.isAssignableTo(SProgram.class)) {
+				//pass
+			} else {
+				if (type.isAssignableTo(SScene.class)) {
+					isMarkedForOpen = true;
+				} else {
+					for (UserMethod method : type.methods) {
+						if (method.managementLevel.getValue() == ManagementLevel.NONE) {
+							isMarkedForOpen = true;
+							break;
+						}
+					}
+				}
+			}
+
+			TextFileUtilities.write(file, code);
+			FileObject fileObject = FileUtil.toFileObject(file);
+			fileObjectsToFormat.add(fileObject);
+
+			if (isMarkedForOpen) {
+				filesToOpen.add(fileObject);
+			}
+			progress(progressHandle, "create: ", fileObject, createWorkUnit);
+			createWorkUnit++;
+		}
+
+		if (progressHandle != null) {
+			progressHandle.switchToDeterminate(fileObjectsToFormat.size());
+		}
+		int formatWorkUnit = 0;
+		for (FileObject fileObjectToFormat : fileObjectsToFormat) {
+			try {
+				DataObject dobj = DataObject.find(fileObjectToFormat);
+				EditorCookie ec = dobj.getCookie(EditorCookie.class);
+				final StyledDocument doc = ec.openDocument();
+				final Reformat rf = Reformat.get(doc);
+				rf.lock();
+				try {
+					NbDocument.runAtomicAsUser(doc, new Runnable() {
+						@Override
+						public void run() {
+							try {
+								rf.reformat(0, doc.getLength());
+							} catch (BadLocationException ble) {
 								Logger.throwable(ble);
-                            }
-                        }
-                    });
-                } finally {
-                    rf.unlock();
-                }
-                ec.saveDocument();
-            } catch (BadLocationException ble) {
+							}
+						}
+					});
+				} finally {
+					rf.unlock();
+				}
+				ec.saveDocument();
+				progress(progressHandle, "format: ", fileObjectToFormat, formatWorkUnit);
+			} catch (BadLocationException ble) {
 				Logger.throwable(ble);
-            } catch (IOException ioe) {
+			} catch (IOException ioe) {
 				Logger.throwable(ioe);
-            }
-        }		
+			}
+			formatWorkUnit++;
+		}
+		return filesToOpen;
 	}
 }

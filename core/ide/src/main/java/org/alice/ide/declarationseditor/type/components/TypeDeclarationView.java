@@ -72,26 +72,22 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 			toolPalette.getCenterView().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 		}
 
-		org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel();
-
+		org.lgna.croquet.views.PageAxisPanel membersPanel = new org.lgna.croquet.views.PageAxisPanel();
 		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
-			pageAxisPanel.addComponent( constructorsToolPalette );
-			pageAxisPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
+			membersPanel.addComponent( constructorsToolPalette );
+			membersPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
 		}
-		pageAxisPanel.addComponent( proceduresToolPalette );
-		pageAxisPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
-		pageAxisPanel.addComponent( functionsToolPalette );
-		pageAxisPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
-		pageAxisPanel.addComponent( fieldsToolPalette );
-		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 24, 0, 0 ) );
-		pageAxisPanel.setBackgroundColor( this.getBackgroundColor() );
+		membersPanel.addComponent( proceduresToolPalette );
+		membersPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
+		membersPanel.addComponent( functionsToolPalette );
+		membersPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
+		membersPanel.addComponent( fieldsToolPalette );
+		membersPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 24, 0, 0 ) );
+		membersPanel.setBackgroundColor( this.getBackgroundColor() );
 
-		org.lgna.croquet.views.BorderPanel borderPanel = new org.lgna.croquet.views.BorderPanel.Builder()
-				.pageStart( pageAxisPanel )
-				.build();
-		borderPanel.setBackgroundColor( this.getBackgroundColor() );
+		outerMainPanel.setBackgroundColor( this.getBackgroundColor() );
+		typePanel.setBackgroundColor( this.getBackgroundColor() );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 
@@ -107,11 +103,11 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 					composite.getImportOperation().createButton(),
 					composite.getExportOperation().createButton()
 					);
-			this.addComponent( header, Constraint.PAGE_START );
+			this.typePanel.addPageStartComponent( header );
 		} else {
-			this.addComponent( typeHeader, Constraint.PAGE_START );
+			this.typePanel.addPageStartComponent( typeHeader );
 		}
-		this.addComponent( scrollPane, Constraint.CENTER );
+		this.typePanel.addCenterComponent( new org.lgna.croquet.views.BorderPanel.Builder().pageStart( membersPanel ).build() );
 
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
@@ -123,10 +119,41 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 	}
 
 	@Override
+	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
+		super.setJavaCodeOnTheSide( value, isFirstTime );
+		if( value ) {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.outerMainPanel.removeComponent( this.scrollPane );
+			}
+			this.scrollPane.setViewportView( null );
+			this.outerMainPanel.addCenterComponent( this.typePanel );
+		} else {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.outerMainPanel.removeComponent( this.typePanel );
+			}
+			this.scrollPane.setViewportView( this.typePanel );
+			this.outerMainPanel.addCenterComponent( this.scrollPane );
+		}
+	}
+
+	@Override
 	public java.awt.print.Printable getPrintable() {
 		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
 				.pageStart( this.getPageStartComponent().getAwtComponent() )
 				.center( this.getCenterComponent().getAwtComponent() )
 				.build();
 	}
+
+	@Override
+	protected org.lgna.croquet.views.AwtComponentView<?> getMainComponent() {
+		return this.outerMainPanel;
+	}
+
+	private final org.lgna.croquet.views.BorderPanel outerMainPanel = new org.lgna.croquet.views.BorderPanel();
+	private final org.lgna.croquet.views.BorderPanel typePanel = new org.lgna.croquet.views.BorderPanel();
+	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
 }

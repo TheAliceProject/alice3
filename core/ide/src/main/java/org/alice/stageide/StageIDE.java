@@ -405,4 +405,37 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		}
 		return null;
 	}
+
+	private org.alice.ide.instancefactory.InstanceFactory getInstanceFactoryForSceneOrSceneField( org.lgna.project.ast.UserField field ) {
+		org.lgna.project.ast.NamedUserType programType = this.getProgramType();
+		if( programType != null ) {
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
+			if( sceneType != null ) {
+				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+				if( scopeType == sceneType ) {
+					if( field != null ) {
+						return org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+					} else {
+						return org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+					}
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public org.alice.ide.instancefactory.InstanceFactory getInstanceFactoryForScene() {
+		return this.getInstanceFactoryForSceneOrSceneField( null );
+	}
+
+	public org.alice.ide.instancefactory.InstanceFactory getInstanceFactoryForSceneField( org.lgna.project.ast.UserField field ) {
+		assert field != null : this;
+		return this.getInstanceFactoryForSceneOrSceneField( field );
+	}
+
 }

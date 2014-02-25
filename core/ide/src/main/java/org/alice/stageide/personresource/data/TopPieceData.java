@@ -54,7 +54,11 @@ public class TopPieceData extends IngredientListData<org.lgna.story.resources.si
 	protected java.util.List<org.lgna.story.resources.sims2.TopPiece> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
 				org.lgna.story.resources.sims2.TopPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				null
+				new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.TopPiece>() {
+					public boolean accept( org.lgna.story.resources.sims2.TopPiece e ) {
+						return org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
+					}
+				}
 				);
 	}
 }

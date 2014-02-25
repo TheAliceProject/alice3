@@ -40,39 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.code;
+package org.lgna.project.ast.localizer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeConverter {
-	public static class Builder {
-		public Builder isLambdaSupported( boolean isLambdaSupported ) {
-			this.isLambdaSupported = isLambdaSupported;
-			return this;
-		}
-
-		public CodeConverter build() {
-			return new CodeConverter( this.isLambdaSupported );
-		}
-
-		private boolean isLambdaSupported;
+public class DefaultAstLocalizerFactory implements AstLocalizerFactory {
+	public org.lgna.project.ast.localizer.AstLocalizer createInstance( StringBuilder sb ) {
+		return new DefaultAstLocalizer( sb );
 	}
-
-	private CodeConverter( boolean isLambdaSupported ) {
-		this.isLambdaSupported = isLambdaSupported;
-	}
-
-	public Iterable<PathCodePair> convert( org.lgna.project.Project project ) {
-		java.util.List<PathCodePair> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.Set<org.lgna.project.ast.NamedUserType> set = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : set ) {
-			String path = type.getName() + ".java";
-			String code = type.generateJavaCode( this.isLambdaSupported );
-			rv.add( new PathCodePair.Builder().path( path ).code( code ).build() );
-		}
-		return rv;
-	}
-
-	private final boolean isLambdaSupported;
 }

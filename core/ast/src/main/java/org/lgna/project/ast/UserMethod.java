@@ -110,18 +110,18 @@ public class UserMethod extends AbstractUserMethod {
 	//	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendMethodPrefix( this );
 		generator.appendMethodHeader( this );
 		this.body.getValue().appendJava( generator );
+		generator.appendMethodPostfix( this );
 	}
 
-	public String generateHeaderJavaCode( boolean isLambdaSupported ) {
-		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
+	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
 		generator.appendMethodHeader( this );
 		return generator.getText( false );
 	}
 
-	public String generateJavaCode( boolean isLambdaSupported ) {
-		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
+	public String generateJavaCode( JavaCodeGenerator generator ) {
 		this.appendJava( generator );
 		return generator.getText( false );
 	}

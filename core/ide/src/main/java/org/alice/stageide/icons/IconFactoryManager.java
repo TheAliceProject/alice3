@@ -128,8 +128,19 @@ public class IconFactoryManager {
 			if( url != null ) {
 				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
-				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( modelResourceCls ) ) {
+					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( modelResourceCls );
+					if( personResourceKey != null ) {
+						return personResourceKey.getIconFactory();
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "no icon factory for:", modelResourceCls, modelResourceName );
+						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+
+					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
+					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				}
 			}
 		}
 	}

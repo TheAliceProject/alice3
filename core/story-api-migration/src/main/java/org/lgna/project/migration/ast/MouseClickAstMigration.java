@@ -45,7 +45,7 @@ package org.lgna.project.migration.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MouseClickAstMigration extends org.lgna.project.migration.MethodInvocationAstMigration {
+public class MouseClickAstMigration extends org.lgna.project.migration.ast.MethodInvocationAstMigration {
 	public MouseClickAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
 		super( minimumVersion, maximumVersion );
 	}

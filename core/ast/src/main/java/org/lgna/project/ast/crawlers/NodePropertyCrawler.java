@@ -40,17 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project.ast.crawlers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoOpAstMigrationStandIn extends AstMigration {
-	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
-		super( minimumVersion, resultVersion );
-	}
+public abstract class NodePropertyCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+	protected abstract void visitNodeProperty( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property );
 
-	@Override
-	public void migrate( org.lgna.project.ast.Node node ) {
+	public final void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+		if( crawlable instanceof org.lgna.project.ast.Node ) {
+			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
+			for( edu.cmu.cs.dennisc.property.Property<?> property : node.getProperties() ) {
+				if( property instanceof edu.cmu.cs.dennisc.property.InstanceProperty<?> ) {
+					edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
+					this.visitNodeProperty( node, instanceProperty );
+				}
+			}
+		}
 	}
 }

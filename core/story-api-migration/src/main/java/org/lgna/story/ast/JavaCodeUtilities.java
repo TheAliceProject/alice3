@@ -40,46 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.code;
+package org.lgna.story.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class PathCodePair {
-	public static class Builder {
-		public Builder path( String path ) {
-			this.path = path;
-			return this;
-		}
-
-		public Builder code( String code ) {
-			this.code = code;
-			return this;
-		}
-
-		public PathCodePair build() {
-			assert this.path != null : this;
-			assert this.code != null : this;
-			return new PathCodePair( this.path, this.code );
-		}
-
-		private String path;
-		private String code;
+public class JavaCodeUtilities {
+	private JavaCodeUtilities() {
+		throw new AssertionError();
 	}
 
-	private PathCodePair( String path, String code ) {
-		this.path = path;
-		this.code = code;
+	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
+		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+				.isLambdaSupported( true )
+				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
+				.addImportStaticMethod(
+						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+								org.lgna.common.ThreadUtilities.class,
+								"doTogether",
+								Runnable[].class ) )
+				.addImportStaticMethod(
+						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+								org.lgna.common.ThreadUtilities.class,
+								"eachInTogether",
+								org.lgna.common.EachInTogetherRunnable.class,
+								Object[].class ) );
 	}
 
-	public String getPath() {
-		return this.path;
+	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+		return createJavaCodeGeneratorBuilder().build();
 	}
-
-	public String getCode() {
-		return this.code;
-	}
-
-	private final String path;
-	private final String code;
 }

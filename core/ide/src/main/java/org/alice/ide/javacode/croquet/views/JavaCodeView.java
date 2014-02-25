@@ -54,6 +54,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	public JavaCodeView( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		this.setDeclaration( declaration );
+		this.setCaret( new edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret() ); // avoid scrolling on setText
 	}
 
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
@@ -65,9 +66,23 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		this.updateHtml();
 	}
 
+	private static org.lgna.croquet.undo.UndoHistory getProjectUndoHistory() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.alice.ide.ProjectDocument document = ide.getDocument();
+			if( document != null ) {
+				return document.getUndoHistory( org.alice.ide.IDE.PROJECT_GROUP );
+			}
+		}
+		return null;
+	}
+
 	@Override
 	protected void handleDisplayable() {
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		this.undoHistory = getProjectUndoHistory();
+		if( this.undoHistory != null ) {
+			this.undoHistory.addHistoryListener( this.historyListener );
+		}
 		this.addKeyListener( this.keyListener );
 		if( IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED ) {
 			this.addMouseWheelListener( this.mouseWheelListener );
@@ -81,26 +96,44 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			this.removeMouseWheelListener( this.mouseWheelListener );
 		}
 		this.removeKeyListener( this.keyListener );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		if( this.undoHistory != null ) {
+			this.undoHistory.removeHistoryListener( this.historyListener );
+		}
 		super.handleUndisplayable();
 	}
 
 	private void updateHtml() {
-		boolean isLambdaSupported = true;
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updateHtml", this.declaration );
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
 		String code;
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
-			code = method.generateJavaCode( isLambdaSupported );
+			code = method.generateJavaCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
-			code = type.generateJavaCode( isLambdaSupported );
+			code = type.generateJavaCode( javaCodeGenerator );
 		} else {
 			code = null;
 		}
 		if( code != null ) {
 			code = org.lgna.project.code.CodeFormatter.format( code );
-			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault();
+			de.java2html.options.JavaSourceStyleTable javaSourceStyleTable = de.java2html.options.JavaSourceStyleTable.getDefault().getClone();
 
+			de.java2html.util.RGB keywordRGB = new de.java2html.util.RGB( 0, 0, 230 );
+			de.java2html.util.RGB commentRGB = new de.java2html.util.RGB( 150, 150, 150 );
+			de.java2html.util.RGB stringRGB = new de.java2html.util.RGB( 206, 123, 0 );
+			de.java2html.util.RGB blackRGB = new de.java2html.util.RGB( 0, 0, 0 );
+
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.KEYWORD, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CODE_TYPE, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.STRING, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CHAR_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_LINE, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_BLOCK, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.NUM_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( blackRGB ) );
+
+			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault().getClone();
+			javaSourceConversionOptions.setStyleTable( javaSourceStyleTable );
 			final boolean IS_TAB_SIZE_WORKING = false;
 			if( IS_TAB_SIZE_WORKING ) {
 				javaSourceConversionOptions.setTabSize( 4 );
@@ -124,17 +157,29 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			code = "";
 		}
 		this.setText( code );
-		//		final javax.swing.JScrollPane jScrollPane = this.getScrollPaneIfItExists().getAwtComponent();
-		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//			public void run() {
-		//				jScrollPane.getViewport().setLocation( 0, 0 );
-		//			}
-		//		} );
 	}
 
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
-		public void projectChanged() {
+	private final org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		}
+
+		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		}
+
+		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		}
+
+		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+			//check not necessary
+			//if( e.getTypedSource().getGroup() == org.alice.ide.IDE.PROJECT_GROUP ) {
 			updateHtml();
+			//}
+		}
+
+		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		}
+
+		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 	};
 
@@ -172,6 +217,8 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
+
+	private org.lgna.croquet.undo.UndoHistory undoHistory;
 	private org.lgna.project.ast.AbstractDeclaration declaration;
 	private int fontSize = 14;
 }

@@ -40,37 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package edu.cmu.cs.dennisc.javax.swing.text;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface AstLocalizer {
-	void appendDeclaration( Declaration declaration );
+public class IgnoreAdjustVisibilityCaret extends javax.swing.text.DefaultCaret {
+	@Override
+	protected void adjustVisibility( java.awt.Rectangle nloc ) {
+		//super.adjustVisibility( nloc );
+	}
 
-	void appendThis();
-
-	void appendNull();
-
-	void appendNullLiteral();
-
-	void appendSpace();
-
-	void appendDot();
-
-	void appendChar( char value );
-
-	void appendBoolean( boolean value );
-
-	void appendInt( int value );
-
-	void appendLong( long value );
-
-	void appendFloat( float value );
-
-	void appendDouble( double value );
-
-	void appendText( String text );
-
-	void appendLocalizedText( Class<? extends Node> cls, String subKey );
+	//	@Override
+	//	protected void adjustVisibility( java.awt.Rectangle nloc ) {
+	//		if( this.ignoreCount > 0 ) {
+	//			//pass
+	//		} else {
+	//			super.adjustVisibility( nloc );
+	//		}
+	//	}
+	//
+	//	public void pushIgnore() {
+	//		this.ignoreCount++;
+	//	}
+	//
+	//	public void popIgnore() {
+	//		this.ignoreCount--;
+	//	}
+	//
+	//	private int ignoreCount;
 }

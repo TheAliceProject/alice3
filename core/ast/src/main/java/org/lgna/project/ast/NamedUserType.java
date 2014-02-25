@@ -114,8 +114,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		return this.isStrictFloatingPoint.getValue();
 	}
 
-	public String generateJavaCode( boolean isLambdaSupported ) {
-		JavaCodeGenerator generator = new JavaCodeGenerator( isLambdaSupported );
+	public String generateJavaCode( JavaCodeGenerator generator ) {
 
 		generator.appendString( "class " );
 		generator.appendTypeName( this );
@@ -127,9 +126,10 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 			constructor.appendJava( generator );
 		}
 
-		for( UserMethod method : this.methods ) {
+		java.util.List<UserMethod> staticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		for( UserMethod method : generator.getMethods( this ) ) {
 			if( method.isStatic() ) {
-				//pass
+				staticMethods.add( method );
 			} else {
 				method.appendJava( generator );
 			}
@@ -148,7 +148,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 			field.appendJava( generator );
 		}
 
-		for( UserMethod method : this.methods ) {
+		for( UserMethod method : staticMethods ) {
 			if( method.isStatic() ) {
 				method.appendJava( generator );
 			}

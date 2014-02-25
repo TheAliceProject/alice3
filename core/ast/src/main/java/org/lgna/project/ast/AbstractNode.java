@@ -42,12 +42,24 @@
  */
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends Element implements Node {
 	private static final double CURRENT_VERSION = 3.10062;
 	private static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
+
+	private static org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory = new org.lgna.project.ast.localizer.DefaultAstLocalizerFactory();
+
+	public static org.lgna.project.ast.localizer.AstLocalizerFactory getAstLocalizerFactory() {
+		return AbstractNode.astLocalizerFactory;
+	}
+
+	public static void setAstLocalizerFactory( org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory ) {
+		AbstractNode.astLocalizerFactory = astLocalizerFactory;
+	}
 
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private AbstractNode parent;
@@ -703,79 +715,7 @@ public abstract class AbstractNode extends Element implements Node {
 
 	public final String getRepr() {
 		final StringBuilder sb = new StringBuilder();
-		this.appendRepr( new AstLocalizer() {
-			public void appendDeclaration( Declaration declaration ) {
-				String name = declaration.getName();
-				if( name != null ) {
-					sb.append( name );
-				} else {
-					//todo: constructor?
-				}
-			}
-
-			public void appendBoolean( boolean value ) {
-				sb.append( value );
-			}
-
-			public void appendChar( char value ) {
-				sb.append( value );
-			}
-
-			public void appendInt( int value ) {
-				sb.append( value );
-			}
-
-			public void appendLong( long value ) {
-				sb.append( value );
-			}
-
-			public void appendFloat( float value ) {
-				sb.append( value );
-			}
-
-			public void appendDouble( double value ) {
-				sb.append( value );
-			}
-
-			public void appendNullLiteral() {
-				sb.append( "null" );
-			}
-
-			//			@Override
-			//			protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-			//				//todo
-			//				if( "java".equals( locale.getVariant() ) ) {
-			//					rv.append( "null" );
-			//				} else {
-			//					rv.append( "None" );
-			//				}
-			//				return rv;
-			//			}
-
-			public void appendNull() {
-				sb.append( "null" );
-			}
-
-			public void appendThis() {
-				sb.append( "this" );
-			}
-
-			public void appendSpace() {
-				sb.append( ' ' );
-			}
-
-			public void appendDot() {
-				sb.append( '.' );
-			}
-
-			public void appendText( String text ) {
-				sb.append( text );
-			}
-
-			public void appendLocalizedText( Class<? extends Node> cls, String subKey ) {
-				sb.append( subKey );
-			}
-		} );
+		this.appendRepr( astLocalizerFactory.createInstance( sb ) );
 		return sb.toString();
 	}
 

@@ -96,7 +96,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		localizer.appendDeclaration( this );
 	}
 

@@ -46,12 +46,59 @@ package org.alice.ide.declarationseditor.code.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
-	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
+	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite, org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor ) {
 		super( composite );
+		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
+
+		org.lgna.project.ast.AbstractCode code = composite.getDeclaration();
+
+		org.lgna.croquet.views.SwingComponentView<?> controlFlowComponent;
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
+		} else {
+			controlFlowComponent = null;
+		}
+
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( method.isFunction() ) {
+				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
+			} else {
+				this.userFunctionStatusComposite = null;
+			}
+		} else {
+			this.userFunctionStatusComposite = null;
+		}
+
+		org.lgna.croquet.views.SwingComponentView<?> pageEndComponent;
+		if( this.userFunctionStatusComposite != null ) {
+			if( controlFlowComponent != null ) {
+				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
+						.center( this.userFunctionStatusComposite.getView() )
+						.pageEnd( controlFlowComponent )
+						.build();
+			} else {
+				pageEndComponent = this.userFunctionStatusComposite.getView();
+			}
+		} else {
+			if( controlFlowComponent != null ) {
+				pageEndComponent = controlFlowComponent;
+			} else {
+				pageEndComponent = null;
+			}
+		}
+
+		if( pageEndComponent != null ) {
+			this.addPageEndComponent( pageEndComponent );
+		}
+		this.setBackgroundColor( this.codePanelWithDropReceptor.getBackgroundColor() );
+		this.handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Deprecated
-	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
+	public final org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
+		return this.codePanelWithDropReceptor;
+	}
 
 	@Override
 	public java.awt.print.Printable getPrintable() {
@@ -99,4 +146,41 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			}
 		}
 	}
+
+	public void handleAstChangeThatCouldBeOfInterest() {
+		org.lgna.project.ast.AbstractCode code = ( (org.alice.ide.declarationseditor.CodeComposite)this.getComposite() ).getDeclaration();
+		if( this.userFunctionStatusComposite != null ) {
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
+
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
+				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
+			} else {
+				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
+					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
+						nextErrorStatus = null;
+					} else {
+						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
+					}
+				} else {
+					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
+				}
+			}
+			if( prevErrorStatus != nextErrorStatus ) {
+				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
+				this.revalidateAndRepaint();
+			}
+
+		}
+	}
+
+	@Override
+	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
+		super.setJavaCodeOnTheSide( value, isFirstTime );
+		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
+	}
+
+	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
+	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
 }

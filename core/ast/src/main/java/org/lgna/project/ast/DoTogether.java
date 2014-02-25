@@ -55,15 +55,19 @@ public final class DoTogether extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.AstLocalizer localizer ) {
+	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		localizer.appendLocalizedText( DoTogether.class, "do together" );
 		super.appendRepr( localizer );
 	}
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendTypeName( JavaType.getInstance( org.lgna.common.ThreadUtilities.class ) );
-		generator.appendString( ".doTogether(" );
+		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
+		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
+		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
+		generator.appendCallerExpression( callerExpression, doTogetherMethod );
+		generator.appendString( doTogetherMethod.getName() );
+		generator.appendString( "(" );
 		String prefix = "";
 		for( Statement statement : this.body.getValue().statements ) {
 			generator.appendString( prefix );

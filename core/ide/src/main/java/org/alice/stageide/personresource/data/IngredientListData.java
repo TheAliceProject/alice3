@@ -46,6 +46,7 @@ package org.alice.stageide.personresource.data;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientListData<T> extends org.lgna.croquet.data.RefreshableListData<T> {
+	protected static final org.lgna.story.resources.sims2.BaseSkinTone SKIN_TONE_FOR_FILTERING = org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
 	private org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;
 
