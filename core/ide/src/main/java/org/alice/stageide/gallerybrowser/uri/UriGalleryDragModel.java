@@ -254,17 +254,18 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 	@Override
 	public boolean isInstanceCreator() {
-		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
-		if( resourceKey != null ) {
-			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
-			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return true;
-		}
+		return true;
+		//		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
+		//		if( resourceKey != null ) {
+		//			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
+		//			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
+		//				return false;
+		//			} else {
+		//				return true;
+		//			}
+		//		} else {
+		//			return true;
+		//		}
 	}
 
 	@Override

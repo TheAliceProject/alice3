@@ -84,6 +84,22 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		return SingletonHolder.toddlerInstance;
 	}
 
+	public static PersonResourceKey getInstanceForResourceClass( Class<?> cls ) {
+		if( cls == org.lgna.story.resources.sims2.ElderPersonResource.class ) {
+			return getElderInstance();
+		} else if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
+			return getAdultInstance();
+		} else if( cls == org.lgna.story.resources.sims2.TeenPersonResource.class ) {
+			return getTeenInstance();
+		} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
+			return getChildInstance();
+		} else if( cls == org.lgna.story.resources.sims2.ToddlerPersonResource.class ) {
+			return getToddlerInstance();
+		} else {
+			return null;
+		}
+	}
+
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 
 	private PersonResourceKey( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
