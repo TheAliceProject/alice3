@@ -22,6 +22,7 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.io.IoUtilities;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
+import org.lgna.story.ast.JavaCodeUtilities;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.modules.editor.indent.api.Reformat;
 import org.openide.cookies.EditorCookie;
@@ -45,8 +46,8 @@ public class ProjectCodeGenerator {
 
 	public static Collection<FileObject> generateCode(File aliceProjectFile, File javaSrcDirectory, ProgressHandle progressHandle) throws IOException, VersionNotSupportedException {
 		Project aliceProject = IoUtilities.readProject(aliceProjectFile);
-		//JavaCodeGenerator.Builder javaCodeGeneratorBuilder = JavaCodeUtilities.createJavaCodeGeneratorBuilder();
-		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
+		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = JavaCodeUtilities.createJavaCodeGeneratorBuilder();
+		//JavaCodeGenerator.Builder javaCodeGeneratorBuilder = new JavaCodeGenerator.Builder().isLambdaSupported(true);
 
 		List<FileObject> filesToOpen = Lists.newLinkedList();
 		List<FileObject> fileObjectsToFormat = Lists.newLinkedList();

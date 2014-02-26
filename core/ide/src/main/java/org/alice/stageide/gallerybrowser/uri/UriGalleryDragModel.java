@@ -330,7 +330,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
-				return null;
+				return org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
 			} else {
 				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}
