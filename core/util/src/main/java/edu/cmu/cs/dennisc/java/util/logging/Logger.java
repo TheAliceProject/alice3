@@ -176,6 +176,14 @@ public class Logger {
 		System.err.println( buildMessage( objects ) );
 	}
 
+	public static void severeln( Object object ) {
+		getInstance().log( java.util.logging.Level.SEVERE, buildMessage( object ) );
+	}
+
+	public static void severeln( Object... objects ) {
+		getInstance().log( java.util.logging.Level.SEVERE, buildMessage( objects ) );
+	}
+
 	public static void throwable( Throwable t, Object object ) {
 		Object[] array = { edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( t ), object };
 		log( THROWABLE, array );
