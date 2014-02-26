@@ -27,12 +27,16 @@ final class Alice3Panel extends javax.swing.JPanel {
 
         jCollapseImportsCheckBox = new javax.swing.JCheckBox();
         jCollapseBoilerPlateMethodsCheckBox = new javax.swing.JCheckBox();
+        jOfferCleanSlateCheckBox = new javax.swing.JCheckBox();
 
         jCollapseImportsCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(jCollapseImportsCheckBox, org.openide.util.NbBundle.getMessage(Alice3Panel.class, "Alice3Panel.jCollapseImportsCheckBox.text")); // NOI18N
 
         jCollapseBoilerPlateMethodsCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(jCollapseBoilerPlateMethodsCheckBox, org.openide.util.NbBundle.getMessage(Alice3Panel.class, "Alice3Panel.jCollapseBoilerPlateMethodsCheckBox.text")); // NOI18N
+
+        jOfferCleanSlateCheckBox.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jOfferCleanSlateCheckBox, org.openide.util.NbBundle.getMessage(Alice3Panel.class, "Alice3Panel.jOfferCleanSlateCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -42,8 +46,9 @@ final class Alice3Panel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCollapseImportsCheckBox)
-                    .addComponent(jCollapseBoilerPlateMethodsCheckBox))
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(jCollapseBoilerPlateMethodsCheckBox)
+                    .addComponent(jOfferCleanSlateCheckBox))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -51,7 +56,9 @@ final class Alice3Panel extends javax.swing.JPanel {
                 .addComponent(jCollapseImportsCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCollapseBoilerPlateMethodsCheckBox)
-                .addGap(0, 22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jOfferCleanSlateCheckBox)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -59,12 +66,14 @@ final class Alice3Panel extends javax.swing.JPanel {
 		Preferences preferences = Preferences.userNodeForPackage(Alice3Panel.class);
 		this.jCollapseImportsCheckBox.setSelected(preferences.getBoolean(Alice3OptionsPanelController.COLLAPSE_IMPORTS_KEY, true));
 		this.jCollapseBoilerPlateMethodsCheckBox.setSelected(preferences.getBoolean(Alice3OptionsPanelController.COLLAPSE_BOILER_PLATE_METHODS_KEY, true));
+		this.jOfferCleanSlateCheckBox.setSelected(preferences.getBoolean(Alice3OptionsPanelController.OFFER_CLEAN_SLATE_METHODS_KEY, true));
 	}
 
 	void store() {
 		Preferences preferences = Preferences.userNodeForPackage(Alice3Panel.class);
 		preferences.putBoolean(Alice3OptionsPanelController.COLLAPSE_IMPORTS_KEY, this.jCollapseImportsCheckBox.isSelected());
 		preferences.putBoolean(Alice3OptionsPanelController.COLLAPSE_BOILER_PLATE_METHODS_KEY, this.jCollapseBoilerPlateMethodsCheckBox.isSelected());
+		preferences.putBoolean(Alice3OptionsPanelController.OFFER_CLEAN_SLATE_METHODS_KEY, this.jOfferCleanSlateCheckBox.isSelected());
 	}
 
 	boolean valid() {
@@ -75,5 +84,6 @@ final class Alice3Panel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCollapseBoilerPlateMethodsCheckBox;
     private javax.swing.JCheckBox jCollapseImportsCheckBox;
+    private javax.swing.JCheckBox jOfferCleanSlateCheckBox;
     // End of variables declaration//GEN-END:variables
 }

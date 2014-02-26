@@ -21,7 +21,7 @@ import org.openide.filesystems.FileUtil;
 
 public class Alice3ProjectTemplatePanelVisual extends JPanel implements DocumentListener {
 
-	private static final boolean IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED = "C:\\Users\\muta".contentEquals(System.getProperty("user.home"));
+	private static final boolean IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED = "C:\\Users\\dennisc".contentEquals(System.getProperty("user.home"));
 	public static final String PROP_PROJECT_NAME = "projectName";
 
 	private Alice3ProjectTemplateWizardPanel panel;
@@ -152,9 +152,9 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
                                 .addComponent(aliceWorldBrowseButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(projectNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                    .addComponent(projectLocationTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                    .addComponent(createdFolderTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+                                    .addComponent(projectNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                                    .addComponent(projectLocationTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                                    .addComponent(createdFolderTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(browseButton)))))
                 .addContainerGap())
@@ -183,7 +183,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createdFolderLabel)
                     .addComponent(createdFolderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 137, Short.MAX_VALUE))
+                .addGap(0, 166, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

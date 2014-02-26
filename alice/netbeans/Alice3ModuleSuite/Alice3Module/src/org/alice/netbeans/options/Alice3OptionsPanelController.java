@@ -24,6 +24,7 @@ import org.openide.util.Lookup;
 public final class Alice3OptionsPanelController extends OptionsPanelController {
 	/*package-private*/ static final String COLLAPSE_IMPORTS_KEY = "collapseImports";
 	/*package-private*/ static final String COLLAPSE_BOILER_PLATE_METHODS_KEY = "collapseBoilerPlateMethods";
+	/*package-private*/ static final String OFFER_CLEAN_SLATE_METHODS_KEY = "offerCleanSlate";
 	
 	public static boolean isImportCollapsingDesired() {
 		Preferences preferences = Preferences.userNodeForPackage(Alice3Panel.class);
@@ -32,6 +33,10 @@ public final class Alice3OptionsPanelController extends OptionsPanelController {
 	public static boolean isBoilerPlateMethodCollapsingDesired() {
 		Preferences preferences = Preferences.userNodeForPackage(Alice3Panel.class);
 		return preferences.getBoolean(COLLAPSE_BOILER_PLATE_METHODS_KEY, true);
+	}
+	public static boolean isOfferingCleanSlateDesired() {
+		Preferences preferences = Preferences.userNodeForPackage(Alice3Panel.class);
+		return preferences.getBoolean(OFFER_CLEAN_SLATE_METHODS_KEY, true);
 	}
 	
 	private Alice3Panel panel;

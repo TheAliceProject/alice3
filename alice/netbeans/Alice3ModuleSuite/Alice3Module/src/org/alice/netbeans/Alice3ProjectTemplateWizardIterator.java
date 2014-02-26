@@ -5,7 +5,7 @@
  */
 package org.alice.netbeans;
 
-import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.awt.Component;
 import java.io.ByteArrayInputStream;
@@ -18,13 +18,18 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
 import org.alice.netbeans.logging.IoLoggingHandler;
+import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.alice.netbeans.project.ProjectCodeGenerator;
 import org.lgna.project.VersionNotSupportedException;
 import org.netbeans.api.progress.ProgressHandle;
@@ -33,10 +38,13 @@ import org.netbeans.api.templates.TemplateRegistration;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
+import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
+import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
+import org.openide.windows.TopComponent;
 import org.openide.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,6 +54,7 @@ import org.xml.sax.InputSource;
 // TODO define position attribute
 @TemplateRegistration(folder = "Project/Standard", displayName = "Java Project from Existing Alice Project", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/aliceIcon.png", content = "ProjectTemplate.zip")
 public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.ProgressInstantiatingIterator {
+
 	public static Alice3ProjectTemplateWizardIterator createIterator() {
 		return new Alice3ProjectTemplateWizardIterator();
 	}
@@ -62,6 +71,56 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		return new String[]{
 			NbBundle.getMessage(Alice3ProjectTemplateWizardIterator.class, "LBL_CreateProjectStep")
 		};
+	}
+
+	private void cleanSlateIfAppropriate() {
+		if (Alice3OptionsPanelController.isOfferingCleanSlateDesired()) {
+			final List<TopComponent> componentsToClose = Lists.newLinkedList();
+			Set<TopComponent> comps = TopComponent.getRegistry().getOpened();
+			for (TopComponent comp : comps) {
+				//IoLoggingHandler.errln( comp.getClass(), comp );
+				if (comp.getClass().getName().equals("org.netbeans.modules.welcome.WelcomeComponent")) {
+					componentsToClose.add(comp);
+				} else {
+					Node[] nodes = comp.getActivatedNodes();
+					if (nodes != null && nodes.length > 0) {
+						for (Node node : nodes) {
+							if (node.getClass().getName().equals("org.netbeans.modules.java.JavaNode")) {
+								componentsToClose.add(comp);
+							}
+						}
+					}
+				}
+			}
+			if (componentsToClose.size() > 0) {
+				String title = "Clean Slate?";
+
+				StringBuilder sb = new StringBuilder();
+				sb.append("<html>");
+				sb.append("<h1>Would you like to start with a clean slate?</h1>");
+				sb.append("<h1>Close the following tabs:</h1>");
+				sb.append("<ul>");
+				for (TopComponent topComponent : componentsToClose) {
+					sb.append("<li>");
+					sb.append(topComponent.getName());
+					sb.append("</li>");
+				}
+				sb.append("</ul>");
+				sb.append("</html>");
+
+				String message = sb.toString();
+				int result = JOptionPane.showConfirmDialog(this.panels[ 0].getComponent(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (result == JOptionPane.YES_OPTION) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							for (TopComponent topComponent : componentsToClose) {
+								topComponent.close();
+							}
+						}
+					});
+				}
+			}
+		}
 	}
 
 	public void initialize(WizardDescriptor wizardDescriptor) {
@@ -112,12 +171,12 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			FileObject template = Templates.getTemplate(wizardDescriptor);
 			FileObject projectDirectoryObject = FileUtil.toFileObject(projectDirectory);
 			unZipFile(template.getInputStream(), projectDirectoryObject);
-	
+
 			// Always open top dir as a project:
 			resultSet.add(projectDirectoryObject);
 
 			final boolean IS_POTENTIAL_SUB_PROJECT = false;
-			if( IS_POTENTIAL_SUB_PROJECT ) {
+			if (IS_POTENTIAL_SUB_PROJECT) {
 				// Look for nested projects to open as well:
 				Enumeration<? extends FileObject> e = projectDirectoryObject.getFolders(true);
 				while (e.hasMoreElements()) {
@@ -137,8 +196,8 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			File javaSrcDirectory = new File(projectDirectory, "src");
 
 			//open source folder: does not seem to work when there are no existing open projects
-			resultSet.add(FileUtil.toFileObject( javaSrcDirectory ) );
-			
+			resultSet.add(FileUtil.toFileObject(javaSrcDirectory));
+
 			try {
 				Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory, progressHandle);
 				resultSet.addAll(filesToOpen);
@@ -147,6 +206,8 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			} catch (VersionNotSupportedException vnse) {
 				Logger.throwable(vnse);
 			}
+
+			this.cleanSlateIfAppropriate();
 
 			return resultSet;
 		} finally {

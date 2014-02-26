@@ -41,6 +41,21 @@ public class IoLoggingHandler extends java.util.logging.Handler {
 			io.getErr().println( stackTraceElement );
 		}
 	}
+	
+	public static void errln( Object object ) {
+		io.getErr().println( object );
+	}
+
+	public static void errln( Object... objects ) {
+		StringBuilder sb = new StringBuilder();
+		String separator = "";
+		for( Object o : objects ) {
+			sb.append( separator );
+			sb.append( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.toString( o ) );
+			separator = " ";
+		}
+		io.getErr().println( sb.toString() );
+	}
 
 	@Override
 	public void publish( java.util.logging.LogRecord record ) {
