@@ -2,31 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddNumberKeyPressListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/DoTogether.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/WhileLoop.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/ForEachIn.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddArrowKeyPressListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/CountLoopCustomizer.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/IfStatement.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddKeyPressListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/ForAllTogether.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddObjectMoverFor.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddTimeListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/I18nUtilities.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/WhileLoop.xml</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddMouseClickOnScreenListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/ForEachIn.xml</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/DoInOrder.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AbstractActiveEditorDrop.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/Bundle.properties</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddDefaultModelManipulation.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/resources/DoTogetherCustomizer.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/CountLoop.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AliceComponentPaletteUtilities.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddMouseClickOnObjectListener.java</file>
-            <file>file:/C:/Users/dennisc/Documents/Git/alice/alice/netbeans/Alice3ModuleSuite/Alice3Module/src/org/alice/netbeans/alicecomponentpalette/items/AddSceneActivationListener.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
