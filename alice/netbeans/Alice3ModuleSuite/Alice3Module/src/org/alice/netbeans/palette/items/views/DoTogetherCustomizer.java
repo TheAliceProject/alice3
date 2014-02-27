@@ -9,7 +9,7 @@
  * Created on Mar 3, 2010, 4:14:02 PM
  */
 
-package org.alice.netbeans.palette.items.resources;
+package org.alice.netbeans.palette.items.views;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;

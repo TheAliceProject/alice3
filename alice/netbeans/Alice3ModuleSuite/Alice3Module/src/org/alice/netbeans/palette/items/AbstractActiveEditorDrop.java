@@ -1,9 +1,9 @@
 package org.alice.netbeans.palette.items;
 
+import org.alice.netbeans.palette.items.resources.I18nUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
-import org.alice.netbeans.palette.items.resources.I18nUtilities;
 import org.openide.text.ActiveEditorDrop;
 
 /**

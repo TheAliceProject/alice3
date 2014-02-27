@@ -1,7 +1,7 @@
 package org.alice.netbeans.palette.items;
 
 import javax.swing.text.JTextComponent;
-import org.alice.netbeans.palette.items.resources.CountLoopCustomizer;
+import org.alice.netbeans.palette.items.views.CountLoopCustomizer;
 
 public class CountLoop extends AbstractActiveEditorDrop {
 
