@@ -93,6 +93,24 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		}
 	}
 
+	private static class RightToLeftFixScrollPanelLayout extends javax.swing.ScrollPaneLayout {
+		@Override
+		public void layoutContainer( java.awt.Container parent ) {
+			super.layoutContainer( parent );
+			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)parent;
+			if( scrollPane.getComponentOrientation() == java.awt.ComponentOrientation.RIGHT_TO_LEFT ) {
+				//todo?
+				java.awt.Rectangle viewportBounds = scrollPane.getViewport().getBounds();
+				java.awt.Rectangle viewBounds = scrollPane.getViewport().getView().getBounds();
+				if( viewBounds.width < viewportBounds.width ) {
+					viewBounds.x = 0;
+					viewBounds.width = viewportBounds.width;
+					scrollPane.getViewport().getView().setBounds( viewBounds );
+				}
+			}
+		}
+	}
+
 	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
 		edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug rv = new edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug() {
 			@Override
@@ -109,6 +127,7 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		javax.swing.JScrollPane rv = this.createJScrollPane();
 		rv.setOpaque( true );
 		rv.setBorder( null );
+		rv.setLayout( new RightToLeftFixScrollPanelLayout() );
 		return rv;
 	}
 
