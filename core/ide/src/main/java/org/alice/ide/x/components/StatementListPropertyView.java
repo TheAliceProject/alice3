@@ -164,14 +164,22 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 						if( isShiftDown && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
 							java.awt.Component lastComponent = this.getComponent( N - 1 );
-							final int X_INDENT = 2;
+							final int INDENT = 2;
 							final int BRACKET_A_WIDTH = 4;
 							final int BRACKET_B_WIDTH = 8;
 							final int BRACKET_B_HEIGHT = 4;
 							int yMax = lastComponent.getY() + lastComponent.getHeight() + INTRASTICIAL_PAD;
-							g.fillRect( X_INDENT, y, BRACKET_A_WIDTH, yMax - y );
-							g.fillRect( X_INDENT, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
-							g.fillRect( X_INDENT, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							if( componentOrientation.isLeftToRight() ) {
+								final int X = INDENT;
+								g.fillRect( X, y, BRACKET_A_WIDTH, yMax - y );
+								g.fillRect( X, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+								g.fillRect( X, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							} else {
+								final int X = this.getWidth() - INDENT - BRACKET_A_WIDTH;
+								g.fillRect( X, y, BRACKET_A_WIDTH, yMax - y );
+								g.fillRect( X - BRACKET_B_WIDTH, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+								g.fillRect( X - BRACKET_B_WIDTH, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							}
 						} else {
 							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
 							g.fillPolygon( xPoints, yPoints, 3 );

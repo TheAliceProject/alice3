@@ -242,10 +242,10 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 								}
 							}
 						}
-						if( componentOrientation == java.awt.ComponentOrientation.RIGHT_TO_LEFT ) {
-							p.x = this.currentUnder.getWidth() - insets.right - step.getDragSource().getDropProxy().getWidth();
-						} else {
+						if( componentOrientation.isLeftToRight() ) {
 							p.x = insets.left;
+						} else {
+							p.x = this.currentUnder.getWidth() - insets.right - step.getDragSource().getDropProxy().getWidth();
 
 						}
 						source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height, availableHeight );
