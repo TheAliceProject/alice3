@@ -312,7 +312,17 @@ public class ComponentUtilities {
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
-				validateTree( component );
+				revalidateTree( component );
+			}
+		}
+	}
+
+	public static void setComponentOrientationTree( java.awt.Component c, java.awt.ComponentOrientation componentOrientation ) {
+		c.setComponentOrientation( componentOrientation );
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				setComponentOrientationTree( component, componentOrientation );
 			}
 		}
 	}
