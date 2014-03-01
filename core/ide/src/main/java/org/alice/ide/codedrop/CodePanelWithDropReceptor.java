@@ -162,6 +162,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 		}
 
 		public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep step ) {
+			java.awt.ComponentOrientation componentOrientation = getAwtComponent().getComponentOrientation();
 			org.lgna.croquet.views.DragComponent source = step.getDragSource();
 			if( source != null ) {
 				java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
@@ -188,7 +189,8 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 								int currentPotentialDropIndex = nextIndex;
 								if( prevOwner == nextOwner ) {
 									if( ( prevIndex == nextIndex ) || ( prevIndex == ( nextIndex - 1 ) ) ) {
-										source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null, -1 );
+										java.awt.Point p = new java.awt.Point( 0, 0 );
+										source.setDropProxyLocationAndShowIfNecessary( p, source, null, -1 );
 										isDropProxyAlreadyUpdated = true;
 										currentPotentialDropIndex = -1;
 									}
@@ -203,8 +205,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 						java.awt.event.MouseEvent eUnder = getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
 						Integer height = 0;
 						java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getAwtComponent() );
-						int x = insets.left;
-						java.awt.Point p = new java.awt.Point( x, 0 );
+						java.awt.Point p = new java.awt.Point( 0, 0 );
 
 						int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
 
@@ -240,6 +241,12 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 									}
 								}
 							}
+						}
+						if( componentOrientation == java.awt.ComponentOrientation.RIGHT_TO_LEFT ) {
+							p.x = this.currentUnder.getWidth() - insets.right - step.getDragSource().getDropProxy().getWidth();
+						} else {
+							p.x = insets.left;
+
 						}
 						source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height, availableHeight );
 					}
