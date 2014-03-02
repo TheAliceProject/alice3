@@ -239,8 +239,11 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 			this.trackDisplayability();
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
 			this.awtComponent.setName( this.getClass().getName() );
-			if( this.awtComponent instanceof javax.swing.JComponent ) {
-				( (javax.swing.JComponent)this.awtComponent ).setComponentOrientation( java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() ) );
+			java.awt.ComponentOrientation componentOrientation = java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() );
+			if( componentOrientation.isLeftToRight() ) {
+				//pass
+			} else {
+				awtComponent.setComponentOrientation( componentOrientation );
 			}
 			AwtComponentView.map.put( this.awtComponent, this );
 		}

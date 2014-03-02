@@ -81,7 +81,6 @@ public class Label extends AbstractLabel {
 
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel();
-		return rv;
+		return new javax.swing.JLabel();
 	}
 }

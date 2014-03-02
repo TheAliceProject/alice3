@@ -178,4 +178,10 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 		this.refreshIfNecessary();
 		super.handleDisplayable();
 	}
+
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+		this.refreshIfNecessary();
+		super.handleAddedTo( parent );
+	}
 }

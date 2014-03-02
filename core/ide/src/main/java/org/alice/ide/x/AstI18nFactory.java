@@ -213,10 +213,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 				//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 				//					rv = this.createComponent( expression );
 			} else {
-				org.lgna.croquet.views.SwingComponentView<?> component = this.createComponent( expression );
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
 					rv = new org.alice.ide.x.components.ExpressionView( this, expression );
 				} else {
+					org.lgna.croquet.views.SwingComponentView<?> component = this.createComponent( expression );
 					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
 				}
 			}
