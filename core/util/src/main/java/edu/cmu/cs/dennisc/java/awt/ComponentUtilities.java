@@ -317,16 +317,6 @@ public class ComponentUtilities {
 		}
 	}
 
-	public static void setComponentOrientationTree( java.awt.Component c, java.awt.ComponentOrientation componentOrientation ) {
-		c.setComponentOrientation( componentOrientation );
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
-				setComponentOrientationTree( component, componentOrientation );
-			}
-		}
-	}
-
 	public static java.awt.Frame getRootFrame( java.awt.Component c ) {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
 		if( root instanceof java.awt.Frame ) {

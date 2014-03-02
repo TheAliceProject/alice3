@@ -96,6 +96,24 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		return this.menuProxy;
 	}
 
+	//todo:
+	private static void setBoxLayoutComponentOrientationTree( java.awt.Component c, java.awt.ComponentOrientation componentOrientation ) {
+		if( c instanceof javax.swing.JPanel ) {
+			javax.swing.JPanel jPanel = (javax.swing.JPanel)c;
+			java.awt.LayoutManager layoutManager = jPanel.getLayout();
+			if( layoutManager instanceof javax.swing.BoxLayout ) {
+				//javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
+				c.setComponentOrientation( componentOrientation );
+			}
+		}
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				setBoxLayoutComponentOrientationTree( component, componentOrientation );
+			}
+		}
+	}
+
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
 		if( this.isDirty() ) {
 			this.icon = null;
@@ -106,9 +124,27 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		} else {
 			javax.swing.JComponent component = this.getMenuProxy( node );
 			if( component != null ) {
+				final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
+				java.awt.ComponentOrientation componentOrientation = component.getComponentOrientation();
+				if( componentOrientation.isLeftToRight() ) {
+					//pass
+				} else {
+					if( IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK ) {
+						setBoxLayoutComponentOrientationTree( component, java.awt.ComponentOrientation.LEFT_TO_RIGHT );
+					}
+				}
+
 				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.invalidateTree( component );
 				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( component );
 				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( component );
+
+				if( componentOrientation.isLeftToRight() ) {
+					//pass
+				} else {
+					if( IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK ) {
+						setBoxLayoutComponentOrientationTree( component, componentOrientation );
+					}
+				}
 
 				java.awt.Dimension size = component.getPreferredSize();
 				if( ( size.width > 0 ) && ( size.height > 0 ) ) {
