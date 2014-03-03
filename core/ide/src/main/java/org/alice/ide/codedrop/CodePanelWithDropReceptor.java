@@ -162,7 +162,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 		}
 
 		public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep step ) {
-			java.awt.ComponentOrientation componentOrientation = getAwtComponent().getComponentOrientation();
+			java.awt.ComponentOrientation componentOrientation = getComponentOrientation();
 			org.lgna.croquet.views.DragComponent source = step.getDragSource();
 			if( source != null ) {
 				java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();

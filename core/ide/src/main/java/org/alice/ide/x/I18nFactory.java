@@ -53,15 +53,15 @@ public abstract class I18nFactory {
 
 	protected abstract org.lgna.croquet.views.SwingComponentView<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount );
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return new org.lgna.croquet.views.Label( textChunk.getText() );
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
 		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = owner.getInstancePropertyNamed( propertyName );
@@ -75,7 +75,7 @@ public abstract class I18nFactory {
 		}
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();
 		org.lgna.croquet.views.SwingComponentView<?> rv;
 		if( ( owner instanceof org.lgna.project.ast.AbstractDeclaration ) && methodName.equals( "getName" ) ) {
@@ -113,7 +113,7 @@ public abstract class I18nFactory {
 		return rv;
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		if( chunk instanceof org.alice.ide.i18n.TextChunk ) {
 			return createComponent( (org.alice.ide.i18n.TextChunk)chunk, owner );
 		} else if( chunk instanceof org.alice.ide.i18n.PropertyChunk ) {
@@ -127,11 +127,11 @@ public abstract class I18nFactory {
 		}
 	}
 
-	protected int getPixelsPerIndent() {
+	private int getPixelsPerIndent() {
 		return 4;
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0 : owner;

@@ -185,7 +185,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					javax.swing.AbstractButton awtButton = this.getAwtComponent();
 					if( isCloseable ) {
 						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
-						if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+						if( this.getComponentOrientation().isLeftToRight() ) {
 							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
 						} else {
 							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
@@ -240,7 +240,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				float xEnd;
 				float xA;
 				float tabPad;
-				if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+				if( this.getComponentOrientation().isLeftToRight() ) {
 					xStart = x;
 					xEnd = ( x + width ) - 1;
 					tabPad = TRAILING_TAB_PAD;
@@ -546,7 +546,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 								java.awt.Rectangle bounds = button.getBounds( innerHeaderPanel );
 								g.setColor( button.getBackgroundColor() );
 								int x0;
-								if( c.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+								if( c.getComponentOrientation().isLeftToRight() ) {
 									x0 = bounds.x;
 								} else {
 									x0 = bounds.x - TRAILING_TAB_PAD;

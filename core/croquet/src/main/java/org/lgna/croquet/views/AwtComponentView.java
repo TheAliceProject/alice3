@@ -377,6 +377,14 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	//		this.getAwtComponent().setEnabled( isEnabled );
 	//	}
 
+	public java.awt.ComponentOrientation getComponentOrientation() {
+		return this.getAwtComponent().getComponentOrientation();
+	}
+
+	public void setComponentOrientation( java.awt.ComponentOrientation componentOrientation ) {
+		this.getAwtComponent().setComponentOrientation( componentOrientation );
+	}
+
 	public java.awt.Color getForegroundColor() {
 		return this.getAwtComponent().getForeground();
 	}
