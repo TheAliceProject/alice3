@@ -304,6 +304,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 						//							g2.setClip( clip );
 						g2.setClip( bounds );
 					}
+
 					g2.draw( path );
 				} finally {
 					g2.setClip( prevClip );
@@ -552,7 +553,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 						if( component instanceof AbstractButton<?, ?> ) {
 							AbstractButton<?, ?> button = (AbstractButton<?, ?>)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
-								java.awt.Rectangle bounds = button.getBounds( innerHeaderPanel );
+								java.awt.Rectangle bounds = button.getBounds( AwtContainerView.lookup( c ) );
 								g.setColor( button.getBackgroundColor() );
 								int x0;
 								if( c.getComponentOrientation().isLeftToRight() ) {
