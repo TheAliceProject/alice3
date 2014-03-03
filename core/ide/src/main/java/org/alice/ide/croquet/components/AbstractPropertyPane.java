@@ -104,4 +104,8 @@ public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property
 		super.handleUndisplayable();
 	}
 
+	@Override
+	protected boolean isRefreshOnAddedToDesired() {
+		return true;
+	}
 }

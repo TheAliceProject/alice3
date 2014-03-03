@@ -98,14 +98,20 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		public void layoutContainer( java.awt.Container parent ) {
 			super.layoutContainer( parent );
 			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)parent;
-			if( scrollPane.getComponentOrientation() == java.awt.ComponentOrientation.RIGHT_TO_LEFT ) {
+			if( scrollPane.getComponentOrientation().isLeftToRight() ) {
+				//pass
+			} else {
 				//todo?
-				java.awt.Rectangle viewportBounds = scrollPane.getViewport().getBounds();
-				java.awt.Rectangle viewBounds = scrollPane.getViewport().getView().getBounds();
-				if( viewBounds.width < viewportBounds.width ) {
-					viewBounds.x = 0;
-					viewBounds.width = viewportBounds.width;
-					scrollPane.getViewport().getView().setBounds( viewBounds );
+				javax.swing.JViewport viewport = scrollPane.getViewport();
+				java.awt.Rectangle viewportBounds = viewport.getBounds();
+				java.awt.Component view = viewport.getView();
+				if( view != null ) {
+					java.awt.Rectangle viewBounds = view.getBounds();
+					if( viewBounds.width < viewportBounds.width ) {
+						viewBounds.x = 0;
+						viewBounds.width = viewportBounds.width;
+						scrollPane.getViewport().getView().setBounds( viewBounds );
+					}
 				}
 			}
 		}
