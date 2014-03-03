@@ -160,13 +160,14 @@ public class StatementListBorder implements javax.swing.border.Border {
 					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, textIndex );
 
 					java.awt.Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
-					int width = ( EMPTY_INSET_TRAILING + (int)bounds.getWidth() ) - 16;
+					final int PADDING = 24;
+					int width = ( EMPTY_INSET_LEADING + (int)bounds.getWidth() ) + PADDING;
 					int height = ( EMPTY_INSET_BOTTOM + (int)bounds.getHeight() ) - 4;
 					int dx;
 					if( c.getComponentOrientation().isLeftToRight() ) {
 						dx = x + EMPTY_INSET_LEADING;
 					} else {
-						dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() );
+						dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() ) - PADDING - 12;
 					}
 					int dy;
 					if( container.getComponentCount() == 0 ) {
@@ -196,7 +197,14 @@ public class StatementListBorder implements javax.swing.border.Border {
 					g.setColor( java.awt.Color.BLACK );
 					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], 8, 0, (int)bounds.getWidth(), height );
+
+					int xText = 6;
+					if( c.getComponentOrientation().isLeftToRight() ) {
+						//pass
+					} else {
+						xText += PADDING;
+					}
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], xText, 0, (int)bounds.getWidth(), height );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 					g.translate( -dx, -dy );
 				}
