@@ -68,22 +68,27 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 		org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:
+			Class<?> resourceCls = classResourceKey.getModelResourceCls();
 			org.lgna.story.resources.sims2.LifeStage lifeStage;
-			if( org.lgna.story.resources.sims2.ToddlerPersonResource.class.isAssignableFrom( this.thingCls ) ) {
+			if( org.lgna.story.resources.sims2.ToddlerPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.TODDLER;
-			} else if( org.lgna.story.resources.sims2.ChildPersonResource.class.isAssignableFrom( this.thingCls ) ) {
+			} else if( org.lgna.story.resources.sims2.ChildPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
-			} else if( org.lgna.story.resources.sims2.TeenPersonResource.class.isAssignableFrom( this.thingCls ) ) {
+			} else if( org.lgna.story.resources.sims2.TeenPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.TEEN;
-			} else if( org.lgna.story.resources.sims2.AdultPersonResource.class.isAssignableFrom( this.thingCls ) ) {
+			} else if( org.lgna.story.resources.sims2.AdultPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
-			} else if( org.lgna.story.resources.sims2.ElderPersonResource.class.isAssignableFrom( this.thingCls ) ) {
+			} else if( org.lgna.story.resources.sims2.ElderPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.ELDER;
 			} else {
 				lifeStage = null;
 			}
 
-			return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( lifeStage );
+			org.alice.stageide.personresource.PersonResourceComposite personResourceComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance();
+			if( lifeStage != null ) {
+				personResourceComposite.EPIC_HACK_disableLifeStageStateOneTime();
+			}
+			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
 		case 1:
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {

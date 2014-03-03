@@ -165,7 +165,12 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	private void initializeRandom( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		this.ingredientsComposite.getLifeStageState().setEnabled( true );
+		boolean isLifeStageStateEnabled = true;
+		if( EPIC_HACK_disableLifeStageStateOneTime ) {
+			isLifeStageStateEnabled = false;
+			EPIC_HACK_disableLifeStageStateOneTime = false;
+		}
+		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
 		org.lgna.story.resources.sims2.PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
 		this.ingredientsComposite.setStates( personResource );
 	}
@@ -188,6 +193,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 			if( type instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					//note: duplicated below
 					isLifeStageStateEnabled = false;
 
 					Object instance = vm.ENTRY_POINT_createInstance( instanceCreation );
@@ -195,6 +201,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 					if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 						org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
 						this.ingredientsComposite.setStates( personResource );
+						//note: duplicated above
 						isLifeStageStateEnabled = false;
 					} else {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
@@ -203,6 +210,12 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 			}
 		}
 		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
+	}
+
+	private boolean EPIC_HACK_disableLifeStageStateOneTime;
+
+	public void EPIC_HACK_disableLifeStageStateOneTime() {
+		EPIC_HACK_disableLifeStageStateOneTime = true;
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
