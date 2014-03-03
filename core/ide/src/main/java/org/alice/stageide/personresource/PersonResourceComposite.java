@@ -128,6 +128,22 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return this.previewComposite;
 	}
 
+	public org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getRandomPersonValueCreator( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return this.randomAdultValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+			return this.randomChildValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return this.randomTeenValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return this.randomToddlerValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+			return this.randomElderValueCreator;
+		} else {
+			return this.randomAdultValueCreator;
+		}
+	}
+
 	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getRandomPersonExpressionValueConverter( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			return this.randomAdultExpressionValueConverter;

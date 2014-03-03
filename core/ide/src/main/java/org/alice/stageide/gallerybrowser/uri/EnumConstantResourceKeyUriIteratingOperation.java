@@ -45,23 +45,34 @@ package org.alice.stageide.gallerybrowser.uri;
 /**
  * @author Dennis Cosgrove
  */
-public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
-	private final Class<?> thingCls;
-	private final java.net.URI uri;
+public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUriIteratingOperation {
+	private static class SingletonHolder {
+		private static EnumConstantResourceKeyUriIteratingOperation instance = new EnumConstantResourceKeyUriIteratingOperation();
+	}
 
-	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey, Class<?> thingCls, java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
-		this.thingCls = thingCls;
-		this.uri = uri;
+	/*package-private*/static EnumConstantResourceKeyUriIteratingOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private EnumConstantResourceKeyUriIteratingOperation() {
+		super( java.util.UUID.fromString( "bb91fc40-48a8-4452-b9b5-bb09ce439a67" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
-		return null;
+	protected int getStepCount() {
+		return 2;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceKeyUriIteratingOperation.getInstance( this.getResourceKey(), this.thingCls, this.uri );
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		org.alice.stageide.modelresource.EnumConstantResourceKey enumConstantResourceKey = (org.alice.stageide.modelresource.EnumConstantResourceKey)this.resourceKey;
+		switch( subSteps.size() ) {
+		case 0:
+			return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
+		case 1:
+			return this.getMergeTypeOperation();
+		default:
+			return null;
+		}
 	}
 }

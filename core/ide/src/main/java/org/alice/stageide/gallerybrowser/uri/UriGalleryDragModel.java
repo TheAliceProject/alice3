@@ -317,9 +317,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		Class<?> thingCls = this.getThingCls();
-		UriResourceKeyIteratingOperation operation = UriResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKeyThingClsAndUri( resourceKey, thingCls, this.uri );
-		return operation;
+		return ResourceKeyUriIteratingOperation.getInstance( resourceKey, thingCls, this.uri );
 	}
 
 	@Override
@@ -330,7 +328,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
-				return org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
+				return null;//org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
 			} else {
 				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}

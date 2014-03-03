@@ -81,9 +81,13 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
-		this.initialInstanceCreation = resourceKey != null ? resourceKey.createInstanceCreation() : null;
+	public void setInitializerInitialValue( org.lgna.project.ast.InstanceCreation initialInstanceCreation, boolean isChangeResourceAllowed ) {
+		this.initialInstanceCreation = initialInstanceCreation;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
+	}
+
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
+		this.setInitializerInitialValue( resourceKey != null ? resourceKey.createInstanceCreation() : null, isChangeResourceAllowed );
 	}
 
 	@Override

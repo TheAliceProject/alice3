@@ -45,23 +45,44 @@ package org.alice.stageide.gallerybrowser.uri;
 /**
  * @author Dennis Cosgrove
  */
-public final class UriBasedResourceNode extends org.alice.stageide.modelresource.ResourceNode {
-	private final Class<?> thingCls;
-	private final java.net.URI uri;
+public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIteratingOperation {
+	private static class SingletonHolder {
+		private static ClassResourceKeyUriIteratingOperation instance = new ClassResourceKeyUriIteratingOperation();
+	}
 
-	public UriBasedResourceNode( org.alice.stageide.modelresource.EnumConstantResourceKey resourceKey, Class<?> thingCls, java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey, (java.util.List)java.util.Collections.emptyList() );
-		this.thingCls = thingCls;
-		this.uri = uri;
+	/*package-private*/static ClassResourceKeyUriIteratingOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ClassResourceKeyUriIteratingOperation() {
+		super( java.util.UUID.fromString( "e0b90c6a-46be-4b26-ae19-43314f6271b8" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
-		return null;
+	protected int getStepCount() {
+		return 3;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceKeyUriIteratingOperation.getInstance( this.getResourceKey(), this.thingCls, this.uri );
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;
+		switch( subSteps.size() ) {
+		case 0:
+			org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite = org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite.getInstance();
+			composite.setClassResourceKey( classResourceKey );
+			return composite.getValueCreator();
+		case 1:
+			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
+				org.alice.stageide.modelresource.EnumConstantResourceKey enumConstantResourceKey = (org.alice.stageide.modelresource.EnumConstantResourceKey)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
+				return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
+			} else {
+				return null;
+			}
+		case 2:
+			return this.getMergeTypeOperation();
+		default:
+			return null;
+		}
 	}
 }
