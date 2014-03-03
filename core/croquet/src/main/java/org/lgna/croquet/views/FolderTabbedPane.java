@@ -106,7 +106,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			} else {
 				String text = button.getText();
 				java.awt.Insets insets = button.getInsets();
-				g.drawString( text, insets.left, button.getBaseline( c.getWidth(), c.getHeight() ) );
+				int x = insets.left;
+				if( button.getComponentOrientation().isLeftToRight() ) {
+					//pass
+				} else {
+					for( java.awt.Component component : button.getComponents() ) {
+						x += component.getPreferredSize().width;
+						x += 4;
+					}
+				}
+				g.drawString( text, x, button.getBaseline( c.getWidth(), c.getHeight() ) );
 			}
 		}
 	}
