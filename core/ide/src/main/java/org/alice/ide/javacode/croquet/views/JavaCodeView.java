@@ -87,6 +87,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		if( IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED ) {
 			this.addMouseWheelListener( this.mouseWheelListener );
 		}
+		this.updateHtml();
 		super.handleDisplayable();
 	}
 
