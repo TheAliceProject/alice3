@@ -149,7 +149,7 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 	protected void internalRefresh() {
 	}
 
-	private void refreshIfNecessary() {
+	protected void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
 			if( this.isInTheMidstOfRefreshing ) {
 				//pass

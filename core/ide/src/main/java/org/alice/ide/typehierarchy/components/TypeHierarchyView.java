@@ -124,14 +124,19 @@ public class TypeHierarchyView extends org.lgna.croquet.views.BorderPanel {
 		}
 	};
 
+	private boolean isIgnoringChangesToTree = false;
 	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			javax.swing.tree.TreePath treePath = jTree.getSelectionPath();
 			if( treePath != null ) {
-				Object last = treePath.getLastPathComponent();
-				if( last instanceof edu.cmu.cs.dennisc.tree.Node ) {
-					edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node = (edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>)last;
-					org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().setValueTransactionlessly( org.alice.ide.declarationseditor.TypeComposite.getInstance( node.getValue() ) );
+				if( isIgnoringChangesToTree ) {
+					//pass
+				} else {
+					Object last = treePath.getLastPathComponent();
+					if( last instanceof edu.cmu.cs.dennisc.tree.Node ) {
+						edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node = (edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>)last;
+						org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().setValueTransactionlessly( org.alice.ide.declarationseditor.TypeComposite.getInstance( node.getValue() ) );
+					}
 				}
 				jTree.repaint();
 			}
@@ -162,7 +167,7 @@ public class TypeHierarchyView extends org.lgna.croquet.views.BorderPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		super.handleDisplayable();
+		this.refreshIfNecessary();
 		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 		this.jTree.addKeyListener( this.keyListener );
@@ -181,15 +186,20 @@ public class TypeHierarchyView extends org.lgna.croquet.views.BorderPanel {
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		this.treeModel.refresh();
-		for( int i = 0; i < this.jTree.getRowCount(); i++ ) {
-			this.jTree.expandRow( i );
-			javax.swing.tree.TreePath treePath = this.jTree.getPathForRow( i );
-			edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> lastNode = (edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>)treePath.getLastPathComponent();
-			if( lastNode.getValue() == org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue() ) {
-				this.jTree.setSelectionRow( i );
+		this.isIgnoringChangesToTree = true;
+		try {
+			this.treeModel.refresh();
+			for( int i = 0; i < this.jTree.getRowCount(); i++ ) {
+				this.jTree.expandRow( i );
+				javax.swing.tree.TreePath treePath = this.jTree.getPathForRow( i );
+				edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> lastNode = (edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>)treePath.getLastPathComponent();
+				if( lastNode.getValue() == org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue() ) {
+					this.jTree.setSelectionRow( i );
+				}
 			}
+			this.jTree.repaint();
+		} finally {
+			this.isIgnoringChangesToTree = false;
 		}
-		this.jTree.repaint();
 	}
 }
