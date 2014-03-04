@@ -2,7 +2,6 @@ package org.alice.ide.declarationseditor.events.components;
 
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
-import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.project.ast.Statement;
@@ -14,7 +13,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 		LineAxisPanel bottom = new LineAxisPanel( button );
 		this.stickyBottomPanel = new StickyBottomPanel();
-		this.stickyBottomPanel.addBottomView( bottom );
+		this.stickyBottomPanel.setBottomView( bottom );
 		//		this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
 		//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 		//				Object src = e.getSource();
@@ -64,19 +63,27 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	}
 
 	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		super.handleAddedTo( parent );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.addListPropertyListener( this.statementsListener );
+
+		//todo: remove
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		//
 	}
 
 	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
+	protected void handleUndisplayable() {
+		//todo: remove
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		//
+
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );
-		super.handleRemovedFrom( parent );
+		super.handleUndisplayable();
 	}
 
 	@Override
@@ -84,13 +91,8 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		super.setJavaCodeOnTheSide( value, isFirstTime );
 		org.lgna.croquet.views.SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
 		if( value ) {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.stickyBottomPanel.removeComponent( this.scrollPane );
-			}
 			this.scrollPane.setViewportView( null );
-			this.stickyBottomPanel.addTopView( codePanel );
+			this.stickyBottomPanel.setTopView( codePanel );
 		} else {
 			if( isFirstTime ) {
 				//pass
@@ -98,7 +100,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 				this.stickyBottomPanel.removeComponent( codePanel );
 			}
 			this.scrollPane.setViewportView( codePanel );
-			this.stickyBottomPanel.addTopView( this.scrollPane );
+			this.stickyBottomPanel.setTopView( this.scrollPane );
 		}
 	}
 
@@ -131,6 +133,12 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
+	};
+
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		public void projectChanged() {
+			revalidateAndRepaint();
+		}
 	};
 
 	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
