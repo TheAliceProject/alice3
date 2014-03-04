@@ -118,7 +118,11 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 						Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
 						this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
 					} else {
-						this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+						if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( resourceCls ) ) {
+							this.resourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+						} else {
+							this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+						}
 					}
 				}
 			} catch( Throwable t ) {
@@ -328,10 +332,13 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
-				return null;//org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
+				//should not happen
+				return null;
 			} else {
 				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}
+		} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
+			return this.getLeftButtonClickModel();
 		} else {
 			Class<?> thingCls = this.getThingCls();
 			if( thingCls != null ) {

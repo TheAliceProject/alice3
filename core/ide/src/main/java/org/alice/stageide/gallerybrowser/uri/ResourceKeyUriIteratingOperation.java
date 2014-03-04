@@ -50,14 +50,12 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 		ResourceKeyUriIteratingOperation rv;
 		if( resourceKey != null ) {
 			if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-				org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
-				if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( classResourceKey.getModelResourceCls() ) ) {
-					rv = PersonResourceKeyUriIteratingOperation.getInstance();
-				} else {
-					rv = ClassResourceKeyUriIteratingOperation.getInstance();
-				}
+				//				org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+				rv = ClassResourceKeyUriIteratingOperation.getInstance();
 			} else if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
 				rv = EnumConstantResourceKeyUriIteratingOperation.getInstance();
+			} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
+				rv = PersonResourceKeyUriIteratingOperation.getInstance();
 			} else {
 				rv = null;
 			}

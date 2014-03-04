@@ -112,7 +112,19 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
-		return org.lgna.story.resources.sims2.PersonResource.class;
+		if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+			return org.lgna.story.resources.sims2.ElderPersonResource.class;
+		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.ADULT ) ) {
+			return org.lgna.story.resources.sims2.AdultPersonResource.class;
+		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+			return org.lgna.story.resources.sims2.TeenPersonResource.class;
+		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.CHILD ) ) {
+			return org.lgna.story.resources.sims2.ChildPersonResource.class;
+		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.TODDLER ) ) {
+			return org.lgna.story.resources.sims2.ToddlerPersonResource.class;
+		} else {
+			return org.lgna.story.resources.sims2.PersonResource.class;
+		}
 	}
 
 	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPersonResourceValueCreator() {

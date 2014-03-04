@@ -65,10 +65,10 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 
 	@Override
 	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
-		org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)this.resourceKey;
+		org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:
-			Class<?> resourceCls = classResourceKey.getModelResourceCls();
+			Class<?> resourceCls = personResourceKey.getModelResourceCls();
 			org.lgna.story.resources.sims2.LifeStage lifeStage;
 			if( org.lgna.story.resources.sims2.ToddlerPersonResource.class.isAssignableFrom( resourceCls ) ) {
 				lifeStage = org.lgna.story.resources.sims2.LifeStage.TODDLER;
