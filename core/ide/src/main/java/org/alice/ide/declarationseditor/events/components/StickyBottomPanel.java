@@ -68,7 +68,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 				dim.height += d.height + vGap;
 			}
 			addInsets( dim, target );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "preferredLayoutSize", dim, target );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "preferredLayoutSize", dim, target );
 			return dim;
 		}
 	}
