@@ -46,6 +46,7 @@ package org.alice.ide.javacode.croquet.views;
  * @author Dennis Cosgrove
  */
 public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
+	private static final boolean IS_LAMBDA_TOGGLE_ENABLED = true;
 	private static final boolean IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED = false;
 
 	public JavaCodeView() {
@@ -110,7 +111,10 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	private void updateHtml() {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updateHtml", this.declaration );
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
+		org.lgna.project.ast.JavaCodeGenerator.Builder javaCodeGeneratorBuilder = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGeneratorBuilder();
+		javaCodeGeneratorBuilder.isLambdaSupported( this.isLambdaSupported );
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = javaCodeGeneratorBuilder.build();
+		//org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
 		String code;
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
@@ -217,6 +221,14 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 				fontSize--;
 				updateHtml();
 				break;
+			case java.awt.event.KeyEvent.VK_SPACE:
+				if( IS_LAMBDA_TOGGLE_ENABLED ) {
+					if( e.isControlDown() && e.isShiftDown() ) {
+						isLambdaSupported = !isLambdaSupported;
+						updateHtml();
+					}
+				}
+				break;
 			}
 		}
 
@@ -227,4 +239,6 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 	private org.lgna.croquet.undo.UndoHistory undoHistory;
 	private org.lgna.project.ast.AbstractDeclaration declaration;
 	private int fontSize = 14;
+
+	private boolean isLambdaSupported = true;
 }
