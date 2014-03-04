@@ -40,82 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.code;
+package org.alice.stageide.personresource.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodeFormatter {
-	private static String[] splitIntoLines( String src ) {
-		src = src.replace( ";", ";\n" );
-		src = src.replace( "{", "{\n" );
-		src = src.replace( "}", "\n}\n" );
-		return src.split( "\n" );
-	}
-
-	public static String format( String src, int indent ) {
-		//todo: do not format comments
-		StringBuilder sb = new StringBuilder();
-		int tabSkipCount = 0;
-		int newLineSkipCount = 0;
-		String[] lines = splitIntoLines( src );
-		for( String line : lines ) {
-			line = line.trim();
-			if( line.length() > 0 ) {
-				if( line.startsWith( "}" ) ) {
-					indent--;
-				}
-				if( tabSkipCount == 0 ) {
-					for( int i = 0; i < indent; i++ ) {
-						sb.append( '\t' );
-					}
-				} else {
-					tabSkipCount--;
-				}
-				if( line.startsWith( "for(" ) ) {
-					tabSkipCount = 2;
-					newLineSkipCount = 2;
-				}
-				if( line.endsWith( "{" ) ) {
-					indent++;
-				}
-				sb.append( line );
-				if( newLineSkipCount == 0 ) {
-					sb.append( '\n' );
-				} else {
-					newLineSkipCount--;
-				}
-			}
-		}
-		String s = sb.toString();
-		s = s.replaceAll( "\\}\\s*,", "}," ); //s = s.replaceAll( "\\}\\s*,\\(", "},(" );
-		s = s.replaceAll( "\\}\\s*\\)", "})" );
-
-		// remove whitespace before else
-		s = s.replaceAll( "\\}\\s*else\\{", "} else{" );
-
-		s = s.replaceAll( "=", " = " );
-		s = s.replaceAll( "=\\s*=", "==" );
-		s = s.replaceAll( ":", " : " );
-		s = s.replaceAll( ";", "; " );
-		s = s.replaceAll( ",", ", " );
-		s = s.replaceAll( "\\{", " { " );
-		s = s.replaceAll( "\\(", "( " );
-		s = s.replaceAll( "\\)", " )" );
-		s = s.replaceAll( "\\} ,", "}," );
-		// remove extra spaces
-		s = s.replaceAll( "  +", " " );
-		s = s.replaceAll( "\t +", "\t" );
-		// remove space from empty parens
-		s = s.replaceAll( "\\( \\)", "()" );
-		// remove whitespace from end of lines
-		s = s.replaceAll( "\\s*\n+", "\n" );
-
-		s = s.replaceAll( "@Override ", "@Override\n\t" );
-		return s;
-	}
-
-	public static String format( String src ) {
-		return format( src, 0 );
+public class ToddlerPersonResourceFillerInner extends PersonResourceFillerInner {
+	public ToddlerPersonResourceFillerInner() {
+		super( org.lgna.story.resources.sims2.ToddlerPersonResource.class, org.lgna.story.resources.sims2.LifeStage.TODDLER );
 	}
 }
