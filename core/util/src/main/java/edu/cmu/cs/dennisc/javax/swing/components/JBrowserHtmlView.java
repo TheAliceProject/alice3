@@ -71,4 +71,15 @@ public class JBrowserHtmlView extends JHtmlView {
 			}
 		}
 	}
+
+	protected boolean isRightToLeftComponentOrientationAllowed() {
+		return true;
+	}
+
+	@Override
+	public void setComponentOrientation( java.awt.ComponentOrientation o ) {
+		if( this.isRightToLeftComponentOrientationAllowed() ) {
+			super.setComponentOrientation( o );
+		}
+	}
 }

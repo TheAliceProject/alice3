@@ -103,6 +103,11 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		super.handleUndisplayable();
 	}
 
+	@Override
+	protected boolean isRightToLeftComponentOrientationAllowed( boolean defaultValue ) {
+		return false;
+	}
+
 	private void updateHtml() {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updateHtml", this.declaration );
 		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
