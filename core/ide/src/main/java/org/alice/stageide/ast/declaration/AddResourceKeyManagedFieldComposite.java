@@ -81,7 +81,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setInitializerInitialValue( org.lgna.project.ast.InstanceCreation initialInstanceCreation, boolean isChangeResourceAllowed ) {
+	private void setInitializerInitialValue( org.lgna.project.ast.InstanceCreation initialInstanceCreation, boolean isChangeResourceAllowed ) {
 		this.initialInstanceCreation = initialInstanceCreation;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
 	}

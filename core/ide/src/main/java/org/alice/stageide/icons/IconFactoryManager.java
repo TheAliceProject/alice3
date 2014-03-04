@@ -86,65 +86,60 @@ public class IconFactoryManager {
 
 		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
 			Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = this.getModelResourceClass();
-			if( org.lgna.story.resources.sims2.PersonResource.class.equals( modelResourceCls ) ) {
-				return new PersonResourceIconFactory();
+			String modelResourceName = this.getModelResourceName();
+			if( modelResourceName != null ) {
+				//pass
 			} else {
-				String modelResourceName = this.getModelResourceName();
-				if( modelResourceName != null ) {
-					//pass
-				} else {
-					if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-						javax.swing.ImageIcon smallIcon = getIcon( modelResourceCls, true );
-						javax.swing.ImageIcon largeIcon = getIcon( modelResourceCls, false );
-						return new org.lgna.croquet.icon.MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
-						//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
-					}
+				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
+					javax.swing.ImageIcon smallIcon = getIcon( modelResourceCls, true );
+					javax.swing.ImageIcon largeIcon = getIcon( modelResourceCls, false );
+					return new org.lgna.croquet.icon.MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
+					//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
-				//			if( modelResourceName != null ) {
-				//				//pass
-				//			} else {
-				//				if( modelResourceCls.isEnum() ) {
-				//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
-				//					if( constants.length > 1 ) {
-				//						int MAXIMUM_CONSTANTS_TO_USE = 5;
-				//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
-				//
-				//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( constants );
-				//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
-				//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
-				//								return o1.toString().compareTo( o2.toString() );
-				//							}
-				//						} );
-				//						int i = 0;
-				//						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
-				//							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
-				//							i += 1;
-				//							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
-				//								break;
-				//							}
-				//						}
-				//						return new EnumConstantsIconFactory( iconFactories );
+			}
+			//			if( modelResourceName != null ) {
+			//				//pass
+			//			} else {
+			//				if( modelResourceCls.isEnum() ) {
+			//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
+			//					if( constants.length > 1 ) {
+			//						int MAXIMUM_CONSTANTS_TO_USE = 5;
+			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+			//
+			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( constants );
+			//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
+			//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
+			//								return o1.toString().compareTo( o2.toString() );
+			//							}
+			//						} );
+			//						int i = 0;
+			//						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
+			//							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
+			//							i += 1;
+			//							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
+			//								break;
+			//							}
+			//						}
+			//						return new EnumConstantsIconFactory( iconFactories );
+			//					}
+			//				}
+			//			}
+			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
+			if( url != null ) {
+				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
+			} else {
+				//				if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( modelResourceCls ) ) {
+				//					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( modelResourceCls );
+				//					if( personResourceKey != null ) {
+				//						return personResourceKey.getIconFactory();
+				//					} else {
+				//						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "no icon factory for:", modelResourceCls, modelResourceName );
+				//						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				//					}
+				//				} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
+				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				//				}
-				//			}
-				java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
-				if( url != null ) {
-					return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
-				} else {
-					if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( modelResourceCls ) ) {
-						org.alice.stageide.modelresource.PersonResourceKey personResourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( modelResourceCls );
-						if( personResourceKey != null ) {
-							return personResourceKey.getIconFactory();
-						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "no icon factory for:", modelResourceCls, modelResourceName );
-							return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
-
-						}
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
-						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
-					}
-				}
 			}
 		}
 	}

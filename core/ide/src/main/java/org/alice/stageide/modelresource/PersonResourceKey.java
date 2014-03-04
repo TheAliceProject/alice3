@@ -55,6 +55,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	private static final org.lgna.croquet.icon.IconFactory TEEN_ICON_FACTORY = createIconFactory( "teen" );
 	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = createIconFactory( "child" );
 	private static final org.lgna.croquet.icon.IconFactory TODDLER_ICON_FACTORY = createIconFactory( "toddler" );
+	private static final org.lgna.croquet.icon.IconFactory PERSON_ICON_FACTORY = new org.alice.stageide.icons.PersonResourceIconFactory();
 
 	private static class SingletonHolder {
 		private static PersonResourceKey elderInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ELDER );
@@ -62,6 +63,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		private static PersonResourceKey teenInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.TEEN );
 		private static PersonResourceKey childInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.CHILD );
 		private static PersonResourceKey toddlerInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.TODDLER );
+		private static PersonResourceKey personInstance = new PersonResourceKey( null );
 	}
 
 	public static PersonResourceKey getElderInstance() {
@@ -84,6 +86,10 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		return SingletonHolder.toddlerInstance;
 	}
 
+	public static PersonResourceKey getPersonInstance() {
+		return SingletonHolder.personInstance;
+	}
+
 	public static PersonResourceKey getInstanceForResourceClass( Class<?> cls ) {
 		if( cls == org.lgna.story.resources.sims2.ElderPersonResource.class ) {
 			return getElderInstance();
@@ -96,7 +102,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		} else if( cls == org.lgna.story.resources.sims2.ToddlerPersonResource.class ) {
 			return getToddlerInstance();
 		} else {
-			return null;
+			return getPersonInstance();
 		}
 	}
 
@@ -112,15 +118,15 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
-		if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
 			return org.lgna.story.resources.sims2.ElderPersonResource.class;
-		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.ADULT ) ) {
+		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			return org.lgna.story.resources.sims2.AdultPersonResource.class;
-		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
 			return org.lgna.story.resources.sims2.TeenPersonResource.class;
-		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.CHILD ) ) {
+		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
 			return org.lgna.story.resources.sims2.ChildPersonResource.class;
-		} else if( this.lifeStage.equals( org.lgna.story.resources.sims2.LifeStage.TODDLER ) ) {
+		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
 			return org.lgna.story.resources.sims2.ToddlerPersonResource.class;
 		} else {
 			return org.lgna.story.resources.sims2.PersonResource.class;
@@ -135,8 +141,12 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "new " );
-		sb.append( this.lifeStage.name().charAt( 0 ) );
-		sb.append( this.lifeStage.name().substring( 1 ).toLowerCase() );
+		if( this.lifeStage != null ) {
+			sb.append( this.lifeStage.name().charAt( 0 ) );
+			sb.append( this.lifeStage.name().substring( 1 ).toLowerCase() );
+		} else {
+			sb.append( "Person" );
+		}
 		sb.append( "( ... )" );
 		return sb.toString();
 	}
@@ -151,8 +161,10 @@ public class PersonResourceKey extends InstanceCreatorKey {
 			return TEEN_ICON_FACTORY;
 		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
 			return CHILD_ICON_FACTORY;
-		} else {
+		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
 			return TODDLER_ICON_FACTORY;
+		} else {
+			return PERSON_ICON_FACTORY;
 		}
 	}
 

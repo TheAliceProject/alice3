@@ -95,9 +95,9 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 				Object value = prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				if( value instanceof org.lgna.project.ast.InstanceCreation ) {
 					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)value;
-					org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-					addResourceKeyManagedFieldComposite.setInitializerInitialValue( instanceCreation, false );
-					return addResourceKeyManagedFieldComposite.getLaunchOperation();
+					org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
+					addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
+					return addPersonResourceManagedFieldComposite.getLaunchOperation();
 				} else {
 					return null;
 				}
