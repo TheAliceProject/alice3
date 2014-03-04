@@ -45,22 +45,59 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class GroupIcon extends CollageIcon {
-	public GroupIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
-		super( size, iconFactories );
+public class PersonResourceIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+	private final java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories;
+
+	public PersonResourceIconFactory() {
+		super( IsCachingDesired.TRUE );
+		//todo
+		this.iconFactories = (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
+				org.alice.stageide.modelresource.PersonResourceKey.getChildInstance().getIconFactory(),
+				org.alice.stageide.modelresource.PersonResourceKey.getElderInstance().getIconFactory(),
+				org.alice.stageide.modelresource.PersonResourceKey.getTeenInstance().getIconFactory(),
+				org.alice.stageide.modelresource.PersonResourceKey.getAdultInstance().getIconFactory(),
+				org.alice.stageide.modelresource.PersonResourceKey.getToddlerInstance().getIconFactory()
+				) );
 	}
 
-	private static final double ROUND = 10;
-
 	@Override
-	protected java.awt.Shape createBackShape( double width, double height ) {
-		java.awt.geom.RoundRectangle2D a = new java.awt.geom.RoundRectangle2D.Double( 0, 0, width * 0.4, height, ROUND, ROUND );
-		java.awt.geom.RoundRectangle2D b = new java.awt.geom.RoundRectangle2D.Double( 0, height * 0.1, width, height * 0.9, ROUND, ROUND );
-		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( a, b );
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new CollageIcon( size, this.iconFactories ) {
+			@Override
+			protected java.awt.Shape createBackShape( double width, double height ) {
+				return null;
+			}
+
+			@Override
+			protected java.awt.Shape createFrontShape( double width, double height ) {
+				return null;
+			}
+
+			@Override
+			protected double getX( int i ) {
+				switch( i ) {
+				case 0:
+					return 0.5;
+				case 1:
+					return 0.2;
+				case 2:
+					return 0.4;
+				case 3:
+					return 0.6;
+				case 4:
+					return 0.3;
+				default:
+					return super.getX( i );
+				}
+			}
+		};
 	}
 
-	@Override
-	protected java.awt.Shape createFrontShape( double width, double height ) {
-		return new java.awt.geom.RoundRectangle2D.Double( 0, height * 0.5, width, height * 0.5, ROUND, ROUND );
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		if( this.iconFactories.size() > 0 ) {
+			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+		} else {
+			return sizeIfResolutionIndependent;
+		}
 	}
 }
