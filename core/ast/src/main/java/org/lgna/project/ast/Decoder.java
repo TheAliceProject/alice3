@@ -222,7 +222,6 @@ public class Decoder {
 			if( xmlLeafTypeFirstChildElement.hasAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ) ) {
 				int arrayTypeUniqueKey = getUniqueKey( xmlElement );
 				int leafTypeUniqueKey = getUniqueKey( xmlLeafTypeFirstChildElement );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( arrayTypeUniqueKey, leafTypeUniqueKey );
 				EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.put( arrayTypeUniqueKey, leafTypeUniqueKey );
 			}
 		}
