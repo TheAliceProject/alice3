@@ -74,8 +74,17 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 		this.getAwtComponent().addImageToCache( url, image );
 	}
 
+	protected boolean isRightToLeftComponentOrientationAllowed( boolean defaultValue ) {
+		return defaultValue;
+	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
+		return new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView() {
+			@Override
+			protected boolean isRightToLeftComponentOrientationAllowed() {
+				return HtmlView.this.isRightToLeftComponentOrientationAllowed( super.isRightToLeftComponentOrientationAllowed() );
+			}
+		};
 	}
 }

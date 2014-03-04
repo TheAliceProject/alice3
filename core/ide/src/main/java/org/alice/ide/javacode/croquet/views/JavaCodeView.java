@@ -87,6 +87,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		if( IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED ) {
 			this.addMouseWheelListener( this.mouseWheelListener );
 		}
+		this.updateHtml();
 		super.handleDisplayable();
 	}
 
@@ -100,6 +101,11 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			this.undoHistory.removeHistoryListener( this.historyListener );
 		}
 		super.handleUndisplayable();
+	}
+
+	@Override
+	protected boolean isRightToLeftComponentOrientationAllowed( boolean defaultValue ) {
+		return false;
 	}
 
 	private void updateHtml() {
