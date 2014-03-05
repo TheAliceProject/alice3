@@ -69,9 +69,4 @@ public class ThisExpressionFillIn extends org.alice.ide.croquet.models.cascade.E
 	public org.lgna.project.ast.ThisExpression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.ThisExpression();
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return "this";
-	}
 }

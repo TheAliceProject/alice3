@@ -70,6 +70,14 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 	}
 
+	public boolean isEditable() {
+		return this.getAwtComponent().isEditable();
+	}
+
+	public void setEditable( boolean isEditable ) {
+		this.getAwtComponent().setEditable( isEditable );
+	}
+
 	public void enableSelectAllWhenFocusGained() {
 		this.getAwtComponent().addFocusListener( this.selectAllFocusListener );
 	}

@@ -58,7 +58,6 @@ public class SProp extends SJointedModel {
 
 	@Override
 	JointedModelImp getImplementation() {
-		// TODO Auto-generated method stub
 		return implementation;
 	}
 

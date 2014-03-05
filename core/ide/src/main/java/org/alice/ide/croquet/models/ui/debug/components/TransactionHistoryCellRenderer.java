@@ -57,12 +57,16 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			String title = transaction.getTitle();
-			if( title != null ) {
-				sb.append( "<strong>" );
-				sb.append( title );
-				sb.append( "</strong>" );
+			org.lgna.croquet.edits.AbstractEdit<?> edit = transaction.getEdit();
+			if( edit != null ) {
+				sb.append( edit.getTerseDescription() );
 			}
+			//			String title = transaction.getTitle();
+			//			if( title != null ) {
+			//				sb.append( "<strong>" );
+			//				sb.append( title );
+			//				sb.append( "</strong>" );
+			//			}
 			sb.append( "</html>" );
 			rv.setText( sb.toString() );
 			rv.setIcon( null );

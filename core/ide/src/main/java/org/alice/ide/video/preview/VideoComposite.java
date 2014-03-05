@@ -108,7 +108,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 				videoPlayer = new edu.cmu.cs.dennisc.video.vlcj.VlcjVideoPlayer();
 			}
 
-			javax.swing.JFrame frame = new javax.swing.JFrame( "vlcj Tutorial" );
+			javax.swing.JFrame frame = new javax.swing.JFrame( "vlcj test" );
 			frame.setLocation( 100, 100 );
 			frame.setSize( 1050, 600 );
 			frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );

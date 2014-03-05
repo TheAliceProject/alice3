@@ -70,6 +70,9 @@ public class EntryPoint {
 			}
 		}
 		javax.swing.UIManager.put( "ScrollBar.width", 13 );
+		javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
+		javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
+		javax.swing.UIManager.put( "ScrollBar.thumb", edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 140 ) );
 
 		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );

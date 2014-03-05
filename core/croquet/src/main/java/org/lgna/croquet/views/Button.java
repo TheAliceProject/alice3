@@ -51,6 +51,16 @@ public class Button extends OperationButton<javax.swing.JButton, org.lgna.croque
 		super( model, "Button" );
 	}
 
+	public Button( org.lgna.croquet.Operation model, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( model );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
+	}
+
+	public Button( org.lgna.croquet.Operation model, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( model, 1.0f, textAttributes );
+	}
+
 	@Override
 	protected final javax.swing.JButton createAwtComponent() {
 		return new javax.swing.JButton() {

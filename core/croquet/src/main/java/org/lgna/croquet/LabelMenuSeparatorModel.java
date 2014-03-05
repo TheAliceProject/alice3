@@ -88,8 +88,4 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 			return null;
 		}
 	}
-
-	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-	}
 }

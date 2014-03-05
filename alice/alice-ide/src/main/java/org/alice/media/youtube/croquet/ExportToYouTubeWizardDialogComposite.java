@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 /**
  * @author Dennis Cosgrove
  */
-public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
+public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.SimpleOperationWizardDialogCoreComposite {
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );

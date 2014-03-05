@@ -218,14 +218,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		};
 	}
 
-	public String getTitle() {
-		if( this.completionStep != null ) {
-			return this.completionStep.getTutorialTransactionTitle();
-		} else {
-			return null;
-		}
-	}
-
 	public void addMenuSelection( MenuSelection menuSelection ) {
 		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {

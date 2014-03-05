@@ -86,9 +86,4 @@ public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessFillIn> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessFillIn>( this, org.lgna.project.ast.UserParameter.class, this.transientValue.parameter.getValue() );
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.parameter.getValue().getName();
-	}
 }

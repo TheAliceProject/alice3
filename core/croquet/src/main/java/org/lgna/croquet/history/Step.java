@@ -71,7 +71,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		if( model != null ) {
 			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
-				contexts.add( contextFactory.createContext( trigger.getOrigin() ) );
+				contexts.add( contextFactory.createContext() );
 			}
 		}
 		this.contexts = java.util.Collections.unmodifiableList( contexts );
@@ -168,26 +168,6 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 
-	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
-		return this.getModel();
-	}
-
-	public String getTutorialNoteText( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
-		if( model != null ) {
-			String triggerText;
-			if( model instanceof org.lgna.croquet.StringState ) {
-				triggerText = "Type";
-			} else {
-				org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
-				triggerText = trigger != null ? trigger.getNoteText() : null;
-			}
-			return model.getTutorialNoteText( this, triggerText, edit );
-		} else {
-			return null;
-		}
-	}
-
 	public M getModel() {
 		return this.modelResolver.getResolved();
 	}
@@ -216,7 +196,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 				trigger.appendRepr( rv );
 			}
 			rv.append( ";text=" );
-			rv.append( model.getTutorialNoteText( this, null, null ) );
+			model.appendUserRepr( rv );
 			rv.append( ";" );
 		}
 		return rv;

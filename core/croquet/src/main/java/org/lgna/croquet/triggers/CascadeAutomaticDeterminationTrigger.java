@@ -50,7 +50,6 @@ public class CascadeAutomaticDeterminationTrigger extends Trigger {
 	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
 
 	public CascadeAutomaticDeterminationTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
-		super( Origin.USER );
 		this.previousTrigger = previousTrigger;
 	}
 
@@ -67,11 +66,5 @@ public class CascadeAutomaticDeterminationTrigger extends Trigger {
 	@Override
 	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
-	}
-
-	@Override
-	public String getNoteText() {
-		//todo
-		return "COMPLETE";
 	}
 }

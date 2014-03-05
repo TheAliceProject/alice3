@@ -679,20 +679,5 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		public org.lgna.croquet.views.ComboBox<T> createComboBox() {
 			return new org.lgna.croquet.views.ComboBox<T>( this );
 		}
-
-		@Override
-		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-			if( edit != null ) {
-				org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-				text.append( "First press on " );
-				text.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( text, stateEdit.getPreviousValue() );
-				text.append( "</strong>" );
-				text.append( " in order to change it to " );
-				text.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( text, stateEdit.getNextValue() );
-				text.append( "</strong>." );
-			}
-		}
 	}
 }

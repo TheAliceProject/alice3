@@ -100,12 +100,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected String getTutorialItemText() {
-			this.initializeIfNecessary();
-			return this.text;
-		}
-
-		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
 			return new javax.swing.JLabel( this.text );
 		}
@@ -141,15 +135,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	@Override
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		return java.util.Collections.emptyList();
-	}
-
-	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		return false;
-	}
-
-	@Override
-	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 	}
 
 	public CascadeFillIn<T, Void> getFillIn() {

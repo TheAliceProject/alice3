@@ -48,15 +48,11 @@ package org.lgna.croquet.triggers;
  */
 public class InputEventTrigger extends ComponentEventTrigger<java.awt.event.InputEvent> {
 	public static InputEventTrigger createUserInstance( java.awt.event.InputEvent inputEvent ) {
-		return new InputEventTrigger( Origin.USER, null, inputEvent );
+		return new InputEventTrigger( null, inputEvent );
 	}
 
-	public static InputEventTrigger createGeneratorInstance() {
-		return new InputEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private InputEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.InputEvent inputEvent ) {
-		super( origin, viewController, inputEvent );
+	private InputEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.InputEvent inputEvent ) {
+		super( viewController, inputEvent );
 	}
 
 	public InputEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -72,10 +68,5 @@ public class InputEventTrigger extends ComponentEventTrigger<java.awt.event.Inpu
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Input";
 	}
 }

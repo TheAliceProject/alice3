@@ -50,7 +50,7 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.OperationInputDialogCoreComposite;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 /**
  * @author Matt May
  */
-public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
+public abstract class AbstractLoginComposite<V extends LoginView> extends SimpleOperationInputDialogCoreComposite<V> {
 
 	private final BooleanState isRememberingState = this.createPreferenceBooleanState( "isRememberingState", false );
 	protected final PreferenceStringState userNameState = this.createPreferenceStringState( "userNameState", "", this.isRememberingState );

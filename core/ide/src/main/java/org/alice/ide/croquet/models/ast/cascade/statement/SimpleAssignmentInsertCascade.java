@@ -54,17 +54,4 @@ public abstract class SimpleAssignmentInsertCascade extends AssignmentInsertCasc
 	protected final int getIndexOfRightHandSide() {
 		return 0;
 	}
-
-	@Override
-	protected final java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
-		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
-		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-
-		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
-		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-				assignmentExpression.rightHandSide.getValue()
-				);
-	}
 }

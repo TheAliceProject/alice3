@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.issue;
  */
 public enum IssueType {
 	BUG,
-	NEW_FEATURE,
-	IMPROVEMENT
+	IMPROVEMENT,
+	NEW_FEATURE
 }

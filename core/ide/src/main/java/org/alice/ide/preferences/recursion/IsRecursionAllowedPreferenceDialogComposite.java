@@ -45,7 +45,7 @@ package org.alice.ide.preferences.recursion;
 /**
  * @author Dennis Cosgrove
  */
-public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
+public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
 	private static class SingletonHolder {
 		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite( 0 );
 	}

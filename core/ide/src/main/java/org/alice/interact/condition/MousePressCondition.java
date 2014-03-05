@@ -48,14 +48,8 @@ import org.alice.interact.InputState;
  * @author David Culyba
  */
 public class MousePressCondition extends MouseDragCondition {
-
-	/**
-	 * @param mouseButton
-	 * @param pickCondition
-	 */
 	public MousePressCondition( int mouseButton, PickCondition pickCondition ) {
 		super( mouseButton, pickCondition );
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

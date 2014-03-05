@@ -326,8 +326,6 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	public void propertyChanging( PropertyEvent e ) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

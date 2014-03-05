@@ -48,7 +48,7 @@ package org.lgna.croquet.imp.dialog.views;
 public abstract class DialogContentPane extends org.lgna.croquet.views.BorderPanel {
 	public DialogContentPane( org.lgna.croquet.imp.dialog.DialogContentComposite composite ) {
 		super( composite );
-		org.lgna.croquet.DialogCoreComposite coreComposite = composite.getCoreComposite();
+		org.lgna.croquet.AdornedDialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
 		org.lgna.croquet.views.CompositeView<?, ?> coreView = coreComposite.getView();

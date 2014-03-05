@@ -47,54 +47,32 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final OwnedByCompositeOperation launchOperation;
-	private final java.util.Map<String, OwnedByCompositeOperation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
 
 	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
-		this.launchOperation = new OwnedByCompositeOperation( operationGroup, this );
+		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation() {
-		return this.getLaunchOperation( null );
+	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+		return this.imp;
 	}
 
-	public OwnedByCompositeOperation createAndRegisterLaunchOperation( String subKey, Initializer<? extends OperationInputDialogCoreComposite> initializer ) {
-		assert subKey != null : initializer;
-		assert mapSubKeyToInitializerLaunchOperation.containsKey( subKey ) == false : subKey;
-		OwnedByCompositeOperation rv = new OwnedByCompositeOperation( this.launchOperation.getGroup(), this, subKey );
-		this.mapSubKeyToInitializerLaunchOperation.put( subKey, rv );
-		return rv;
+	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+		return this.imp.getLaunchOperation( subKeyText );
 	}
 
-	public OwnedByCompositeOperation getLaunchOperation( String subKey ) {
-		if( subKey != null ) {
-			return this.mapSubKeyToInitializerLaunchOperation.get( subKey );
-		} else {
-			return this.launchOperation;
-		}
-	}
-
-	@Override
-	protected String getName() {
-		return this.getLaunchOperation().getName();
-	}
-
-	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
-	public String modifyNameIfNecessary( String text ) {
+	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
-	}
-
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		text.append( this.getName() );
 	}
 
 	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
 			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

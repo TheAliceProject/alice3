@@ -161,11 +161,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		return false;
-	}
-
 	public Class<T> getComponentType() {
 		return this.componentType;
 	}
@@ -336,17 +331,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			this.menuModel = new InternalMenuModel<T>( this );
 		}
 		return this.menuModel;
-	}
-
-	@Override
-	protected void appendTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		//todo:
-		org.lgna.croquet.history.Transaction ownerTransaction = step.getOwner();
-		final int N = ownerTransaction.getPrepStepCount();
-		if( N > 0 ) {
-			org.lgna.croquet.history.PrepStep prepStep = ownerTransaction.getPrepStepAt( N - 1 );
-			( (AbstractModel)prepStep.getModel() ).appendTutorialStepText( rv, prepStep, edit );
-		}
 	}
 
 	@Override

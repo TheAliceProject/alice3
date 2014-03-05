@@ -68,9 +68,4 @@ public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.
 	protected org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
-	}
 }

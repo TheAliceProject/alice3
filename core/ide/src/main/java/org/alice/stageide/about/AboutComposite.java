@@ -46,7 +46,7 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.stageide.about.views.AboutView> {
+public final class AboutComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
 	private static class SingletonHolder {
 		private static AboutComposite instance = new AboutComposite();
 	}

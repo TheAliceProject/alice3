@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowPathPropertyComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
+public abstract class ShowPathPropertyComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
 	private final String propertyName;
 
 	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {

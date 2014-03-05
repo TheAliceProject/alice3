@@ -54,25 +54,6 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInse
 		this.arrayType = arrayType;
 	}
 
-	@Override
-	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
-		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
-		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-
-		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
-		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
-
-		org.lgna.project.ast.Expression leftExpression = assignmentExpression.leftHandSide.getValue();
-		assert leftExpression instanceof org.lgna.project.ast.ArrayAccess : leftExpression;
-		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftExpression;
-
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-				arrayAccess.index.getValue(),
-				assignmentExpression.rightHandSide.getValue()
-				);
-	}
-
 	protected abstract org.lgna.project.ast.Expression createAccessExpression();
 
 	@Override

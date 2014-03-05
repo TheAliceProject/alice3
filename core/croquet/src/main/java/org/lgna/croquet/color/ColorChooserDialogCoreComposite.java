@@ -45,7 +45,7 @@ package org.lgna.croquet.color;
 /**
  * @author Dennis Cosgrove
  */
-public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.lgna.croquet.color.views.ColorChooserDialogCoreView> {
+public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<org.lgna.croquet.color.views.ColorChooserDialogCoreView> {
 	private final ColorState colorState;
 
 	/* package-private */ColorChooserDialogCoreComposite( ColorState colorState ) {

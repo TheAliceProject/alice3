@@ -729,18 +729,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws org.lgna.croquet.UnsupportedGenerationException {
-			org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
-			CascadeFillIn<T, ?> fillIn = this.customizer.getFillInFor( nextValue );
-			if( fillIn != null ) {
-				org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( rv, null, new MenuItemPrepModel[] { fillIn }, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find fillin for", nextValue );
-			}
-			return rv;
-		}
-
-		@Override
 		protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( blankChildren, blankNode );
 		}

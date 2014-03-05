@@ -48,15 +48,11 @@ package org.lgna.croquet.triggers;
  */
 public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEvent> {
 	public static ItemEventTrigger createUserInstance( java.awt.event.ItemEvent itemEvent ) {
-		return new ItemEventTrigger( Origin.USER, null, itemEvent );
+		return new ItemEventTrigger( null, itemEvent );
 	}
 
-	public static ItemEventTrigger createGeneratorInstance() {
-		return new ItemEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private ItemEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
-		super( origin, viewController, itemEvent );
+	private ItemEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
+		super( viewController, itemEvent );
 	}
 
 	public ItemEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -66,10 +62,5 @@ public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEven
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Select";
 	}
 }

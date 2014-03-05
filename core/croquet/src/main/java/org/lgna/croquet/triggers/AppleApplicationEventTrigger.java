@@ -48,15 +48,11 @@ package org.lgna.croquet.triggers;
  */
 public class AppleApplicationEventTrigger extends EventObjectTrigger<java.util.EventObject> {
 	public static AppleApplicationEventTrigger createUserInstance( java.util.EventObject event ) {
-		return new AppleApplicationEventTrigger( Origin.USER, null, event );
+		return new AppleApplicationEventTrigger( null, event );
 	}
 
-	public static AppleApplicationEventTrigger createGeneratorInstance() {
-		return new AppleApplicationEventTrigger( Origin.GENERATOR, null, null );
-	}
-
-	private AppleApplicationEventTrigger( Origin origin, org.lgna.croquet.views.ViewController<?, ?> viewController, java.util.EventObject event ) {
-		super( origin, viewController, event );
+	private AppleApplicationEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.util.EventObject event ) {
+		super( viewController, event );
 	}
 
 	public AppleApplicationEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -66,10 +62,5 @@ public class AppleApplicationEventTrigger extends EventObjectTrigger<java.util.E
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
-	}
-
-	@Override
-	public String getNoteText() {
-		return "Apple";
 	}
 }

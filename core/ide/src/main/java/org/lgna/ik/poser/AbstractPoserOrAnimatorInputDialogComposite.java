@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.alice.ide.IDE;
-import org.lgna.croquet.OperationInputDialogCoreComposite;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.SplitPane;
@@ -73,7 +73,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends OperationInputDialogCoreComposite<CompositeView> {
+public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends SimpleOperationInputDialogCoreComposite<CompositeView> {
 
 	private IkPoser poser;
 

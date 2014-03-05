@@ -45,7 +45,7 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
 	public PreviewContainingOperationInputDialogCoreComposite( java.util.UUID id, org.lgna.croquet.Group operationMigrationId ) {
 		super( id, operationMigrationId );
 	}

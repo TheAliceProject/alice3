@@ -56,7 +56,8 @@ public class GraphicsDriverHelpOperation extends org.alice.ide.browser.Immutable
 
 	private static String getSpec() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "http://help.alice.org/w/page/" );
+		sb.append( org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC );
+		sb.append( "w/page/" );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
 		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
