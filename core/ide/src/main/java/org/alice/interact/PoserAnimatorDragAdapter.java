@@ -56,8 +56,8 @@ import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.stageide.sceneeditor.HandleStyle;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
-import org.lgna.ik.walkandtouch.AbstractPoserScene;
-import org.lgna.ik.walkandtouch.PoserPicturePlaneInteraction;
+import org.lgna.ik.poser.scene.AbstractPoserScene;
+import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.story.SModel;
 
 import edu.cmu.cs.dennisc.color.Color4f;

@@ -46,7 +46,7 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BonesState extends org.lgna.croquet.MutableDataSingleSelectListState<org.lgna.ik.solver.Bone> {
+public class BonesState extends org.lgna.croquet.MutableDataSingleSelectListState<org.lgna.ik.core.solver.Bone> {
 	private static class SingletonHolder {
 		private static BonesState instance = new BonesState();
 	}
@@ -59,16 +59,16 @@ public class BonesState extends org.lgna.croquet.MutableDataSingleSelectListStat
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
 	}
 
-	public void setChain( org.lgna.ik.solver.Chain chain ) {
+	public void setChain( org.lgna.ik.core.solver.Chain chain ) {
 		if( chain == null ) {
 			this.clear();
 		} else {
-			org.lgna.ik.solver.Bone prevBone = this.getValue();
-			org.lgna.ik.solver.Bone[] bones = chain.getBones();
+			org.lgna.ik.core.solver.Bone prevBone = this.getValue();
+			org.lgna.ik.core.solver.Bone[] bones = chain.getBones();
 			int selectionIndex = -1;
 			if( prevBone != null ) {
 				int index = 0;
-				for( org.lgna.ik.solver.Bone bone : bones ) {
+				for( org.lgna.ik.core.solver.Bone bone : bones ) {
 					if( prevBone.getA() == bone.getA() ) {
 						selectionIndex = index;
 						break;

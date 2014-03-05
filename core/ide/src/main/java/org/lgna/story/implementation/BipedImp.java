@@ -43,8 +43,8 @@
 
 package org.lgna.story.implementation;
 
-import org.lgna.ik.walkandtouch.IKMagicWand;
-import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.ik.core.IKCore;
+import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.JointId;
@@ -97,6 +97,6 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 			System.out.println( "Unhandled LIMB: " + reachingLimb );
 			return;
 		}
-		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, EmployeesOnly.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
+		IKCore.moveChainToPointInSceneSpace( anchor, end, EmployeesOnly.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
 	}
 }

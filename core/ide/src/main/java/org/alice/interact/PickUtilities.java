@@ -163,7 +163,7 @@ public class PickUtilities {
 			{
 				pickTypes.add( PickHint.PickType.JOINT );
 			}
-			if( entity instanceof org.lgna.ik.poser.JointSelectionSphere ) {
+			if( entity instanceof org.lgna.ik.poser.jselection.JointSelectionSphere ) {
 				pickTypes.add( PickHint.PickType.JOINT );
 			}
 		}

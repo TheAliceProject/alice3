@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.ik.poser.input.AbstractAnimatorInputDialogComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;

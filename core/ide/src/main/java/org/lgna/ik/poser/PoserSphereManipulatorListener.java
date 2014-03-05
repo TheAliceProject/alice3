@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.ik.poser.controllers.PoserEvent;
+
 /**
  * @author Matt May
  */

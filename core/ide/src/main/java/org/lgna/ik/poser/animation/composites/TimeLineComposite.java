@@ -43,10 +43,10 @@
 package org.lgna.ik.poser.animation.composites;
 
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.views.TimeLineView;
-import org.lgna.ik.poser.pose.Pose;
 
 /**
  * @author Matt May

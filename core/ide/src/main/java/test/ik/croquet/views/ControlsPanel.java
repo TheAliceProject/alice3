@@ -68,7 +68,7 @@ public class ControlsPanel extends org.lgna.croquet.views.PageAxisPanel {
 
 		this.addComponent( new org.lgna.croquet.views.Label( "chain:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 
-		org.lgna.croquet.views.List<org.lgna.ik.solver.Bone> list = test.ik.croquet.BonesState.getInstance().createList();
+		org.lgna.croquet.views.List<org.lgna.ik.core.solver.Bone> list = test.ik.croquet.BonesState.getInstance().createList();
 		list.setAlignmentX( 0.0f );
 		list.setBackgroundColor( null );
 		this.addComponent( list );

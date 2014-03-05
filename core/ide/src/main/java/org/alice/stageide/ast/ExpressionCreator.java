@@ -43,8 +43,8 @@
 
 package org.alice.stageide.ast;
 
-import org.lgna.ik.poser.pose.JointKey;
-import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.ik.core.pose.JointKey;
+import org.lgna.ik.core.pose.builder.PoseBuilder;
 import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
 
@@ -206,7 +206,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "addCustom", Orientation.class, JointId.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
-	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.poser.pose.Pose pose ) throws CannotCreateExpressionException {
+	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.core.pose.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
 			PoseBuilder<?> builder = pose.getBuilder();
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
@@ -272,8 +272,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createFontExpression( (org.lgna.story.Font)value );
 			//		} else if( value instanceof org.lgna.ik.poser.Pose ) {
 			//			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
-		} else if( value instanceof org.lgna.ik.poser.pose.Pose<?> ) {
-			return this.createPoseExpression( (org.lgna.ik.poser.pose.Pose<?>)value );
+		} else if( value instanceof org.lgna.ik.core.pose.Pose<?> ) {
+			return this.createPoseExpression( (org.lgna.ik.core.pose.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
 		} else if( value instanceof org.lgna.story.resources.JointId ) {

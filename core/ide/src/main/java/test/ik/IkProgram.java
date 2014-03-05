@@ -43,9 +43,9 @@
 
 package test.ik;
 
-import org.lgna.ik.IkConstants;
-import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
-import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
+import org.lgna.ik.core.IkConstants;
+import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
+import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MoveDirection;
@@ -90,11 +90,11 @@ class IkProgram extends SProgram {
 		}
 	};
 	//SOLVER this is for printing out the chain
-	private final org.lgna.croquet.State.ValueListener<org.lgna.ik.solver.Bone> boneListener = new org.lgna.croquet.State.ValueListener<org.lgna.ik.solver.Bone>() {
-		public void changing( org.lgna.croquet.State<org.lgna.ik.solver.Bone> state, org.lgna.ik.solver.Bone prevValue, org.lgna.ik.solver.Bone nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.ik.core.solver.Bone> boneListener = new org.lgna.croquet.State.ValueListener<org.lgna.ik.core.solver.Bone>() {
+		public void changing( org.lgna.croquet.State<org.lgna.ik.core.solver.Bone> state, org.lgna.ik.core.solver.Bone prevValue, org.lgna.ik.core.solver.Bone nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed( org.lgna.croquet.State<org.lgna.ik.solver.Bone> state, org.lgna.ik.solver.Bone prevValue, org.lgna.ik.solver.Bone nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<org.lgna.ik.core.solver.Bone> state, org.lgna.ik.core.solver.Bone prevValue, org.lgna.ik.core.solver.Bone nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
@@ -105,7 +105,7 @@ class IkProgram extends SProgram {
 	};
 	//	private org.lgna.ik.solver.Chain chain;
 	//	private org.lgna.ik.solver.Solver solver;
-	private org.lgna.ik.enforcer.JointedModelIkEnforcer ikEnforcer;
+	private org.lgna.ik.core.enforcer.JointedModelIkEnforcer ikEnforcer;
 	private TightPositionalIkEnforcer tightIkEnforcer;
 
 	//	class Constraints {
@@ -172,7 +172,7 @@ class IkProgram extends SProgram {
 
 	//SOLVER this prints to the yellow area right under the chain display
 	private void updateInfo() {
-		org.lgna.ik.solver.Bone bone = test.ik.croquet.BonesState.getInstance().getValue();
+		org.lgna.ik.core.solver.Bone bone = test.ik.croquet.BonesState.getInstance().getValue();
 
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {
@@ -319,7 +319,7 @@ class IkProgram extends SProgram {
 
 	private Thread initializeOldIkEnforcer() {
 		//		solver = new org.lgna.ik.solver.Solver();
-		ikEnforcer = new org.lgna.ik.enforcer.JointedModelIkEnforcer( getSubjectImp() );
+		ikEnforcer = new org.lgna.ik.core.enforcer.JointedModelIkEnforcer( getSubjectImp() );
 		ikEnforcer.addFullBodyDefaultPoseUsingCurrentPose();
 
 		//I'm setting joint weights here
@@ -336,7 +336,7 @@ class IkProgram extends SProgram {
 					//I can tell solver, for this chain this is the linear target, etc. 
 					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
 
-					java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, Double>();
+					java.util.Map<org.lgna.ik.core.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.core.solver.Bone.Axis, Double>();
 
 					//not bad concurrent programming practice
 					boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();

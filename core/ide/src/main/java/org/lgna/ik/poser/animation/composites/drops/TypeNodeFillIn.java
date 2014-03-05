@@ -51,8 +51,8 @@ import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereFillIn;
+import org.lgna.ik.poser.jselection.JointSelectionSphere;
+import org.lgna.ik.poser.jselection.JointSelectionSphereFillIn;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 

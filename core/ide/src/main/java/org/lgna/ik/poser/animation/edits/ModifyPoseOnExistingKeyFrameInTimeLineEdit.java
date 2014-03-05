@@ -43,9 +43,9 @@
 package org.lgna.ik.poser.animation.edits;
 
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
-import org.lgna.ik.poser.pose.Pose;
 
 /**
  * @author Matt May

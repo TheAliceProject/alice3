@@ -47,6 +47,8 @@ import java.util.List;
 import org.alice.interact.InputState;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
+import org.lgna.ik.poser.controllers.PoserEvent;
+import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 

@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser.animation;
 
-import org.lgna.ik.poser.pose.Pose;
+import org.lgna.ik.core.pose.Pose;
 
 /**
  * @author Matt May

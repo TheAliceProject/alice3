@@ -47,9 +47,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.ik.poser.pose.JointKey;
-import org.lgna.ik.poser.pose.Pose;
-import org.lgna.ik.poser.pose.builder.PoseBuilder;
+import org.lgna.ik.core.pose.JointKey;
+import org.lgna.ik.core.pose.Pose;
+import org.lgna.ik.core.pose.builder.PoseBuilder;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.resources.JointId;
 

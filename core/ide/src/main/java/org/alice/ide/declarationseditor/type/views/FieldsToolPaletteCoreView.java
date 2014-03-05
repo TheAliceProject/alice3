@@ -42,7 +42,7 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
-import org.lgna.ik.poser.AbstractPoserInputDialogComposite;
+import org.lgna.ik.poser.input.AbstractPoserInputDialogComposite;
 
 /**
  * @author Dennis Cosgrove
