@@ -78,6 +78,11 @@ public class CursorUtilities {
 		component.setCursor( nextCursor );
 	}
 
+	public static void pushAndSetPredefinedCursor( java.awt.Component component, int nextCursorType ) {
+		pushAndSet( component, java.awt.Cursor.getPredefinedCursor( nextCursorType ) );
+
+	}
+
 	public static java.awt.Cursor popAndSet( java.awt.Component component ) {
 		java.util.Stack<java.awt.Cursor> stack = CursorUtilities.getStack( component );
 		java.awt.Cursor prevCursor = stack.pop();

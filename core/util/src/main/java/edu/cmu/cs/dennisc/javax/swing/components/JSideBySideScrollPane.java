@@ -48,6 +48,10 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 public class JSideBySideScrollPane extends javax.swing.JPanel {
 	//todo: handle right to left
 	private static class SideBySideLayout implements java.awt.LayoutManager {
+		public void setDividerLocationBasedOnMouseEvent( java.awt.event.MouseEvent e ) {
+
+		}
+
 		public void layoutContainer( java.awt.Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
 
@@ -62,7 +66,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			int w = parentSize.width - lineEndScrollBarPreferredSize.width - separatorPreferredSize.width - insets.left - insets.right;
 			int h = parentSize.height - pageEndScrollBarPreferredSize.height - insets.top - insets.bottom;
 
-			int leadingWidth = w / 2;
+			int leadingWidth = (int)( w * this.leadingPortion );
 			int trailingWidth = w - leadingWidth;
 
 			int x = insets.left;
@@ -103,6 +107,8 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
+
+		private float leadingPortion = 0.5f;
 	}
 
 	public JSideBySideScrollPane() {
@@ -198,12 +204,21 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 		int extentHorizontal;
 		int maxHorizontal;
-		if( leadingViewSize.width > trailingViewSize.width ) {
+
+		if( ( leadingViewSize.width != 0 ) && ( trailingViewSize.width != 0 ) ) {
+			float leading = leadingExtentSize.width / (float)leadingViewSize.width;
+			float trailing = trailingExtentSize.width / (float)trailingViewSize.width;
+			if( leading < trailing ) {
+				extentHorizontal = leadingExtentSize.width;
+				maxHorizontal = leadingViewSize.width;
+			} else {
+				extentHorizontal = trailingExtentSize.width;
+				maxHorizontal = trailingViewSize.width;
+			}
+		} else {
+			//todo?
 			extentHorizontal = leadingExtentSize.width;
 			maxHorizontal = leadingViewSize.width;
-		} else {
-			extentHorizontal = trailingExtentSize.width;
-			maxHorizontal = trailingViewSize.width;
 		}
 
 		int extentVertical;
@@ -257,11 +272,61 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		model.setValue( value );
 	}
 
-	private static class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
+	private class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
+		@Override
+		public void addNotify() {
+			super.addNotify();
+			this.addMouseListener( this.mouseListener );
+			this.addMouseMotionListener( this.mouseMotionListener );
+		}
+
+		@Override
+		public void removeNotify() {
+			this.removeMouseMotionListener( this.mouseMotionListener );
+			this.removeMouseListener( this.mouseListener );
+			super.removeNotify();
+		}
+
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 4 );
 		}
+
+		private void handleMouseDragged( java.awt.event.MouseEvent e ) {
+			java.awt.Point p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), JSideBySideScrollPane.this );
+
+			SideBySideLayout sideBySideLayout = (SideBySideLayout)JSideBySideScrollPane.this.getLayout();
+			sideBySideLayout.leadingPortion = p.x / (float)JSideBySideScrollPane.this.getWidth();
+			JSideBySideScrollPane.this.revalidate();
+		}
+
+		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+				edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSetPredefinedCursor( e.getComponent(), java.awt.Cursor.E_RESIZE_CURSOR );
+			}
+
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+				edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+			}
+
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+			}
+
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			}
+
+			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			}
+		};
+
+		private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
+			}
+
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+				handleMouseDragged( e );
+			}
+		};
 	}
 
 	private class JSideBySideScrollBar extends javax.swing.JScrollBar implements javax.swing.plaf.UIResource {
