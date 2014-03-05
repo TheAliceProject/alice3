@@ -849,6 +849,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		duration = adjustDurationIfNecessary( duration );
 		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( this.getSpeechBubbleOriginator() );
 		bubble.text.setValue( text );
 		initializeBubble( bubble, font, textColor, fillColor, outlineColor );
@@ -856,6 +857,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		duration = adjustDurationIfNecessary( duration );
 		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( this.getSpeechBubbleOriginator() );
 		bubble.text.setValue( text );
 		initializeBubble( bubble, font, textColor, fillColor, outlineColor );
