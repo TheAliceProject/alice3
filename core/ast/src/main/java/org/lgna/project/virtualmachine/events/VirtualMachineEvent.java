@@ -50,7 +50,7 @@ public abstract class VirtualMachineEvent {
 		this.vm = vm;
 	}
 
-	public org.lgna.project.virtualmachine.VirtualMachine getVM() {
+	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
 

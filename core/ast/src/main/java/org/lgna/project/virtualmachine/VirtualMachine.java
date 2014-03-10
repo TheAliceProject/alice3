@@ -1004,20 +1004,20 @@ public abstract class VirtualMachine {
 			final int n = this.evaluateInt( countLoop.count.getValue(), "count expression is null" );
 			this.pushLocal( constant, n );
 			try {
-				org.lgna.project.virtualmachine.events.VirtualMachineListener[] array;
+				org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
 				synchronized( this.virtualMachineListeners ) {
 					if( this.virtualMachineListeners.size() > 0 ) {
-						array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+						listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
 					} else {
-						array = null;
+						listeners = null;
 					}
 				}
 
 				for( int i = 0; i < n; i++ ) {
 					org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent;
-					if( array != null ) {
+					if( listeners != null ) {
 						countLoopIterationEvent = new org.lgna.project.virtualmachine.events.CountLoopIterationEvent( this, countLoop, i, n );
-						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
 							virtualMachineListener.countLoopIterating( countLoopIterationEvent );
 						}
 					} else {
@@ -1025,8 +1025,8 @@ public abstract class VirtualMachine {
 					}
 					this.setLocal( variable, i );
 					this.execute( countLoop.body.getValue() );
-					if( array != null ) {
-						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+					if( listeners != null ) {
+						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
 							virtualMachineListener.countLoopIterated( countLoopIterationEvent );
 						}
 					}
@@ -1082,13 +1082,39 @@ public abstract class VirtualMachine {
 	}
 
 	private void excecuteForEachLoop( org.lgna.project.ast.AbstractForEachLoop forEachInLoop, Object[] array ) throws ReturnException {
+		org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
+		synchronized( this.virtualMachineListeners ) {
+			if( this.virtualMachineListeners.size() > 0 ) {
+				listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+			} else {
+				listeners = null;
+			}
+		}
+
 		org.lgna.project.ast.UserLocal item = forEachInLoop.item.getValue();
 		org.lgna.project.ast.BlockStatement blockStatement = forEachInLoop.body.getValue();
 		this.pushLocal( item, -1 );
 		try {
+			int index = 0;
 			for( Object o : array ) {
+				org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent forEachLoopIterationEvent;
+				if( listeners != null ) {
+					forEachLoopIterationEvent = new org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent( this, forEachInLoop, o, array, index );
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						virtualMachineListener.forEachLoopIterating( forEachLoopIterationEvent );
+					}
+				} else {
+					forEachLoopIterationEvent = null;
+				}
+
 				this.setLocal( item, o );
 				this.execute( blockStatement );
+				if( listeners != null ) {
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						virtualMachineListener.forEachLoopIterated( forEachLoopIterationEvent );
+					}
+				}
+				index++;
 			}
 		} finally {
 			this.popLocal( item );
@@ -1189,18 +1215,18 @@ public abstract class VirtualMachine {
 		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
 			org.lgna.project.virtualmachine.events.StatementExecutionEvent statementEvent;
-			org.lgna.project.virtualmachine.events.VirtualMachineListener[] array;
+			org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
 			synchronized( this.virtualMachineListeners ) {
 				if( this.virtualMachineListeners.size() > 0 ) {
 					statementEvent = new org.lgna.project.virtualmachine.events.StatementExecutionEvent( this, statement );
-					array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+					listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
 				} else {
 					statementEvent = null;
-					array = null;
+					listeners = null;
 				}
 			}
-			if( ( statementEvent != null ) && ( array != null ) ) {
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+			if( ( statementEvent != null ) && ( listeners != null ) ) {
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.statementExecuting( statementEvent );
 				}
 			}
@@ -1240,8 +1266,8 @@ public abstract class VirtualMachine {
 			}
 
 			//todo: finally?
-			if( ( statementEvent != null ) && ( array != null ) ) {
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+			if( ( statementEvent != null ) && ( listeners != null ) ) {
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.statementExecuted( statementEvent );
 				}
 			}

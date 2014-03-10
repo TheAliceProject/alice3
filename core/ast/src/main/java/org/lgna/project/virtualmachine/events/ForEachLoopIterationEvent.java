@@ -45,16 +45,34 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface VirtualMachineListener {
-	void statementExecuting( StatementExecutionEvent statementExecutionEvent );
+public class ForEachLoopIterationEvent extends VirtualMachineEvent {
+	public ForEachLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.AbstractForEachLoop forEachLoop, Object value, Object[] array, int index ) {
+		super( vm );
+		this.forEachLoop = forEachLoop;
+		this.value = value;
+		this.array = array;
+		this.index = index;
+	}
 
-	void statementExecuted( StatementExecutionEvent statementExecutionEvent );
+	public org.lgna.project.ast.AbstractForEachLoop getForEachLoop() {
+		return this.forEachLoop;
+	}
 
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
+	public Object getValue() {
+		return this.value;
+	}
 
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
+	public Object[] getArray() {
+		return this.array;
+	}
 
-	void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent );
+	public int getIndex() {
+		return this.index;
+	}
 
-	void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent );
+	private final org.lgna.project.ast.AbstractForEachLoop forEachLoop;
+	private final Object value;
+	private final Object[] array;
+	private final int index;
+
 }
