@@ -45,24 +45,22 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface VirtualMachineListener {
-	void statementExecuting( StatementExecutionEvent statementExecutionEvent );
+public class WhileLoopIterationEvent extends VirtualMachineEvent {
+	public WhileLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.WhileLoop whileLoop, int index ) {
+		super( vm );
+		this.whileLoop = whileLoop;
+		this.index = index;
+	}
 
-	void statementExecuted( StatementExecutionEvent statementExecutionEvent );
+	public org.lgna.project.ast.WhileLoop getWhileLoop() {
+		return this.whileLoop;
+	}
 
-	void whileLoopIterating( WhileLoopIterationEvent whileLoopIterationEvent );
+	public int getIndex() {
+		return this.index;
+	}
 
-	void whileLoopIterated( WhileLoopIterationEvent whileLoopIterationEvent );
+	private final org.lgna.project.ast.WhileLoop whileLoop;
+	private final int index;
 
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
-
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
-
-	void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent );
-
-	void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent );
 }

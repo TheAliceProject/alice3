@@ -1239,8 +1239,32 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeWhileLoop( org.lgna.project.ast.WhileLoop whileLoop ) throws ReturnException {
+		org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
+		synchronized( this.virtualMachineListeners ) {
+			if( this.virtualMachineListeners.size() > 0 ) {
+				listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+			} else {
+				listeners = null;
+			}
+		}
+		int i = 0;
 		while( this.evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
+			org.lgna.project.virtualmachine.events.WhileLoopIterationEvent whileLoopIterationEvent;
+			if( listeners != null ) {
+				whileLoopIterationEvent = new org.lgna.project.virtualmachine.events.WhileLoopIterationEvent( this, whileLoop, i );
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					virtualMachineListener.whileLoopIterating( whileLoopIterationEvent );
+				}
+			} else {
+				whileLoopIterationEvent = null;
+			}
 			this.execute( whileLoop.body.getValue() );
+			if( listeners != null ) {
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					virtualMachineListener.whileLoopIterated( whileLoopIterationEvent );
+				}
+			}
+			i++;
 		}
 	}
 

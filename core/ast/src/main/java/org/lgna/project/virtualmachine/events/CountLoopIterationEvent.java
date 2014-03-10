@@ -46,11 +46,11 @@ package org.lgna.project.virtualmachine.events;
  * @author Dennis Cosgrove
  */
 public class CountLoopIterationEvent extends VirtualMachineEvent {
-	public CountLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.CountLoop countLoop, int index, int count ) {
+	public CountLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.CountLoop countLoop, int index, int total ) {
 		super( vm );
 		this.countLoop = countLoop;
 		this.index = index;
-		this.count = count;
+		this.total = total;
 	}
 
 	public org.lgna.project.ast.CountLoop getCountLoop() {
@@ -61,12 +61,11 @@ public class CountLoopIterationEvent extends VirtualMachineEvent {
 		return this.index;
 	}
 
-	public int getCount() {
-		return this.count;
+	public int getTotal() {
+		return this.total;
 	}
 
 	private final org.lgna.project.ast.CountLoop countLoop;
 	private final int index;
-	private final int count;
-
+	private final int total;
 }
