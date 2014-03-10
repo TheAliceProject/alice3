@@ -1188,11 +1188,11 @@ public abstract class VirtualMachine {
 	protected void execute( org.lgna.project.ast.Statement statement ) throws ReturnException {
 		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
-			org.lgna.project.virtualmachine.events.StatementEvent statementEvent;
+			org.lgna.project.virtualmachine.events.StatementExecutionEvent statementEvent;
 			org.lgna.project.virtualmachine.events.VirtualMachineListener[] array;
 			synchronized( this.virtualMachineListeners ) {
 				if( this.virtualMachineListeners.size() > 0 ) {
-					statementEvent = new org.lgna.project.virtualmachine.events.StatementEvent( this, statement );
+					statementEvent = new org.lgna.project.virtualmachine.events.StatementExecutionEvent( this, statement );
 					array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
 				} else {
 					statementEvent = null;

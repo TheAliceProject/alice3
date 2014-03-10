@@ -72,7 +72,7 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOper
 	}
 
 	private final org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener = new org.lgna.project.virtualmachine.events.VirtualMachineListener() {
-		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
+		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementExecutionEvent statementEvent ) {
 			if( statementEvent.getStatement() == statement ) {
 				if( runProgramContext != null ) {
 					org.lgna.story.implementation.ProgramImp programImp = runProgramContext.getProgramImp();
@@ -87,7 +87,7 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOper
 			}
 		}
 
-		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
+		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementExecutionEvent statementEvent ) {
 		}
 
 		public void countLoopIterating( org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent ) {

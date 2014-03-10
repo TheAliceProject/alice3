@@ -46,9 +46,9 @@ package org.lgna.project.virtualmachine.events;
  * @author Dennis Cosgrove
  */
 public interface VirtualMachineListener {
-	void statementExecuting( StatementEvent statementEvent );
+	void statementExecuting( StatementExecutionEvent statementEvent );
 
-	void statementExecuted( StatementEvent statementEvent );
+	void statementExecuted( StatementExecutionEvent statementEvent );
 
 	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
 
