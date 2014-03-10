@@ -862,65 +862,75 @@ public abstract class VirtualMachine {
 
 	protected Object evaluate( org.lgna.project.ast.Expression expression ) {
 		if( expression != null ) {
+			Object rv;
 			if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
-				return this.evaluateAssignmentExpression( (org.lgna.project.ast.AssignmentExpression)expression );
+				rv = this.evaluateAssignmentExpression( (org.lgna.project.ast.AssignmentExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.BooleanLiteral ) {
-				return this.evaluateBooleanLiteral( (org.lgna.project.ast.BooleanLiteral)expression );
+				rv = this.evaluateBooleanLiteral( (org.lgna.project.ast.BooleanLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-				return this.evaluateInstanceCreation( (org.lgna.project.ast.InstanceCreation)expression );
+				rv = this.evaluateInstanceCreation( (org.lgna.project.ast.InstanceCreation)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
-				return this.evaluateArrayInstanceCreation( (org.lgna.project.ast.ArrayInstanceCreation)expression );
+				rv = this.evaluateArrayInstanceCreation( (org.lgna.project.ast.ArrayInstanceCreation)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArrayLength ) {
-				return this.evaluateArrayLength( (org.lgna.project.ast.ArrayLength)expression );
+				rv = this.evaluateArrayLength( (org.lgna.project.ast.ArrayLength)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArrayAccess ) {
-				return this.evaluateArrayAccess( (org.lgna.project.ast.ArrayAccess)expression );
+				rv = this.evaluateArrayAccess( (org.lgna.project.ast.ArrayAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-				return this.evaluateFieldAccess( (org.lgna.project.ast.FieldAccess)expression );
+				rv = this.evaluateFieldAccess( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
-				return this.evaluateLocalAccess( (org.lgna.project.ast.LocalAccess)expression );
+				rv = this.evaluateLocalAccess( (org.lgna.project.ast.LocalAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
-				return this.evaluateArithmeticInfixExpression( (org.lgna.project.ast.ArithmeticInfixExpression)expression );
+				rv = this.evaluateArithmeticInfixExpression( (org.lgna.project.ast.ArithmeticInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.BitwiseInfixExpression ) {
-				return this.evaluateBitwiseInfixExpression( (org.lgna.project.ast.BitwiseInfixExpression)expression );
+				rv = this.evaluateBitwiseInfixExpression( (org.lgna.project.ast.BitwiseInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
-				return this.evaluateConditionalInfixExpression( (org.lgna.project.ast.ConditionalInfixExpression)expression );
+				rv = this.evaluateConditionalInfixExpression( (org.lgna.project.ast.ConditionalInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.RelationalInfixExpression ) {
-				return this.evaluateRelationalInfixExpression( (org.lgna.project.ast.RelationalInfixExpression)expression );
+				rv = this.evaluateRelationalInfixExpression( (org.lgna.project.ast.RelationalInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.ShiftInfixExpression ) {
-				return this.evaluateShiftInfixExpression( (org.lgna.project.ast.ShiftInfixExpression)expression );
+				rv = this.evaluateShiftInfixExpression( (org.lgna.project.ast.ShiftInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.LogicalComplement ) {
-				return this.evaluateLogicalComplement( (org.lgna.project.ast.LogicalComplement)expression );
+				rv = this.evaluateLogicalComplement( (org.lgna.project.ast.LogicalComplement)expression );
 			} else if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				return this.evaluateMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
+				rv = this.evaluateMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
 			} else if( expression instanceof org.lgna.project.ast.NullLiteral ) {
-				return this.evaluateNullLiteral( (org.lgna.project.ast.NullLiteral)expression );
+				rv = this.evaluateNullLiteral( (org.lgna.project.ast.NullLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.StringConcatenation ) {
-				return this.evaluateStringConcatenation( (org.lgna.project.ast.StringConcatenation)expression );
+				rv = this.evaluateStringConcatenation( (org.lgna.project.ast.StringConcatenation)expression );
 			} else if( expression instanceof org.lgna.project.ast.NumberLiteral ) {
-				return this.evaluateNumberLiteral( (org.lgna.project.ast.NumberLiteral)expression );
+				rv = this.evaluateNumberLiteral( (org.lgna.project.ast.NumberLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-				return this.evaluateDoubleLiteral( (org.lgna.project.ast.DoubleLiteral)expression );
+				rv = this.evaluateDoubleLiteral( (org.lgna.project.ast.DoubleLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
-				return this.evaluateFloatLiteral( (org.lgna.project.ast.FloatLiteral)expression );
+				rv = this.evaluateFloatLiteral( (org.lgna.project.ast.FloatLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
-				return this.evaluateIntegerLiteral( (org.lgna.project.ast.IntegerLiteral)expression );
+				rv = this.evaluateIntegerLiteral( (org.lgna.project.ast.IntegerLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
-				return this.evaluateParameterAccess( (org.lgna.project.ast.ParameterAccess)expression );
+				rv = this.evaluateParameterAccess( (org.lgna.project.ast.ParameterAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-				return this.evaluateStringLiteral( (org.lgna.project.ast.StringLiteral)expression );
+				rv = this.evaluateStringLiteral( (org.lgna.project.ast.StringLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.ThisExpression ) {
-				return this.evaluateThisExpression( (org.lgna.project.ast.ThisExpression)expression );
+				rv = this.evaluateThisExpression( (org.lgna.project.ast.ThisExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-				return this.evaluateTypeExpression( (org.lgna.project.ast.TypeExpression)expression );
+				rv = this.evaluateTypeExpression( (org.lgna.project.ast.TypeExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeLiteral ) {
-				return this.evaluateTypeLiteral( (org.lgna.project.ast.TypeLiteral)expression );
+				rv = this.evaluateTypeLiteral( (org.lgna.project.ast.TypeLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.ResourceExpression ) {
-				return this.evaluateResourceExpression( (org.lgna.project.ast.ResourceExpression)expression );
+				rv = this.evaluateResourceExpression( (org.lgna.project.ast.ResourceExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
-				return this.evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression );
+				rv = this.evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression );
 			} else {
 				throw new RuntimeException( expression.getClass().getName() );
 			}
+			synchronized( this.virtualMachineListeners ) {
+				if( this.virtualMachineListeners.size() > 0 ) {
+					org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent expressionEvaluationEvent = new org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent( this, expression, rv );
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : this.virtualMachineListeners ) {
+						virtualMachineListener.expressionEvaluated( expressionEvaluationEvent );
+					}
+				}
+			}
+			return rv;
 		} else {
 			throw new NullPointerException();
 		}

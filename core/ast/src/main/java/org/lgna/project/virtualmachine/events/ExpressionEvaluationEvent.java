@@ -45,26 +45,21 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface VirtualMachineListener {
-	void statementExecuting( StatementExecutionEvent statementExecutionEvent );
+public class ExpressionEvaluationEvent extends VirtualMachineEvent {
+	public ExpressionEvaluationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.Expression expression, Object value ) {
+		super( vm );
+		this.expression = expression;
+		this.value = value;
+	}
 
-	void statementExecuted( StatementExecutionEvent statementExecutionEvent );
+	public org.lgna.project.ast.Expression getExpression() {
+		return this.expression;
+	}
 
-	void whileLoopIterating( WhileLoopIterationEvent whileLoopIterationEvent );
+	public Object getValue() {
+		return this.value;
+	}
 
-	void whileLoopIterated( WhileLoopIterationEvent whileLoopIterationEvent );
-
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
-
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
-
-	void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent );
-
-	void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent );
-
-	void expressionEvaluated( ExpressionEvaluationEvent expressionEvaluationEvent );
+	private final org.lgna.project.ast.Expression expression;
+	private final Object value;
 }
