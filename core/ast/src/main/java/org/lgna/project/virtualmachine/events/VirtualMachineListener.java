@@ -40,57 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.run;
+package org.lgna.project.virtualmachine.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOperation {
-	public FastForwardToStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
-		this.statement = statement;
-	}
+public interface VirtualMachineListener {
+	void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent );
 
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		RunComposite.getInstance().setFastForwardToStatementOperation( this );
-		RunComposite.getInstance().getLaunchOperation().fire();
-	}
-
-	public void pre( org.alice.stageide.program.RunProgramContext runProgramContext ) {
-		this.runProgramContext = runProgramContext;
-		this.runProgramContext.getVirtualMachine().addVirtualMachineListener( this.virtualMachineListener );
-		this.runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
-	}
-
-	public void post() {
-		//todo: removeStatementListener without locking
-		if( this.runProgramContext != null ) {
-			runProgramContext.getVirtualMachine().removeVirtualMachineListener( this.virtualMachineListener );
-			runProgramContext = null;
-		}
-	}
-
-	private final org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener = new org.lgna.project.virtualmachine.events.VirtualMachineListener() {
-		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
-			if( statementEvent.getStatement() == statement ) {
-				if( runProgramContext != null ) {
-					org.lgna.story.implementation.ProgramImp programImp = runProgramContext.getProgramImp();
-					if( programImp != null ) {
-						programImp.setSimulationSpeedFactor( 1.0 );
-					}
-					runProgramContext.getVirtualMachine().removeVirtualMachineListener( this );
-					runProgramContext = null;
-				}
-				//} else {
-				//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
-			}
-		}
-
-		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent ) {
-		}
-	};
-
-	private final org.lgna.project.ast.Statement statement;
-	private org.alice.stageide.program.RunProgramContext runProgramContext;
+	void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent );
 }

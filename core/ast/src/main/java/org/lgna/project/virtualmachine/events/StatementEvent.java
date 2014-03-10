@@ -45,20 +45,15 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementEvent {
+public class StatementEvent extends VirtualMachineEvent {
 	public StatementEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.Statement statement ) {
-		this.vm = vm;
+		super( vm );
 		this.statement = statement;
-	}
-
-	public org.lgna.project.virtualmachine.VirtualMachine getVM() {
-		return this.vm;
 	}
 
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
 
-	private final org.lgna.project.virtualmachine.VirtualMachine vm;
 	private final org.lgna.project.ast.Statement statement;
 }

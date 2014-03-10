@@ -45,8 +45,15 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface StatementListener {
-	void statementExecuting( org.lgna.project.virtualmachine.events.StatementEvent statementEvent );
+public abstract class VirtualMachineEvent {
+	public VirtualMachineEvent( org.lgna.project.virtualmachine.VirtualMachine vm ) {
+		this.vm = vm;
+	}
 
-	void statementExecuted( org.lgna.project.virtualmachine.events.StatementEvent statementEvent );
+	public org.lgna.project.virtualmachine.VirtualMachine getVM() {
+		return this.vm;
+	}
+
+	private final org.lgna.project.virtualmachine.VirtualMachine vm;
+
 }

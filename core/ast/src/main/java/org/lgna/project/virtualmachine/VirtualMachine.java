@@ -1166,27 +1166,19 @@ public abstract class VirtualMachine {
 		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
 			org.lgna.project.virtualmachine.events.StatementEvent statementEvent;
-			org.lgna.project.virtualmachine.events.StatementListener[] array;
-			synchronized( this.statementListeners ) {
-				//				synchronized( this.statementListenersMarkedForRemoval ) {
-				//					if( this.statementListenersMarkedForRemoval.size() > 0 ) {
-				//						for( org.lgna.project.virtualmachine.events.StatementListener statementListener : this.statementListenersMarkedForRemoval ) {
-				//							this.statementListeners.remove( statementListener );
-				//						}
-				//						this.statementListenersMarkedForRemoval.clear();
-				//					}
-				//				}
-				if( this.statementListeners.size() > 0 ) {
+			org.lgna.project.virtualmachine.events.VirtualMachineListener[] array;
+			synchronized( this.virtualMachineListeners ) {
+				if( this.virtualMachineListeners.size() > 0 ) {
 					statementEvent = new org.lgna.project.virtualmachine.events.StatementEvent( this, statement );
-					array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.statementListeners, org.lgna.project.virtualmachine.events.StatementListener.class );
+					array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
 				} else {
 					statementEvent = null;
 					array = null;
 				}
 			}
 			if( ( statementEvent != null ) && ( array != null ) ) {
-				for( org.lgna.project.virtualmachine.events.StatementListener statementListener : array ) {
-					statementListener.statementExecuting( statementEvent );
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+					virtualMachineListener.statementExecuting( statementEvent );
 				}
 			}
 			//todo: try?
@@ -1226,37 +1218,30 @@ public abstract class VirtualMachine {
 
 			//todo: finally?
 			if( ( statementEvent != null ) && ( array != null ) ) {
-				for( org.lgna.project.virtualmachine.events.StatementListener statementListener : array ) {
-					statementListener.statementExecuted( statementEvent );
+				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+					virtualMachineListener.statementExecuted( statementEvent );
 				}
 			}
 		}
 	}
 
-	public void addStatementListener( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
-		synchronized( this.statementListeners ) {
-			this.statementListeners.add( statementListener );
+	public void addVirtualMachineListener( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener ) {
+		synchronized( this.virtualMachineListeners ) {
+			this.virtualMachineListeners.add( virtualMachineListener );
 		}
 	}
 
-	public void removeStatementListener( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
-		synchronized( this.statementListeners ) {
-			this.statementListeners.remove( statementListener );
+	public void removeVirtualMachineListener( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener ) {
+		synchronized( this.virtualMachineListeners ) {
+			this.virtualMachineListeners.remove( virtualMachineListener );
 		}
 	}
 
-	//	public void markStatementListenerForRemoval( org.lgna.project.virtualmachine.events.StatementListener statementListener ) {
-	//		synchronized( this.statementListenersMarkedForRemoval ) {
-	//			this.statementListenersMarkedForRemoval.add( statementListener );
-	//		}
-	//	}
-
-	public java.util.List<org.lgna.project.virtualmachine.events.StatementListener> getStatementListeners() {
-		synchronized( this.statementListeners ) {
-			return java.util.Collections.unmodifiableList( this.statementListeners );
+	public java.util.List<org.lgna.project.virtualmachine.events.VirtualMachineListener> getVirtualMachineListeners() {
+		synchronized( this.virtualMachineListeners ) {
+			return java.util.Collections.unmodifiableList( this.virtualMachineListeners );
 		}
 	}
 
-	private final java.util.List<org.lgna.project.virtualmachine.events.StatementListener> statementListeners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//	private final java.util.List<org.lgna.project.virtualmachine.events.StatementListener> statementListenersMarkedForRemoval = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<org.lgna.project.virtualmachine.events.VirtualMachineListener> virtualMachineListeners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }
