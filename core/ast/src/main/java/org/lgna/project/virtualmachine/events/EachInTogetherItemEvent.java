@@ -45,20 +45,27 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface VirtualMachineListener {
-	void statementExecuting( StatementExecutionEvent statementExecutionEvent );
+public class EachInTogetherItemEvent extends VirtualMachineEvent {
+	public EachInTogetherItemEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.AbstractEachInTogether eachInTogether, Object value, Object[] array ) {
+		super( vm );
+		this.eachInTogether = eachInTogether;
+		this.value = value;
+		this.array = array;
+	}
 
-	void statementExecuted( StatementExecutionEvent statementExecutionEvent );
+	public org.lgna.project.ast.AbstractEachInTogether getEachInTogether() {
+		return this.eachInTogether;
+	}
 
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
+	public Object getValue() {
+		return this.value;
+	}
 
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
+	public Object[] getArray() {
+		return this.array;
+	}
 
-	void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent );
-
-	void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent );
-
-	void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent );
+	private final org.lgna.project.ast.AbstractEachInTogether eachInTogether;
+	private final Object value;
+	private final Object[] array;
 }

@@ -101,6 +101,12 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOper
 
 		public void forEachLoopIterated( org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent forEachLoopIterationEvent ) {
 		}
+
+		public void eachInTogetherItemExecuting( org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherItemEvent ) {
+		}
+
+		public void eachInTogetherItemExecuted( org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherItemEvent ) {
+		}
 	};
 
 	private final org.lgna.project.ast.Statement statement;

@@ -1139,17 +1139,41 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	private void excecuteForEachTogether( org.lgna.project.ast.AbstractEachInTogether forEachInTogether, final Object[] array ) throws ReturnException {
-		final org.lgna.project.ast.UserLocal item = forEachInTogether.item.getValue();
-		final org.lgna.project.ast.BlockStatement blockStatement = forEachInTogether.body.getValue();
+	private void excecuteEachInTogether( final org.lgna.project.ast.AbstractEachInTogether eachInTogether, final Object[] array ) throws ReturnException {
+		final org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
+		synchronized( this.virtualMachineListeners ) {
+			if( this.virtualMachineListeners.size() > 0 ) {
+				listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+			} else {
+				listeners = null;
+			}
+		}
+
+		final org.lgna.project.ast.UserLocal item = eachInTogether.item.getValue();
+		final org.lgna.project.ast.BlockStatement blockStatement = eachInTogether.body.getValue();
 
 		switch( array.length ) {
 		case 0:
 			break;
 		case 1:
-			VirtualMachine.this.pushLocal( item, array[ 0 ] );
+			Object value = array[ 0 ];
+			VirtualMachine.this.pushLocal( item, value );
 			try {
+				org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherEvent;
+				if( listeners != null ) {
+					eachInTogetherEvent = new org.lgna.project.virtualmachine.events.EachInTogetherItemEvent( this, eachInTogether, value, array );
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						virtualMachineListener.eachInTogetherItemExecuting( eachInTogetherEvent );
+					}
+				} else {
+					eachInTogetherEvent = null;
+				}
 				VirtualMachine.this.execute( blockStatement );
+				if( listeners != null ) {
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						virtualMachineListener.eachInTogetherItemExecuted( eachInTogetherEvent );
+					}
+				}
 			} finally {
 				VirtualMachine.this.popLocal( item );
 			}
@@ -1162,7 +1186,21 @@ public abstract class VirtualMachine {
 					try {
 						VirtualMachine.this.pushLocal( item, value );
 						try {
+							org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherEvent;
+							if( listeners != null ) {
+								eachInTogetherEvent = new org.lgna.project.virtualmachine.events.EachInTogetherItemEvent( VirtualMachine.this, eachInTogether, value, array );
+								for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+									virtualMachineListener.eachInTogetherItemExecuting( eachInTogetherEvent );
+								}
+							} else {
+								eachInTogetherEvent = null;
+							}
 							VirtualMachine.this.execute( blockStatement );
+							if( listeners != null ) {
+								for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+									virtualMachineListener.eachInTogetherItemExecuted( eachInTogetherEvent );
+								}
+							}
 						} catch( ReturnException re ) {
 							//todo
 						} finally {
@@ -1179,7 +1217,7 @@ public abstract class VirtualMachine {
 	protected void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether ) throws ReturnException {
 		Object[] array = this.evaluate( eachInArrayTogether.array.getValue(), Object[].class );
 		if( array != null ) {
-			excecuteForEachTogether( eachInArrayTogether, array );
+			excecuteEachInTogether( eachInArrayTogether, array );
 		} else {
 			throw new LgnaVmNullPointerException( "each in together array is null", this );
 		}
@@ -1188,7 +1226,7 @@ public abstract class VirtualMachine {
 	protected void executeEachInIterableTogether( org.lgna.project.ast.EachInIterableTogether eachInIterableTogether ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
 		if( iterable != null ) {
-			excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
+			excecuteEachInTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
 		} else {
 			throw new LgnaVmNullPointerException( "each in together iterable is null", this );
 		}
