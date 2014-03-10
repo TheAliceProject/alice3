@@ -45,12 +45,28 @@ package org.lgna.project.virtualmachine.events;
 /**
  * @author Dennis Cosgrove
  */
-public interface VirtualMachineListener {
-	void statementExecuting( StatementEvent statementEvent );
+public class CountLoopIterationEvent extends VirtualMachineEvent {
+	public CountLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.CountLoop countLoop, int index, int count ) {
+		super( vm );
+		this.countLoop = countLoop;
+		this.index = index;
+		this.count = count;
+	}
 
-	void statementExecuted( StatementEvent statementEvent );
+	public org.lgna.project.ast.CountLoop getCountLoop() {
+		return this.countLoop;
+	}
 
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
+	public int getIndex() {
+		return this.index;
+	}
 
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
+	public int getCount() {
+		return this.count;
+	}
+
+	private final org.lgna.project.ast.CountLoop countLoop;
+	private final int index;
+	private final int count;
+
 }

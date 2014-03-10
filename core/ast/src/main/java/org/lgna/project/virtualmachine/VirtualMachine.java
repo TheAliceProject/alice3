@@ -1004,9 +1004,32 @@ public abstract class VirtualMachine {
 			final int n = this.evaluateInt( countLoop.count.getValue(), "count expression is null" );
 			this.pushLocal( constant, n );
 			try {
+				org.lgna.project.virtualmachine.events.VirtualMachineListener[] array;
+				synchronized( this.virtualMachineListeners ) {
+					if( this.virtualMachineListeners.size() > 0 ) {
+						array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+					} else {
+						array = null;
+					}
+				}
+
 				for( int i = 0; i < n; i++ ) {
+					org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent;
+					if( array != null ) {
+						countLoopIterationEvent = new org.lgna.project.virtualmachine.events.CountLoopIterationEvent( this, countLoop, i, n );
+						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+							virtualMachineListener.countLoopIterating( countLoopIterationEvent );
+						}
+					} else {
+						countLoopIterationEvent = null;
+					}
 					this.setLocal( variable, i );
 					this.execute( countLoop.body.getValue() );
+					if( array != null ) {
+						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : array ) {
+							virtualMachineListener.countLoopIterated( countLoopIterationEvent );
+						}
+					}
 				}
 			} finally {
 				this.popLocal( constant );
