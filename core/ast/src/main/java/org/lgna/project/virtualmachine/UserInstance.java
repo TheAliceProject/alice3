@@ -135,7 +135,7 @@ public class UserInstance {
 				this.createAndSetFieldInstance( vm, userField );
 			}
 			try {
-				vm.executeBlockStatement( constructorBlockStatement );
+				vm.execute( constructorBlockStatement );
 			} catch( ReturnException re ) {
 				throw new RuntimeException( re );
 			}
