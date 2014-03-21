@@ -95,6 +95,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 			}
 		}
 
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
