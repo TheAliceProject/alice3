@@ -56,11 +56,11 @@ package org.lgna.issue.swing;
 		}
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
+			java.util.List<edu.cmu.cs.dennisc.java.lang.SystemProperty> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>" );
 			sb.append( "<body>" );
-			for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
+			for( edu.cmu.cs.dennisc.java.lang.SystemProperty property : propertyList ) {
 				sb.append( "<strong> " );
 				sb.append( property.getKey() );
 				sb.append( ":</strong> " );

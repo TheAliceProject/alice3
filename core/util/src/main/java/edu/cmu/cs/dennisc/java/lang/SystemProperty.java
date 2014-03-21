@@ -45,16 +45,16 @@ package edu.cmu.cs.dennisc.java.lang;
 /**
  * @author Dennis Cosgrove
  */
-public class Property implements Comparable<Property> {
+public class SystemProperty implements Comparable<SystemProperty> {
 	private final String key;
 	private final String value;
 
-	public Property( String key, String value ) {
+	public SystemProperty( String key, String value ) {
 		this.key = key;
 		this.value = value;
 	}
 
-	public int compareTo( Property other ) {
+	public int compareTo( SystemProperty other ) {
 		return this.key.compareTo( other.key );
 	}
 
