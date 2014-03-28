@@ -687,4 +687,11 @@ public class AstUtilities {
 			}
 		}
 	}
+
+	public static java.util.Collection<NamedUserType> getNamedUserTypes( Node node ) {
+		edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter = null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
+		return crawler.getList();
+	}
 }

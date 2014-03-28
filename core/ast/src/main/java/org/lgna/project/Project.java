@@ -146,9 +146,7 @@ public class Project {
 
 	public java.util.Set<org.lgna.project.ast.NamedUserType> getNamedUserTypes() {
 		synchronized( this.getLock() ) {
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-			this.programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
-			this.namedUserTypes.addAll( crawler.getList() );
+			this.namedUserTypes.addAll( org.lgna.project.ast.AstUtilities.getNamedUserTypes( this.programType ) );
 			return this.namedUserTypes;
 		}
 	}
