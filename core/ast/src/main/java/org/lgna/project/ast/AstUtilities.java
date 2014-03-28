@@ -52,8 +52,13 @@ public class AstUtilities {
 	}
 
 	public static <N extends Node> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
-		java.util.Set<AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
-		( (AbstractNode)original ).removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		java.util.Set<AbstractDeclaration> abstractDeclarations;
+		if( root != null ) {
+			abstractDeclarations = root.createDeclarationSet();
+			( (AbstractNode)original ).removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		} else {
+			abstractDeclarations = java.util.Collections.emptySet();
+		}
 		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = ( (AbstractNode)original ).encode( abstractDeclarations );
 		try {
@@ -67,6 +72,10 @@ public class AstUtilities {
 
 	public static <N extends Node> N createCopy( N original, NamedUserType root ) {
 		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
+	}
+
+	public static <N extends Node> N createDeepCopy( N original, DecodeIdPolicy decodeIdPolicy ) {
+		return createCopy( original, null, decodeIdPolicy );
 	}
 
 	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
