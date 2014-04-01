@@ -49,13 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class ExpressionStatement extends Statement {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
-
 	public ExpressionStatement() {
 	}
 
@@ -82,4 +75,11 @@ public final class ExpressionStatement extends Statement {
 		generator.appendExpression( this.expression.getValue() );
 		generator.appendSemicolon();
 	}
+
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			throw new RuntimeException( "todo" );
+		}
+	};
 }

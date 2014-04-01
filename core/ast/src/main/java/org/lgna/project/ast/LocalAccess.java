@@ -49,8 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class LocalAccess extends Expression {
-	public DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
-
 	public LocalAccess() {
 	}
 
@@ -100,4 +98,6 @@ public final class LocalAccess extends Expression {
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.local.getValue() );
 	}
+
+	public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
 }

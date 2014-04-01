@@ -47,13 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class LogicalComplement extends Expression {
-	public ExpressionProperty operand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.BOOLEAN_OBJECT_TYPE;
-		}
-	};
-
 	public LogicalComplement() {
 	}
 
@@ -91,4 +84,11 @@ public final class LogicalComplement extends Expression {
 		generator.appendChar( '!' );
 		generator.appendExpression( this.operand.getValue() );
 	}
+
+	public final ExpressionProperty operand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.BOOLEAN_OBJECT_TYPE;
+		}
+	};
 }

@@ -67,11 +67,6 @@ public class JavaConstructorParameter extends JavaParameter {
 		return rv;
 	}
 
-	private final JavaConstructor constructor;
-	private final int index;
-	private final String name;
-	private final JavaType valueType;
-
 	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
 		this.constructor = constructor;
@@ -110,4 +105,9 @@ public class JavaConstructorParameter extends JavaParameter {
 			return false;
 		}
 	}
+
+	private final JavaConstructor constructor;
+	private final int index;
+	private final String name;
+	private final JavaType valueType;
 }

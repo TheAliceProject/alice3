@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class BlockStatement extends Statement {
-	public StatementListProperty statements = new StatementListProperty( this );
-
 	public BlockStatement() {
 	}
 
@@ -77,4 +75,6 @@ public class BlockStatement extends Statement {
 		this.appendBody( generator );
 		generator.appendChar( '}' );
 	}
+
+	public final StatementListProperty statements = new StatementListProperty( this );
 }

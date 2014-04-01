@@ -236,12 +236,6 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	//		return (modifiers & prohibited) == 0;
 	//	}
 
-	private final ClassReflectionProxy classReflectionProxy;
-	private final java.util.ArrayList<JavaConstructor> constructors = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.ArrayList<JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.ArrayList<JavaField> fields = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.ArrayList<JavaGetterSetterPair> getterSetterPairs = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-
 	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
 	}
@@ -519,4 +513,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return false;
 		}
 	}
+
+	private final ClassReflectionProxy classReflectionProxy;
+	private final java.util.ArrayList<JavaConstructor> constructors = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final java.util.ArrayList<JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final java.util.ArrayList<JavaField> fields = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final java.util.ArrayList<JavaGetterSetterPair> getterSetterPairs = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 }

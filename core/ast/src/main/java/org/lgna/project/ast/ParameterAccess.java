@@ -49,8 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class ParameterAccess extends Expression {
-	public DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
-
 	public ParameterAccess() {
 	}
 
@@ -102,4 +100,6 @@ public final class ParameterAccess extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( this.parameter.getValue().getName() );
 	}
+
+	public final DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
 }

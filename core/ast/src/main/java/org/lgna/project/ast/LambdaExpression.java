@@ -47,14 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class LambdaExpression extends Expression {
-	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
-		//todo?
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-
 	public LambdaExpression() {
 	}
 
@@ -89,4 +81,12 @@ public final class LambdaExpression extends Expression {
 			userLambda.appendJava( generator );
 		}
 	}
+
+	public final DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
+		//todo?
+		@Override
+		public boolean isReference() {
+			return false;
+		}
+	};
 }

@@ -47,9 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class UserParameter extends AbstractParameter {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-
 	public UserParameter() {
 	}
 
@@ -96,4 +93,7 @@ public class UserParameter extends AbstractParameter {
 	public boolean isVariableLength() {
 		return false;
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 }

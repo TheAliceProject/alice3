@@ -49,8 +49,6 @@ package org.lgna.project.ast;
 public class JavaPackage extends AbstractPackage {
 	private static java.util.Map<PackageReflectionProxy, JavaPackage> s_map = new java.util.HashMap<PackageReflectionProxy, JavaPackage>();
 
-	private PackageReflectionProxy packageReflectionProxy;
-
 	public static JavaPackage getInstance( PackageReflectionProxy packageReflectionProxy ) {
 		if( packageReflectionProxy != null ) {
 			JavaPackage rv = s_map.get( packageReflectionProxy );
@@ -102,4 +100,6 @@ public class JavaPackage extends AbstractPackage {
 			return false;
 		}
 	}
+
+	private final PackageReflectionProxy packageReflectionProxy;
 }

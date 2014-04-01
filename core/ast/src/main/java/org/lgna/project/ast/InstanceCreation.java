@@ -46,17 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class InstanceCreation extends Expression implements ArgumentOwner {
-	//todo: AbstractConstructor -> Expression<AbstractConstructor>
-	public DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return ( this.getValue() instanceof AnonymousUserConstructor ) == false;
-		}
-	};
-	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
-
 	public InstanceCreation() {
 	}
 
@@ -129,4 +118,15 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 		generator.appendArguments( this );
 		generator.appendChar( ')' );
 	}
+
+	//todo: AbstractConstructor -> Expression<AbstractConstructor>
+	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
+		@Override
+		public boolean isReference() {
+			return ( this.getValue() instanceof AnonymousUserConstructor ) == false;
+		}
+	};
+	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
+	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 }

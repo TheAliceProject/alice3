@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ConstructorBlockStatement extends BlockStatement {
-	public NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );
-
 	public ConstructorBlockStatement() {
 		this.constructorInvocationStatement.setValue( new SuperConstructorInvocationStatement() );
 	}
@@ -72,4 +70,6 @@ public final class ConstructorBlockStatement extends BlockStatement {
 		this.constructorInvocationStatement.getValue().appendJava( generator );
 		super.appendBody( generator );
 	}
+
+	public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );
 }

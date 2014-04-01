@@ -46,9 +46,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
-	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-
-	public enum Operator {
+	public static enum Operator {
 		PLUS() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
@@ -298,4 +296,6 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 		this.operator.getValue().appendJava( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 }

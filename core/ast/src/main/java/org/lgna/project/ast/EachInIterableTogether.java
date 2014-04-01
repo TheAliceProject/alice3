@@ -47,13 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class EachInIterableTogether extends AbstractEachInTogether implements EachInIterableStatement {
-	public ExpressionProperty iterable = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
-
 	public EachInIterableTogether() {
 	}
 
@@ -69,4 +62,11 @@ public class EachInIterableTogether extends AbstractEachInTogether implements Ea
 	protected ExpressionProperty getArrayOrIterableProperty() {
 		return this.getIterableProperty();
 	}
+
+	public final ExpressionProperty iterable = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			throw new RuntimeException( "todo" );
+		}
+	};
 }

@@ -48,8 +48,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?>> {
-	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-
 	public TypeLiteral() {
 	}
 
@@ -89,4 +87,6 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 		generator.appendTypeName( this.value.getValue() );
 		generator.appendString( ".class" );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 }

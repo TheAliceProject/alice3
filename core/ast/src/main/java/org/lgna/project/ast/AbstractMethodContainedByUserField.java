@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMethodContainedByUserField extends AbstractMethod {
-	private final UserField field;
-
 	/* package-private */AbstractMethodContainedByUserField( UserField field ) {
 		this.field = field;
 	}
@@ -128,4 +126,6 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 	public final AbstractCode getNextShorterInChain() {
 		return null;
 	}
+
+	private final UserField field;
 }

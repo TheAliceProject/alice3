@@ -46,14 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class BooleanExpressionBodyPair extends AbstractNode {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Boolean.class );
-		}
-	};
-	public NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
-
 	public BooleanExpressionBodyPair() {
 	}
 
@@ -72,4 +64,12 @@ public final class BooleanExpressionBodyPair extends AbstractNode {
 		}
 		return false;
 	}
+
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.getInstance( Boolean.class );
+		}
+	};
+	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
 }

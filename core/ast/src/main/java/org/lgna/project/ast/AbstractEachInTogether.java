@@ -48,13 +48,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEachInTogether extends AbstractStatementWithBody implements EachInStatement {
-	public DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-
 	public AbstractEachInTogether() {
 	}
 
@@ -128,4 +121,11 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		}
 		generator.appendString( ");" );
 	}
+
+	public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
+		@Override
+		public boolean isReference() {
+			return false;
+		}
+	};
 }

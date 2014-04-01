@@ -46,15 +46,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class AssignmentExpression extends Expression {
-	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AssignmentExpression.this.expressionType.getValue();
-		}
-	};
-
-	public enum Operator {
+	public static enum Operator {
 		ASSIGN( "=" ),
 		PLUS_ASSIGN( "+=" ),
 		MINUS_ASSIGN( "-=" ),
@@ -77,15 +69,6 @@ public final class AssignmentExpression extends Expression {
 			generator.appendString( this.text );
 		}
 	}
-
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
-	//todo: new name
-	public ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AssignmentExpression.this.expressionType.getValue();
-		}
-	};
 
 	public AssignmentExpression() {
 	}
@@ -123,4 +106,21 @@ public final class AssignmentExpression extends Expression {
 		this.operator.getValue().appendJava( generator );
 		generator.appendExpression( this.rightHandSide.getValue() );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return AssignmentExpression.this.expressionType.getValue();
+		}
+	};
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
+	//todo: new name
+	public final ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return AssignmentExpression.this.expressionType.getValue();
+		}
+	};
 }

@@ -46,15 +46,13 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class Getter extends AbstractMethodContainedByUserField {
-	private final UserField field;
-
 	/* package-private */Getter( UserField field ) {
 		super( field );
-		this.field = field;
 	}
 
 	public AbstractType<?, ?, ?> getReturnType() {
-		return this.field.getValueType();
+		UserField field = this.getField();
+		return field.getValueType();
 	}
 
 	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
@@ -62,6 +60,7 @@ public class Getter extends AbstractMethodContainedByUserField {
 	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		UserField field = this.getField();
 		generator.appendMethodHeader( this );
 		generator.appendChar( '{' );
 		generator.appendString( "return this." );
@@ -72,8 +71,9 @@ public class Getter extends AbstractMethodContainedByUserField {
 
 	@Override
 	public String getName() {
+		UserField field = this.getField();
 		//todo: handle boolean and is
-		String fieldName = this.field.getName();
+		String fieldName = field.getName();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "get" );
 		if( fieldName.length() > 0 ) {

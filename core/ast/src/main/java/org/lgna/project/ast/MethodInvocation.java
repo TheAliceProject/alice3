@@ -47,17 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class MethodInvocation extends Expression implements ArgumentOwner {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return method.getValue().getDeclaringType();
-		}
-	};
-	public DeclarationProperty<AbstractMethod> method = new DeclarationProperty<AbstractMethod>( this );
-	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
-
 	public MethodInvocation() {
 	}
 
@@ -183,4 +172,14 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		generator.appendChar( ')' );
 	}
 
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return method.getValue().getDeclaringType();
+		}
+	};
+	public final DeclarationProperty<AbstractMethod> method = new DeclarationProperty<AbstractMethod>( this );
+	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
+	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 }

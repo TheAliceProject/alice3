@@ -47,16 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUserMethod extends AbstractMethod implements UserCode {
-	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public DeclarationProperty<AbstractType<?, ?, ?>> returnType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
-	public NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-
 	public AbstractUserMethod() {
 	}
 
@@ -138,4 +128,14 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final boolean isStrictFloatingPoint() {
 		return this.isStrictFloatingPoint.getValue();
 	}
+
+	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
+	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 }

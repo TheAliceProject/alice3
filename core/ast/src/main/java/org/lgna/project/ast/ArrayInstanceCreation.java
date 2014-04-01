@@ -46,10 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ArrayInstanceCreation extends Expression {
-	public DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
-	public ExpressionListProperty expressions = new ExpressionListProperty( this );
-
 	public ArrayInstanceCreation() {
 	}
 
@@ -130,4 +126,8 @@ public final class ArrayInstanceCreation extends Expression {
 		}
 		generator.appendChar( '}' );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
+	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
 }

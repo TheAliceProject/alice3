@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementWithBody extends Statement implements StatementWithBody {
-	public NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
-
 	public AbstractStatementWithBody() {
 	}
 
@@ -72,4 +70,6 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	@Override
 	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 	}
+
+	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
 }

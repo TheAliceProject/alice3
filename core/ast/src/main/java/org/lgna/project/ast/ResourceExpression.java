@@ -46,9 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ResourceExpression extends Expression {
-	public DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
-
 	public ResourceExpression() {
 	}
 
@@ -82,4 +79,7 @@ public final class ResourceExpression extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.todo( this );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
 }

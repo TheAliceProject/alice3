@@ -69,8 +69,6 @@ public class JavaField extends AbstractField {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( declaringCls, name ) );
 	}
 
-	private FieldReflectionProxy fieldReflectionProxy;
-
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
 	}
@@ -191,4 +189,5 @@ public class JavaField extends AbstractField {
 		}
 	}
 
+	private final FieldReflectionProxy fieldReflectionProxy;
 }

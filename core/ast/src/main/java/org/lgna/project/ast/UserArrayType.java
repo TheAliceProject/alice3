@@ -60,20 +60,17 @@ public class UserArrayType extends AbstractType {
 		return rv;
 	}
 
-	private UserType<?> m_leafType;
-	private int m_dimensionCount;
-
 	private UserArrayType( UserType<?> leafType, int dimensionCount ) {
-		m_leafType = leafType;
-		m_dimensionCount = dimensionCount;
+		this.leafType = leafType;
+		this.dimensionCount = dimensionCount;
 	}
 
 	public UserType<?> getLeafType() {
-		return m_leafType;
+		return this.leafType;
 	}
 
 	public int getDimensionCount() {
-		return m_dimensionCount;
+		return this.dimensionCount;
 	}
 
 	@Override
@@ -88,8 +85,8 @@ public class UserArrayType extends AbstractType {
 	@Override
 	public String getName() {
 		StringBuffer sb = new StringBuffer();
-		sb.append( m_leafType.getName() );
-		for( int i = 0; i < m_dimensionCount; i++ ) {
+		sb.append( this.leafType.getName() );
+		for( int i = 0; i < this.dimensionCount; i++ ) {
 			sb.append( "[]" );
 		}
 		return sb.toString();
@@ -108,10 +105,10 @@ public class UserArrayType extends AbstractType {
 
 	@Override
 	public AbstractType<?, ?, ?> getComponentType() {
-		if( m_dimensionCount == 1 ) {
-			return m_leafType;
+		if( this.dimensionCount == 1 ) {
+			return this.leafType;
 		} else {
-			return UserArrayType.getInstance( m_leafType, m_dimensionCount - 1 );
+			return UserArrayType.getInstance( this.leafType, this.dimensionCount - 1 );
 		}
 	}
 
@@ -123,19 +120,19 @@ public class UserArrayType extends AbstractType {
 	@Override
 	public AbstractPackage getPackage() {
 		//todo?
-		return m_leafType.getPackage();
+		return this.leafType.getPackage();
 	}
 
 	@Override
 	public AbstractType<?, ?, ?> getSuperType() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "the super type of a java array is Object" );
-		AbstractType<?, ?, ?> leafSuperType = m_leafType.getSuperType();
+		AbstractType<?, ?, ?> leafSuperType = this.leafType.getSuperType();
 		if( leafSuperType instanceof UserType<?> ) {
-			return UserArrayType.getInstance( ( (UserType<?>)leafSuperType ), m_dimensionCount );
+			return UserArrayType.getInstance( ( (UserType<?>)leafSuperType ), this.dimensionCount );
 		} else {
 			assert leafSuperType instanceof JavaType;
 			Class<?> leafSuperCls = ( (JavaType)leafSuperType ).getClassReflectionProxy().getReification();
-			Class<?> superCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( leafSuperCls, m_dimensionCount );
+			Class<?> superCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( leafSuperCls, this.dimensionCount );
 			return JavaType.getInstance( superCls );
 		}
 	}
@@ -153,13 +150,13 @@ public class UserArrayType extends AbstractType {
 	@Override
 	public boolean isFollowToSuperClassDesired() {
 		//todo?
-		return m_leafType.isFollowToSuperClassDesired();
+		return this.leafType.isFollowToSuperClassDesired();
 	}
 
 	@Override
 	public boolean isConsumptionBySubClassDesired() {
 		//todo?
-		return m_leafType.isConsumptionBySubClassDesired();
+		return this.leafType.isConsumptionBySubClassDesired();
 	}
 
 	@Override
@@ -182,7 +179,7 @@ public class UserArrayType extends AbstractType {
 
 	@Override
 	public AccessLevel getAccessLevel() {
-		return m_leafType.getAccessLevel();
+		return this.leafType.getAccessLevel();
 	}
 
 	@Override
@@ -193,35 +190,38 @@ public class UserArrayType extends AbstractType {
 	@Override
 	public boolean isInterface() {
 		//todo?
-		return m_leafType.isInterface();
+		return this.leafType.isInterface();
 	}
 
 	@Override
 	public boolean isAbstract() {
 		//todo?
-		return m_leafType.isAbstract();
+		return this.leafType.isAbstract();
 	}
 
 	@Override
 	public boolean isFinal() {
 		//todo?
-		return m_leafType.isFinal();
+		return this.leafType.isFinal();
 	}
 
 	@Override
 	public boolean isStatic() {
 		//todo?
-		return m_leafType.isStatic();
+		return this.leafType.isStatic();
 	}
 
 	@Override
 	public boolean isStrictFloatingPoint() {
 		//todo?
-		return m_leafType.isStrictFloatingPoint();
+		return this.leafType.isStrictFloatingPoint();
 	}
 
 	@Override
 	public AbstractType getArrayType() {
-		return UserArrayType.getInstance( m_leafType, m_dimensionCount + 1 );
+		return UserArrayType.getInstance( this.leafType, this.dimensionCount + 1 );
 	}
+
+	private final UserType<?> leafType;
+	private final int dimensionCount;
 }

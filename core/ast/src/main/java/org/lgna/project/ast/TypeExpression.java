@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class TypeExpression extends Expression {
-	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-
 	public TypeExpression() {
 	}
 
@@ -83,4 +81,6 @@ public final class TypeExpression extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendTypeName( this.value.getValue() );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 }

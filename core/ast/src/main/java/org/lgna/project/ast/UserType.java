@@ -47,16 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class UserType<C extends UserConstructor> extends AbstractType<C, UserMethod, UserField> {
-	public DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>( this ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
-			assert ( value == null ) || ( value.isArray() == false );
-			super.setValue( owner, value );
-		}
-	};
-	public NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>( this );
-	public NodeListProperty<UserField> fields = new NodeListProperty<UserField>( this );
-
 	public UserType() {
 	}
 
@@ -158,4 +148,14 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 	public final AbstractType<?, ?, ?> getArrayType() {
 		return UserArrayType.getInstance( this, 1 );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>( this ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
+			assert ( value == null ) || ( value.isArray() == false );
+			super.setValue( owner, value );
+		}
+	};
+	public final NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>( this );
+	public final NodeListProperty<UserField> fields = new NodeListProperty<UserField>( this );
 }

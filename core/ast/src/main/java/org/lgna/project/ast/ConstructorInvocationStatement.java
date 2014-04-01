@@ -47,16 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ConstructorInvocationStatement extends Statement implements ArgumentOwner {
-	public DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
-	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
-
 	public ConstructorInvocationStatement() {
 	}
 
@@ -106,4 +96,14 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		}
 		return false;
 	}
+
+	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
+		@Override
+		public boolean isReference() {
+			return true;
+		}
+	};
+	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
+	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 }

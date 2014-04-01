@@ -108,7 +108,7 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 		return ( (Number)o ).byteValue();
 	}
 
-	public enum Operator {
+	public static enum Operator {
 		LESS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
@@ -312,9 +312,6 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
-	public DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-
 	public RelationalInfixExpression() {
 	}
 
@@ -359,4 +356,7 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 		this.operator.getValue().appendJava( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 }

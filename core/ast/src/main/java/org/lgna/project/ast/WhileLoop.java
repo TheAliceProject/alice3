@@ -49,13 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public class WhileLoop extends AbstractLoop {
-	public ExpressionProperty conditional = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Boolean.class );
-		}
-	};
-
 	public WhileLoop() {
 	}
 
@@ -88,4 +81,10 @@ public class WhileLoop extends AbstractLoop {
 		generator.appendString( ")" );
 	}
 
+	public final ExpressionProperty conditional = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.getInstance( Boolean.class );
+		}
+	};
 }

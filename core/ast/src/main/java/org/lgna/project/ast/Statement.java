@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class Statement extends AbstractNode {
-	public edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 
 	@Override
@@ -59,4 +57,6 @@ public abstract class Statement extends AbstractNode {
 		}
 		return false;
 	}
+
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 }

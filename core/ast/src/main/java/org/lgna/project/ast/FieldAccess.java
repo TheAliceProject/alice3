@@ -49,31 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class FieldAccess extends Expression {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			AbstractField f = field.getValue();
-			if( f != null ) {
-				return f.getDeclaringType();
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "field.getValue() == null", field );
-				return JavaType.OBJECT_TYPE;
-			}
-		}
-	};
-	public DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this ) {
-		@Override
-		public AbstractField getValue( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-			Object o = super.getValue( owner );
-			if( o instanceof AbstractField ) {
-				return (AbstractField)o;
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( o );
-				return null;
-			}
-		}
-	};
-
 	public FieldAccess() {
 	}
 
@@ -145,4 +120,29 @@ public final class FieldAccess extends Expression {
 		generator.appendChar( '.' );
 		generator.appendString( this.field.getValue().getName() );
 	}
+
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			AbstractField f = field.getValue();
+			if( f != null ) {
+				return f.getDeclaringType();
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "field.getValue() == null", field );
+				return JavaType.OBJECT_TYPE;
+			}
+		}
+	};
+	public final DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this ) {
+		@Override
+		public AbstractField getValue( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+			Object o = super.getValue( owner );
+			if( o instanceof AbstractField ) {
+				return (AbstractField)o;
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( o );
+				return null;
+			}
+		}
+	};
 }

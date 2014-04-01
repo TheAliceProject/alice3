@@ -47,19 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ForEachInArrayLoop extends AbstractForEachLoop implements EachInArrayStatement {
-	public ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			UserLocal item = ForEachInArrayLoop.this.item.getValue();
-			AbstractType<?, ?, ?> type = item.valueType.getValue();
-			if( type != null ) {
-				return type.getArrayType();
-			} else {
-				return null;
-			}
-		}
-	};
-
 	public ForEachInArrayLoop() {
 	}
 
@@ -76,4 +63,17 @@ public final class ForEachInArrayLoop extends AbstractForEachLoop implements Eac
 	protected org.lgna.project.ast.ExpressionProperty getArrayOrIterableProperty() {
 		return this.getArrayProperty();
 	}
+
+	public final ExpressionProperty array = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			UserLocal item = ForEachInArrayLoop.this.item.getValue();
+			AbstractType<?, ?, ?> type = item.valueType.getValue();
+			if( type != null ) {
+				return type.getArrayType();
+			} else {
+				return null;
+			}
+		}
+	};
 }

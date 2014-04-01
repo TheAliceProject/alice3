@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class Setter extends AbstractMethodContainedByUserField {
-	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new SetterParameter( this ) ) );
-
 	/* package-private */Setter( UserField field ) {
 		super( field );
 	}
@@ -84,4 +82,6 @@ public class Setter extends AbstractMethodContainedByUserField {
 		}
 		return sb.toString();
 	}
+
+	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new SetterParameter( this ) ) );
 }

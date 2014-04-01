@@ -47,19 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class AssertStatement extends Statement {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
-	public ExpressionProperty message = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
-
 	public AssertStatement() {
 	}
 
@@ -90,4 +77,17 @@ public class AssertStatement extends Statement {
 		}
 		generator.appendSemicolon();
 	}
+
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			throw new RuntimeException( "todo" );
+		}
+	};
+	public final ExpressionProperty message = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			throw new RuntimeException( "todo" );
+		}
+	};
 }

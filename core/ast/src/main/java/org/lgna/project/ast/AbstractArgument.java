@@ -47,14 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgument extends AbstractNode {
-	public DeclarationProperty<AbstractParameter> parameter = new DeclarationProperty<AbstractParameter>( this );
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AbstractArgument.this.getExpressionTypeForParameterType( AbstractArgument.this.parameter.getValue().getValueType() );
-		}
-	};
-
 	public AbstractArgument() {
 	}
 
@@ -77,4 +69,12 @@ public abstract class AbstractArgument extends AbstractNode {
 	}
 
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
+
+	public final DeclarationProperty<AbstractParameter> parameter = new DeclarationProperty<AbstractParameter>( this );
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return AbstractArgument.this.getExpressionTypeForParameterType( AbstractArgument.this.parameter.getValue().getValueType() );
+		}
+	};
 }

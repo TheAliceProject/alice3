@@ -47,25 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class UserField extends AbstractField implements UserMember {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-
-	public ExpressionProperty initializer = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return UserField.this.valueType.getValue();
-		}
-	};
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
-	private final Getter getter = new Getter( this );
-	private final Setter setter = new Setter( this );
-
 	public UserField() {
 	}
 
@@ -171,4 +152,22 @@ public final class UserField extends AbstractField implements UserMember {
 		this.appendJava( generator );
 		return generator.getText( false );
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final ExpressionProperty initializer = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return UserField.this.valueType.getValue();
+		}
+	};
+	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
+	private final Getter getter = new Getter( this );
+	private final Setter setter = new Setter( this );
 }

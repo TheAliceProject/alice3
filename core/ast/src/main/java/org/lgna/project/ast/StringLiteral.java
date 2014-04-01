@@ -48,8 +48,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class StringLiteral extends AbstractValueLiteral<String> {
-	public edu.cmu.cs.dennisc.property.StringProperty value = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-
 	public StringLiteral() {
 	}
 
@@ -78,4 +76,6 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
 		generator.appendString( this.value.getValue() );
 		generator.appendChar( '"' );
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty value = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 }

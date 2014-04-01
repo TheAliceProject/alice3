@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class UserPackage extends AbstractPackage {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-
 	public UserPackage() {
 	}
 
@@ -70,4 +68,6 @@ public class UserPackage extends AbstractPackage {
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 }

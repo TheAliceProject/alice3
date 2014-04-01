@@ -53,8 +53,6 @@ public final class ThisExpression extends Expression {
 		return new ThisExpression( typeForNoAncestorTypeCondition );
 	}
 
-	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;
-
 	public ThisExpression() {
 		this( null );
 	}
@@ -99,4 +97,6 @@ public final class ThisExpression extends Expression {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "this" );
 	}
+
+	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;
 }

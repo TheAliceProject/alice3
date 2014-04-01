@@ -67,11 +67,6 @@ public class JavaMethodParameter extends JavaParameter {
 		return rv;
 	}
 
-	private final JavaMethod method;
-	private final int index;
-	private final String name;
-	private final JavaType valueType;
-
 	/* package-private */JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
 		this.method = method;
@@ -114,4 +109,9 @@ public class JavaMethodParameter extends JavaParameter {
 			return false;
 		}
 	}
+
+	private final JavaMethod method;
+	private final int index;
+	private final String name;
+	private final JavaType valueType;
 }

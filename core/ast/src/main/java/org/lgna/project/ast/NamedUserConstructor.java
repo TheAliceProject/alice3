@@ -47,15 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
-
 	public NamedUserConstructor() {
 	}
 
@@ -97,11 +88,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
-		return m_visibility;
+		return this.visibility;
 	}
 
 	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
-		m_visibility = visibility;
+		this.visibility = visibility;
 	}
 
 	@Override
@@ -134,4 +125,13 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		generator.appendParameters( this );
 		this.body.getValue().appendJava( generator );
 	}
+
+	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );
+	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+
+	private org.lgna.project.annotations.Visibility visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
 }

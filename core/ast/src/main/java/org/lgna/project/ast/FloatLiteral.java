@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class FloatLiteral extends AbstractValueLiteral<Float> {
-	public edu.cmu.cs.dennisc.property.FloatProperty value = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
-
 	public FloatLiteral() {
 	}
 
@@ -79,4 +77,6 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	public void appendJava( JavaCodeGenerator generator ) {
 		generator.appendFloat( this.value.getValue() );
 	}
+
+	public final edu.cmu.cs.dennisc.property.FloatProperty value = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
 }

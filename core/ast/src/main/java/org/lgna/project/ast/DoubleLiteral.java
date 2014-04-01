@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class DoubleLiteral extends AbstractValueLiteral<Double> {
-	public edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null, true );
-
 	public DoubleLiteral() {
 	}
 
@@ -79,4 +77,6 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendDouble( this.value.getValue() );
 	}
+
+	public final edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null, true );
 }

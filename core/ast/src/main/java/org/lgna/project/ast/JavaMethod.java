@@ -69,10 +69,6 @@ public class JavaMethod extends AbstractMethod {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
 	}
 
-	private final MethodReflectionProxy methodReflectionProxy;
-	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
-	private final JavaMethodParameter variableOrKeyedParameter;
-
 	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
 		this.methodReflectionProxy = methodReflectionProxy;
 		ClassReflectionProxy[] parameterTypeReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
@@ -261,4 +257,8 @@ public class JavaMethod extends AbstractMethod {
 			return false;
 		}
 	}
+
+	private final MethodReflectionProxy methodReflectionProxy;
+	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
+	private final JavaMethodParameter variableOrKeyedParameter;
 }

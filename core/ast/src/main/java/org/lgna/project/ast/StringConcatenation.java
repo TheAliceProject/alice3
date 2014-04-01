@@ -46,20 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class StringConcatenation extends Expression {
-	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			//todo: allow both objects?
-			return JavaType.OBJECT_TYPE;
-		}
-	};
-	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.OBJECT_TYPE;
-		}
-	};
-
 	public StringConcatenation() {
 	}
 
@@ -97,4 +83,18 @@ public final class StringConcatenation extends Expression {
 		generator.appendChar( '+' );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
+
+	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			//todo: allow both objects?
+			return JavaType.OBJECT_TYPE;
+		}
+	};
+	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.OBJECT_TYPE;
+		}
+	};
 }

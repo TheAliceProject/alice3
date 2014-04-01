@@ -49,25 +49,6 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public class CountLoop extends AbstractLoop {
-	public DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-	public DeclarationProperty<UserLocal> constant = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-	public ExpressionProperty count = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
-
 	public CountLoop() {
 	}
 
@@ -140,4 +121,23 @@ public class CountLoop extends AbstractLoop {
 		generator.appendString( variableName );
 		generator.appendString( "++)" );
 	}
+
+	public final DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>( this ) {
+		@Override
+		public boolean isReference() {
+			return false;
+		}
+	};
+	public final DeclarationProperty<UserLocal> constant = new DeclarationProperty<UserLocal>( this ) {
+		@Override
+		public boolean isReference() {
+			return false;
+		}
+	};
+	public final ExpressionProperty count = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.getInstance( Integer.class );
+		}
+	};
 }

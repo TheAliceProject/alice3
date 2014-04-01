@@ -47,14 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ReturnStatement extends Statement {
-	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return ReturnStatement.this.expressionType.getValue();
-		}
-	};
-
 	public ReturnStatement() {
 	}
 
@@ -80,4 +72,12 @@ public final class ReturnStatement extends Statement {
 		generator.appendExpression( this.expression.getValue() );
 		generator.appendSemicolon();
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return ReturnStatement.this.expressionType.getValue();
+		}
+	};
 }

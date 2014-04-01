@@ -69,10 +69,6 @@ public class JavaConstructor extends AbstractConstructor {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
 
-	private final ConstructorReflectionProxy constructorReflectionProxy;
-	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
-	private final AbstractParameter variableOrKeyedParameter;
-
 	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
 		this.constructorReflectionProxy = constructorReflectionProxy;
 		ClassReflectionProxy[] parameterTypeReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
@@ -200,4 +196,8 @@ public class JavaConstructor extends AbstractConstructor {
 			return false;
 		}
 	}
+
+	private final ConstructorReflectionProxy constructorReflectionProxy;
+	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
+	private final AbstractParameter variableOrKeyedParameter;
 }

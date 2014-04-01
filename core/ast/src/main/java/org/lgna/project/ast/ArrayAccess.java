@@ -47,22 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ArrayAccess extends Expression {
-	public DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			AbstractType<?, ?, ?> arrayType = ArrayAccess.this.arrayType.getValue();
-			assert arrayType != null;
-			return arrayType;
-		}
-	};
-	public ExpressionProperty index = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
-
 	public ArrayAccess() {
 	}
 
@@ -119,4 +103,20 @@ public final class ArrayAccess extends Expression {
 		generator.appendExpression( this.index.getValue() );
 		generator.appendChar( ']' );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final ExpressionProperty array = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			AbstractType<?, ?, ?> arrayType = ArrayAccess.this.arrayType.getValue();
+			assert arrayType != null;
+			return arrayType;
+		}
+	};
+	public final ExpressionProperty index = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return JavaType.getInstance( Integer.class );
+		}
+	};
 }

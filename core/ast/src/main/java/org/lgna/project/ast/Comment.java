@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class Comment extends Statement {
-	public edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-
 	public Comment() {
 	}
 
@@ -74,4 +72,6 @@ public class Comment extends Statement {
 			generator.appendChar( '\n' );
 		}
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
 }

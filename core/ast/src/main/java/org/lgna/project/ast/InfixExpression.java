@@ -46,20 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class InfixExpression<E extends Enum<E>> extends Expression {
-	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return InfixExpression.this.getLeftOperandType();
-		}
-	};
-	public edu.cmu.cs.dennisc.property.EnumProperty<E> operator = new edu.cmu.cs.dennisc.property.EnumProperty<E>( this, null );
-	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return InfixExpression.this.getRightOperandType();
-		}
-	};
-
 	public InfixExpression() {
 	}
 
@@ -85,4 +71,18 @@ public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 		}
 		return false;
 	}
+
+	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return InfixExpression.this.getLeftOperandType();
+		}
+	};
+	public final edu.cmu.cs.dennisc.property.EnumProperty<E> operator = new edu.cmu.cs.dennisc.property.EnumProperty<E>( this, null );
+	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return InfixExpression.this.getRightOperandType();
+		}
+	};
 }

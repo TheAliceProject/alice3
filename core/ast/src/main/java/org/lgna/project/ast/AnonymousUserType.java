@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
-	private java.util.ArrayList<AnonymousUserConstructor> constructors;
-
 	public AnonymousUserType() {
 	}
 
@@ -62,6 +60,7 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 
 	@Override
 	public java.util.ArrayList<AnonymousUserConstructor> getDeclaredConstructors() {
+		//todo?
 		if( this.constructors != null ) {
 			//pass
 		} else {
@@ -110,4 +109,5 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 		return false;
 	}
 
+	private java.util.ArrayList<AnonymousUserConstructor> constructors;
 }

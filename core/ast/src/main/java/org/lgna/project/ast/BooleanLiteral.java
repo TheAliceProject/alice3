@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
-	public edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
-
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.getInstance( Boolean.class );
@@ -74,4 +72,6 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendBoolean( this.value.getValue() );
 	}
+
+	public final edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
 }

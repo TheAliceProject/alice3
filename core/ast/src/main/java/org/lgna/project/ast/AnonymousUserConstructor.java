@@ -48,7 +48,6 @@ package org.lgna.project.ast;
  */
 public class AnonymousUserConstructor extends UserConstructor {
 	private static java.util.Map<AnonymousUserType, AnonymousUserConstructor> s_map;
-	private AnonymousUserType type;
 
 	public static AnonymousUserConstructor get( AnonymousUserType type ) {
 		if( type != null ) {
@@ -108,4 +107,6 @@ public class AnonymousUserConstructor extends UserConstructor {
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		return null;
 	}
+
+	private final AnonymousUserType type;
 }

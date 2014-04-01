@@ -47,9 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ConditionalStatement extends Statement {
-	public NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
-	public NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
-
 	public ConditionalStatement() {
 	}
 
@@ -83,4 +80,7 @@ public final class ConditionalStatement extends Statement {
 		generator.appendString( "else" );
 		this.elseBody.getValue().appendJava( generator );
 	}
+
+	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
+	public final NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
 }

@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class SetterParameter extends AbstractParameter {
-	private final Setter setter;
-
 	/* package-private */SetterParameter( Setter setter ) {
 		this.setter = setter;
 	}
@@ -86,4 +84,6 @@ public class SetterParameter extends AbstractParameter {
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		return null;
 	}
+
+	private final Setter setter;
 }

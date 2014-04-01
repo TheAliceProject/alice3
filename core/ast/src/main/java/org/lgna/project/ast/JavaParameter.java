@@ -47,9 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class JavaParameter extends AbstractParameter {
-	private final java.lang.annotation.Annotation[] annotations;
-	private org.lgna.project.annotations.ValueDetails<?> details;
-
 	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
 		this.annotations = annotations;
 		if( this.annotations != null ) {
@@ -97,4 +94,7 @@ public abstract class JavaParameter extends AbstractParameter {
 		assert details.length == 1;
 		this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
 	}
+
+	private final java.lang.annotation.Annotation[] annotations;
+	private org.lgna.project.annotations.ValueDetails<?> details;
 }

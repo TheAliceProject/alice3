@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
-	public edu.cmu.cs.dennisc.property.IntegerProperty value = new edu.cmu.cs.dennisc.property.IntegerProperty( this, 0 );
-
 	public IntegerLiteral() {
 	}
 
@@ -86,4 +84,6 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 			generator.appendInt( n );
 		}
 	}
+
+	public final edu.cmu.cs.dennisc.property.IntegerProperty value = new edu.cmu.cs.dennisc.property.IntegerProperty( this, 0 );
 }

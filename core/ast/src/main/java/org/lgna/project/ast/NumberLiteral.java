@@ -46,8 +46,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class NumberLiteral extends AbstractValueLiteral<Number> {
-	public edu.cmu.cs.dennisc.property.NumberProperty value = new edu.cmu.cs.dennisc.property.NumberProperty( this, null );
-
 	public NumberLiteral() {
 	}
 
@@ -69,4 +67,6 @@ public final class NumberLiteral extends AbstractValueLiteral<Number> {
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.todo( this );
 	}
+
+	public final edu.cmu.cs.dennisc.property.NumberProperty value = new edu.cmu.cs.dennisc.property.NumberProperty( this, null );
 }

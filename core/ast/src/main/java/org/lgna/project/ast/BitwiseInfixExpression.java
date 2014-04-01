@@ -46,7 +46,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class BitwiseInfixExpression extends Expression {
-	public enum Operator {
+	public static enum Operator {
 		AND() {
 			@Override
 			public Object operate( Object leftOperand, Object rightOperand ) {
@@ -124,21 +124,6 @@ public final class BitwiseInfixExpression extends Expression {
 		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
-	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return BitwiseInfixExpression.this.expressionType.getValue();
-		}
-	};
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
-	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return BitwiseInfixExpression.this.expressionType.getValue();
-		}
-	};
-
 	public BitwiseInfixExpression() {
 	}
 
@@ -178,4 +163,19 @@ public final class BitwiseInfixExpression extends Expression {
 		this.operator.getValue().appendJava( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
+
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return BitwiseInfixExpression.this.expressionType.getValue();
+		}
+	};
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
+	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?, ?, ?> getExpressionType() {
+			return BitwiseInfixExpression.this.expressionType.getValue();
+		}
+	};
 }

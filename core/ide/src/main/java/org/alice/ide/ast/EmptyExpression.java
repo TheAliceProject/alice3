@@ -46,8 +46,6 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class EmptyExpression extends IdeExpression {
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
-
 	public EmptyExpression( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
@@ -60,4 +58,6 @@ public class EmptyExpression extends IdeExpression {
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.type;
 	}
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
 }
