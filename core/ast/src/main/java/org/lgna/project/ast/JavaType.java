@@ -487,6 +487,13 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return this.classReflectionProxy.isArray();
 	}
 
+	@Override
+	public boolean isEnum() {
+		Class<?> cls = this.classReflectionProxy.getReification();
+		assert cls != null : this.classReflectionProxy;
+		return cls.isEnum();
+	}
+
 	public JavaType getEnclosingType() {
 		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null : this.classReflectionProxy;

@@ -140,6 +140,11 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 	}
 
 	@Override
+	public boolean isEnum() {
+		return false;
+	}
+
+	@Override
 	public final AbstractType<?, ?, ?> getComponentType() {
 		return null;
 	}
