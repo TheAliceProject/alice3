@@ -115,6 +115,8 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
 	public abstract boolean isArray();
 
+	public abstract boolean isEnum();
+
 	public abstract AbstractType<?, ?, ?> getComponentType();
 
 	@Override

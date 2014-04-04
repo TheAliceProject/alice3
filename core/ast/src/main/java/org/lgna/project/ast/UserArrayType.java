@@ -218,6 +218,11 @@ public class UserArrayType extends AbstractType {
 	}
 
 	@Override
+	public boolean isEnum() {
+		return false;
+	}
+
+	@Override
 	public AbstractType getArrayType() {
 		return UserArrayType.getInstance( this.leafType, this.dimensionCount + 1 );
 	}
