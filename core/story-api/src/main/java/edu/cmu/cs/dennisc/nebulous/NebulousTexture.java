@@ -44,6 +44,8 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 /**
  * @author alice
  * 
@@ -52,7 +54,15 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
-		StorytellingResources.getInstance().loadSimsBundles();
+		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
+		{
+			//Don't load nebulous resources if the default loading is disabled
+			//Disabling should only happen under controlled circumstances like running the model batch process
+		}
+		else
+		{
+			StorytellingResources.getInstance().loadSimsBundles();
+		}
 	}
 
 	private final String m_textureKey;

@@ -3,6 +3,9 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
+import org.lgna.story.resourceutilities.StorytellingResources;
+
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
@@ -11,7 +14,15 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	static {
-		//		StorytellingResources.getInstance().loadSimsBundles();
+		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
+		{
+			//Don't load nebulous resources if the default loading is disabled
+			//Disabling should only happen under controlled circumstances like running the model batch process
+		}
+		else
+		{
+			StorytellingResources.getInstance().loadSimsBundles();
+		}
 		//		Manager.setDebugDraw( true );
 	}
 
