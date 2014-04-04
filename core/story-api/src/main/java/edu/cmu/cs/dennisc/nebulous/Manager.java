@@ -59,7 +59,11 @@ public class Manager {
 
 	public static void unloadUnusedNebulousTextureData( javax.media.opengl.GL gl ) {
 		if( isInitialized() ) {
-			unloadUnusedTextures( gl );
+			try {
+				unloadUnusedTextures( gl );
+			} catch( RuntimeException e ) {
+				e.printStackTrace();
+			}
 		}
 	}
 

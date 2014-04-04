@@ -1017,13 +1017,26 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 
-	private void add( File source, JarOutputStream target, boolean recursive ) throws IOException
+	private void add( File source, JarOutputStream target, String destPathPrefix, boolean recursive ) throws IOException
 	{
+		if( destPathPrefix == null ) {
+			destPathPrefix = "";
+		}
+		if( ( destPathPrefix != null ) && ( destPathPrefix.length() > 0 ) ) {
+			destPathPrefix = destPathPrefix.replace( "\\", "/" );
+			if( !destPathPrefix.endsWith( "/" ) ) {
+				destPathPrefix += "/";
+			}
+			if( destPathPrefix.startsWith( "/" ) || destPathPrefix.startsWith( "\\" ) ) {
+				destPathPrefix = destPathPrefix.substring( 1 );
+			}
+		}
+
 		String root = source.getAbsolutePath().replace( "\\", "/" ) + "/";
-		this.add( source, target, root, recursive );
+		this.add( source, target, root, destPathPrefix, recursive );
 	}
 
-	private void add( File source, JarOutputStream target, String root, boolean recursive ) throws IOException
+	private void add( File source, JarOutputStream target, String root, String destPathPrefix, boolean recursive ) throws IOException
 	{
 		BufferedInputStream in = null;
 		try
@@ -1042,6 +1055,7 @@ public class ModelResourceExporter {
 					}
 					if( name.length() > 0 )
 					{
+						name = destPathPrefix + name;
 						JarEntry entry = new JarEntry( name );
 						entry.setTime( source.lastModified() );
 						try
@@ -1059,7 +1073,7 @@ public class ModelResourceExporter {
 				{
 					if( !nestedFile.isDirectory() || recursive )
 					{
-						add( nestedFile, target, root, recursive );
+						add( nestedFile, target, root, destPathPrefix, recursive );
 					}
 				}
 				return;
@@ -1070,6 +1084,7 @@ public class ModelResourceExporter {
 			if( entryName.startsWith( "/" ) || entryName.startsWith( "\\" ) ) {
 				entryName = entryName.substring( 1 );
 			}
+			entryName = destPathPrefix + entryName;
 			JarEntry entry = new JarEntry( entryName );
 			entry.setTime( source.lastModified() );
 			target.putNextEntry( entry );
@@ -1291,14 +1306,23 @@ public class ModelResourceExporter {
 		String classThumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
 		File firstThumbFile = new File( getThumbnailPath( root, firstThumbName ) );
 		File classThumbFile = new File( getThumbnailPath( root, classThumbName ) );
-		BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
-		ImageUtilities.write( classThumbFile, classThumb );
-		thumbnailFiles.add( classThumbFile );
+
+		//TODO: Handle this error in a better way
+		try {
+			BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
+
+			ImageUtilities.write( classThumbFile, classThumb );
+			thumbnailFiles.add( classThumbFile );
+		} catch( IOException ioe ) {
+			ioe.printStackTrace();
+			System.err.println( "Error reading thumbnail " + firstThumbFile + ", Deleting it..." );
+			firstThumbFile.delete();
+		}
 
 		return thumbnailFiles;
 	}
 
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, String destResourceDirPrefix, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
 	{
 		if( !sourceDirectory.endsWith( "/" ) && !sourceDirectory.endsWith( "\\" ) ) {
 			sourceDirectory += File.separator;
@@ -1347,7 +1371,7 @@ public class ModelResourceExporter {
 			try
 			{
 				System.out.println( "Adding " + resourceDir );
-				add( resourceDir, resourceJarStream, resourceDirectory, true );
+				add( resourceDir, resourceJarStream, resourceDirectory, destResourceDirPrefix, true );
 			} catch( Exception e )
 			{
 				throw new IOException( "FAILED ADDING RESROUCES TO RESOURCE JAR." + e );
@@ -1357,7 +1381,7 @@ public class ModelResourceExporter {
 			try
 			{
 				System.out.println( "Adding " + sourceDir );
-				add( sourceDir, sourceJarStream, sourceDirectory, false );
+				add( sourceDir, sourceJarStream, sourceDirectory, "", false );
 			} catch( Exception e )
 			{
 				throw new IOException( "FAILED ADDING RESROUCES TO SOURCE JAR." + e );
@@ -1410,17 +1434,17 @@ public class ModelResourceExporter {
 		}
 	}
 
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, String destResourceDirPrefix ) throws IOException
 	{
-		return addToJar( sourceDirectory, resourceDirectory, jos, jos, true, true );
+		return addToJar( sourceDirectory, resourceDirectory, jos, jos, destResourceDirPrefix, true, true );
 	}
 
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, String destResourceDirPrefix, boolean rebuildFiles ) throws IOException
 	{
-		return addToJar( sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles );
+		return addToJar( sourceDirectory, resourceDirectory, jos, jos, destResourceDirPrefix, rebuildFiles, rebuildFiles );
 	}
 
-	public File export( String sourceDirectory, String resourceDirectory, String outputDir )
+	public File export( String sourceDirectory, String resourceDirectory, String outputDir, String destResourceDirPrefix )
 	{
 
 		File outputFile = new File( outputDir + this.getJavaClassName() + ".jar" );
@@ -1429,7 +1453,7 @@ public class ModelResourceExporter {
 			FileUtilities.createParentDirectoriesIfNecessary( outputFile );
 			FileOutputStream fos = new FileOutputStream( outputFile );
 			JarOutputStream jos = new JarOutputStream( fos );
-			addToJar( sourceDirectory, resourceDirectory, jos );
+			addToJar( sourceDirectory, resourceDirectory, jos, destResourceDirPrefix );
 			jos.close();
 		} catch( Exception e )
 		{

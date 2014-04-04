@@ -3,8 +3,6 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
-import org.lgna.story.resourceutilities.StorytellingResources;
-
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
@@ -13,7 +11,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	static {
-		StorytellingResources.getInstance().loadSimsBundles();
+		//		StorytellingResources.getInstance().loadSimsBundles();
 		//		Manager.setDebugDraw( true );
 	}
 
