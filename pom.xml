@@ -27,7 +27,6 @@
 	<modules>
 		<module>core/util</module>
 		<module>core/ast</module>
-
 		<module>core/croquet</module>
 		<module>core/scenegraph</module>
 		<module>core/image-editor</module>
