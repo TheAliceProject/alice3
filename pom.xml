@@ -25,16 +25,17 @@
 	</properties>
 
 	<modules>
-		<module>core/util</module>
 		<module>core/ast</module>
 		<module>core/croquet</module>
-		<module>core/scenegraph</module>
+		<module>core/i18n</module>
+		<module>core/ide</module>
 		<module>core/image-editor</module>
 		<module>core/issue-reporting</module>
+		<module>core/resources</module>
+		<module>core/scenegraph</module>
 		<module>core/story-api</module>
 		<module>core/story-api-migration</module>
-		<module>core/ide</module>
-		<module>core/resources</module>
+		<module>core/util</module>
 
 		<module>alice/alice-ide</module>
 	</modules>
@@ -90,6 +91,11 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>ide</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>i18n</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
