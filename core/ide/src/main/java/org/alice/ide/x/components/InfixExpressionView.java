@@ -49,13 +49,8 @@ package org.alice.ide.x.components;
 public class InfixExpressionView extends AbstractExpressionView<org.lgna.project.ast.InfixExpression> {
 	public InfixExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InfixExpression<? extends Enum<?>> infixExpression ) {
 		super( factory, infixExpression );
-		String clsName = infixExpression.getClass().getName();
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
-
-		Enum<?> e = infixExpression.operator.getValue();
-
-		String value = resourceBundle.getString( e.name() );
-		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( formatter.getInfixExpressionText( infixExpression ) );
 		org.lgna.croquet.views.SwingComponentView<?> component = factory.createComponent( page, infixExpression );
 		for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
 			if( child instanceof javax.swing.JLabel ) {

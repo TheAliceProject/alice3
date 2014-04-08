@@ -57,7 +57,7 @@ public class AliceFormatter extends Formatter {
 	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private AliceFormatter() {
-		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );
+		super( "Alice" );
 		java.util.Locale locale = java.util.Locale.getDefault();
 		String[] bundleNames = {
 				"AliceFormatter",
