@@ -84,9 +84,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		public JointImplementationAndVisualDataFactory<R> getFactoryForResource( R resource );
 	}
 
-	private class JointImpWrapper extends JointImp {
-		private JointImp internalJointImp;
-
+	private static class JointImpWrapper extends JointImp {
 		public JointImpWrapper( JointedModelImp<?, ?> jointedModelImp, JointImp joint ) {
 			super( jointedModelImp );
 			this.internalJointImp = joint;
@@ -215,15 +213,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			internalJointImp.setPivotVisible( isPivotVisible );
 		}
 
+		private JointImp internalJointImp;
 	}
-
-	private JointImplementationAndVisualDataFactory<R> factory;
-	private final A abstraction;
-	private VisualData visualData;
-
-	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable;
-
-	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory<R> factory ) {
 		this.abstraction = abstraction;
@@ -864,4 +855,9 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.displayBubble( bubble, duration );
 	}
 
+	private final A abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable;
+	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private JointImplementationAndVisualDataFactory<R> factory;
+	private VisualData visualData;
 }

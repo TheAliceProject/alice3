@@ -48,9 +48,6 @@ package org.lgna.story.implementation;
  */
 @Deprecated
 public class SunImp extends TransformableImp {
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final org.lgna.story.SSun abstraction;
-
 	public SunImp( org.lgna.story.SSun abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgComposite().addComponent( this.sgSun );
@@ -66,4 +63,7 @@ public class SunImp extends TransformableImp {
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;
 	}
+
+	private final org.lgna.story.SSun abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 }

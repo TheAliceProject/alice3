@@ -47,29 +47,7 @@ package org.lgna.story.implementation;
  * 
  */
 public class RoomImp extends VisualScaleModelImp {
-
-	public final PaintProperty wallPaint = new PaintProperty( RoomImp.this ) {
-		@Override
-		protected void internalSetValue( org.lgna.story.Paint value ) {
-			TexturedPaintUtilities.setPaint( walls, value );
-		}
-	};
-
-	public final PaintProperty floorPaint = new PaintProperty( RoomImp.this ) {
-		@Override
-		protected void internalSetValue( org.lgna.story.Paint value ) {
-			TexturedPaintUtilities.setPaint( floor, value );
-		}
-	};
-
-	public final PaintProperty ceilingPaint = new PaintProperty( RoomImp.this ) {
-		@Override
-		protected void internalSetValue( org.lgna.story.Paint value ) {
-			TexturedPaintUtilities.setPaint( ceiling, value );
-		}
-	};
-
-	public class WallSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
+	private static class WallSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
 		private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
 				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
@@ -133,8 +111,7 @@ public class RoomImp extends VisualScaleModelImp {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
-		{
+		public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry() {
 			return this.sgGeometry;
 		}
 
@@ -210,16 +187,6 @@ public class RoomImp extends VisualScaleModelImp {
 		}
 	}
 
-	private final org.lgna.story.SRoom abstraction;
-
-	private final WallSurface walls = new WallSurface();
-	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface floor = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface( true );
-	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface ceiling = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface( false );
-
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.walls, this.floor, this.ceiling };
-
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
-
 	public RoomImp( org.lgna.story.SRoom abstraction ) {
 		this( abstraction, 10, 3, 10 );
 	}
@@ -270,4 +237,34 @@ public class RoomImp extends VisualScaleModelImp {
 		return this.sgAppearances;
 	}
 
+	private final org.lgna.story.SRoom abstraction;
+
+	private final WallSurface walls = new WallSurface();
+	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface floor = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface( true );
+	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface ceiling = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface( false );
+
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.walls, this.floor, this.ceiling };
+
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
+
+	public final PaintProperty wallPaint = new PaintProperty( RoomImp.this ) {
+		@Override
+		protected void internalSetValue( org.lgna.story.Paint value ) {
+			TexturedPaintUtilities.setPaint( walls, value );
+		}
+	};
+
+	public final PaintProperty floorPaint = new PaintProperty( RoomImp.this ) {
+		@Override
+		protected void internalSetValue( org.lgna.story.Paint value ) {
+			TexturedPaintUtilities.setPaint( floor, value );
+		}
+	};
+
+	public final PaintProperty ceilingPaint = new PaintProperty( RoomImp.this ) {
+		@Override
+		protected void internalSetValue( org.lgna.story.Paint value ) {
+			TexturedPaintUtilities.setPaint( ceiling, value );
+		}
+	};
 }

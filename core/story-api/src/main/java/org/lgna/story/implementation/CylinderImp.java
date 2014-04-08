@@ -46,21 +46,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.SCylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-
 	public CylinderImp( org.lgna.story.SCylinder abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgCylinder().bottomRadius.setValue( 0.5 );
@@ -81,4 +66,19 @@ public class CylinderImp extends AbstractCylinderImp {
 	protected double getXZ() {
 		return this.radius.getValue();
 	}
+
+	private final org.lgna.story.SCylinder abstraction;
+	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
+			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
+			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
+		}
+	};
 }

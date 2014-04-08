@@ -47,111 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class SceneImp extends EntityImp {
-	private static class Capsule {
-		private final TransformableImp transformable;
-		private EntityImp vehicle;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
-
-		public Capsule( TransformableImp transformable ) {
-			this.transformable = transformable;
-		}
-
-		public void preserve() {
-			this.vehicle = this.transformable.getVehicle();
-			this.localTransformation = this.transformable.getSgComposite().getLocalTransformation();
-		}
-
-		public void restore() {
-			this.transformable.setVehicle( this.vehicle );
-			this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
-		}
-	}
-
-	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
-	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
-	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight();
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightA = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightB = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightC = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromBelowDirectionalLight = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
-
-	//	private final java.util.List< org.lgna.story.event.SceneActivationListener > sceneActivationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<Capsule> capsules = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	private ProgramImp program;
-	private final org.lgna.story.SScene abstraction;
-	private float fogDensityValue = 0;
-	private final org.lgna.story.implementation.eventhandling.EventManager eventManager;
-
-	public org.lgna.story.implementation.eventhandling.EventManager getEventManager() {
-		return this.eventManager;
-	}
-
-	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
-		@Override
-		public org.lgna.story.Color getValue() {
-			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgBackground.color.getValue() );
-		}
-
-		@Override
-		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
-			SceneImp.this.sgBackground.color.setValue( color );
-			SceneImp.this.sgFog.color.setValue( color );
-		}
-	};
-	public final ColorProperty fromAboveLightColor = new ColorProperty( SceneImp.this ) {
-		@Override
-		public org.lgna.story.Color getValue() {
-			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
-		}
-
-		@Override
-		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
-			SceneImp.this.sgAmbientLight.color.setValue( color );
-			SceneImp.this.sgFromAboveDirectionalLightA.color.setValue( color );
-			SceneImp.this.sgFromAboveDirectionalLightB.color.setValue( color );
-			SceneImp.this.sgFromAboveDirectionalLightC.color.setValue( color );
-		}
-	};
-	public final ColorProperty fromBelowLightColor = new ColorProperty( SceneImp.this ) {
-		@Override
-		public org.lgna.story.Color getValue() {
-			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
-		}
-
-		@Override
-		protected void handleSetValue( org.lgna.story.Color value ) {
-			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
-			SceneImp.this.sgFromBelowDirectionalLight.color.setValue( color );
-		}
-	};
-	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImp.this ) {
-		@Override
-		public Float getValue() {
-			return SceneImp.this.sgScene.globalBrightness.getValue();
-		}
-
-		@Override
-		protected void handleSetValue( Float value ) {
-			SceneImp.this.sgScene.globalBrightness.setValue( value );
-		}
-	};
-
-	public final FloatProperty fogDensity = new FloatProperty( SceneImp.this ) {
-		@Override
-		public Float getValue() {
-			return SceneImp.this.fogDensityValue;
-		}
-
-		@Override
-		protected void handleSetValue( Float value ) {
-			SceneImp.this.setFogDensity( value );
-		}
-	};
-
 	private static final edu.cmu.cs.dennisc.scenegraph.Transformable createDirectionalLightTransformable( edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgDirectionalLight, edu.cmu.cs.dennisc.math.Angle yaw, edu.cmu.cs.dennisc.math.Angle pitch, float brightness ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 		rv.applyRotationAboutYAxis( yaw );
@@ -162,27 +57,32 @@ public class SceneImp extends EntityImp {
 	}
 
 	public SceneImp( org.lgna.story.SScene abstraction ) {
-		eventManager = new org.lgna.story.implementation.eventhandling.EventManager( this );
-		eventManager.initialize();
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue( this.sgBackground.color.getValue() );
 		this.sgScene.background.setValue( this.sgBackground );
 		this.sgAmbientLight.brightness.setValue( 0.3f );
 		this.sgScene.addComponent( this.sgAmbientLight );
-		this.setFogDensity( 0 );
+		this.setFogDensity( 0.0f );
 		this.putInstance( this.sgScene );
 
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -45.0 );
 		final float fromAboveBrightness = 0.533f;
-		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightA, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
-		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightB, new edu.cmu.cs.dennisc.math.AngleInDegrees( 120 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
-		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightC, new edu.cmu.cs.dennisc.math.AngleInDegrees( 240 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
+		this.addToScene( createDirectionalLightTransformable( this.sgFromAboveDirectionalLightA, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromAbovePitch, fromAboveBrightness ) );
+		this.addToScene( createDirectionalLightTransformable( this.sgFromAboveDirectionalLightB, new edu.cmu.cs.dennisc.math.AngleInDegrees( 120 ), fromAbovePitch, fromAboveBrightness ) );
+		this.addToScene( createDirectionalLightTransformable( this.sgFromAboveDirectionalLightC, new edu.cmu.cs.dennisc.math.AngleInDegrees( 240 ), fromAbovePitch, fromAboveBrightness ) );
 
 		final edu.cmu.cs.dennisc.math.Angle fromBelowPitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( 90.0 );
 		final float fromBelowBrightness = 1.0f;
-		createDirectionalLightTransformable( this.sgFromBelowDirectionalLight, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromBelowPitch, fromBelowBrightness ).setParent( this.sgScene );
+		this.addToScene( createDirectionalLightTransformable( this.sgFromBelowDirectionalLight, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromBelowPitch, fromBelowBrightness ) );
 		this.sgFromBelowDirectionalLight.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
+
+		this.eventManager = new org.lgna.story.implementation.eventhandling.EventManager( this );
+		this.eventManager.initialize();
+	}
+
+	private void addToScene( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+		sgTransformable.setParent( this.sgScene );
 	}
 
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
@@ -193,8 +93,6 @@ public class SceneImp extends EntityImp {
 		this.eventManager.removeSceneActivationListener( sceneActivationListener );
 	}
 
-	private int ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount = 0;
-
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization() {
 		ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount++;
 	}
@@ -204,17 +102,7 @@ public class SceneImp extends EntityImp {
 	}
 
 	private void fireSceneActivationListeners() {
-		eventManager.sceneActivated();
-		//		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-		//		final EventRecorder recorder = edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this );
-		//		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
-		//			new org.lgna.common.ComponentThread( new Runnable() {
-		//				public void run() {
-		//					recorder.recordEvent(new EventRecord( null, sceneActivationListener, e, getProgram().getAnimator().getCurrentTime() ));
-		//					sceneActivationListener.sceneActivated( e );
-		//				}
-		//			}, "SceneActivation" ).start();
-		//		}
+		this.eventManager.sceneActivated();
 	}
 
 	private void changeActiveStatus( ProgramImp programImp, boolean isActive, int activationCount ) {
@@ -237,9 +125,6 @@ public class SceneImp extends EntityImp {
 			this.removeCamerasFrom( programImp );
 		}
 	}
-
-	private int activeCount;
-	private int deactiveCount;
 
 	public void activate( ProgramImp programImp ) {
 		assert deactiveCount == activeCount;
@@ -304,17 +189,35 @@ public class SceneImp extends EntityImp {
 		this.program = program;
 	}
 
+	//todo
+	//	private static class Capsule {
+	//		private final TransformableImp transformable;
+	//		private EntityImp vehicle;
+	//		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
+	//
+	//		public Capsule( TransformableImp transformable ) {
+	//			this.transformable = transformable;
+	//		}
+	//
+	//		public void preserve() {
+	//			this.vehicle = this.transformable.getVehicle();
+	//			this.localTransformation = this.transformable.getSgComposite().getLocalTransformation();
+	//		}
+	//
+	//		public void restore() {
+	//			this.transformable.setVehicle( this.vehicle );
+	//			this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
+	//		}
+	//	}
+	//	private final java.util.List<Capsule> capsules = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+
 	public void preserveStateAndEventListeners() {
 		this.eventManager.silenceAllListeners();
-		//		for( Entity entity : this.entities ) {
-		//			this.pointOfViewMap.put( entity, null );
-		//		}
+		//todo: preserve state
 	}
 
 	public void restoreStateAndEventListeners() {
-		//		for( Entity entity : this.entities ) {
-		//			this.pointOfViewMap.put( entity, null );
-		//		}
+		//todo: restore state
 		this.eventManager.restoreAllListeners();
 	}
 
@@ -371,7 +274,94 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 
+	public org.lgna.story.implementation.eventhandling.EventManager getEventManager() {
+		return this.eventManager;
+	}
+
 	public edu.cmu.cs.dennisc.matt.eventscript.EventScript getTranscript() {
 		return eventManager.getScript();
 	}
+
+	private ProgramImp program;
+	private final org.lgna.story.SScene abstraction;
+	private final org.lgna.story.implementation.eventhandling.EventManager eventManager;
+
+	private int ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount = 0;
+
+	private int activeCount;
+	private int deactiveCount;
+
+	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
+	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
+	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight();
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightA = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightB = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromAboveDirectionalLightC = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromBelowDirectionalLight = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
+
+	private float fogDensityValue = 0;
+	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
+		@Override
+		public org.lgna.story.Color getValue() {
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgBackground.color.getValue() );
+		}
+
+		@Override
+		protected void handleSetValue( org.lgna.story.Color value ) {
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
+			SceneImp.this.sgBackground.color.setValue( color );
+			SceneImp.this.sgFog.color.setValue( color );
+		}
+	};
+	public final ColorProperty fromAboveLightColor = new ColorProperty( SceneImp.this ) {
+		@Override
+		public org.lgna.story.Color getValue() {
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
+		}
+
+		@Override
+		protected void handleSetValue( org.lgna.story.Color value ) {
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
+			SceneImp.this.sgAmbientLight.color.setValue( color );
+			SceneImp.this.sgFromAboveDirectionalLightA.color.setValue( color );
+			SceneImp.this.sgFromAboveDirectionalLightB.color.setValue( color );
+			SceneImp.this.sgFromAboveDirectionalLightC.color.setValue( color );
+		}
+	};
+	public final ColorProperty fromBelowLightColor = new ColorProperty( SceneImp.this ) {
+		@Override
+		public org.lgna.story.Color getValue() {
+			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
+		}
+
+		@Override
+		protected void handleSetValue( org.lgna.story.Color value ) {
+			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( value );
+			SceneImp.this.sgFromBelowDirectionalLight.color.setValue( color );
+		}
+	};
+	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImp.this ) {
+		@Override
+		public Float getValue() {
+			return SceneImp.this.sgScene.globalBrightness.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Float value ) {
+			SceneImp.this.sgScene.globalBrightness.setValue( value );
+		}
+	};
+
+	public final FloatProperty fogDensity = new FloatProperty( SceneImp.this ) {
+		@Override
+		public Float getValue() {
+			return SceneImp.this.fogDensityValue;
+		}
+
+		@Override
+		protected void handleSetValue( Float value ) {
+			SceneImp.this.setFogDensity( value );
+		}
+	};
 }

@@ -46,9 +46,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class ProgramControlPanel extends javax.swing.JPanel {
-	private final javax.swing.JLabel label = new javax.swing.JLabel();
-	private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-
 	public ProgramControlPanel( final ProgramImp programImp ) {
 		final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 		buttonModel.setSelected( true );
@@ -157,4 +154,7 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		sb.append( "x" );
 		this.label.setText( sb.toString() );
 	}
+
+	private final javax.swing.JLabel label = new javax.swing.JLabel();
+	private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 }

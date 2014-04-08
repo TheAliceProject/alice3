@@ -42,15 +42,12 @@
  */
 package org.lgna.story.implementation;
 
-import org.lgna.story.SCameraMarker;
-
 /**
  * @author dculyba
- * 
  */
 public class BookmarkCameraMarkerImp extends PerspectiveCameraMarkerImp {
 
-	public BookmarkCameraMarkerImp( SCameraMarker abstraction ) {
+	public BookmarkCameraMarkerImp( org.lgna.story.SCameraMarker abstraction ) {
 		super( abstraction );
 	}
 

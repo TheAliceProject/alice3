@@ -47,8 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.dennisc.pattern.Reusable {
-	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
-
 	public StandInImp() {
 		this.putInstance( this.sgStandIn );
 	}
@@ -81,4 +79,6 @@ public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.d
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;
 	}
+
+	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
 }

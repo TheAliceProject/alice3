@@ -47,10 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class TextModelImp extends SimpleModelImp {
-	private final org.lgna.story.STextModel abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
-	private StringBuffer sb = new StringBuffer();
-
 	public TextModelImp( org.lgna.story.STextModel abstraction ) {
 		this.abstraction = abstraction;
 		this.sgText.text.setValue( "" );
@@ -148,4 +144,7 @@ public class TextModelImp extends SimpleModelImp {
 		this.setScale( getScaleForSize( size ) );
 	}
 
+	private final org.lgna.story.STextModel abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
+	private StringBuffer sb = new StringBuffer();
 }
