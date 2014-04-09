@@ -63,8 +63,6 @@ public enum SpatialRelationImp {
 	//public static final SpatialRelation ON = new SpatialRelation();
 	//public static final SpatialRelation AT = new SpatialRelation();
 
-	private final edu.cmu.cs.dennisc.math.Point3 placeAxis;
-
 	SpatialRelationImp( edu.cmu.cs.dennisc.math.Point3 placeAxis ) {
 		this.placeAxis = placeAxis;
 	}
@@ -97,6 +95,7 @@ public enum SpatialRelationImp {
 		}
 
 		return new edu.cmu.cs.dennisc.math.Point3( x, y, z );
-
 	}
+
+	private final edu.cmu.cs.dennisc.math.Point3 placeAxis;
 }

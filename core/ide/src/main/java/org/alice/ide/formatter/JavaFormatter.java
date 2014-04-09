@@ -46,6 +46,50 @@ package org.alice.ide.formatter;
  * @author Dennis Cosgrove
  */
 public class JavaFormatter extends Formatter {
+	private static final java.util.Map<Class<?>, String> templateMap;
+	private static final java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, String> arithmeticOperatorMap;
+	private static final java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, String> conditionalOperatorMap;
+	private static final java.util.Map<org.lgna.project.ast.RelationalInfixExpression.Operator, String> relationalOperatorMap;
+	static {
+		java.util.Map<Class<?>, String> tempTemplateMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		tempTemplateMap.put( org.lgna.project.ast.ExpressionStatement.class, "</expression/>;" );
+		tempTemplateMap.put( org.lgna.project.ast.WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "</__constant__/> = </count/>;\nfor( </__variable__/> = 0; </_variable_/> < </_constant_/>; </_variable_/>++ ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
+		tempTemplateMap.put( org.lgna.project.ast.ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );
+		tempTemplateMap.put( org.lgna.project.ast.FieldAccess.class, "</expression/>.</field/>" );
+		tempTemplateMap.put( org.lgna.project.ast.LocalDeclarationStatement.class, "</__local__/> = </initializer/> ;" );
+		tempTemplateMap.put( org.lgna.project.ast.DoInOrder.class, "/*do in order*/ {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.DoTogether.class, "ThreadUtilities.doTogether( ()-> {\n\t</body/>\n} );" );
+		tempTemplateMap.put( org.lgna.project.ast.ForEachInArrayLoop.class, "for( </__item__/> : </array/> ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.TypeExpression.class, "</value/>" );
+		tempTemplateMap.put( org.lgna.project.ast.InstanceCreation.class, "new </constructor/>( </requiredArguments/></variableArguments/></keyedArguments/> )" );
+		tempTemplateMap.put( org.lgna.project.ast.LogicalComplement.class, "!</operand/>" );
+		tempTemplateMap.put( org.lgna.project.ast.NullLiteral.class, "null" );
+		tempTemplateMap.put( org.lgna.project.ast.LambdaExpression.class, "{# </value/> }" );
+		tempTemplateMap.put( org.lgna.project.ast.EachInArrayTogether.class, "ThreadUtilities.eachInTogether( ( </__item__/> ) -> {\n\t</body/>\n}, </array/> );" );
+		templateMap = java.util.Collections.unmodifiableMap( tempTemplateMap );
+
+		java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, String> tempArithmeticOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, "</leftOperand/> / </rightOperand/>" );
+		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.REAL_REMAINDER, "Math.IEEEremainder( </leftOperand/>, </rightOperand/> )" );
+		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, "</leftOperand/> % </rightOperand/>" );
+		arithmeticOperatorMap = java.util.Collections.unmodifiableMap( tempArithmeticOperatorMap );
+
+		java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, String> tempConditionalOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		tempConditionalOperatorMap.put( org.lgna.project.ast.ConditionalInfixExpression.Operator.AND, "</leftOperand/> && </rightOperand/>" );
+		tempConditionalOperatorMap.put( org.lgna.project.ast.ConditionalInfixExpression.Operator.OR, "</leftOperand/> || </rightOperand/>" );
+		conditionalOperatorMap = java.util.Collections.unmodifiableMap( tempConditionalOperatorMap );
+
+		java.util.Map<org.lgna.project.ast.RelationalInfixExpression.Operator, String> tempRelationalOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.LESS_EQUALS, "</leftOperand/> <= </rightOperand/>" );
+		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, "</leftOperand/> >= </rightOperand/>" );
+		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS, "</leftOperand/> == </rightOperand/>" );
+		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS, "</leftOperand/> != </rightOperand/>" );
+		relationalOperatorMap = java.util.Collections.unmodifiableMap( tempRelationalOperatorMap );
+	}
+
 	private static class SingletonHolder {
 		private static JavaFormatter instance = new JavaFormatter();
 	}
@@ -55,7 +99,41 @@ public class JavaFormatter extends Formatter {
 	}
 
 	private JavaFormatter() {
-		super( new java.util.Locale( "en", "US", "java" ), "Java" );
+		super( "Java" );
+	}
+
+	@Override
+	public String getTemplateText( Class<?> cls ) {
+		String rv = templateMap.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = super.getTemplateText( cls );
+		}
+		return rv;
+	}
+
+	@Override
+	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
+		String rv;
+		if( infixExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
+			org.lgna.project.ast.ArithmeticInfixExpression arithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)infixExpression;
+			rv = arithmeticOperatorMap.get( arithmeticInfixExpression.operator.getValue() );
+		} else if( infixExpression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
+			org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression = (org.lgna.project.ast.ConditionalInfixExpression)infixExpression;
+			rv = conditionalOperatorMap.get( conditionalInfixExpression.operator.getValue() );
+		} else if( infixExpression instanceof org.lgna.project.ast.RelationalInfixExpression ) {
+			org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression = (org.lgna.project.ast.RelationalInfixExpression)infixExpression;
+			rv = relationalOperatorMap.get( relationalInfixExpression.operator.getValue() );
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = super.getInfixExpressionText( infixExpression );
+		}
+		return rv;
 	}
 
 	@Override

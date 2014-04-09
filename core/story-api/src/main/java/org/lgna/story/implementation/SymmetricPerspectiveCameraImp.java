@@ -47,8 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class SymmetricPerspectiveCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> {
-	private final org.lgna.story.SCamera abstraction;
-
 	public SymmetricPerspectiveCameraImp( org.lgna.story.SCamera abstraction ) {
 		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
 		this.abstraction = abstraction;
@@ -81,4 +79,6 @@ public class SymmetricPerspectiveCameraImp extends CameraImp<edu.cmu.cs.dennisc.
 		GoodVantagePointData data = new GoodVantagePointData( this, other );
 		this.animateVantagePoint( data, duration, style );
 	}
+
+	private final org.lgna.story.SCamera abstraction;
 }

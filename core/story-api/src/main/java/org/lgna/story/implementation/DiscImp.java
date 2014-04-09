@@ -47,20 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class DiscImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
-	private final org.lgna.story.SDisc abstraction;
-	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
-		@Override
-		public Double getValue() {
-			return DiscImp.this.sgDisc.outerRadius.getValue();
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			DiscImp.this.sgDisc.outerRadius.setValue( value );
-		}
-	};
-
 	public DiscImp( org.lgna.story.SDisc abstraction ) {
 		this.abstraction = abstraction;
 		this.sgDisc.outerRadius.setValue( 0.5 );
@@ -109,4 +95,18 @@ public class DiscImp extends ShapeImp {
 		}
 		this.outerRadius.setValue( size.x * .5 );
 	}
+
+	private final org.lgna.story.SDisc abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
+	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
+		@Override
+		public Double getValue() {
+			return DiscImp.this.sgDisc.outerRadius.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			DiscImp.this.sgDisc.outerRadius.setValue( value );
+		}
+	};
 }

@@ -47,20 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class SphereImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
-	private final org.lgna.story.SSphere abstraction;
-	public final DoubleProperty radius = new DoubleProperty( SphereImp.this ) {
-		@Override
-		public Double getValue() {
-			return SphereImp.this.sgSphere.radius.getValue();
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			SphereImp.this.sgSphere.radius.setValue( value );
-		}
-	};
-
 	public SphereImp( org.lgna.story.SSphere abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
@@ -107,4 +93,18 @@ public class SphereImp extends ShapeImp {
 		}
 		this.radius.setValue( size.x * .5 );
 	}
+
+	private final org.lgna.story.SSphere abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
+	public final DoubleProperty radius = new DoubleProperty( SphereImp.this ) {
+		@Override
+		public Double getValue() {
+			return SphereImp.this.sgSphere.radius.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			SphereImp.this.sgSphere.radius.setValue( value );
+		}
+	};
 }

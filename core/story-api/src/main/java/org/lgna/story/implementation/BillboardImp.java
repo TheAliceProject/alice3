@@ -54,23 +54,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	private static final float MIN_V = 1.0f;
 	private static final float MAX_V = 0.0f;
 
-	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
-		@Override
-		protected void internalSetValue( org.lgna.story.Paint value ) {
-			TexturedPaintUtilities.setPaint( BillboardImp.this.sgBackFace, value );
-		}
-	};
-
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
-		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
-		};
-		private boolean isFront;
-
 		public Face( boolean isFront ) {
 			putInstance( this );
 			putInstance( this.getAppearance() );
@@ -127,15 +111,16 @@ public class BillboardImp extends VisualScaleModelImp {
 				return +1.0f;
 			}
 		}
+
+		private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
+		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
+		};
+		private final boolean isFront;
 	}
-
-	private final Face sgFrontFace = new Face( true );
-	private final Face sgBackFace = new Face( false );
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
-
-	private final org.lgna.story.SBillboard abstraction;
 
 	public BillboardImp( org.lgna.story.SBillboard abstraction ) {
 		this.abstraction = abstraction;
@@ -256,4 +241,19 @@ public class BillboardImp extends VisualScaleModelImp {
 	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.sgOpacityAppearances;
 	}
+
+	private final org.lgna.story.SBillboard abstraction;
+
+	private final Face sgFrontFace = new Face( true );
+	private final Face sgBackFace = new Face( false );
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
+
+	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
+		@Override
+		protected void internalSetValue( org.lgna.story.Paint value ) {
+			TexturedPaintUtilities.setPaint( BillboardImp.this.sgBackFace, value );
+		}
+	};
 }

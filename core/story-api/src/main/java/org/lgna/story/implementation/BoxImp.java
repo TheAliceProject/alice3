@@ -46,9 +46,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class BoxImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
-	private final org.lgna.story.SBox abstraction;
-
 	public BoxImp( org.lgna.story.SBox abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgBox } );
@@ -128,4 +125,7 @@ public class BoxImp extends ShapeImp {
 		this.sgBox.zMinimum.setValue( -z );
 		this.sgBox.zMaximum.setValue( +z );
 	}
+
+	private final org.lgna.story.SBox abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 }

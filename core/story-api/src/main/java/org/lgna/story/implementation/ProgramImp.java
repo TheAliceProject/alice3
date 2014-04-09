@@ -47,9 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramImp {
-	private final org.lgna.story.SProgram abstraction;
-	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-
 	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
 	private static Class<? extends ProgramImp> ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
 	private static Class<?>[] ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes;
@@ -92,10 +89,7 @@ public abstract class ProgramImp {
 		return rv;
 	}
 
-	private double simulationSpeedFactor = 1.0;
-	private javax.swing.Action restartAction;
-
-	private class ToggleFullScreenAction extends javax.swing.AbstractAction {
+	private static class ToggleFullScreenAction extends javax.swing.AbstractAction {
 		private java.awt.Rectangle prevNormalBounds;
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -117,8 +111,6 @@ public abstract class ProgramImp {
 			}
 		}
 	};
-
-	private final ToggleFullScreenAction toggleFullScreenAction = new ToggleFullScreenAction();
 
 	private static final class FullScreenIcon implements javax.swing.Icon {
 		public int getIconWidth() {
@@ -229,8 +221,6 @@ public abstract class ProgramImp {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
-
-	private boolean isAnimatorStarted = false;
 
 	public void startAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
@@ -343,8 +333,6 @@ public abstract class ProgramImp {
 		this.startAnimator();
 	}
 
-	private boolean isProgramClosedExceptionDesired = false;
-
 	public void shutDown() {
 		this.onscreenLookingGlass.release();
 		this.stopAnimator();
@@ -360,4 +348,12 @@ public abstract class ProgramImp {
 		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
+
+	private final org.lgna.story.SProgram abstraction;
+	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private double simulationSpeedFactor = 1.0;
+	private javax.swing.Action restartAction;
+	private boolean isAnimatorStarted = false;
+	private boolean isProgramClosedExceptionDesired = false;
+	private final ToggleFullScreenAction toggleFullScreenAction = new ToggleFullScreenAction();
 }

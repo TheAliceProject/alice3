@@ -46,19 +46,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCylinderImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
-	public final DoubleProperty length = new DoubleProperty( AbstractCylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return AbstractCylinderImp.this.sgCylinder.length.getValue();
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			AbstractCylinderImp.this.sgCylinder.length.setValue( value );
-		}
-	};
-
 	public AbstractCylinderImp() {
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
@@ -122,4 +109,18 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 		this.length.setValue( size.y );
 		this.setXZ( size.x * .5 );
 	}
+
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+
+	public final DoubleProperty length = new DoubleProperty( AbstractCylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return AbstractCylinderImp.this.sgCylinder.length.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			AbstractCylinderImp.this.sgCylinder.length.setValue( value );
+		}
+	};
 }

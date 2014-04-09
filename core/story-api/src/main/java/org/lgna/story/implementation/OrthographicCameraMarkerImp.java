@@ -42,38 +42,25 @@
  */
 package org.lgna.story.implementation;
 
-import org.lgna.story.OrthographicCameraMarker;
-
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-
 /**
  * @author dculyba
  * 
  */
 public class OrthographicCameraMarkerImp extends CameraMarkerImp {
-
-	private ClippedZPlane picturePlane = new ClippedZPlane();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
-
-	public OrthographicCameraMarkerImp( OrthographicCameraMarker abstraction ) {
+	public OrthographicCameraMarkerImp( org.lgna.story.OrthographicCameraMarker abstraction ) {
 		super( abstraction );
 	}
 
 	@Override
-	protected void createVisuals()
-	{
+	protected void createVisuals() {
 		//Do nothing
 	}
 
-	public void setPicturePlane( ClippedZPlane picturePlane )
-	{
+	public void setPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane picturePlane ) {
 		this.picturePlane.set( picturePlane );
 	}
 
-	public ClippedZPlane getPicturePlane()
-	{
+	public edu.cmu.cs.dennisc.math.ClippedZPlane getPicturePlane() {
 		return this.picturePlane;
 	}
 
@@ -88,8 +75,11 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	@Override
-	protected Visual[] getSgVisuals() {
-		return sgVisuals;
+	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+		return this.sgVisuals;
 	}
 
+	private final edu.cmu.cs.dennisc.math.ClippedZPlane picturePlane = new edu.cmu.cs.dennisc.math.ClippedZPlane();
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
 }

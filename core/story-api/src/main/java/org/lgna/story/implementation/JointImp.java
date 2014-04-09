@@ -47,10 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class JointImp extends AbstractTransformableImp {
-	private org.lgna.story.SJoint abstraction;
-	private final JointedModelImp<?, ?> jointedModelImplementation;
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
-
 	public JointImp( JointedModelImp<?, ?> jointedModelImplementation ) {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
@@ -130,4 +126,8 @@ public abstract class JointImp extends AbstractTransformableImp {
 		super.appendRepr( sb );
 		sb.append( this.getJointId().toString() );
 	}
+
+	private org.lgna.story.SJoint abstraction;
+	private final JointedModelImp<?, ?> jointedModelImplementation;
+	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
 }

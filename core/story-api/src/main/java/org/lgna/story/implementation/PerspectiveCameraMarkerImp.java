@@ -42,9 +42,6 @@
  */
 package org.lgna.story.implementation;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -63,10 +60,8 @@ import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 
 /**
  * @author dculyba
- * 
  */
 public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
-
 	private static final double VIEW_LINES_DEFAULT_DISPLACEMENT = 3;
 	private static final double VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA = 3;
 	private static final float START_ALPHA = .5f;
@@ -82,34 +77,17 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	private static final float LASER_LINE_GREEN = 0;
 	private static final float LASER_LINE_BLUE = 0;
 
-	private double farClippingPlane;
-	private edu.cmu.cs.dennisc.math.Angle horizontalViewAngle;
-	private edu.cmu.cs.dennisc.math.Angle verticalViewAngle;
-
-	private Vertex[] sgLaserLineVertices;
-	private LineArray sgLaserLine;
-	private SimpleAppearance sgLaserLinesFrontFacingAppearance;
-
-	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private SimpleAppearance sgAppearance;
-	private SimpleAppearance[] sgAppearances;
-	private List<Visual> sgDetailedComponents;
-
-	protected boolean showDetail = false;
-
 	public PerspectiveCameraMarkerImp( org.lgna.story.PerspectiveCameraMarker abstraction ) {
 		super( abstraction );
 	}
 
 	@Override
-	protected Color4f getDefaultMarkerColor()
-	{
+	protected Color4f getDefaultMarkerColor() {
 		return Color4f.GRAY;
 	}
 
 	@Override
-	protected float getDefaultMarkerOpacity()
-	{
+	protected float getDefaultMarkerOpacity() {
 		return 1;
 	}
 
@@ -119,7 +97,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 		this.sgAppearance = new SimpleAppearance();
 		this.sgAppearances = new SimpleAppearance[] { sgAppearance };
 
-		this.sgDetailedComponents = new LinkedList<Visual>();
+		this.sgDetailedComponents = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.farClippingPlane = 100;
 		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees( 90 );
 		this.verticalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees( 90 );
@@ -296,40 +274,32 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 
 	}
 
-	public void setDetailedViewShowing( boolean isShowing )
-	{
-		if( this.showDetail != isShowing )
-		{
+	public void setDetailedViewShowing( boolean isShowing ) {
+		if( this.showDetail != isShowing ) {
 			this.showDetail = isShowing;
 			this.updateDetailIsShowing();
 		}
 	}
 
-	private void updateDetailIsShowing()
-	{
-		for( Visual v : this.sgDetailedComponents )
-		{
-			v.isShowing.setValue( this.showDetail && this.isShowing );
+	private void updateDetailIsShowing() {
+		for( Visual v : this.sgDetailedComponents ) {
+			v.isShowing.setValue( this.showDetail && this.isShowing() );
 		}
 	}
 
-	public void setFarClippingPlane( double farClippingPlane )
-	{
+	public void setFarClippingPlane( double farClippingPlane ) {
 		this.farClippingPlane = farClippingPlane;
 		updateViewGeometry();
 	}
 
-	public void setViewingAngle( edu.cmu.cs.dennisc.math.Angle horizontalViewAngle, edu.cmu.cs.dennisc.math.Angle verticalViewAngle )
-	{
+	public void setViewingAngle( edu.cmu.cs.dennisc.math.Angle horizontalViewAngle, edu.cmu.cs.dennisc.math.Angle verticalViewAngle ) {
 		this.horizontalViewAngle.set( horizontalViewAngle );
 		this.verticalViewAngle.set( verticalViewAngle );
 		updateViewGeometry();
 	}
 
-	private void updateViewGeometry()
-	{
-		if( ( this.sgLaserLineVertices != null ) && ( this.sgLaserLine != null ) )
-		{
+	private void updateViewGeometry() {
+		if( ( this.sgLaserLineVertices != null ) && ( this.sgLaserLine != null ) ) {
 			this.sgLaserLineVertices[ 1 ].position.z = -this.farClippingPlane;
 			this.sgLaserLine.vertices.setValue( this.sgLaserLineVertices );
 		}
@@ -350,4 +320,18 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 		return this.sgVisuals;
 	}
 
+	private double farClippingPlane;
+	private edu.cmu.cs.dennisc.math.Angle horizontalViewAngle;
+	private edu.cmu.cs.dennisc.math.Angle verticalViewAngle;
+
+	private Vertex[] sgLaserLineVertices;
+	private LineArray sgLaserLine;
+	private SimpleAppearance sgLaserLinesFrontFacingAppearance;
+
+	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
+	private SimpleAppearance sgAppearance;
+	private SimpleAppearance[] sgAppearances;
+	private java.util.List<Visual> sgDetailedComponents;
+
+	protected boolean showDetail = false;
 }

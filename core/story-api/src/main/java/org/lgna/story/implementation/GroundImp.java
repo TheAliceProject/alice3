@@ -49,7 +49,6 @@ import static edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV;
  * @author Dennis Cosgrove
  */
 public class GroundImp extends SimpleModelImp {
-	private final org.lgna.story.SGround abstraction;
 	private static final double y = 0.0;
 
 	private static final float i = 0.0f;
@@ -715,4 +714,6 @@ public class GroundImp extends SimpleModelImp {
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		assert false : size;
 	}
+
+	private final org.lgna.story.SGround abstraction;
 }

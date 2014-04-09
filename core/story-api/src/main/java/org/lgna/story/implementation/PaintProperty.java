@@ -47,8 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class PaintProperty extends Property<org.lgna.story.Paint> {
-	private org.lgna.story.Paint value = org.lgna.story.Color.WHITE;
-
 	public PaintProperty( EntityImp owner ) {
 		super( owner, org.lgna.story.Paint.class );
 	}
@@ -85,4 +83,6 @@ public abstract class PaintProperty extends Property<org.lgna.story.Paint> {
 		}
 		return b;
 	}
+
+	private org.lgna.story.Paint value = org.lgna.story.Color.WHITE;
 }

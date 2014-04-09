@@ -77,8 +77,6 @@ public abstract class EntityImp implements ReferenceFrame {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
 
-	private String name;
-
 	public String getName() {
 		return this.name;
 	}
@@ -720,19 +718,6 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 	}
 
-	protected void appendRepr( StringBuilder sb ) {
-	}
-
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		this.appendRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
-	}
-
 	public boolean isCollidingWith( org.lgna.story.SThing other ) {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
@@ -750,4 +735,19 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		} );
 	}
+
+	protected void appendRepr( StringBuilder sb ) {
+	}
+
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
+	}
+
+	private String name;
 }

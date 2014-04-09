@@ -46,49 +46,13 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class TorusImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
-	private final org.lgna.story.STorus abstraction;
 
 	private static final double MINIMUM_VALUE = 0.01; //todo
-	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.25;
-
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double outerRadius = TorusImp.this.outerRadius.getValue();
-			double minorDiameter = Math.max( outerRadius - value, MINIMUM_VALUE );
-			double minorRadius = minorDiameter * 0.5;
-			double majorRadius = Math.max( outerRadius - minorRadius, MINIMUM_VALUE );
-			sgTorus.minorRadius.setValue( minorRadius );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
-	public final DoubleProperty outerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.5;
-
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
-
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double majorRadius = Math.max( value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
 
 	public TorusImp( org.lgna.story.STorus abstraction ) {
+		this.abstraction = abstraction;
 		this.sgTorus.majorRadius.setValue( 0.375 );
 		this.sgTorus.minorRadius.setValue( 0.125 );
-		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgTorus } );
 	}
 
@@ -135,4 +99,41 @@ public class TorusImp extends ShapeImp {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "setSize", size, this );
 		this.outerRadius.setValue( size.x * .5 );
 	}
+
+	private final org.lgna.story.STorus abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
+	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
+		private double value = 0.25;
+
+		@Override
+		public Double getValue() {
+			return this.value;
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			this.value = value;
+			double outerRadius = TorusImp.this.outerRadius.getValue();
+			double minorDiameter = Math.max( outerRadius - value, MINIMUM_VALUE );
+			double minorRadius = minorDiameter * 0.5;
+			double majorRadius = Math.max( outerRadius - minorRadius, MINIMUM_VALUE );
+			sgTorus.minorRadius.setValue( minorRadius );
+			sgTorus.majorRadius.setValue( majorRadius );
+		}
+	};
+	public final DoubleProperty outerRadius = new DoubleProperty( TorusImp.this ) {
+		private double value = 0.5;
+
+		@Override
+		public Double getValue() {
+			return this.value;
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			this.value = value;
+			double majorRadius = Math.max( value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE );
+			sgTorus.majorRadius.setValue( majorRadius );
+		}
+	};
 }
