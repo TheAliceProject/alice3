@@ -59,7 +59,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 		{
 			this.propertyListener = new Listener<P>()
 			{
-				public void propertyChanged( P prevValue, P nextValue ) {
+				public void propertyChanged( org.lgna.story.implementation.Property<P> property, P prevValue, P nextValue ) {
 					isPropertyUpdate = true;
 					handleInternalValueChanged();
 					isPropertyUpdate = false;

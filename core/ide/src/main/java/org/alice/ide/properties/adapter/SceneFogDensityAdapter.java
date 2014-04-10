@@ -60,7 +60,7 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 		{
 			this.propertyListener = new Listener<Float>()
 			{
-				public void propertyChanged( Float prevValue, Float nextValue ) {
+				public void propertyChanged( org.lgna.story.implementation.Property<Float> property, Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
 				}
 			};

@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public abstract class Property<T> {
 	public static interface Listener<T> {
-		public void propertyChanged( T prevValue, T nextValue );
+		public void propertyChanged( Property<T> property, T prevValue, T nextValue );
 	}
 
 	public static String getPropertyNameForGetter( java.lang.reflect.Method method ) {
@@ -135,7 +135,7 @@ public abstract class Property<T> {
 
 	protected void fireChanged( T prevValue, T nextValue ) {
 		for( Listener<T> listener : listeners ) {
-			listener.propertyChanged( prevValue, nextValue );
+			listener.propertyChanged( this, prevValue, nextValue );
 		}
 	}
 
