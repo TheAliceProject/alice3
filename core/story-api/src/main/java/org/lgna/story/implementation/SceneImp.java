@@ -63,7 +63,6 @@ public class SceneImp extends EntityImp {
 		this.sgScene.background.setValue( this.sgBackground );
 		this.sgAmbientLight.brightness.setValue( 0.3f );
 		this.sgScene.addComponent( this.sgAmbientLight );
-		this.setFogDensity( 0.0f );
 		this.putInstance( this.sgScene );
 
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -45.0 );
@@ -141,17 +140,6 @@ public class SceneImp extends EntityImp {
 		this.animateGlobalBrightness( 0.0f, 0.25, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		this.changeActiveStatus( programImp, false, activeCount );
 		this.setProgram( null );
-	}
-
-	private void setFogDensity( float densityValue ) {
-		this.fogDensityValue = densityValue;
-		if( ( densityValue == 0 ) && ( this.sgFog.getParent() == this.sgScene ) ) {
-			this.sgScene.removeComponent( this.sgFog );
-		}
-		else if( ( densityValue > 0 ) && ( this.sgFog.getParent() != this.sgScene ) ) {
-			this.sgScene.addComponent( this.sgFog );
-		}
-		this.sgFog.density.setValue( (double)( densityValue * densityValue * densityValue ) );
 	}
 
 	@Override
@@ -300,7 +288,6 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromBelowDirectionalLight = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
-	private float fogDensityValue = 0;
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
@@ -353,15 +340,39 @@ public class SceneImp extends EntityImp {
 		}
 	};
 
-	public final FloatProperty fogDensity = new FloatProperty( SceneImp.this ) {
-		@Override
-		public Float getValue() {
-			return SceneImp.this.fogDensityValue;
+	private static class FogDensityProperty extends FloatProperty {
+		public FogDensityProperty( SceneImp owner ) {
+			super( owner );
 		}
 
 		@Override
-		protected void handleSetValue( Float value ) {
-			SceneImp.this.setFogDensity( value );
+		public SceneImp getOwner() {
+			return (SceneImp)super.getOwner();
 		}
-	};
+
+		@Override
+		public Float getValue() {
+			SceneImp sceneImp = this.getOwner();
+			if( sceneImp.sgFog.getParent() != null ) {
+				double v = sceneImp.sgFog.density.getValue();
+				return (float)Math.pow( v, 1 / 3.0 );
+			} else {
+				return 0.0f;
+			}
+		}
+
+		@Override
+		protected void handleSetValue( Float densityValue ) {
+			SceneImp sceneImp = this.getOwner();
+			if( ( densityValue == 0 ) && ( sceneImp.sgFog.getParent() == sceneImp.sgScene ) ) {
+				sceneImp.sgScene.removeComponent( sceneImp.sgFog );
+			}
+			else if( ( densityValue > 0 ) && ( sceneImp.sgFog.getParent() != sceneImp.sgScene ) ) {
+				sceneImp.sgScene.addComponent( sceneImp.sgFog );
+			}
+			sceneImp.sgFog.density.setValue( (double)( densityValue * densityValue * densityValue ) );
+		}
+	}
+
+	public final FloatProperty fogDensity = new FogDensityProperty( SceneImp.this );
 }
