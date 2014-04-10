@@ -125,13 +125,13 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 
 	protected void addPropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.addPropertyObserver( propertyListener );
+			property.addPropertyListener( propertyListener );
 		}
 	}
 
 	protected void removePropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.removePropertyObserver( propertyListener );
+			property.removePropertyListener( propertyListener );
 		}
 	}
 

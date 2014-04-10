@@ -126,13 +126,13 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 
 	protected void addPropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.addPropertyObserver( propertyListener );
+			property.addPropertyListener( propertyListener );
 		}
 	}
 
 	protected void removePropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.removePropertyObserver( propertyListener );
+			property.removePropertyListener( propertyListener );
 		}
 	}
 

@@ -134,14 +134,14 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 
 	protected void addPropertyListener( Listener<P> propertyListener ) {
 		if( this.property != null ) {
-			property.addPropertyObserver( propertyListener );
+			property.addPropertyListener( propertyListener );
 			isPropertyListening = true;
 		}
 	}
 
 	protected void removePropertyListener( Listener<P> propertyListener ) {
 		if( ( this.property != null ) && isPropertyListening ) {
-			property.removePropertyObserver( propertyListener );
+			property.removePropertyListener( propertyListener );
 			isPropertyListening = false;
 		}
 	}

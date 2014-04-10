@@ -139,11 +139,11 @@ public abstract class Property<T> {
 		}
 	}
 
-	public void addPropertyObserver( Listener<T> listener ) {
+	public void addPropertyListener( Listener<T> listener ) {
 		this.listeners.add( listener );
 	}
 
-	public void removePropertyObserver( Listener<T> listener ) {
+	public void removePropertyListener( Listener<T> listener ) {
 		this.listeners.remove( listener );
 	}
 }
