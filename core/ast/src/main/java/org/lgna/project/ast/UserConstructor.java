@@ -59,4 +59,11 @@ public abstract class UserConstructor extends AbstractConstructor {
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}
+
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
+
+	public String generateJavaCode( JavaCodeGenerator generator ) {
+		this.appendJava( generator );
+		return generator.getText( false );
+	}
 }

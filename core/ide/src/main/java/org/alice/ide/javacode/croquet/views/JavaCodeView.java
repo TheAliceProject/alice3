@@ -119,6 +119,9 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
 			code = method.generateJavaCode( javaCodeGenerator );
+		} else if( this.declaration instanceof org.lgna.project.ast.UserConstructor ) {
+			org.lgna.project.ast.UserConstructor constructor = (org.lgna.project.ast.UserConstructor)this.declaration;
+			code = constructor.generateJavaCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
 			code = type.generateJavaCode( javaCodeGenerator );

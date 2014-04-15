@@ -67,7 +67,7 @@ public final class LocalDeclarationStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		UserLocal localValue = this.local.getValue();
 		generator.appendTypeName( localValue.getValueType() );
 		generator.appendSpace();

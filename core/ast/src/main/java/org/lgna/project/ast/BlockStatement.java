@@ -70,7 +70,7 @@ public class BlockStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		generator.appendChar( '{' );
 		this.appendBody( generator );
 		generator.appendChar( '}' );
