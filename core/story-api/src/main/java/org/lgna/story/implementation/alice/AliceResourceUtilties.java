@@ -407,7 +407,13 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).visualName;
+		if( resourceIdentifierToResourceNamesMap.get( identifier ) != null ) {
+			return resourceIdentifierToResourceNamesMap.get( identifier ).visualName;
+		}
+		else {
+			Logger.severe( "Failed to find resource names for '" + resourceClass + "' and '" + resourceName + "'" );
+			return null;
+		}
 	}
 
 	public static String getTextureNameFromClassAndResource( Class<?> resourceClass, String resourceName ) {
