@@ -108,5 +108,10 @@ public class AnonymousUserConstructor extends UserConstructor {
 		return null;
 	}
 
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		//todo?
+	}
+
 	private final AnonymousUserType type;
 }

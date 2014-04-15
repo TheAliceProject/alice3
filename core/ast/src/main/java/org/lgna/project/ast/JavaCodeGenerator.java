@@ -82,6 +82,20 @@ public class JavaCodeGenerator {
 		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
 
+	/* package-private */void pushStatementDisabled() {
+		this.statementDisabledCount++;
+		if( this.statementDisabledCount == 1 ) {
+			this.appendString( "\n/* disabled\n" );
+		}
+	}
+
+	/* package-private */void popStatementDisabled() {
+		if( this.statementDisabledCount == 1 ) {
+			this.appendString( "\n*/\n" );
+		}
+		this.statementDisabledCount--;
+	}
+
 	/* package-private */boolean isLambdaSupported() {
 		return this.isLambdaSupported;
 	}
@@ -347,4 +361,6 @@ public class JavaCodeGenerator {
 	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
 
 	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+
+	private int statementDisabledCount;
 }

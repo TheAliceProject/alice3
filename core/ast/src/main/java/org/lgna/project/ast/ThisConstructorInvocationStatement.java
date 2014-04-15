@@ -59,7 +59,7 @@ public final class ThisConstructorInvocationStatement extends ConstructorInvocat
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		generator.appendString( "this(" );
 		generator.appendArguments( this );
 		generator.appendString( ");" );

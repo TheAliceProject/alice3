@@ -67,7 +67,7 @@ public final class ReturnStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		generator.appendString( "return " );
 		generator.appendExpression( this.expression.getValue() );
 		generator.appendSemicolon();
