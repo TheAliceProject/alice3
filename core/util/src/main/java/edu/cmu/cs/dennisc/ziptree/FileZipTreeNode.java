@@ -55,17 +55,19 @@ public class FileZipTreeNode extends ZipTreeNode {
 
 	public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
 		return new java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
+			@Override
 			public boolean hasNext() {
 				return false;
 			}
 
+			@Override
 			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> next() {
 				return null;
 			}
 
 			@Override
 			public void remove() {
-				throw new UnsupportedOperationException();
+				throw new UnsupportedOperationException( "remove" );
 			}
 		};
 	}

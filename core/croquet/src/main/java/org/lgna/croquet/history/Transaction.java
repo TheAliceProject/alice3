@@ -73,10 +73,12 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 			}
 		}
 
+		@Override
 		public boolean hasNext() {
 			return this.transactionIndex < this.transactions.size();
 		}
 
+		@Override
 		public Step<?> next() {
 			if( this.transactionIndex < this.transactions.size() ) {
 				Step<?> rv;
@@ -97,7 +99,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 		@Override
 		public void remove() {
-			throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException( "remove" );
 		}
 	}
 
