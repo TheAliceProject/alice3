@@ -135,6 +135,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 			jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
 			poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
 			poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+
 		}
 
 		@Override

@@ -64,6 +64,7 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 	private FieldNameValidator validator;
 	private final ErrorStatus emptyPoseStatus = this.createErrorStatus( "noPose" );
 	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
+	private Object poseChangeListener;
 
 	public AbstractPoserInputDialogComposite( NamedUserType valueType, UUID uuid ) {
 		super( valueType, uuid );
@@ -71,7 +72,8 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 
 	@Override
 	protected PoserControlComposite createControlComposite() {
-		return new PoserControlComposite( this );
+		PoserControlComposite rv = new PoserControlComposite( this );
+		return rv;
 	}
 
 	@Override

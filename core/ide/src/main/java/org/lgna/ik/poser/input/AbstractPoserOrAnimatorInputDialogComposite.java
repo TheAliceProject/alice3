@@ -118,6 +118,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 			if( !usedJoints.contains( jointId ) ) {
 				usedJoints.add( jointId );
 			}
+			refreshStatus();
 		}
 	};
 

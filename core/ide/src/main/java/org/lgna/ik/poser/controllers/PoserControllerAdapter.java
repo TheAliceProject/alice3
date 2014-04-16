@@ -142,4 +142,8 @@ public class PoserControllerAdapter {
 	public BooleanState getJointRotationHandleVisibilityState() {
 		return controlComposite.getJointRotationHandleVisibilityState();
 	}
+
+	public AbstractPoserControlComposite getControlComposite() {
+		return this.controlComposite;
+	}
 }

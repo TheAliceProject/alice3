@@ -89,4 +89,5 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 	public AbstractPoserOrAnimatorInputDialogComposite getParent() {
 		return parent;
 	}
+
 }

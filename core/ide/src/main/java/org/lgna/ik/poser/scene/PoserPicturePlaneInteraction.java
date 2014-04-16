@@ -146,7 +146,6 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private void fireMousePressed( MouseEvent e ) {
 		if( selected != null ) {
-			System.out.println( "pressed" );
 			for( PoserSphereManipulatorListener listener : listeners ) {
 				listener.fireStart( new PoserEvent( selected ) );
 			}
