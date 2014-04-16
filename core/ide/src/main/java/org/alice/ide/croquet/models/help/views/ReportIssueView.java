@@ -94,17 +94,22 @@ public class ReportIssueView extends AbstractIssueView {
 
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
 
-		BorderPanel header = new BorderPanel.Builder()
-				.lineStart( lineStartPanel )
-				.lineEnd( composite.getLogInOutCardComposite().getView() )
-				.build();
-		header.setBackgroundColor( backgroundColor );
+		BorderPanel header = new BorderPanel();
+		header.addLineStartComponent( lineStartPanel );
 
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.alice.ide.IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
+			org.lgna.issue.IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
+			if( issueReportingHub.isLoginSupported() ) {
+				header.addLineEndComponent( composite.getLogInOutCardComposite().getView() );
+			}
+		}
+		header.setBackgroundColor( backgroundColor );
 		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addPageStartComponent( header );
 		this.addCenterComponent( centerComponent );
 	}
-
 }

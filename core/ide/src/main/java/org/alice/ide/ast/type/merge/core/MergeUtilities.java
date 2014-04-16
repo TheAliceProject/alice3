@@ -78,25 +78,35 @@ public class MergeUtilities {
 		return null;
 	}
 
+	private static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGeneratorForEquivalence() {
+		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+				.isLambdaSupported( true ) //don't care
+				.build();
+	}
+
 	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateHeaderJavaCode( isLambdaSupported ).contentEquals( b.generateHeaderJavaCode( isLambdaSupported ) );
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
+		String aText = a.generateJavaCode( javaCodeGenerator );
+		String bText = b.generateJavaCode( javaCodeGenerator );
+		return aText.contentEquals( bText );
 	}
 
 	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		boolean isLambdaSupported = true; //don't care
-		String aText = a.generateJavaCode( isLambdaSupported );
-		String bText = b.generateJavaCode( isLambdaSupported );
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
+		String aText = a.generateJavaCode( javaCodeGenerator );
+		String bText = b.generateJavaCode( javaCodeGenerator );
+		return aText.contentEquals( bText );
+	}
+
+	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
+		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
+		String aText = a.generateJavaCode( javaCodeGenerator );
+		String bText = b.generateJavaCode( javaCodeGenerator );
 		return aText.contentEquals( bText );
 	}
 
 	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
 		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		boolean isLambdaSupported = true; //don't care
-		return a.generateJavaCode( isLambdaSupported ).contentEquals( b.generateJavaCode( isLambdaSupported ) );
 	}
 
 	private static org.lgna.project.ast.AbstractMethod findMatch( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractMethod original ) {

@@ -69,8 +69,8 @@ import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
-import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.project.annotations.Visibility;
@@ -565,23 +565,30 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.selectedInstance = instance;
 
 		if( instance != null ) {
-			Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
-			if( instanceInJava instanceof org.lgna.story.SThing ) {
-				this.selectedEntity = (org.lgna.story.SThing)instanceInJava;
-				this.selectedImp = EmployeesOnly.getImplementation( this.selectedEntity );
-			}
-			else if( instanceInJava instanceof org.lgna.story.implementation.EntityImp )
-			{
-				this.selectedImp = (org.lgna.story.implementation.EntityImp)instanceInJava;
-				this.selectedEntity = this.selectedImp.getAbstraction();
-			}
-			for( LabelValueControllerPair activeController : this.activeControllers )
-			{
-				if( activeController.controller != null )
+			org.lgna.project.ast.Expression expression = this.selectedInstance.createExpression();
+			if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+				//pass
+			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
+				//pass
+			} else {
+				Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
+				if( instanceInJava instanceof org.lgna.story.SThing ) {
+					this.selectedEntity = (org.lgna.story.SThing)instanceInJava;
+					this.selectedImp = EmployeesOnly.getImplementation( this.selectedEntity );
+				}
+				else if( instanceInJava instanceof org.lgna.story.implementation.EntityImp )
 				{
-					activeController.controller.getPropertyAdapter().stopListening();
-					//				activeController.controller.getPropertyAdapter().clearListeners();
-					activeController.controller.setPropertyAdapter( null );
+					this.selectedImp = (org.lgna.story.implementation.EntityImp)instanceInJava;
+					this.selectedEntity = this.selectedImp.getAbstraction();
+				}
+				for( LabelValueControllerPair activeController : this.activeControllers )
+				{
+					if( activeController.controller != null )
+					{
+						activeController.controller.getPropertyAdapter().stopListening();
+						//				activeController.controller.getPropertyAdapter().clearListeners();
+						activeController.controller.setPropertyAdapter( null );
+					}
 				}
 			}
 		}

@@ -42,74 +42,10 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
-	private static int INSET = 2;
-
-	private static class SmallerFootprintScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
-		public static javax.swing.plaf.ScrollBarUI createUI() {
-			return new SmallerFootprintScrollBarUI();
-		}
-
-		@Override
-		protected void installDefaults() {
-			super.installDefaults();
-			this.thumbRolloverColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 100 );
-			this.thumbPressedColor = new java.awt.Color( 100, 140, 255 );
-		}
-
-		@Override
-		protected void paintThumb( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds ) {
-			//super.paintThumb( g, c, thumbBounds );
-			if( c instanceof javax.swing.JScrollBar ) {
-				javax.swing.JScrollBar jScrollBar = (javax.swing.JScrollBar)c;
-				int span = jScrollBar.getOrientation() == javax.swing.JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
-				int arc = span - INSET - INSET;
-				java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
-				java.awt.Paint paint;
-				if( this.isDragging ) {
-					paint = this.thumbPressedColor;
-				} else {
-					paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
-				}
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				g2.setPaint( paint );
-				g2.fill( shape );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-			}
-		}
-
-		@Override
-		protected void paintTrack( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds ) {
-			//super.paintTrack( g, c, trackBounds );
-		}
-
-		private static javax.swing.JButton create0SizeButton() {
-			javax.swing.JButton rv = new javax.swing.JButton();
-			java.awt.Dimension size = new java.awt.Dimension( 0, 0 );
-			rv.setMinimumSize( size );
-			rv.setPreferredSize( size );
-			rv.setMaximumSize( size );
-			return rv;
-		}
-
-		@Override
-		protected javax.swing.JButton createIncreaseButton( int orientation ) {
-			return create0SizeButton();
-		}
-
-		@Override
-		protected javax.swing.JButton createDecreaseButton( int orientation ) {
-			return create0SizeButton();
-		}
-
-		private java.awt.Color thumbPressedColor;
-		private java.awt.Color thumbRolloverColor;
-	}
 
 	protected static class JViewBasedBackgroundColorScrollBar extends javax.swing.JScrollBar {
 		public JViewBasedBackgroundColorScrollBar( int orientation ) {
@@ -134,13 +70,14 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			this.getViewport().setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
 		}
-		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET );
+		int inset = edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.INSET;
+		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset );
 		javax.swing.JScrollBar verticalScrollBar = this.getVerticalScrollBar();
-		verticalScrollBar.setUI( SmallerFootprintScrollBarUI.createUI() );
+		verticalScrollBar.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
 		verticalScrollBar.setBorder( border );
 
 		javax.swing.JScrollBar horizontalScrollBar = this.getHorizontalScrollBar();
-		horizontalScrollBar.setUI( SmallerFootprintScrollBarUI.createUI() );
+		horizontalScrollBar.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
 		horizontalScrollBar.setBorder( border );
 	}
 

@@ -50,7 +50,7 @@ public abstract class PropertyValueOperation<P> extends org.lgna.croquet.ActionO
 	private final P nextValue;
 
 	public PropertyValueOperation( java.util.UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
 		this.propertyAdapter = propertyAdapter;
 		this.nextValue = nextValue;
 	}

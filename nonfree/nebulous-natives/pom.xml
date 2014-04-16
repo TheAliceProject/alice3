@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.alice.nonfree</groupId>
+		<artifactId>nonfree</artifactId>
+		<version>2013.08.08</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>nebulous-natives</artifactId>
+	<!-- nebulous.libs.version -->
+	<version>2013.08.20</version>
+	<packaging>pom</packaging>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>linux-amd64</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-amd64.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>linux-i586</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-i586.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>macosx</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/macosx.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>win32</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/win32.xml</descriptor>
+						</configuration>
+					</execution>
+					<execution>
+						<id>win64</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/win64.xml</descriptor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

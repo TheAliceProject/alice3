@@ -106,7 +106,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			} else {
 				String text = button.getText();
 				java.awt.Insets insets = button.getInsets();
-				g.drawString( text, insets.left, button.getBaseline( c.getWidth(), c.getHeight() ) );
+				int x = insets.left;
+				if( button.getComponentOrientation().isLeftToRight() ) {
+					//pass
+				} else {
+					for( java.awt.Component component : button.getComponents() ) {
+						x += component.getPreferredSize().width;
+						x += 4;
+					}
+				}
+				g.drawString( text, x, button.getBaseline( c.getWidth(), c.getHeight() ) );
 			}
 		}
 	}
@@ -185,7 +194,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					javax.swing.AbstractButton awtButton = this.getAwtComponent();
 					if( isCloseable ) {
 						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
-						if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+						if( this.getComponentOrientation().isLeftToRight() ) {
 							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
 						} else {
 							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
@@ -240,7 +249,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				float xEnd;
 				float xA;
 				float tabPad;
-				if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+				if( this.getComponentOrientation().isLeftToRight() ) {
 					xStart = x;
 					xEnd = ( x + width ) - 1;
 					tabPad = TRAILING_TAB_PAD;
@@ -295,6 +304,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 						//							g2.setClip( clip );
 						g2.setClip( bounds );
 					}
+
 					g2.draw( path );
 				} finally {
 					g2.setClip( prevClip );
@@ -543,10 +553,10 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 						if( component instanceof AbstractButton<?, ?> ) {
 							AbstractButton<?, ?> button = (AbstractButton<?, ?>)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
-								java.awt.Rectangle bounds = button.getBounds( innerHeaderPanel );
+								java.awt.Rectangle bounds = button.getBounds( AwtContainerView.lookup( c ) );
 								g.setColor( button.getBackgroundColor() );
 								int x0;
-								if( c.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+								if( c.getComponentOrientation().isLeftToRight() ) {
 									x0 = bounds.x;
 								} else {
 									x0 = bounds.x - TRAILING_TAB_PAD;

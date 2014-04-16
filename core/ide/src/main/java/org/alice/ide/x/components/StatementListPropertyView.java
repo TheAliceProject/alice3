@@ -101,13 +101,18 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	@Override
 	protected int getBoxLayoutPad() {
-		int rv;
-		if( this.getProperty().getOwner() instanceof org.lgna.project.ast.DoTogether ) {
-			rv = 0;
-		} else {
-			rv = INTRASTICIAL_PAD;
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			if( owningNode instanceof org.lgna.project.ast.DoTogether ) {
+				java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
+				//todo:
+				//java.awt.Font font = this.getFont();
+				java.awt.Font font = g.getFont();
+				java.awt.FontMetrics fm = g.getFontMetrics( font );
+				return fm.getHeight() + 8;
+			}
 		}
-		return rv;
+		return INTRASTICIAL_PAD;
 	}
 
 	@Override
@@ -115,76 +120,86 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return null;
 	}
 
-	@Override
-	protected DefaultJPanel createJPanel() {
-		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
-		class FeedbackJPanel extends DefaultJPanel {
-			@Override
-			public void paint( java.awt.Graphics g ) {
-				super.paint( g );
-				int i = StatementListPropertyView.this.currentPotentialDropIndex;
-				if( i != -1 ) {
-					final int N = StatementListPropertyView.this.getProperty().size();
-					if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
-						if( ( i != -1 ) && ( N > 0 ) ) {
-							int y;
-							if( i == N ) {
-								java.awt.Component lastComponent = this.getComponent( N - 1 );
-								y = lastComponent.getY();
-								y += lastComponent.getHeight();
-							} else {
-								java.awt.Component iComponent = this.getComponent( i );
-								y = iComponent.getY();
-								y -= INTRASTICIAL_PAD;
-							}
+	private static final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
 
-							java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
-							int x0;
-							int x1;
-							if( componentOrientation.isLeftToRight() ) {
-								x0 = 0;
-								x1 = x0 + INDENT;
-							} else {
-								x0 = this.getWidth();
-								x1 = x0 - INDENT;
-							}
-
-							int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
-							int y0 = yC - INDENT;
-							int y1 = yC + INDENT;
-
-							int w = this.getWidth();
-							int[] xPoints = new int[] { x1, x0, x0 };
-							int[] yPoints = new int[] { yC, y1, y0 };
-							g.setColor( FEEDBACK_COLOR );
-
-							if( isShiftDown && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
-								java.awt.Component lastComponent = this.getComponent( N - 1 );
-								final int X_INDENT = 2;
-								final int BRACKET_A_WIDTH = 4;
-								final int BRACKET_B_WIDTH = 8;
-								final int BRACKET_B_HEIGHT = 4;
-								int yMax = lastComponent.getY() + lastComponent.getHeight() + INTRASTICIAL_PAD;
-								g.fillRect( X_INDENT, y, BRACKET_A_WIDTH, yMax - y );
-								g.fillRect( X_INDENT, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
-								g.fillRect( X_INDENT, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
-							} else {
-								g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-								g.fillPolygon( xPoints, yPoints, 3 );
-							}
-
-							//g.setColor( java.awt.Color.YELLOW );
-							//g.fillRect( 1, yC, w-2, 1 );
+	public class FeedbackJPanel extends DefaultJPanel {
+		@Override
+		public void paint( java.awt.Graphics g ) {
+			super.paint( g );
+			int i = StatementListPropertyView.this.currentPotentialDropIndex;
+			if( i != -1 ) {
+				final int N = StatementListPropertyView.this.getProperty().size();
+				if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
+					if( ( i != -1 ) && ( N > 0 ) ) {
+						int y;
+						if( i == N ) {
+							java.awt.Component lastComponent = this.getComponent( N - 1 );
+							y = lastComponent.getY();
+							y += lastComponent.getHeight();
+						} else {
+							java.awt.Component iComponent = this.getComponent( i );
+							y = iComponent.getY();
+							y -= INTRASTICIAL_PAD;
 						}
+
+						java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+						int x0;
+						int x1;
+						if( componentOrientation.isLeftToRight() ) {
+							x0 = 0;
+							x1 = x0 + INDENT;
+						} else {
+							x0 = this.getWidth();
+							x1 = x0 - INDENT;
+						}
+
+						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+						int y0 = yC - INDENT;
+						int y1 = yC + INDENT;
+
+						int w = this.getWidth();
+						int[] xPoints = new int[] { x1, x0, x0 };
+						int[] yPoints = new int[] { yC, y1, y0 };
+						g.setColor( FEEDBACK_COLOR );
+
+						if( isShiftDown && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
+							java.awt.Component lastComponent = this.getComponent( N - 1 );
+							final int INDENT = 2;
+							final int BRACKET_A_WIDTH = 4;
+							final int BRACKET_B_WIDTH = 8;
+							final int BRACKET_B_HEIGHT = 4;
+							int yMax = lastComponent.getY() + lastComponent.getHeight() + INTRASTICIAL_PAD;
+							if( componentOrientation.isLeftToRight() ) {
+								final int X = INDENT;
+								g.fillRect( X, y, BRACKET_A_WIDTH, yMax - y );
+								g.fillRect( X, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+								g.fillRect( X, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							} else {
+								final int X = this.getWidth() - INDENT - BRACKET_A_WIDTH;
+								g.fillRect( X, y, BRACKET_A_WIDTH, yMax - y );
+								g.fillRect( X - BRACKET_B_WIDTH, y, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+								g.fillRect( X - BRACKET_B_WIDTH, yMax - BRACKET_B_HEIGHT, BRACKET_B_WIDTH, BRACKET_B_HEIGHT );
+							}
+						} else {
+							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+							g.fillPolygon( xPoints, yPoints, 3 );
+						}
+
+						//g.setColor( java.awt.Color.YELLOW );
+						//g.fillRect( 1, yC, w-2, 1 );
 					}
 				}
 			}
-
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				return this.getPreferredSize();
-			}
 		}
+
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			return this.getPreferredSize();
+		}
+	};
+
+	@Override
+	protected DefaultJPanel createJPanel() {
 		return new FeedbackJPanel();
 	}
 

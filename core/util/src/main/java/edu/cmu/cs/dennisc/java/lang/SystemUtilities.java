@@ -70,12 +70,12 @@ public class SystemUtilities {
 	}
 
 	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		java.util.List<Property> properties = getSortedPropertyList();
+		java.util.List<SystemProperty> properties = getSortedPropertyList();
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "systemProperties" );
 		xmlDocument.appendChild( xmlRootElement );
-		for( Property property : properties ) {
+		for( SystemProperty property : properties ) {
 			org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
 			xmlProperty.setAttribute( "key", property.getKey() );
 			xmlProperty.appendChild( xmlDocument.createTextNode( property.getValue() ) );
@@ -98,14 +98,14 @@ public class SystemUtilities {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
 
-	public static java.util.List<Property> getPropertyList() {
-		java.util.List<Property> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static java.util.List<SystemProperty> getPropertyList() {
+		java.util.List<SystemProperty> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		java.util.Properties systemProperties = System.getProperties();
 		for( java.util.Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
 			Object key = entry.getKey();
 			Object value = entry.getValue();
 			if( ( key instanceof String ) && ( value instanceof String ) ) {
-				rv.add( new edu.cmu.cs.dennisc.java.lang.Property( (String)key, (String)value ) );
+				rv.add( new edu.cmu.cs.dennisc.java.lang.SystemProperty( (String)key, (String)value ) );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
 			}
@@ -113,8 +113,8 @@ public class SystemUtilities {
 		return rv;
 	}
 
-	public static java.util.List<Property> getSortedPropertyList() {
-		java.util.List<Property> rv = getPropertyList();
+	public static java.util.List<SystemProperty> getSortedPropertyList() {
+		java.util.List<SystemProperty> rv = getPropertyList();
 		java.util.Collections.sort( rv );
 		return rv;
 	}

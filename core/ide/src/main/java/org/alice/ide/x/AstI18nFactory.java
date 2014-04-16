@@ -233,11 +233,15 @@ public abstract class AstI18nFactory extends I18nFactory {
 				if( component != null ) {
 					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
 				} else {
-					component = this.createComponent( expression );
 					if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
 						rv = new org.alice.ide.x.components.ExpressionView( this, expression );
 					} else {
-						rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+						if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
+							rv = new org.alice.ide.x.components.ExpressionView( this, expression );
+						} else {
+							component = this.createComponent( expression );
+							rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+						}
 					}
 				}
 			}

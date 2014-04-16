@@ -123,7 +123,13 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 
 				java.awt.Rectangle potentialDragSourceBounds;
 				if( this.potentialDragSource != null ) {
-					potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( this.potentialDragSource.getParent().getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent() );
+					org.lgna.croquet.views.AwtContainerView<?> parent = this.potentialDragSource.getParent();
+					if( parent != null ) {
+						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( parent.getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent() );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.potentialDragSource );
+						potentialDragSourceBounds = null;
+					}
 				} else {
 					potentialDragSourceBounds = null;
 				}

@@ -58,7 +58,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	private final boolean isEnveloping;
 
 	public StatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, blanks );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id, blanks );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 		this.isEnveloping = isEnveloping;
 	}

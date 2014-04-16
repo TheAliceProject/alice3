@@ -42,7 +42,6 @@
  */
 package org.alice.media.youtube.croquet;
 
-import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.youtube.croquet.views.EventRecordView;
 import org.alice.media.youtube.croquet.views.icons.IsPlayingIcon;
 import org.alice.stageide.StageIDE;
@@ -75,7 +74,7 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
+	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( org.lgna.story.ast.EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS );
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( "cannotAdvanceBecauseRecording" );
 	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
 	private RunProgramContext programContext;

@@ -50,11 +50,11 @@ import org.alice.interact.condition.MousePressCondition;
 import org.alice.interact.condition.MouseWheelCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
-import org.alice.interact.manipulator.CameraZoomMouseWheelManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.stageide.sceneeditor.HandleStyle;
+import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
@@ -63,6 +63,7 @@ import org.lgna.story.SModel;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Matt May
@@ -76,10 +77,10 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	public PoserAnimatorDragAdapter( AbstractPoserScene poserScene ) {
 		this.poserScene = poserScene;
+		this.setUpControls();
 	}
 
-	@Override
-	protected void setUpControls() {
+	private void setUpControls() {
 		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
 
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( orbiter );
@@ -121,7 +122,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		selectObject.addCondition( new DragAndDropCondition() );
 
 		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
-		this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, group );
+		this.mapHandleStyleToInteractionGroup.put( HandleStyle.ROTATION, group );
 		setInteractionState( HandleStyle.ROTATION );
 
 		this.manipulators.add( selectObject );
@@ -129,6 +130,35 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		for( int i = 0; i < this.manipulators.size(); i++ ) {
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
+	}
+
+	@Override
+	public boolean shouldSnapToRotation() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldSnapToGround() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldSnapToGrid() {
+		return false;
+	}
+
+	@Override
+	public double getGridSpacing() {
+		return 1.0;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
+		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
+	}
+
+	@Override
+	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 
 	public final void setTarget( SModel model ) {
@@ -156,14 +186,14 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.stageide.sceneeditor.HandleStyle> getHandleStyleState() {
+	protected org.lgna.croquet.SingleSelectListState<HandleStyle> getHandleStyleState() {
 		//todo
 		return null;
 	}
 
 	@Override
-	public void setHandlVisibility( boolean isVisible ) {
-		super.setHandlVisibility( isVisible );
+	public void setHandleVisibility( boolean isVisible ) {
+		super.setHandleVisibility( isVisible );
 		selectObject.setEnabled( isVisible );
 	}
 }

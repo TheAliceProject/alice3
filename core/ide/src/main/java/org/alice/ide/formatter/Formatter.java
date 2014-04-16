@@ -46,17 +46,19 @@ package org.alice.ide.formatter;
  * @author Dennis Cosgrove
  */
 public abstract class Formatter {
-	private java.util.Locale locale;
-	private String repr;
-
-	public Formatter( java.util.Locale locale, String repr ) {
-		this.locale = locale;
+	public Formatter( String repr ) {
 		this.repr = repr;
 	}
 
-	@Deprecated
-	public java.util.Locale getLocale() {
-		return this.locale;
+	public String getTemplateText( Class<?> cls ) {
+		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
+		String clsName = infixExpression.getClass().getName();
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
+		Enum<?> e = infixExpression.operator.getValue();
+		return resourceBundle.getString( e.name() );
 	}
 
 	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
@@ -112,4 +114,6 @@ public abstract class Formatter {
 	public String toString() {
 		return this.repr;
 	}
+
+	private final String repr;
 }

@@ -277,9 +277,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
+	private org.alice.stageide.sceneeditor.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
-	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
+	private org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.views.Button expandButton;
 	private org.lgna.croquet.views.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
@@ -431,13 +431,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 				if( !this.selectionIsFromInstanceSelector )
 				{
+					org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 					if( field == this.getActiveSceneField() )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
+						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForScene() );
 					}
 					else if( field != null )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
 					}
 				}
 			}
@@ -731,7 +732,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
-			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter( this );
+			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener( this );
 			this.globalDragAdapter.setAnimator( animator );
@@ -740,7 +741,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				setSelectedFieldOnManipulator( this.getSelectedField() );
 			}
 
-			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
+			this.mainCameraNavigatorWidget = new org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
 
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			this.expandButton = ide.getSetToSetupScenePerspectiveOperation().createButton();
@@ -759,7 +760,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			initializeCameraMarkers();
 
-			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+			this.globalDragAdapter.addSelectionListener( new org.alice.interact.event.SelectionListener() {
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 				}
 
@@ -962,13 +963,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	@Override
 	public void preScreenCapture()
 	{
-		this.globalDragAdapter.setHandlVisibility( false );
+		this.globalDragAdapter.setHandleVisibility( false );
 	}
 
 	@Override
 	public void postScreenCapture()
 	{
-		this.globalDragAdapter.setHandlVisibility( true );
+		this.globalDragAdapter.setHandleVisibility( true );
 	}
 
 	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, boolean getFullFieldState ) {
@@ -1067,8 +1068,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			Point3 location;
 			if( resourceCls != null ) {
 				ClassResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
-				AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
-				boolean shouldPlaceOnGround = org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( childKey );
+				AxisAlignedBox box = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( childKey );
+				boolean shouldPlaceOnGround = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( childKey );
 				double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
 				location = new Point3( 0, y, 0 );
 			}

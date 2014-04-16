@@ -63,7 +63,7 @@ public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.UserField field;
 
 	public RevertFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
 		this.field = field;
 	}
 

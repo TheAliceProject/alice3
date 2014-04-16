@@ -145,7 +145,7 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 				nextCapsule = null;
 			}
 			if( ( prevCapsule != null ) && ( nextCapsule != null ) ) {
-				return new org.alice.ide.ToDoEdit( step ) {
+				return new org.lgna.croquet.edits.AbstractEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						nextCapsule.update( resource );

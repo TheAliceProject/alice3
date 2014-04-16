@@ -81,8 +81,8 @@ public class RPCUtilities {
 		StringBuilder sb = new StringBuilder();
 		sb.append( jiraReport.getDescription() );
 		sb.append( "\n\nsystem properties:\n" );
-		java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
-		for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
+		java.util.List<edu.cmu.cs.dennisc.java.lang.SystemProperty> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
+		for( edu.cmu.cs.dennisc.java.lang.SystemProperty property : propertyList ) {
 			sb.append( property.getKey() );
 			sb.append( ": " );
 			sb.append( property.getValue() );

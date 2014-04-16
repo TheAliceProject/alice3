@@ -128,6 +128,8 @@ public class PopupMenuUtilities {
 			y = pt.y;
 		} else {
 			if( invoker != null ) {
+				//todo
+				//if( invoker.getComponentOrientation().isLeftToRight() ) {
 				x = 0;
 				y = invoker.getHeight();
 			} else {

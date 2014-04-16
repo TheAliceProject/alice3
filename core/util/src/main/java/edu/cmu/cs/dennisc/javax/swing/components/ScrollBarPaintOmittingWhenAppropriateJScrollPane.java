@@ -46,14 +46,6 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  * @author Dennis Cosgrove
  */
 public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-		if( jScrollBar != null ) {
-			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
-		} else {
-			return false;
-		}
-	}
-
 	protected class PaintOmittingJScrollBar extends JViewBasedBackgroundColorScrollBar {
 		public PaintOmittingJScrollBar( int orientation ) {
 			super( orientation );
@@ -62,7 +54,7 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
 		@Override
 		public void paint( java.awt.Graphics g ) {
 			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
+			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && ScrollBarPaintUtilities.isPaintRequiredFor( otherScrollBar ) ) ) {
 				super.paint( g );
 			} else {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

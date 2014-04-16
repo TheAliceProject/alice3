@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.javax.swing.layouts;
  * @author Dennis Cosgrove
  */
 public class PaddedBoxLayout extends javax.swing.BoxLayout {
-	private int pad;
-	private int axis;
+	private static int getPadCount( java.awt.Container target ) {
+		return Math.max( target.getComponentCount() - 1, 0 );
+	}
 
 	public PaddedBoxLayout( java.awt.Container target, int axis, int pad ) {
 		super( target, axis );
@@ -58,15 +59,15 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	@Override
 	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
 		java.awt.Dimension rv = super.minimumLayoutSize( target );
-		final int N = target.getComponentCount();
+		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
 		case PAGE_AXIS:
-			rv.height += N * this.pad;
+			rv.height += NUM_PADS * this.pad;
 			break;
 		case X_AXIS:
 		case LINE_AXIS:
-			rv.width += N * this.pad;
+			rv.width += NUM_PADS * this.pad;
 			break;
 		}
 		return rv;
@@ -75,15 +76,15 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	@Override
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
 		java.awt.Dimension rv = super.preferredLayoutSize( target );
-		final int N = target.getComponentCount();
+		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
 		case PAGE_AXIS:
-			rv.height += N * this.pad;
+			rv.height += NUM_PADS * this.pad;
 			break;
 		case X_AXIS:
 		case LINE_AXIS:
-			rv.width += N * this.pad;
+			rv.width += NUM_PADS * this.pad;
 			break;
 		}
 		return rv;
@@ -92,15 +93,15 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	@Override
 	public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
 		java.awt.Dimension rv = super.maximumLayoutSize( target );
-		final int N = target.getComponentCount();
+		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
 		case PAGE_AXIS:
-			rv.height += N * this.pad;
+			rv.height += NUM_PADS * this.pad;
 			break;
 		case X_AXIS:
 		case LINE_AXIS:
-			rv.width += N * this.pad;
+			rv.width += NUM_PADS * this.pad;
 			break;
 		}
 		return rv;
@@ -127,4 +128,7 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 			componentI.setLocation( p );
 		}
 	}
+
+	private final int pad;
+	private final int axis;
 }

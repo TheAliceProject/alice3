@@ -71,7 +71,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 	private final org.lgna.project.ast.InstanceCreation instanceCreation;
 
 	private FieldInitializerInstanceCreationArgument0State( org.lgna.project.ast.UserField field, org.lgna.project.ast.InstanceCreation instanceCreation ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5743343c-c7e5-43aa-9ccc-51d766f3a683" ), instanceCreation.requiredArguments.get( 0 ).expression.getValue() );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "5743343c-c7e5-43aa-9ccc-51d766f3a683" ), instanceCreation.requiredArguments.get( 0 ).expression.getValue() );
 		this.field = field;
 		this.instanceCreation = instanceCreation;
 	}

@@ -49,12 +49,6 @@ import org.alice.ide.x.components.StatementListPropertyView;
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
-	private final org.lgna.project.ast.AbstractCode code;
-	private final AbstractCodeHeaderPane header;
-	private final StatementListPropertyView rootStatementListPropertyPane;
-
-	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
-
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode : this.code;
@@ -82,15 +76,10 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			statementListComponent = this.rootStatementListPropertyPane;
 		}
 
-		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
+		this.bodyPane = new org.alice.ide.common.BodyPane( statementListComponent );
 
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane() );
-
-		org.lgna.croquet.views.ScrollPane scrollPane = this.getScrollPane();
-		scrollPane.setViewportView( bodyPane );
-		//scrollPane.setBackgroundColor( null );
-		scrollPane.getAwtComponent().getViewport().setOpaque( false );
-		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+		this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
+		this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
@@ -103,83 +92,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 		this.addPageStartComponent( this.header );
 
-		if( this.code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
-			if( method.isFunction() ) {
-				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
-			} else {
-				this.userFunctionStatusComposite = null;
-			}
-		} else {
-			this.userFunctionStatusComposite = null;
-		}
-
-		org.lgna.croquet.views.SwingComponentView<?> controlFlowComponent;
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
-		} else {
-			controlFlowComponent = null;
-		}
-
-		org.lgna.croquet.views.SwingComponentView<?> pageEndComponent;
-		if( this.userFunctionStatusComposite != null ) {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
-						.center( this.userFunctionStatusComposite.getView() )
-						.pageEnd( controlFlowComponent )
-						.build();
-			} else {
-				pageEndComponent = this.userFunctionStatusComposite.getView();
-			}
-		} else {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = controlFlowComponent;
-			} else {
-				pageEndComponent = null;
-			}
-		}
-
-		if( pageEndComponent != null ) {
-			this.addPageEndComponent( pageEndComponent );
-		}
-
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
-		//color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
-
-		this.handleAstChangeThatCouldBeOfInterest();
-	}
-
-	public org.lgna.croquet.views.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.views.ScrollPane)this.getCenterComponent();
-	}
-
-	public void handleAstChangeThatCouldBeOfInterest() {
-		if( this.userFunctionStatusComposite != null ) {
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
-
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
-			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
-				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
-			} else {
-				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
-					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
-						nextErrorStatus = null;
-					} else {
-						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
-					}
-				} else {
-					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
-				}
-			}
-			if( prevErrorStatus != nextErrorStatus ) {
-				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
-				this.revalidateAndRepaint();
-			}
-
-		}
 	}
 
 	@Override
@@ -197,49 +112,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	@Override
 	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
-	}
-
-	@Override
-	protected javax.swing.JPanel createJPanel() {
-		final boolean IS_FEEDBACK_DESIRED = false;
-		javax.swing.JPanel rv;
-		if( IS_FEEDBACK_DESIRED ) {
-			rv = new javax.swing.JPanel() {
-				@Override
-				public void paint( java.awt.Graphics g ) {
-					super.paint( g );
-					if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						int i = 0;
-						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodeEditor.this.statementListPropertyPaneInfos ) {
-							if( statementListPropertyPaneInfo != null ) {
-								java.awt.Color color;
-								if( CodeEditor.this.dropReceptor.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
-									color = new java.awt.Color( 0, 0, 0, 127 );
-								} else {
-									color = null;
-									//color = new java.awt.Color( 255, 0, 0, 31 );
-								}
-								java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
-								bounds = javax.swing.SwingUtilities.convertRectangle( CodeEditor.this.getAsSeenBy().getAwtComponent(), bounds, this );
-								if( color != null ) {
-									g2.setColor( color );
-									g2.fill( bounds );
-									g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
-									g2.draw( bounds );
-								}
-								g2.setColor( java.awt.Color.BLACK );
-								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
-							}
-							i++;
-						}
-					}
-				}
-			};
-		} else {
-			rv = new javax.swing.JPanel();
-		}
-		return rv;
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> typeFeedbackListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
@@ -396,7 +268,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			org.lgna.croquet.views.AwtContainerView<?> arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			org.lgna.croquet.DragModel dragModel = null;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dragModel );
-			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.dropReceptor.createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
+			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.getDropReceptor().createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i = 0; i < N; i++ ) {
 				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];
@@ -437,14 +309,41 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 	@Override
 	protected org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy() {
-		return this.getScrollPane().getViewportView();
+		return this.bodyPane;
 	}
 
 	@Override
 	public java.awt.print.Printable getPrintable() {
 		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
-				.center( this.getScrollPane().getAwtComponent() )
+				.center( this.getCenterComponent().getAwtComponent() )
 				.pageStart( this.getPageStartComponent().getAwtComponent() )
 				.build();
 	}
+
+	@Override
+	public void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
+		if( value ) {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.removeComponent( this.scrollPane );
+			}
+			this.scrollPane.setViewportView( null );
+			this.addCenterComponent( this.bodyPane );
+		} else {
+			if( isFirstTime ) {
+				//pass
+			} else {
+				this.removeComponent( this.bodyPane );
+			}
+			this.scrollPane.setViewportView( this.bodyPane );
+			this.addCenterComponent( this.scrollPane );
+		}
+	}
+
+	private final org.lgna.project.ast.AbstractCode code;
+	private final AbstractCodeHeaderPane header;
+	private final StatementListPropertyView rootStatementListPropertyPane;
+	private final org.alice.ide.common.BodyPane bodyPane;
+	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
 }

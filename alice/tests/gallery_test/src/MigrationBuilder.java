@@ -1,3 +1,4 @@
+import org.alice.ide.story.AliceIde;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
@@ -52,9 +53,9 @@ public class MigrationBuilder {
 	private static void output( java.util.Set<Class<?>> set, org.alice.stageide.modelresource.ResourceNode node ) {
 		org.lgna.project.ast.JavaType type;
 		if( node.getResourceKey() instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			type = (org.lgna.project.ast.JavaType) ((org.alice.stageide.modelresource.ClassResourceKey)node.getResourceKey()).getType();
+			type = (org.lgna.project.ast.JavaType)( (org.alice.stageide.modelresource.ClassResourceKey)node.getResourceKey() ).getType();
 		} else if( node.getResourceKey() instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
-			type = (org.lgna.project.ast.JavaType) ((org.alice.stageide.modelresource.EnumConstantResourceKey)node.getResourceKey()).getField().getDeclaringType();
+			type = (org.lgna.project.ast.JavaType)( (org.alice.stageide.modelresource.EnumConstantResourceKey)node.getResourceKey() ).getField().getDeclaringType();
 		} else {
 			type = null;
 		}
@@ -65,8 +66,8 @@ public class MigrationBuilder {
 			} else {
 				if( cls.isEnum() ) {
 					String clsName = cls.getName();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\""+clsName.substring( 0, clsName.length()-"Resource".length() )+"\"," );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\""+clsName+"\"," );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\"" + clsName.substring( 0, clsName.length() - "Resource".length() ) + "\"," );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\"" + clsName + "\"," );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 				}
 				set.add( cls );
@@ -76,18 +77,19 @@ public class MigrationBuilder {
 			output( set, child );
 		}
 	}
+
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new AliceIde();
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-		
-		java.util.Set<Class<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		
+
+		java.util.Set<Class<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+
 		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
 			ResourceKey key = child.getResourceKey();
-			if (key instanceof ClassResourceKey) {
+			if( key instanceof ClassResourceKey ) {
 				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
+				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass( classKey.getModelResourceCls() );
 				output( set, child );
 			}
 		}

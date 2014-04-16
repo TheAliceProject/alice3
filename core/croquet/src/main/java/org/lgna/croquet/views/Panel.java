@@ -149,7 +149,7 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 	protected void internalRefresh() {
 	}
 
-	private void refreshIfNecessary() {
+	protected void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
 			if( this.isInTheMidstOfRefreshing ) {
 				//pass
@@ -177,5 +177,17 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 	protected void handleDisplayable() {
 		this.refreshIfNecessary();
 		super.handleDisplayable();
+	}
+
+	protected boolean isRefreshOnAddedToDesired() {
+		return false;
+	}
+
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+		if( this.isRefreshOnAddedToDesired() ) {
+			this.refreshIfNecessary();
+		}
+		super.handleAddedTo( parent );
 	}
 }

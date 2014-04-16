@@ -142,6 +142,18 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.window.setLocation( x, y );
 	}
 
+	public boolean isLocationByPlatform() {
+		return this.window.isLocationByPlatform();
+	}
+
+	public void setLocationByPlatform( boolean isLocationByPlatform ) {
+		this.window.setLocationByPlatform( isLocationByPlatform );
+	}
+
+	public void setLocationRelativeTo( ScreenElement component ) {
+		this.window.setLocationRelativeTo( component.getAwtComponent() );
+	}
+
 	public int getWidth() {
 		return this.window.getWidth();
 	}
@@ -179,6 +191,18 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
+	}
+
+	public boolean isAlwaysOnTopSupported() {
+		return this.getAwtComponent().isAlwaysOnTopSupported();
+	}
+
+	public boolean isAlwaysOnTop() {
+		return this.getAwtComponent().isAlwaysOnTop();
+	}
+
+	public void setAlwaysOnTop( boolean isAlwaysOnTop ) {
+		this.getAwtComponent().setAlwaysOnTop( isAlwaysOnTop );
 	}
 
 	public ScrollPane getScrollPaneAncestor() {

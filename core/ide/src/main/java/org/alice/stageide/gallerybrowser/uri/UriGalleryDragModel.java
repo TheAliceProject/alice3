@@ -118,7 +118,11 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 						Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
 						this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
 					} else {
-						this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+						if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( resourceCls ) ) {
+							this.resourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+						} else {
+							this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+						}
 					}
 				}
 			} catch( Throwable t ) {
@@ -254,24 +258,25 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 	@Override
 	public boolean isInstanceCreator() {
-		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
-		if( resourceKey != null ) {
-			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
-			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return true;
-		}
+		return true;
+		//		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
+		//		if( resourceKey != null ) {
+		//			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
+		//			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
+		//				return false;
+		//			} else {
+		//				return true;
+		//			}
+		//		} else {
+		//			return true;
+		//		}
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
-			return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( resourceKey );
+			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( resourceKey );
 		} else {
 			return null;
 		}
@@ -281,7 +286,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	public boolean placeOnGround() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
-			return org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( resourceKey );
+			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( resourceKey );
 		} else {
 			return false;
 		}
@@ -316,9 +321,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
 		Class<?> thingCls = this.getThingCls();
-		UriResourceKeyIteratingOperation operation = UriResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKeyThingClsAndUri( resourceKey, thingCls, this.uri );
-		return operation;
+		return ResourceKeyUriIteratingOperation.getInstance( resourceKey, thingCls, this.uri );
 	}
 
 	@Override
@@ -329,10 +332,13 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
+				//should not happen
 				return null;
 			} else {
 				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}
+		} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
+			return this.getLeftButtonClickModel();
 		} else {
 			Class<?> thingCls = this.getThingCls();
 			if( thingCls != null ) {

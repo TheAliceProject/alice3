@@ -143,4 +143,12 @@ public class IconUtilities {
 	public static javax.swing.Icon getErrorIcon() {
 		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
 	}
+
+	public static java.awt.Dimension newDimension( javax.swing.Icon icon ) {
+		if( icon != null ) {
+			return new java.awt.Dimension( icon.getIconWidth(), icon.getIconHeight() );
+		} else {
+			return null;
+		}
+	}
 }

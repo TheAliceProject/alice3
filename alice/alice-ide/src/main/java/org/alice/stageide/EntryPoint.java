@@ -53,33 +53,35 @@ public class EntryPoint {
 		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
 
-		if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
-			final Object macMenuBarUI;
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "apple.laf.useScreenMenuBar" ) ) {
-					macMenuBarUI = javax.swing.UIManager.get( MENU_BAR_UI_NAME );
-				} else {
-					macMenuBarUI = null;
-				}
-			} else {
-				macMenuBarUI = null;
-			}
-			edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( NIMBUS_LOOK_AND_FEEL_NAME );
-			if( macMenuBarUI != null ) {
-				javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
-			}
-		}
-		javax.swing.UIManager.put( "ScrollBar.width", 13 );
-		javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
-		javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
-		javax.swing.UIManager.put( "ScrollBar.thumb", edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 140 ) );
-
-		//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
-		//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
-
-		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
+
+				if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
+					final Object macMenuBarUI;
+					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+						if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "apple.laf.useScreenMenuBar" ) ) {
+							macMenuBarUI = javax.swing.UIManager.get( MENU_BAR_UI_NAME );
+						} else {
+							macMenuBarUI = null;
+						}
+					} else {
+						macMenuBarUI = null;
+					}
+					edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( NIMBUS_LOOK_AND_FEEL_NAME );
+					if( macMenuBarUI != null ) {
+						javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
+					}
+				}
+				javax.swing.UIManager.put( "ScrollBar.width", 13 );
+				javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
+				javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
+				javax.swing.UIManager.put( "ScrollBar.thumb", edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 140 ) );
+
+				//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+				//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
+				edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
 				int xLocation = 0;
@@ -130,10 +132,6 @@ public class EntryPoint {
 				}
 				ide.initialize( args );
 				ide.getFrame().setVisible( true );
-				//
-				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
-				//					org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
-				//				}
 			}
 		} );
 	}

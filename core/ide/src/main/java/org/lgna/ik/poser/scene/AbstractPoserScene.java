@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.alice.interact.PoserAnimatorDragAdapter;
-import org.alice.stageide.sceneeditor.HandleStyle;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.core.IKCore;
@@ -113,7 +112,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 
 		@Override
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			poserAnimatorDragAdapter.setHandlVisibility( nextValue );
+			poserAnimatorDragAdapter.setHandleVisibility( nextValue );
 		}
 	};
 	private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
@@ -134,7 +133,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 			JointSelectionSphere jss = poserEvent.getJSS();
 			jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
 			poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
-			poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+			poserAnimatorDragAdapter.setHandleVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
 
 		}
 
@@ -187,10 +186,10 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		synchronized( dragListeners ) {
 			poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
 			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getAnimator() );
-			poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
+			poserAnimatorDragAdapter.setInteractionState( org.alice.interact.handle.HandleStyle.ROTATION );
 			poserAnimatorDragAdapter.setTarget( model );
 			poserAnimatorDragAdapter.setOnscreenLookingGlass( getOnscreenLookingGlass() );
-			poserAnimatorDragAdapter.setHandlVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+			poserAnimatorDragAdapter.setHandleVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
 			for( PoserSphereManipulatorListener sphereListener : dragListeners ) {
 				poserAnimatorDragAdapter.addSphereDragListener( sphereListener );
 			}

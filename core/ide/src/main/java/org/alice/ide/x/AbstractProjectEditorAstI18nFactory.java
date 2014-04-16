@@ -47,7 +47,7 @@ package org.alice.ide.x;
  */
 public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18nFactory {
 	public AbstractProjectEditorAstI18nFactory() {
-		super( org.alice.ide.IDE.PROJECT_GROUP );
+		super( org.lgna.croquet.Application.PROJECT_GROUP );
 	}
 
 	@Override

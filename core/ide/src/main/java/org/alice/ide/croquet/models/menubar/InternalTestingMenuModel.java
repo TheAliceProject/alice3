@@ -58,6 +58,8 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
 				org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
+				org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+				SEPARATOR,
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),

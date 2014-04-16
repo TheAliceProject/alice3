@@ -46,20 +46,20 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  * @author Dennis Cosgrove
  */
 public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
-	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-	private edu.cmu.cs.dennisc.scenegraph.Box m_sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
+	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 
 	public BoundingBoxDecorator( boolean isPickable ) {
-		m_sgFrontAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
-		m_sgFrontAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
-		m_sgFrontAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
-		m_sgBackAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.DARK_GRAY );
-		m_sgBackAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
-		m_sgBackAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
-		frontFacingAppearance.setValue( m_sgFrontAppearance );
-		backFacingAppearance.setValue( m_sgBackAppearance );
-		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { m_sgBox } );
+		this.sgFrontAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
+		this.sgFrontAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
+		this.sgFrontAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
+		this.sgBackAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.DARK_GRAY );
+		this.sgBackAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
+		this.sgBackAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
+		this.frontFacingAppearance.setValue( this.sgFrontAppearance );
+		this.backFacingAppearance.setValue( this.sgBackAppearance );
+		this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgBox } );
 		this.isPickable.setValue( isPickable );
 	}
 
@@ -68,7 +68,15 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 	}
 
 	public void setBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box ) {
-		m_sgBox.set( box );
+		this.sgBox.set( box );
+	}
+
+	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance getSgFrontAppearance() {
+		return this.sgFrontAppearance;
+	}
+
+	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance getSgBackAppearance() {
+		return this.sgBackAppearance;
 	}
 
 	@Override
@@ -79,8 +87,8 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		} else {
 			name = "null";
 		}
-		m_sgFrontAppearance.setName( name + ".m_sgFrontAppearance" );
-		m_sgBackAppearance.setName( name + ".m_sgBackAppearance" );
-		m_sgBox.setName( name + ".m_sgBox" );
+		this.sgFrontAppearance.setName( name + ".sgFrontAppearance" );
+		this.sgBackAppearance.setName( name + ".sgBackAppearance" );
+		this.sgBox.setName( name + ".sgBox" );
 	}
 }

@@ -140,7 +140,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new org.alice.stageide.StageIDE();
+		//new org.alice.stageide.StageIDE();
 		try {
 			org.lgna.croquet.triggers.Trigger trigger = null;
 			ArrayCustomExpressionCreatorComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( String[].class ) ).getValueCreator().fire( trigger );

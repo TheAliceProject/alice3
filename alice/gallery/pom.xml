@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.alice</groupId>
+	<artifactId>gallery</artifactId>
+
+	<!-- alice.gallery.version -->
+	<version>2013.08.20</version>
+	<packaging>pom</packaging>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
+
+	<modules>
+		<module>alice-model-resources</module>
+		<module>alice-model-source</module>
+		<module>sound-gallery</module>
+	</modules>
+
+	<distributionManagement>
+		<repository>
+			<id>org.alice</id>
+			<name>Alice Repository</name>
+			<url>scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/alice</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

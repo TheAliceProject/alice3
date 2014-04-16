@@ -312,7 +312,7 @@ public class ComponentUtilities {
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
-				validateTree( component );
+				revalidateTree( component );
 			}
 		}
 	}

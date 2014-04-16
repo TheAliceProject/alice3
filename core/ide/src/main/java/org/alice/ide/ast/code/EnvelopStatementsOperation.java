@@ -63,7 +63,7 @@ public final class EnvelopStatementsOperation extends org.lgna.croquet.ActionOpe
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
 
 	private EnvelopStatementsOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 	}

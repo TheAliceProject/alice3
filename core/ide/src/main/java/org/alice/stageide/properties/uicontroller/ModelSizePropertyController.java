@@ -270,37 +270,37 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 		if( ( this.propertyAdapter != null ) && ( this.propertyAdapter.getInstance() != null ) ) {
 			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-			for( org.lgna.story.implementation.ModelImp.Resizer r : baseModel.getResizers() ) {
-				if( r == org.lgna.story.implementation.ModelImp.Resizer.UNIFORM ) {
+			for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer r : baseModel.getResizers() ) {
+				if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
 					hasLinkAll = true;
 					hasX = true;
 					hasY = true;
 					hasZ = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE ) {
 					hasLinkXY = true;
 					hasX = true;
 					hasY = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 					hasLinkXZ = true;
 					hasX = true;
 					hasZ = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) {
 					hasLinkYZ = true;
 					hasY = true;
 					hasZ = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.X_AXIS ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
 					hasX = true;
 					hasIndependentX = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.Y_AXIS ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 					hasY = true;
 					hasIndependentY = true;
 				}
-				else if( r == org.lgna.story.implementation.ModelImp.Resizer.Z_AXIS ) {
+				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
 					hasZ = true;
 					hasIndependentZ = true;
 				}

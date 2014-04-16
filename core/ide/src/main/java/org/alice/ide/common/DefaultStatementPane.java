@@ -60,4 +60,39 @@ public class DefaultStatementPane extends AbstractStatementPane {
 	public void setMaxYForIfBlock( int maxYForIfBlock ) {
 		this.maxYForIfBlock = maxYForIfBlock;
 	}
+
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+			org.lgna.project.ast.Statement statement = this.getStatement();
+			if( statement instanceof org.lgna.project.ast.DoTogether ) {
+				org.lgna.croquet.views.imp.JDragView jDragView = this.getAwtComponent();
+				org.alice.ide.x.components.StatementListPropertyView.FeedbackJPanel feedbackJPanel = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findFirstMatch( jDragView, org.alice.ide.x.components.StatementListPropertyView.FeedbackJPanel.class );
+				if( feedbackJPanel != null ) {
+					java.awt.Insets insets = this.getInsets();
+					edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g2 );
+					gc.pushAndSetTextAntialiasing( true );
+					gc.pushPaint();
+					g2.setColor( java.awt.Color.BLACK );
+					try {
+						final int N = feedbackJPanel.getComponentCount();
+						for( int i = 1; i < N; i++ ) {
+							java.awt.Component componentI = feedbackJPanel.getComponent( i );
+							java.awt.Point p = new java.awt.Point( 0, 0 );
+							java.awt.Point pThis = javax.swing.SwingUtilities.convertPoint( componentI, p, jDragView );
+							g2.drawString( "}, () -> {", insets.left + x, pThis.y - 6 );
+						}
+					} finally {
+						gc.popAll();
+					}
+					//				for( org.lgna.croquet.views.AwtComponentView<?> awtComponentView : ( (org.lgna.croquet.views.AwtContainerView<?>)( (org.lgna.croquet.views.AwtContainerView<?>)this.getComponent( 0 ) ).getComponent( 1 ) ).getComponents() ) {
+					//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( awtComponentView );
+					//					if( awtComponentView instanceof org.alice.ide.x.components.StatementListPropertyView ) {
+					//						org.alice.ide.x.components.StatementListPropertyView statementListPropertyView = (org.alice.ide.x.components.StatementListPropertyView)awtComponentView;
+					//					}
+				}
+			}
+		}
+	}
 }

@@ -46,8 +46,6 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class PreviousValueExpression extends IdeExpression {
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
-
 	public PreviousValueExpression( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
@@ -66,4 +64,6 @@ public class PreviousValueExpression extends IdeExpression {
 		//		}
 		return this.type;
 	}
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
 }

@@ -63,7 +63,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna
 	private final org.lgna.project.ast.ArgumentOwner argumentOwner;
 
 	private KeyedMoreCascade( org.lgna.project.ast.ArgumentOwner argumentOwner ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
 		this.argumentOwner = argumentOwner;
 	}
 

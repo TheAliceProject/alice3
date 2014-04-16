@@ -59,7 +59,20 @@ public class StatementListBorder implements javax.swing.border.Border {
 
 	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0 );
 
-	private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
+	private static final int EMPTY_INSET_TOP = 3;
+	private static final int EMPTY_INSET_BOTTOM = 16;
+	private static final int EMPTY_INSET_LEADING = 12;
+	private static final int EMPTY_INSET_TRAILING = 64;
+
+	//private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
+
+	private static java.awt.Insets createEmptyInsets( java.awt.ComponentOrientation componentOrientation ) {
+		if( componentOrientation.isLeftToRight() ) {
+			return new java.awt.Insets( EMPTY_INSET_TOP, EMPTY_INSET_LEADING, EMPTY_INSET_BOTTOM, EMPTY_INSET_TRAILING );
+		} else {
+			return new java.awt.Insets( EMPTY_INSET_TOP, EMPTY_INSET_TRAILING, EMPTY_INSET_BOTTOM, EMPTY_INSET_LEADING );
+		}
+	}
 
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.StatementListProperty alternateListProperty;
@@ -68,7 +81,6 @@ public class StatementListBorder implements javax.swing.border.Border {
 	private final int minimum;
 
 	private boolean isDrawingDesired = true;
-	private boolean isEmptyAffordanceTemporariltyDisabled = false;
 
 	public StatementListBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
 		this.factory = factory;
@@ -94,8 +106,19 @@ public class StatementListBorder implements javax.swing.border.Border {
 			if( g != null ) {
 				g.dispose();
 			}
+			java.awt.Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
 			if( bounds != null ) {
-				return new java.awt.Insets( EMPTY_INSETS.top, EMPTY_INSETS.left, EMPTY_INSETS.bottom + (int)bounds.getHeight(), EMPTY_INSETS.right + (int)bounds.getWidth() );
+				int left = EMPTY_INSETS.left;
+				int right = EMPTY_INSETS.right;
+				if( this.isCompletelyEmpty( container ) ) {
+					int textWidth = (int)Math.ceil( bounds.getWidth() );
+					if( container.getComponentOrientation().isLeftToRight() ) {
+						right += textWidth;
+					} else {
+						left += textWidth;
+					}
+				}
+				return new java.awt.Insets( EMPTY_INSETS.top, left, EMPTY_INSETS.bottom + (int)bounds.getHeight(), right );
 			} else {
 				return EMPTY_INSETS;
 			}
@@ -106,6 +129,10 @@ public class StatementListBorder implements javax.swing.border.Border {
 
 	public int getMinimum() {
 		return this.minimum;
+	}
+
+	private boolean isCompletelyEmpty( java.awt.Container container ) {
+		return container.getComponentCount() == 0;
 	}
 
 	public boolean isVirtuallyEmpty( java.awt.Container container ) {
@@ -132,9 +159,16 @@ public class StatementListBorder implements javax.swing.border.Border {
 					int textIndex = container.getComponentCount();
 					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, textIndex );
 
-					int width = ( EMPTY_INSETS.right + (int)bounds.getWidth() ) - 16;
-					int height = ( EMPTY_INSETS.bottom + (int)bounds.getHeight() ) - 4;
-					int dx = x + EMPTY_INSETS.left;
+					java.awt.Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
+					final int PADDING = 24;
+					int width = ( EMPTY_INSET_LEADING + (int)bounds.getWidth() ) + PADDING;
+					int height = ( EMPTY_INSET_BOTTOM + (int)bounds.getHeight() ) - 4;
+					int dx;
+					if( c.getComponentOrientation().isLeftToRight() ) {
+						dx = x + EMPTY_INSET_LEADING;
+					} else {
+						dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() ) - PADDING - 12;
+					}
 					int dy;
 					if( container.getComponentCount() == 0 ) {
 						dy = y + EMPTY_INSETS.top + 2;
@@ -163,12 +197,24 @@ public class StatementListBorder implements javax.swing.border.Border {
 					g.setColor( java.awt.Color.BLACK );
 					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], 8, 0, (int)bounds.getWidth(), height );
+
+					int xText = 6;
+					if( c.getComponentOrientation().isLeftToRight() ) {
+						//pass
+					} else {
+						xText += PADDING;
+					}
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], xText, 0, (int)bounds.getWidth(), height );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 					g.translate( -dx, -dy );
 				}
 			}
 		}
+		//		java.awt.Insets insets = container.getInsets();
+		//		g.setColor( java.awt.Color.MAGENTA );
+		//		g.drawRect( x + insets.left, y + insets.top, w - insets.right, h - insets.bottom );
+		//		g.setColor( java.awt.Color.BLUE );
+		//		g.drawRect( x, y, w, h );
 	}
 
 	public boolean isDrawingDesired() {

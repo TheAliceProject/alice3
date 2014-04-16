@@ -47,18 +47,12 @@ package org.alice.ide.declarationseditor.code.components;
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
-	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
-
 	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite );
-		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
-		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
-		this.addCenterComponent( this.codeEditor );
+		super( composite, new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() ) );
 	}
 
-	@Deprecated
 	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
-		return this.codeEditor;
+	protected org.lgna.croquet.views.AwtComponentView<?> getMainComponent() {
+		return this.getCodePanelWithDropReceptor();
 	}
 }

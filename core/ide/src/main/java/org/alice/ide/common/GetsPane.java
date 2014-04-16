@@ -119,7 +119,7 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 	}
 
 	private boolean isReversalDesired() {
-		java.awt.ComponentOrientation componentOrientation = java.awt.ComponentOrientation.getOrientation( this.getLocale() );
+		java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
 		if( componentOrientation.isLeftToRight() ) {
 			return isTowardLeadingEdge == false;
 		} else {

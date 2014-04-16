@@ -59,7 +59,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 		{
 			this.propertyListener = new Listener<P>()
 			{
-				public void propertyChanged( P prevValue, P nextValue ) {
+				public void propertyChanged( org.lgna.story.implementation.Property<P> property, P prevValue, P nextValue ) {
 					isPropertyUpdate = true;
 					handleInternalValueChanged();
 					isPropertyUpdate = false;
@@ -134,14 +134,14 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 
 	protected void addPropertyListener( Listener<P> propertyListener ) {
 		if( this.property != null ) {
-			property.addPropertyObserver( propertyListener );
+			property.addPropertyListener( propertyListener );
 			isPropertyListening = true;
 		}
 	}
 
 	protected void removePropertyListener( Listener<P> propertyListener ) {
 		if( ( this.property != null ) && isPropertyListening ) {
-			property.removePropertyObserver( propertyListener );
+			property.removePropertyListener( propertyListener );
 			isPropertyListening = false;
 		}
 	}

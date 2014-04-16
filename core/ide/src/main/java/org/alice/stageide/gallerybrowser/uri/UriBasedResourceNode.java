@@ -62,8 +62,6 @@ public final class UriBasedResourceNode extends org.alice.stageide.modelresource
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		UriResourceKeyIteratingOperation operation = UriResourceKeyIteratingOperation.getInstance();
-		operation.setResourceKeyThingClsAndUri( this.getResourceKey(), this.thingCls, this.uri );
-		return operation;
+		return ResourceKeyUriIteratingOperation.getInstance( this.getResourceKey(), this.thingCls, this.uri );
 	}
 }

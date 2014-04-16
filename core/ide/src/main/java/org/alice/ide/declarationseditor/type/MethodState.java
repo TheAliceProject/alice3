@@ -48,6 +48,6 @@ package org.alice.ide.declarationseditor.type;
  */
 public abstract class MethodState extends FilteredMemberState<org.lgna.project.ast.UserMethod> {
 	public MethodState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.MethodData data ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, data );
+		super( org.lgna.croquet.Application.PROJECT_GROUP, id, data );
 	}
 }

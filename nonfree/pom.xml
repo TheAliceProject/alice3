@@ -4,14 +4,15 @@
 
 	<groupId>org.alice.nonfree</groupId>
 	<artifactId>nonfree</artifactId>
-	<version>2013.08.20</version>
+	<!-- nebulous.gallery.version -->
+	<version>2013.08.08</version>
 	<packaging>pom</packaging>
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->
 
 	<modules>
-		<module>nebulous</module>
+		<module>nebulous-natives</module>
 		<module>nebulous-model-resources</module>
 		<module>nebulous-model-source</module>
 	</modules>

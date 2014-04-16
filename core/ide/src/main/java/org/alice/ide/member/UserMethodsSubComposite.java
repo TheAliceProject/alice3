@@ -98,7 +98,8 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
 		java.util.List<org.lgna.project.ast.AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
-			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
+			org.lgna.project.ast.ManagementLevel managementLevel = method.managementLevel.getValue();
+			if( ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.GENERATED ) ) {
 				if( this.isAcceptable( method ) ) {
 					rv.add( method );
 				}

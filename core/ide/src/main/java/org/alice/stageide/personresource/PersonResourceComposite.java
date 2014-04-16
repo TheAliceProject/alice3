@@ -128,6 +128,22 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return this.previewComposite;
 	}
 
+	public org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getRandomPersonValueCreator( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return this.randomAdultValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+			return this.randomChildValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return this.randomTeenValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return this.randomToddlerValueCreator;
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+			return this.randomElderValueCreator;
+		} else {
+			return this.randomAdultValueCreator;
+		}
+	}
+
 	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getRandomPersonExpressionValueConverter( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			return this.randomAdultExpressionValueConverter;
@@ -149,7 +165,12 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	private void initializeRandom( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		this.ingredientsComposite.getLifeStageState().setEnabled( true );
+		boolean isLifeStageStateEnabled = true;
+		if( EPIC_HACK_disableLifeStageStateOneTime ) {
+			isLifeStageStateEnabled = false;
+			EPIC_HACK_disableLifeStageStateOneTime = false;
+		}
+		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
 		org.lgna.story.resources.sims2.PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
 		this.ingredientsComposite.setStates( personResource );
 	}
@@ -172,6 +193,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 			if( type instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					//note: duplicated below
 					isLifeStageStateEnabled = false;
 
 					Object instance = vm.ENTRY_POINT_createInstance( instanceCreation );
@@ -179,6 +201,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 					if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 						org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
 						this.ingredientsComposite.setStates( personResource );
+						//note: duplicated above
 						isLifeStageStateEnabled = false;
 					} else {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
@@ -187,6 +210,12 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 			}
 		}
 		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
+	}
+
+	private boolean EPIC_HACK_disableLifeStageStateOneTime;
+
+	public void EPIC_HACK_disableLifeStageStateOneTime() {
+		EPIC_HACK_disableLifeStageStateOneTime = true;
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
@@ -215,14 +244,20 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		}
 		super.handlePreShowDialog( completionStep );
 	}
 
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 		super.handleFinally( step, dialog );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().enableRendering();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().enableRendering();
+		}
 	}
 
 	@Override
@@ -233,7 +268,8 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		new org.alice.stageide.StageIDE();
+		//new org.alice.stageide.StageIDE();
+		new org.lgna.croquet.simple.SimpleApplication();
 
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();

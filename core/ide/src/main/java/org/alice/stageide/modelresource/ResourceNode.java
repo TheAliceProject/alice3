@@ -181,12 +181,12 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( this.resourceKey );
+		return IdeAliceResourceUtilities.getBoundingBox( this.resourceKey );
 	}
 
 	@Override
 	public boolean placeOnGround() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getPlaceOnGround( this.resourceKey );
+		return IdeAliceResourceUtilities.getPlaceOnGround( this.resourceKey );
 	}
 
 	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {

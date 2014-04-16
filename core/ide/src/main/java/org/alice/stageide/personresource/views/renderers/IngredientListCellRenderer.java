@@ -89,6 +89,16 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		this.height = height;
 	}
 
+	public boolean ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( E value, org.lgna.story.resources.sims2.SkinTone baseSkinTone ) {
+		Object v = getValue( value );
+		String clsName = v.getClass().getSimpleName();
+		clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
+		String enumConstantName = v.toString();
+		String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+		java.io.File file = new java.io.File( IMAGE_ROOT, path );
+		return file.exists();
+	}
+
 	protected abstract String getSubPath();
 
 	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {

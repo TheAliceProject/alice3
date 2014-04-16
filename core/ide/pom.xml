@@ -20,6 +20,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>ast</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>croquet</artifactId>
 		</dependency>
 		<dependency>
@@ -32,21 +36,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>story-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>story-api-migration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>issue-reporting</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
 			<artifactId>resources</artifactId>
-		</dependency>
-
-		<!-- Gallery/Models -->
-		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>alice-model-source</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.alice.nonfree</groupId>
-			<artifactId>nebulous-model-source</artifactId>
 		</dependency>
 
 		<!-- External -->
@@ -60,13 +62,9 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>javamp3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>gov.nist.math.jama</groupId>
-			<artifactId>gov.nist.math.jama</artifactId>
-			<version>1.1.1</version>
+			<groupId>de.java2html</groupId>
+			<artifactId>java2html</artifactId>
+			<version>5.0</version>
 		</dependency>
 	</dependencies>
 
@@ -76,20 +74,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<executions>
-					<!-- add generated source directory -->
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src/generated/java</source>
-							</sources>
-						</configuration>
-					</execution>
-
 					<!-- add generated resources directory -->
 					<execution>
 						<id>add-resource</id>
