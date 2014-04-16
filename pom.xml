@@ -16,12 +16,14 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<java.version>1.6</java.version>
 
 		<jogl.version>2.1.3</jogl.version>
+
 		<alice.gallery.version>2013.08.08</alice.gallery.version>
-		<nebulous.version>2013.08.20</nebulous.version>
+		<sound.gallery.version>2013.08.08</sound.gallery.version>
+		<nebulous.gallery.version>2013.08.08</nebulous.gallery.version>
+		<nebulous.libs.version>2013.08.20</nebulous.libs.version>
 	</properties>
 
 	<modules>
@@ -108,7 +110,7 @@
 			<dependency>
 				<groupId>org.alice.nonfree</groupId>
 				<artifactId>nebulous-model-source</artifactId>
-				<version>${alice.gallery.version}</version>
+				<version>${nebulous.gallery.version}</version>
 			</dependency>
 
 			<!-- Third Party Libraries -->
