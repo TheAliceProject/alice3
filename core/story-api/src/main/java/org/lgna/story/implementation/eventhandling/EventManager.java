@@ -243,8 +243,8 @@ public class EventManager {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
 
-	public void moveWithArrows( SMovableTurnable entity ) {
-		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
+	public void moveWithArrows( SMovableTurnable entity, Double speed ) {
+		MoveWithArrows.createNewAndAddTo( entity, speed, this.keyHandler );
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {

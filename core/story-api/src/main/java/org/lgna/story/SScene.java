@@ -195,7 +195,7 @@ public abstract class SScene extends SThing {
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
 	public void addObjectMoverFor( SMovableTurnable thing ) {
-		this.implementation.getEventManager().moveWithArrows( thing );
+		this.implementation.getEventManager().moveWithArrows( thing, 1.0 );
 	}
 
 	//TransformationListeners
