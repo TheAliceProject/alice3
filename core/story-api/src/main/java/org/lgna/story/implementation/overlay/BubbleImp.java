@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -43,73 +43,21 @@
 package org.lgna.story.implementation.overlay;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
-	protected static enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
+public class BubbleImp {
+	public BubbleImp( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		this.bubble = bubble;
+		this.bubble.text.setValue( text );
+		this.bubble.font.setValue( font );
+		this.bubble.textColor.setValue( textColor );
+		this.bubble.fillColor.setValue( fillColor );
+		this.bubble.outlineColor.setValue( outlineColor );
 	}
 
-	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( entityImp );
-		this.openingDuration = openingDuration;
-		this.updatingDuration = updatingDuration;
-		this.closingDuration = closingDuration;
+	public edu.cmu.cs.dennisc.scenegraph.graphics.Bubble getBubble() {
+		return this.bubble;
 	}
 
-	protected double getOpeningDuration() {
-		return this.openingDuration;
-	}
-
-	protected double getUpdatingDuration() {
-		return this.updatingDuration;
-	}
-
-	protected double getClosingDuration() {
-		return this.closingDuration;
-	}
-
-	protected abstract void updateStateAndPortion( State state, double portion );
-
-	@Override
-	protected void prologue() {
-		this.updateStateAndPortion( State.OPENNING, 0.0 );
-		super.prologue();
-	}
-
-	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( ( this.openingDuration > 0.0 ) && ( deltaSincePrologue <= this.openingDuration ) ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / this.openingDuration;
-		} else if( ( this.updatingDuration > 0.0 ) && ( deltaSincePrologue <= ( this.openingDuration + this.updatingDuration ) ) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue - this.openingDuration ) / this.updatingDuration;
-		} else {
-			state = State.CLOSING;
-			if( this.closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue - this.openingDuration - this.updatingDuration ) / this.closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
-			}
-		}
-		this.updateStateAndPortion( state, portion );
-		double toReturn = ( this.openingDuration + this.updatingDuration + this.closingDuration ) - deltaSincePrologue;
-		return toReturn;
-	}
-
-	@Override
-	protected void epilogue() {
-		this.updateStateAndPortion( State.CLOSING, 1.0 );
-		super.epilogue();
-	}
-
-	private final double openingDuration;
-	private final double updatingDuration;
-	private final double closingDuration;
+	private final edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble;
 }

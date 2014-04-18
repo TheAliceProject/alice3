@@ -381,9 +381,9 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 		this.animateScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 
-	public void displayBubble( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration ) {
+	public void displayBubble( org.lgna.story.implementation.overlay.BubbleImp bubbleImp, Number duration ) {
 		if( this.getScene() != null ) {
-			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
+			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubbleImp ) );
 		} else {
 			//todo
 			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );

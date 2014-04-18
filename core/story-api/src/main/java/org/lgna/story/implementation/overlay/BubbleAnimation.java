@@ -47,35 +47,34 @@ package org.lgna.story.implementation.overlay;
  * 
  */
 public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
-	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble m_bubble;
-
-	public BubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
+	public BubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration, BubbleImp bubbleImp ) {
 		super( entityImp, openingDuration, updatingDuration, closingDuration );
-		m_bubble = bubble;
+		this.bubbleImp = bubbleImp;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic() {
-		return m_bubble;
+	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble getSGGraphic() {
+		return this.bubbleImp.getBubble();
 	}
 
 	@Override
 	protected void updateStateAndPortion( State state, double portion ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = this.getSGGraphic();
 		if( state == State.OPENNING ) {
-			m_bubble.portion.setValue( portion );
+			bubble.portion.setValue( portion );
 		} else if( state == State.UPDATING ) {
-			m_bubble.portion.setValue( 1.0 );
+			bubble.portion.setValue( 1.0 );
 		} else {
 			//state == State.CLOSING;
-			m_bubble.portion.setValue( 1.0 - portion );
+			bubble.portion.setValue( 1.0 - portion );
 		}
 	}
 
 	@Override
-	protected void epilogue()
-	{
+	protected void epilogue() {
 		super.epilogue();
-		edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( this.m_bubble );
+		edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( this.getSGGraphic() );
 	}
 
+	private final BubbleImp bubbleImp;
 }
