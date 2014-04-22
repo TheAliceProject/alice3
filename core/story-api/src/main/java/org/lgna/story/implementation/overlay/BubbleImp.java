@@ -94,6 +94,8 @@ public abstract class BubbleImp extends org.lgna.story.implementation.PropertyOw
 			} else {
 				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
 					this.getSgLayer().removeGraphic( bubble );
+					//todo:
+					edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( bubble );
 				}
 			}
 			bubble.portion.setValue( nextValue );
