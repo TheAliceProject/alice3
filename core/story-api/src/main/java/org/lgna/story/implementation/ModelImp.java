@@ -383,7 +383,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	public void displayBubble( org.lgna.story.implementation.overlay.BubbleImp bubbleImp, Number duration ) {
 		if( this.getScene() != null ) {
-			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubbleImp ) );
+			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( 0.2, duration.doubleValue(), 0.2, bubbleImp ) );
 		} else {
 			//todo
 			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );

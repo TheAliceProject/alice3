@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation.overlay;
-
-import edu.cmu.cs.dennisc.animation.AbstractAnimation;
+package org.lgna.story.implementation;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+public abstract class PropertyOwnerImp {
+	protected static final double RIGHT_NOW = 0.0;
 
-	private org.lgna.story.implementation.EntityImp m_entityImp;
-	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
-	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+	public abstract ProgramImp getProgram();
 
-	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
-		assert entityImp != null;
-		m_entityImp = entityImp;
+	private double getSimulationSpeedFactor() {
+		ProgramImp programImplementation = this.getProgram();
+		if( programImplementation != null ) {
+			return programImplementation.getSimulationSpeedFactor();
+		} else {
+			return Double.NaN;
+		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
-
-	@Override
-	protected void prologue() {
-		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
-		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
-		m_sgLayer = camera.getPostRenderLayer();
-		m_sgGraphic = this.getSGGraphic();
-		assert m_sgLayer != null;
-		assert m_sgGraphic != null;
-		m_sgGraphic.setParent( m_sgLayer );
+	protected double adjustDurationIfNecessary( double duration ) {
+		if( duration == RIGHT_NOW ) {
+			//pass
+		} else {
+			double simulationSpeedFactor = this.getSimulationSpeedFactor();
+			if( Double.isNaN( simulationSpeedFactor ) ) {
+				duration = RIGHT_NOW;
+			} else if( Double.isInfinite( simulationSpeedFactor ) ) {
+				duration = RIGHT_NOW;
+			} else {
+				duration = duration / simulationSpeedFactor;
+			}
+		}
+		return duration;
 	}
 
-	@Override
-	protected void preEpilogue() {
+	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		ProgramImp programImplementation = this.getProgram();
+		if( programImplementation != null ) {
+			programImplementation.perform( animation, animationObserver );
+		} else {
+			animation.complete( animationObserver );
+		}
 	}
 
-	@Override
-	protected void epilogue() {
-		m_sgGraphic.setParent( null );
+	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
+		this.perform( animation, null );
 	}
-
 }

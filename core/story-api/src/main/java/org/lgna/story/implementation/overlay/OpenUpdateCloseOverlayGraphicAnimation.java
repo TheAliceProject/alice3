@@ -46,42 +46,28 @@ package org.lgna.story.implementation.overlay;
  * @author dculyba
  * 
  */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
+public abstract class OpenUpdateCloseOverlayGraphicAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimation {
 	protected static enum State {
 		OPENNING,
 		UPDATING,
 		CLOSING,
 	}
 
-	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
-		super( entityImp );
+	public OpenUpdateCloseOverlayGraphicAnimation( double openingDuration, double updatingDuration, double closingDuration ) {
 		this.openingDuration = openingDuration;
 		this.updatingDuration = updatingDuration;
 		this.closingDuration = closingDuration;
 	}
 
-	protected double getOpeningDuration() {
-		return this.openingDuration;
-	}
-
-	protected double getUpdatingDuration() {
-		return this.updatingDuration;
-	}
-
-	protected double getClosingDuration() {
-		return this.closingDuration;
-	}
-
 	protected abstract void updateStateAndPortion( State state, double portion );
 
 	@Override
-	protected void prologue() {
+	protected final void prologue() {
 		this.updateStateAndPortion( State.OPENNING, 0.0 );
-		super.prologue();
 	}
 
 	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	protected final double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		State state;
 		double portion;
 		if( ( this.openingDuration > 0.0 ) && ( deltaSincePrologue <= this.openingDuration ) ) {
@@ -104,9 +90,12 @@ public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGrap
 	}
 
 	@Override
-	protected void epilogue() {
+	protected void preEpilogue() {
+	}
+
+	@Override
+	protected final void epilogue() {
 		this.updateStateAndPortion( State.CLOSING, 1.0 );
-		super.epilogue();
 	}
 
 	private final double openingDuration;

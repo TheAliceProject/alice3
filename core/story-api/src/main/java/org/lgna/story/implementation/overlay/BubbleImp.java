@@ -45,8 +45,9 @@ package org.lgna.story.implementation.overlay;
 /**
  * @author Dennis Cosgrove
  */
-public class BubbleImp {
-	public BubbleImp( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+public abstract class BubbleImp extends org.lgna.story.implementation.PropertyOwnerImp {
+	public BubbleImp( org.lgna.story.implementation.EntityImp imp, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		this.imp = imp;
 		this.bubble = bubble;
 		this.bubble.text.setValue( text );
 		this.bubble.font.setValue( font );
@@ -59,5 +60,43 @@ public class BubbleImp {
 		return this.bubble;
 	}
 
+	@Override
+	public org.lgna.story.implementation.ProgramImp getProgram() {
+		return this.imp.getProgram();
+	}
+
+	private final org.lgna.story.implementation.EntityImp imp;
 	private final edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble;
+
+	private static final double CLOSE_ENOUGH_TO_ZERO = 0.001;
+	public final org.lgna.story.implementation.DoubleProperty portion = new org.lgna.story.implementation.DoubleProperty( this ) {
+		private edu.cmu.cs.dennisc.scenegraph.Layer getSgLayer() {
+			org.lgna.story.implementation.SceneImp scene = imp.getScene();
+			org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+			return camera.getPostRenderLayer();
+		}
+
+		@Override
+		public Double getValue() {
+			return bubble.portion.getValue();
+		}
+
+		@Override
+		protected void handleSetValue( Double value ) {
+			double prevValue = bubble.portion.getValue();
+			double nextValue = value.doubleValue();
+			if( prevValue < CLOSE_ENOUGH_TO_ZERO ) {
+				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
+					//pass
+				} else {
+					this.getSgLayer().addGraphic( bubble );
+				}
+			} else {
+				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
+					this.getSgLayer().removeGraphic( bubble );
+				}
+			}
+			bubble.portion.setValue( nextValue );
+		}
+	};
 }

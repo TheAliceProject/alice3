@@ -49,7 +49,7 @@ import org.lgna.story.implementation.eventhandling.AabbCollisionDetector;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImp implements ReferenceFrame {
+public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFrame {
 	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key<EntityImp> ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
 
 	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
@@ -224,7 +224,8 @@ public abstract class EntityImp implements ReferenceFrame {
 		return vehicle != null ? vehicle.getScene() : null;
 	}
 
-	protected ProgramImp getProgram() {
+	@Override
+	public ProgramImp getProgram() {
 		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
@@ -260,37 +261,11 @@ public abstract class EntityImp implements ReferenceFrame {
 		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
 	}
 
-	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;
 	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
 
 	//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
 	//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
-
-	private double getSimulationSpeedFactor() {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			return programImplementation.getSimulationSpeedFactor();
-		} else {
-			return Double.NaN;
-		}
-	}
-
-	protected double adjustDurationIfNecessary( double duration ) {
-		if( duration == RIGHT_NOW ) {
-			//pass
-		} else {
-			double simulationSpeedFactor = this.getSimulationSpeedFactor();
-			if( Double.isNaN( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else if( Double.isInfinite( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else {
-				duration = duration / simulationSpeedFactor;
-			}
-		}
-		return duration;
-	}
 
 	public void alreadyAdjustedDelay( double duration ) {
 		if( duration == RIGHT_NOW ) {
@@ -320,19 +295,6 @@ public abstract class EntityImp implements ReferenceFrame {
 		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 		edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
 		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
-	}
-
-	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			programImplementation.perform( animation, animationObserver );
-		} else {
-			animation.complete( animationObserver );
-		}
-	}
-
-	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
-		this.perform( animation, null );
 	}
 
 	private java.awt.Component getParentComponent() {
