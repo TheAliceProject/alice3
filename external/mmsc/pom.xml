@@ -16,6 +16,15 @@
 
 	<name>MMSC</name>
 	<url>http://www.mms-computing.co.uk/</url>
+	<!-- http://thorntonzone.com/manuals/Compression/Fax,%20IBM%20MMR/MMSC/mmsc/uk/co/mmscomputing/download/index.html -->
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->

@@ -13,6 +13,20 @@
 	<artifactId>libvlc</artifactId>
 	<packaging>pom</packaging>
 
+	<name>VideoLAN</name>
+	<url>http://www.videolan.org</url>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License Version 2</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
+
 	<build>
 		<plugins>
 			<plugin>
