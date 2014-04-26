@@ -3,15 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.alice</groupId>
-		<artififactId>gallery</artififactId>
+		<groupId>org.alice.nonfree</groupId>
+		<artifactId>nonfree</artifactId>
 		<version>1.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>sound-gallery</artifactId>
-	<!-- sound.gallery.version -->
-	<version>2013.08.20</version>
+	<artifactId>nebulous-person-resources</artifactId>
+	<!-- nebulous.person.version -->
+	<version>0.0.0</version>
 	<packaging>pom</packaging>
 
 	<!-- Deploy Command -->
@@ -44,4 +44,3 @@
 	</build>
 
 </project>
-
