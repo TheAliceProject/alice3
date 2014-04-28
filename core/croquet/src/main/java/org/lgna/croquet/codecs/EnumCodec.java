@@ -131,7 +131,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( sb.getClass().getName() );
+		sb.append( this.getClass().getName() );
 		sb.append( "[" );
 		sb.append( this.valueCls.getName() );
 		sb.append( "]" );
