@@ -45,12 +45,48 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty<E extends Declaration> extends NodeProperty<E> {
+//public class DeclarationProperty<E extends Declaration> extends NodeProperty<E> {
+//	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+//		super( owner );
+//	}
+//
+//	public boolean isReference() {
+//		return true;
+//	}
+//}
+//public class DeclarationProperty<E extends Declaration> extends NodeProperty<E> {
+//	public static <E extends Declaration> DeclarationProperty<E> createInstance( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+//		return new DeclarationProperty<E>( owner, false );
+//	}
+//
+//	public static <E extends Declaration> DeclarationProperty<E> createReferenceInstance( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+//		return new DeclarationProperty<E>( owner, true );
+//	}
+//
+//	private DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, boolean isReference ) {
+//		super( owner );
+//		this.isReference = isReference;
+//	}
+//
+//	public boolean isReference() {
+//		return this.isReference;
+//	}
+//
+//	private final boolean isReference;
+//}
+public abstract class DeclarationProperty<E extends Declaration> extends NodeProperty<E> {
+	public static <E extends Declaration> DeclarationProperty<E> createReferenceInstance( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		return new DeclarationProperty<E>( owner ) {
+			@Override
+			public boolean isReference() {
+				return true;
+			}
+		};
+	}
+
 	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}
 
-	public boolean isReference() {
-		return true;
-	}
+	public abstract boolean isReference();
 }

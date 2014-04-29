@@ -132,7 +132,7 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = DeclarationProperty.createReferenceInstance( this );
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
 	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );

@@ -80,6 +80,6 @@ public final class ResourceExpression extends Expression {
 		generator.todo( this );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
 	public final org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
 }

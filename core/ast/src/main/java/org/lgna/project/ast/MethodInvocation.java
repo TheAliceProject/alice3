@@ -178,7 +178,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 			return method.getValue().getDeclaringType();
 		}
 	};
-	public final DeclarationProperty<AbstractMethod> method = new DeclarationProperty<AbstractMethod>( this );
+	public final DeclarationProperty<AbstractMethod> method = DeclarationProperty.createReferenceInstance( this );
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );

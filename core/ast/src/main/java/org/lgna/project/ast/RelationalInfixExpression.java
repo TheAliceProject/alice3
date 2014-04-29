@@ -357,6 +357,6 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = DeclarationProperty.createReferenceInstance( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = DeclarationProperty.createReferenceInstance( this );
 }

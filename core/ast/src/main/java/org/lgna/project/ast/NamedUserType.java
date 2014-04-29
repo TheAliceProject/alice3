@@ -153,7 +153,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public final DeclarationProperty<UserPackage> _package = new DeclarationProperty<UserPackage>( this );
+	public final DeclarationProperty<UserPackage> _package = DeclarationProperty.createReferenceInstance( this );
 	public final NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>( this );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither>( this, TypeModifierFinalAbstractOrNeither.NEITHER );

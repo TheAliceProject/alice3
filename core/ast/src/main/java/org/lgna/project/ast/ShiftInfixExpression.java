@@ -166,7 +166,7 @@ public final class ShiftInfixExpression extends Expression {
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
