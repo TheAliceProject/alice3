@@ -205,7 +205,8 @@ public abstract class IoUtilities {
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
 		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, decodedProjectVersion );
 
-		org.lgna.project.migration.ast.AstMigrationUtilities.migrateNode( rv, migrationManagerDecodedVersionPairs );
+		org.lgna.project.Project projectIfApplicable = null;
+		org.lgna.project.migration.ast.AstMigrationUtilities.migrateNode( rv, projectIfApplicable, migrationManagerDecodedVersionPairs );
 		return rv;
 	}
 

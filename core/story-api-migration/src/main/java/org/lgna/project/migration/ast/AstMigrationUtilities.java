@@ -46,14 +46,14 @@ package org.lgna.project.migration.ast;
  * @author Dennis Cosgrove
  */
 public class AstMigrationUtilities {
-	public static void migrateNode( org.lgna.project.ast.Node affecteeNode, org.lgna.project.io.MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) {
+	public static void migrateNode( org.lgna.project.ast.Node affecteeNode, org.lgna.project.Project projectIfApplicable, org.lgna.project.io.MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) {
 		for( org.lgna.project.io.MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
 			org.lgna.project.migration.MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
 			org.lgna.project.Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
 			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
 				//pass
 			} else {
-				migrationManager.migrate( affecteeNode, decodedVersion );
+				migrationManager.migrate( affecteeNode, projectIfApplicable, decodedVersion );
 			}
 		}
 	}

@@ -44,7 +44,6 @@ package org.lgna.project.migration.ast;
 
 import org.lgna.project.migration.AstMigration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +53,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
 	}
 
 	@Override
-	public void migrate( org.lgna.project.ast.Node node ) {
+	public void migrate( org.lgna.project.ast.Node node, org.lgna.project.Project projectIfApplicable ) {
 		if( node instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)node;
 			org.lgna.project.ast.UserMethod mainMethod = type.getDeclaredMethod( "main", String[].class );
