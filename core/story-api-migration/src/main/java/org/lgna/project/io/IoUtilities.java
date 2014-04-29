@@ -205,16 +205,8 @@ public abstract class IoUtilities {
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
 		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, decodedProjectVersion );
 
-		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
-			org.lgna.project.migration.MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
-			org.lgna.project.Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
-			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
-				//pass
-			} else {
-				migrationManager.migrate( rv, decodedVersion );
-			}
-		}
-
+		org.lgna.project.Project projectIfApplicable = null;
+		org.lgna.project.migration.ast.AstMigrationUtilities.migrateNode( rv, projectIfApplicable, migrationManagerDecodedVersionPairs );
 		return rv;
 	}
 

@@ -42,7 +42,6 @@
  */
 package org.lgna.project.migration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -81,14 +80,14 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		return rv;
 	}
 
-	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Version version ) {
+	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable, org.lgna.project.Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
 			if( astMigration != null ) {
 				if( astMigration.isApplicable( version ) ) {
 					if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
 					}
-					astMigration.migrate( root );
+					astMigration.migrate( root, projectIfApplicable );
 					version = astMigration.getResultVersion();
 				}
 			}

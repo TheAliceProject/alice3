@@ -61,8 +61,8 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
 	private static final JavaMethod[] removeTheseDetails = {
-		org.lgna.story.ast.EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-		org.lgna.story.ast.EventListenerMethodUtilities.MOVE_WITH_ARROWS,
+			org.lgna.story.ast.EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+			org.lgna.story.ast.EventListenerMethodUtilities.MOVE_WITH_ARROWS,
 			org.lgna.story.ast.EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD,
 			org.lgna.story.ast.EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
 			org.lgna.story.ast.EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD,
@@ -79,7 +79,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 	}
 
 	@Override
-	protected void migrate( MethodInvocation methodInvocation ) {
+	protected void migrate( MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;

@@ -786,13 +786,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.mainCameraViewTracker = new CameraMarkerTracker( this, animator );
 
 			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
+			this.mainCameraViewSelector.setRenderer( new CameraViewCellRenderer( this.mainCameraViewTracker ) );
 			this.mainCameraViewSelector.setFontSize( 15 );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
-			this.mainCameraViewSelector.setRenderer( new CameraViewCellRenderer( this.mainCameraViewTracker ) );
 
 			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewTracker );
 			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewSelectionObserver );
