@@ -11,7 +11,7 @@
 		<repository>
 			<id>org.alice.external</id>
 			<name>Alice External Repository</name>
-			<url>scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/external</url>
+			<url>${alice-deploy-url}/external</url>
 		</repository>
 	</distributionManagement>
 
