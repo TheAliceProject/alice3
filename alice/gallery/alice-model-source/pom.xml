@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artififactId>gallery</artififactId>
+		<artifactId>gallery</artifactId>
 		<version>1.0</version>
 		<relativePath>../</relativePath>
 	</parent>
