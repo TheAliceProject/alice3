@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ui.debug;
+package org.lgna.croquet.imp.booleanstate;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
-	private static class SingletonHolder {
-		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+/*package-private*/final class BooleanStateSetToValueOperation extends org.lgna.croquet.ActionOperation {
+	private final org.lgna.croquet.BooleanState state;
+	private final boolean value;
+
+	/*package-private*/BooleanStateSetToValueOperation( org.lgna.croquet.BooleanState state, boolean value ) {
+		super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
+		assert state != null;
+		this.state = state;
+		this.value = value;
 	}
 
-	public static ActiveTransactionHistoryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ActiveTransactionHistoryComposite() {
-		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
-		//todo: investigate
-		this.initializeIfNecessary();
-		final boolean IS_SHOWING_BY_DEFAULT = false;
-		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-		}
+	@Override
+	protected void initialize() {
+		this.state.initializeIfNecessary();
+		super.initialize();
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
+		this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
+		this.setButtonIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
-		return rv;
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		this.state.setValueTransactionlessly( this.value );
+		step.finish();
 	}
 }

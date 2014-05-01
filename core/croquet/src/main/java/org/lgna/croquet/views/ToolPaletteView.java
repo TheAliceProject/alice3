@@ -132,7 +132,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		return new ToolPaletteLayout( composite.getIsExpandedState().getSwingModel().getButtonModel() );
+		return new ToolPaletteLayout( composite.getIsExpandedState().getImp().getSwingModel().getButtonModel() );
 	}
 
 	@Override

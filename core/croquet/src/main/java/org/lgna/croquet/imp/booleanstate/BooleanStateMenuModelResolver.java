@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.imp.booleanstate;
 
-package org.alice.ide.croquet.models.ui.debug;
+import org.lgna.croquet.AbstractElement.IndirectResolver;
+import org.lgna.croquet.BooleanState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
-	private static class SingletonHolder {
-		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+public final class BooleanStateMenuModelResolver extends IndirectResolver<BooleanStateMenuModel, BooleanState> {
+	/*package-private*/BooleanStateMenuModelResolver( BooleanState indirect ) {
+		super( indirect );
 	}
 
-	public static ActiveTransactionHistoryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ActiveTransactionHistoryComposite() {
-		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
-		//todo: investigate
-		this.initializeIfNecessary();
-		final boolean IS_SHOWING_BY_DEFAULT = false;
-		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-		}
+	public BooleanStateMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
-		return rv;
+	protected BooleanStateMenuModel getDirect( BooleanState indirect ) {
+		return indirect.getImp().getMenuModel();
 	}
 }

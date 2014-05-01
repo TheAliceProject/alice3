@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ui.debug;
+package org.lgna.croquet.imp.booleanstate;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
-	private static class SingletonHolder {
-		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+public class BooleanStateSwingModel {
+	/*package-private*/BooleanStateSwingModel( org.lgna.croquet.BooleanState state, javax.swing.ButtonModel buttonModel, boolean initialValue ) {
+		this.state = state;
+		this.buttonModel = buttonModel;
+		this.buttonModel.setSelected( initialValue );
 	}
 
-	public static ActiveTransactionHistoryComposite getInstance() {
-		return SingletonHolder.instance;
+	public javax.swing.ButtonModel getButtonModel() {
+		return this.buttonModel;
 	}
 
-	private ActiveTransactionHistoryComposite() {
-		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
-		//todo: investigate
-		this.initializeIfNecessary();
-		final boolean IS_SHOWING_BY_DEFAULT = false;
-		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
+	public javax.swing.Action getAction() {
+		return this.action;
+	}
+
+	private boolean isTextVariable() {
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.state.getTrueText(), this.state.getFalseText() );
+	}
+
+	private boolean isIconVariable() {
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.state.getTrueIcon(), this.state.getFalseIcon() );
+	}
+
+	private final org.lgna.croquet.BooleanState state;
+	private final javax.swing.ButtonModel buttonModel;
+	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+		@Override
+		public Object getValue( String key ) {
+			if( NAME.equals( key ) ) {
+				return state.getTextFor( buttonModel.isSelected() );
+			} else if( SMALL_ICON.equals( key ) ) {
+				return state.getIconFor( buttonModel.isSelected() );
+			} else {
+				return super.getValue( key );
+			}
 		}
-	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
-		return rv;
-	}
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			boolean isSelected = buttonModel.isSelected();
+			if( isTextVariable() ) {
+				//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+				this.putValue( NAME, state.getTextFor( isSelected ) );
+			}
+			if( isIconVariable() ) {
+				//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+				this.putValue( SMALL_ICON, state.getIconFor( isSelected ) );
+			}
+		}
+	};
 }

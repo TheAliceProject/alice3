@@ -68,7 +68,7 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
-	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver<D> {
+	public static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver<D> {
 		private final org.lgna.croquet.resolvers.Resolver<I> resolver;
 
 		public IndirectResolver( I indirect ) {

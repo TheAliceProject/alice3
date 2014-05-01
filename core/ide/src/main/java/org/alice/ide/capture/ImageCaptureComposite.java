@@ -169,7 +169,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ImageCaptureComposite.getInstance().getIsFrameShowingState().getSwingModel().getButtonModel().setSelected( true );
+		ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
 	}
 
 }

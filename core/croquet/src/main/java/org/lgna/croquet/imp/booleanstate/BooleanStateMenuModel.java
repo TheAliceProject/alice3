@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,72 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.imp.booleanstate;
 
-package org.alice.ide.croquet.models.ui.debug;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.Operation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
-	private static class SingletonHolder {
-		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+/*package-private*/class BooleanStateMenuModel extends MenuModel {
+	public BooleanStateMenuModel( BooleanState state ) {
+		super( java.util.UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
+		this.state = state;
 	}
 
-	public static ActiveTransactionHistoryComposite getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected void initialize() {
+		this.state.initializeIfNecessary();
+		super.initialize();
 	}
 
-	private ActiveTransactionHistoryComposite() {
-		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
-		//todo: investigate
-		this.initializeIfNecessary();
-		final boolean IS_SHOWING_BY_DEFAULT = false;
-		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
+	@Override
+	protected String getSubKeyForLocalization() {
+		return "menu";
+	}
+
+	public BooleanState getBooleanState() {
+		return this.state;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.state.isEnabled();
+	}
+
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.state.setEnabled( isEnabled );
+	}
+
+	@Override
+	protected BooleanStateMenuModelResolver createResolver() {
+		return new BooleanStateMenuModelResolver( this.state );
+	}
+
+	@Override
+	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
+		super.handleShowing( menuItemContainer, e );
+		javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+		for( boolean isTrue : new boolean[] { true, false } ) {
+			Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
+			operation.initializeIfNecessary();
+			javax.swing.Action action = operation.getSwingModel().getAction();
+			javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
+			buttonGroup.add( jMenuItem );
+			jMenuItem.setSelected( this.state.getValue() == isTrue );
+			menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
 		}
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
+	protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		menuItemContainer.forgetAndRemoveAllMenuItems();
+		super.handleHiding( menuItemContainer, e );
 	}
 
-	@Override
-	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
-		return rv;
-	}
+	private final BooleanState state;
 }
