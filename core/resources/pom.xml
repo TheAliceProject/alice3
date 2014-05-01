@@ -124,7 +124,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
+									<artifactId>nebulous-natives</artifactId>
 									<version>${nebulous.lib.version}</version>
 									<classifier>linux-amd64</classifier>
 									<type>zip</type>
@@ -148,7 +148,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
+									<artifactId>nebulous-natives</artifactId>
 									<version>${nebulous.lib.version}</version>
 									<classifier>linux-i586</classifier>
 									<type>zip</type>
@@ -172,7 +172,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
+									<artifactId>nebulous-natives</artifactId>
 									<version>${nebulous.lib.version}</version>
 									<classifier>macosx</classifier>
 									<type>zip</type>
@@ -210,7 +210,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
+									<artifactId>nebulous-natives</artifactId>
 									<version>${nebulous.lib.version}</version>
 									<classifier>win32</classifier>
 									<type>zip</type>
@@ -248,7 +248,7 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
+									<artifactId>nebulous-natives</artifactId>
 									<version>${nebulous.lib.version}</version>
 									<classifier>win64</classifier>
 									<type>zip</type>

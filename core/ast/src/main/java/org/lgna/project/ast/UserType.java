@@ -156,6 +156,11 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>( this ) {
 		@Override
+		public boolean isReference() {
+			return true;
+		}
+
+		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
 			assert ( value == null ) || ( value.isArray() == false );
 			super.setValue( owner, value );

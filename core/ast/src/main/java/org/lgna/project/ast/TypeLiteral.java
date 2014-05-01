@@ -88,5 +88,5 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 		generator.appendString( ".class" );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );
 }

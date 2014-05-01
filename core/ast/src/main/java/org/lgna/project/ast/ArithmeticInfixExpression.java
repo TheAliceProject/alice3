@@ -297,5 +297,5 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 }

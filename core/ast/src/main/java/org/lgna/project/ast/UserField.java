@@ -154,7 +154,7 @@ public final class UserField extends AbstractField implements UserMember {
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );

@@ -73,7 +73,7 @@ public final class ReturnStatement extends Statement {
 		generator.appendSemicolon();
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

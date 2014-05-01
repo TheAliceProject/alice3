@@ -104,7 +104,7 @@ public final class ArrayAccess extends Expression {
 		generator.appendChar( ']' );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
 	public final ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

@@ -99,5 +99,5 @@ public final class LocalAccess extends Expression {
 		safeAppendRepr( localizer, this.local.getValue() );
 	}
 
-	public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
+	public final DeclarationProperty<UserLocal> local = DeclarationProperty.createReferenceInstance( this );
 }

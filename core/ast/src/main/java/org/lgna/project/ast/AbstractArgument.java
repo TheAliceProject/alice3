@@ -70,7 +70,7 @@ public abstract class AbstractArgument extends AbstractNode {
 
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 
-	public final DeclarationProperty<AbstractParameter> parameter = new DeclarationProperty<AbstractParameter>( this );
+	public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

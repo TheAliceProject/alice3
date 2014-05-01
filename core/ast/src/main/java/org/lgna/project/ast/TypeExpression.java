@@ -82,5 +82,5 @@ public final class TypeExpression extends Expression {
 		generator.appendTypeName( this.value.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );
 }

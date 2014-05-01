@@ -97,12 +97,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		return false;
 	}
 
-	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
+	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );

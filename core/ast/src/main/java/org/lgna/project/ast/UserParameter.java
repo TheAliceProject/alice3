@@ -95,5 +95,5 @@ public class UserParameter extends AbstractParameter {
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
 }

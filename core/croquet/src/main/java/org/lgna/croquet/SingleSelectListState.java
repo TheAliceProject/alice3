@@ -526,6 +526,12 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		return new org.lgna.croquet.views.List<T>( this );
 	}
 
+	public org.lgna.croquet.views.List<T> createListWithItemCodecListCellRenderer() {
+		org.lgna.croquet.views.List<T> rv = this.createList();
+		rv.setCellRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.getItemCodec() ) );
+		return rv;
+	}
+
 	public org.lgna.croquet.views.DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {
 		return new org.lgna.croquet.views.DefaultRadioButtons<T>( this, true );
 	}
@@ -678,6 +684,12 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 
 		public org.lgna.croquet.views.ComboBox<T> createComboBox() {
 			return new org.lgna.croquet.views.ComboBox<T>( this );
+		}
+
+		public org.lgna.croquet.views.ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
+			org.lgna.croquet.views.ComboBox<T> rv = this.createComboBox();
+			rv.setRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
+			return rv;
 		}
 	}
 }

@@ -83,7 +83,7 @@
 		<repository>
 			<id>org.alice</id>
 			<name>Alice Repository</name>
-			<url>scp://lookingglass-runner@lookingglass.seas.wustl.edu/export/lookingglass/lookingglass-dev/shared/maven2/alice</url>
+			<url>${alice-deploy-url}/alice</url>
 		</repository>
 	</distributionManagement>
 

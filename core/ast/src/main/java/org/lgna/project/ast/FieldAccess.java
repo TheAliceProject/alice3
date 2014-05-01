@@ -135,6 +135,11 @@ public final class FieldAccess extends Expression {
 	};
 	public final DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this ) {
 		@Override
+		public boolean isReference() {
+			return true;
+		}
+
+		@Override
 		public AbstractField getValue( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 			Object o = super.getValue( owner );
 			if( o instanceof AbstractField ) {
