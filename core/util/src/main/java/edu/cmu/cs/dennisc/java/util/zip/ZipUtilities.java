@@ -119,6 +119,63 @@ public class ZipUtilities {
 		zos.closeEntry();
 	}
 
+	public static void addFileToZipStream( java.io.File fileToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix, byte[] buffer ) throws java.io.IOException {
+		assert !fileToAdd.isDirectory();
+		pathPrefix = pathPrefix.replace( '\\', '/' );
+		if( !pathPrefix.endsWith( "/" ) ) {
+			pathPrefix += "/";
+		}
+		java.io.FileInputStream fis = new java.io.FileInputStream( fileToAdd );
+		java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( pathPrefix + fileToAdd.getName() );
+		zos.putNextEntry( zipEntry );
+		while( true ) {
+			int bytesRead = fis.read( buffer );
+			if( bytesRead != -1 ) {
+				zos.write( buffer, 0, bytesRead );
+			} else {
+				break;
+			}
+		}
+		zos.closeEntry();
+		fis.close();
+	}
+
+	public static void addFileToZipStream( java.io.File fileToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix ) throws java.io.IOException {
+		addFileToZipStream( fileToAdd, zos, pathPrefix, new byte[ 1024 ] );
+	}
+
+	private static void addDirToZipStream( java.io.File dirToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix, boolean includeDirName ) throws java.io.IOException {
+		assert dirToAdd.isDirectory();
+		byte[] buffer = new byte[ 1024 ];
+		java.io.FileFilter filter = null;
+		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( dirToAdd, filter );
+
+		String rootPath = includeDirName ? dirToAdd.getParentFile().getAbsolutePath() : dirToAdd.getAbsolutePath();
+		pathPrefix = pathPrefix.replace( '\\', '/' );
+		if( ( pathPrefix.length() > 0 ) && !pathPrefix.endsWith( "/" ) ) {
+			pathPrefix += "/";
+		}
+		for( java.io.File file : files ) {
+			if( file.isDirectory() ) {
+				//pass
+			} else {
+				String path = file.getAbsolutePath();
+				assert path.startsWith( rootPath );
+				String subPath = path.substring( rootPath.length() + 1, path.length() - file.getName().length() );
+				subPath = subPath.replace( '\\', '/' );
+				addFileToZipStream( file, zos, pathPrefix + subPath, buffer );
+			}
+		}
+	}
+
+	public static void addDirToZipStream( java.io.File dirToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix ) throws java.io.IOException {
+		addDirToZipStream( dirToAdd, zos, pathPrefix, true );
+	}
+
+	public static void addDirContentsToZipStream( java.io.File dirToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix ) throws java.io.IOException {
+		addDirToZipStream( dirToAdd, zos, pathPrefix, false );
+	}
+
 	//todo: support recursion
 	public static void zip( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
 
