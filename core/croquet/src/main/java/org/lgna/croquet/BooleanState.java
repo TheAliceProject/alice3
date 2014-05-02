@@ -46,77 +46,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends SimpleValueState<Boolean> {
-	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
-		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuItemPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalMenuItemPrepModel getDirect( BooleanState indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
-	}
-
-	public static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
-		private final BooleanState booleanState;
-
-		private InternalMenuItemPrepModel( BooleanState booleanState ) {
-			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
-			assert booleanState != null;
-			this.booleanState = booleanState;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.booleanState );
-		}
-
-		@Override
-		protected void localize() {
-		}
-
-		public BooleanState getBooleanState() {
-			return this.booleanState;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.booleanState.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.booleanState.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuItemPrepModelResolver createResolver() {
-			return new InternalMenuItemPrepModelResolver( this.booleanState );
-		}
-
-		@Override
-		public org.lgna.croquet.views.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-			org.lgna.croquet.views.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.views.CheckBoxMenuItem( this.getBooleanState() );
-			menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
-			return checkBoxMenuItem;
-		}
-	}
-
-	private InternalMenuItemPrepModel menuPrepModel;
-
-	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
-		if( this.menuPrepModel != null ) {
-			//pass
-		} else {
-			this.menuPrepModel = new InternalMenuItemPrepModel( this );
-		}
-		return this.menuPrepModel;
-	}
-
 	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
 		this.imp = new org.lgna.croquet.imp.booleanstate.BooleanStateImp( this, initialValue, buttonModel );
@@ -133,11 +62,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 	@Override
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 
 	@Override
@@ -319,6 +244,10 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 	public synchronized MenuModel getMenuModel() {
 		return this.imp.getMenuModel();
+	}
+
+	public org.lgna.croquet.imp.booleanstate.BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+		return this.imp.getMenuItemPrepModel();
 	}
 
 	private static final class InternalRadioButton extends org.lgna.croquet.views.OperationButton<javax.swing.JRadioButton, Operation> {

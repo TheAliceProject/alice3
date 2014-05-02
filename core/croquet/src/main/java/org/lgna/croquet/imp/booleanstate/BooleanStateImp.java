@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet.imp.booleanstate;
 
+import org.lgna.croquet.PrepModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -113,9 +115,27 @@ public class BooleanStateImp {
 		return this.menuModel;
 	}
 
+	public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+		if( this.menuPrepModel != null ) {
+			//pass
+		} else {
+			this.menuPrepModel = new BooleanStateMenuItemPrepModel( this.state );
+		}
+		return this.menuPrepModel;
+	}
+
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+		if( this.menuPrepModel != null ) {
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 	private final BooleanStateSwingModel swingModel;
 	private final org.lgna.croquet.BooleanState state;
 	private org.lgna.croquet.Operation trueOperation;
 	private org.lgna.croquet.Operation falseOperation;
 	private BooleanStateMenuModel menuModel;
+	private BooleanStateMenuItemPrepModel menuPrepModel;
 }
