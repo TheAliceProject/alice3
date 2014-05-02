@@ -234,19 +234,19 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new org.lgna.croquet.views.PushButton( this );
 	}
 
-	public synchronized Operation getSetToTrueOperation() {
+	public Operation getSetToTrueOperation() {
 		return this.imp.getSetToTrueOperation();
 	}
 
-	public synchronized Operation getSetToFalseOperation() {
+	public Operation getSetToFalseOperation() {
 		return this.imp.getSetToFalseOperation();
 	}
 
-	public synchronized MenuModel getMenuModel() {
+	public MenuModel getMenuModel() {
 		return this.imp.getMenuModel();
 	}
 
-	public org.lgna.croquet.imp.booleanstate.BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+	public StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.imp.getMenuItemPrepModel();
 	}
 

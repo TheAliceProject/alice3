@@ -42,30 +42,24 @@
  */
 package org.lgna.croquet.imp.liststate;
 
+import org.lgna.croquet.AbstractElement.IndirectResolver;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateImp<T> {
-	public SingleSelectListStateImp( org.lgna.croquet.SingleSelectListState<T> state, SingleSelectListStateSwingModel swingModel ) {
-		this.state = state;
-		this.swingModel = swingModel;
+public class SingleSelectListStateComboBoxPrepModelResolver<T> extends IndirectResolver<SingleSelectListStateComboBoxPrepModel<T>, SingleSelectListState<T>> {
+	public SingleSelectListStateComboBoxPrepModelResolver( SingleSelectListState<T> indirect ) {
+		super( indirect );
 	}
 
-	public SingleSelectListStateSwingModel getSwingModel() {
-		return this.swingModel;
+	public SingleSelectListStateComboBoxPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
-	public synchronized SingleSelectListStateMenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new SingleSelectListStateMenuModel<T>( this.state );
-		}
-		return this.menuModel;
+	@Override
+	protected SingleSelectListStateComboBoxPrepModel<T> getDirect( SingleSelectListState<T> indirect ) {
+		return indirect.getPrepModel();
 	}
-
-	private final org.lgna.croquet.SingleSelectListState<T> state;
-	private final SingleSelectListStateSwingModel swingModel;
-	private SingleSelectListStateMenuModel<T> menuModel;
 }

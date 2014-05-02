@@ -159,13 +159,11 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		return this.emptyConditionText;
 	}
 
-	private InternalPrepModel<T> prepModel;
-
-	public synchronized InternalPrepModel<T> getPrepModel() {
+	public synchronized SingleSelectListStateComboBoxPrepModel<T> getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
 		} else {
-			this.prepModel = new InternalPrepModel<T>( this );
+			this.prepModel = new SingleSelectListStateComboBoxPrepModel<T>( this );
 		}
 		return this.prepModel;
 	}
@@ -469,148 +467,8 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 	}
 
-	public static final class InternalMenuModelResolver<T> extends IndirectResolver<MenuModel, SingleSelectListState<T>> {
-		private InternalMenuModelResolver( SingleSelectListState<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected MenuModel getDirect( SingleSelectListState<T> indirect ) {
-			return indirect.getMenuModel();
-		}
-	}
-
-	private static final class InternalMenuModel<T> extends MenuModel {
-		private SingleSelectListState<T> listSelectionState;
-
-		public InternalMenuModel( SingleSelectListState<T> listSelectionState ) {
-			super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
-			this.listSelectionState = listSelectionState;
-		}
-
-		public SingleSelectListState<T> getListSelectionState() {
-			return this.listSelectionState;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.listSelectionState.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.listSelectionState.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuModelResolver<T> createResolver() {
-			return new InternalMenuModelResolver<T>( this.listSelectionState );
-		}
-
-		@Override
-		protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
-			super.handleShowing( menuItemContainer, e );
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for( final Object item : this.listSelectionState ) {
-				Operation operation = this.listSelectionState.getItemSelectionOperation( (T)item );
-				operation.initializeIfNecessary();
-				javax.swing.Action action = operation.getSwingModel().getAction();
-				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
-				buttonGroup.add( jMenuItem );
-				jMenuItem.setSelected( this.listSelectionState.getValue() == item );
-				menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
-			}
-		}
-
-		@Override
-		protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			menuItemContainer.forgetAndRemoveAllMenuItems();
-			super.handleHiding( menuItemContainer, e );
-		}
-	}
-
-	private InternalMenuModel<T> menuModel;
-
 	public synchronized MenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new InternalMenuModel<T>( this );
-		}
-		return this.menuModel;
-	}
-
-	public static final class InternalPrepModelResolver<T> extends IndirectResolver<InternalPrepModel<T>, SingleSelectListState<T>> {
-		private InternalPrepModelResolver( SingleSelectListState<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalPrepModel<T> getDirect( SingleSelectListState<T> indirect ) {
-			return indirect.getPrepModel();
-		}
-	}
-
-	public static final class InternalPrepModel<T> extends AbstractPrepModel {
-		private final SingleSelectListState<T> listSelectionState;
-
-		private InternalPrepModel( SingleSelectListState<T> listSelectionState ) {
-			super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
-			assert listSelectionState != null;
-			this.listSelectionState = listSelectionState;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.listSelectionState );
-		}
-
-		@Override
-		protected void localize() {
-		}
-
-		@Override
-		public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-			throw new RuntimeException();
-		}
-
-		public SingleSelectListState<T> getListSelectionState() {
-			return this.listSelectionState;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.listSelectionState.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.listSelectionState.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalPrepModelResolver<T> createResolver() {
-			return new InternalPrepModelResolver<T>( this.listSelectionState );
-		}
-
-		public org.lgna.croquet.views.ComboBox<T> createComboBox() {
-			return new org.lgna.croquet.views.ComboBox<T>( this );
-		}
-
-		public org.lgna.croquet.views.ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
-			org.lgna.croquet.views.ComboBox<T> rv = this.createComboBox();
-			rv.setRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
-			return rv;
-		}
+		return this.imp.getMenuModel();
 	}
 
 	private class EmptyConditionText extends PlainStringValue {
@@ -639,4 +497,5 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	private final DataIndexPair dataIndexPair;
 	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> imp;
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
+	private SingleSelectListStateComboBoxPrepModel<T> prepModel;
 }

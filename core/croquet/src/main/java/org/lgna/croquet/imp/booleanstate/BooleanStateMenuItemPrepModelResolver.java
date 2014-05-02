@@ -44,11 +44,12 @@ package org.lgna.croquet.imp.booleanstate;
 
 import org.lgna.croquet.AbstractElement.IndirectResolver;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateMenuItemPrepModelResolver extends IndirectResolver<BooleanStateMenuItemPrepModel, BooleanState> {
+public class BooleanStateMenuItemPrepModelResolver extends IndirectResolver<StandardMenuItemPrepModel, BooleanState> {
 	/*package-private*/BooleanStateMenuItemPrepModelResolver( BooleanState indirect ) {
 		super( indirect );
 	}
@@ -58,7 +59,7 @@ public class BooleanStateMenuItemPrepModelResolver extends IndirectResolver<Bool
 	}
 
 	@Override
-	protected BooleanStateMenuItemPrepModel getDirect( BooleanState indirect ) {
+	protected StandardMenuItemPrepModel getDirect( BooleanState indirect ) {
 		return indirect.getMenuItemPrepModel();
 	}
 }

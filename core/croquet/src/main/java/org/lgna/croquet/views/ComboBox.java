@@ -48,8 +48,8 @@ import org.lgna.croquet.SingleSelectListState;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListState.InternalPrepModel<E>> {
-	public ComboBox( org.lgna.croquet.SingleSelectListState.InternalPrepModel<E> model ) {
+public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E>> {
+	public ComboBox( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E> model ) {
 		super( model );
 		this.setSwingComboBoxModel( model.getListSelectionState().getImp().getSwingModel().getComboBoxModel() );
 	}

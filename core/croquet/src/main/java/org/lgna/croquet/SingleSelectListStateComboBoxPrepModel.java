@@ -40,32 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.imp.liststate;
-
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateImp<T> {
-	public SingleSelectListStateImp( org.lgna.croquet.SingleSelectListState<T> state, SingleSelectListStateSwingModel swingModel ) {
-		this.state = state;
-		this.swingModel = swingModel;
+public final class SingleSelectListStateComboBoxPrepModel<T> extends AbstractPrepModel {
+	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T> listSelectionState ) {
+		super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
+		assert listSelectionState != null;
+		this.listSelectionState = listSelectionState;
 	}
 
-	public SingleSelectListStateSwingModel getSwingModel() {
-		return this.swingModel;
+	@Override
+	public Iterable<? extends Model> getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.listSelectionState );
 	}
 
-	public synchronized SingleSelectListStateMenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new SingleSelectListStateMenuModel<T>( this.state );
-		}
-		return this.menuModel;
+	@Override
+	protected void localize() {
 	}
 
-	private final org.lgna.croquet.SingleSelectListState<T> state;
-	private final SingleSelectListStateSwingModel swingModel;
-	private SingleSelectListStateMenuModel<T> menuModel;
+	@Override
+	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		throw new RuntimeException();
+	}
+
+	public SingleSelectListState<T> getListSelectionState() {
+		return this.listSelectionState;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.listSelectionState.isEnabled();
+	}
+
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.listSelectionState.setEnabled( isEnabled );
+	}
+
+	@Override
+	protected org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T> createResolver() {
+		return new org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T>( this.listSelectionState );
+	}
+
+	public org.lgna.croquet.views.ComboBox<T> createComboBox() {
+		return new org.lgna.croquet.views.ComboBox<T>( this );
+	}
+
+	public org.lgna.croquet.views.ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
+		org.lgna.croquet.views.ComboBox<T> rv = this.createComboBox();
+		rv.setRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
+		return rv;
+	}
+
+	private final SingleSelectListState<T> listSelectionState;
 }
