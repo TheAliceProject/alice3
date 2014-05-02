@@ -51,7 +51,7 @@ import org.lgna.croquet.SingleSelectListState;
 public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListState.InternalPrepModel<E>> {
 	public ComboBox( org.lgna.croquet.SingleSelectListState.InternalPrepModel<E> model ) {
 		super( model );
-		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
+		this.setSwingComboBoxModel( model.getListSelectionState().getImp().getSwingModel().getComboBoxModel() );
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
@@ -122,12 +122,12 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
-		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleUndisplayable();
 	}

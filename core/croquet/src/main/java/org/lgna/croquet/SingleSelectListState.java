@@ -47,9 +47,6 @@ package org.lgna.croquet;
  */
 public abstract class SingleSelectListState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
 	private class DataIndexPair implements javax.swing.ComboBoxModel {
-		private final org.lgna.croquet.data.ListData<T> data;
-		private int index;
-
 		public DataIndexPair( org.lgna.croquet.data.ListData<T> data, int index ) {
 			this.data = data;
 			this.index = index;
@@ -85,8 +82,13 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 
 		public void setSelectedItem( Object item ) {
 			int index = this.data.indexOf( (T)item );
-			SingleSelectListState.this.swingModel.setSelectionIndex( index );
+			SingleSelectListState.this.imp.getSwingModel().setSelectionIndex( index );
+
+			//todo: update this.index???
 		}
+
+		private final org.lgna.croquet.data.ListData<T> data;
+		private int index;
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
@@ -94,10 +96,10 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			if( isInTheMidstOfSettingSwingValue ) {
 				//pass
 			} else {
-				int index = swingModel.getSelectionIndex();
+				int index = imp.getSwingModel().getSelectionIndex();
 				T nextValue;
 				if( index != -1 ) {
-					nextValue = (T)SingleSelectListState.this.swingModel.comboBoxModel.getElementAt( index );
+					nextValue = (T)imp.getSwingModel().getComboBoxModel().getElementAt( index );
 				} else {
 					nextValue = null;
 				}
@@ -105,62 +107,6 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			}
 		}
 	};
-
-	public static class SwingModel {
-		private final javax.swing.ComboBoxModel comboBoxModel;
-		private final javax.swing.DefaultListSelectionModel listSelectionModel;
-
-		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, javax.swing.DefaultListSelectionModel listSelectionModel ) {
-			this.comboBoxModel = comboBoxModel;
-			this.listSelectionModel = listSelectionModel;
-		}
-
-		public javax.swing.ComboBoxModel getComboBoxModel() {
-			return this.comboBoxModel;
-		}
-
-		public javax.swing.ListSelectionModel getListSelectionModel() {
-			return this.listSelectionModel;
-		}
-
-		public int getSelectionIndex() {
-			if( this.listSelectionModel.isSelectionEmpty() ) {
-				return -1;
-			} else {
-				return this.listSelectionModel.getLeadSelectionIndex();
-			}
-		}
-
-		public void setSelectionIndex( int index ) {
-			if( index != -1 ) {
-				this.listSelectionModel.setSelectionInterval( index, index );
-			} else {
-				this.listSelectionModel.clearSelection();
-			}
-		}
-
-		/* package-private */void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-			for( javax.swing.event.ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
-				listener.valueChanged( e );
-			}
-		}
-
-		private void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireContentsChanged", source, index0, index1 );
-		}
-
-		private void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalAdded", source, index0, index1 );
-		}
-
-		private void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalRemoved", source, index0, index1 );
-		}
-	}
-
-	private final DataIndexPair dataIndexPair;
-	private final SwingModel swingModel;
 
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
@@ -175,37 +121,15 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 	}
 
-	private class EmptyConditionText extends PlainStringValue {
-		public EmptyConditionText() {
-			super( java.util.UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
-		}
-
-		@Override
-		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
-			return SingleSelectListState.this.getClassUsedForLocalization();
-		}
-
-		@Override
-		protected String getSubKeyForLocalization() {
-			StringBuilder sb = new StringBuilder();
-			String subKey = SingleSelectListState.this.getSubKeyForLocalization();
-			if( subKey != null ) {
-				sb.append( subKey );
-				sb.append( "." );
-			}
-			sb.append( "emptyConditionText" );
-			return sb.toString();
-		}
-	}
-
-	private final PlainStringValue emptyConditionText = new EmptyConditionText();
-
 	public SingleSelectListState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
-		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
-		this.swingModel.listSelectionModel.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
-		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
+		this.imp = new org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T>( this, new org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel( this.dataIndexPair ) );
+		this.imp.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+	}
+
+	public org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> getImp() {
+		return this.imp;
 	}
 
 	@Override
@@ -224,10 +148,6 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 
 	public org.lgna.croquet.data.ListData<T> getData() {
 		return this.dataIndexPair.data;
-	}
-
-	public SwingModel getSwingModel() {
-		return this.swingModel;
 	}
 
 	@Override
@@ -261,15 +181,15 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 
 	@Override
 	protected boolean isSwingValueValid() {
-		int index = this.swingModel.getSelectionIndex();
+		int index = this.imp.getSwingModel().getSelectionIndex();
 		return ( -1 <= index ) && ( index < this.getItemCount() );
 	}
 
 	@Override
 	protected T getSwingValue() {
-		int index = this.swingModel.getSelectionIndex();
+		int index = this.imp.getSwingModel().getSelectionIndex();
 		if( index != -1 ) {
-			return (T)this.swingModel.comboBoxModel.getElementAt( index );
+			return (T)this.imp.getSwingModel().getComboBoxModel().getElementAt( index );
 		} else {
 			return null;
 		}
@@ -291,11 +211,11 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			}
 			isInTheMidstOfSettingSwingValue = true;
 			try {
-				this.swingModel.setSelectionIndex( index );
+				this.imp.getSwingModel().setSelectionIndex( index );
 			} finally {
 				isInTheMidstOfSettingSwingValue = false;
 			}
-			this.swingModel.fireListSelectionChanged( index, index, false );
+			this.imp.getSwingModel().fireListSelectionChanged( index, index, false );
 		}
 	}
 
@@ -456,15 +376,15 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	}
 
 	protected void fireContentsChanged( int index0, int index1 ) {
-		this.swingModel.ACCESS_fireContentsChanged( this, index0, index1 );
+		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
 	}
 
 	protected void fireIntervalAdded( int index0, int index1 ) {
-		this.swingModel.ACCESS_fireIntervalAdded( this, index0, index1 );
+		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
 	}
 
 	protected void fireIntervalRemoved( int index0, int index1 ) {
-		this.swingModel.ACCESS_fireIntervalRemoved( this, index0, index1 );
+		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {
@@ -692,4 +612,31 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			return rv;
 		}
 	}
+
+	private class EmptyConditionText extends PlainStringValue {
+		public EmptyConditionText() {
+			super( java.util.UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
+		}
+
+		@Override
+		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+			return SingleSelectListState.this.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			StringBuilder sb = new StringBuilder();
+			String subKey = SingleSelectListState.this.getSubKeyForLocalization();
+			if( subKey != null ) {
+				sb.append( subKey );
+				sb.append( "." );
+			}
+			sb.append( "emptyConditionText" );
+			return sb.toString();
+		}
+	}
+
+	private final DataIndexPair dataIndexPair;
+	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> imp;
+	private final PlainStringValue emptyConditionText = new EmptyConditionText();
 }

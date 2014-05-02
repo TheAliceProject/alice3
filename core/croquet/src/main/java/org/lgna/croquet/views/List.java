@@ -84,8 +84,8 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 
 	public List( org.lgna.croquet.SingleSelectListState<T> model ) {
 		super( model );
-		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
-		this.getAwtComponent().setSelectionModel( model.getSwingModel().getListSelectionModel() );
+		this.getAwtComponent().setModel( model.getImp().getSwingModel().getComboBoxModel() );
+		this.getAwtComponent().setSelectionModel( model.getImp().getSwingModel().getListSelectionModel() );
 	}
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
