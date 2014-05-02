@@ -91,23 +91,6 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		private int index;
 	}
 
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			if( isInTheMidstOfSettingSwingValue ) {
-				//pass
-			} else {
-				int index = imp.getSwingModel().getSelectionIndex();
-				T nextValue;
-				if( index != -1 ) {
-					nextValue = (T)imp.getSwingModel().getComboBoxModel().getElementAt( index );
-				} else {
-					nextValue = null;
-				}
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-			}
-		}
-	};
-
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
 			if( index < data.getItemCount() ) {
@@ -192,8 +175,6 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			return null;
 		}
 	}
-
-	private boolean isInTheMidstOfSettingSwingValue;
 
 	@Override
 	protected void setSwingValue( T nextValue ) {
@@ -497,5 +478,23 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	private final DataIndexPair dataIndexPair;
 	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> imp;
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			if( isInTheMidstOfSettingSwingValue ) {
+				//pass
+			} else {
+				int index = imp.getSwingModel().getSelectionIndex();
+				T nextValue;
+				if( index != -1 ) {
+					nextValue = (T)imp.getSwingModel().getComboBoxModel().getElementAt( index );
+				} else {
+					nextValue = null;
+				}
+				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			}
+		}
+	};
+
 	private SingleSelectListStateComboBoxPrepModel<T> prepModel;
+	private boolean isInTheMidstOfSettingSwingValue;
 }
