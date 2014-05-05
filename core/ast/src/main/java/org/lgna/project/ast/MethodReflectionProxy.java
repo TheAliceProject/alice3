@@ -47,8 +47,82 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class MethodReflectionProxy extends InvocableReflectionProxy<java.lang.reflect.Method> {
-	private final String name;
-	private final boolean isVarArgs;
+	private static java.lang.reflect.Method findVarArgsVersion( Class<?> cls, String name, Class<?>[] desiredParameterTypes ) {
+		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
+			if( mthd.isVarArgs() ) {
+				if( mthd.getName().equals( name ) ) {
+					Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
+					if( candidateParameterTypes.length == ( desiredParameterTypes.length + 1 ) ) {
+						java.lang.reflect.Method rv = mthd;
+						for( int i = 0; i < desiredParameterTypes.length; i++ ) {
+							if( candidateParameterTypes[ i ].equals( desiredParameterTypes[ i ] ) ) {
+								//pass
+							} else {
+								rv = null;
+							}
+						}
+						if( rv != null ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "MIGRATION: varArgs version used", rv );
+							return rv;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private static Class<?>[] getTrimmedParameterTypes( Class<?>[] parameterTypes ) {
+		Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
+		System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
+		return trimmedParameterTypes;
+	}
+
+	private static java.lang.reflect.Method getNonVarArgsVersion( Class<?> cls, String name, Class<?>[] parameterTypes ) {
+		Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes( parameterTypes );
+		try {
+			return cls.getDeclaredMethod( name, trimmedParameterTypes );
+		} catch( NoSuchMethodException nsme ) {
+			return null;
+		}
+	}
+
+	public static MethodReflectionProxy getReplacementIfNecessary( MethodReflectionProxy original ) {
+		Class<?> cls = original.getDeclaringClassReflectionProxy().getReification();
+		if( cls != null ) {
+			Class<?>[] parameterTypes = ClassReflectionProxy.getReifications( original.parameterClassReflectionProxies );
+			try {
+				cls.getDeclaredMethod( original.name, parameterTypes );
+			} catch( NoSuchMethodException nsme ) {
+				java.lang.reflect.Method varArgsMthd;
+				if( original.isVarArgs ) {
+					//varArgsMthd = getNonVarArgsVersion( cls, original.name, parameterTypes );
+					varArgsMthd = null;
+				} else {
+					varArgsMthd = findVarArgsVersion( cls, original.name, parameterTypes );
+					if( varArgsMthd != null ) {
+						//pass
+					} else {
+						if( parameterTypes.length > 0 ) {
+							Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
+							if( lastParameterType != null ) {
+								if( lastParameterType.isArray() ) {
+									Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes( parameterTypes );
+									varArgsMthd = findVarArgsVersion( cls, original.name, trimmedParameterTypes );
+								}
+							}
+						}
+					}
+				}
+				if( varArgsMthd != null ) {
+					return new MethodReflectionProxy( varArgsMthd );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( original );
+				}
+			}
+		}
+		return null;
+	}
 
 	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
@@ -87,31 +161,6 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 		return this.name;
 	}
 
-	private static java.lang.reflect.Method findVarArgsVersion( Class<?> cls, String name, Class<?>[] desiredParameterTypes ) {
-		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-			if( mthd.isVarArgs() ) {
-				if( mthd.getName().equals( name ) ) {
-					Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
-					if( candidateParameterTypes.length == ( desiredParameterTypes.length + 1 ) ) {
-						java.lang.reflect.Method rv = mthd;
-						for( int i = 0; i < desiredParameterTypes.length; i++ ) {
-							if( candidateParameterTypes[ i ].equals( desiredParameterTypes[ i ] ) ) {
-								//pass
-							} else {
-								rv = null;
-							}
-						}
-						if( rv != null ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "MIGRATION: varArgs version used", rv );
-							return rv;
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-
 	@Override
 	protected java.lang.reflect.Method reify() {
 		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
@@ -120,27 +169,29 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 			try {
 				return cls.getDeclaredMethod( name, parameterTypes );
 			} catch( NoSuchMethodException nsme ) {
-				java.lang.reflect.Method rv = findVarArgsVersion( cls, name, parameterTypes );
-				if( rv != null ) {
-					//pass
-				} else {
-					if( parameterTypes.length > 0 ) {
-						Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
-						if( lastParameterType != null ) {
-							if( lastParameterType.isArray() ) {
-								Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
-								System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
-								rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
-								if( rv != null ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
-								}
-							}
-						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-						}
-					}
-				}
-				return rv;
+				return null;
+				//				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( nsme, this );
+				//				java.lang.reflect.Method rv = findVarArgsVersion( cls, name, parameterTypes );
+				//				if( rv != null ) {
+				//					//pass
+				//				} else {
+				//					if( parameterTypes.length > 0 ) {
+				//						Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
+				//						if( lastParameterType != null ) {
+				//							if( lastParameterType.isArray() ) {
+				//								Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
+				//								System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
+				//								rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
+				//								if( rv != null ) {
+				//									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+				//								}
+				//							}
+				//						} else {
+				//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+				//						}
+				//					}
+				//				}
+				//				return rv;
 			}
 		} else {
 			return null;
@@ -163,4 +214,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 		sb.append( ";name=" );
 		sb.append( this.name );
 	}
+
+	private final String name;
+	private final boolean isVarArgs;
 }

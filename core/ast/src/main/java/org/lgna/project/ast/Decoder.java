@@ -298,7 +298,13 @@ public class Decoder {
 			} else if( clsName.equals( JavaConstructor.class.getName() ) ) {
 				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( JavaMethod.class.getName() ) ) {
-				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
+				MethodReflectionProxy methodReflectionProxy = decodeMethod( xmlElement, "method" );
+				MethodReflectionProxy varArgsReplacement = MethodReflectionProxy.getReplacementIfNecessary( methodReflectionProxy );
+				if( varArgsReplacement != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "replacing", methodReflectionProxy, "with", varArgsReplacement );
+					methodReflectionProxy = varArgsReplacement;
+				}
+				rv = JavaMethod.getInstance( methodReflectionProxy );
 			} else if( clsName.equals( Getter.class.getName() ) || clsName.equals( Setter.class.getName() ) ) {
 
 				org.w3c.dom.Node xmlFirstChild = xmlElement.getFirstChild();
