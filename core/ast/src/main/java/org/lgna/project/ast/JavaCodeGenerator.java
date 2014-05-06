@@ -55,6 +55,11 @@ public class JavaCodeGenerator {
 			return this;
 		}
 
+		public Builder isPublicStaticFinalFieldGetterDesired( boolean isPublicStaticFinalFieldGetterDesired ) {
+			this.isPublicStaticFinalFieldGetterDesired = isPublicStaticFinalFieldGetterDesired;
+			return this;
+		}
+
 		public Builder addImportOnDemandPackage( Package pckg ) {
 			this.importOnDemandPackages.add( JavaPackage.getInstance( pckg ) );
 			return this;
@@ -72,12 +77,14 @@ public class JavaCodeGenerator {
 		}
 
 		private boolean isLambdaSupported;
+		private boolean isPublicStaticFinalFieldGetterDesired;
 		private final java.util.List<JavaPackage> importOnDemandPackages = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	};
 
 	protected JavaCodeGenerator( Builder builder ) {
 		this.isLambdaSupported = builder.isLambdaSupported;
+		this.isPublicStaticFinalFieldGetterDesired = builder.isPublicStaticFinalFieldGetterDesired;
 		this.packagesMarkedForOnDemandImport = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
 		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
@@ -98,6 +105,10 @@ public class JavaCodeGenerator {
 
 	/* package-private */boolean isLambdaSupported() {
 		return this.isLambdaSupported;
+	}
+
+	/* package-private */boolean isPublicStaticFinalFieldGetterDesired() {
+		return this.isPublicStaticFinalFieldGetterDesired;
 	}
 
 	/* package-private */void appendBoolean( boolean b ) {
@@ -352,6 +363,7 @@ public class JavaCodeGenerator {
 	}
 
 	private final boolean isLambdaSupported;
+	private final boolean isPublicStaticFinalFieldGetterDesired;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 	private final java.util.Set<JavaPackage> packagesToImportOnDemand = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();

@@ -129,6 +129,13 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		}
 
 		for( UserField field : this.fields ) {
+			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+				if( generator.isPublicStaticFinalFieldGetterDesired() ) {
+					//pass
+				} else {
+					continue;
+				}
+			}
 			field.getGetter().appendJava( generator );
 			if( field.isFinal() ) {
 				//pass
