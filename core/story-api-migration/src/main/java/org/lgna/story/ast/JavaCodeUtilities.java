@@ -53,6 +53,7 @@ public class JavaCodeUtilities {
 	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
 		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
 				.isLambdaSupported( true )
+				.isPublicStaticFinalFieldGetterDesired( false )
 				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
 				.addImportStaticMethod(
 						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
