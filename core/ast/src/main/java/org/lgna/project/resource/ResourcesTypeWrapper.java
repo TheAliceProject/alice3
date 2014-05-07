@@ -46,24 +46,71 @@ package org.lgna.project.resource;
  * @author Dennis Cosgrove
  */
 public class ResourcesTypeWrapper {
+	private static final String NAME_FOR_UNNAMED = "UNNAMED";
+
 	private static String fixNameIfNecessary( String name ) {
-		//todo
-		return name.replaceAll( "\\.", "_" );
+		StringBuilder sb = new StringBuilder();
+
+		if( name != null ) {
+			for( char c : name.toCharArray() ) {
+				if( Character.isLetterOrDigit( c ) ) {
+					sb.append( c );
+				} else {
+					sb.append( '_' );
+				}
+			}
+		}
+
+		if( sb.length() > 0 ) {
+			char c0 = sb.charAt( 0 );
+			if( Character.isLetter( c0 ) || ( c0 == '_' ) ) {
+				//pass
+			} else {
+				sb.insert( 0, "_" );
+			}
+			return sb.toString();
+		} else {
+			return NAME_FOR_UNNAMED;
+		}
+	}
+
+	public static final String getTypeName() {
+		return "Resources";
+	}
+
+	public static final String getFixedName( org.lgna.common.Resource resource ) {
+		return fixNameIfNecessary( resource.getName() );
 	}
 
 	public ResourcesTypeWrapper( org.lgna.project.Project project ) {
 		java.util.Set<org.lgna.common.Resource> resources = project.getResources();
 		if( ( resources != null ) && ( resources.size() > 0 ) ) {
 			this.type = new org.lgna.project.ast.NamedUserType();
-			this.type.name.setValue( "Resources" );
+			this.type.name.setValue( getTypeName() );
 			this.type.superType.setValue( org.lgna.project.ast.JavaType.OBJECT_TYPE );
+			int unnamedCount = 0;
+			int duplicateCount = 0;
 			for( org.lgna.common.Resource resource : resources ) {
 				org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
 				field.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PUBLIC );
 				field.isStatic.setValue( true );
 				field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 				field.valueType.setValue( org.lgna.project.ast.JavaType.getInstance( resource.getClass() ) );
-				field.name.setValue( fixNameIfNecessary( resource.getName() ) );
+
+				String name = getFixedName( resource );
+				for( org.lgna.project.ast.UserField prevField : type.fields ) {
+					if( prevField.name.getValue().equals( name ) ) {
+						if( name.equals( NAME_FOR_UNNAMED ) ) {
+							name += "_" + unnamedCount;
+							unnamedCount++;
+						} else {
+							name += "_duplicate_" + duplicateCount;
+							duplicateCount++;
+						}
+					}
+				}
+
+				field.name.setValue( name );
 				field.initializer.setValue( org.lgna.project.ast.AstUtilities.createInstanceCreation(
 						resource.getClass(),
 						new Class<?>[] {

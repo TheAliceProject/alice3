@@ -77,7 +77,7 @@ public final class ResourceExpression extends Expression {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		generator.appendResourceExpression( this );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
