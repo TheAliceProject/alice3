@@ -50,6 +50,16 @@ public class EntryPoint {
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
 	public static void main( final String[] args ) {
+		final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector = new edu.cmu.cs.dennisc.crash.CrashDetector( EntryPoint.class );
+		if( crashDetector.isPreviouslyOpenedButNotSucessfullyClosed() ) {
+			String propertyName = "org.alice.stageide.isCrashDetectionDesired";
+			String isCrashDetectionDesiredText = System.getProperty( propertyName, "true" );
+			if( "true".equals( isCrashDetectionDesiredText.toLowerCase() ) ) {
+				javax.swing.JOptionPane.showMessageDialog( null, "Alice did not successfully close last time." );
+			}
+		}
+		crashDetector.open();
+
 		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
 
@@ -122,7 +132,7 @@ public class EntryPoint {
 					rootFrame.setExtendedState( rootFrame.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 				}
 
-				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
+				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( crashDetector );
 				if( file != null ) {
 					if( file.exists() ) {
 						ide.setProjectFileToLoadOnWindowOpened( file );

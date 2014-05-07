@@ -80,9 +80,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private java.io.File projectFileToLoadOnWindowOpened;
 
 	private final IdeConfiguration ideConfiguration;
+	private final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector;
 
-	public IDE( IdeConfiguration ideConfiguration ) {
+	public IDE( IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		this.ideConfiguration = ideConfiguration;
+		this.crashDetector = crashDetector;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Please Submit Bug Report: " );
 		sb.append( getApplicationName() );
@@ -484,8 +486,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation();
 
 	@Override
-	public void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.preservePreferences();
+		if( this.crashDetector != null ) {
+			this.crashDetector.close();
+		}
 		this.clearanceCheckingExitOperation.fire( trigger );
 	}
 

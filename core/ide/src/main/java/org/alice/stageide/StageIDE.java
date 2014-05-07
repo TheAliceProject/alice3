@@ -55,8 +55,8 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
-	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration ) {
-		super( ideConfiguration );
+	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+		super( ideConfiguration, crashDetector );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
@@ -139,7 +139,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 					"The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." )
-			.buildAndShow();
+					.buildAndShow();
 			System.exit( -1 );
 		}
 	}

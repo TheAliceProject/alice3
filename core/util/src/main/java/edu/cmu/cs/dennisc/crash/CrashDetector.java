@@ -40,13 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.story;
+package edu.cmu.cs.dennisc.crash;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIde extends org.alice.stageide.StageIDE {
-	public AliceIde( edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
-		super( new AliceIdeConfiguration(), crashDetector );
+public final class CrashDetector {
+	private static final String IS_OPENED_KEY = "IS_OPENED";
+	private static final String IS_SUCCESSFULLY_CLOSED_KEY = "IS_SUCCESSFULLY_CLOSED";
+
+	public CrashDetector( Class<?> cls ) {
+		this.cls = cls;
 	}
+
+	private java.util.prefs.Preferences getPreferences() {
+		return java.util.prefs.Preferences.userNodeForPackage( cls );
+	}
+
+	public boolean isPreviouslyOpenedButNotSucessfullyClosed() {
+		java.util.prefs.Preferences preferences = this.getPreferences();
+		boolean isOpened = preferences.getBoolean( IS_OPENED_KEY, false );
+		boolean isSuccessfullyClosed = preferences.getBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
+		return isOpened && ( isSuccessfullyClosed == false );
+	}
+
+	public void open() {
+		java.util.prefs.Preferences preferences = this.getPreferences();
+		preferences.putBoolean( IS_OPENED_KEY, true );
+		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
+	}
+
+	public void close() {
+		java.util.prefs.Preferences preferences = this.getPreferences();
+		preferences.putBoolean( IS_OPENED_KEY, true );
+		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, true );
+	}
+
+	public void clearCrashDetectionPreferences() throws java.util.prefs.BackingStoreException {
+		java.util.prefs.Preferences preferences = this.getPreferences();
+		preferences.clear();
+	}
+
+	private final Class<?> cls;
 }

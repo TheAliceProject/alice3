@@ -55,7 +55,7 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
 		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
 		final boolean IS_TESTING_LGNA = false;
 		if( IS_TESTING_LGNA ) {
-			org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
+			org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( null );
 			throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE ME", 0, null );
 		} else {
 			//while( true ) {
