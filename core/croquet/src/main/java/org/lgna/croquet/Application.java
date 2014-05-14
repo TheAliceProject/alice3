@@ -81,7 +81,7 @@ public abstract class Application {
 		return this.transactionHistory;
 	}
 
-	// TODO: Fix this the right way... this is a hack for now... <kjh/>
+	// TODO: Fix this the right way... if we *ever* support multiple documents... this is a hack for now...
 	@Deprecated
 	public org.lgna.croquet.history.TransactionHistory getApplicationOrDocumentTransactionHistory() {
 		if( this.getDocument() == null ) {

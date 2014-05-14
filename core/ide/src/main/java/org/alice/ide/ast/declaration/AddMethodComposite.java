@@ -50,7 +50,6 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 
 	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( migrationId, details );
-		// <kjh/> Should we use meta-context factories instead?
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.getLaunchOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
 		} else {
