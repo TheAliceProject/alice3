@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/alice/.m2/repository/org/alice/alice-model-source/2013.08.08/alice-model-source-2013.08.08.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/story-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
@@ -10,5 +9,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/croquet"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/alice-ide"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/story-api-migration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scenegraph"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/imageEditor"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/issueReporting"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/resources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -49,9 +49,9 @@ public class MigrateProjects extends Batch {
 	private static final int HEIGHT = 150 + 40;
 	private int x = 0;
 	private int y = 0;
-	
-	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	
+
+	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
 	private void outputProblematicFiles() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
@@ -64,6 +64,7 @@ public class MigrateProjects extends Batch {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 	}
+
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
 		if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
@@ -83,19 +84,19 @@ public class MigrateProjects extends Batch {
 					y += HEIGHT;
 				}
 				frame.setVisible( true );
-				
+
 				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
 				runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
 					@Override
 					public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
-						frame.getContentPane().add(onscreenLookingGlass.getAWTComponent());
+						frame.getContentPane().add( onscreenLookingGlass.getAWTComponent() );
 					}
 				} );
 				runProgramContext.setActiveScene();
 				runProgramContext.cleanUpProgram();
 				frame.dispose();
 			}
-			
+
 			if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", project );
 			}
@@ -109,12 +110,14 @@ public class MigrateProjects extends Batch {
 			t.printStackTrace();
 		}
 	}
+
 	@Override
 	protected boolean isSkipExistingOutFilesDesirable() {
 		return false;
 	}
+
 	public static void main( String[] args ) {
-		org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.67.0.0" );
+		org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.92.0.0" );
 		MigrateProjects migrateProjects = new MigrateProjects();
 		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
 		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
