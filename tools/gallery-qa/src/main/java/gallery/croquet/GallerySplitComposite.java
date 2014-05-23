@@ -50,8 +50,9 @@ public class GallerySplitComposite extends org.lgna.croquet.SplitComposite {
 	public GallerySplitComposite() {
 		super( java.util.UUID.fromString( "fe1830bd-21da-44a3-80f1-cb288459080e" ), new ControlsComposite(), test.ik.croquet.SceneComposite.getInstance() );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.SplitPane createView() {
-		return new org.lgna.croquet.components.HorizontalSplitPane( this );
+	protected org.lgna.croquet.views.SplitPane createView() {
+		return new org.lgna.croquet.views.HorizontalSplitPane( this );
 	}
 }

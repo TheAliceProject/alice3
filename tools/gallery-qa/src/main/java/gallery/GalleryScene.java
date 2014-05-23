@@ -46,14 +46,13 @@ package gallery;
 import gallery.croquet.IsVisualizationShowingState;
 
 import org.lgna.croquet.State;
-import org.lgna.story.SCamera;
 import org.lgna.story.Color;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.SCamera;
 import org.lgna.story.SCylinder;
 import org.lgna.story.SGround;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
-import org.lgna.story.MoveDirection;
 import org.lgna.story.SScene;
 import org.lgna.story.TurnDirection;
 
@@ -61,18 +60,19 @@ import org.lgna.story.TurnDirection;
  * @author Dennis Cosgrove
  */
 public class GalleryScene extends SScene {
-	
+
 	private final SGround snow = new SGround();
 	private final SCamera camera;
 	private final SCylinder measuringStick = new SCylinder();
 	private SModel model;
 	private boolean shouldShow;
+
 	public GalleryScene( SCamera camera ) {
 		this.camera = camera;
 		IsVisualizationShowingState.getInstance().addValueListener( this.isVizShowingListener );
 	}
-	
-	public void setModel(SJointedModel model){
+
+	public void setModel( SJointedModel model ) {
 		if( this.model != null ) {
 			this.model.setVehicle( null );
 		}
@@ -83,32 +83,33 @@ public class GalleryScene extends SScene {
 			updateVisualization();
 		}
 	}
-	
-	private void updateVisualization(){
+
+	private void updateVisualization() {
 		if( this.getModel() != null ) {
-			org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.getModel() );
-			if(shouldShow){
+			org.lgna.story.implementation.JointedModelImp impl = org.lgna.story.EmployeesOnly.getImplementation( this.getModel() );
+			if( shouldShow ) {
 				impl.showVisualization();
-			}else{
+			} else {
 				impl.hideVisualization();
 			}
-			
+
 		}
 	}
+
 	private final State.ValueListener<Boolean> isVizShowingListener = new State.ValueListener<Boolean>() {
 
-		public void changing(State<Boolean> state, Boolean prevValue,
-				Boolean nextValue, boolean isAdjusting) {
+		public void changing( State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed(State<Boolean> state, Boolean prevValue,
-				Boolean nextValue, boolean isAdjusting) {
+		public void changed( State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting ) {
 			shouldShow = nextValue;
 			updateVisualization();
 		}
-		
+
 	};
-	
+
 	private void performGeneratedSetup() {
 		measuringStick.setRadius( .1 );
 		measuringStick.move( MoveDirection.LEFT, 1 );
@@ -121,11 +122,12 @@ public class GalleryScene extends SScene {
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
+
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
 		//this.ogre.setOpacity( 0.25 );
 	}
-	
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {

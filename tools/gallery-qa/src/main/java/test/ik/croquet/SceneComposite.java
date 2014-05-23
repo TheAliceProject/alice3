@@ -41,43 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package gallery.croquet.views;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsPanel extends org.lgna.croquet.components.BorderPanel {
-	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
-		super( composite );
+public class SceneComposite extends org.lgna.croquet.SimpleComposite<test.ik.croquet.views.ScenePanel> {
+	private static class SingletonHolder {
+		private static SceneComposite instance = new SceneComposite();
+	}
 
-		org.lgna.croquet.components.Tree< ? >  tree = composite.getTreeState().createTree();
-		tree.expandAllRows();
-		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.modelresource.ResourceNode>() {
-			@Override
-			protected javax.swing.JLabel updateListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.modelresource.ResourceNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-				if( value != null ) {
-					org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
-					javax.swing.Icon icon;
-					if( iconFactory != null ) {
-						icon = iconFactory.getIcon( new java.awt.Dimension( 64, 48 ) );
-					} else {
-						icon = null;
-					}
-					rv.setIcon(icon);
-					rv.setText(value.getText());
-				} else {
-					rv.setIcon(null);
-					rv.setText(null);
-				}
-				return rv;
-			}
-		});
-		
-		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( tree ) );
+	public static SceneComposite getInstance() {
+		return SingletonHolder.instance;
+	}
 
-		org.lgna.croquet.components.CheckBox checkBox = composite.getViz().createCheckBox();
-		this.addPageStartComponent(checkBox);
-		
-		checkBox.getAwtComponent().setFocusable( false );
+	private SceneComposite() {
+		super( java.util.UUID.fromString( "d34e5678-1cf9-41bd-9031-10e16cde2dd6" ) );
+	}
+
+	@Override
+	protected test.ik.croquet.views.ScenePanel createView() {
+		return new test.ik.croquet.views.ScenePanel( this );
 	}
 }

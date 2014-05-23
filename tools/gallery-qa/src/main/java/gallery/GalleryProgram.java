@@ -53,7 +53,6 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SFlyer;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
@@ -61,9 +60,9 @@ import org.lgna.story.SProgram;
 import org.lgna.story.SProp;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.SSwimmer;
+import org.lgna.story.STransport;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.STransport;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
@@ -92,80 +91,81 @@ public class GalleryProgram extends SProgram {
 
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final State.ValueListener<ResourceNode> galleryListener = new State.ValueListener<ResourceNode>() {
-		public void changing(State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting) {
+		public void changing( State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting ) {
 		}
-		
-		private SJointedModel createJointedModelFromModelResource( org.lgna.story.resources.ModelResource constant ) { 
-			if (constant instanceof BasicResource) {
-				BasicResource basicResource = (BasicResource) constant;
-				if (basicResource instanceof PropResource) {
-					PropResource propResource = (PropResource) basicResource;
+
+		private SJointedModel createJointedModelFromModelResource( org.lgna.story.resources.ModelResource constant ) {
+			if( constant instanceof BasicResource ) {
+				BasicResource basicResource = (BasicResource)constant;
+				if( basicResource instanceof PropResource ) {
+					PropResource propResource = (PropResource)basicResource;
 					return new SProp( propResource );
-				}else{
+				} else {
 					return null;
 				}
-			}else if (constant instanceof BipedResource) {
-				BipedResource bipedResource = (BipedResource) constant;
+			} else if( constant instanceof BipedResource ) {
+				BipedResource bipedResource = (BipedResource)constant;
 				return new SBiped( bipedResource );
-			} else if (constant instanceof FlyerResource) {
-				FlyerResource flyerResource = (FlyerResource) constant;
+			} else if( constant instanceof FlyerResource ) {
+				FlyerResource flyerResource = (FlyerResource)constant;
 				return new SFlyer( flyerResource );
-			} else if (constant instanceof QuadrupedResource) {
-				QuadrupedResource quadrupedResource = (QuadrupedResource) constant;
+			} else if( constant instanceof QuadrupedResource ) {
+				QuadrupedResource quadrupedResource = (QuadrupedResource)constant;
 				return new SQuadruped( quadrupedResource );
-			} else if (constant instanceof SwimmerResource) {
-				SwimmerResource swimmerResource = (SwimmerResource) constant;
+			} else if( constant instanceof SwimmerResource ) {
+				SwimmerResource swimmerResource = (SwimmerResource)constant;
 				return new SSwimmer( swimmerResource );
-			} else if (constant instanceof TransportResource) {
-				TransportResource transportResource = (TransportResource) constant;
+			} else if( constant instanceof TransportResource ) {
+				TransportResource transportResource = (TransportResource)constant;
 				return new STransport( transportResource );
 			} else {
 				return null;
 			}
-			
+
 		}
-		public void changed(State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting) {
+
+		public void changed( State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting ) {
 			SJointedModel model;
 			org.alice.stageide.modelresource.ResourceKey resourceKey = nextValue.getResourceKey();
 			if( resourceKey.isLeaf() ) {
-				if (resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey) {
+				if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
 					org.alice.stageide.modelresource.EnumConstantResourceKey fieldResourceNode = (org.alice.stageide.modelresource.EnumConstantResourceKey)resourceKey;
 					AbstractField field = fieldResourceNode.getField();
-					if (field instanceof JavaField) {
-						JavaField javaField = (JavaField) field;
+					if( field instanceof JavaField ) {
+						JavaField javaField = (JavaField)field;
 						Field fld = javaField.getFieldReflectionProxy().getReification();
 						try {
 							Object constant = fld.get( null );
-							if (constant instanceof org.lgna.story.resources.ModelResource) {
-								org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource) constant;
+							if( constant instanceof org.lgna.story.resources.ModelResource ) {
+								org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)constant;
 								model = this.createJointedModelFromModelResource( modelResource );
 							} else {
 								model = null;
 							}
-						} catch (IllegalArgumentException e) {
+						} catch( IllegalArgumentException e ) {
 							throw new RuntimeException( e );
-						} catch (IllegalAccessException e) {
+						} catch( IllegalAccessException e ) {
 							throw new RuntimeException( e );
 						}
 					} else {
 						model = null;
 					}
-				} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey) {
+				} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
 					org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 					org.lgna.story.resources.ModelResource constant = classResourceKey.getModelResourceCls().getEnumConstants()[ 0 ];
 					model = this.createJointedModelFromModelResource( constant );
-				} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey) {
+				} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
 					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)resourceKey;
 					LifeStage lifeStage = LifeStage.ADULT;
 					Gender gender = Gender.getRandom();
 					model = new SBiped( new AdultPersonResource(
-							gender, 
-							BaseSkinTone.getRandom(), 
-							BaseEyeColor.getRandom(), 
-							HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender),
+							gender,
+							BaseSkinTone.getRandom(),
+							BaseEyeColor.getRandom(),
+							HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 							0.5,
-							FullBodyOutfitManager.getSingleton().getRandomEnumConstant(lifeStage, gender)
-					) );
+							FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender )
+							) );
 				} else {
 					model = null;
 				}
@@ -176,21 +176,22 @@ public class GalleryProgram extends SProgram {
 			animate();
 		}
 	};
+
 	private void animate() {
 		SModel model = scene.getModel();
-		if (model instanceof SBiped) {
-			SBiped biped = (SBiped) model;
-			warmUp(biped);
-		} else if (model instanceof SQuadruped) {
-			SQuadruped quadruped = (SQuadruped) model;
-			warmUp(quadruped);
-		} else if (model instanceof SFlyer) {
-			SFlyer flyer = (SFlyer) model;
-			warmUp(flyer);
+		if( model instanceof SBiped ) {
+			SBiped biped = (SBiped)model;
+			warmUp( biped );
+		} else if( model instanceof SQuadruped ) {
+			SQuadruped quadruped = (SQuadruped)model;
+			warmUp( quadruped );
+		} else if( model instanceof SFlyer ) {
+			SFlyer flyer = (SFlyer)model;
+			warmUp( flyer );
 		}
 	}
-	
-	private void warmUp(SFlyer flyer) {
+
+	private void warmUp( SFlyer flyer ) {
 		final SJoint rightKnee = flyer.getRightKnee();
 		final SJoint rightHip = flyer.getRightHip();
 		final SJoint leftKnee = flyer.getLeftKnee();
@@ -202,52 +203,52 @@ public class GalleryProgram extends SProgram {
 		final SJoint head = flyer.getHead();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration( 0.5 ) );
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				leftShoulder.turn(TurnDirection.BACKWARD, 0.12, Turn.duration(0.5) );
-				leftShoulder.turn(TurnDirection.FORWARD, 0.25);
-				leftShoulder.turn(TurnDirection.BACKWARD, 0.25);
-				leftShoulder.turn(TurnDirection.FORWARD, 0.12, Turn.duration(0.5) );
+				leftShoulder.turn( TurnDirection.BACKWARD, 0.12, Turn.duration( 0.5 ) );
+				leftShoulder.turn( TurnDirection.FORWARD, 0.25 );
+				leftShoulder.turn( TurnDirection.BACKWARD, 0.25 );
+				leftShoulder.turn( TurnDirection.FORWARD, 0.12, Turn.duration( 0.5 ) );
 			}
 		}, "leftArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				rightShoulder.turn(TurnDirection.BACKWARD, 0.12, Turn.duration(0.5) );
-				rightShoulder.turn(TurnDirection.FORWARD, 0.25);
-				rightShoulder.turn(TurnDirection.BACKWARD, 0.25);
-				rightShoulder.turn(TurnDirection.FORWARD, 0.12, Turn.duration(0.5) );
+				rightShoulder.turn( TurnDirection.BACKWARD, 0.12, Turn.duration( 0.5 ) );
+				rightShoulder.turn( TurnDirection.FORWARD, 0.25 );
+				rightShoulder.turn( TurnDirection.BACKWARD, 0.25 );
+				rightShoulder.turn( TurnDirection.FORWARD, 0.12, Turn.duration( 0.5 ) );
 			}
 		}, "rightArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				rightHip.turn(TurnDirection.RIGHT, 0.15);
-				rightHip.turn(TurnDirection.LEFT, 0.15);
-				rightHip.turn(TurnDirection.BACKWARD, 0.25);
-				rightKnee.turn(TurnDirection.FORWARD, 0.25);
-				rightKnee.turn(TurnDirection.BACKWARD, 0.25);
-				rightHip.turn(TurnDirection.FORWARD, 0.25);
+				rightHip.turn( TurnDirection.RIGHT, 0.15 );
+				rightHip.turn( TurnDirection.LEFT, 0.15 );
+				rightHip.turn( TurnDirection.BACKWARD, 0.25 );
+				rightKnee.turn( TurnDirection.FORWARD, 0.25 );
+				rightKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				rightHip.turn( TurnDirection.FORWARD, 0.25 );
 			}
 		}, "leftLeg" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				leftHip.turn(TurnDirection.LEFT, 0.15);
-				leftHip.turn(TurnDirection.RIGHT, 0.15);
-				leftHip.turn(TurnDirection.BACKWARD, 0.25);
-				leftKnee.turn(TurnDirection.FORWARD, 0.25);
-				leftKnee.turn(TurnDirection.BACKWARD, 0.25);
-				leftHip.turn(TurnDirection.FORWARD, 0.25);
+				leftHip.turn( TurnDirection.LEFT, 0.15 );
+				leftHip.turn( TurnDirection.RIGHT, 0.15 );
+				leftHip.turn( TurnDirection.BACKWARD, 0.25 );
+				leftKnee.turn( TurnDirection.FORWARD, 0.25 );
+				leftKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				leftHip.turn( TurnDirection.FORWARD, 0.25 );
 			}
 		}, "rightLeg" ).start();
-		
+
 	}
 
-	private void warmUp(SQuadruped quadruped) {
+	private void warmUp( SQuadruped quadruped ) {
 		final SJoint rightHip = quadruped.getBackRightHip();
 		final SJoint leftHip = quadruped.getBackLeftHip();
 		final SJoint leftKnee = quadruped.getBackLeftKnee();
@@ -262,10 +263,10 @@ public class GalleryProgram extends SProgram {
 			public void run() {
 				neck.turn( TurnDirection.FORWARD, 0.25 );
 				neck.turn( TurnDirection.BACKWARD, 0.25 );
-				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration( 0.5 ) );
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
@@ -302,7 +303,7 @@ public class GalleryProgram extends SProgram {
 		}, "leftBack" ).start();
 	}
 
-	private void warmUp(SBiped biped) {
+	private void warmUp( SBiped biped ) {
 		final SJoint leftShoulder = biped.getLeftShoulder();
 		final SJoint rightShoulder = biped.getRightShoulder();
 		final SJoint rightElbow = biped.getRightElbow();
@@ -311,75 +312,77 @@ public class GalleryProgram extends SProgram {
 		final SJoint leftHip = biped.getLeftHip();
 		final SJoint rightKnee = biped.getRightKnee();
 		final SJoint head = biped.getHead();
-		final SJoint leftKnee = biped.getLeftKnee();new org.lgna.common.ComponentThread( new Runnable() {
+		final SJoint leftKnee = biped.getLeftKnee();
+		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
-				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration( 0.5 ) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration( 0.5 ) );
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				leftShoulder.turn(TurnDirection.BACKWARD, 0.40);
-				leftShoulder.turn(TurnDirection.FORWARD, 0.40);
-				leftShoulder.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
-				leftElbow.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
-				leftElbow.turn(TurnDirection.BACKWARD, 0.25);
-				leftElbow.turn(TurnDirection.FORWARD, 0.25);
-				leftElbow.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
-				leftShoulder.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
+				leftShoulder.turn( TurnDirection.BACKWARD, 0.40 );
+				leftShoulder.turn( TurnDirection.FORWARD, 0.40 );
+				leftShoulder.turn( TurnDirection.RIGHT, 0.25, Turn.duration( 0.5 ) );
+				leftElbow.turn( TurnDirection.RIGHT, 0.25, Turn.duration( 0.5 ) );
+				leftElbow.turn( TurnDirection.BACKWARD, 0.25 );
+				leftElbow.turn( TurnDirection.FORWARD, 0.25 );
+				leftElbow.turn( TurnDirection.LEFT, 0.25, Turn.duration( 0.5 ) );
+				leftShoulder.turn( TurnDirection.LEFT, 0.25, Turn.duration( 0.5 ) );
 			}
 		}, "leftArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				rightShoulder.turn(TurnDirection.BACKWARD, 0.40);
-				rightShoulder.turn(TurnDirection.FORWARD, 0.40);
-				rightShoulder.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
-				rightElbow.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
-				rightElbow.turn(TurnDirection.BACKWARD, 0.25);
-				rightElbow.turn(TurnDirection.FORWARD, 0.25);
-				rightElbow.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
-				rightShoulder.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
+				rightShoulder.turn( TurnDirection.BACKWARD, 0.40 );
+				rightShoulder.turn( TurnDirection.FORWARD, 0.40 );
+				rightShoulder.turn( TurnDirection.LEFT, 0.25, Turn.duration( 0.5 ) );
+				rightElbow.turn( TurnDirection.LEFT, 0.25, Turn.duration( 0.5 ) );
+				rightElbow.turn( TurnDirection.BACKWARD, 0.25 );
+				rightElbow.turn( TurnDirection.FORWARD, 0.25 );
+				rightElbow.turn( TurnDirection.RIGHT, 0.25, Turn.duration( 0.5 ) );
+				rightShoulder.turn( TurnDirection.RIGHT, 0.25, Turn.duration( 0.5 ) );
 			}
 		}, "rightArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				rightHip.turn(TurnDirection.RIGHT, 0.15);
-				rightHip.turn(TurnDirection.LEFT, 0.15);
-				rightHip.turn(TurnDirection.BACKWARD, 0.25);
-				rightKnee.turn(TurnDirection.FORWARD, 0.25);
-				rightKnee.turn(TurnDirection.BACKWARD, 0.25);
-				rightHip.turn(TurnDirection.FORWARD, 0.25);
+				rightHip.turn( TurnDirection.RIGHT, 0.15 );
+				rightHip.turn( TurnDirection.LEFT, 0.15 );
+				rightHip.turn( TurnDirection.BACKWARD, 0.25 );
+				rightKnee.turn( TurnDirection.FORWARD, 0.25 );
+				rightKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				rightHip.turn( TurnDirection.FORWARD, 0.25 );
 			}
 		}, "leftLeg" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
-				leftHip.turn(TurnDirection.LEFT, 0.15);
-				leftHip.turn(TurnDirection.RIGHT, 0.15);
-				leftHip.turn(TurnDirection.BACKWARD, 0.25);
-				leftKnee.turn(TurnDirection.FORWARD, 0.25);
-				leftKnee.turn(TurnDirection.BACKWARD, 0.25);
-				leftHip.turn(TurnDirection.FORWARD, 0.25);
+				leftHip.turn( TurnDirection.LEFT, 0.15 );
+				leftHip.turn( TurnDirection.RIGHT, 0.15 );
+				leftHip.turn( TurnDirection.BACKWARD, 0.25 );
+				leftKnee.turn( TurnDirection.FORWARD, 0.25 );
+				leftKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				leftHip.turn( TurnDirection.FORWARD, 0.25 );
 			}
 		}, "rightLeg" ).start();
 	}
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenLookingGlass( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
-		
-		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().addValueListener( this.galleryListener );
-		
+
+		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance().addValueListener( this.galleryListener );
+
 		Logger.todo( "remove ogre" );
 		this.scene.setModel( this.ogre );
 	}
+
 	public static void main( String[] args ) {
 		Logger.setLevel( Level.WARNING );
-		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull(true);
+		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull( true );
 		GalleryApplication app = new GalleryApplication();
 		app.initialize( args );
 		app.getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
@@ -390,8 +393,8 @@ public class GalleryProgram extends SProgram {
 
 		app.getFrame().setSize( 1200, 800 );
 		app.getFrame().setVisible( true );
-		
-		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState treeState = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
+
+		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState treeState = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance();
 		treeState.setValueTransactionlessly( treeState.getChildren( treeState.getTreeModel().getRoot() ).get( 0 ) );
 	}
 }
