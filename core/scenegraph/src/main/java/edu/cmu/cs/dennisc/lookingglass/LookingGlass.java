@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
+public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePlane, edu.cmu.cs.dennisc.pattern.Releasable {
 	public LookingGlassFactory getLookingGlassFactory();
 
 	public java.awt.Dimension getSize();

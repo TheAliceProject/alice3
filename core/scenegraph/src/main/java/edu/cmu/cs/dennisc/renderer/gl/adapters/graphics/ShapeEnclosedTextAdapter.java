@@ -47,8 +47,8 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 	private java.awt.Color outlineColor = null;
 
 	protected abstract void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
@@ -60,15 +60,15 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
 			java.awt.Font font,
 			java.awt.Color textColor,
 			float wrapWidth ) {
-		this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
+		this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
 	}
 
 	@Override

@@ -40,49 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.scenegraph;
+package edu.cmu.cs.dennisc.renderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCamera extends Leaf {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
-	//public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer> postRenderLayers = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
-		@Override
-		protected Layer[] createArray( int length ) {
-			return new Layer[ length ];
-		}
+public abstract class Graphics2D extends java.awt.Graphics2D {
+	public abstract boolean isValid();
 
-		@Override
-		protected Layer createCopy( Layer src ) {
-			//todo?
-			return src;
-		}
-	};
+	//todo?
+	//public abstract void transform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
+	//public abstract void setTransform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
 
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT( rv, xyzw, picturePlane, this );
-	}
+	public abstract boolean isRemembered( java.awt.Font font );
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT( rv, p, z, picturePlane, this );
-	}
+	public abstract void remember( java.awt.Font font );
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyzw, picturePlane, this );
-	}
+	public abstract void forget( java.awt.Font font );
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyz, picturePlane, this );
-	}
+	public abstract void disposeForgottenFonts();
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewVectorD4( p, z, picturePlane, this );
-	}
+	public abstract java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font );
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewPointD3( p, z, picturePlane, this );
-	}
+	public abstract boolean isRemembered( java.awt.Image image );
+
+	public abstract void remember( java.awt.Image image );
+
+	public abstract void forget( java.awt.Image image );
+
+	public abstract void disposeForgottenImages();
+
+	public abstract boolean isRemembered( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+
+	public abstract void remember( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+
+	public abstract void paint( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator, float x, float y, float alpha );
+
+	public abstract void forget( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+
+	public abstract void disposeForgottenImageGenerators();
 }

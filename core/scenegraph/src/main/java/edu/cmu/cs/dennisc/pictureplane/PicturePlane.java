@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,49 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.scenegraph;
+package edu.cmu.cs.dennisc.pictureplane;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCamera extends Leaf {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
-	//public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer> postRenderLayers = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
-		@Override
-		protected Layer[] createArray( int length ) {
-			return new Layer[ length ];
-		}
+public interface PicturePlane {
+	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-		@Override
-		protected Layer createCopy( Layer src ) {
-			//todo?
-			return src;
-		}
-	};
+	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT( rv, xyzw, picturePlane, this );
-	}
+	java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT( rv, p, z, picturePlane, this );
-	}
-
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyzw, picturePlane, this );
-	}
-
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyz, picturePlane, this );
-	}
-
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewVectorD4( p, z, picturePlane, this );
-	}
-
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewPointD3( p, z, picturePlane, this );
-	}
+	java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 }

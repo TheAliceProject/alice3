@@ -135,6 +135,10 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		throw new RuntimeException( "todo" );
 	}
 
+	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		throw new RuntimeException( "todo" );
+	}
+
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgPerspectiveCamera ) {
 		throw new RuntimeException( "todo" );
 	}
@@ -152,6 +156,10 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	public java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		throw new RuntimeException( "todo" );
 	}
 
