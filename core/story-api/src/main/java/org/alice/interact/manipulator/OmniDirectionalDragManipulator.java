@@ -448,7 +448,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
 	private Point calculateMousePlaneOffset( Point mousePosition ) {
 		Point3 pointInCamera = this.manipulatedTransformable.getTranslation( this.getCamera() );
-		Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+		Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
 		return new Point( awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y );
 	}
 
@@ -459,7 +459,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected Point getMouseCursorPositionInLookingGlass() {
 		Point3 new3DPoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 		Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
-		Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+		Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
 		return awtPoint;
 	}
 

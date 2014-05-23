@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.util;
+package edu.cmu.cs.dennisc.pictureplane;
 
 //todo: unify w/ scenegraph.util.TransformationUtilities?
 /**
