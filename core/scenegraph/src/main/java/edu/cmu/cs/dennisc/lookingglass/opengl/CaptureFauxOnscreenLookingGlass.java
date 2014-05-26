@@ -147,7 +147,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	protected void repaintIfAppropriate() {
 	}
 
-	public java.awt.Component getAWTComponent() {
+	public java.awt.Component getAwtComponent() {
 		return this.jPanel;
 	}
 

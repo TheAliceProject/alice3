@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.pictureplane;
  * @author Dennis Cosgrove
  */
 public interface OnscreenPicturePlane extends PicturePlane {
-	public java.awt.Component getAWTComponent();
+	public java.awt.Component getAwtComponent();
 }

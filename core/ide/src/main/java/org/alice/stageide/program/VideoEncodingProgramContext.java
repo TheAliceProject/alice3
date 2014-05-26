@@ -120,7 +120,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 
 	//todo: add String[] args?
 	public void initializeInContainer( java.awt.Container container ) {
-		java.awt.Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
+		java.awt.Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAwtComponent();
 		awtComponent.setSize( SIZE );
 		container.add( awtComponent );
 	}

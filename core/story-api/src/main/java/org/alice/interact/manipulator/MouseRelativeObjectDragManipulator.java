@@ -346,7 +346,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	}
 
 	protected void hideCursor() {
-		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAwtComponent(), CursorUtilities.NULL_CURSOR );
 		this.hidCursor = true;
 	}
 
@@ -356,9 +356,9 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 			Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
 			Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenPicturePlane, this.getCamera() );
-			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAWTComponent(), awtPoint );
+			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAwtComponent(), awtPoint );
 		} finally {
-			CursorUtilities.popAndSet( this.onscreenPicturePlane.getAWTComponent() );
+			CursorUtilities.popAndSet( this.onscreenPicturePlane.getAwtComponent() );
 		}
 	}
 

@@ -125,7 +125,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
 		if( lg.isRenderingEnabled() ) {
-			java.awt.Component component = lg.getAWTComponent();
+			java.awt.Component component = lg.getAwtComponent();
 			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
 				if( lg.getCameraCount() > 0 ) {
 					return true;

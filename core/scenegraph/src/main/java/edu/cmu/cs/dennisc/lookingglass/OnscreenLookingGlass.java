@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface OnscreenLookingGlass extends LookingGlass, edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane {
-	public java.awt.Component getAWTComponent();
+	public java.awt.Component getAwtComponent();
 
 	public void repaint();
 }

@@ -126,7 +126,7 @@ public abstract class BareBonesDragAdapter {
 
 	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( onscreenLookingGlass != null ) {
-			return onscreenLookingGlass.getAWTComponent();
+			return onscreenLookingGlass.getAwtComponent();
 		} else {
 			return null;
 		}

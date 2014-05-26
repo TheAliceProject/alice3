@@ -452,7 +452,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected boolean isPointInsideLookingGlass( Point awtPoint ) {
-		return this.onscreenPicturePlane.getAWTComponent().contains( awtPoint );
+		return this.onscreenPicturePlane.getAwtComponent().contains( awtPoint );
 	}
 
 	protected Point getMouseCursorPositionInLookingGlass() {
@@ -463,7 +463,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected void moveCursorToPointInLookingGlass( Point awtPoint ) {
-		edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAWTComponent(), awtPoint );
+		edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAwtComponent(), awtPoint );
 	}
 
 	protected void moveCursorToObjectRelativePosition() {
@@ -472,14 +472,14 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected void hideCursor() {
-		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAwtComponent(), CursorUtilities.NULL_CURSOR );
 		this.hidCursor = true;
 	}
 
 	protected void showCursor() {
 		if( this.hidCursor ) {
 			this.moveCursorToObjectRelativePosition();
-			CursorUtilities.popAndSet( this.onscreenPicturePlane.getAWTComponent() );
+			CursorUtilities.popAndSet( this.onscreenPicturePlane.getAwtComponent() );
 		}
 	}
 

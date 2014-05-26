@@ -242,7 +242,7 @@ public abstract class ProgramImp {
 	}
 
 	private void addComponents( AwtContainerInitializer awtContainerInitializer ) {
-		java.awt.Component awtLgComponent = this.getOnscreenLookingGlass().getAWTComponent();
+		java.awt.Component awtLgComponent = this.getOnscreenLookingGlass().getAwtComponent();
 		synchronized( awtLgComponent.getTreeLock() ) {
 			javax.swing.JPanel controlPanel;
 			if( this.isControlPanelDesired() ) {
@@ -255,7 +255,7 @@ public abstract class ProgramImp {
 	}
 
 	private void requestFocusInWindow() {
-		this.getOnscreenLookingGlass().getAWTComponent().requestFocusInWindow();
+		this.getOnscreenLookingGlass().getAwtComponent().requestFocusInWindow();
 	}
 
 	public static interface AwtContainerInitializer {
@@ -270,7 +270,7 @@ public abstract class ProgramImp {
 		}
 
 		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
-			this.awtContainer.add( onscreenLookingGlass.getAWTComponent() );
+			this.awtContainer.add( onscreenLookingGlass.getAwtComponent() );
 			if( controlPanel != null ) {
 				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
 			}

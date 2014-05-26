@@ -103,13 +103,13 @@ public abstract class PicturePlaneInteraction {
 	}
 
 	public void startUp() {
-		java.awt.Component awtComponent = this.onscreenLookingGlass.getAWTComponent();
+		java.awt.Component awtComponent = this.onscreenLookingGlass.getAwtComponent();
 		awtComponent.addMouseListener( this.mouseListener );
 		awtComponent.addMouseMotionListener( this.mouseMotionListener );
 	}
 
 	public void shutDown() {
-		java.awt.Component awtComponent = this.onscreenLookingGlass.getAWTComponent();
+		java.awt.Component awtComponent = this.onscreenLookingGlass.getAwtComponent();
 		awtComponent.removeMouseMotionListener( this.mouseMotionListener );
 		awtComponent.removeMouseListener( this.mouseListener );
 	}
@@ -160,7 +160,7 @@ public abstract class PicturePlaneInteraction {
 		this.rayPixelY0 = e.getY();
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
 		this.rayT0 = this.ray.getProjectedPointT( p );
-		edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), edu.cmu.cs.dennisc.java.awt.CursorUtilities.NULL_CURSOR );
+		edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.CursorUtilities.NULL_CURSOR );
 	}
 
 	private void rayDrag( java.awt.event.MouseEvent e ) {
@@ -179,12 +179,12 @@ public abstract class PicturePlaneInteraction {
 
 		this.isInTheMidstOfACursorWarp = true;
 		try {
-			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenLookingGlass.getAWTComponent(), xyInPixels );
+			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenLookingGlass.getAwtComponent(), xyInPixels );
 		} finally {
 			this.isInTheMidstOfACursorWarp = false;
 		}
 
-		edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
+		edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( this.onscreenLookingGlass.getAwtComponent() );
 		this.ray = null;
 		this.rayT0 = Double.NaN;
 		this.rayPixelY0 = Double.NaN;

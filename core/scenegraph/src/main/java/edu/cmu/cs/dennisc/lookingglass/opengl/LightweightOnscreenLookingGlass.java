@@ -131,7 +131,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		return this.glPanel;
 	}
 
-	public java.awt.Component getAWTComponent() {
+	public java.awt.Component getAwtComponent() {
 		return getJPanel();
 	}
 
