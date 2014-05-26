@@ -53,7 +53,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
@@ -66,7 +65,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
 
 	public HandlelessObjectRotateDragManipulator() {
@@ -101,12 +100,12 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		return CameraView.ACTIVE_VIEW;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 
 	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null )
 		{
 			int xDif = mouseLocation.x - this.initialPoint.x;
@@ -192,7 +191,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	private Vector3 rotateAxis;
 	private MovementDirection rotateAxisDirection;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 
 	private Point initialPoint;
 	private Vector3 absoluteRotationAxis;

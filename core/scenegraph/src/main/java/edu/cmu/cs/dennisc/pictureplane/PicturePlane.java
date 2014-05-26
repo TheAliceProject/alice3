@@ -46,6 +46,10 @@ package edu.cmu.cs.dennisc.pictureplane;
  * @author Dennis Cosgrove
  */
 public interface PicturePlane {
+	int getWidth();
+
+	int getHeight();
+
 	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
@@ -53,4 +57,8 @@ public interface PicturePlane {
 	java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+
+	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+
+	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel );
 }

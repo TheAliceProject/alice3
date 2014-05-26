@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
-
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+package edu.cmu.cs.dennisc.pictureplane;
 
 /**
- * @author David Culyba
+ * @author Dennis Cosgrove
  */
-public interface OnScreenLookingGlassInformedManipulator {
-
-	public OnscreenLookingGlass getOnscreenLookingGlass();
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass );
-
+public interface OnscreenPicturePlane extends PicturePlane {
+	public java.awt.Component getAWTComponent();
 }

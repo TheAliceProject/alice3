@@ -55,7 +55,6 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
@@ -71,7 +70,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 /**
  * @author David Culyba
  */
-public class ObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class ObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 
 	private static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 15.0d / 360.0d );
 	private static final double WORLD_DISTANCE_TO_RADIANS_MULTIPLIER = 1.1d;
@@ -136,12 +135,12 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
 	}
 
 	@Override
@@ -217,7 +216,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors( this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward );
 			double distanceToRightAngle = Math.abs( ( Math.PI * .5d ) - angleBetweenVector.getAsRadians() );
@@ -301,7 +300,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	protected void hideCursor() {
-		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAWTComponent(), CursorUtilities.NULL_CURSOR );
 		this.hidCursor = true;
 	}
 
@@ -310,10 +309,10 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		{
 			try {
 				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-				Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
-				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.getOnscreenLookingGlass().getAWTComponent(), awtPoint );
+				Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenPicturePlane, this.getCamera() );
+				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAWTComponent(), awtPoint );
 			} finally {
-				CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
+				CursorUtilities.popAndSet( this.onscreenPicturePlane.getAWTComponent() );
 			}
 		}
 	}
@@ -348,6 +347,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	private Plane cameraFacingPlane;
 	private RotationRingHandle rotationHandle;
 	private AbstractCamera camera = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 	private boolean hidCursor = false;
 }

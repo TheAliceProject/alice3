@@ -40,13 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.alice.interact.manipulator;
+
 
 /**
- * @author Dennis Cosgrove
+ * @author David Culyba
  */
-public interface OnscreenLookingGlass extends LookingGlass, edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane {
-	public java.awt.Component getAWTComponent();
+public interface OnscreenPicturePlaneInformedManipulator {
 
-	public void repaint();
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane();
+
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane );
+
 }
