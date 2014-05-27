@@ -396,14 +396,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
 		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
-				if( PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( method.name.getValue() ) ) {
-					return method;
-				}
-			}
-		}
-		return null;
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod( sceneType );
 	}
 
 	private org.alice.ide.instancefactory.InstanceFactory getInstanceFactoryForSceneOrSceneField( org.lgna.project.ast.UserField field ) {

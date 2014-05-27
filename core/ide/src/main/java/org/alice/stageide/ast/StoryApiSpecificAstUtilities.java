@@ -88,8 +88,6 @@ public class StoryApiSpecificAstUtilities {
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			org.lgna.project.ast.UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 			if( initializeEventListenersMethod != null ) {
-				java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-
 				for( org.lgna.project.ast.Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
 					if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 						org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
@@ -134,6 +132,21 @@ public class StoryApiSpecificAstUtilities {
 		} else {
 			return java.util.Collections.emptyList();
 		}
+	}
 
+	public static org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod( org.lgna.project.ast.NamedUserType sceneType ) {
+		if( sceneType != null ) {
+			return sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
+		} else {
+			return null;
+		}
+	}
+
+	public static org.lgna.project.ast.UserMethod getInitializeEventListenersMethod( org.lgna.project.ast.NamedUserType sceneType ) {
+		if( sceneType != null ) {
+			return sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+		} else {
+			return null;
+		}
 	}
 }
