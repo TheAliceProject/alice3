@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+
 /**
  * @author Dennis Cosgrove
  */

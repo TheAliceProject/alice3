@@ -70,7 +70,7 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	protected java.net.URL getUrl() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "http://www.google.com/search?q=+graphics+driver" );
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
 			String renderer = sharedDetails.getRenderer();
 			if( renderer != null ) {

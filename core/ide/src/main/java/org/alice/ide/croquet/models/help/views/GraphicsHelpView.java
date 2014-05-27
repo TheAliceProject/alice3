@@ -59,7 +59,7 @@ public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 	private static String getGraphicsInformation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Graphics information: " );
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
 			sb.append( sharedDetails.getRenderer() );
 		} else {
@@ -69,7 +69,7 @@ public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 	}
 
 	public GraphicsHelpView() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "FYI: " );
 		if( pickDetails != null ) {

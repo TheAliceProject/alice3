@@ -929,7 +929,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
 		return new java.awt.font.FontRenderContext( getTransform(), isAntiAliased, usesFractionalMetrics );
 	}
 
-	// edu.cmu.cs.dennisc.lookingglass.Graphics2D
+	// edu.cmu.cs.dennisc.renderer.Graphics2D
 
 	private static final class ReferencedObject<E> {
 		private final E object;
@@ -1228,7 +1228,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
 		}
 	}
 
-	// edu.cmu.cs.dennisc.lookingglass.opengl.Graphics2D
+	// edu.cmu.cs.dennisc.renderer.opengl.Graphics2D
 
 	public javax.media.opengl.GL getGL() {
 		return this.renderContext.gl;

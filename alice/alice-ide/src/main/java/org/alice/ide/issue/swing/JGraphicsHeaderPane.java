@@ -55,8 +55,8 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 	}
 
 	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
 		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
 		sbSearchGraphicsDriverUrlSpec.append( "http://www.google.com/search?q=+graphics+driver" );
 		if( sharedDetails != null ) {

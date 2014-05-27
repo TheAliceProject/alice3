@@ -68,7 +68,7 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 		StringBuilder sb = new StringBuilder();
 		sb.append( super.getEnvironmentText() );
 		sb.append( ";" );
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
 			sb.append( sharedDetails.getRenderer() );
 		} else {
