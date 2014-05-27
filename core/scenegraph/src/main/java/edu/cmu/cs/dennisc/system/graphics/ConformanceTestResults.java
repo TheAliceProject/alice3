@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.system.graphics;
 
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
@@ -56,6 +56,8 @@ import static javax.media.opengl.GL2.GL_RENDER;
 import static javax.media.opengl.GL2.GL_SELECT;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+import edu.cmu.cs.dennisc.lookingglass.opengl.GetUtilities;
+import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
 
 /**
  * @author Dennis Cosgrove

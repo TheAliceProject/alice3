@@ -315,7 +315,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			if( isSubElementActuallyRequired ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+				edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
 				if( pickDetails != null ) {
 					isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
 				} else {

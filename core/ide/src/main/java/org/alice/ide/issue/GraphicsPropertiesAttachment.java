@@ -59,8 +59,8 @@ public class GraphicsPropertiesAttachment implements Attachment {
 		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "graphicsProperties" );
 		xmlDocument.appendChild( xmlRootElement );
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
 		if( sharedDetails != null ) {
 			org.w3c.dom.Element xmlSharedElement = xmlDocument.createElement( "sharedProperties" );
 			xmlRootElement.appendChild( xmlSharedElement );

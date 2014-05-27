@@ -48,6 +48,7 @@ import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove
@@ -315,7 +316,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			if( isSubElementActuallyRequired ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
+				edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 				if( pickDetails != null ) {
 					isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
 				} else {

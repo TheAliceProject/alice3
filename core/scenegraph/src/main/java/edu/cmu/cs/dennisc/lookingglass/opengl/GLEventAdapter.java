@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove

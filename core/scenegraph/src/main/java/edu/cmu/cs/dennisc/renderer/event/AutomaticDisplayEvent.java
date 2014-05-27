@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package edu.cmu.cs.dennisc.renderer.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.BrowserOperation {
-	private static class SingletonHolder {
-		private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
-	}
-
-	public static SearchForGraphicsDriversOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SearchForGraphicsDriversOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
-	}
-
-	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase().contains( "geforce" ) ) {
-			return "GeForce";
-		} else {
-			return renderer;
-		}
-	}
-
-	@Override
-	protected java.net.URL getUrl() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "http://www.google.com/search?q=+graphics+driver" );
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		if( sharedDetails != null ) {
-			String renderer = sharedDetails.getRenderer();
-			if( renderer != null ) {
-				renderer = getRendererSearchTerm( renderer );
-				sb.append( "+" );
-				sb.append( renderer.replaceAll( " ", "+" ) );
-			}
-		}
-		String spec = sb.toString();
-		this.setToolTipText( spec );
-		try {
-			return new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
+public class AutomaticDisplayEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.renderer.RenderFactory> {
+	public AutomaticDisplayEvent( edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory ) {
+		super( renderFactory );
 	}
 }
