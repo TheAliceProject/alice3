@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,20 +45,21 @@ package edu.cmu.cs.dennisc.renderer.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface RenderTargetListener {
-	public void initialized( RenderTargetInitializeEvent e );
+public class RenderTargetDisplayChangeEvent extends RenderTargetEvent {
+	private boolean m_isModeChanged;
+	private boolean m_isDeviceChanged;
 
-	public void cleared( RenderTargetRenderEvent e );
+	public RenderTargetDisplayChangeEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, boolean isModeChanged, boolean isDeviceChanged ) {
+		super( renderTarget );
+		m_isModeChanged = isModeChanged;
+		m_isDeviceChanged = isDeviceChanged;
+	}
 
-	public void rendered( RenderTargetRenderEvent e );
+	public boolean isModeChanged() {
+		return m_isModeChanged;
+	}
 
-	//todo: add
-	//	public void displaying( RenderTargetEvent e );
-	//	public void displayed( RenderTargetEvent e );
-	//	public void picking( RenderTargetEvent e );
-	//	public void picked( RenderTargetEvent e );
-
-	public void resized( RenderTargetResizeEvent e );
-
-	public void displayChanged( RenderTargetDisplayChangeEvent e );
+	public boolean isDeviceChanged() {
+		return m_isDeviceChanged;
+	}
 }

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,20 +45,21 @@ package edu.cmu.cs.dennisc.renderer.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface RenderTargetListener {
-	public void initialized( RenderTargetInitializeEvent e );
+public class RenderTargetResizeEvent extends RenderTargetEvent {
+	private int m_width;
+	private int m_height;
 
-	public void cleared( RenderTargetRenderEvent e );
+	public RenderTargetResizeEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, int width, int height ) {
+		super( renderTarget );
+		m_width = width;
+		m_height = height;
+	}
 
-	public void rendered( RenderTargetRenderEvent e );
+	public int getWidth() {
+		return m_width;
+	}
 
-	//todo: add
-	//	public void displaying( RenderTargetEvent e );
-	//	public void displayed( RenderTargetEvent e );
-	//	public void picking( RenderTargetEvent e );
-	//	public void picked( RenderTargetEvent e );
-
-	public void resized( RenderTargetResizeEvent e );
-
-	public void displayChanged( RenderTargetDisplayChangeEvent e );
+	public int getHeight() {
+		return m_height;
+	}
 }

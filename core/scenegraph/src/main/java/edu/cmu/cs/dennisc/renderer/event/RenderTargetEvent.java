@@ -45,6 +45,8 @@ package edu.cmu.cs.dennisc.renderer.event;
 /**
  * @author Dennis Cosgrove
  */
-public class RenderTargetEvent {
-
+public abstract class RenderTargetEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.renderer.RenderTarget> {
+	public RenderTargetEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		super( renderTarget );
+	}
 }

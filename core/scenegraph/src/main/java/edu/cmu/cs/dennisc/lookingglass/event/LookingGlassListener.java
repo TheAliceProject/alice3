@@ -56,7 +56,7 @@ public interface LookingGlassListener {
 	//	public void displaying( LookingGlassEvent e );
 	//	public void displayed( LookingGlassEvent e );
 	//	public void picking( LookingGlassEvent e );
-	//	public void pickeded( LookingGlassEvent e );
+	//	public void picked( LookingGlassEvent e );
 
 	public void resized( LookingGlassResizeEvent e );
 

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,20 +45,15 @@ package edu.cmu.cs.dennisc.renderer.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface RenderTargetListener {
-	public void initialized( RenderTargetInitializeEvent e );
+public class RenderTargetRenderEvent extends RenderTargetEvent {
+	private edu.cmu.cs.dennisc.lookingglass.Graphics2D m_g;
 
-	public void cleared( RenderTargetRenderEvent e );
+	public RenderTargetRenderEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.lookingglass.Graphics2D g ) {
+		super( renderTarget );
+		m_g = g;
+	}
 
-	public void rendered( RenderTargetRenderEvent e );
-
-	//todo: add
-	//	public void displaying( RenderTargetEvent e );
-	//	public void displayed( RenderTargetEvent e );
-	//	public void picking( RenderTargetEvent e );
-	//	public void picked( RenderTargetEvent e );
-
-	public void resized( RenderTargetResizeEvent e );
-
-	public void displayChanged( RenderTargetDisplayChangeEvent e );
+	public edu.cmu.cs.dennisc.lookingglass.Graphics2D getGraphics2D() {
+		return m_g;
+	}
 }
