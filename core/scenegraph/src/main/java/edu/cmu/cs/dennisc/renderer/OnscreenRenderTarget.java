@@ -47,4 +47,6 @@ package edu.cmu.cs.dennisc.renderer;
  */
 public interface OnscreenRenderTarget<C extends java.awt.Component> extends RenderTarget, edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane {
 	public C getAwtComponent();
+
+	public void repaint();
 }

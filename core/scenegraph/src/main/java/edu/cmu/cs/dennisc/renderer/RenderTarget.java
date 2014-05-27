@@ -58,6 +58,8 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
 
+	int getSgCameraCount();
+
 	void addRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener );
 
 	void removeRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener );
@@ -100,9 +102,9 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	//
 	//	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	//
-	//	public boolean isRenderingEnabled();
-	//
-	//	public void setRenderingEnabled( boolean isRenderingEnabled );
+	boolean isRenderingEnabled();
+
+	void setRenderingEnabled( boolean isRenderingEnabled );
 	//
 	//	public void forgetAllCachedItems();
 }

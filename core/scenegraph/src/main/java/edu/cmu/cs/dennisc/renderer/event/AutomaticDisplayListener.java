@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlOffscreenRenderTarget extends GlRenderTarget implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
-	private final javax.media.opengl.GLPbuffer glPixelBuffer;
-
-	public GlOffscreenRenderTarget( int width, int height ) {
-		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
-			//			this.glPixelBuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height, share );
-			//
-			//			// This is a work around for Linux users.
-			//			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
-			//			// return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
-			//			if( mapPixelBufferToDimension != null ) {
-			//				mapPixelBufferToDimension.put( this.glPixelBuffer, new java.awt.Dimension( width, height ) );
-			//			}
-			this.glPixelBuffer = null;
-		} else {
-			this.glPixelBuffer = null;
-		}
-	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGlAutoDrawable() {
-		return this.glPixelBuffer;
-	}
-
-	@Override
-	protected void repaintIfAppropriate() {
-	}
+public interface AutomaticDisplayListener {
+	public void automaticDisplayCompleted( AutomaticDisplayEvent e );
 }

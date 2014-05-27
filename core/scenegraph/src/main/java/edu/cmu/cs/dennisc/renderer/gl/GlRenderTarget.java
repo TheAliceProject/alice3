@@ -103,6 +103,10 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		this.sgCameras.clear();
 	}
 
+	public int getSgCameraCount() {
+		return this.sgCameras.size();
+	}
+
 	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
 		return java.util.Collections.unmodifiableList( this.sgCameras );
 	}
@@ -197,7 +201,36 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		throw new RuntimeException( "todo" );
 	}
 
+	public boolean isRenderingEnabled() {
+		return this.isRenderingEnabled;
+	}
+
+	protected abstract void repaintIfAppropriate();
+
+	public void setRenderingEnabled( boolean isRenderingEnabled ) {
+		if( this.isRenderingEnabled != isRenderingEnabled ) {
+			this.isRenderingEnabled = isRenderingEnabled;
+			this.repaintIfAppropriate();
+			//			//todo
+			//			if( m_isRenderingEnabled ) {
+			//				if( m_glEventAdapter.isListening() ) {
+			//					//pass
+			//				} else {
+			//					m_glEventAdapter.startListening( getGLAutoDrawable() );
+			//				}
+			//			} else {
+			//				if( m_glEventAdapter.isListening() ) {
+			//					m_glEventAdapter.stopListening( getGLAutoDrawable() );
+			//				} else {
+			//					//pass
+			//				}
+			//			}
+		}
+	}
+
 	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.Map<edu.cmu.cs.dennisc.scenegraph.AbstractCamera, java.awt.Rectangle> mapSgCameraToViewport = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	private boolean isRenderingEnabled = true;
 }
