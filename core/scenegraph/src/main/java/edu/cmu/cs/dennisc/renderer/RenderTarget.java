@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.renderer;
 /**
  * @author Dennis Cosgrove
  */
-public interface RenderTarget {
+public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePlane {
 	int getWidth();
 
 	int getHeight();

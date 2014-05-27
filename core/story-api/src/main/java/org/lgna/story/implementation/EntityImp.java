@@ -302,7 +302,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		if( scene != null ) {
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 			if( onscreenLookingGlass != null ) {
-				return onscreenLookingGlass.getAWTComponent();
+				return onscreenLookingGlass.getAwtComponent();
 			}
 		}
 		return null;

@@ -423,7 +423,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
 					java.awt.geom.Point2D.Float out_textBoundsOffset,
 					edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
-					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+					edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane,
 					java.awt.Rectangle actualViewport,
 					edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera,
 					java.awt.geom.Dimension2D textSize
@@ -438,7 +438,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 				}
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo_New( offsetAsSeenBySubject, sgCamera );
 				//			edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
-				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, lookingGlass );
+				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, picturePlane );
 				//			float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
 				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 

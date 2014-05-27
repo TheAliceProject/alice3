@@ -241,7 +241,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	private org.lgna.croquet.undo.UndoHistory undoHistory;
 	private org.lgna.project.ast.AbstractDeclaration declaration;
-	private int fontSize = 14;
+	private int fontSize = edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.getDefaultFontSize();
 
 	private boolean isLambdaSupported = true;
 }

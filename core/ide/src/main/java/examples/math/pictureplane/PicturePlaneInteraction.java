@@ -103,13 +103,13 @@ public abstract class PicturePlaneInteraction {
 	}
 
 	public void startUp() {
-		java.awt.Component awtComponent = this.onscreenLookingGlass.getAWTComponent();
+		java.awt.Component awtComponent = this.onscreenLookingGlass.getAwtComponent();
 		awtComponent.addMouseListener( this.mouseListener );
 		awtComponent.addMouseMotionListener( this.mouseMotionListener );
 	}
 
 	public void shutDown() {
-		java.awt.Component awtComponent = this.onscreenLookingGlass.getAWTComponent();
+		java.awt.Component awtComponent = this.onscreenLookingGlass.getAwtComponent();
 		awtComponent.removeMouseMotionListener( this.mouseMotionListener );
 		awtComponent.removeMouseListener( this.mouseListener );
 	}
@@ -129,7 +129,7 @@ public abstract class PicturePlaneInteraction {
 	private void startPlaneDrag( java.awt.event.MouseEvent e ) {
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = new edu.cmu.cs.dennisc.math.Vector4( p.x, p.y, p.z, 1.0 );
-		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToViewport_New( xyzwInCameraSpace, this.onscreenLookingGlass, this.sgCamera );
+		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToViewport_New( xyzwInCameraSpace, this.onscreenLookingGlass, this.sgCamera );
 		this.planeZ0 = xyzwInViewportSpace.z / xyzwInViewportSpace.w;
 	}
 
@@ -140,7 +140,7 @@ public abstract class PicturePlaneInteraction {
 
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = new edu.cmu.cs.dennisc.math.Vector4( x, y, this.planeZ0, 1.0 );
 
-		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromViewportToCamera_New( xyzwInViewportSpace, this.onscreenLookingGlass, this.sgCamera );
+		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromViewportToCamera_New( xyzwInViewportSpace, this.onscreenLookingGlass, this.sgCamera );
 
 		edu.cmu.cs.dennisc.math.Point3 p = new edu.cmu.cs.dennisc.math.Point3( xyzwInCameraSpace.x / xyzwInCameraSpace.w, xyzwInCameraSpace.y / xyzwInCameraSpace.w, xyzwInCameraSpace.z / xyzwInCameraSpace.w );
 		this.sgTransformable.setTranslationOnly( p, this.sgCamera );
@@ -160,7 +160,7 @@ public abstract class PicturePlaneInteraction {
 		this.rayPixelY0 = e.getY();
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
 		this.rayT0 = this.ray.getProjectedPointT( p );
-		edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), edu.cmu.cs.dennisc.java.awt.CursorUtilities.NULL_CURSOR );
+		edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.CursorUtilities.NULL_CURSOR );
 	}
 
 	private void rayDrag( java.awt.event.MouseEvent e ) {
@@ -175,16 +175,16 @@ public abstract class PicturePlaneInteraction {
 
 	private void stopRayDrag( java.awt.event.MouseEvent e ) {
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
-		java.awt.Point xyInPixels = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( p, this.onscreenLookingGlass, this.sgCamera );
+		java.awt.Point xyInPixels = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( p, this.onscreenLookingGlass, this.sgCamera );
 
 		this.isInTheMidstOfACursorWarp = true;
 		try {
-			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenLookingGlass.getAWTComponent(), xyInPixels );
+			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenLookingGlass.getAwtComponent(), xyInPixels );
 		} finally {
 			this.isInTheMidstOfACursorWarp = false;
 		}
 
-		edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
+		edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( this.onscreenLookingGlass.getAwtComponent() );
 		this.ray = null;
 		this.rayT0 = Double.NaN;
 		this.rayPixelY0 = Double.NaN;

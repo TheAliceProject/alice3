@@ -55,7 +55,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearDragHandle;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -68,7 +67,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 /**
  * @author David Culyba
  */
-public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
@@ -88,12 +87,12 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 
 	protected double getDistanceAlongAxisBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation.backward;
 			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, cameraBack );
@@ -262,5 +261,5 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	private Plane cameraFacingPlane;
 	private Plane handleAlignedPlane;
 	private AbstractCamera camera = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 }

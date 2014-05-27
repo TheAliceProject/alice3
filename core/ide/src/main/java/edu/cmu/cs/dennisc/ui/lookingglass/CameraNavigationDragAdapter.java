@@ -292,7 +292,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		//todo
 
-		this.getOnscreenLookingGlass().getAWTComponent().addMouseWheelListener( this );
+		this.getOnscreenLookingGlass().getAwtComponent().addMouseWheelListener( this );
 		//component.addMouseWheelListener( this );
 	}
 
@@ -302,7 +302,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		//todo
 
-		this.getOnscreenLookingGlass().getAWTComponent().addMouseWheelListener( this );
+		this.getOnscreenLookingGlass().getAwtComponent().addMouseWheelListener( this );
 		//component.removeMouseWheelListener( this );
 	}
 

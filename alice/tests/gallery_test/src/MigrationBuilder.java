@@ -1,4 +1,3 @@
-import org.alice.ide.story.AliceIde;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
@@ -80,7 +79,7 @@ public class MigrationBuilder {
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new AliceIde();
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 
 		java.util.Set<Class<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();

@@ -50,7 +50,7 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
-import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
+import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
@@ -310,8 +310,8 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	@Override
 	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState ) {
-		if( manipulator instanceof OnScreenLookingGlassInformedManipulator ) {
-			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
+		if( manipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
+			OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator)manipulator;
 			this.setLookingGlassOnManipulator( lookingGlassManipulator );
 		}
 		if( manipulator instanceof CameraInformedManipulator ) {

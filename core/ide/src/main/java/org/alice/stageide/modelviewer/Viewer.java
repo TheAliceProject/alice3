@@ -63,7 +63,7 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 		this.camera.setVehicle( this.scene );
 		this.sunLight.setVehicle( this.scene );
 		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
-		this.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		this.getAwtComponent().add( this.onscreenLookingGlass.getAwtComponent(), java.awt.BorderLayout.CENTER );
 	}
 
 	private boolean isInitialized = false;

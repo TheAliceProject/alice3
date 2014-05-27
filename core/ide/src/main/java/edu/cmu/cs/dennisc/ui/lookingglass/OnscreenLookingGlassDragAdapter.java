@@ -60,6 +60,6 @@ public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
 	}
 
 	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		return onscreenLookingGlass.getAWTComponent();
+		return onscreenLookingGlass.getAwtComponent();
 	}
 }

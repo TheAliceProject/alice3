@@ -49,7 +49,7 @@ import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
-import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
+import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
@@ -126,7 +126,7 @@ public abstract class BareBonesDragAdapter {
 
 	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( onscreenLookingGlass != null ) {
-			return onscreenLookingGlass.getAWTComponent();
+			return onscreenLookingGlass.getAwtComponent();
 		} else {
 			return null;
 		}
@@ -174,8 +174,8 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator ) {
-		manipulator.setOnscreenLookingGlass( this.onscreenLookingGlass );
+	public void setLookingGlassOnManipulator( OnscreenPicturePlaneInformedManipulator manipulator ) {
+		manipulator.setOnscreenPicturePlane( this.onscreenLookingGlass );
 	}
 
 	protected abstract void setManipulatorStartState( AbstractManipulator manipulator, InputState startState );

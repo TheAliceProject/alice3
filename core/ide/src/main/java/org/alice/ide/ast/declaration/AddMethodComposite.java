@@ -62,7 +62,8 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	@Override
 	protected void localize() {
 		super.localize();
-		this.getLaunchOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+		int size = edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.getDefaultFontSize() + 4;
+		this.getLaunchOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( size, size ) ) );
 	}
 
 	@Override

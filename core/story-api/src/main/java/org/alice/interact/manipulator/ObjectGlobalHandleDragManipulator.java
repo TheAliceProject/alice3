@@ -47,14 +47,13 @@ import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba
  */
-public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
@@ -86,14 +85,14 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
-		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator ) ) {
-			( (OnScreenLookingGlassInformedManipulator)this.activeManipulator ).setOnscreenLookingGlass( lookingGlass );
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
+		if( this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
+			( (OnscreenPicturePlaneInformedManipulator)this.activeManipulator ).setOnscreenPicturePlane( onscreenPicturePlane );
 		}
 	}
 
@@ -173,8 +172,8 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState ) {
 		manipulator.setDragAdapter( this.dragAdapter );
-		if( manipulator instanceof OnScreenLookingGlassInformedManipulator ) {
-			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
+		if( manipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
+			OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator)manipulator;
 			this.dragAdapter.setLookingGlassOnManipulator( lookingGlassManipulator );
 		}
 		if( manipulator instanceof CameraInformedManipulator ) {
@@ -240,7 +239,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	private AbstractManipulator activeManipulator;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 	private ManipulationHandle activeHandle = null;
 	private AbstractCamera camera = null;
 }

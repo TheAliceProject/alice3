@@ -100,7 +100,7 @@ public class CardPane extends javax.swing.JPanel {
 	}
 
 	public CardPane( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		this( onscreenLookingGlass, onscreenLookingGlass.getAWTComponent() );
+		this( onscreenLookingGlass, onscreenLookingGlass.getAwtComponent() );
 	}
 
 	private void showCard( String key ) {

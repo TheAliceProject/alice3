@@ -78,7 +78,7 @@ public class GalleryTest {
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde();
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		java.util.List<String> brokenModelNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();

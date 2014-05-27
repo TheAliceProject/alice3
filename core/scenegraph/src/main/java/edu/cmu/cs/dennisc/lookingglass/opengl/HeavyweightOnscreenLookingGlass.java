@@ -72,15 +72,15 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 	}
 
 	public void repaint() {
-		getAWTComponent().repaint();
+		getAwtComponent().repaint();
 	}
 
-	public java.awt.Component getAWTComponent() {
+	public java.awt.Component getAwtComponent() {
 		return m_glCanvas;
 	}
 
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
-		return getAWTComponent().getSize( rv );
+		return getAwtComponent().getSize( rv );
 	}
 
 	@Override

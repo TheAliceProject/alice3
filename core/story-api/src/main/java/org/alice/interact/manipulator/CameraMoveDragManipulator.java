@@ -49,7 +49,6 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -58,16 +57,16 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
-public class CameraMoveDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator {
+public class CameraMoveDragManipulator extends CameraManipulator implements OnscreenPicturePlaneInformedManipulator {
 	private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
 	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
 	}
 
 	@Override
@@ -144,11 +143,11 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 	}
 
 	private void calculateMovementFactors( Point mousePoint ) {
-		Ray centerRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y );
-		Ray oneUp = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y - 1 );
-		Ray oneDown = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x, mousePoint.y + 1 );
-		Ray oneRight = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x + 1, mousePoint.y );
-		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mousePoint.x - 1, mousePoint.y );
+		Ray centerRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y );
+		Ray oneUp = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y - 1 );
+		Ray oneDown = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y + 1 );
+		Ray oneRight = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x + 1, mousePoint.y );
+		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x - 1, mousePoint.y );
 
 		double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
@@ -204,5 +203,5 @@ public class CameraMoveDragManipulator extends CameraManipulator implements OnSc
 	private double initialCameraDotVertical;
 	private double pickDistance;
 
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 }

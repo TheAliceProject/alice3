@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import javax.swing.Icon;
 
-import org.alice.ide.story.AliceIde;
 import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
@@ -543,7 +542,7 @@ public class GalleryWebpageGenerator {
 	}
 
 	public static void buildGalleryWebpage( String webpageDir ) {
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new AliceIde();
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS ) );
 
 		StringBuilder indexPageContent = new StringBuilder();

@@ -53,7 +53,7 @@ public abstract class Bubble extends ShapeEnclosedText {
 				java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
 				java.awt.geom.Point2D.Float out_textBoundsOffset,
 				Bubble bubble,
-				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+				edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane,
 				java.awt.Rectangle actualViewport,
 				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 				java.awt.geom.Dimension2D textSize

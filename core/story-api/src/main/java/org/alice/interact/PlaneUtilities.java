@@ -42,7 +42,6 @@
  */
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -61,8 +60,8 @@ public class PlaneUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera, int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.math.Ray ray = onscreenLookingGlass.getRayAtPixel( xPixel, yPixel, camera );
+	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane, AbstractCamera camera, int xPixel, int yPixel ) {
+		edu.cmu.cs.dennisc.math.Ray ray = picturePlane.getRayAtPixel( xPixel, yPixel, camera );
 
 		//So this is a little crazy
 		//The pick ray from the lookingglass is calculated to be pointing along the "backward" direction of the camera

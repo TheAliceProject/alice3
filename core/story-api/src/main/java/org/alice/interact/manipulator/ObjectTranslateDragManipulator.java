@@ -54,7 +54,6 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -67,7 +66,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 /**
  * @author David Culyba
  */
-public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 
 	private static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 8.0d / 360.0d );
 	private static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
@@ -92,12 +91,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
+		return this.onscreenPicturePlane;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
+		this.onscreenPicturePlane = onscreenPicturePlane;
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Plane toMoveIn = this.movementPlane;
 			double badAngleAmount = this.getBadAngleAmount( this.movementPlane, pickRay );
@@ -241,7 +240,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.movementPlane = createPickPlane( this.initialClickPoint );
 			this.badAnglePlane = createBadAnglePlane( this.initialClickPoint );
 
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if( pickRay != null ) {
 				this.initialClickPoint = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );
 				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.initialClickPoint );
@@ -275,5 +274,5 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	private Boolean hasMoved = false;
 
 	private AbstractCamera camera = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
 }

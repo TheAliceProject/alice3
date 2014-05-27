@@ -132,7 +132,7 @@ public class EventManager {
 		}
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
-			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenLookingGlass().getAWTComponent() ), 0 );
+			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenLookingGlass().getAwtComponent() ), 0 );
 		}
 	};
 
@@ -182,14 +182,14 @@ public class EventManager {
 	}
 
 	public void addListenersTo( OnscreenLookingGlass onscreenLookingGlass ) {
-		java.awt.Component component = onscreenLookingGlass.getAWTComponent();
+		java.awt.Component component = onscreenLookingGlass.getAwtComponent();
 		component.addMouseListener( this.mouseAdapter );
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
 	}
 
 	public void removeListenersFrom( OnscreenLookingGlass onscreenLookingGlass ) {
-		java.awt.Component component = onscreenLookingGlass.getAWTComponent();
+		java.awt.Component component = onscreenLookingGlass.getAwtComponent();
 		component.removeMouseListener( this.mouseAdapter );
 		component.removeMouseMotionListener( this.mouseAdapter );
 		component.removeKeyListener( this.keyAdapter );

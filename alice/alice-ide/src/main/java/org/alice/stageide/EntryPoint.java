@@ -82,6 +82,9 @@ public class EntryPoint {
 						javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 					}
 				}
+
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.scaleFontIAppropriate();
+
 				javax.swing.UIManager.put( "ScrollBar.width", 13 );
 				javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
 				javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
