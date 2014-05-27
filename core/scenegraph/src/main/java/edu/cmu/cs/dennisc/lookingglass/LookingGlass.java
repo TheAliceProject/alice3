@@ -90,21 +90,21 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public void setDescription( String description );
 
-	public void addCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	public void removeCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	public void clearCameras();
+	public void clearSgCameras();
 
-	public int getCameraCount();
+	public int getSgCameraCount();
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAt( int index );
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv );
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv );
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getCameras();
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras();
 
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessCameras();
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
 
 	public void addLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener );
 

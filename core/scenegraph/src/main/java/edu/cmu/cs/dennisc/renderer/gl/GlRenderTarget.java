@@ -107,6 +107,10 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		return this.sgCameras.size();
 	}
 
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
+		return this.sgCameras.get( index );
+	}
+
 	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
 		return java.util.Collections.unmodifiableList( this.sgCameras );
 	}

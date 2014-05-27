@@ -214,7 +214,7 @@ public class SceneImp extends EntityImp {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
 			if( entityImp instanceof CameraImp ) {
 				CameraImp cameraImp = (CameraImp)entityImp;
-				program.getOnscreenLookingGlass().addCamera( cameraImp.getSgCamera() );
+				program.getOnscreenLookingGlass().addSgCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
@@ -224,7 +224,7 @@ public class SceneImp extends EntityImp {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
 			if( entityImp instanceof CameraImp ) {
 				CameraImp cameraImp = (CameraImp)entityImp;
-				program.getOnscreenLookingGlass().removeCamera( cameraImp.getSgCamera() );
+				program.getOnscreenLookingGlass().removeSgCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}

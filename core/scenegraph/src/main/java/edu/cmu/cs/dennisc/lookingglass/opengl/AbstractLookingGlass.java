@@ -220,7 +220,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		m_description = description;
 	}
 
-	public void addCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.add( camera );
@@ -233,7 +233,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
-	public void removeCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.remove( camera );
@@ -245,7 +245,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
-	public void clearCameras() {
+	public void clearSgCameras() {
 		if( m_cameras.size() > 0 ) {
 			synchronized( m_cameras ) {
 				m_cameras.clear();
@@ -256,27 +256,27 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
-	public int getCameraCount() {
+	public int getSgCameraCount() {
 		return m_cameras.size();
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAt( int index ) {
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
 		return m_cameras.elementAt( index );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv ) {
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv ) {
 		synchronized( m_cameras ) {
 			m_cameras.copyInto( rv );
 		}
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getCameras() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv = new edu.cmu.cs.dennisc.scenegraph.AbstractCamera[ getCameraCount() ];
-		return getCameras( rv );
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras() {
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv = new edu.cmu.cs.dennisc.scenegraph.AbstractCamera[ getSgCameraCount() ];
+		return getSgCameras( rv );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessCameras() {
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
 		synchronized( m_cameras ) {
 			return m_cameras;
 		}

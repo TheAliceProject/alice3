@@ -89,7 +89,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
+				if( LightweightOnscreenLookingGlass.this.getSgCameraCount() > 0 ) {
 					try {
 						super.paintComponent( g );
 						this.prevThrowable = null;

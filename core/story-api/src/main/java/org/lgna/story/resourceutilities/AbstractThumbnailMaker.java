@@ -105,8 +105,8 @@ public abstract class AbstractThumbnailMaker {
 
 	protected void removeComponent( edu.cmu.cs.dennisc.scenegraph.Component sgComponent )
 	{
-		if( this.offscreenLookingGlass.getCameraCount() > 0 ) {
-			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenLookingGlass.accessCameras();
+		if( this.offscreenLookingGlass.getSgCameraCount() > 0 ) {
+			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenLookingGlass.accessSgCameras();
 			synchronized( cameras ) {
 				for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 					AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
@@ -456,8 +456,8 @@ public abstract class AbstractThumbnailMaker {
 	protected void setUpCamera( edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass )
 	{
 		boolean isClearingAndAddingRequired;
-		if( lookingGlass.getCameraCount() == 1 ) {
-			if( lookingGlass.getCameraAt( 0 ) == this.sgCamera ) {
+		if( lookingGlass.getSgCameraCount() == 1 ) {
+			if( lookingGlass.getSgCameraAt( 0 ) == this.sgCamera ) {
 				isClearingAndAddingRequired = false;
 			} else {
 				isClearingAndAddingRequired = true;
@@ -466,8 +466,8 @@ public abstract class AbstractThumbnailMaker {
 			isClearingAndAddingRequired = true;
 		}
 		if( isClearingAndAddingRequired ) {
-			lookingGlass.clearCameras();
-			lookingGlass.addCamera( this.sgCamera );
+			lookingGlass.clearSgCameras();
+			lookingGlass.addSgCamera( this.sgCamera );
 		}
 	}
 

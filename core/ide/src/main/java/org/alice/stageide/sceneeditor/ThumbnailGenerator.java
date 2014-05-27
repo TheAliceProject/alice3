@@ -61,8 +61,8 @@ public final class ThumbnailGenerator {
 				sceneEditor.preScreenCapture();
 
 				boolean isClearingAndAddingRequired;
-				if( offscreenLookingGlass.getCameraCount() == 1 ) {
-					if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
+				if( offscreenLookingGlass.getSgCameraCount() == 1 ) {
+					if( offscreenLookingGlass.getSgCameraAt( 0 ) == sgCamera ) {
 						isClearingAndAddingRequired = false;
 					} else {
 						isClearingAndAddingRequired = true;
@@ -71,8 +71,8 @@ public final class ThumbnailGenerator {
 					isClearingAndAddingRequired = true;
 				}
 				if( isClearingAndAddingRequired ) {
-					offscreenLookingGlass.clearCameras();
-					offscreenLookingGlass.addCamera( sgCamera );
+					offscreenLookingGlass.clearSgCameras();
+					offscreenLookingGlass.addSgCamera( sgCamera );
 				}
 				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getColorBuffer();
 

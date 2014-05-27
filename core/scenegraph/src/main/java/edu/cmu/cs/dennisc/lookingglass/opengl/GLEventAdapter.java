@@ -173,9 +173,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( this.lookingGlass.getCameraCount() > 0 ) {
+					if( this.lookingGlass.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
-						Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.lookingGlass.accessCameras();
+						Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.lookingGlass.accessSgCameras();
 						synchronized( cameras ) {
 							for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 								AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );

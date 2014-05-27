@@ -127,7 +127,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		if( lg.isRenderingEnabled() ) {
 			java.awt.Component component = lg.getAwtComponent();
 			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
-				if( lg.getCameraCount() > 0 ) {
+				if( lg.getSgCameraCount() > 0 ) {
 					return true;
 				}
 			}

@@ -46,6 +46,8 @@ package edu.cmu.cs.dennisc.pictureplane;
  * @author Dennis Cosgrove
  */
 public interface PicturePlane {
+	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
+
 	int getWidth();
 
 	int getHeight();

@@ -96,13 +96,13 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
 		if( onscreenLookingGlass != null ) {
-			int cameraCount = onscreenLookingGlass.getCameraCount();
+			int cameraCount = onscreenLookingGlass.getSgCameraCount();
 			if( ( cameraCount > 1 ) && ( this.isMultipleCameraWarningAlreadyDelivered == false ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getCameraCount() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getSgCameraCount() );
 				this.isMultipleCameraWarningAlreadyDelivered = true;
 			}
 			if( m_sgCameraIndex < cameraCount ) {
-				return onscreenLookingGlass.getCameraAt( m_sgCameraIndex );
+				return onscreenLookingGlass.getSgCameraAt( m_sgCameraIndex );
 			} else {
 				return null;
 			}

@@ -69,7 +69,7 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 	private boolean isInitialized = false;
 
 	protected void initialize() {
-		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
+		this.onscreenLookingGlass.addSgCamera( this.camera.getSgCamera() );
 	}
 
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {

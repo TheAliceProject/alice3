@@ -58,6 +58,8 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
 
+	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
+
 	int getSgCameraCount();
 
 	void addRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener );

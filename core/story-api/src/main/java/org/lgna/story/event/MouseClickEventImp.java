@@ -88,7 +88,7 @@ public class MouseClickEventImp {
 		} else {
 			OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
 			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
-			AbstractCamera sgCamera = lg.getCameraAt( 0 );
+			AbstractCamera sgCamera = lg.getSgCameraAt( 0 );
 			this.viewport = lg.getActualViewport( sgCamera );
 		}
 		return this.viewport;

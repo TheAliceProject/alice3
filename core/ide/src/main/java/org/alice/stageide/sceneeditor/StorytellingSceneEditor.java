@@ -523,8 +523,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private void clearCameras()
 	{
 		this.snapGrid.stopTrackingCameras();
-		if( this.onscreenLookingGlass.getCameraCount() > 0 ) {
-			onscreenLookingGlass.clearCameras();
+		if( this.onscreenLookingGlass.getSgCameraCount() > 0 ) {
+			onscreenLookingGlass.clearSgCameras();
 		}
 		this.mainCameraViewTracker.setCameras( null, null );
 		this.globalDragAdapter.clearCameraViews();
@@ -689,8 +689,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
 		boolean isClearingAndAddingRequired;
-		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
-			if( onscreenLookingGlass.getCameraAt( 0 ) == camera ) {
+		if( this.onscreenLookingGlass.getSgCameraCount() == 1 ) {
+			if( onscreenLookingGlass.getSgCameraAt( 0 ) == camera ) {
 				isClearingAndAddingRequired = false;
 			} else {
 				isClearingAndAddingRequired = true;
@@ -699,8 +699,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			isClearingAndAddingRequired = true;
 		}
 		if( isClearingAndAddingRequired ) {
-			onscreenLookingGlass.clearCameras();
-			onscreenLookingGlass.addCamera( camera );
+			onscreenLookingGlass.clearSgCameras();
+			onscreenLookingGlass.addSgCamera( camera );
 		}
 		this.snapGrid.setCurrentCamera( camera );
 		this.onscreenLookingGlass.repaint();
@@ -1178,8 +1178,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void rendered( LookingGlassRenderEvent e ) {
-		if( ( this.onscreenLookingGlass.getCameraCount() > 0 ) && ( this.onscreenLookingGlass.getCameraAt( 0 ) instanceof OrthographicCamera ) ) {
-			paintHorizonLine( e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt( 0 ) );
+		if( ( this.onscreenLookingGlass.getSgCameraCount() > 0 ) && ( this.onscreenLookingGlass.getSgCameraAt( 0 ) instanceof OrthographicCamera ) ) {
+			paintHorizonLine( e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getSgCameraAt( 0 ) );
 		}
 	}
 
