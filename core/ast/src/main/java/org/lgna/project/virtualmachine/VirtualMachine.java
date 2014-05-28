@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.project.virtualmachine;
@@ -306,7 +306,7 @@ public abstract class VirtualMachine {
 
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> arguments,
 			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> variableArguments, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.JavaKeyedArgument> keyedArguments ) {
-		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated 
+		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated
 		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
 		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
 		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
@@ -350,7 +350,7 @@ public abstract class VirtualMachine {
 			}
 			rv[ rvIndex ] = array;
 			//
-			//			
+			//
 			//			org.lgna.project.ast.AbstractParameter paramLast = requiredParameters.get( N-1 );
 			//			if( paramLast.isVariableLength() ) {
 			//				Class<?> arrayCls =  paramLast.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification();
@@ -440,6 +440,14 @@ public abstract class VirtualMachine {
 			//pass
 		} else {
 			throw new LgnaVmArrayIndexOutOfBoundsException( this, index, length );
+		}
+	}
+
+	private void checkNotNull( Object value, String message ) {
+		if( value != null ) {
+			//pass
+		} else {
+			throw new LgnaVmNullPointerException( message, this );
 		}
 	}
 
@@ -572,13 +580,7 @@ public abstract class VirtualMachine {
 		if( method.isStatic() ) {
 			//pass
 		} else {
-			if( instance != null ) {
-				//pass
-			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "instance is null" );
-				throw new LgnaVmNullPointerException( sb.toString(), this );
-			}
+			this.checkNotNull( instance, "caller is null" );
 		}
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
@@ -753,7 +755,15 @@ public abstract class VirtualMachine {
 				parameterCount += 1;
 			}
 			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
-			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), allArguments );
+			org.lgna.project.ast.Expression callerExpression = methodInvocation.expression.getValue();
+			Object caller = this.evaluate( callerExpression );
+			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+			if( method.isStatic() ) {
+				//pass
+			} else {
+				this.checkNotNull( caller, "caller is null" );
+			}
+			return this.invoke( caller, method, allArguments );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation.method.getValue() );
 			return null;
@@ -956,27 +966,21 @@ public abstract class VirtualMachine {
 
 	private boolean evaluateBoolean( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
 		Object value = this.evaluate( expression );
-		if( value != null ) {
-			if( value instanceof Boolean ) {
-				return (Boolean)value;
-			} else {
-				throw new LgnaVmClassCastException( this, Boolean.class, value.getClass() );
-			}
+		this.checkNotNull( value, nullExceptionMessage );
+		if( value instanceof Boolean ) {
+			return (Boolean)value;
 		} else {
-			throw new LgnaVmNullPointerException( nullExceptionMessage, this );
+			throw new LgnaVmClassCastException( this, Boolean.class, value.getClass() );
 		}
 	}
 
 	private int evaluateInt( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
 		Object value = this.evaluate( expression );
-		if( value != null ) {
-			if( value instanceof Integer ) {
-				return (Integer)value;
-			} else {
-				throw new LgnaVmClassCastException( this, Integer.class, value.getClass() );
-			}
+		this.checkNotNull( value, nullExceptionMessage );
+		if( value instanceof Integer ) {
+			return (Integer)value;
 		} else {
-			throw new LgnaVmNullPointerException( nullExceptionMessage, this );
+			throw new LgnaVmClassCastException( this, Integer.class, value.getClass() );
 		}
 	}
 
@@ -1115,20 +1119,14 @@ public abstract class VirtualMachine {
 
 	protected final void executeForEachInArrayLoop( org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
 		Object[] array = this.evaluate( forEachInArrayLoop.array.getValue(), Object[].class );
-		if( array != null ) {
-			excecuteForEachLoop( forEachInArrayLoop, array, listeners );
-		} else {
-			throw new LgnaVmNullPointerException( "for each array is null", this );
-		}
+		this.checkNotNull( array, "for each array is null" );
+		excecuteForEachLoop( forEachInArrayLoop, array, listeners );
 	}
 
 	protected final void executeForEachInIterableLoop( org.lgna.project.ast.ForEachInIterableLoop forEachInIterableLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getValue(), Iterable.class );
-		if( iterable != null ) {
-			excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
-		} else {
-			throw new LgnaVmNullPointerException( "for each iterable is null", this );
-		}
+		this.checkNotNull( iterable, "for each iterable is null" );
+		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
 	}
 
 	protected void excecuteEachInTogether( final org.lgna.project.ast.AbstractEachInTogether eachInTogether, final Object[] array, final org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
@@ -1199,20 +1197,14 @@ public abstract class VirtualMachine {
 
 	protected final void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
 		Object[] array = this.evaluate( eachInArrayTogether.array.getValue(), Object[].class );
-		if( array != null ) {
-			excecuteEachInTogether( eachInArrayTogether, array, listeners );
-		} else {
-			throw new LgnaVmNullPointerException( "each in together array is null", this );
-		}
+		this.checkNotNull( array, "each in together array is null" );
+		excecuteEachInTogether( eachInArrayTogether, array, listeners );
 	}
 
 	protected final void executeEachInIterableTogether( org.lgna.project.ast.EachInIterableTogether eachInIterableTogether, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
-		if( iterable != null ) {
-			excecuteEachInTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
-		} else {
-			throw new LgnaVmNullPointerException( "each in together iterable is null", this );
-		}
+		this.checkNotNull( iterable, "each in together iterable is null" );
+		excecuteEachInTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
 	}
 
 	protected void executeReturnStatement( org.lgna.project.ast.ReturnStatement returnStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
