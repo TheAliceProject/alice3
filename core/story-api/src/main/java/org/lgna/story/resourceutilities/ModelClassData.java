@@ -32,5 +32,6 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData AUTOMOBILE_CLASS_DATA = new ModelClassData( org.lgna.story.resources.AutomobileResource.class, "org.lgna.story.resources.automobile", VEHICLE_BASE_CLASS_DATA );
 	public static final ModelClassData AIRCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.AircraftResource.class, "org.lgna.story.resources.aircraft", VEHICLE_BASE_CLASS_DATA );
 	public static final ModelClassData WATERCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.WatercraftResource.class, "org.lgna.story.resources.watercraft", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData TRAIN_CLASS_DATA = new ModelClassData( org.lgna.story.resources.TrainResource.class, "org.lgna.story.resources.train", VEHICLE_BASE_CLASS_DATA );
 
 }
