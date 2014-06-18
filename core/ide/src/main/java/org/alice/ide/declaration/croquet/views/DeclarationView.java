@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.ide.declaration.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public AbstractCodePerspective( java.util.UUID id, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( id, menuBar );
-	}
-
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getView().getCodeDropReceptorInFocus();
-	}
-
-	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
-		if( declarationComposite != null ) {
-			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
-			declarationView.addPotentialDropReceptors( out, dragModel );
-		}
+public class DeclarationView extends org.lgna.croquet.views.BorderPanel {
+	public DeclarationView( org.alice.ide.declaration.croquet.DeclarationTab tab ) {
+		super( tab );
 	}
 }

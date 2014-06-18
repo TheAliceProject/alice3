@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.ide.declaration.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public AbstractCodePerspective( java.util.UUID id, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( id, menuBar );
-	}
+public final class DeclarationTab extends org.lgna.croquet.AbstractTabComposite<org.lgna.croquet.views.Panel> {
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Declaration, DeclarationTab> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getView().getCodeDropReceptorInFocus();
-	}
-
-	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
-		if( declarationComposite != null ) {
-			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
-			declarationView.addPotentialDropReceptors( out, dragModel );
+	public static DeclarationTab getInstance( org.lgna.project.ast.Declaration declaration ) {
+		if( declaration != null ) {
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( declaration, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Declaration, DeclarationTab>() {
+				public DeclarationTab initialize( org.lgna.project.ast.Declaration key ) {
+					return new DeclarationTab( key );
+				}
+			} );
+		} else {
+			return null;
 		}
 	}
+
+	private DeclarationTab( org.lgna.project.ast.Declaration declaration ) {
+		super( java.util.UUID.fromString( "46055801-7f28-4081-96f2-6202c6ead894" ) );
+		this.declaration = declaration;
+	}
+
+	public org.lgna.project.ast.Declaration getDeclaration() {
+		return this.declaration;
+	}
+
+	public boolean isCloseable() {
+		//todo
+		return true;
+	}
+
+	@Override
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.alice.ide.declaration.croquet.views.DeclarationView( this );
+	}
+
+	private final org.lgna.project.ast.Declaration declaration;
 }

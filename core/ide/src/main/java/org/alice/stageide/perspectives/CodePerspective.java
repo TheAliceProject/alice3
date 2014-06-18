@@ -47,8 +47,13 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
+	public CodePerspective( org.lgna.croquet.MenuBarComposite menuBar ) {
 		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), menuBar );
+	}
+
+	@Override
+	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
+		return org.alice.ide.declaration.croquet.views.FullEditDeclarationViewFactory.SINGLETON;
 	}
 
 	public org.lgna.croquet.Composite<?> getMainComposite() {

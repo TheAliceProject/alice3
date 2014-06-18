@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.ide.declaration.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public AbstractCodePerspective( java.util.UUID id, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( id, menuBar );
+public enum DeclarationTabCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.declaration.croquet.DeclarationTab> {
+	SINGLETON;
+	public Class<org.alice.ide.declaration.croquet.DeclarationTab> getValueClass() {
+		return org.alice.ide.declaration.croquet.DeclarationTab.class;
 	}
 
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getView().getCodeDropReceptorInFocus();
-	}
-
-	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
-		if( declarationComposite != null ) {
-			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
-			declarationView.addPotentialDropReceptors( out, dragModel );
+	public org.alice.ide.declaration.croquet.DeclarationTab decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+		if( valueIsNotNull ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			org.lgna.project.ast.AbstractDeclaration declaration = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+			return org.alice.ide.declaration.croquet.DeclarationTab.getInstance( declaration );
+		} else {
+			return null;
 		}
+	}
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declaration.croquet.DeclarationTab value ) {
+		boolean valueIsNotNull = value != null;
+		binaryEncoder.encode( valueIsNotNull );
+		if( valueIsNotNull ) {
+			binaryEncoder.encode( value.getDeclaration().getId() );
+		}
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.declaration.croquet.DeclarationTab value ) {
+		sb.append( value != null ? value.getDeclaration().getName() : value );
 	}
 }
