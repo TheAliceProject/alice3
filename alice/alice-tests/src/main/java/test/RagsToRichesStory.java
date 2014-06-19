@@ -340,7 +340,7 @@ class RagsToRichesStory extends SProgram {
 			@Override
 			public void run() {
 				ThreadUtilities.sleep( 250 );
-				Component awtComponent = EmployeesOnly.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAWTComponent();
+				Component awtComponent = EmployeesOnly.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAwtComponent();
 				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootFrame( awtComponent ).setSize( 1024, 768 );
 			}
 		}.start();

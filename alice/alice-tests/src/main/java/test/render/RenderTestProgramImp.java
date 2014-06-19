@@ -50,7 +50,7 @@ public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramI
 
 	public RenderTestProgramImp( org.lgna.story.SProgram abstraction ) {
 		super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
-		java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
+		java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAwtComponent();
 		awtComponent.addMouseListener( new java.awt.event.MouseListener() {
 
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
