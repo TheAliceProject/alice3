@@ -5,6 +5,8 @@ public interface TransportResource extends JointedModelResource {
 
 	public org.lgna.story.resources.JointId[] getRootJointIds();
 
+	public org.lgna.story.resources.JointId[] getWheels();
+
 	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction );
 
 }

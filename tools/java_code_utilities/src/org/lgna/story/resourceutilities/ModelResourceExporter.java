@@ -67,6 +67,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
 import java.util.zip.ZipException;
 
 import javax.xml.transform.OutputKeys;
@@ -93,6 +94,7 @@ public class ModelResourceExporter {
 	private static boolean REMOVE_ROOT_JOINTS = false;
 
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
+	private static final String ROOT_IDS_METHOD_NAME = "getRootJointIds";
 
 	private class NamedFile
 	{
@@ -358,16 +360,17 @@ public class ModelResourceExporter {
 		//			}
 		//			return nameStr;
 		//		}
-		String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
-		if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
-			return customArrayNameMap.get( nameStr );
+		int index = jointName.lastIndexOf( '_' );
+		if( index != -1 ) {
+			String nameStr = jointName.substring( 0, index );
+			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+				return customArrayNameMap.get( nameStr );
+			}
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
-	public static Map<String, List<String>> getArrayEntriesFromJointList( List<Tuple2<String, String>> jointList, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) {
+	public static Map<String, List<String>> getArrayEntriesFromJointList( List<Tuple2<String, String>> jointList, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) throws DataFormatException {
 		List<String> jointNames = new LinkedList<String>();
 		for( Tuple2<String, String> joint : jointList ) {
 			jointNames.add( joint.getA() );
@@ -375,7 +378,7 @@ public class ModelResourceExporter {
 		return getArrayEntries( jointNames, customArrayNameMap, jointsToSuppress );
 	}
 
-	public static Map<String, List<String>> getArrayEntries( List<String> jointNames, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) {
+	public static Map<String, List<String>> getArrayEntries( List<String> jointNames, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) throws DataFormatException {
 		//Array name, joint name entries
 		Map<String, List<String>> arrayEntries = new HashMap<String, List<String>>();
 
@@ -398,18 +401,22 @@ public class ModelResourceExporter {
 		// Like entries with different names (ENGINE_WHEEL_1 vs COAL_BOX_WHEEL_1) but have a clear spatial ordering
 		// We don't handle cases like this 
 		for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
-			Collections.sort( arrayEntry.getValue(), new Comparator<String>() {
-				public int compare( String o1, String o2 ) {
-					int index1 = getArrayIndexForJoint( o1 );
-					int index2 = getArrayIndexForJoint( o2 );
-					if( index1 == index2 ) {
-						System.err.println( "ERROR COMPARING ARRAY NAME INDICES: " + o1 + " == " + o2 );
+			try {
+				Collections.sort( arrayEntry.getValue(), new Comparator<String>() {
+					public int compare( String o1, String o2 ) {
+						int index1 = getArrayIndexForJoint( o1 );
+						int index2 = getArrayIndexForJoint( o2 );
+						if( index1 == index2 ) {
+							System.err.println( "ERROR COMPARING ARRAY NAME INDICES: " + o1 + " == " + o2 );
+							//We don't handle cases where the index is the same.
+							throw new RuntimeException( "ERROR COMPARING ARRAY NAME INDICES: " + o1 + " == " + o2 + ". These names resolve to the same index (" + index1 + ") and that is not allowed." );
+						}
+						return index1 - index2;
 					}
-					//We don't handle cases where the index is the same.
-					assert index1 != index2;
-					return index1 - index2;
-				}
-			} );
+				} );
+			} catch( RuntimeException e ) {
+				throw new DataFormatException( e.toString() );
+			}
 		}
 
 		return arrayEntries;
@@ -1004,7 +1011,7 @@ public class ModelResourceExporter {
 		String arrayAccessorMethodName = getArrayAccessorMethodName( arrayName );
 		Method m = null;
 		try {
-			m = classData.superClass.getDeclaredMethod( arrayAccessorMethodName );
+			m = classData.superClass.getMethod( arrayAccessorMethodName );
 			if( ( m != null ) && m.getDeclaringClass().isInterface() ) {
 				return true;
 			}
@@ -1013,7 +1020,41 @@ public class ModelResourceExporter {
 		return false;
 	}
 
-	public String createJavaCode()
+	private List<Method> getMandatoryMethods( Class<?> superClass, Class<?> returnType ) {
+		List<Method> methods = new LinkedList<Method>();
+		for( Method method : superClass.getMethods() ) {
+			if( method.getReturnType().equals( returnType ) && method.getDeclaringClass().isInterface() )
+			{
+				methods.add( method );
+			}
+		}
+		return methods;
+	}
+
+	private List<String> getMandatoryJointArrayNames( Class<?> superClass ) {
+		List<String> methodNames = new LinkedList<String>();
+		for( Method method : getMandatoryMethods( superClass, org.lgna.story.resources.JointId[].class ) ) {
+			methodNames.add( method.getName() );
+		}
+		List<String> arrayNames = new LinkedList<String>();
+		for( String methodName : methodNames ) {
+			int index = methodName.indexOf( "get" );
+			if( ( index == 0 ) ) {
+				if( !methodName.equals( ROOT_IDS_METHOD_NAME ) ) {
+					String newName = methodName.substring( 3 );
+					newName = AliceResourceUtilties.makeEnumName( newName );
+					arrayNames.add( newName );
+				}
+			}
+			else {
+				System.err.println( "FROM " + superClass + ": UNABLE TO CONVERT " + methodName + " INTO AN ARRAY NAME." );
+			}
+
+		}
+		return arrayNames;
+	}
+
+	public String createJavaCode() throws DataFormatException
 	{
 		StringBuilder sb = new StringBuilder();
 
@@ -1091,8 +1132,18 @@ public class ModelResourceExporter {
 				}
 				sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 			}
-
-			if( !arrayEntries.isEmpty() ) {
+			List<String> mandatoryArrayNames = getMandatoryJointArrayNames( classData.superClass );
+			if( !arrayEntries.isEmpty() || ( mandatoryArrayNames.size() != 0 ) ) {
+				//Loop through and remove any existing arrays from the mandatory array list
+				// This should leave only the mandatory arrays that need an empty list defined
+				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
+					if( mandatoryArrayNames.contains( arrayEntry.getKey() ) ) {
+						mandatoryArrayNames.remove( arrayEntry.getKey() );
+					}
+				}
+				for( String mandatoryArray : mandatoryArrayNames ) {
+					arrayEntries.put( mandatoryArray, new LinkedList<String>() );
+				}
 				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
 					List<String> arrayElements = arrayEntry.getValue();
 					String arrayName = arrayEntry.getKey();// + "_ARRAY";
@@ -1131,7 +1182,7 @@ public class ModelResourceExporter {
 		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		if( needsToDefineRootsMethod( this.classData.superClass ) )
 		{
-			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){" + JavaCodeUtilities.LINE_RETURN );
+			sb.append( "\tpublic org.lgna.story.resources.JointId[] " + ROOT_IDS_METHOD_NAME + "(){" + JavaCodeUtilities.LINE_RETURN );
 			if( addedRoots )
 			{
 				sb.append( "\t\treturn " + this.getJavaClassName() + "." + ROOT_IDS_FIELD_NAME + ";" + JavaCodeUtilities.LINE_RETURN );
@@ -1274,7 +1325,7 @@ public class ModelResourceExporter {
 		return new File( root + filename );
 	}
 
-	private File createJavaCode( String root )
+	private File createJavaCode( String root ) throws DataFormatException
 	{
 		String packageDirectory = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString );
 		System.out.println( packageDirectory );

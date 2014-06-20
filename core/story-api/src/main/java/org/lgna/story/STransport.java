@@ -11,4 +11,8 @@ public class STransport extends SJointedModel {
 	org.lgna.story.implementation.TransportImp getImplementation() {
 		return implementation;
 	}
+
+	public SJoint[] getWheels() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getWheels() );
+	}
 }
