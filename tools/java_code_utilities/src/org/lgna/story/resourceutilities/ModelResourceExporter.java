@@ -350,13 +350,17 @@ public class ModelResourceExporter {
 	}
 
 	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap ) {
-		Matcher match = arrayPattern.matcher( jointName );
-		if( match.find() ) {
-			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
-			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
-				nameStr = customArrayNameMap.get( nameStr );
-			}
-			return nameStr;
+		//Matcher match = arrayPattern.matcher( jointName );
+		//		if( match.find() ) {
+		//			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
+		//			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+		//				nameStr = customArrayNameMap.get( nameStr );
+		//			}
+		//			return nameStr;
+		//		}
+		String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
+		if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+			return customArrayNameMap.get( nameStr );
 		}
 		else {
 			return null;
