@@ -42,6 +42,8 @@
  */
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+
 /**
  * @author dculyba
  * 
@@ -84,6 +86,7 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId RIGHT_FOOT = new org.lgna.story.resources.JointId( RIGHT_ANKLE, FlyerResource.class );
 	//	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction );

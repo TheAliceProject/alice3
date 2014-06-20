@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,19 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.annotation;
+package org.lgna.story.implementation;
 
 /**
- * @author dculyba
- * 
+ * @author user
  */
-public enum ModelResourceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.resources.JointedModelResource> {
-	SINGLETON;
-	public Class<org.lgna.story.resources.JointedModelResource> getSupportedCls() {
-		return org.lgna.story.resources.JointedModelResource.class;
-	}
-
-	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.resources.biped.OgreResource.class.getFields();
+public class TrainImp extends TransportImp<org.lgna.story.STrain, org.lgna.story.resources.TrainResource> {
+	public TrainImp( org.lgna.story.STrain abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.TrainResource> factory ) {
+		super( abstraction, factory );
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.annotations;
+package org.lgna.story;
 
 /**
- * @author dculyba
- * 
+ * @author user
  */
-@java.lang.annotation.Documented
-@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
-public @interface ResourceTemplate {
-	boolean isTopLevelResource() default true;
+public class STrain extends STransport {
 
-	Class<?> modelClass();
+	//	@Override
+	//	public org.lgna.story.implementation.TrainImp getImplementation() {
+	//		return (org.lgna.story.implementation.TrainImp)super.getImplementation();
+	//	}
+
+	public STrain( org.lgna.story.resources.TrainResource resource ) {
+		super( resource );
+	}
+
+	public SJoint[] getWheels() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getTypedJointedModelResource( org.lgna.story.resources.TrainResource.class ).getWheels() );
+	}
 }

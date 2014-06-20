@@ -2,6 +2,8 @@ package org.lgna.story.resourceutilities;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.CollectionUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
@@ -40,6 +42,7 @@ public class StorytellingResources {
 	private ModelResourceTree galleryTree;
 	private final List<File> simsPathsLoaded = new LinkedList<File>();
 	private List<Class<? extends org.lgna.story.resources.ModelResource>> aliceClassesLoaded = null;
+	private List<org.lgna.project.ast.JavaType> rootTypes = null;
 
 	private List<URLClassLoader> resourceClassLoaders;
 	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
@@ -321,6 +324,68 @@ public class StorytellingResources {
 		return rv;
 	}
 
+	public List<String> getClassNamesFromResourceFiles( File... resourceFiles )
+	{
+		List<String> classNames = new LinkedList<String>();
+		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
+		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
+			for( String className : entry.getValue() ) {
+				classNames.add( className );
+			}
+		}
+		return classNames;
+	}
+
+	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles )
+	{
+		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		try
+		{
+			URL[] urlArray = new URL[ resourceFiles.length ];
+			for( int i = 0; i < resourceFiles.length; i++ ) {
+				urlArray[ i ] = resourceFiles[ i ].toURI().toURL();
+			}
+			URLClassLoader cl = new URLClassLoader( urlArray, null );
+			for( String className : classNames )
+			{
+				try {
+					Class<?> cls = cl.loadClass( className );
+					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) )
+					{
+						//TEST
+						Field[] fields = cls.getDeclaredFields();
+						Method[] methods = cls.getDeclaredMethods();
+
+						Field[] fields2 = cls.getFields();
+						Method[] methods2 = cls.getMethods();
+
+						classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+					}
+				} catch( Throwable cnfe ) {
+
+					try {
+						Class<?> cls = ClassLoader.getSystemClassLoader().loadClass( className );
+						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) )
+						{
+							classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+						}
+					} catch( ClassNotFoundException cnfe2 ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
+					}
+				}
+			}
+			if( this.resourceClassLoaders == null ) {
+				this.resourceClassLoaders = new LinkedList<URLClassLoader>();
+			}
+			this.resourceClassLoaders.add( cl );
+
+		} catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+		return classes;
+	}
+
 	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourcesFromFiles( File... resourceFiles )
 	{
 		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
@@ -371,26 +436,24 @@ public class StorytellingResources {
 
 	public List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths )
 	{
+		List<File> resourceFiles = new ArrayList<File>();
 		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 		for( File modelPath : resourcePaths )
 		{
 			if( modelPath.exists() ) {
-				try {
-					if( modelPath.isDirectory() ) {
-						File[] jarFiles = FileUtilities.listFiles( modelPath, "jar" );
-						File[] dirs = FileUtilities.listDirectories( modelPath );
-						File[] resourceFiles = ArrayUtilities.concatArrays( File.class, dirs, jarFiles );
-						galleryClasses.addAll( this.loadResourcesFromFiles( resourceFiles ) );
-					}
-					else {
-						galleryClasses.addAll( this.loadResourcesFromFiles( modelPath ) );
-					}
-				} catch( Exception e )
-				{
-					System.err.println( "Failed to load resources on path: '" + modelPath + "'" );
+				if( modelPath.isDirectory() ) {
+					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
+					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
+
+				}
+				else {
+					resourceFiles.add( modelPath );
 				}
 			}
 		}
+		File[] resourceFileArray = resourceFiles.toArray( new File[ resourceFiles.size() ] );
+		List<String> classNames = this.getClassNamesFromResourceFiles( resourceFileArray );
+		galleryClasses = this.loadClassesFromResourceFiles( classNames, resourceFileArray );
 		return galleryClasses;
 	}
 
@@ -598,12 +661,15 @@ public class StorytellingResources {
 	}
 
 	public List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
-		List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getRootNodes();
-		List<org.lgna.project.ast.JavaType> rootTypes = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-		for( ModelResourceTreeNode node : rootNodes ) {
-			rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
+		if( this.rootTypes == null ) {
+			List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
+			this.rootTypes = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			for( ModelResourceTreeNode node : rootNodes ) {
+				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
+			}
 		}
-		return rootTypes;
+
+		return this.rootTypes;
 	}
 
 	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {

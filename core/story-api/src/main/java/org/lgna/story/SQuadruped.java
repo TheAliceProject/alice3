@@ -178,20 +178,32 @@ public class SQuadruped extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.PELVIS_LOWER_BODY );
 	}
 
-	public SJoint getTail() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL );
+	public SJoint[] getTail() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getTail() );
 	}
 
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
+	public SJoint getTail1() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_0 );
+	}
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
 	public SJoint getTail2() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_1 );
+	}
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
+	public SJoint getTail3() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_2 );
 	}
 
-	public SJoint getTail3() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3 );
-	}
-
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
 	public SJoint getTail4() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_4 );
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3 );
 	}
 
 	public SJoint getBackLeftHip() {
