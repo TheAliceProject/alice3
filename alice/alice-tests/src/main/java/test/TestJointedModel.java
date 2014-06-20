@@ -169,7 +169,7 @@ class TestJointedModel extends SProgram {
 	public void test() {
 		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass();
 
-		lg.getAWTComponent().addMouseListener( new java.awt.event.MouseListener() {
+		lg.getAwtComponent().addMouseListener( new java.awt.event.MouseListener() {
 			public void mousePressed( MouseEvent e ) {
 				previousX = e.getX();
 				previousY = e.getY();
@@ -190,7 +190,7 @@ class TestJointedModel extends SProgram {
 			}
 
 		} );
-		lg.getAWTComponent().addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+		lg.getAwtComponent().addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 
 			public void mouseMoved( java.awt.event.MouseEvent e ) {
 				edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED );
