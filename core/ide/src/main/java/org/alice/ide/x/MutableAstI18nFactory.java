@@ -76,11 +76,6 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return org.alice.ide.common.TypeComponent.createInstance( type );
-	}
-
-	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}

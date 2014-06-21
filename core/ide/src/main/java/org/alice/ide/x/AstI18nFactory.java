@@ -57,6 +57,51 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
+	@Override
+	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		String methodName = methodInvocationChunk.getMethodName();
+		org.lgna.croquet.views.SwingComponentView<?> rv;
+		if( ( owner instanceof org.lgna.project.ast.AbstractDeclaration ) && methodName.equals( "getName" ) ) {
+			org.lgna.project.ast.AbstractDeclaration declaration = (org.lgna.project.ast.AbstractDeclaration)owner;
+			org.alice.ide.ast.components.DeclarationNameLabel label = new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
+			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+					label.scaleFont( 1.1f );
+					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				}
+			}
+			rv = label;
+		} else if( ( owner instanceof org.lgna.project.ast.SimpleArgument ) && methodName.equals( "getParameterNameText" ) ) {
+			org.lgna.project.ast.SimpleArgument argument = (org.lgna.project.ast.SimpleArgument)owner;
+			rv = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
+		} else if( ( owner instanceof org.lgna.project.ast.AbstractConstructor ) && methodName.equals( "getDeclaringType" ) ) {
+			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;
+			rv = this.createTypeComponent( constructor.getDeclaringType() );
+		} else if( ( owner instanceof org.lgna.project.ast.UserMethod ) && methodName.equals( "getReturnType" ) ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)owner;
+			rv = this.createTypeComponent( method.getReturnType() );
+		} else if( ( owner instanceof org.lgna.project.ast.UserCode ) && methodName.equals( "getParameters" ) ) {
+			org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)owner;
+			rv = new org.alice.ide.codeeditor.ParametersPane( this, code );
+		} else {
+			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
+			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
+			String s;
+			if( o != null ) {
+				if( o instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+					s = ( (org.lgna.project.ast.AbstractType<?, ?, ?>)o ).getName();
+				} else {
+					s = o.toString();
+				}
+			} else {
+				s = null;
+			}
+			rv = new org.lgna.croquet.views.Label( s );
+		}
+		return rv;
+	}
+
 	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
 		return org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
 	}
@@ -99,8 +144,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return new org.alice.ide.common.GetsPane( isTowardLeadingEdge );
 	}
 
-	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 

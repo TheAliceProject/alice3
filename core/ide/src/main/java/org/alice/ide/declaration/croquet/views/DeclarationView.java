@@ -49,4 +49,15 @@ public class DeclarationView extends org.lgna.croquet.views.BorderPanel {
 	public DeclarationView( org.alice.ide.declaration.croquet.DeclarationTab tab ) {
 		super( tab );
 	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
+
+		DeclarationViewFactory declarationViewFactory = FullEditDeclarationViewFactory.SINGLETON;
+
+		org.alice.ide.declaration.croquet.DeclarationTab tab = (org.alice.ide.declaration.croquet.DeclarationTab)this.getComposite();
+		this.addCenterComponent( declarationViewFactory.createView( tab.getDeclaration() ) );
+	}
 }

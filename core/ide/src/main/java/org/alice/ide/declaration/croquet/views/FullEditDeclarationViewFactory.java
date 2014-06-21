@@ -49,7 +49,23 @@ public enum FullEditDeclarationViewFactory implements DeclarationViewFactory {
 	SINGLETON;
 
 	public org.lgna.croquet.views.Panel createView( org.lgna.project.ast.Declaration declaration ) {
-		org.lgna.croquet.views.Panel rv = new org.lgna.croquet.views.BorderPanel.Builder().pageStart( new org.lgna.croquet.views.Label( declaration.getName() ) ).build();
+		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		//formatter = org.alice.ide.formatter.JavaFormatter.getInstance();
+		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel.Builder().pageStart( new org.lgna.croquet.views.Label( declaration.getName() ) ).build();
+		if( declaration instanceof org.lgna.project.ast.UserCode ) {
+			org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)declaration;
+			String headerText = formatter.getHeaderTextForCode( code );
+			if( ( headerText != null ) && ( headerText.length() > 0 ) ) {
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( headerText );
+				rv.addPageStartComponent( factory.createComponent( page, declaration ) );
+			}
+			String trailerText = formatter.getTrailerTextForCode( code );
+			if( ( trailerText != null ) && ( trailerText.length() > 0 ) ) {
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( trailerText );
+				rv.addPageEndComponent( factory.createComponent( page, declaration ) );
+			}
+		}
 		rv.makeStandOut();
 		return rv;
 	}

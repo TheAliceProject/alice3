@@ -103,6 +103,31 @@ public class AliceFormatter extends Formatter {
 		}
 	}
 
+	@Override
+	public String getHeaderTextForCode( org.lgna.project.ast.UserCode code ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "declare " );
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( method.isProcedure() ) {
+				sb.append( "procedure " );
+			} else {
+				sb.append( "</getReturnType()/> " );
+				sb.append( "function " );
+			}
+			sb.append( "</getName()/> " );
+		} else {
+			sb.append( "constructor " );
+		}
+		sb.append( "</getParameters()/>" );
+		return sb.toString();
+	}
+
+	@Override
+	public String getTrailerTextForCode( org.lgna.project.ast.UserCode code ) {
+		return null;
+	}
+
 	private String getLocalizedText( String text, String rvIfNull ) {
 		if( text != null ) {
 			String rv = this.map.get( text );

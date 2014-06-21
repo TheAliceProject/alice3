@@ -92,7 +92,11 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 
 		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
-		java.util.List<org.lgna.project.ast.UserMethod> userMethods = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( sceneType );
+		//java.util.List<org.lgna.project.ast.UserMethod> userMethods = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( sceneType );
+		java.util.List<org.lgna.project.ast.Declaration> declarations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		declarations.add( sceneType );
+		declarations.addAll( sceneType.getDeclaredConstructors() );
+		declarations.addAll( sceneType.getDeclaredMethods() );
 
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
@@ -101,8 +105,8 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 		org.alice.stageide.perspectives.CodePerspective codePerspective = new org.alice.stageide.perspectives.CodePerspective( menuBar );
 		perspectiveState.addItem( codePerspective );
 		DeclarationTabState state = new DeclarationTabState( perspectiveState );
-		for( org.lgna.project.ast.UserMethod method : userMethods ) {
-			state.addItem( DeclarationTab.getInstance( method ) );
+		for( org.lgna.project.ast.Declaration declaration : declarations ) {
+			state.addItem( DeclarationTab.getInstance( declaration ) );
 		}
 		state.setValueTransactionlessly( state.getItemAt( 0 ) );
 
