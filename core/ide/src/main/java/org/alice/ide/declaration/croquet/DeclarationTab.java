@@ -46,11 +46,11 @@ package org.alice.ide.declaration.croquet;
  * @author Dennis Cosgrove
  */
 public final class DeclarationTab extends org.lgna.croquet.AbstractTabComposite<org.lgna.croquet.views.Panel> {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Declaration, DeclarationTab> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Declaration, DeclarationTab> mapDeclarationToTab = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static DeclarationTab getInstance( org.lgna.project.ast.Declaration declaration ) {
 		if( declaration != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( declaration, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Declaration, DeclarationTab>() {
+			return mapDeclarationToTab.getInitializingIfAbsent( declaration, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Declaration, DeclarationTab>() {
 				public DeclarationTab initialize( org.lgna.project.ast.Declaration key ) {
 					return new DeclarationTab( key );
 				}
