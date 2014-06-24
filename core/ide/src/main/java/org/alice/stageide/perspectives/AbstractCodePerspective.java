@@ -47,8 +47,8 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public AbstractCodePerspective( java.util.UUID id, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( id, menuBar );
+	public AbstractCodePerspective( java.util.UUID id, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
+		super( id, projectDocumentFrame, menuBar );
 	}
 
 	@Override

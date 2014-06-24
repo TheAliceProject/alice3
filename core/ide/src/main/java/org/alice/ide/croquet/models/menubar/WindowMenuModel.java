@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
 	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		rv.add( perspectiveState.getMenuModel() );
@@ -61,7 +61,15 @@ public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return rv;
 	}
 
-	public WindowMenuModel( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels( perspectiveState ) );
+	public WindowMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
+
+	@Override
+	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( createModels( this.projectDocumentFrame.getPerspectiveState() ), org.lgna.croquet.StandardMenuItemPrepModel.class );
+	}
+
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

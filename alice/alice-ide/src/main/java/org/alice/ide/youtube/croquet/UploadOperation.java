@@ -61,10 +61,9 @@ import edu.wustl.lookingglass.media.FFmpegProcess;
  * @author Matt May
  */
 public class UploadOperation extends SingleThreadIteratingOperation {
-	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
-
-	public UploadOperation() {
+	public UploadOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
@@ -75,22 +74,6 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		}
 		return this.exportToYouTubeWizardDialogComposite;
 	}
-
-	//	protected void perform() {
-	//		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
-	//		if( fileKnownToBeNotExecuable != null ) {
-	//			ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( fileKnownToBeNotExecuable );
-	//			composite.getLaunchOperation().fire();
-	//		} else {
-	//			ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
-	//			wizard.setProject( ProjectStack.peekProject() );
-	//			try {
-	//				wizard.getLaunchOperation().fire();
-	//			} finally {
-	//				wizard.setProject( null );
-	//			}
-	//		}
-	//	}
 
 	private java.io.File getFFmpegFileIfNotExecutable() {
 		java.io.File fileKnownToBeNotExecuable;
@@ -163,4 +146,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 	}
+
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
 }

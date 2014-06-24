@@ -47,10 +47,14 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-
-	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.MenuBarComposite menuBar ) {
+	public ProjectPerspective( java.util.UUID id, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
 		super( id );
+		this.projectDocumentFrame = projectDocumentFrame;
 		this.menuBar = menuBar;
+	}
+
+	public org.alice.ide.ProjectDocumentFrame getProjectDocumentFrame() {
+		return this.projectDocumentFrame;
 	}
 
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
@@ -84,5 +88,6 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		return this.getName();
 	}
 
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 	private final org.lgna.croquet.MenuBarComposite menuBar;
 }

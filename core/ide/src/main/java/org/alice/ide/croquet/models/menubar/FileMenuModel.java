@@ -46,11 +46,9 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private final org.lgna.croquet.Operation[] uploadOperations;
-
-	public FileMenuModel( org.lgna.croquet.Operation... uploadOperations ) {
+	public FileMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
-		this.uploadOperations = uploadOperations;
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
@@ -67,7 +65,8 @@ public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
 				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel()
 				);
 
-		if( this.uploadOperations.length > 0 ) {
+		org.lgna.croquet.Operation[] uploadOperations = this.projectDocumentFrame.getUploadOperations();
+		if( uploadOperations.length > 0 ) {
 			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
 			for( org.lgna.croquet.Operation operation : uploadOperations ) {
 				list.add( operation.getMenuItemPrepModel() );
@@ -84,4 +83,6 @@ public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
+
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

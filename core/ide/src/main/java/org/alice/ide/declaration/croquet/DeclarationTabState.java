@@ -100,11 +100,15 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
-		org.alice.stageide.perspectives.PerspectiveState perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		org.lgna.croquet.MenuBarComposite menuBar = null;
-		org.alice.stageide.perspectives.CodePerspective codePerspective = new org.alice.stageide.perspectives.CodePerspective( menuBar );
-		perspectiveState.addItem( codePerspective );
-		DeclarationTabState state = new DeclarationTabState( perspectiveState );
+		org.alice.ide.IdeConfiguration ideConfiguration = null;
+
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = new org.alice.ide.ProjectDocumentFrame( ideConfiguration );
+
+		//		org.alice.stageide.perspectives.PerspectiveState perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
+		//		org.lgna.croquet.MenuBarComposite menuBar = null;
+		//		org.alice.stageide.perspectives.CodePerspective codePerspective = new org.alice.stageide.perspectives.CodePerspective( menuBar );
+		//		perspectiveState.addItem( codePerspective );
+		DeclarationTabState state = new DeclarationTabState( projectDocumentFrame.getPerspectiveState() );
 		for( org.lgna.project.ast.Declaration declaration : declarations ) {
 			state.addItem( DeclarationTab.getInstance( declaration ) );
 		}

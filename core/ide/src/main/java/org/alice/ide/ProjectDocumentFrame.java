@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
+public class ProjectDocumentFrame {
+	public ProjectDocumentFrame( IdeConfiguration ideConfiguration ) {
+		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
+		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
+		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new org.lgna.croquet.Operation[ 0 ];
+		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( this );
+		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( this, aliceMenuBar );
+		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
+		this.perspectiveState.addItem( this.codePerspective );
+		this.perspectiveState.addItem( this.setupScenePerspective );
 	}
 
-	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return org.alice.ide.declaration.croquet.views.FullEditDeclarationViewFactory.SINGLETON;
+	public org.lgna.croquet.Operation[] getUploadOperations() {
+		return this.uploadOperations;
 	}
 
-	public org.lgna.croquet.Composite<?> getMainComposite() {
-		return org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance();
+	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
+		return this.codePerspective;
 	}
 
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.code.CodeToolBarComposite.getInstance();
-		} else {
-			return null;
-		}
+	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
+		return this.setupScenePerspective;
 	}
+
+	public org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
+		return this.perspectiveState;
+	}
+
+	public org.alice.ide.croquet.models.project.find.croquet.FindComposite getFindComposite() {
+		return this.findComposite;
+	}
+
+	private final org.lgna.croquet.Operation[] uploadOperations;
+
+	private final org.alice.ide.croquet.models.project.find.croquet.FindComposite findComposite;
+
+	private final org.alice.stageide.perspectives.CodePerspective codePerspective;
+	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
+
+	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
 }
