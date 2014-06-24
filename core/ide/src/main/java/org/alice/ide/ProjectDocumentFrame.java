@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import org.alice.ide.declarationseditor.DeclarationComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,6 +78,28 @@ public class ProjectDocumentFrame {
 	public org.alice.ide.croquet.models.project.find.croquet.FindComposite getFindComposite() {
 		return this.findComposite;
 	}
+
+	public org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> getTypeMetaState() {
+		if( this.typeMetaState != null ) {
+			//pass
+		} else {
+			final org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			this.typeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite<?, ?>>( declarationTabState ) {
+				@Override
+				public org.lgna.project.ast.NamedUserType getValue() {
+					DeclarationComposite<?, ?> declarationComposite = declarationTabState.getValue();
+					if( declarationComposite != null ) {
+						return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( declarationComposite.getType(), org.lgna.project.ast.NamedUserType.class );
+					} else {
+						return null;
+					}
+				}
+			};
+		}
+		return this.typeMetaState;
+	}
+
+	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
 
 	private final org.lgna.croquet.Operation[] uploadOperations;
 

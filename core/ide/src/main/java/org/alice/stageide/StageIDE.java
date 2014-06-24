@@ -404,7 +404,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		if( programType != null ) {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 				if( scopeType == sceneType ) {
 					if( field != null ) {
 						return org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
