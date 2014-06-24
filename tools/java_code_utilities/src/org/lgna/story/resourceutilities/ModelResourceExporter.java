@@ -117,6 +117,7 @@ public class ModelResourceExporter {
 	private File xmlFile;
 	private File javaFile;
 	private List<String> jointIdsToSuppress = new ArrayList<String>();
+	private List<String> arraysToExposeFirstElementOf = new ArrayList<String>();
 	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
 	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
@@ -322,6 +323,22 @@ public class ModelResourceExporter {
 		return false;
 	}
 
+	public void addArrayNamesToExposeFirstElementOf( List<String> arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToExposeFirstElementOf.contains( arrayName ) ) {
+				this.arraysToExposeFirstElementOf.add( arrayName );
+			}
+		}
+	}
+
+	public void addArrayNamesToExposeFirstElementOf( String[] arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToExposeFirstElementOf.contains( arrayName ) ) {
+				this.arraysToExposeFirstElementOf.add( arrayName );
+			}
+		}
+	}
+
 	public void addJointIdsToSuppress( List<String> jointIds ) {
 		for( String jointId : jointIds ) {
 			if( !this.jointIdsToSuppress.contains( jointId ) ) {
@@ -352,21 +369,23 @@ public class ModelResourceExporter {
 	}
 
 	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap ) {
-		//Matcher match = arrayPattern.matcher( jointName );
-		//		if( match.find() ) {
-		//			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
+		Matcher match = arrayPattern.matcher( jointName );
+		if( match.find() ) {
+			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
+			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+				nameStr = customArrayNameMap.get( nameStr );
+			}
+			return nameStr;
+		}
+		//		int index = jointName.lastIndexOf( '_' );
+		//		if( index != -1 ) {
+		//			String nameStr = jointName.substring( 0, index );
 		//			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
 		//				nameStr = customArrayNameMap.get( nameStr );
+		//				return nameStr;
 		//			}
-		//			return nameStr;
+		//
 		//		}
-		int index = jointName.lastIndexOf( '_' );
-		if( index != -1 ) {
-			String nameStr = jointName.substring( 0, index );
-			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
-				return customArrayNameMap.get( nameStr );
-			}
-		}
 		return null;
 	}
 
@@ -992,13 +1011,33 @@ public class ModelResourceExporter {
 		return false;
 	}
 
-	private boolean isJointInAnArray( String jointString, Map<String, List<String>> arrayEntries ) {
+	private String getArrayNameFromMapForJoint( String jointString, Map<String, List<String>> arrayEntries ) {
 		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
 			if( entry.getValue().contains( jointString ) ) {
-				return true;
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	private boolean shouldSuppressJointInArray( String jointString, Map<String, List<String>> arrayEntries ) {
+		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
+			//We don't suppress the first element in the array so we can generate an accessor for it in Alice
+			if( entry.getValue().contains( jointString ) ) {
+				if( this.arraysToExposeFirstElementOf.contains( entry.getKey() ) && ( getArrayIndexForJoint( jointString ) == 0 ) ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
+		String arrayName = getArrayNameForJoint( jointName, null );
+		return getArrayAccessorMethodName( arrayName );
 	}
 
 	private String getArrayAccessorMethodName( String arrayName ) {
@@ -1042,6 +1081,10 @@ public class ModelResourceExporter {
 			if( ( index == 0 ) ) {
 				if( !methodName.equals( ROOT_IDS_METHOD_NAME ) ) {
 					String newName = methodName.substring( 3 );
+					int arrayIndex = newName.indexOf( "Array" );
+					if( arrayIndex != -1 ) {
+						newName = newName.substring( 0, arrayIndex );
+					}
 					newName = AliceResourceUtilties.makeEnumName( newName );
 					arrayNames.add( newName );
 				}
@@ -1111,11 +1154,18 @@ public class ModelResourceExporter {
 					rootJoints.add( jointString );
 					addedRoots = true;
 				}
-				if( shouldSuppressJoint( jointString ) || isJointInAnArray( jointString, arrayEntries ) ) {
+				if( shouldSuppressJoint( jointString ) || shouldSuppressJointInArray( jointString, arrayEntries ) ) {
 					sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
 				}
 				else {
-					sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+					String arrayName = getArrayNameFromMapForJoint( jointString, arrayEntries );
+					if( arrayName != null ) {
+						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint=\"" + getJointAccessMethodNameForArrayJoint( jointString ) + "\")" + JavaCodeUtilities.LINE_RETURN );
+					}
+					else {
+						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+					}
+
 				}
 				sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 			}
@@ -1146,7 +1196,7 @@ public class ModelResourceExporter {
 				}
 				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
 					List<String> arrayElements = arrayEntry.getValue();
-					String arrayName = arrayEntry.getKey();// + "_ARRAY";
+					String arrayName = arrayEntry.getKey() + "_ARRAY";
 					boolean needsAccessor = needsAccessorMethodForArray( classData, arrayName );
 
 					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.

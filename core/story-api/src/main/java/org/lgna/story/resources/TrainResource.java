@@ -57,5 +57,4 @@ public interface TrainResource extends TransportResource {
 	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.resources.JointId[] getWheels();
 }

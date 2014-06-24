@@ -12,7 +12,7 @@ public class STransport extends SJointedModel {
 		return implementation;
 	}
 
-	public SJoint[] getWheels() {
-		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getWheels() );
+	public SJoint[] getWheelsArray() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getWheelsArray() );
 	}
 }

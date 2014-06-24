@@ -92,8 +92,12 @@ public class SFlyer extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_UPPER );
 	}
 
+	public SJoint[] getNeckArray() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getNeckArray() );
+	}
+
 	public SJoint getNeck() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.NECK );
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.NECK_0 );
 	}
 
 	public SJoint getHead() {
@@ -157,16 +161,24 @@ public class SFlyer extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_LOWER_BODY );
 	}
 
+	public SJoint[] getTailArray() {
+		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getTailArray() );
+	}
+
 	public SJoint getTail() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL );
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_0 );
 	}
 
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
 	public SJoint getTail2() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2 );
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_1 );
 	}
 
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@Deprecated
 	public SJoint getTail3() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_3 );
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2 );
 	}
 
 	public SJoint getLeftHip() {

@@ -97,16 +97,16 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-
-		new org.lgna.croquet.simple.SimpleApplication();
-		//new org.alice.stageide.StageIDE();
-		EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
-		//Class<? extends org.lgna.story.resources.ModelResource> cls = org.lgna.story.resources.biped.OgreResource.class;
-		Class<? extends org.lgna.story.resources.ModelResource> cls = org.lgna.story.resources.prop.ArmoireResource.class;
-		composite.setClassResourceKey( new org.alice.stageide.modelresource.ClassResourceKey( cls ) );
-		org.lgna.croquet.triggers.Trigger trigger = null;
-		composite.getValueCreator().fire( trigger );
-		System.exit( 0 );
+		//		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		//
+		//		new org.lgna.croquet.simple.SimpleApplication();
+		//		//new org.alice.stageide.StageIDE();
+		//		EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
+		//		//Class<? extends org.lgna.story.resources.ModelResource> cls = org.lgna.story.resources.biped.OgreResource.class;
+		//		Class<? extends org.lgna.story.resources.ModelResource> cls = org.lgna.story.resources.prop.ArmoireResource.class;
+		//		composite.setClassResourceKey( new org.alice.stageide.modelresource.ClassResourceKey( cls ) );
+		//		org.lgna.croquet.triggers.Trigger trigger = null;
+		//		composite.getValueCreator().fire( trigger );
+		//		System.exit( 0 );
 	}
 }

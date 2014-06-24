@@ -233,10 +233,18 @@ public class AliceResourceUtilties {
 		return StorytellingResources.getInstance().getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
-	public static String enumToCamelCase( String enumName ) {
+	public static String enumToCamelCase( String enumName, boolean startWithLowerCase ) {
 		StringBuilder sb = new StringBuilder();
 		for( int i = 0; i < enumName.length(); i++ ) {
-			if( ( i == 0 ) || ( enumName.charAt( i - 1 ) == '_' ) ) {
+			if( i == 0 ) {
+				if( startWithLowerCase ) {
+					sb.append( Character.toLowerCase( enumName.charAt( i ) ) );
+				}
+				else {
+					sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
+				}
+			}
+			else if( enumName.charAt( i - 1 ) == '_' ) {
 				sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
 			}
 			else if( enumName.charAt( i ) != '_' ) {
@@ -244,6 +252,10 @@ public class AliceResourceUtilties {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static String enumToCamelCase( String enumName ) {
+		return enumToCamelCase( enumName, false );
 	}
 
 	public static String camelCaseToEnum( String name ) {

@@ -105,7 +105,7 @@ public interface QuadrupedResource extends JointedModelResource {
 	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.resources.JointId[] getTail();
+	public org.lgna.story.resources.JointId[] getTailArray();
 
 	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction );
 }
