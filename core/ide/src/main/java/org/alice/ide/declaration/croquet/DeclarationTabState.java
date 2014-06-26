@@ -46,9 +46,9 @@ package org.alice.ide.declaration.croquet;
  * @author Dennis Cosgrove
  */
 public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationTab> {
-	public DeclarationTabState( org.alice.stageide.perspectives.PerspectiveState perspectiveState ) {
+	public DeclarationTabState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "55d2430f-c9ac-4815-a660-e1b746ae0f9e" ), org.alice.ide.declaration.croquet.codecs.DeclarationTabCodec.SINGLETON );
-		this.metaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.alice.ide.declaration.croquet.views.DeclarationViewFactory, org.alice.ide.perspectives.ProjectPerspective>( perspectiveState ) {
+		this.metaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.alice.ide.declaration.croquet.views.DeclarationViewFactory, org.alice.ide.perspectives.ProjectPerspective>( projectDocumentFrame.getPerspectiveState() ) {
 			@Override
 			protected org.alice.ide.declaration.croquet.views.DeclarationViewFactory getValue( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state ) {
 				org.alice.ide.perspectives.ProjectPerspective projectPerspective = state.getValue();
@@ -87,41 +87,37 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 
 	private final org.lgna.croquet.meta.MetaState<org.alice.ide.declaration.croquet.views.DeclarationViewFactory> metaState;
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-
-		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
-		//java.util.List<org.lgna.project.ast.UserMethod> userMethods = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( sceneType );
-		java.util.List<org.lgna.project.ast.Declaration> declarations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		declarations.add( sceneType );
-		declarations.addAll( sceneType.getDeclaredConstructors() );
-		declarations.addAll( sceneType.getDeclaredMethods() );
-
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-
-		org.alice.ide.IdeConfiguration ideConfiguration = null;
-
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = new org.alice.ide.ProjectDocumentFrame( ideConfiguration );
-
-		//		org.alice.stageide.perspectives.PerspectiveState perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		//		org.lgna.croquet.MenuBarComposite menuBar = null;
-		//		org.alice.stageide.perspectives.CodePerspective codePerspective = new org.alice.stageide.perspectives.CodePerspective( menuBar );
-		//		perspectiveState.addItem( codePerspective );
-		DeclarationTabState state = new DeclarationTabState( projectDocumentFrame.getPerspectiveState() );
-		for( org.lgna.project.ast.Declaration declaration : declarations ) {
-			state.addItem( DeclarationTab.getInstance( declaration ) );
-		}
-		state.setValueTransactionlessly( state.getItemAt( 0 ) );
-
-		state.handlePreActivation();
-
-		org.lgna.croquet.views.FolderTabbedPane<?> tabbedPane = state.createFolderTabbedPane();
-		//app.getFrame().setMainComposite( tab );
-		app.getFrame().getAwtComponent().add( tabbedPane.getAwtComponent() );
-
-		app.getFrame().setSize( 640, 480 );
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-		app.getFrame().setVisible( true );
-	}
+	//	public static void main( String[] args ) throws Exception {
+	//		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+	//		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+	//
+	//		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+	//		//java.util.List<org.lgna.project.ast.UserMethod> userMethods = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( sceneType );
+	//		java.util.List<org.lgna.project.ast.Declaration> declarations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//		declarations.add( sceneType );
+	//		declarations.addAll( sceneType.getDeclaredConstructors() );
+	//		declarations.addAll( sceneType.getDeclaredMethods() );
+	//
+	//		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+	//
+	//		org.alice.ide.IdeConfiguration ideConfiguration = null;
+	//
+	//		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = new org.alice.ide.ProjectDocumentFrame( ideConfiguration );
+	//
+	//		DeclarationTabState state = new DeclarationTabState( projectDocumentFrame );
+	//		for( org.lgna.project.ast.Declaration declaration : declarations ) {
+	//			state.addItem( DeclarationTab.getInstance( declaration ) );
+	//		}
+	//		state.setValueTransactionlessly( state.getItemAt( 0 ) );
+	//
+	//		state.handlePreActivation();
+	//
+	//		org.lgna.croquet.views.FolderTabbedPane<?> tabbedPane = state.createFolderTabbedPane();
+	//		//app.getFrame().setMainComposite( tab );
+	//		app.getFrame().getAwtComponent().add( tabbedPane.getAwtComponent() );
+	//
+	//		app.getFrame().setSize( 640, 480 );
+	//		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+	//		app.getFrame().setVisible( true );
+	//	}
 }

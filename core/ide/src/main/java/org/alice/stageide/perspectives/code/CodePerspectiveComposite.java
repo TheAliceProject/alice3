@@ -46,42 +46,19 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
-	private static class SingletonHolder {
-		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
+public class CodePerspectiveComposite extends org.lgna.croquet.ImmutableSplitComposite {
+	public CodePerspectiveComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
 	}
 
-	public static CodePerspectiveComposite getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.lgna.croquet.Composite<?> getLeadingComposite() {
+		return this.leadingCompositeLazy.get();
 	}
 
-	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
-		public void propertyChange( java.beans.PropertyChangeEvent e ) {
-			if( ignoreDividerChangeCount > 0 ) {
-				//pass
-			} else {
-				CodeContextSplitComposite otherComposite = CodeContextSplitComposite.getInstance();
-				org.lgna.croquet.views.SplitPane otherSplitPane = otherComposite.getView();
-				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() / org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
-				if( prevValue != nextValue ) {
-					otherComposite.incrementIgnoreDividerLocationChangeCount();
-					try {
-						otherSplitPane.setDividerLocation( nextValue );
-					} finally {
-						otherComposite.decrementIgnoreDividerLocationChangeCount();
-					}
-				}
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "outer:", e.getOldValue(), e.getNewValue() );
-			}
-		}
-	};
-	private int ignoreDividerChangeCount = 0;
-
-	private CodePerspectiveComposite() {
-		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
-				CodeContextSplitComposite.getInstance(),
-				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance() );
+	@Override
+	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {
@@ -101,4 +78,34 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 		rv.setDividerLocation( 400 );
 		return rv;
 	}
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<CodeContextSplitComposite> leadingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<CodeContextSplitComposite>() {
+		@Override
+		protected CodeContextSplitComposite create() {
+			return new CodeContextSplitComposite( CodePerspectiveComposite.this );
+		}
+	};
+
+	private int ignoreDividerChangeCount = 0;
+	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+			if( ignoreDividerChangeCount > 0 ) {
+				//pass
+			} else {
+				CodeContextSplitComposite otherComposite = leadingCompositeLazy.get();
+				org.lgna.croquet.views.SplitPane otherSplitPane = otherComposite.getView();
+				int prevValue = otherSplitPane.getDividerLocation();
+				int nextValue = (int)( (Integer)e.getNewValue() / org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
+				if( prevValue != nextValue ) {
+					otherComposite.incrementIgnoreDividerLocationChangeCount();
+					try {
+						otherSplitPane.setDividerLocation( nextValue );
+					} finally {
+						otherComposite.decrementIgnoreDividerLocationChangeCount();
+					}
+				}
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "outer:", e.getOldValue(), e.getNewValue() );
+			}
+		}
+	};
 }

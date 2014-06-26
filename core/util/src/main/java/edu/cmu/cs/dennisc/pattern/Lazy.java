@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,19 +45,19 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazilyInitialized<E> {
-	private boolean isInitialized = false;
-	private E value;
-
-	protected abstract E initialize();
-
-	public E get() {
-		if( this.isInitialized ) {
+public abstract class Lazy<T> {
+	public synchronized T get() {
+		if( this.isCreated ) {
 			//pass
 		} else {
-			value = initialize();
-			this.isInitialized = true;
+			this.value = this.create();
+			this.isCreated = true;
 		}
-		return value;
+		return this.value;
 	}
+
+	protected abstract T create();
+
+	private boolean isCreated;
+	private T value;
 }

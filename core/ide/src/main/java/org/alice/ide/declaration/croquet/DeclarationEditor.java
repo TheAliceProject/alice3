@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.ide.declaration.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
+public class DeclarationEditor extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+	public DeclarationEditor( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "c1b8d881-4c2e-4885-bfae-4eee5e2fbac9" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
+		this.tabState = new DeclarationTabState( this.projectDocumentFrame );
 	}
 
 	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return org.alice.ide.declaration.croquet.views.FullEditDeclarationViewFactory.SINGLETON;
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.tabState.createFolderTabbedPane() ).build();
 	}
 
-	public org.lgna.croquet.Composite<?> getMainComposite() {
-		if( this.mainComposite != null ) {
-			//pass
-		} else {
-			this.mainComposite = new org.alice.stageide.perspectives.code.CodePerspectiveComposite( this.getProjectDocumentFrame() );
-		}
-		return this.mainComposite;
-	}
-
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.code.CodeToolBarComposite.getInstance();
-		} else {
-			return null;
-		}
-	}
-
-	private org.lgna.croquet.Composite<?> mainComposite;
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final DeclarationTabState tabState;
 }
