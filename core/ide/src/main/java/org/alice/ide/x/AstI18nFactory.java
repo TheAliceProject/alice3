@@ -57,6 +57,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
+	protected float getDeclarationNameFontScale() {
+		return 1.1f;
+	}
+
 	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();
@@ -67,7 +71,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
 				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-					label.scaleFont( 1.1f );
+					label.scaleFont( this.getDeclarationNameFontScale() );
 					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 				}
 			}
