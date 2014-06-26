@@ -46,19 +46,21 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.ImmutableSplitComposite {
+public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSplitComposite<CodeContextSplitComposite, org.lgna.croquet.SimpleComposite<?>> {
 	public CodePerspectiveComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getLeadingComposite() {
-		return this.leadingCompositeLazy.get();
+	protected org.alice.stageide.perspectives.code.CodeContextSplitComposite createLeadingComposite() {
+		return new CodeContextSplitComposite( this );
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+	protected org.lgna.croquet.SimpleComposite<?> createTrailingComposite() {
 		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
+		//return new org.alice.ide.declaration.croquet.DeclarationEditor( this.projectDocumentFrame );
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {
@@ -79,20 +81,14 @@ public class CodePerspectiveComposite extends org.lgna.croquet.ImmutableSplitCom
 		return rv;
 	}
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<CodeContextSplitComposite> leadingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<CodeContextSplitComposite>() {
-		@Override
-		protected CodeContextSplitComposite create() {
-			return new CodeContextSplitComposite( CodePerspectiveComposite.this );
-		}
-	};
-
 	private int ignoreDividerChangeCount = 0;
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
 				//pass
 			} else {
-				CodeContextSplitComposite otherComposite = leadingCompositeLazy.get();
+				CodeContextSplitComposite otherComposite = getLeadingComposite();
 				org.lgna.croquet.views.SplitPane otherSplitPane = otherComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
 				int nextValue = (int)( (Integer)e.getNewValue() / org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
