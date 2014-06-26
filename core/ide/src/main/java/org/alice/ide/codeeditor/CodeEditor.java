@@ -49,7 +49,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
-	public CodeEditor( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AbstractCode code ) {
+	public CodeEditor( org.alice.ide.x.AbstractProjectEditorAstI18nFactory factory, org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode : this.code;
 
@@ -80,15 +80,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 		this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
-			this.header = new MethodHeaderPane( factory, userMethod, false );
-		} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
-			org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
-			this.header = new ConstructorHeaderPane( userConstructor, false );
-		} else {
-			throw new RuntimeException();
-		}
+		this.header = (org.lgna.croquet.views.Panel)factory.createCodeHeader( (org.lgna.project.ast.UserCode)this.code );
 		this.addPageStartComponent( this.header );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -341,7 +333,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	}
 
 	private final org.lgna.project.ast.AbstractCode code;
-	private final AbstractCodeHeaderPane header;
+	private final org.lgna.croquet.views.Panel header;
 	private final StatementListPropertyView rootStatementListPropertyPane;
 	private final org.alice.ide.common.BodyPane bodyPane;
 	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();

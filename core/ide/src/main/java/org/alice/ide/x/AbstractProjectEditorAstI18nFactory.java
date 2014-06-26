@@ -55,4 +55,43 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 		return java.awt.Color.RED;
 	}
 
+	@Override
+	protected float getDeclarationNameFontScale() {
+		if( Float.isNaN( this.declarationNameFontScale ) ) {
+			return super.getDeclarationNameFontScale();
+		} else {
+			return this.declarationNameFontScale;
+		}
+	}
+
+	public org.lgna.croquet.views.SwingComponentView<?> createCodeHeader( org.lgna.project.ast.UserCode code ) {
+		final boolean IS_FORMATTER_READY_FOR_PRIME_TIME = false;
+		if( IS_FORMATTER_READY_FOR_PRIME_TIME ) {
+			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+			String headerText = formatter.getHeaderTextForCode( code );
+			if( ( headerText != null ) && ( headerText.length() > 0 ) ) {
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( headerText );
+				this.declarationNameFontScale = 1.8f;
+				try {
+					return this.createComponent( page, code );
+				} finally {
+					this.declarationNameFontScale = Float.NaN;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			if( code instanceof org.lgna.project.ast.UserMethod ) {
+				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
+				return new org.alice.ide.codeeditor.MethodHeaderPane( this, userMethod, false );
+			} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
+				org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
+				return new org.alice.ide.codeeditor.ConstructorHeaderPane( userConstructor, false );
+			} else {
+				throw new RuntimeException();
+			}
+		}
+	}
+
+	private float declarationNameFontScale = Float.NaN;
 }
