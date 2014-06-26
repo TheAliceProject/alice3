@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSplitComposite<CodeContextSplitComposite, org.lgna.croquet.SimpleComposite<?>> {
+public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSplitComposite<CodeContextSplitComposite, org.lgna.croquet.Composite<?>> {
 	public CodePerspectiveComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
@@ -58,9 +58,8 @@ public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSpli
 	}
 
 	@Override
-	protected org.lgna.croquet.SimpleComposite<?> createTrailingComposite() {
+	protected org.lgna.croquet.Composite<?> createTrailingComposite() {
 		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
-		//return new org.alice.ide.declaration.croquet.DeclarationEditor( this.projectDocumentFrame );
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {
