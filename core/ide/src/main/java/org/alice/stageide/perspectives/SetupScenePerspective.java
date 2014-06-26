@@ -51,11 +51,6 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), projectDocumentFrame, menuBar );
 	}
 
-	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return null;
-	}
-
 	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
 		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
 	}

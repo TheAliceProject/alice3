@@ -51,11 +51,6 @@ public class CodePerspective extends AbstractCodePerspective {
 		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
 	}
 
-	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return org.alice.ide.declaration.croquet.views.FullEditDeclarationViewFactory.SINGLETON;
-	}
-
 	public org.lgna.croquet.Composite<?> getMainComposite() {
 		return this.mainCompositeLazy.get();
 	}
