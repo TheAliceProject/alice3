@@ -59,26 +59,16 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			controlFlowComponent = null;
 		}
 
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( method.isFunction() ) {
-				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
-			} else {
-				this.userFunctionStatusComposite = null;
-			}
-		} else {
-			this.userFunctionStatusComposite = null;
-		}
-
+		org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
 		org.lgna.croquet.views.SwingComponentView<?> pageEndComponent;
-		if( this.userFunctionStatusComposite != null ) {
+		if( userFunctionStatusComposite != null ) {
 			if( controlFlowComponent != null ) {
 				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
-						.center( this.userFunctionStatusComposite.getView() )
+						.center( userFunctionStatusComposite.getView() )
 						.pageEnd( controlFlowComponent )
 						.build();
 			} else {
-				pageEndComponent = this.userFunctionStatusComposite.getView();
+				pageEndComponent = userFunctionStatusComposite.getView();
 			}
 		} else {
 			if( controlFlowComponent != null ) {
@@ -92,7 +82,6 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			this.addPageEndComponent( pageEndComponent );
 		}
 		this.setBackgroundColor( this.codePanelWithDropReceptor.getBackgroundColor() );
-		this.handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Deprecated
@@ -147,40 +136,11 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		}
 	}
 
-	public void handleAstChangeThatCouldBeOfInterest() {
-		org.lgna.project.ast.AbstractCode code = ( (org.alice.ide.declarationseditor.CodeComposite)this.getComposite() ).getDeclaration();
-		if( this.userFunctionStatusComposite != null ) {
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
-
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
-				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
-			} else {
-				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
-					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
-						nextErrorStatus = null;
-					} else {
-						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
-					}
-				} else {
-					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
-				}
-			}
-			if( prevErrorStatus != nextErrorStatus ) {
-				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
-				this.revalidateAndRepaint();
-			}
-
-		}
-	}
-
 	@Override
 	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
 		super.setJavaCodeOnTheSide( value, isFirstTime );
 		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
 	}
 
-	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
 }
