@@ -49,7 +49,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
-	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
+	public CodeEditor( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode : this.code;
 
@@ -57,7 +57,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 
-		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance();
 		this.rootStatementListPropertyPane = new StatementListPropertyView( factory, body.statements, 32 );
 
 		org.lgna.croquet.views.SwingComponentView<?> statementListComponent = null;
@@ -95,6 +94,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
 		this.setBackgroundColor( color );
+
+		this.makeStandOut();
 	}
 
 	@Override
