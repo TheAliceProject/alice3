@@ -109,7 +109,9 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 			} else {
 				text = UNVIEWED_TEXT;
 			}
-			this.getView().setVisible( errorStatus != null );
+			synchronized( this.getView().getTreeLock() ) {
+				this.getView().setVisible( errorStatus != null );
+			}
 			this.metaStringValue.setText( text );
 		}
 	}
