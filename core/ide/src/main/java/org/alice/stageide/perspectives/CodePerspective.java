@@ -57,12 +57,7 @@ public class CodePerspective extends AbstractCodePerspective {
 	}
 
 	public org.lgna.croquet.Composite<?> getMainComposite() {
-		if( this.mainComposite != null ) {
-			//pass
-		} else {
-			this.mainComposite = new org.alice.stageide.perspectives.code.CodePerspectiveComposite( this.getProjectDocumentFrame() );
-		}
-		return this.mainComposite;
+		return this.mainCompositeLazy.get();
 	}
 
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
@@ -73,5 +68,10 @@ public class CodePerspective extends AbstractCodePerspective {
 		}
 	}
 
-	private org.lgna.croquet.Composite<?> mainComposite;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>> mainCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>>() {
+		@Override
+		protected org.lgna.croquet.Composite<?> create() {
+			return new org.alice.stageide.perspectives.code.CodePerspectiveComposite( getProjectDocumentFrame() );
+		}
+	};
 }
