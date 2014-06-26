@@ -83,11 +83,11 @@ public class ProjectDocumentFrame {
 		if( this.typeMetaState != null ) {
 			//pass
 		} else {
-			final org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 			this.typeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite<?, ?>>( declarationTabState ) {
 				@Override
-				public org.lgna.project.ast.NamedUserType getValue() {
-					DeclarationComposite<?, ?> declarationComposite = declarationTabState.getValue();
+				protected org.lgna.project.ast.NamedUserType getValue( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> state ) {
+					DeclarationComposite<?, ?> declarationComposite = state.getValue();
 					if( declarationComposite != null ) {
 						return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( declarationComposite.getType(), org.lgna.project.ast.NamedUserType.class );
 					} else {

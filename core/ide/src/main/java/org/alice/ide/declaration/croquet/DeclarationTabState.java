@@ -46,12 +46,12 @@ package org.alice.ide.declaration.croquet;
  * @author Dennis Cosgrove
  */
 public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationTab> {
-	public DeclarationTabState( final org.alice.stageide.perspectives.PerspectiveState perspectiveState ) {
+	public DeclarationTabState( org.alice.stageide.perspectives.PerspectiveState perspectiveState ) {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "55d2430f-c9ac-4815-a660-e1b746ae0f9e" ), org.alice.ide.declaration.croquet.codecs.DeclarationTabCodec.SINGLETON );
 		this.metaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.alice.ide.declaration.croquet.views.DeclarationViewFactory, org.alice.ide.perspectives.ProjectPerspective>( perspectiveState ) {
 			@Override
-			public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getValue() {
-				org.alice.ide.perspectives.ProjectPerspective projectPerspective = perspectiveState.getValue();
+			protected org.alice.ide.declaration.croquet.views.DeclarationViewFactory getValue( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state ) {
+				org.alice.ide.perspectives.ProjectPerspective projectPerspective = state.getValue();
 				if( projectPerspective != null ) {
 					return projectPerspective.getDeclarationViewFactory();
 				} else {
