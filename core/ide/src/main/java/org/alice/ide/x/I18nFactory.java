@@ -103,7 +103,7 @@ public abstract class I18nFactory {
 				rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( indentCount * this.getPixelsPerIndent() ) );
 			}
 			for( org.alice.ide.i18n.Chunk chunk : chunks ) {
-				org.lgna.croquet.views.AwtComponentView<?> component = createComponent( chunk, owner );
+				org.lgna.croquet.views.SwingComponentView<?> component = createComponent( chunk, owner );
 				assert component != null : chunk.toString();
 				//				rv.setAlignmentY( 0.5f );
 				rv.addComponent( component );

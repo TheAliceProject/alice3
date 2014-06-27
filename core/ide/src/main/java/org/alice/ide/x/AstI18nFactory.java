@@ -57,6 +57,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+		return true;
+	}
+
 	protected float getDeclarationNameFontScale() {
 		return 1.1f;
 	}
@@ -110,13 +114,17 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
 	}
 
+	protected boolean isDropDownDesiredFor( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
+		return org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression );
+	}
+
 	public org.lgna.croquet.views.SwingComponentView<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.views.SwingComponentView<?> prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
-			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 			org.lgna.croquet.views.SwingComponentView<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
-			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
+			if( this.isDropDownDesiredFor( expressionProperty ) ) {
 				org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade model = this.getArgumentCascade( simpleArgument );
 				org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 				rv = expressionPropertyDropDownPane;

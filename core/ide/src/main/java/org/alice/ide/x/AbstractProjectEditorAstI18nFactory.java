@@ -46,6 +46,8 @@ package org.alice.ide.x;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18nFactory {
+	private static final boolean IS_MUTABLE = true;
+
 	public AbstractProjectEditorAstI18nFactory() {
 		super( org.lgna.croquet.Application.PROJECT_GROUP );
 	}
@@ -56,12 +58,44 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 	}
 
 	@Override
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+		if( IS_MUTABLE ) {
+			return org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( code );
+		} else {
+			return true;
+		}
+	}
+
+	@Override
 	protected float getDeclarationNameFontScale() {
 		if( Float.isNaN( this.declarationNameFontScale ) ) {
 			return super.getDeclarationNameFontScale();
 		} else {
 			return this.declarationNameFontScale;
 		}
+	}
+
+	public boolean isDraggable( org.lgna.project.ast.Statement statement ) {
+		return IS_MUTABLE;
+	}
+
+	@Override
+	protected boolean isDropDownDesiredFor( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		if( IS_MUTABLE ) {
+			return super.isDropDownDesiredFor( expressionProperty );
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		if( this.isDraggable( statement ) ) {
+			//pass
+		} else {
+			dragModel = null;
+		}
+		return super.createStatementPane( dragModel, statement, statementListProperty );
 	}
 
 	public org.lgna.croquet.views.SwingComponentView<?> createCodeHeader( org.lgna.project.ast.UserCode code ) {
