@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazilyInitialized<E> {
-	private boolean isInitialized = false;
-	private E value;
-
-	protected abstract E initialize();
-
-	public E get() {
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			value = initialize();
-			this.isInitialized = true;
-		}
-		return value;
+public abstract class LazyImmutableSplitComposite<LC extends org.lgna.croquet.Composite<?>, TC extends org.lgna.croquet.Composite<?>> extends ImmutableSplitComposite {
+	public LazyImmutableSplitComposite( java.util.UUID id ) {
+		super( id );
 	}
+
+	@Override
+	public final LC getLeadingComposite() {
+		return this.leadingCompositeLazy.get();
+	}
+
+	@Override
+	public final TC getTrailingComposite() {
+		return this.trailingCompositeLazy.get();
+	}
+
+	protected abstract LC createLeadingComposite();
+
+	protected abstract TC createTrailingComposite();
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<LC> leadingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<LC>() {
+		@Override
+		protected LC create() {
+			return createLeadingComposite();
+		}
+	};
+	private final edu.cmu.cs.dennisc.pattern.Lazy<TC> trailingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<TC>() {
+		@Override
+		protected TC create() {
+			return createTrailingComposite();
+		}
+	};
 }

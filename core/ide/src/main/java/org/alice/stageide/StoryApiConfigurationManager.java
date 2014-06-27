@@ -346,7 +346,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
 		//todo: check to see if only referenced from Program and Program type is hidden
 		return super.isSignatureLocked( code ) || org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() );
 	}

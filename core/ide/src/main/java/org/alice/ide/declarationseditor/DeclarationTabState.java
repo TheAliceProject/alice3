@@ -222,12 +222,9 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 
 	private void handleAstChangeThatCouldBeOfInterest() {
 		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = this.getValue();
-		if( declarationComposite != null ) {
-			org.lgna.croquet.views.CompositeView view = declarationComposite.getView();
-			if( view instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
-				org.alice.ide.declarationseditor.code.components.CodeDeclarationView codeDeclarationView = (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)view;
-				codeDeclarationView.handleAstChangeThatCouldBeOfInterest();
-			}
+		if( declarationComposite instanceof CodeComposite ) {
+			CodeComposite codeComposite = (CodeComposite)declarationComposite;
+			codeComposite.handleAstChangeThatCouldBeOfInterest();
 		}
 	}
 

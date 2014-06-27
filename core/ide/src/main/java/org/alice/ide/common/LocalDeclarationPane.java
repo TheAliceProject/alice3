@@ -57,6 +57,7 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 		}
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
 		this.addComponent( component );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 	}
 
 	private void updateFinalLabel() {

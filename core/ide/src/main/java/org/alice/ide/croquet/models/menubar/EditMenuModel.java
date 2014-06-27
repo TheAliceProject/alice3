@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class EditMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static EditMenuModel instance = new EditMenuModel();
-	}
-
-	public static EditMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private EditMenuModel() {
+	public EditMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ),
 				org.alice.ide.croquet.models.history.UndoOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance().getMenuItemPrepModel(),

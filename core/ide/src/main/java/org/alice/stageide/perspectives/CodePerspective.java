@@ -47,17 +47,12 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), menuBar );
-	}
-
-	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return org.alice.ide.declaration.croquet.views.FullEditDeclarationViewFactory.SINGLETON;
+	public CodePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
+		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
 	}
 
 	public org.lgna.croquet.Composite<?> getMainComposite() {
-		return org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance();
+		return this.mainCompositeLazy.get();
 	}
 
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
@@ -67,4 +62,11 @@ public class CodePerspective extends AbstractCodePerspective {
 			return null;
 		}
 	}
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>> mainCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>>() {
+		@Override
+		protected org.lgna.croquet.Composite<?> create() {
+			return new org.alice.stageide.perspectives.code.CodePerspectiveComposite( getProjectDocumentFrame() );
+		}
+	};
 }

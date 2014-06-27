@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class ConstructorHeaderPane extends AbstractCodeHeaderPane {
+public class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	private final org.lgna.project.ast.NamedUserConstructor userConstructor;
 
 	public ConstructorHeaderPane( org.lgna.project.ast.NamedUserConstructor userConstructor, boolean isPreview ) {

@@ -84,7 +84,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 		this.value = value;
 
 		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
-			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addValueListener( this.typeListener );
+			org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 		}
 
 		edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();

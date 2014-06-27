@@ -40,17 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declaration.croquet.views;
+package edu.cmu.cs.dennisc.pattern;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum FullEditDeclarationViewFactory implements DeclarationViewFactory {
-	SINGLETON;
-
-	public org.lgna.croquet.views.Panel createView( org.lgna.project.ast.Declaration declaration ) {
-		org.lgna.croquet.views.Panel rv = new org.lgna.croquet.views.BorderPanel.Builder().pageStart( new org.lgna.croquet.views.Label( declaration.getName() ) ).build();
-		rv.makeStandOut();
-		return rv;
+public abstract class Lazy<T> {
+	public synchronized T get() {
+		if( this.isCreated ) {
+			//pass
+		} else {
+			this.value = this.create();
+			this.isCreated = true;
+		}
+		return this.value;
 	}
+
+	protected abstract T create();
+
+	private boolean isCreated;
+	private T value;
 }

@@ -77,7 +77,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	}
 
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+		return org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 	}
 
 	@Override

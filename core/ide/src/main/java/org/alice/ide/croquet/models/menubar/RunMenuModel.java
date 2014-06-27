@@ -45,17 +45,18 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class RunMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static RunMenuModel instance = new RunMenuModel();
+public class RunMenuModel extends org.lgna.croquet.StaticMenuModel {
+	public RunMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
-	public static RunMenuModel getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
+		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
+				org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel()
+		};
 	}
 
-	private RunMenuModel() {
-		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ),
-				org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
-	}
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

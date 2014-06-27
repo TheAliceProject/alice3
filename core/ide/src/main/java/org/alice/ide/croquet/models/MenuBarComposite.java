@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public abstract class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	public MenuBarComposite( org.lgna.croquet.SingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState, org.lgna.croquet.Operation... uploadOperations ) {
+	public MenuBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addItem( new org.alice.ide.croquet.models.menubar.FileMenuModel( uploadOperations ) );
-		this.addItem( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		this.addItem( new org.alice.ide.croquet.models.menubar.WindowMenuModel( perspectiveState ) );
+		this.addItem( new org.alice.ide.croquet.models.menubar.FileMenuModel( projectDocumentFrame ) );
+		this.addItem( new org.alice.ide.croquet.models.menubar.EditMenuModel( projectDocumentFrame ) );
+		this.addItem( new org.alice.ide.croquet.models.menubar.ProjectMenuModel( projectDocumentFrame ) );
+		this.addItem( new org.alice.ide.croquet.models.menubar.RunMenuModel( projectDocumentFrame ) );
+		this.addItem( new org.alice.ide.croquet.models.menubar.WindowMenuModel( projectDocumentFrame ) );
 		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 		//this.addItem( org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel() );
 	}

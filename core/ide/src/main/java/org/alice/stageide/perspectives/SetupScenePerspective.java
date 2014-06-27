@@ -47,13 +47,8 @@ package org.alice.stageide.perspectives;
  * @author Dennis Cosgrove
  */
 public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public SetupScenePerspective( org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), menuBar );
-	}
-
-	@Override
-	public org.alice.ide.declaration.croquet.views.DeclarationViewFactory getDeclarationViewFactory() {
-		return null;
+	public SetupScenePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), projectDocumentFrame, menuBar );
 	}
 
 	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {

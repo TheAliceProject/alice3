@@ -46,6 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends org.alice.ide.common.StatementLikeSubstance {
+	private static final java.awt.Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 );
 	private final org.alice.ide.x.AstI18nFactory factory;
 
 	private edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -68,6 +69,15 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 
 	public org.alice.ide.x.AstI18nFactory getFactory() {
 		return this.factory;
+	}
+
+	@Override
+	protected java.awt.Paint getPassiveOutlinePaint() {
+		if( this.getModel() != null ) {
+			return super.getPassiveOutlinePaint();
+		} else {
+			return PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE;
+		}
 	}
 
 	@Override

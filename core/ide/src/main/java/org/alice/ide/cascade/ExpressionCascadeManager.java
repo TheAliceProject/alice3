@@ -271,7 +271,7 @@ public abstract class ExpressionCascadeManager {
 			arrayLengthFillIns = null;
 		}
 
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 		if( this.isApplicableForFillInAndPossiblyPartFillIns( type, selectedType ) ) {
 			this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ThisExpression(), selectedType );
 		}

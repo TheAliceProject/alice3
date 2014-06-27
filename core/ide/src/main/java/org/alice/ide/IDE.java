@@ -72,11 +72,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
 
-	private final org.alice.stageide.perspectives.CodePerspective codePerspective;
-	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
-
-	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
-
 	private java.io.File projectFileToLoadOnWindowOpened;
 
 	private final IdeConfiguration ideConfiguration;
@@ -90,34 +85,36 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		sb.append( getApplicationName() );
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
+		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration );
+
 		//initialize locale
+
 		org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}
 		} );
-		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( perspectiveState, ideConfiguration.getUploadOperations() );
-		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( aliceMenuBar );
-		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( aliceMenuBar );
-		this.perspectiveState.addItem( this.codePerspective );
-		this.perspectiveState.addItem( this.setupScenePerspective );
+
 	}
 
 	public IdeConfiguration getIdeConfiguration() {
 		return this.ideConfiguration;
 	}
 
+	public ProjectDocumentFrame getProjectDocumentFrame() {
+		return this.projectDocumentFrame;
+	}
+
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
-		return this.codePerspective;
+		return this.projectDocumentFrame.getCodePerspective();
 	}
 
 	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
-		return this.setupScenePerspective;
+		return this.projectDocumentFrame.getSetupScenePerspective();
 	}
 
 	public final org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
-		return this.perspectiveState;
+		return this.projectDocumentFrame.getPerspectiveState();
 	}
 
 	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
@@ -421,7 +418,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
-		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? this.setupScenePerspective : this.codePerspective;
+		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? this.getSetupScenePerspective() : this.getCodePerspective();
 		this.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
@@ -642,4 +639,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return this.highlightStencil;
 	}
+
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

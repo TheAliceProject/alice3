@@ -133,12 +133,12 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomIte
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.refreshLater();
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleUndisplayable();
 	}
 };

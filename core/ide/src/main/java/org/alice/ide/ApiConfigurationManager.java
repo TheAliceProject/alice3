@@ -190,7 +190,7 @@ public abstract class ApiConfigurationManager {
 		return this.mapTypeToText.get( type );
 	}
 
-	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
 		return code.isSignatureLocked();
 	}
 

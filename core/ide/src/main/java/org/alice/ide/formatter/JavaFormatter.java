@@ -103,6 +103,23 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
+	public String getHeaderTextForCode( org.lgna.project.ast.UserCode code ) {
+		StringBuilder sb = new StringBuilder();
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			sb.append( "</getReturnType()/> </getName()/>" );
+		} else {
+			sb.append( "</getDeclaringType()/>" );
+		}
+		sb.append( " ( </getParameters()/> ) {" );
+		return sb.toString();
+	}
+
+	@Override
+	public String getTrailerTextForCode( org.lgna.project.ast.UserCode code ) {
+		return "}";
+	}
+
+	@Override
 	public String getTemplateText( Class<?> cls ) {
 		String rv = templateMap.get( cls );
 		if( rv != null ) {

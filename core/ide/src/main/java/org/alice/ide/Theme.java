@@ -78,7 +78,7 @@ public interface Theme {
 
 	public java.awt.Color getCommentForegroundColor();
 
-	public java.awt.Color getCodeColor( org.lgna.project.ast.AbstractCode code );
+	public java.awt.Color getCodeColor( org.lgna.project.ast.Code code );
 
 	public java.awt.Color getSelectedColor();
 
