@@ -361,7 +361,18 @@ public class ModelResourceExporter {
 		Matcher match = arrayPattern.matcher( jointName );
 		if( match.find() ) {
 			String indexStr = jointName.substring( jointName.lastIndexOf( '_' ) + 1 );
-			return Integer.decode( indexStr );
+			//Remove all leading 0s
+			indexStr = indexStr.replaceAll( "^0+", "" );
+			//If we've removed all the leading 0s and ended up with an empty string, return the number 0
+			if( indexStr.length() == 0 ) {
+				return 0;
+			}
+			try {
+				return Integer.decode( indexStr );
+			} catch( NumberFormatException e ) {
+				System.err.println( "Error decoding array index in joint " + jointName );
+				return -1;
+			}
 		}
 		else {
 			return -1;
@@ -434,6 +445,7 @@ public class ModelResourceExporter {
 					}
 				} );
 			} catch( RuntimeException e ) {
+				e.printStackTrace();
 				throw new DataFormatException( e.toString() );
 			}
 		}

@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -104,4 +106,20 @@ public class SJoint extends STurnable {
 	public void setPivotVisible( Boolean isPivotVisible ) {
 		this.implementation.setPivotVisible( isPivotVisible );
 	}
+
+	@MethodTemplate( )
+	public Double getWidth() {
+		return this.getImplementation().getSize().x;
+	}
+
+	@MethodTemplate( )
+	public Double getHeight() {
+		return this.getImplementation().getSize().y;
+	}
+
+	@MethodTemplate( )
+	public Double getDepth() {
+		return this.getImplementation().getSize().z;
+	}
+
 }

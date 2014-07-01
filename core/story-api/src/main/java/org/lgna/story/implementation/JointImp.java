@@ -127,6 +127,22 @@ public abstract class JointImp extends AbstractTransformableImp {
 		sb.append( this.getJointId().toString() );
 	}
 
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+		return getAxisAlignedMinimumBoundingBox().getSize();
+	}
+
+	public double getWidth() {
+		return this.getSize().x;
+	}
+
+	public double getHeight() {
+		return this.getSize().y;
+	}
+
+	public double getDepth() {
+		return this.getSize().z;
+	}
+
 	private org.lgna.story.SJoint abstraction;
 	private final JointedModelImp<?, ?> jointedModelImplementation;
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
