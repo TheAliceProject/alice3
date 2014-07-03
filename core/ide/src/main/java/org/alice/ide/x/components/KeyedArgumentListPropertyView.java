@@ -47,7 +47,7 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.lgna.project.ast.JavaKeyedArgument> {
-	public KeyedArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
+	public KeyedArgumentListPropertyView( org.alice.ide.x.MutableAstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
 		super( factory, argumentListProperty );
 	}
 
@@ -63,8 +63,10 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.
 		if( org.lgna.project.ast.AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
 			//pass
 		} else {
-			this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
-			this.addComponent( new org.lgna.croquet.views.DropDown( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
+			if( this.getFactory().isKeyedArgumentListMutable( this.getArgumentListProperty() ) ) {
+				this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+				this.addComponent( new org.lgna.croquet.views.DropDown( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
+			}
 		}
 	}
 }

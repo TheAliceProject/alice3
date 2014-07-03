@@ -57,6 +57,10 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 		return null;
 	}
 
+	public boolean isKeyedArgumentListMutable( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
+		return true;
+	}
+
 	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
 		org.lgna.project.ast.ArgumentOwner owner = argumentListProperty.getOwner();

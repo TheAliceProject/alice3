@@ -48,7 +48,7 @@ package org.alice.ide.x.components;
  */
 public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.views.LineAxisPanel {
 	protected final static String SEPARATOR = ",";
-	private final org.alice.ide.x.AstI18nFactory factory;
+	private final org.alice.ide.x.MutableAstI18nFactory factory;
 	private final org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<N> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<N>() {
 		@Override
@@ -61,13 +61,13 @@ public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.Ab
 		}
 	};
 
-	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty ) {
+	public ArgumentListPropertyView( org.alice.ide.x.MutableAstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty ) {
 		this.factory = factory;
 		this.argumentListProperty = argumentListProperty;
 		this.refreshLater();
 	}
 
-	public org.alice.ide.x.AstI18nFactory getFactory() {
+	public org.alice.ide.x.MutableAstI18nFactory getFactory() {
 		return this.factory;
 	}
 
