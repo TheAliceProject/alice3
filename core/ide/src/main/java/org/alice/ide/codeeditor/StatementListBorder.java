@@ -42,8 +42,6 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -74,7 +72,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 		}
 	}
 
-	private final org.alice.ide.x.AstI18nFactory factory;
+	private final boolean isMutable;
 	private final org.lgna.project.ast.StatementListProperty alternateListProperty;
 
 	private final java.awt.Insets normalInsets;
@@ -82,8 +80,8 @@ public class StatementListBorder implements javax.swing.border.Border {
 
 	private boolean isDrawingDesired = true;
 
-	public StatementListBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
-		this.factory = factory;
+	public StatementListBorder( boolean isMutable, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
+		this.isMutable = isMutable;
 		this.alternateListProperty = alternateListProperty;
 		this.normalInsets = normalInsets;
 		this.minimum = minimum;
@@ -147,53 +145,45 @@ public class StatementListBorder implements javax.swing.border.Border {
 		return ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 );
 	}
 
-	private boolean isEditable() {
-		return this.factory instanceof org.alice.ide.x.ProjectEditorAstI18nFactory;
-	}
-
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h ) {
 		java.awt.Container container = (java.awt.Container)c;
 		if( this.isVirtuallyEmpty( container ) ) {
-			if( this.isEditable() ) {
-				if( this.isDrawingDesired() ) {
-					int textIndex = container.getComponentCount();
-					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, textIndex );
+			if( this.isDrawingDesired() ) {
+				int textIndex = container.getComponentCount();
+				java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, textIndex );
 
-					java.awt.Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
-					final int PADDING = 24;
-					int width = ( EMPTY_INSET_LEADING + (int)bounds.getWidth() ) + PADDING;
-					int height = ( EMPTY_INSET_BOTTOM + (int)bounds.getHeight() ) - 4;
-					int dx;
-					if( c.getComponentOrientation().isLeftToRight() ) {
-						dx = x + EMPTY_INSET_LEADING;
-					} else {
-						dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() ) - PADDING - 12;
-					}
-					int dy;
-					if( container.getComponentCount() == 0 ) {
-						dy = y + EMPTY_INSETS.top + 2;
-					} else {
-						dy = ( y + h ) - height - 2;
-					}
-					g.translate( dx, dy );
+				java.awt.Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
+				final int PADDING = 24;
+				int width = ( EMPTY_INSET_LEADING + (int)bounds.getWidth() ) + PADDING;
+				int height = ( EMPTY_INSET_BOTTOM + (int)bounds.getHeight() ) - 4;
+				int dx;
+				if( c.getComponentOrientation().isLeftToRight() ) {
+					dx = x + EMPTY_INSET_LEADING;
+				} else {
+					dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() ) - PADDING - 12;
+				}
+				int dy;
+				if( container.getComponentCount() == 0 ) {
+					dy = y + EMPTY_INSETS.top + 2;
+				} else {
+					dy = ( y + h ) - height - 2;
+				}
+				g.translate( dx, dy );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				if( this.isMutable ) {
 					if( this.isDashed() ) {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						g2.setColor( java.awt.Color.GRAY );
 						g2.setStroke( DASHED_STROKE );
 						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, width - 3, height - 3, 8, 8 );
 						g2.draw( rr );
 					} else {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						java.awt.Paint prevPaint = g2.getPaint();
 
 						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, width - 1, height - 1, 8, 8 );
 						g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR ) );
 						g2.fill( rr );
 
 						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle( g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE );
-						g2.setPaint( prevPaint );
 					}
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					g.setColor( java.awt.Color.BLACK );
 					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
@@ -206,19 +196,18 @@ public class StatementListBorder implements javax.swing.border.Border {
 					}
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], xText, 0, (int)bounds.getWidth(), height );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
-					g.translate( -dx, -dy );
+				} else {
+					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, width - 1, height - 1, 8, 8 );
+					g2.setPaint( BOTTOM_COLOR );
+					g2.fill( rr );
 				}
+				g.translate( -dx, -dy );
 			}
 		}
-		//		java.awt.Insets insets = container.getInsets();
-		//		g.setColor( java.awt.Color.MAGENTA );
-		//		g.drawRect( x + insets.left, y + insets.top, w - insets.right, h - insets.bottom );
-		//		g.setColor( java.awt.Color.BLUE );
-		//		g.drawRect( x, y, w, h );
 	}
 
 	public boolean isDrawingDesired() {
-		return this.isDrawingDesired && ( StatementInsertCascade.EPIC_HACK_isActive() == false );
+		return this.isDrawingDesired && ( org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade.EPIC_HACK_isActive() == false );
 	}
 
 	public void setDrawingDesired( boolean isDrawingDesired ) {
