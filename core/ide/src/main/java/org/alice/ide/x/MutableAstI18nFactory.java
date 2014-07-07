@@ -57,6 +57,10 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 		return null;
 	}
 
+	public boolean isStatementListPropertyMutable( org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		return true;
+	}
+
 	public boolean isKeyedArgumentListMutable( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
 		return true;
 	}
