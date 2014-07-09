@@ -45,6 +45,8 @@ package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 import static javax.media.opengl.GL.GL_LINES;
 import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 /**
  * @author Dennis Cosgrove

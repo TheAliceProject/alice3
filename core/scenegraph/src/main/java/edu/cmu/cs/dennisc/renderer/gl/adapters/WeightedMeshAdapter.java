@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class WeightedMeshAdapter<E extends WeightedMesh> extends MeshAdapter<E>

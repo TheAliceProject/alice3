@@ -41,59 +41,83 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl.adapters;
-
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public abstract class Context {
+	public javax.media.opengl.GL2 gl;
+	public javax.media.opengl.glu.GLU glu;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private javax.media.opengl.glu.GLUquadric m_quadric;
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	public Context() {
+		glu = new javax.media.opengl.glu.GLU();
+	}
+
+	private int scaledCount = 0;
+	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+
+	public void initialize() {
+		this.scaledCount = 0;
+		this.disableNormalize();
+	}
+
+	public boolean isScaled() {
+		return this.scaledCount > 0;
+	}
+
+	protected abstract void enableNormalize();
+
+	protected abstract void disableNormalize();
+
+	public void incrementScaledCount() {
+		this.scaledCount++;
+		if( this.scaledCount == 1 ) {
+			this.enableNormalize();
+		}
+
+	}
+
+	public void decrementScaledCount() {
+		if( this.scaledCount == 1 ) {
+			this.disableNormalize();
+		}
+		this.scaledCount--;
+	}
+
+	public void pushScaledCountAndSetToZero() {
+		this.scaledCountStack.push( this.scaledCount );
+		this.scaledCount = 0;
+	}
+
+	public void popAndRestoreScaledCount() {
+		this.scaledCount = this.scaledCountStack.pop();
+	}
+
+	//todo: synchronize?
+	public javax.media.opengl.glu.GLUquadric getQuadric() {
+		if( m_quadric == null ) {
+			m_quadric = glu.gluNewQuadric();
+		}
+		return m_quadric;
+	}
+
+	protected abstract void handleGLChange();
+
+	//	private boolean isGLChanged = true;
+	//	public boolean isGLChanged() {
+	//		return this.isGLChanged;
+	//	}
+	public void setGL( javax.media.opengl.GL2 gl ) {
+		//		this.isGLChanged = this.gl != gl;
+		//		if( this.isGLChanged ) {
+		if( this.gl != gl ) {
+			this.gl = gl;
+			handleGLChange();
 		}
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
+	public abstract void setAppearanceIndex( int index );
 }

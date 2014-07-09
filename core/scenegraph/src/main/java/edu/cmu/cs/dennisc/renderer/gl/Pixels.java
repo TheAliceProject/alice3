@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl.adapters;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 /**
  * @author Dennis Cosgrove

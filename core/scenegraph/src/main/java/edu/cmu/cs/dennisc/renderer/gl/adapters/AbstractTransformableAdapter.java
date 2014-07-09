@@ -1,5 +1,9 @@
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
+import edu.cmu.cs.dennisc.renderer.gl.Context;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+
 public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends CompositeAdapter<E> {
 
 	private static double[] unscaling = new double[ 16 ];

@@ -12,6 +12,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends AppearanceAdapter<E> {
 	private boolean m_isShaded;

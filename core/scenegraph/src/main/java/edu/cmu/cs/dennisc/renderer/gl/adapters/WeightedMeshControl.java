@@ -50,6 +50,8 @@ import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 

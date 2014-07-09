@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl.adapters;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_CULL_FACE;

@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.renderer.gl.adapters;
 import static javax.media.opengl.GL2ES1.GL_EXP2;
 import static javax.media.opengl.GL2ES1.GL_FOG_DENSITY;
 import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 /**
  * @author Dennis Cosgrove

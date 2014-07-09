@@ -44,6 +44,8 @@
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 /**
  * @author Dennis Cosgrove

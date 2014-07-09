@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl.adapters;
+package edu.cmu.cs.dennisc.renderer.gl;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
@@ -66,6 +66,10 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.ForgettableBinding;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.GeometryAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.MultipleAppearanceAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.TextureAdapter;
 
 /**
  * @author Dennis Cosgrove
@@ -591,7 +595,7 @@ public class RenderContext extends Context {
 		}
 	}
 
-	protected void renderVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+	public void renderVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
 		if( this.currDiffuseColorTextureAdapter != null ) {
 			if( vertex.textureCoordinate0.isNaN() == false ) {
 				float u = this.currDiffuseColorTextureAdapter.mapU( vertex.textureCoordinate0.u );

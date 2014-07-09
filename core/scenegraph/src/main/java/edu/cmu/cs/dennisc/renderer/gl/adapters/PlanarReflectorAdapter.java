@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
 import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 /**
  * @author Dennis Cosgrove

@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
+import edu.cmu.cs.dennisc.renderer.gl.Context;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+
 /**
  * @author Dennis Cosgrove
  */

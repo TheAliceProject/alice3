@@ -256,7 +256,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext();
+	private final edu.cmu.cs.dennisc.renderer.gl.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.RenderContext();
 
 	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();

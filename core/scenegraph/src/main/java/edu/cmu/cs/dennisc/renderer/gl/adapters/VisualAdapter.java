@@ -47,6 +47,8 @@ import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 
 /**

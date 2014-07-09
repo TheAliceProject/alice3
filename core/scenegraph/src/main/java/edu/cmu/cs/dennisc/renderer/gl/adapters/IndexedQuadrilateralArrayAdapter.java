@@ -43,7 +43,9 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.adapters;
 
-import static javax.media.opengl.GL2.GL_QUADS;
+import static javax.media.opengl.GL2GL3.GL_QUADS;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 
 /**
  * @author Dennis Cosgrove
