@@ -108,7 +108,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 		return rv;
 	}
 
-	protected edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
+	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
 		//		rv.set( m_picturePlane, actualViewport );
 		rv.set( m_element.picturePlane.getValue(), actualViewport );
 		return rv;
