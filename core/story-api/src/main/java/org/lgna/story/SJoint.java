@@ -54,6 +54,8 @@ public class SJoint extends STurnable {
 
 	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]> mapToArrayMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
+	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointArrayId, SJoint[]> mapToArrayIdMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	/* package-private */static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId, SJoint>() {
 			public SJoint initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
@@ -72,6 +74,15 @@ public class SJoint extends STurnable {
 					jointArray[ i ] = org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointIdArray[ i ] );
 				}
 				return jointArray;
+			}
+		} );
+	}
+
+	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
+		return mapToArrayIdMap.getInitializingIfAbsent( jointedModel, jointArrayId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointArrayId, SJoint[]>() {
+			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
+				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+				return jointedModelImplementation.getSJointArray( jointArrayId );
 			}
 		} );
 	}

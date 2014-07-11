@@ -143,6 +143,51 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 	}
 
+	public org.lgna.story.implementation.JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId ) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
+		if( sgSkeletonVisual != null ) {
+			String key = jointArrayId.getElementNamePattern();
+			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			edu.cmu.cs.dennisc.scenegraph.Joint[] sgJoints = sgSkeletonRoot.getJoints( key );
+			if( sgJoints != null ) {
+				org.lgna.story.implementation.JointImp[] jointImps = new org.lgna.story.implementation.JointImp[ sgJoints.length ];
+				for( int i = 0; i < sgJoints.length; i++ ) {
+					final String jointName = sgJoints[ i ].jointID.getValue();
+					sgJoints[ i ].setName( jointName );
+					org.lgna.story.resources.JointId parentJointId;
+					if( i == 0 ) {
+						parentJointId = jointArrayId.getParent();
+					}
+					else {
+						parentJointId = jointImps[ i - 1 ].getJointId();
+					}
+					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() )
+					{
+						org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid implicit array structure:", jointName, "'s parent is not set to", parentJointId.toString(), "on", resource.getClass(), resource );
+						return null;
+					}
+
+					org.lgna.story.resources.JointId jointId = new org.lgna.story.resources.JointId( parentJointId, jointArrayId.getContainingClass() ) {
+						@Override
+						public String toString() {
+							return jointName;
+						}
+					};
+
+					jointImps[ i ] = new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoints[ i ] );
+				}
+				return jointImps;
+			} else {
+				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( jointArrayId, " array not found for ", resource.getClass(), resource );
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return AliceResourceUtilties.getOriginalJointOrientation( this.resource, jointId );
 	}

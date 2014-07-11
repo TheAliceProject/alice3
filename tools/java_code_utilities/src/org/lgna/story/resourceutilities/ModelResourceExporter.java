@@ -85,6 +85,7 @@ import org.w3c.dom.Document;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
@@ -118,6 +119,7 @@ public class ModelResourceExporter {
 	private File javaFile;
 	private List<String> jointIdsToSuppress = new ArrayList<String>();
 	private List<String> arraysToExposeFirstElementOf = new ArrayList<String>();
+	private List<String> arraysToHideElementsOf = new ArrayList<String>();
 	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
 	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
@@ -135,6 +137,8 @@ public class ModelResourceExporter {
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
 	private boolean placeOnGround = false;
+
+	private boolean enableArraySupport = false;
 
 	private String attributionName;
 	private String attributionYear;
@@ -339,6 +343,22 @@ public class ModelResourceExporter {
 		}
 	}
 
+	public void addArrayNamesToHideElementsOf( List<String> arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToHideElementsOf.contains( arrayName ) ) {
+				this.arraysToHideElementsOf.add( arrayName );
+			}
+		}
+	}
+
+	public void addArrayNamesToHideElementsOf( String[] arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToHideElementsOf.contains( arrayName ) ) {
+				this.arraysToHideElementsOf.add( arrayName );
+			}
+		}
+	}
+
 	public void addJointIdsToSuppress( List<String> jointIds ) {
 		for( String jointId : jointIds ) {
 			if( !this.jointIdsToSuppress.contains( jointId ) ) {
@@ -377,6 +397,15 @@ public class ModelResourceExporter {
 		else {
 			return -1;
 		}
+	}
+
+	public static boolean hasArray( String arrayName, List<Tuple2<String, String>> jointList ) {
+		for( Tuple2<String, String> joint : jointList ) {
+			if( arrayName.equals( getArrayNameForJoint( joint.getA(), null ) ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap ) {
@@ -1047,6 +1076,17 @@ public class ModelResourceExporter {
 		return false;
 	}
 
+	private boolean shouldHideJointInArray( String jointString, Map<String, List<String>> arrayEntries ) {
+		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
+			if( entry.getValue().contains( jointString ) ) {
+				if( this.arraysToHideElementsOf.contains( entry.getKey() ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
 		String arrayName = getArrayNameForJoint( jointName, null );
 		return getArrayAccessorMethodName( arrayName );
@@ -1109,6 +1149,14 @@ public class ModelResourceExporter {
 		return arrayNames;
 	}
 
+	private List<String> getAlreadyDeclaredJointArrayNames( Class<?> superClass ) {
+		List<String> fieldNames = new LinkedList<String>();
+		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( superClass, org.lgna.story.resources.JointArrayId.class ) ) {
+			fieldNames.add( field.getName() );
+		}
+		return fieldNames;
+	}
+
 	public String createJavaCode() throws DataFormatException
 	{
 		StringBuilder sb = new StringBuilder();
@@ -1160,26 +1208,28 @@ public class ModelResourceExporter {
 				{
 					continue;
 				}
-				if( ( parentString == null ) || ( parentString.length() == 0 ) )
-				{
-					parentString = "null";
-					rootJoints.add( jointString );
-					addedRoots = true;
-				}
-				if( shouldSuppressJoint( jointString ) || shouldSuppressJointInArray( jointString, arrayEntries ) ) {
-					sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
-				}
-				else {
-					String arrayName = getArrayNameFromMapForJoint( jointString, arrayEntries );
-					if( arrayName != null ) {
-						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint=\"" + getJointAccessMethodNameForArrayJoint( jointString ) + "\")" + JavaCodeUtilities.LINE_RETURN );
+				if( !shouldHideJointInArray( jointString, arrayEntries ) ) {
+					if( ( parentString == null ) || ( parentString.length() == 0 ) )
+					{
+						parentString = "null";
+						rootJoints.add( jointString );
+						addedRoots = true;
+					}
+					if( shouldSuppressJoint( jointString ) || shouldSuppressJointInArray( jointString, arrayEntries ) ) {
+						sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
 					}
 					else {
-						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
-					}
+						String arrayName = getArrayNameFromMapForJoint( jointString, arrayEntries );
+						if( arrayName != null ) {
+							sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint=\"" + getJointAccessMethodNameForArrayJoint( jointString ) + "\")" + JavaCodeUtilities.LINE_RETURN );
+						}
+						else {
+							sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+						}
 
+					}
+					sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 				}
-				sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 			}
 
 			if( addedRoots )
@@ -1195,6 +1245,7 @@ public class ModelResourceExporter {
 				sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 			}
 			List<String> mandatoryArrayNames = getMandatoryJointArrayNames( classData.superClass );
+			List<String> declaredArrays = getAlreadyDeclaredJointArrayNames( classData.superClass );
 			if( !arrayEntries.isEmpty() || ( mandatoryArrayNames.size() != 0 ) ) {
 				//Loop through and remove any existing arrays from the mandatory array list
 				// This should leave only the mandatory arrays that need an empty list defined
@@ -1209,6 +1260,12 @@ public class ModelResourceExporter {
 				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
 					List<String> arrayElements = arrayEntry.getValue();
 					String arrayName = arrayEntry.getKey() + "_ARRAY";
+
+					if( declaredArrays.contains( arrayName ) || declaredArrays.contains( arrayEntry.getKey() ) ) {
+						//If the array is already declared, skip it and trust that the previous declaration will capture the data
+						continue;
+					}
+
 					boolean needsAccessor = needsAccessorMethodForArray( classData, arrayName );
 
 					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.
@@ -1217,14 +1274,31 @@ public class ModelResourceExporter {
 					if( needsAccessor ) {
 						sb.append( "\n\t@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
 					}
-					sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + arrayName + " = { " );
-					for( int i = 0; i < arrayElements.size(); i++ ) {
-						sb.append( arrayElements.get( i ) );
-						if( i < ( arrayElements.size() - 1 ) ) {
-							sb.append( ", " );
+
+					//If the array is one in the "hide all the elements of this array" list, then declare it as an arrayId rather than an array of joint ids
+					if( this.arraysToHideElementsOf.contains( arrayName ) ) {
+						String firstEntry = arrayElements.get( 0 );
+						String parentString = "null";
+						for( Tuple2<String, String> entry : trimmedSkeleton )
+						{
+							if( entry.getA().equals( firstEntry ) ) {
+								parentString = entry.getB();
+								break;
+							}
 						}
+						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\tpublic static final org.lgna.story.resources.JointArrayId " + arrayName + " = new org.lgna.story.resources.JointArrayId( \"" + arrayEntry.getKey() + "\", " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 					}
-					sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
+					else {
+						sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + arrayName + " = { " );
+						for( int i = 0; i < arrayElements.size(); i++ ) {
+							sb.append( arrayElements.get( i ) );
+							if( i < ( arrayElements.size() - 1 ) ) {
+								sb.append( ", " );
+							}
+						}
+						sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
+					}
 					if( needsAccessor ) {
 						String arrayAccessorName = getArrayAccessorMethodName( arrayName );
 						sb.append( "\tpublic org.lgna.story.resources.JointId[] " + arrayAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );

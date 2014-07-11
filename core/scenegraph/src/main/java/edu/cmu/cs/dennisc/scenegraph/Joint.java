@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import java.util.Comparator;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.EulerAngles;
@@ -105,6 +107,44 @@ public class Joint extends Transformable implements ModelJoint
 	public Joint getJoint( String jointID )
 	{
 		return getJoint( this, jointID );
+	}
+
+	private void getJoints( Composite c, String nameKey, java.util.List<Joint> joints )
+	{
+		if( c == null )
+		{
+			return;
+		}
+		if( c instanceof Joint )
+		{
+			Joint j = (Joint)c;
+			if( j.jointID.getValue().startsWith( nameKey ) )
+			{
+				joints.add( j );
+			}
+		}
+		for( int i = 0; i < c.getComponentCount(); i++ )
+		{
+			Component comp = c.getComponentAt( i );
+			if( comp instanceof Composite )
+			{
+				getJoints( (Composite)comp, nameKey, joints );
+			}
+		}
+	}
+
+	private static final Comparator<Joint> JOINT_ARRAY_COMPARATOR = new Comparator<Joint>() {
+		public int compare( Joint o1, Joint o2 ) {
+			return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
+		}
+	};
+
+	public Joint[] getJoints( String nameKey )
+	{
+		java.util.List<Joint> joints = new java.util.ArrayList<Joint>();
+		getJoints( this, nameKey, joints );
+		java.util.Collections.sort( joints, JOINT_ARRAY_COMPARATOR );
+		return joints.toArray( new Joint[ joints.size() ] );
 	}
 
 	public void setParentVisual( SkeletonVisual parentVisual ) {

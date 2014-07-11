@@ -432,6 +432,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					//skip
 				} else {
 					org.lgna.project.ast.JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointId[].class );
+					org.lgna.project.ast.JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointArrayId.class );
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
 					//					ArrayList<?> methods = resourceType.getDeclaredMethods();
 					//					org.lgna.project.ast.JavaMethod getImplementationMethod = (org.lgna.project.ast.JavaMethod)JOINTED_MODEL_TYPE.findMethod( "HACKgetImplementation" );
@@ -496,6 +497,22 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
 										new org.lgna.project.ast.ThisExpression(),
 										getJointArrayMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
+										);
+								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
+								rv.methods.add( method );
+							}
+							else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointArrayId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+								String methodName = getFieldMethodNameHint( field );
+								if( methodName == null ) {
+									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+								}
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
+								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
+								org.lgna.project.ast.BlockStatement body = method.body.getValue();
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointArrayIdMethod,
 										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
 										);
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );

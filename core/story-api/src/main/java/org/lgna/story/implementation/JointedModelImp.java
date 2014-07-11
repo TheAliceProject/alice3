@@ -44,6 +44,7 @@
 package org.lgna.story.implementation;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.lgna.story.SJoint;
@@ -74,6 +75,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		public R getResource();
 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
+
+		public JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId );
 
 		public VisualData createVisualData();
 
@@ -234,6 +237,17 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			throw new RuntimeException( sb.toString() );
 		}
 
+		//TODO: Arrays?
+
+		//do something for joint arrays here?
+		//get all the JointArrayId fields
+		//find all the joints that match those ids?
+		// How? we need to look up the joints in the visualData perhaps
+		//This is the code from alice.JointImplementationAndVisualDataFactory.createJointImplementation(
+		//		String key = jointId.toString();
+		//		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+		//		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 		if( rootIds.length == 0 ) {
@@ -255,6 +269,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 		}
 
+		this.buildJointArrayMap();
+
 		this.visualData.setSGParent( sgComposite );
 
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
@@ -262,6 +278,53 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.visualData.getSgAppearances() ) {
 			putInstance( sgAppearance );
+		}
+	}
+
+	//JointArrayId support
+	//This is for implicit array support
+	private void buildJointArrayMapHelper( org.lgna.story.resources.JointId currentJointId, org.lgna.story.resources.JointArrayId[] jointArrayIds, java.util.Map<org.lgna.story.resources.JointArrayId, List<org.lgna.story.resources.JointId>> arrayMap ) {
+		for( org.lgna.story.resources.JointArrayId arrayId : jointArrayIds ) {
+			if( arrayId.isMemberOf( currentJointId ) ) {
+				if( !arrayMap.containsKey( arrayId ) ) {
+					arrayMap.put( arrayId, new ArrayList<org.lgna.story.resources.JointId>() );
+				}
+				arrayMap.get( arrayId ).add( currentJointId );
+			}
+		}
+
+		for( org.lgna.story.resources.JointId childId : currentJointId.getChildren( this.factory.getResource() ) ) {
+			buildJointArrayMapHelper( childId, jointArrayIds, arrayMap );
+		}
+	}
+
+	private static final Comparator<org.lgna.story.resources.JointId> JOINT_ARRAY_COMPARATOR = new Comparator<org.lgna.story.resources.JointId>() {
+		public int compare( org.lgna.story.resources.JointId o1, org.lgna.story.resources.JointId o2 ) {
+			return o1.toString().compareTo( o2.toString() );
+		}
+	};
+
+	/*
+	 * Can we do this on demand?
+	 *  when we get a "getJointArray" call, just look up the id in a map and then try to build the array from existing joints or call this.factory.createJointImplementation( this, jointId );
+	 */
+
+	//TODO: Do we need this? Why do we need this.getJointArrayIds()?
+	private void buildJointArrayMap() {
+		java.util.Map<org.lgna.story.resources.JointArrayId, List<org.lgna.story.resources.JointId>> arrayIdMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		org.lgna.story.resources.JointArrayId[] jointArrayIds = this.getJointArrayIds();
+
+		for( org.lgna.story.resources.JointId root : rootIds ) {
+			this.buildJointArrayMapHelper( root, jointArrayIds, arrayIdMap );
+		}
+
+		this.mapArrayIdToJointArray.clear();
+		for( java.util.Map.Entry<org.lgna.story.resources.JointArrayId, List<org.lgna.story.resources.JointId>> entry : arrayIdMap.entrySet() ) {
+			List<org.lgna.story.resources.JointId> jointList = entry.getValue();
+			java.util.Collections.sort( entry.getValue(), JOINT_ARRAY_COMPARATOR );
+			this.mapArrayIdToJointArray.put( entry.getKey(), jointList.toArray( new org.lgna.story.SJoint[ jointList.size() ] ) );
 		}
 	}
 
@@ -322,6 +385,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 					this.createRegularJointTree( root, this, newJoints );
 				}
 			}
+			this.buildJointArrayMap();
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
 			this.visualData.setSGParent( originalParent );
@@ -506,6 +570,15 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
+
+	public org.lgna.story.SJoint[] getSJointArray( org.lgna.story.resources.JointArrayId jointArrayId ) {
+		return this.mapArrayIdToJointArray.get( jointArrayId );
+	}
+
+	//TODO: Do we need this? Why do we need this.getJointArrayIds()?
+	public org.lgna.story.resources.JointArrayId[] getJointArrayIds() {
+		return this.getResource().getJointArrayIds();
+	}
 
 	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
 		if( this.getSgVisuals()[ 0 ] instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual )
@@ -847,6 +920,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	private final A abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable;
 	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<org.lgna.story.resources.JointArrayId, org.lgna.story.SJoint[]> mapArrayIdToJointArray = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private JointImplementationAndVisualDataFactory<R> factory;
 	private VisualData visualData;
 }

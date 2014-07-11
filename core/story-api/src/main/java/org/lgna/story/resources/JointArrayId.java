@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2014, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,21 +42,44 @@
  */
 package org.lgna.story.resources;
 
-import org.lgna.project.annotations.FieldTemplate;
-import org.lgna.project.annotations.Visibility;
-
 /**
- * @author Alice Build
+ * @author user
  */
-//@org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.STrain.class, isTopLevelResource = false )
-public interface TrainResource extends TransportResource {
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId ROOT = new JointId( null, TrainResource.class );
-	public static final JointId NEXT_CAR_LOCATION = new JointId( ROOT, TrainResource.class );
+public class JointArrayId {
 
-	public static final JointArrayId WHEELS_ARRAY = new JointArrayId( "WHEELS", ROOT, TrainResource.class );
+	private final Class<? extends JointedModelResource> containingClass;
+	private final String elementPattern;
+	private final JointId parent;
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+	public JointArrayId( String elementPattern, JointId parent, Class<? extends JointedModelResource> containingClass ) {
+		this.parent = parent;
+		this.elementPattern = elementPattern;
+		this.containingClass = containingClass;
+	}
 
+	public Class<? extends JointedModelResource> getContainingClass()
+	{
+		return this.containingClass;
+	}
+
+	//Returns true if the given JointId  is a member of this array
+	public boolean isMemberOf( JointId jointId ) {
+		if( jointId != null ) {
+			if( this.containingClass.isAssignableFrom( jointId.getContainingClass() ) ) {
+				if( jointId.toString().startsWith( this.elementPattern ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public JointId getParent()
+	{
+		return this.parent;
+	}
+
+	public String getElementNamePattern() {
+		return this.elementPattern;
+	}
 }

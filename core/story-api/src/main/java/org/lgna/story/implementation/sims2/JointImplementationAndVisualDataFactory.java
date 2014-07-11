@@ -43,7 +43,10 @@
 
 package org.lgna.story.implementation.sims2;
 
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.JointArrayId;
 
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
@@ -86,6 +89,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
 	}
 
+	//Not supported on nebulous models
+	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
+		return null;
+	}
+
 	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData() {
 		try {
 			if( this.resource instanceof org.lgna.story.resources.sims2.PersonResource ) {
@@ -111,4 +119,5 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getOriginalJointTransformation not supported from nebulous factory" );
 		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
+
 }

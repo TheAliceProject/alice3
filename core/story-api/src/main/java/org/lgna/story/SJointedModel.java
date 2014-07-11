@@ -63,6 +63,11 @@ public abstract class SJointedModel extends SModel {
 		return SJoint.getJointArray( this, jointIdArray );
 	}
 
+	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
+	public SJoint[] getJointArray( org.lgna.story.resources.JointArrayId jointArrayId ) {
+		return SJoint.getJointArray( this, jointArrayId );
+	}
+
 	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
 		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
