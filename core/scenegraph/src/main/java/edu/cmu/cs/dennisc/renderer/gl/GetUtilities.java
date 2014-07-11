@@ -40,60 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.GL.GL_FALSE;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
+public class GetUtilities {
+	public static boolean getBoolean( javax.media.opengl.GL gl, int which ) {
+		byte[] tmp = new byte[ 1 ];
+		gl.glGetBooleanv( which, tmp, 0 );
+		return tmp[ 0 ] != GL_FALSE;
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
+	public static int getInteger( javax.media.opengl.GL gl, int which ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetIntegerv( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	@Override
-	protected void enableNormalize() {
+	public static float getFloat( javax.media.opengl.GL gl, int which ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetFloatv( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	@Override
-	protected void disableNormalize() {
+	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
+		double[] tmp = new double[ 1 ];
+		gl.glGetDoublev( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
+	public static int getTexParameterInteger( javax.media.opengl.GL gl, int target, int name ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetTexParameteriv( target, name, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
+	public static float getTexParameterFloat( javax.media.opengl.GL gl, int target, int name ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetTexParameterfv( target, name, tmp, 0 );
+		return tmp[ 0 ];
 	}
 }

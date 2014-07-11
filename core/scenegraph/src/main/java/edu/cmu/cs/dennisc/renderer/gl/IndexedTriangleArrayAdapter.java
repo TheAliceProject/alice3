@@ -43,57 +43,33 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.GL.GL_TRIANGLES;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
-
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
+public class IndexedTriangleArrayAdapter extends IndexedPolygonArrayAdapter<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> {
+	@Override
+	protected int getMode() {
+		return GL_TRIANGLES;
 	}
 
 	@Override
-	protected void enableNormalize() {
+	protected int getIndicesPerPolygon() {
+		return 3;
 	}
 
 	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
+	protected void renderPolygon( RenderContext rc, int[] polygonData, int i ) {
+		rc.renderVertex( accessVertexAt( polygonData[ i ] ) );
+		rc.renderVertex( accessVertexAt( polygonData[ i + 1 ] ) );
+		rc.renderVertex( accessVertexAt( polygonData[ i + 2 ] ) );
 	}
 
 	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
+	protected void pickPolygon( PickContext pc, int[] polygonData, int i ) {
+		pc.pickVertex( accessVertexAt( polygonData[ i ] ) );
+		pc.pickVertex( accessVertexAt( polygonData[ i + 1 ] ) );
+		pc.pickVertex( accessVertexAt( polygonData[ i + 2 ] ) );
 	}
 }

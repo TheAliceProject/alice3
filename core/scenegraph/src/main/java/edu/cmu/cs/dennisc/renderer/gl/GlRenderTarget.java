@@ -51,7 +51,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		javax.media.opengl.GL2 gl2 = gl.getGL2();
 		rc.gl = gl2;
 		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
-			edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera ).performClearAndRenderOffscreen( rc, glDrawable.getWidth(), glDrawable.getHeight() );
+			edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera ).performClearAndRenderOffscreen( rc, glDrawable.getWidth(), glDrawable.getHeight() );
 		}
 	}
 
@@ -118,16 +118,16 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		throw new RuntimeException( "todo" );
 	}
 
-	private java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
+	private java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
 		return cameraAdapter.getActualViewport( rv, getWidth(), getHeight() );
 	}
 
-	private java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
+	private java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
 		return this.getActualViewport( new java.awt.Rectangle(), cameraAdapter );
 	}
 
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return this.getActualViewport( rv, edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera ) );
+		return this.getActualViewport( rv, edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera ) );
 	}
 
 	public final java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
@@ -135,7 +135,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera );
+		edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getActualProjectionMatrix( rv, actualViewport );
 	}
@@ -145,25 +145,25 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.FrustumPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgFrustumPerspectiveCamera );
+		edu.cmu.cs.dennisc.renderer.gl.FrustumPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgFrustumPerspectiveCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
 	}
 
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.OrthographicCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgOrthographicCamera );
+		edu.cmu.cs.dennisc.renderer.gl.OrthographicCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgOrthographicCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
 	}
 
 	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
+		edu.cmu.cs.dennisc.renderer.gl.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getActualHorizontalViewingAngle( actualViewport );
 	}
 
 	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
+		edu.cmu.cs.dennisc.renderer.gl.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getActualVerticalViewingAngle( actualViewport );
 	}
@@ -183,7 +183,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera );
+		edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera );
 		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
 		return cameraAdapter.getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel, actualViewport );
 	}

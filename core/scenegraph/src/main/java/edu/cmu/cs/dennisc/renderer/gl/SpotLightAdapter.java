@@ -43,57 +43,38 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class SpotLightAdapter extends PointLightAdapter<edu.cmu.cs.dennisc.scenegraph.SpotLight> {
+	private float m_outerBeamAngleInDegrees;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	@Override
+	protected float[] getSpotDirection( float[] rv ) {
+		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		rv[ 0 ] = (float)db.get( 8 );
+		rv[ 1 ] = (float)db.get( 9 );
+		rv[ 2 ] = (float)db.get( 10 );
+		return rv;
+	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	//todo?
+	//protected float getSpotExponent() {
+	//    return ???;
+	//}
+	@Override
+	protected float getSpotCutoff() {
+		return m_outerBeamAngleInDegrees;
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.innerBeamAngle ) {
+		} else if( property == m_element.outerBeamAngle ) {
+			m_outerBeamAngleInDegrees = (float)m_element.outerBeamAngle.getValue().getAsDegrees();
+		} else if( property == m_element.falloff ) {
+		} else {
+			super.propertyChanged( property );
 		}
-	}
-
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

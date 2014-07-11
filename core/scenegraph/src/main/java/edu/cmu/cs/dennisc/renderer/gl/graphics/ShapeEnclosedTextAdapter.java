@@ -40,60 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.renderer.gl.graphics;
 
-package edu.cmu.cs.dennisc.renderer.gl;
+public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText> extends TextAdapter<E> {
+	private java.awt.Color fillColor = null;
+	private java.awt.Color outlineColor = null;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+	protected abstract void render(
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
+			float wrapWidth,
+			java.awt.Color fillColor,
+			java.awt.Color outlineColor );
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+	@Override
+	protected void render(
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
+			float wrapWidth ) {
+		this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
+	}
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.fillColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.fillColor.getValue();
+			if( color != null ) {
+				this.fillColor = color.getAsAWTColor();
+			} else {
+				this.fillColor = null;
+			}
+		} else if( property == m_element.outlineColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.outlineColor.getValue();
+			if( color != null ) {
+				this.outlineColor = color.getAsAWTColor();
+			} else {
+				this.outlineColor = null;
+			}
+		} else {
+			super.propertyChanged( property );
 		}
-	}
-
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

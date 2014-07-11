@@ -43,57 +43,67 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class SphereAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Sphere> {
+	private double m_radius;
+	//todo: add scenegraph hint
+	private int m_stacks = 50;
+	private int m_slices = 50;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private void glSphere( Context c ) {
+		c.glu.gluSphere( c.getQuadric(), m_radius, m_slices, m_stacks );
+	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	@Override
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
+		boolean isTextureEnabled = rc.isTextureEnabled();
+		//todo:
+		isTextureEnabled = true;
+		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
+		glSphere( rc );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+		//assuming ray unit length
+
+		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
+		edu.cmu.cs.dennisc.math.Vector3 dst = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), origin );
+		double b = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, ray.accessDirection() );
+		double c = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, dst ) - m_radius;
+		double d = ( b * b ) - c;
+		if( d > 0 ) {
+			double t = -b - Math.sqrt( d );
+			ray.getPointAlong( rv, t );
+		} else {
+			rv.setNaN();
 		}
+		return rv;
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
+	@Override
+	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
+		int name;
+		if( isSubElementRequired ) {
+			name = 0;
+		} else {
+			name = -1;
 		}
+		pc.gl.glPushName( name );
+		glSphere( pc );
+		pc.gl.glPopName();
 	}
 
 	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.radius ) {
+			m_radius = m_element.radius.getValue();
+			setIsGeometryChanged( true );
+		} else {
+			super.propertyChanged( property );
 		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

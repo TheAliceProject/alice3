@@ -43,57 +43,70 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class PickParameters {
+	public PickParameters( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.Observer<?> pickObserver ) {
+		this.renderTarget = renderTarget;
+		this.sgCamera = sgCamera;
+		this.x = x;
+		this.y = y;
+		this.isSubElementRequired = isSubElementRequired;
+		this.pickObserver = pickObserver;
+	}
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public void addPickResult( edu.cmu.cs.dennisc.scenegraph.Component source, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
+		this.pickResults.add( new edu.cmu.cs.dennisc.renderer.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
+	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> accessAllPickResults() {
+		return this.pickResults;
+	}
+
+	public edu.cmu.cs.dennisc.renderer.PickResult accessFrontMostPickResult() {
+		edu.cmu.cs.dennisc.renderer.PickResult rv;
+		if( this.pickResults.isEmpty() ) {
+			rv = new edu.cmu.cs.dennisc.renderer.PickResult( this.sgCamera );
+		} else {
+			rv = this.pickResults.get( 0 );
 		}
+		return rv;
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
+	public edu.cmu.cs.dennisc.renderer.RenderTarget getRenderTarget() {
+		return this.renderTarget;
 	}
 
-	@Override
-	protected void enableNormalize() {
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
+		return this.sgCamera;
 	}
 
-	@Override
-	protected void disableNormalize() {
+	public int getX() {
+		return this.x;
 	}
 
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
+	public int getY() {
+		return this.y;
 	}
 
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
+	public int getFlippedY( java.awt.Rectangle actualViewport ) {
+		return actualViewport.height - this.y;
 	}
 
-	@Override
-	protected void handleGLChange() {
+	public boolean isSubElementRequired() {
+		return this.isSubElementRequired;
 	}
 
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
+	public edu.cmu.cs.dennisc.renderer.Observer<?> getPickObserver() {
+		return this.pickObserver;
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
+	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
+	private final int x;
+	private final int y;
+	private final boolean isSubElementRequired;
+	private final edu.cmu.cs.dennisc.renderer.Observer<?> pickObserver;
 }

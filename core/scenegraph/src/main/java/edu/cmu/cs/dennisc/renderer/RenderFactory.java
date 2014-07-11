@@ -247,7 +247,7 @@ public enum RenderFactory {
 		if( this.automaticDisplayCount > 0 ) {
 			acquireRenderingLock();
 			try {
-				edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.pushRenderingMode();
+				edu.cmu.cs.dennisc.renderer.gl.ChangeHandler.pushRenderingMode();
 				for( HeavyweightOnscreenRenderTarget rt : this.heavyweightOnscreenRenderTargets ) {
 					if( isDisplayDesired( rt ) ) {
 						//lg.getGLAutoDrawable().display();
@@ -257,8 +257,8 @@ public enum RenderFactory {
 					}
 				}
 				try {
-					if( edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
-						edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.resetEventCount();
+					if( edu.cmu.cs.dennisc.renderer.gl.ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
+						edu.cmu.cs.dennisc.renderer.gl.ChangeHandler.resetEventCount();
 						//isJustCreatedOnscreenLookingGlassAccountedFor = true;
 						for( OnscreenRenderTarget<?> rt : this.lightweightOnscreenRenderTargets ) {
 							if( isDisplayDesired( rt ) ) {
@@ -270,7 +270,7 @@ public enum RenderFactory {
 						}
 					}
 				} finally {
-					edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.popRenderingMode();
+					edu.cmu.cs.dennisc.renderer.gl.ChangeHandler.popRenderingMode();
 				}
 			} finally {
 				releaseRenderingLock();

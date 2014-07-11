@@ -66,10 +66,6 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ForgettableBinding;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.GeometryAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.MultipleAppearanceAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TextureAdapter;
 
 /**
  * @author Dennis Cosgrove

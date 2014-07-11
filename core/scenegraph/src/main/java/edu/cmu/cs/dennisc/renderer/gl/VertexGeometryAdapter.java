@@ -43,57 +43,74 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GeometryAdapter<E> {
+	private boolean m_isAlphaBlended;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	//    private boolean m_isVertexColored;
+	private void updateVertices() {
+		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = m_sgE;
+		//	    int vertexCount = vg.getVertexCount();
+		//	    if( vertexCount != m_vertices.length ) {
+		//	        m_vertices = vg.getVertices();
+		//	    } else {
+		//	        m_vertices = vg.getVertices( m_vertices );
+		//	    }
+		setIsGeometryChanged( true );
+		m_isAlphaBlended = false;
+		//	    m_isVertexColored = false;
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : m_element.vertices.getValue() ) {
+			if( v.diffuseColor.isNaN() == false ) {
+				//m_isVertexColored = true;
+				if( v.diffuseColor.alpha < 1.0f ) {
+					m_isAlphaBlended = true;
+					break;
+				}
+			}
 		}
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
+	@Override
+	public boolean isAlphaBlended() {
+		return m_isAlphaBlended;
+	}
+
+	//    public boolean isVertexColored() {
+	//    	return m_isVertexColored;
+	//    }
+
+	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
+		return m_element.vertices.getValue()[ index ];
+	}
+
+	public void renderPrimative( RenderContext rc, int mode ) {
+		rc.gl.glBegin( mode );
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+			rc.renderVertex( vertex );
 		}
+		rc.gl.glEnd();
 	}
 
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+	public void pickPrimative( PickContext pc, int mode ) {
+		pc.gl.glPushName( -1 );
+		pc.gl.glBegin( mode );
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+			pc.pickVertex( vertex );
 		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
+		pc.gl.glEnd();
+		pc.gl.glPopName();
 	}
 
 	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.vertices ) {
+			updateVertices();
+			setIsGeometryChanged( true );
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

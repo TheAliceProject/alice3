@@ -40,60 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.renderer.gl.graphics;
 
-package edu.cmu.cs.dennisc.renderer.gl;
+public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Title> extends ShapeEnclosedTextAdapter<E> {
+	protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
+	private java.awt.geom.Rectangle2D.Float backgroundBounds = new java.awt.geom.Rectangle2D.Float();
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+	@Override
+	protected float getWrapWidth( java.awt.Rectangle actualViewport ) {
+		return (float)( actualViewport.getWidth() * 0.9 );
+	}
 
-/**
- * @author Dennis Cosgrove
- */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+	protected abstract java.awt.geom.Rectangle2D.Float getFillBounds( java.awt.geom.Rectangle2D.Float rv, java.awt.Rectangle actualViewport, java.awt.geom.Dimension2D multilineTextSize );
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	@Override
+	protected void render(
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
+			float wrapWidth,
+			java.awt.Color fillColor,
+			java.awt.Color outlineColor ) {
+		synchronized( this.backgroundBounds ) {
+			g2.setFont( font );
+			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
+			this.getFillBounds( this.backgroundBounds, actualViewport, size );
+			if( fillColor != null ) {
+				g2.setColor( fillColor );
+				g2.fill( this.backgroundBounds );
+			}
+			if( outlineColor != null ) {
+				g2.setColor( outlineColor );
+				g2.draw( this.backgroundBounds );
+			}
+			if( textColor != null ) {
+				g2.setColor( textColor );
+				g2.setFont( font );
+				multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.CENTER, this.backgroundBounds );
+				//				float x = this.backgroundBounds.x - (float)textBounds.getX() + this.backgroundBounds.width * 0.5f - (float)textBounds.getWidth() * 0.5f;
+				//				float y = this.backgroundBounds.y - (float)textBounds.getY() + this.backgroundBounds.height * 0.5f - (float)textBounds.getHeight() * 0.5f;
+				//				g2.setFont( font );
+				//				g2.drawString( text, x, y );
+			}
 		}
-	}
-
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

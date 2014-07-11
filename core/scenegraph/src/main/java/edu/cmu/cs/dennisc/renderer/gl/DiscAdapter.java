@@ -43,57 +43,73 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc> {
+	//todo: add scenegraph hint
+	private static final int SLICE_COUNT = 50;
+	private static final int LOOP_COUNT = 1;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	private void glDisc( Context c ) {
+		double innerRadius = m_element.innerRadius.getValue();
+		double outerRadius = m_element.outerRadius.getValue();
+		c.gl.glPushMatrix();
+		try {
+			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = m_element.axis.getValue();
+			if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.X ) {
+				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
+			} else if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.Y ) {
+				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
+			}
+			if( m_element.isFrontFaceVisible.getValue() ) {
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+			if( m_element.isBackFaceVisible.getValue() ) {
+				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+		} finally {
+			c.gl.glPopMatrix();
 		}
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
+	@Override
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
+		glDisc( rc );
+	}
+
+	@Override
+	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
+		int name;
+		if( isSubElementRequired ) {
+			name = 0;
+		} else {
+			name = -1;
 		}
+		pc.gl.glPushName( name );
+		glDisc( pc );
+		pc.gl.glPopName();
 	}
 
 	@Override
-	protected void enableNormalize() {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, 0, 1, 0 );
 	}
 
 	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.innerRadius ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.outerRadius ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isFrontFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isBackFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else {
+			super.propertyChanged( property );
 		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

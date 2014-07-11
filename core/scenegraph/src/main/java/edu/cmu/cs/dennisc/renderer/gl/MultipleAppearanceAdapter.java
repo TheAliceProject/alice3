@@ -43,57 +43,78 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.dennisc.scenegraph.MultipleAppearance> {
+	private TexturedAppearanceAdapter[] m_singleAppearanceAdapters;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	@Override
+	public boolean isActuallyShowing() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isActuallyShowing() ) {
+				return true;
+			}
 		}
+		return false;
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
+	@Override
+	public boolean isAlphaBlended() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isAlphaBlended() ) {
+				return true;
+			}
 		}
+		return false;
 	}
-
+	
 	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
+	public boolean isAllAlphaBlended() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( !sao.isAllAlphaBlended()) {
+				return false;
+			}
 		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
+		return true;
+	}
+	
+	@Override
+	public boolean isEthereal() {
+		assert m_singleAppearanceAdapters != null;
+		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
+			assert sao != null;
+			if( sao.isEthereal() ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
-	protected void handleGLChange() {
+	public void setPipelineState( RenderContext rc, int face ) {
+		rc.setMultipleAppearance( face, this );
 	}
 
-	//todo: remove?
+	public void setPipelineState( RenderContext rc, int face, int index ) {
+		m_singleAppearanceAdapters[ index ].setPipelineState( rc, face );
+	}
+
 	@Override
-	public void setAppearanceIndex( int index ) {
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.singleAppearances ) {
+			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( m_element.singleAppearances.getValue(), TexturedAppearanceAdapter.class );
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

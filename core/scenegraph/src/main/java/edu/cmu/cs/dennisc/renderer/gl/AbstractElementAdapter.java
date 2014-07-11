@@ -43,57 +43,48 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractElement> {
+	protected E m_element;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public void handleReleased() {
+		if( m_element == null )
+		{
+			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
+		}
+		AdapterFactory.forget( m_element );
+		ChangeHandler.removeListenersAndObservers( m_element );
+		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + m_element.hashCode() + " : " + this + "->" + m_element );
+		m_element = null;
+	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	public static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
+		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
+		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractElement ) {
+			edu.cmu.cs.dennisc.pattern.AbstractElement element = (edu.cmu.cs.dennisc.pattern.AbstractElement)releasable;
+			AbstractElementAdapter elementAdapter = AdapterFactory.getAdapterForElement( element );
+			if( elementAdapter != null ) {
+				elementAdapter.handleReleased();
+			}
+		} else {
+			throw new Error( "this should never occur" );
 		}
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
+	public void initialize( E element ) {
+		m_element = element;
+	}
+
+	@Override
+	public String toString() {
+		if( m_element != null ) {
+			return getClass().getName() + " " + m_element.toString();
+		} else {
+			return super.toString();
 		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }

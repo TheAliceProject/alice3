@@ -43,57 +43,49 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+public class PointLightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends LightAdapter<E> {
+	private float m_constant;
+	private float m_linear;
+	private float m_quadratic;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	@Override
+	protected float[] getPosition( float[] rv ) {
+		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		rv[ 0 ] = (float)db.get( 12 );
+		rv[ 1 ] = (float)db.get( 13 );
+		rv[ 2 ] = (float)db.get( 14 );
+		rv[ 3 ] = 1.0f;
+		return rv;
+	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
+	@Override
+	protected float getConstantAttenuation() {
+		return m_constant;
+	}
+
+	@Override
+	protected float getLinearAttenuation() {
+		return m_linear;
+	}
+
+	@Override
+	protected float getQuadraticAttenuation() {
+		return m_quadratic;
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.constantAttenuation ) {
+			m_constant = m_element.constantAttenuation.getValue().floatValue();
+		} else if( property == m_element.linearAttenuation ) {
+			m_linear = m_element.linearAttenuation.getValue().floatValue();
+		} else if( property == m_element.quadraticAttenuation ) {
+			m_quadratic = m_element.quadraticAttenuation.getValue().floatValue();
+		} else {
+			super.propertyChanged( property );
 		}
-	}
-
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-
-	@Override
-	protected void enableNormalize() {
-	}
-
-	@Override
-	protected void disableNormalize() {
-	}
-
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
 	}
 }
