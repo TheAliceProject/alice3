@@ -46,6 +46,10 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.RenderTarget {
+	public edu.cmu.cs.dennisc.renderer.RenderFactory getRenderFactory() {
+		return GlRenderFactory.INSTANCE;
+	}
+
 	private void handleDisplay( javax.media.opengl.GLAutoDrawable glDrawable ) {
 		javax.media.opengl.GL gl = glDrawable.getGL();
 		javax.media.opengl.GL2 gl2 = gl.getGL2();
