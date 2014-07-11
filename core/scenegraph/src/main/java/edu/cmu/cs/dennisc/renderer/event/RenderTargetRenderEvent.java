@@ -46,14 +46,15 @@ package edu.cmu.cs.dennisc.renderer.event;
  * @author Dennis Cosgrove
  */
 public class RenderTargetRenderEvent extends RenderTargetEvent {
-	private edu.cmu.cs.dennisc.lookingglass.Graphics2D m_g;
 
-	public RenderTargetRenderEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.lookingglass.Graphics2D g ) {
+	public RenderTargetRenderEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.renderer.Graphics2D g ) {
 		super( renderTarget );
-		m_g = g;
+		this.g = g;
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.Graphics2D getGraphics2D() {
-		return m_g;
+	public edu.cmu.cs.dennisc.renderer.Graphics2D getGraphics2D() {
+		return this.g;
 	}
+
+	private final edu.cmu.cs.dennisc.renderer.Graphics2D g;
 }
