@@ -40,13 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.scenegraph.adorn;
+package edu.cmu.cs.dennisc.renderer.gl.adorn;
+
+import static javax.media.opengl.GL.GL_LINES;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StickFigure extends Adornment {
-	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( StickFigure.class, edu.cmu.cs.dennisc.lookingglass.opengl.adorn.StickFigureAdapter.class );
+public class StickFigureAdapter extends AdornmentAdapter {
+	private static final int TRANSLATION_X_INDEX = 12;
+	private static final int TRANSLATION_Y_INDEX = 13;
+	private static final int TRANSLATION_Z_INDEX = 14;
+	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+	private static void glStickFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.renderer.gl.CompositeAdapter parent ) {
+		gl.glPushMatrix();
+		try {
+			gl.glMultMatrixd( ltParent );
+			Iterable<edu.cmu.cs.dennisc.renderer.gl.ComponentAdapter> componentAdapters = parent.accessComponentAdapters();
+			synchronized( componentAdapters ) {
+				for( edu.cmu.cs.dennisc.renderer.gl.ComponentAdapter componentAdapter : componentAdapters ) {
+					if( componentAdapter instanceof edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter ) {
+						edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
+						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
+						gl.glBegin( GL_LINES );
+						try {
+							gl.glVertex3d( 0, 0, 0 );
+							gl.glVertex3d( ltChild.get( TRANSLATION_X_INDEX ), ltChild.get( TRANSLATION_Y_INDEX ), ltChild.get( TRANSLATION_Z_INDEX ) );
+						} finally {
+							gl.glEnd();
+						}
+						glStickFigure( gl, ltChild, child );
+					}
+				}
+			}
+		} finally {
+			gl.glPopMatrix();
+		}
+	}
+
+	@Override
+	protected void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.CompositeAdapter adornmentRootAdapter ) {
+		rc.gl.glDisable( GL_LIGHTING );
+		rc.setColor( COLOR, 1.0f );
+		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}
 }

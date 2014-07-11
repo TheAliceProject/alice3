@@ -40,13 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.scenegraph.adorn;
+package edu.cmu.cs.dennisc.renderer.gl.adorn;
+
+import static javax.media.opengl.GL.GL_LINES;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StickFigure extends Adornment {
-	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( StickFigure.class, edu.cmu.cs.dennisc.lookingglass.opengl.adorn.StickFigureAdapter.class );
+public class PivotFigureAdapter extends AdornmentAdapter {
+	private static final float FULL = 1.0f;
+	private static final float ZERO = 0.0f;
+
+	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.renderer.gl.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
+		gl.glPushMatrix();
+		try {
+			gl.glMultMatrixd( ltParent );
+			Iterable<edu.cmu.cs.dennisc.renderer.gl.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessComponentAdapters();
+			synchronized( componentAdapters ) {
+				for( edu.cmu.cs.dennisc.renderer.gl.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
+					if( componentAdapter instanceof edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter ) {
+						edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.renderer.gl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
+						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
+						gl.glBegin( GL_LINES );
+						try {
+
+							//todo: account for global brightness
+
+							gl.glColor3f( FULL, ZERO, ZERO );
+							gl.glVertex3d( 0, 0, 0 );
+							gl.glVertex3d( 1, 0, 0 );
+							gl.glColor3f( ZERO, FULL, ZERO );
+							gl.glVertex3d( 0, 0, 0 );
+							gl.glVertex3d( 0, 1, 0 );
+							gl.glColor3f( ZERO, ZERO, FULL );
+							gl.glVertex3d( 0, 0, 0 );
+							gl.glVertex3d( 0, 0, 1 );
+							gl.glColor3f( FULL, FULL, FULL );
+							gl.glVertex3d( 0, 0, 0 );
+							gl.glVertex3d( 0, 0, -2 );
+						} finally {
+							gl.glEnd();
+						}
+						glPivotFigure( gl, ltChild, child );
+					}
+				}
+			}
+		} finally {
+			gl.glPopMatrix();
+		}
+	}
+
+	@Override
+	protected void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.CompositeAdapter adornmentRootAdapter ) {
+		rc.gl.glDisable( GL_LIGHTING );
+		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}
 }
