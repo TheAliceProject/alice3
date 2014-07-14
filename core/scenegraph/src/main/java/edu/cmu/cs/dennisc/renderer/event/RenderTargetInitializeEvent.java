@@ -46,20 +46,20 @@ package edu.cmu.cs.dennisc.renderer.event;
  * @author Dennis Cosgrove
  */
 public class RenderTargetInitializeEvent extends RenderTargetEvent {
-	private int m_width;
-	private int m_height;
-
 	public RenderTargetInitializeEvent( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, int width, int height ) {
 		super( renderTarget );
-		m_width = width;
-		m_height = height;
+		this.width = width;
+		this.height = height;
 	}
 
 	public int getWidth() {
-		return m_width;
+		return this.width;
 	}
 
 	public int getHeight() {
-		return m_height;
+		return this.height;
 	}
+
+	private final int width;
+	private final int height;
 }

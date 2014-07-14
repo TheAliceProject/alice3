@@ -47,24 +47,24 @@ package org.alice.ide.common;
  */
 public abstract class AbstractStatementPane extends org.alice.ide.common.StatementLikeSubstance {
 	private static final java.awt.Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 );
-	private final org.alice.ide.x.AstI18nFactory factory;
-
-	private edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		}
-
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			AbstractStatementPane.this.repaint();
-		}
-	};
-	private org.lgna.project.ast.Statement statement;
-	private org.lgna.project.ast.StatementListProperty owner;
 
 	public AbstractStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( model, org.alice.ide.common.StatementLikeSubstance.getClassFor( statement ), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
 		this.owner = owner;
+		if( this.factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
+			this.isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				}
+
+				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					AbstractStatementPane.this.repaint();
+				}
+			};
+		} else {
+			this.isEnabledListener = null;
+		}
 	}
 
 	public org.alice.ide.x.AstI18nFactory getFactory() {
@@ -83,14 +83,16 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		//		this.factory.getStatementMap().put( this.statement, this );
-		this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
+		if( this.isEnabledListener != null ) {
+			this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
+		}
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
-		//		this.factory.getStatementMap().remove( this.statement );
+		if( this.isEnabledListener != null ) {
+			this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
+		}
 		super.handleUndisplayable();
 	}
 
@@ -101,39 +103,6 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	public org.lgna.project.ast.StatementListProperty getOwner() {
 		return this.owner;
 	}
-
-	//	@Override
-	//	protected boolean isClickReservedForSelection() {
-	//		return true;
-	//	}
-
-	//	//todo?
-	//	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
-	//		if( this.statement instanceof org.lgna.project.ast.Comment ) {
-	//			//pass
-	//		} else {
-	//			if( this.statement.isEnabled.getValue() ) {
-	//				rv.add(  new org.alice.ide.operations.ast.DisableStatementOperation( this.statement ) );
-	//			} else {
-	//				rv.add(  new org.alice.ide.operations.ast.EnableStatementOperation( this.statement ) );
-	//			}
-	//		}
-	//		if( this.owner != null ) {
-	//			rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
-	//		}
-	//		return rv;
-	//	}
-	//	@Override
-	//	protected void handleRightMousePress( java.awt.event.MouseEvent e ) {
-	//		super.handleRightMousePress( e );
-	//		java.util.List< org.alice.ide.AbstractActionOperation > operations = new java.util.LinkedList< org.alice.ide.AbstractActionOperation >();
-	//		this.updateOperationsListForAltMenu( operations );
-	//		if( operations.size() > 0 ) {
-	//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
-	////			javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( operations );
-	////			popupMenu.show( this, e.getX(), e.getY() );
-	//		}
-	//	}
 
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
@@ -146,8 +115,8 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		}
 	}
 
-	//	@Override
-	//	protected boolean isActuallyPotentiallyDraggable() {
-	//		return true;
-	//	}
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final org.lgna.project.ast.Statement statement;
+	private final org.lgna.project.ast.StatementListProperty owner;
+	private final edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener;
 }

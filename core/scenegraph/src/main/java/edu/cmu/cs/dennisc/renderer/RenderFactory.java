@@ -42,359 +42,46 @@
  */
 package edu.cmu.cs.dennisc.renderer;
 
-abstract class Animator implements Runnable {
-	public static final long DEFAULT_SLEEP_MILLIS = 5;
-	private boolean isActive = false;
-	private long tStart;
-	private int frameCount;
-	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
-
-	public enum ThreadDeferenceAction {
-		DO_NOTHING,
-		SLEEP,
-		YIELD
-	}
-
-	public void start() {
-		this.isActive = true;
-		this.frameCount = 0;
-		this.tStart = System.currentTimeMillis();
-		//		javax.swing.SwingUtilities.invokeLater( this );
-		new Thread( this ).start();
-	}
-
-	public void stop() {
-		this.isActive = false;
-		//long tDelta = System.currentTimeMillis() - this.tStart;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.frameCount, tDelta, this.frameCount/(tDelta*0.001) );
-	}
-
-	public int getFrameCount() {
-		return this.frameCount;
-	}
-
-	public long getStartTimeMillis() {
-		return this.tStart;
-	}
-
-	public long getSleepMillis() {
-		return this.sleepMillis;
-	}
-
-	public void setSleepMillis( long sleepMillis ) {
-		this.sleepMillis = sleepMillis;
-	}
-
-	protected abstract ThreadDeferenceAction step();
-
-	public void run() {
-		final long THRESHOLD = 5;
-		long tPrev = System.currentTimeMillis() - THRESHOLD;
-		while( this.isActive ) {
-			//			int i = 0;
-			while( true ) {
-				long tCurrent = System.currentTimeMillis();
-				if( ( tCurrent - tPrev ) < THRESHOLD ) {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 5 );
-					//					i++;
-				} else {
-					tPrev = tCurrent;
-					break;
-				}
-			}
-			//			if( i>3 ) {
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep count:", i );
-			//			}
-			//		if( this.isActive ) {
-			//			try {
-			ThreadDeferenceAction threadAction = this.step();
-			if( threadAction == ThreadDeferenceAction.SLEEP ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep", this.sleepMillis );
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( this.sleepMillis );
-			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "yield" );
-				Thread.yield();
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "threadAction", threadAction );
-			}
-			this.frameCount++;
-			//			} finally {
-			//				javax.swing.SwingUtilities.invokeLater( this );
-			//			}
-		}
-	}
-}
-
-class WaitingRunnable implements Runnable {
-	private Runnable runnable;
-	private Thread thread;
-	private Exception exception;
-
-	public WaitingRunnable( Runnable runnable, Thread thread ) {
-		assert runnable != null;
-		assert thread != null;
-		this.runnable = runnable;
-		this.thread = thread;
-		this.exception = null;
-	}
-
-	public Exception getException() {
-		return this.exception;
-	}
-
-	public void run() {
-		try {
-			this.runnable.run();
-		} catch( Exception e ) {
-			this.exception = e;
-		} finally {
-			synchronized( this.thread ) {
-				this.thread.notifyAll();
-			}
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public enum RenderFactory {
-	INSTANCE;
-	private static boolean isDisplayDesired( OnscreenRenderTarget<?> rt ) {
-		if( rt.isRenderingEnabled() ) {
-			java.awt.Component component = rt.getAwtComponent();
-			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
-				if( rt.getSgCameraCount() > 0 ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
-	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent {
-		public ReusableAutomaticDisplayEvent( RenderFactory renderFactory ) {
-			super( renderFactory );
-		}
+public interface RenderFactory {
+	ColorBuffer createColorBuffer();
 
-		@Override
-		public boolean isReservedForReuse() {
-			return true;
-		}
-	};
+	ColorAndDepthBuffers createColorAndDepthBuffers();
 
-	public ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
-	}
+	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
 
-	public ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
-	}
+	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
 
-	public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
-		this.heavyweightOnscreenRenderTargets.add( rv );
-		return rv;
-	}
+	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
 
-	public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
-		this.lightweightOnscreenRenderTargets.add( rv );
-		return rv;
-	}
+	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenLookingGlasses();
 
-	public OffscreenRenderTarget createOffscreenRenderTarget( int width, int height ) {
-		OffscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlOffscreenRenderTarget( width, height );
-		this.offscreenRenderTargets.add( rv );
-		return rv;
-	}
+	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenLookingGlasses();
 
-	public Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenLookingGlasses() {
-		return java.util.Collections.unmodifiableList( this.heavyweightOnscreenRenderTargets );
-	}
+	Iterable<OffscreenRenderTarget> getOffscreenLookingGlasses();
 
-	public Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenLookingGlasses() {
-		return java.util.Collections.unmodifiableList( this.lightweightOnscreenRenderTargets );
-	}
+	void acquireRenderingLock();
 
-	public Iterable<OffscreenRenderTarget> getOffscreenLookingGlasses() {
-		return java.util.Collections.unmodifiableList( this.offscreenRenderTargets );
-	}
+	void releaseRenderingLock();
 
-	public Animator.ThreadDeferenceAction step() {
-		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
-		//		synchronized( this.toBeReleased ) {
-		//			for( edu.cmu.cs.dennisc.pattern.Releasable releasable : this.toBeReleased ) {
-		//				if( releasable instanceof OnscreenLookingGlass ) {
-		//					OnscreenLookingGlass onscreenLookingGlass = (OnscreenLookingGlass)releasable;
-		//					if( onscreenLookingGlass instanceof HeavyweightOnscreenLookingGlass ) {
-		//						this.heavyweightOnscreenRenderTargets.remove( onscreenLookingGlass );
-		//					} else if( onscreenLookingGlass instanceof LightweightOnscreenLookingGlass ) {
-		//						this.lightweightOnscreenRenderTargets.remove( onscreenLookingGlass );
-		//					} else {
-		//						assert false;
-		//					}
-		//					//this.animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
-		//				} else if( releasable instanceof OffscreenLookingGlass ) {
-		//					this.offscreenRenderTargets.remove( releasable );
-		//				} else {
-		//					assert false;
-		//				}
-		//			}
-		//			this.toBeReleased.clear();
-		//		}
+	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
 
-		if( this.automaticDisplayCount > 0 ) {
-			acquireRenderingLock();
-			try {
-				edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.pushRenderingMode();
-				for( HeavyweightOnscreenRenderTarget rt : this.heavyweightOnscreenRenderTargets ) {
-					if( isDisplayDesired( rt ) ) {
-						//lg.getGLAutoDrawable().display();
-						rt.repaint();
-						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
-						rv = Animator.ThreadDeferenceAction.YIELD;
-					}
-				}
-				try {
-					if( edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
-						edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.resetEventCount();
-						//isJustCreatedOnscreenLookingGlassAccountedFor = true;
-						for( OnscreenRenderTarget<?> rt : this.lightweightOnscreenRenderTargets ) {
-							if( isDisplayDesired( rt ) ) {
-								//lg.getGLAutoDrawable().display();
-								rt.repaint();
-								//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
-								rv = Animator.ThreadDeferenceAction.YIELD;
-							}
-						}
-					}
-				} finally {
-					edu.cmu.cs.dennisc.renderer.gl.adapters.ChangeHandler.popRenderingMode();
-				}
-			} finally {
-				releaseRenderingLock();
-			}
-		} else {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
-		}
-		RenderFactory.this.handleDisplayed();
-		return rv;
-	}
+	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
 
-	private void handleDisplayed() {
-		for( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
-			automaticDisplayListener.automaticDisplayCompleted( reusableAutomaticDisplayEvent );
-		}
-		while( this.runnables.isEmpty() == false ) {
-			Runnable runnable = this.runnables.remove();
-			runnable.run();
-		}
-	}
+	Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
 
-	public void acquireRenderingLock() {
-		try {
-			this.renderingLock.acquire();
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+	int getAutomaticDisplayCount();
 
-	public void releaseRenderingLock() {
-		this.renderingLock.release();
-	}
+	void incrementAutomaticDisplayCount();
 
-	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.add( automaticDisplayListener );
-	}
+	void decrementAutomaticDisplayCount();
 
-	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.remove( automaticDisplayListener );
-	}
+	void invokeLater( Runnable runnable );
 
-	public Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
-		return java.util.Collections.unmodifiableList( this.automaticDisplayListeners );
-	}
+	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
 
-	public int getAutomaticDisplayCount() {
-		return this.automaticDisplayCount;
-	}
-
-	public synchronized void incrementAutomaticDisplayCount() {
-		this.automaticDisplayCount++;
-		if( this.animator != null ) {
-			//pass
-		} else {
-			this.animator = new Animator() {
-				@Override
-				protected ThreadDeferenceAction step() {
-					return RenderFactory.this.step();
-				}
-			};
-			this.animator.start();
-		}
-	}
-
-	public synchronized void decrementAutomaticDisplayCount() {
-		this.automaticDisplayCount--;
-	}
-
-	public void invokeLater( Runnable runnable ) {
-		this.runnables.add( runnable );
-	}
-
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
-		Thread currentThread = Thread.currentThread();
-		WaitingRunnable waitingRunnable = new WaitingRunnable( runnable, currentThread );
-		synchronized( currentThread ) {
-			this.runnables.add( waitingRunnable );
-			currentThread.wait();
-		}
-		if( waitingRunnable.getException() != null ) {
-			throw new java.lang.reflect.InvocationTargetException( waitingRunnable.getException() );
-		}
-	}
-
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
-		try {
-			invokeAndWait( runnable );
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		} catch( java.lang.reflect.InvocationTargetException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
-
-	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<LightweightOnscreenRenderTarget> lightweightOnscreenRenderTargets = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<HeavyweightOnscreenRenderTarget> heavyweightOnscreenRenderTargets = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<OffscreenRenderTarget> offscreenRenderTargets = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.Queue<Runnable> runnables = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
-	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
-	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
-
-	private Animator animator;
-	//todo: just force start and stop? or rename methods
-	private int automaticDisplayCount;
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
-				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-				sgAxes.setParent( sgWorld );
-				sgWorld.getSGCameraVehicle().setTranslationOnly( 4, 4, 4, sgAxes );
-				sgWorld.getSGCameraVehicle().setAxesOnlyToPointAt( sgAxes );
-				OnscreenRenderTarget<?> renderTarget = INSTANCE.createHeavyweightOnscreenRenderTarget();
-				renderTarget.addSgCamera( sgWorld.getSGCamera() );
-
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-				frame.getContentPane().add( renderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
-				frame.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
-	}
+	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
 }

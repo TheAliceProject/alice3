@@ -42,6 +42,9 @@
  */
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -120,12 +123,20 @@ public abstract class VirtualMachine {
 		}
 	}
 
+	public Object createAndSetFieldInstance( UserInstance userInstance, UserField field ) {
+		Expression expression = field.initializer.getValue();
+		assert expression != null;
+		Object rv = this.evaluate( expression );
+		userInstance.setFieldValue( field, rv );
+		return rv;
+	}
+
 	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( UserInstance instance, org.lgna.project.ast.UserField field ) {
 		//pushCurrentThread( null );
 		//try {
 		this.pushBogusFrame( instance );
 		try {
-			return instance.createAndSetFieldInstance( this, field );
+			return this.createAndSetFieldInstance( instance, field );
 		} finally {
 			this.popFrame();
 		}
