@@ -47,6 +47,140 @@ package org.alice.stageide.sceneeditor.views;
  * @author Dennis Cosgrove
  */
 public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
+	private static final class InstanceFactoryLayout implements java.awt.LayoutManager2 {
+		public void addLayoutComponent( String name, java.awt.Component comp ) {
+			this.invalidateLayout( comp.getParent() );
+		}
+
+		public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
+			this.invalidateLayout( comp.getParent() );
+		}
+
+		public void removeLayoutComponent( java.awt.Component comp ) {
+			this.invalidateLayout( comp.getParent() );
+		}
+
+		public void invalidateLayout( java.awt.Container target ) {
+			synchronized( this ) {
+				this.xChildren = null;
+				this.yChildren = null;
+				this.xTotal = null;
+				this.yTotal = null;
+			}
+		}
+
+		private void ensureSizeRequirementsUpToDate( java.awt.Container target ) {
+			synchronized( this ) {
+				if( ( xChildren == null ) || ( yChildren == null ) ) {
+					int nChildren = target.getComponentCount();
+					xChildren = new javax.swing.SizeRequirements[ nChildren ];
+					yChildren = new javax.swing.SizeRequirements[ nChildren ];
+					for( int i = 0; i < nChildren; i++ ) {
+						java.awt.Component c = target.getComponent( i );
+						if( c.isVisible() ) {
+							java.awt.Dimension min = c.getMinimumSize();
+							java.awt.Dimension typ = c.getPreferredSize();
+							java.awt.Dimension max = c.getMaximumSize();
+							xChildren[ i ] = new javax.swing.SizeRequirements( min.width, typ.width, max.width, c.getAlignmentX() );
+							yChildren[ i ] = new javax.swing.SizeRequirements( min.height, typ.height, max.height, c.getAlignmentY() );
+						} else {
+							xChildren[ i ] = new javax.swing.SizeRequirements( 0, 0, 0, c.getAlignmentX() );
+							yChildren[ i ] = new javax.swing.SizeRequirements( 0, 0, 0, c.getAlignmentY() );
+						}
+					}
+					xTotal = javax.swing.SizeRequirements.getAlignedSizeRequirements( xChildren );
+					yTotal = javax.swing.SizeRequirements.getTiledSizeRequirements( yChildren );
+				}
+			}
+		}
+
+		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			this.ensureSizeRequirementsUpToDate( parent );
+			java.awt.Insets insets = parent.getInsets();
+			return new java.awt.Dimension( this.xTotal.minimum + insets.left + insets.right, this.yTotal.minimum + insets.top + insets.bottom );
+		}
+
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			this.ensureSizeRequirementsUpToDate( parent );
+			java.awt.Insets insets = parent.getInsets();
+			return new java.awt.Dimension( this.xTotal.preferred + insets.left + insets.right, this.yTotal.preferred + insets.top + insets.bottom );
+		}
+
+		public java.awt.Dimension maximumLayoutSize( java.awt.Container parent ) {
+			this.ensureSizeRequirementsUpToDate( parent );
+			java.awt.Insets insets = parent.getInsets();
+			return new java.awt.Dimension( this.xTotal.maximum + insets.left + insets.right, this.yTotal.maximum + insets.top + insets.bottom );
+		}
+
+		public void layoutContainer( java.awt.Container target ) {
+			int nChildren = target.getComponentCount();
+			int[] xOffsets = new int[ nChildren ];
+			int[] xSpans = new int[ nChildren ];
+			int[] yOffsets = new int[ nChildren ];
+			int[] ySpans = new int[ nChildren ];
+
+			java.awt.Dimension size = target.getSize();
+			java.awt.Insets insets = target.getInsets();
+
+			java.awt.Dimension availableSpace = new java.awt.Dimension( size );
+			availableSpace.width -= insets.left + insets.right;
+			availableSpace.height -= insets.top + insets.bottom;
+
+			synchronized( this ) {
+				this.ensureSizeRequirementsUpToDate( target );
+				javax.swing.SizeRequirements.calculateAlignedPositions( availableSpace.width, xTotal, xChildren, xOffsets, xSpans, true );
+				javax.swing.SizeRequirements.calculateTiledPositions( availableSpace.height, yTotal, yChildren, yOffsets, ySpans );
+			}
+
+			for( int i = 0; i < nChildren; i++ ) {
+				java.awt.Component c = target.getComponent( i );
+				int x = insets.left + xOffsets[ i ];
+				int y = insets.top + yOffsets[ i ];
+				c.setBounds( x, y, xSpans[ i ], ySpans[ i ] );
+			}
+
+			java.awt.Rectangle boundsI = new java.awt.Rectangle();
+			int indexOfFirstComponentThatFails = -1;
+			for( int i = 0; i < ( nChildren - 1 ); i++ ) {
+				java.awt.Component c = target.getComponent( i );
+				c.getBounds( boundsI );
+				if( ( boundsI.y + boundsI.height ) >= ( size.height - insets.bottom ) ) {
+					indexOfFirstComponentThatFails = i;
+					break;
+				}
+			}
+
+			java.awt.Component lastComponent = target.getComponent( nChildren - 1 );
+			if( indexOfFirstComponentThatFails == -1 ) {
+				lastComponent.setSize( 0, 0 );
+			} else {
+				if( indexOfFirstComponentThatFails > 0 ) {
+					for( int i = indexOfFirstComponentThatFails - 1; i < ( nChildren - 1 ); i++ ) {
+						target.getComponent( i ).setSize( 0, 0 );
+					}
+					java.awt.Point locationOfLastComponent = target.getComponent( indexOfFirstComponentThatFails - 1 ).getLocation();
+					locationOfLastComponent.x += 16;
+					lastComponent.setLocation( locationOfLastComponent );
+				}
+			}
+		}
+
+		public float getLayoutAlignmentX( java.awt.Container target ) {
+			this.ensureSizeRequirementsUpToDate( target );
+			return this.xTotal.alignment;
+		}
+
+		public float getLayoutAlignmentY( java.awt.Container target ) {
+			this.ensureSizeRequirementsUpToDate( target );
+			return this.yTotal.alignment;
+		}
+
+		private javax.swing.SizeRequirements[] xChildren;
+		private javax.swing.SizeRequirements[] yChildren;
+		private javax.swing.SizeRequirements xTotal;
+		private javax.swing.SizeRequirements yTotal;
+	}
+
 	private static final class InternalButton extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -146,12 +280,14 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		}
 	}
 
-	private static final class InternalPanel extends org.lgna.croquet.views.PageAxisPanel {
+	private static final class InternalPanel extends org.lgna.croquet.views.Panel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		private final org.lgna.croquet.views.SwingComponentView<?> dropDown;
 
 		public InternalPanel() {
 			this.setBackgroundColor( null );
+			this.dropDown = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		}
 
 		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
@@ -163,6 +299,11 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 				map.put( instanceFactory, rv );
 			}
 			return rv;
+		}
+
+		@Override
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+			return new InstanceFactoryLayout();
 		}
 
 		@Override
@@ -187,6 +328,8 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 				this.internalAddComponent( button );
 				this.buttonGroup.add( button.getAwtComponent() );
 			}
+
+			this.internalAddComponent( this.dropDown );
 			this.setSelected( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue() );
 		}
 

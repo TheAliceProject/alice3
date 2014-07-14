@@ -230,6 +230,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		protected javax.swing.JPanel createJPanel() {
 			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
 		}
+
+		@Override
+		public void setNorthWestComponent( org.lgna.croquet.views.AwtComponentView<?> northWestComponent ) {
+			super.setNorthWestComponent( northWestComponent );
+			if( northWestComponent != null ) {
+				javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)this.getAwtComponent().getLayout();
+				springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, northWestComponent.getAwtComponent(), -this.getPad(), javax.swing.SpringLayout.SOUTH, this.getAwtComponent() );
+			}
+		}
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> showSnapGridListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
