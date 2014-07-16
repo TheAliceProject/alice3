@@ -17,6 +17,7 @@ public class ModelResourceTreeNodeModel extends javax.swing.tree.DefaultTreeMode
 		return (ModelResourceTreeNode)super.getRoot();
 	}
 
+	@Override
 	public javax.swing.tree.TreePath getTreePath( ModelResourceTreeNode e ) {
 		Object[] nodes = this.getPathToRoot( e );
 		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );

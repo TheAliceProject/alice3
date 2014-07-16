@@ -47,18 +47,22 @@ package org.alice.stageide.personresource.codecs;
  */
 public enum TopPieceCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.TopPiece> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.resources.sims2.TopPiece> getValueClass() {
 		return org.lgna.story.resources.sims2.TopPiece.class;
 	}
 
+	@Override
 	public org.lgna.story.resources.sims2.TopPiece decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.TopPiece value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.TopPiece value ) {
 		sb.append( value );
 	}

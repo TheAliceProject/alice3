@@ -58,6 +58,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+		@Override
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
 		}
@@ -67,6 +68,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private InstanceFactory value;
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();
 		}

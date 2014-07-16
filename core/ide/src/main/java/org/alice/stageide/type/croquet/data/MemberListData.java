@@ -49,6 +49,7 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 	private final org.lgna.croquet.StringState filterState;
 
 	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			refresh();
 		}
@@ -73,6 +74,7 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 		java.util.List<org.lgna.project.ast.Member> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		build( list, root );
 		java.util.Collections.sort( list, new java.util.Comparator<org.lgna.project.ast.Member>() {
+			@Override
 			public int compare( org.lgna.project.ast.Member o1, org.lgna.project.ast.Member o2 ) {
 				return o1.getName().compareTo( o2.getName() );
 			}

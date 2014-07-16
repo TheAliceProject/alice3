@@ -77,6 +77,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 		}
 		if( shouldFire ) {
 			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
+				@Override
 				public void run() {
 					fire( listener, event );
 					if( policyMap.get( listener ).equals( MultipleEventPolicy.ENQUEUE ) ) {

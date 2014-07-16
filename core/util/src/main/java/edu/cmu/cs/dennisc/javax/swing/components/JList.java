@@ -59,23 +59,29 @@ public class JList<E extends Object> extends javax.swing.JList {
 
 	private void initialize() {
 		addMouseListener( new java.awt.event.MouseListener() {
+			@Override
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 				fireActionListeners( e.getWhen(), e.getModifiers(), true );
 			}
 
+			@Override
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 			}
 		} );
 		addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			@Override
 			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 				if( e.getValueIsAdjusting() ) {
 					//pass

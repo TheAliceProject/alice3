@@ -50,6 +50,7 @@ public enum RecycleBinIcon implements javax.swing.Icon {
 
 	private static final javax.swing.Icon[] ICONS = { org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON, org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON };
 
+	@Override
 	public int getIconWidth() {
 		int rv = 0;
 		for( javax.swing.Icon icon : ICONS ) {
@@ -58,6 +59,7 @@ public enum RecycleBinIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public int getIconHeight() {
 		int rv = 0;
 		for( javax.swing.Icon icon : ICONS ) {
@@ -66,6 +68,7 @@ public enum RecycleBinIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
 		java.awt.Paint paint;

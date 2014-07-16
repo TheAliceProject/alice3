@@ -56,6 +56,7 @@ public abstract class Application {
 
 	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
 	private final javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			handleMenuSelectionStateChanged( e );
 		}
@@ -119,26 +120,33 @@ public abstract class Application {
 	public void initialize( String[] args ) {
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
+			@Override
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				Application.this.handleWindowOpened( e );
 			}
 
+			@Override
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				Application.this.handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 
+			@Override
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 		} );
@@ -146,6 +154,7 @@ public abstract class Application {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
 			application.setAboutHandler( new com.apple.eawt.AboutHandler() {
+				@Override
 				public void handleAbout( com.apple.eawt.AppEvent.AboutEvent e ) {
 					Operation aboutOperation = Application.this.getAboutOperation();
 					if( aboutOperation != null ) {
@@ -154,6 +163,7 @@ public abstract class Application {
 				}
 			} );
 			application.setPreferencesHandler( new com.apple.eawt.PreferencesHandler() {
+				@Override
 				public void handlePreferences( com.apple.eawt.AppEvent.PreferencesEvent e ) {
 					Operation preferencesOperation = Application.this.getPreferencesOperation();
 					if( preferencesOperation != null ) {
@@ -162,12 +172,14 @@ public abstract class Application {
 				}
 			} );
 			application.setQuitHandler( new com.apple.eawt.QuitHandler() {
+				@Override
 				public void handleQuitRequestWith( com.apple.eawt.AppEvent.QuitEvent e, com.apple.eawt.QuitResponse quitResponse ) {
 					Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 				}
 			} );
 
 			application.setOpenFileHandler( new com.apple.eawt.OpenFilesHandler() {
+				@Override
 				public void openFiles( com.apple.eawt.AppEvent.OpenFilesEvent e ) {
 					Application.this.handleOpenFiles( e.getFiles() );
 				}

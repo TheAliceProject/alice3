@@ -5,6 +5,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		this.vGap = vGap;
 	}
 
+	@Override
 	public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
 		if( org.lgna.croquet.views.BorderPanel.Constraint.CENTER.getInternal().equals( constraints ) ) {
 			this.mainComponent = comp;
@@ -15,10 +16,12 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
+	@Override
 	public void addLayoutComponent( String name, java.awt.Component comp ) {
 		this.addLayoutComponent( comp, name );
 	}
 
+	@Override
 	public void removeLayoutComponent( java.awt.Component comp ) {
 		if( this.mainComponent == comp ) {
 			this.mainComponent = null;
@@ -34,6 +37,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		return rv;
 	}
 
+	@Override
 	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "minimumLayoutSize", target );
 		synchronized( target.getTreeLock() ) {
@@ -54,6 +58,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
+	@Override
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
 		synchronized( target.getTreeLock() ) {
 			java.awt.Dimension dim = new java.awt.Dimension( 0, 0 );
@@ -73,10 +78,12 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
+	@Override
 	public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
 		return new java.awt.Dimension( Integer.MAX_VALUE, Integer.MAX_VALUE );
 	}
 
+	@Override
 	public void layoutContainer( java.awt.Container target ) {
 		synchronized( target.getTreeLock() ) {
 			java.awt.Insets insets = target.getInsets();
@@ -116,14 +123,17 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
+	@Override
 	public void invalidateLayout( java.awt.Container target ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "invalidateLayout", target );
 	}
 
+	@Override
 	public float getLayoutAlignmentX( java.awt.Container parent ) {
 		return 0.0f;
 	}
 
+	@Override
 	public float getLayoutAlignmentY( java.awt.Container parent ) {
 		return 0.0f;
 	}

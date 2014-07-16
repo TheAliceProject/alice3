@@ -56,7 +56,8 @@ import javax.sound.sampled.AudioSystem;
  * subclass of AudioInputStream itself, reading from instances of this class
  * behaves as if the mixdown result of the input streams is read.
  * <p>
- * This class uses the FloatSampleBuffer for easy conversion using normalized samples in the buffers.
+ * This class uses the FloatSampleBuffer for easy conversion using normalized
+ * samples in the buffers.
  * 
  * @author Florian Bomers
  * @author Matthias Pfisterer
@@ -131,7 +132,8 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 
 	/**
 	 * The maximum of the frame length of the input stream is calculated and
-	 * returned. If at least one of the input streams has length <code>AudioInputStream.NOT_SPECIFIED</code>, this value is returned.
+	 * returned. If at least one of the input streams has length
+	 * <code>AudioInputStream.NOT_SPECIFIED</code>, this value is returned.
 	 */
 	@Override
 	public long getFrameLength() {

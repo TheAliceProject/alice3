@@ -55,6 +55,7 @@ public final class ForEachInArrayLoop extends AbstractForEachLoop implements Eac
 		this.array.setValue( array );
 	}
 
+	@Override
 	public ExpressionProperty getArrayProperty() {
 		return this.array;
 	}

@@ -56,15 +56,18 @@ public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.Instanc
 		super.setValue( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.AffineMatrix4x4( value ) );

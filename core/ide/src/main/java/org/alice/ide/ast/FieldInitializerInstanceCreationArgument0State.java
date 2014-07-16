@@ -57,6 +57,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 				java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 				if( requiredParameters.size() > 0 ) {
 					return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldInitializerInstanceCreationArgument0State>() {
+						@Override
 						public FieldInitializerInstanceCreationArgument0State initialize( org.lgna.project.ast.UserField field ) {
 							return new FieldInitializerInstanceCreationArgument0State( field, instanceCreation );
 						}

@@ -278,6 +278,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		private final org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton;
 		private final int axis;
 		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
 				handleChanged( e.getNextValue() );
 			}
@@ -374,6 +375,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	private boolean isItemStateChangedToBeIgnored = false;
 
 	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		@Override
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			BooleanState.this.handleItemStateChanged( e );
 		}

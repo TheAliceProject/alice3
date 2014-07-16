@@ -57,6 +57,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		this.item.setValue( item );
 	}
 
+	@Override
 	public DeclarationProperty<UserLocal> getItemProperty() {
 		return this.item;
 	}

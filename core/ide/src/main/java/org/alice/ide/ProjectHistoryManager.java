@@ -52,9 +52,11 @@ public class ProjectHistoryManager {
 
 	public ProjectHistoryManager( ProjectDocument projectDocument ) {
 		this.listener = new org.lgna.croquet.history.event.Listener() {
+			@Override
 			public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 			}
 
+			@Override
 			public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 				if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
 					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;

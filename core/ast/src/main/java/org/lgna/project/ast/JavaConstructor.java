@@ -52,6 +52,7 @@ public class JavaConstructor extends AbstractConstructor {
 	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( constructorReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
+				@Override
 				public org.lgna.project.ast.JavaConstructor initialize( org.lgna.project.ast.ConstructorReflectionProxy key ) {
 					return new JavaConstructor( key );
 				}
@@ -100,6 +101,7 @@ public class JavaConstructor extends AbstractConstructor {
 		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -112,6 +114,7 @@ public class JavaConstructor extends AbstractConstructor {
 		}
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -124,6 +127,7 @@ public class JavaConstructor extends AbstractConstructor {
 		}
 	}
 
+	@Override
 	public java.util.List<JavaConstructorParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}

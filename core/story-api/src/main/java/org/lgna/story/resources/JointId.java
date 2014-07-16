@@ -211,6 +211,7 @@ public class JointId {
 			this.forJoint = forJoint;
 		}
 
+		@Override
 		public java.util.Iterator<JointId> iterator() {
 			return new ExternalChildrenIterator( this.forClass, this.forJoint );
 		}

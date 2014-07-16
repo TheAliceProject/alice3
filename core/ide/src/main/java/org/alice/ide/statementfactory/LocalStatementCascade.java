@@ -51,6 +51,7 @@ public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalB
 
 	public static synchronized LocalStatementCascade getInstance( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return mapToMap.getInitializingIfAbsent( local, blockStatementIndexPair, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade>() {
+			@Override
 			public LocalStatementCascade initialize( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 				return new LocalStatementCascade( local, blockStatementIndexPair );
 			}

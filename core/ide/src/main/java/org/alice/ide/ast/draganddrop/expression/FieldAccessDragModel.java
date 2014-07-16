@@ -51,6 +51,7 @@ public class FieldAccessDragModel extends AbstractExpressionDragModel {
 
 	public static FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldAccessDragModel>() {
+			@Override
 			public FieldAccessDragModel initialize( org.lgna.project.ast.AbstractField field ) {
 				return new FieldAccessDragModel( field );
 			}

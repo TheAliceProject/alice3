@@ -52,10 +52,12 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
 		this.expressionProperty = expressionProperty;
 	}
 
+	@Override
 	public org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
 
+	@Override
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof org.lgna.project.ast.Node ) {

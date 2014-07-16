@@ -59,10 +59,12 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 		return this.field.getDeclaringType();
 	}
 
+	@Override
 	public final AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public final AbstractParameter getKeyedParameter() {
 		return null;
 	}

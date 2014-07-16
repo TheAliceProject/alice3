@@ -67,6 +67,7 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.v
 		super.addComponent( child, constraint );
 	}
 
+	@Override
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
 		if( pageIndex > 0 ) {
 			return NO_SUCH_PAGE;

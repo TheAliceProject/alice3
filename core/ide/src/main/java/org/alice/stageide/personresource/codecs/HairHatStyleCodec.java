@@ -47,18 +47,22 @@ package org.alice.stageide.personresource.codecs;
  */
 public enum HairHatStyleCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.personresource.data.HairHatStyle> {
 	SINGLETON;
+	@Override
 	public Class<org.alice.stageide.personresource.data.HairHatStyle> getValueClass() {
 		return org.alice.stageide.personresource.data.HairHatStyle.class;
 	}
 
+	@Override
 	public org.alice.stageide.personresource.data.HairHatStyle decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.personresource.data.HairHatStyle value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.stageide.personresource.data.HairHatStyle value ) {
 		sb.append( value );
 	}

@@ -71,6 +71,7 @@ public abstract class AbstractIconFactory implements IconFactory {
 
 	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
 
+	@Override
 	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
 		if( this.map != null ) {
 			javax.swing.Icon rv = this.map.get( size );
@@ -109,18 +110,22 @@ public abstract class AbstractIconFactory implements IconFactory {
 		return new java.awt.Dimension( width, height );
 	}
 
+	@Override
 	public final java.awt.Dimension getDefaultSizeForWidth( int width ) {
 		return this.createDimensionForWidth( width, this.getDefaultWidthToHeightAspectRatio() );
 	}
 
+	@Override
 	public final java.awt.Dimension getDefaultSizeForHeight( int height ) {
 		return this.createDimensionForHeight( height, this.getDefaultWidthToHeightAspectRatio() );
 	}
 
+	@Override
 	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
 		return this.createDimensionForWidth( width, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 
+	@Override
 	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
 		return this.createDimensionForHeight( height, this.getTrimmedWidthToHeightAspectRatio() );
 	}

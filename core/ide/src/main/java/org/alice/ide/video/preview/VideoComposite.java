@@ -47,6 +47,7 @@ package org.alice.ide.video.preview;
  */
 public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
 	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( "togglePlayPauseOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
 				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
@@ -139,6 +140,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 				uriB = fileB.toURI();
 			}
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
@@ -147,6 +149,7 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 					app.getFrame().setMainComposite( videoComposite );
 
 					javax.swing.Action action = new javax.swing.AbstractAction() {
+						@Override
 						public void actionPerformed( java.awt.event.ActionEvent e ) {
 							videoComposite.getView().setUri( uriB );
 						}

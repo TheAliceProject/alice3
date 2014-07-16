@@ -50,18 +50,22 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 	private static final class InstanceFactoryLayout implements java.awt.LayoutManager2 {
 		private static final int INDENT = 16;
 
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
+		@Override
 		public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
+		@Override
 		public void invalidateLayout( java.awt.Container target ) {
 			synchronized( this ) {
 				this.xChildren = null;
@@ -96,6 +100,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			}
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
 			java.awt.Insets insets = parent.getInsets();
@@ -103,18 +108,21 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			return new java.awt.Dimension( this.xTotal.minimum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].minimum, this.yTotal.minimum + insets.top + insets.bottom );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
 			java.awt.Insets insets = parent.getInsets();
 			return new java.awt.Dimension( this.xTotal.preferred + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].preferred, this.yTotal.preferred + insets.top + insets.bottom );
 		}
 
+		@Override
 		public java.awt.Dimension maximumLayoutSize( java.awt.Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
 			java.awt.Insets insets = parent.getInsets();
 			return new java.awt.Dimension( this.xTotal.maximum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].maximum, this.yTotal.maximum + insets.top + insets.bottom );
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			int nChildren = parent.getComponentCount();
 			int[] xOffsets = new int[ nChildren ];
@@ -188,11 +196,13 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			}
 		}
 
+		@Override
 		public float getLayoutAlignmentX( java.awt.Container target ) {
 			this.ensureSizeRequirementsUpToDate( target );
 			return this.xTotal.alignment;
 		}
 
+		@Override
 		public float getLayoutAlignmentY( java.awt.Container target ) {
 			this.ensureSizeRequirementsUpToDate( target );
 			return this.yTotal.alignment;
@@ -207,6 +217,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 	private static final class InternalButton extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( InternalButton.this.instanceFactory );
 			}
@@ -398,6 +409,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}

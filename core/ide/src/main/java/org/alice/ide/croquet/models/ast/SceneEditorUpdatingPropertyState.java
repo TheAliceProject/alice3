@@ -51,6 +51,7 @@ public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.Property
 
 	public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
 		return mapToMap.getInitializingIfAbsent( field, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.JavaMethod, SceneEditorUpdatingPropertyState>() {
+			@Override
 			public SceneEditorUpdatingPropertyState initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
 				return new SceneEditorUpdatingPropertyState( field, setter );
 			}

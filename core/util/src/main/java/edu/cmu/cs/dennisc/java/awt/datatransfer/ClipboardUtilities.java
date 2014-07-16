@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.java.awt.datatransfer;
  */
 public class ClipboardUtilities {
 	private static class DoNothingOnLostOwnershipClipboardOwner implements java.awt.datatransfer.ClipboardOwner {
+		@Override
 		public void lostOwnership( java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents ) {
 			//pass
 		}

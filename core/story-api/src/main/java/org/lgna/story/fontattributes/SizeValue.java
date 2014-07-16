@@ -53,10 +53,12 @@ public class SizeValue implements SizeAttribute {
 		m_value = value;
 	}
 
+	@Override
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.SIZE;
 	}
 
+	@Override
 	public Float getValue() {
 		return m_value;
 	}

@@ -52,6 +52,7 @@ public class BadScale implements Problem {
 		this.sgVisual = sgVisual;
 	}
 
+	@Override
 	public void mend( edu.cmu.cs.dennisc.scenegraph.qa.Mender mender ) {
 		sgVisual.scale.setValue( edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
 	}

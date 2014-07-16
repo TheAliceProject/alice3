@@ -51,6 +51,7 @@ import org.lgna.project.annotations.MethodTemplate;
 public class SCamera extends SMovableTurnable implements MutableRider {
 	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}

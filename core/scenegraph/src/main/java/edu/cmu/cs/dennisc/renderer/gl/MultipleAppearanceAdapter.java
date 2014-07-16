@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -73,19 +72,19 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isAllAlphaBlended() {
 		assert m_singleAppearanceAdapters != null;
 		for( TexturedAppearanceAdapter sao : m_singleAppearanceAdapters ) {
 			assert sao != null;
-			if( !sao.isAllAlphaBlended()) {
+			if( !sao.isAllAlphaBlended() ) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean isEthereal() {
 		assert m_singleAppearanceAdapters != null;

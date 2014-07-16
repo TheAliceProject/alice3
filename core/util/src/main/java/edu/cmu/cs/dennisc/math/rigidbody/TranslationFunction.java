@@ -167,14 +167,17 @@ public abstract class TranslationFunction<E extends TranslationDerivative> imple
 		}
 	}
 
+	@Override
 	public final E evaluate( double t ) {
 		return evaluate( newDerivative(), t );
 	}
 
+	@Override
 	public final E evaluate( double t, double dt, E derivative ) {
 		return evaluate( newDerivative(), t, dt, derivative );
 	}
 
+	@Override
 	public void update( E a, E b, E c, E d, double dt ) {
 		//todo?
 		//m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt / 6, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( a.velocity, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( 2.0, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( b.velocity, c.velocity ) ), d.velocity ) ) ) );
@@ -212,6 +215,7 @@ public abstract class TranslationFunction<E extends TranslationDerivative> imple
 				) );
 	}
 
+	@Override
 	public void update() {
 		edu.cmu.cs.dennisc.math.Vector3.setReturnValueToMultiplication( m_velocity, m_momentum, m_inverseMass );
 	}

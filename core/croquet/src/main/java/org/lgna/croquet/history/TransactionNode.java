@@ -121,6 +121,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 
 	public org.lgna.croquet.DropSite findDropSite() {
 		Step<?> step = this.findAcceptableStep( new edu.cmu.cs.dennisc.pattern.Criterion<Step<?>>() {
+			@Override
 			public boolean accept( Step<?> step ) {
 				org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {

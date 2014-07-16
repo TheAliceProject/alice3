@@ -63,6 +63,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 		this.height = height;
 	}
 
+	@Override
 	public int getIconWidth() {
 		if( this.icon != null ) {
 			if( this.icon.getIconWidth() == this.width ) {
@@ -74,6 +75,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		if( this.icon != null ) {
 			if( this.icon.getIconHeight() == this.height ) {
@@ -95,6 +97,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		if( this.worker.isDone() ) {
 			if( this.icon != null ) {

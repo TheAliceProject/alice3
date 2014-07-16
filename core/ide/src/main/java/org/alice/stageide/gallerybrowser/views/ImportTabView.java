@@ -82,6 +82,7 @@ public class ImportTabView extends GalleryTabView {
 	}
 
 	private final org.lgna.croquet.event.ValueListener<String> directoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
 			handleDirectoryChanged();
 		}

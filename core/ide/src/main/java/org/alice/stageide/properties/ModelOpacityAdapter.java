@@ -59,6 +59,7 @@ public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelIm
 		{
 			this.propertyListener = new Listener<Float>()
 			{
+				@Override
 				public void propertyChanged( org.lgna.story.implementation.Property<Float> property, Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
 				}

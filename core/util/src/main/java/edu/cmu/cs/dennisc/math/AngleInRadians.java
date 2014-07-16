@@ -56,10 +56,12 @@ public class AngleInRadians implements Angle {
 		this( other.getAsRadians() );
 	}
 
+	@Override
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		m_radians = binaryDecoder.decodeDouble();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( m_radians );
 	}
@@ -74,46 +76,57 @@ public class AngleInRadians implements Angle {
 		}
 	}
 
+	@Override
 	public boolean isNaN() {
 		return Double.isNaN( m_radians );
 	}
 
+	@Override
 	public void setNaN() {
 		m_radians = Double.NaN;
 	}
 
+	@Override
 	public double getAsRadians() {
 		return m_radians;
 	}
 
+	@Override
 	public double getAsDegrees() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.radiansToDegrees( m_radians );
 	}
 
+	@Override
 	public double getAsRevolutions() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.radiansToRevolutions( m_radians );
 	}
 
+	@Override
 	public void setAsRadians( double radians ) {
 		m_radians = radians;
 	}
 
+	@Override
 	public void setAsDegrees( double degrees ) {
 		m_radians = AngleUtilities.degreesToRadians( degrees );
 	}
 
+	@Override
 	public void setAsRevolutions( double revolutions ) {
 		m_radians = AngleUtilities.revolutionsToRadians( revolutions );
 	}
 
+	@Override
 	public Angle createCopy() {
 		return new AngleInRadians( this );
 	}
 
+	@Override
 	public void set( Angle other ) {
 		setAsRadians( other.getAsRadians() );
 	}
 
+	@Override
 	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
 		setAsRadians( InterpolationUtilities.interpolate( a0.getAsRadians(), a1.getAsRadians(), portion ) );
 	}

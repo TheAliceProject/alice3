@@ -48,8 +48,10 @@ package edu.cmu.cs.dennisc.renderer;
 public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePlane {
 	RenderFactory getRenderFactory();
 
+	@Override
 	int getWidth();
 
+	@Override
 	int getHeight();
 
 	void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
@@ -60,6 +62,7 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
 
+	@Override
 	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
 
 	int getSgCameraCount();
@@ -74,6 +77,7 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
 
+	@Override
 	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera );
@@ -86,10 +90,13 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel );
 
+	@Override
 	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
+	@Override
 	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel );
 
+	@Override
 	java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	java.awt.Rectangle getViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );

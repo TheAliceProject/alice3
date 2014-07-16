@@ -48,10 +48,12 @@ package org.alice.ide.croquet.codecs.typeeditor;
  */
 public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> {
 	SINGLETON;
+	@Override
 	public Class<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> getValueClass() {
 		return (Class)org.alice.ide.declarationseditor.DeclarationComposite.class;
 	}
 
+	@Override
 	public org.alice.ide.declarationseditor.DeclarationComposite<?, ?> decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -64,6 +66,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declarationseditor.DeclarationComposite<?, ?> value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
@@ -72,6 +75,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.ide.declarationseditor.DeclarationComposite<?, ?> value ) {
 		sb.append( value != null ? value.getDeclaration().getName() : value );
 	}

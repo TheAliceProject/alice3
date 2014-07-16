@@ -85,6 +85,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 
 		this.valueChangeListener = new ActionListener() {
 
+			@Override
 			public void actionPerformed( ActionEvent e )
 			{
 				Point3PropertyController.this.updateAdapterFromUI( e );

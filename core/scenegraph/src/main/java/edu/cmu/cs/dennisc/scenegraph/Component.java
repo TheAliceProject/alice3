@@ -51,6 +51,7 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private Composite vehicle = null;
 
+	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
 	}
@@ -63,6 +64,7 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		if( this.vehicle != null ) {
 			rv = this.vehicle.getAbsoluteTransformation( rv );
@@ -72,12 +74,14 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		return rv;
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
 
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_bufferMatrixForReuse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		if( this.vehicle != null ) {
 			rv = this.vehicle.getInverseAbsoluteTransformation( rv );
@@ -87,10 +91,12 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		return rv;
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
 		return getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		if( this.vehicle != null ) {
 			return this.vehicle.getTransformation( rv, asSeenBy );
@@ -99,6 +105,7 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		}
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), asSeenBy );
 	}
@@ -158,14 +165,17 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		}
 	}
 
+	@Override
 	public boolean isLocalOf( Component other ) {
 		return this == other;
 	}
 
+	@Override
 	public boolean isVehicleOf( Component other ) {
 		return this == other.getParent();
 	}
 
+	@Override
 	public boolean isSceneOf( Component other ) {
 		return this == other.getRoot();
 	}

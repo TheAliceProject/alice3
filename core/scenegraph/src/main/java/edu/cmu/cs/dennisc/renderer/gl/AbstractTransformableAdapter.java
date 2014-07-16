@@ -1,6 +1,5 @@
 package edu.cmu.cs.dennisc.renderer.gl;
 
-
 public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends CompositeAdapter<E> {
 
 	private static double[] unscaling = new double[ 16 ];

@@ -55,9 +55,11 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		this.owner = owner;
 		if( this.factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
 			this.isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				@Override
 				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				}
 
+				@Override
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					AbstractStatementPane.this.repaint();
 				}

@@ -52,6 +52,7 @@ class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
 		this.textComponent = textComponent;
 	}
 
+	@Override
 	public void focusGained( java.awt.event.FocusEvent e ) {
 		if( this.textComponent.getText().length() == 0 ) {
 			this.textComponent.repaint();
@@ -59,6 +60,7 @@ class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
 		//this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
 	}
 
+	@Override
 	public void focusLost( java.awt.event.FocusEvent e ) {
 		//Thread.dumpStack();
 		if( this.textComponent.getText().length() == 0 ) {

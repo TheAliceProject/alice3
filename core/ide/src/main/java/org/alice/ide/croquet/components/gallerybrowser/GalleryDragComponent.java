@@ -173,6 +173,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		private final java.util.List<java.awt.Component> topRightComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		private java.awt.Component baseComponent;
 
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 			if( name.contentEquals( BASE_CONSTRAINT ) ) {
 				this.baseComponent = comp;
@@ -184,13 +185,16 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			}
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return new java.awt.Dimension();
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			//note: ridiculous 
 			java.awt.Dimension rv = this.baseComponent.getPreferredSize();
@@ -200,6 +204,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			return rv;
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			//note: ridiculous 
 			java.awt.Insets insets = parent.getInsets();

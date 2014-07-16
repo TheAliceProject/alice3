@@ -51,6 +51,7 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 	private final org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> memberListState = this.createSingleSelectListState( "memberListState", this.memberListData, -1 );
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Member> e ) {
 			org.lgna.project.ast.Member nextValue = e.getNextValue();
 			if( nextValue != null ) {

@@ -51,6 +51,7 @@ import javax.swing.AbstractAction;
 	private static final java.awt.Dimension ARROW_SIZE = new java.awt.Dimension( 10, 10 );
 
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			javax.swing.ButtonModel buttonModel = getModel();
 			if( buttonModel.isArmed() ) {
@@ -82,6 +83,7 @@ import javax.swing.AbstractAction;
 			return this.scrollDirection;
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.layout.adjustIndex( this.scrollDirection.getDelta() );
 		}

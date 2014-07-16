@@ -52,10 +52,12 @@ public class AliceIssueReportRemoteUser implements org.lgna.issue.IssueReportRem
 		this.jiraRemoteUser = jiraRemoteUser;
 	}
 
+	@Override
 	public String getAccountId() {
 		return this.jiraRemoteUser.getName();
 	}
 
+	@Override
 	public String getFullName() {
 		return this.jiraRemoteUser.getFullname();
 	}

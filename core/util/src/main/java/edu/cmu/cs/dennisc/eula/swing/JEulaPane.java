@@ -96,11 +96,13 @@ public class JEulaPane extends javax.swing.JPanel {
 		}
 
 		this.okButton = new javax.swing.JButton( new javax.swing.AbstractAction( okButtonText ) {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				handleOkOrCancel( true );
 			}
 		} );
 		javax.swing.JButton cancelButton = new javax.swing.JButton( new javax.swing.AbstractAction( cancelButtonText ) {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				handleOkOrCancel( false );
 			}
@@ -126,6 +128,7 @@ public class JEulaPane extends javax.swing.JPanel {
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				scrollPane.getVerticalScrollBar().setValue( 0 );
 			}
@@ -149,6 +152,7 @@ public class JEulaPane extends javax.swing.JPanel {
 
 	private final javax.swing.JButton okButton;
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			okButton.setEnabled( accept.isSelected() );
 		}
@@ -159,6 +163,7 @@ public class JEulaPane extends javax.swing.JPanel {
 
 	public static void main( String[] args ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				//				java.util.Locale locale = java.util.Locale.SIMPLIFIED_CHINESE;
 				//				java.util.Locale.setDefault( locale );

@@ -84,6 +84,7 @@ public class IconFactoryManager {
 
 		protected abstract String getModelResourceName();
 
+		@Override
 		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
 			Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = this.getModelResourceClass();
 			String modelResourceName = this.getModelResourceName();
@@ -225,6 +226,7 @@ public class IconFactoryManager {
 			this.instance = instance;
 		}
 
+		@Override
 		public org.lgna.croquet.icon.IconFactory createIconFactory() {
 			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;

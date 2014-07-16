@@ -46,14 +46,17 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public class SystemPropertiesAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+	@Override
 	public byte[] getBytes() {
 		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLByteArray();
 	}
 
+	@Override
 	public String getMIMEType() {
 		return "application/xml";
 	}
 
+	@Override
 	public String getFileName() {
 		return "systemProperties.xml";
 	}

@@ -54,10 +54,12 @@ public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
 		super( valueClass );
 	}
 
+	@Override
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		throw new RuntimeException( "todo" );
 	}

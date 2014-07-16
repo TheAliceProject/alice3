@@ -61,14 +61,17 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		return this.imp;
 	}
 
+	@Override
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
+	@Override
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
+	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
@@ -82,10 +85,12 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 	protected void handleFinally() {
 	}
 
+	@Override
 	public boolean isSubTransactionHistoryRequired() {
 		return false;
 	}
 
+	@Override
 	public void perform( org.lgna.croquet.OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> step ) {
 		final java.util.List<org.lgna.croquet.views.Frame> framesToDiable = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
@@ -94,12 +99,14 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 
 		final org.lgna.croquet.views.Frame frame = new org.lgna.croquet.views.Frame();
 		class ModalFrameWindowListener implements java.awt.event.WindowListener {
+			@Override
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				for( org.lgna.croquet.views.Frame frame : framesToDiable ) {
 					frame.getAwtComponent().setEnabled( false );
 				}
 			}
 
+			@Override
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
 					for( org.lgna.croquet.views.Frame frame : framesToDiable ) {
@@ -110,6 +117,7 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 				}
 			}
 
+			@Override
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 				frame.removeWindowListener( this );
 				try {
@@ -119,15 +127,19 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 				}
 			}
 
+			@Override
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
 		}

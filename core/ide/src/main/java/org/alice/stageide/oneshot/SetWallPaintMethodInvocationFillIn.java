@@ -50,6 +50,7 @@ public class SetWallPaintMethodInvocationFillIn extends OneShotJavaMethodInvocat
 
 	public static SetWallPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetWallPaintMethodInvocationFillIn>() {
+			@Override
 			public SetWallPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new SetWallPaintMethodInvocationFillIn( instanceFactory, method );
 			}

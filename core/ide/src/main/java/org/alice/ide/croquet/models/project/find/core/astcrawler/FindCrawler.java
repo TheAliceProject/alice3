@@ -68,6 +68,7 @@ public class FindCrawler implements Crawler {
 		this.results = results;
 	}
 
+	@Override
 	public void visit( Crawlable crawlable ) {
 		if( crawlable instanceof MethodInvocation ) {
 			MethodInvocation methodInv = (MethodInvocation)crawlable;

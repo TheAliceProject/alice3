@@ -58,14 +58,17 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return this.imp;
 	}
 
+	@Override
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
+	@Override
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
+	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
@@ -89,6 +92,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		}
 	}
 
+	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {

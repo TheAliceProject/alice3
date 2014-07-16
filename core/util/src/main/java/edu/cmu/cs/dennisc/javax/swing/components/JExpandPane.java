@@ -85,11 +85,13 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 	public JExpandPane() {
 		this.setModel( new javax.swing.DefaultButtonModel() );
 		this.toggle.addActionListener( new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				JExpandPane.this.setSelected( toggle.isSelected() );
 			}
 		} );
 		this.addItemListener( new java.awt.event.ItemListener() {
+			@Override
 			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				JExpandPane.this.handleToggled( e );
 			}

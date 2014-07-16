@@ -54,6 +54,7 @@ public class BasicPainter implements Painter {
 		this.paint = paint;
 	}
 
+	@Override
 	public java.awt.Rectangle getBounds( java.awt.Shape shape ) {
 		java.awt.Rectangle bounds = shape.getBounds();
 		//todo?
@@ -62,6 +63,7 @@ public class BasicPainter implements Painter {
 		return bounds;
 	}
 
+	@Override
 	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
 		java.awt.Paint prevPaint = g2.getPaint();

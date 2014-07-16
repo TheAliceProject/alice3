@@ -52,6 +52,7 @@ public abstract class NameCriterion implements edu.cmu.cs.dennisc.pattern.Criter
 
 	protected abstract boolean acceptName( String name );
 
+	@Override
 	public boolean accept( Object o ) {
 		boolean isAccepted;
 		if( o instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {

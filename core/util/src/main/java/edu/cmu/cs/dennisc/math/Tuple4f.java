@@ -69,6 +69,7 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		w = binaryDecoder.decodeFloat();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
@@ -76,6 +77,7 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		binaryEncoder.encode( w );
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );

@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.renderer;
 
-
 /**
  * @author Dennis Cosgrove
  */

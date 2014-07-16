@@ -122,10 +122,12 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 	}
 
 	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanged( PropertyEvent e ) {
 			positionRelativeToObject();
 		}
 
+		@Override
 		public void propertyChanging( PropertyEvent e ) {
 
 		}

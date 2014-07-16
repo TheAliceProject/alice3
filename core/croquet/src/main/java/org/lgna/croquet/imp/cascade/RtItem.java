@@ -210,22 +210,26 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 	}
 
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			RtItem.this.select();
 			RtItem.this.getRtRoot().handleActionPerformed( e );
 		}
 	};
 	private javax.swing.event.MenuListener menuListener = new javax.swing.event.MenuListener() {
+		@Override
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
 			RtItem.this.addNextNodeMenuItems( (org.lgna.croquet.views.CascadeMenu)RtItem.this.getMenuItem() );
 			RtItem.this.select();
 		}
 
+		@Override
 		public void menuDeselected( javax.swing.event.MenuEvent e ) {
 			RtItem.this.deselect();
 			RtItem.this.removeAll( (org.lgna.croquet.views.CascadeMenu)RtItem.this.getMenuItem() );
 		}
 
+		@Override
 		public void menuCanceled( javax.swing.event.MenuEvent e ) {
 		}
 	};

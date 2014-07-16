@@ -424,54 +424,66 @@ public abstract class BareBonesDragAdapter {
 	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e );
 
 	private final edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		@Override
 		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 			handleMouseWheelMoved( e );
 		}
 	};
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			handleMouseMoved( e );
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			handleMouseDragged( e );
 		}
 	};
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			handleMouseEntered( e );
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 			handleMouseExited( e );
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			handleMousePressed( e );
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			handleMouseReleased( e );
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};
 	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 			handleKeyPressed( e );
 		}
 
+		@Override
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 			handleKeyReleased( e );
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};

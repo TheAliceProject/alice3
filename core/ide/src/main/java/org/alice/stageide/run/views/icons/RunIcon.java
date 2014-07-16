@@ -54,14 +54,17 @@ public class RunIcon implements javax.swing.Icon {
 	private static final java.awt.Color ENABLED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
 	private static final java.awt.Color DISABLED_COLOR = java.awt.Color.GRAY;
 
+	@Override
 	public int getIconHeight() {
 		return 24;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return 24;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		if( c instanceof javax.swing.AbstractButton ) {
 			javax.swing.ButtonModel buttonModel = ( (javax.swing.AbstractButton)c ).getModel();

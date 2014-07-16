@@ -52,6 +52,7 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
 
 	private boolean isInTheMidstOfHandlingAThrowable;
 
+	@Override
 	public final void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
 		if( isInTheMidstOfHandlingAThrowable ) {

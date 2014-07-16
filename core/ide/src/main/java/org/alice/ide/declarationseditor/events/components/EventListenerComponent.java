@@ -46,11 +46,11 @@ import javax.swing.BorderFactory;
 
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.x.components.StatementListPropertyView;
-import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;

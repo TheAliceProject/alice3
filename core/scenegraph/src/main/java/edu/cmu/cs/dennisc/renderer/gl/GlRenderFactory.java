@@ -87,6 +87,7 @@ abstract class Animator implements Runnable {
 
 	protected abstract ThreadDeferenceAction step();
 
+	@Override
 	public void run() {
 		final long THRESHOLD = 5;
 		long tPrev = System.currentTimeMillis() - THRESHOLD;
@@ -142,6 +143,7 @@ class WaitingRunnable implements Runnable {
 		return this.exception;
 	}
 
+	@Override
 	public void run() {
 		try {
 			this.runnable.run();
@@ -183,40 +185,48 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	};
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.ColorBuffer createColorBuffer() {
 		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers createColorAndDepthBuffers() {
 		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
 		this.heavyweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
 		this.lightweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height ) {
 		edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlOffscreenRenderTarget( width, height );
 		this.offscreenRenderTargets.add( rv );
 		return rv;
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenLookingGlasses() {
 		return java.util.Collections.unmodifiableList( this.heavyweightOnscreenRenderTargets );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenLookingGlasses() {
 		return java.util.Collections.unmodifiableList( this.lightweightOnscreenRenderTargets );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenLookingGlasses() {
 		return java.util.Collections.unmodifiableList( this.offscreenRenderTargets );
 	}
@@ -292,6 +302,7 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	}
 
+	@Override
 	public void acquireRenderingLock() {
 		try {
 			this.renderingLock.acquire();
@@ -300,26 +311,32 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	}
 
+	@Override
 	public void releaseRenderingLock() {
 		this.renderingLock.release();
 	}
 
+	@Override
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
 
+	@Override
 	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.remove( automaticDisplayListener );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
 		return java.util.Collections.unmodifiableList( this.automaticDisplayListeners );
 	}
 
+	@Override
 	public int getAutomaticDisplayCount() {
 		return this.automaticDisplayCount;
 	}
 
+	@Override
 	public synchronized void incrementAutomaticDisplayCount() {
 		this.automaticDisplayCount++;
 		if( this.animator != null ) {
@@ -335,14 +352,17 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	}
 
+	@Override
 	public synchronized void decrementAutomaticDisplayCount() {
 		this.automaticDisplayCount--;
 	}
 
+	@Override
 	public void invokeLater( Runnable runnable ) {
 		this.runnables.add( runnable );
 	}
 
+	@Override
 	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		Thread currentThread = Thread.currentThread();
 		WaitingRunnable waitingRunnable = new WaitingRunnable( runnable, currentThread );
@@ -355,6 +375,7 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	}
 
+	@Override
 	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
 		try {
 			invokeAndWait( runnable );
@@ -379,6 +400,7 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 
 	public static void main( String[] args ) throws Exception {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				edu.cmu.cs.dennisc.scenegraph.util.World sgWorld = new edu.cmu.cs.dennisc.scenegraph.util.World();
 				edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );

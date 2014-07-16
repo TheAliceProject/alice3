@@ -196,46 +196,56 @@ public class EulerAngles implements Orientation {
 		setPitchYawRollOrder( pitch, yaw, roll, order );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
 
+	@Override
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
 
+	@Override
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
 
+	@Override
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
 
+	@Override
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
@@ -248,6 +258,7 @@ public class EulerAngles implements Orientation {
 		order = binaryDecoder.decodeEnum(/* Order.class */);
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		yaw.encode( binaryEncoder );
 		pitch.encode( binaryEncoder );
@@ -268,10 +279,12 @@ public class EulerAngles implements Orientation {
 		return setReturnValueToNaN( new EulerAngles() );
 	}
 
+	@Override
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
 
+	@Override
 	public boolean isNaN() {
 		return this.yaw.isNaN() || this.pitch.isNaN() || this.roll.isNaN();
 	}
@@ -298,10 +311,12 @@ public class EulerAngles implements Orientation {
 		return setReturnValueToIdentity( EulerAngles.createNaN() );
 	}
 
+	@Override
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
 
+	@Override
 	public boolean isIdentity() {
 		return ( this.yaw.getAsRadians() == 0.0 ) && ( this.pitch.getAsRadians() == 0.0 ) && ( this.roll.getAsRadians() == 0.0 ) && ( this.order != Order.NOT_APPLICABLE );
 	}
@@ -327,22 +342,26 @@ public class EulerAngles implements Orientation {
 		assert isNaN() == false;
 	}
 
+	@Override
 	public void setValue( OrthogonalMatrix3x3 m ) {
 		assert m != null;
 		assert m.isNaN() == false;
 		set( m.right.x, m.up.x, m.backward.x, m.right.y, m.up.y, m.backward.y, m.right.z, m.up.z, m.backward.z );
 	}
 
+	@Override
 	public void setValue( UnitQuaternion q ) {
 		//todo: convert directly
 		setValue( new OrthogonalMatrix3x3( q ) );
 	}
 
+	@Override
 	public void setValue( AxisRotation aa ) {
 		//todo: convert directly
 		setValue( new OrthogonalMatrix3x3( aa ) );
 	}
 
+	@Override
 	public void setValue( EulerAngles other ) {
 		if( other != null ) {
 			setPitchYawRollOrder( other.pitch, other.yaw, other.roll, other.order );
@@ -351,6 +370,7 @@ public class EulerAngles implements Orientation {
 		}
 	}
 
+	@Override
 	public void setValue( ForwardAndUpGuide faug ) {
 		//todo: convert directly
 		setValue( new OrthogonalMatrix3x3( faug ) );

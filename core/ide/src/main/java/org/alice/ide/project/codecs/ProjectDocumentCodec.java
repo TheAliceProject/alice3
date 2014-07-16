@@ -48,18 +48,22 @@ package org.alice.ide.project.codecs;
  */
 public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.ProjectDocument> {
 	SINGLETON;
+	@Override
 	public org.alice.ide.ProjectDocument decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.ProjectDocument value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public Class<org.alice.ide.ProjectDocument> getValueClass() {
 		return org.alice.ide.ProjectDocument.class;
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.ide.ProjectDocument value ) {
 		sb.append( value );
 	}

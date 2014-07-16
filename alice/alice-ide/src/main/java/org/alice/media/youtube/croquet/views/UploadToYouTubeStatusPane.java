@@ -290,6 +290,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		}
 	}
 
+	@Override
 	public void youTubeEventTriggered( YouTubeEvent event ) {
 		if( ( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ) ||
 				( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ) ||
@@ -306,6 +307,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 
 	}
 
+	@Override
 	public void actionPerformed( ActionEvent e ) {
 		if( e.getSource() == this.cancelButton )
 		{

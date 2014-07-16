@@ -50,6 +50,7 @@ public class AllJointLocalTransformationsMethodInvocationFillIn extends OneShotJ
 
 	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, AllJointLocalTransformationsMethodInvocationFillIn>() {
+			@Override
 			public AllJointLocalTransformationsMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
 			}

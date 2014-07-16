@@ -50,6 +50,7 @@ import org.alice.ide.ast.type.croquet.ImportTypeWizard;
 public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.views.Panel, ImportTypeWizard> {
 	private final org.lgna.croquet.BooleanState isIncludingAllState = this.createBooleanState( "isIncludingAllState", false );
 	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			getView().refreshLater();
 		}

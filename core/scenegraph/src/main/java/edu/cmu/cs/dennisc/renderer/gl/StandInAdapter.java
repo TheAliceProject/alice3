@@ -1,6 +1,5 @@
 package edu.cmu.cs.dennisc.renderer.gl;
 
-
 public class StandInAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends CompositeAdapter<E> {
 	private double[] m_localTransformation = new double[ 16 ];
 	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );

@@ -58,6 +58,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 
 	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
 		EnumCodec<T> rv = map.getInitializingIfAbsent( (Class)valueCls, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
+			@Override
 			public EnumCodec initialize( Class valueCls ) {
 				return new EnumCodec( valueCls, null );
 			}
@@ -74,6 +75,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 		this.localizationCustomizer = localizationCustomizer;
 	}
 
+	@Override
 	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
@@ -82,14 +84,17 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 		return this.localizationCustomizer;
 	}
 
+	@Override
 	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeEnum();
 	}
 
+	@Override
 	public final void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t ) {
 		binaryEncoder.encode( t );
 	}
 
+	@Override
 	public final void appendRepresentation( StringBuilder sb, T value ) {
 		if( value != null ) {
 			if( this.mapValueToLocalization != null ) {

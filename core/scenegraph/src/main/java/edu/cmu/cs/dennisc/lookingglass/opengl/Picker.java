@@ -96,6 +96,7 @@ public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
 				//pass
 			} else {
 				this.glOffscreenDrawable = OffscreenDrawable.createInstance( new OffscreenDrawable.DisplayCallback() {
+					@Override
 					public void display( javax.media.opengl.GL2 gl ) {
 						sharedActualPicker.performPick( gl );
 					}
@@ -210,12 +211,14 @@ public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
 						java.util.Comparator<SelectionBufferInfo> comparator;
 						if( pickDetails.isPickFunctioningCorrectly() ) {
 							comparator = new java.util.Comparator<SelectionBufferInfo>() {
+								@Override
 								public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
 									return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
 								}
 							};
 						} else {
 							comparator = new java.util.Comparator<SelectionBufferInfo>() {
+								@Override
 								public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
 									double z1 = -sbi1.getPointInSource().z;
 									double z2 = -sbi2.getPointInSource().z;
@@ -281,20 +284,24 @@ public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
 		this.lookingGlass = lookingGlass;
 	}
 
+	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 
+	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
 			return sharedActualPicker.pickAll( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
 			return sharedActualPicker.pickFrontMost( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );

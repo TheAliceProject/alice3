@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.GL2.GL_QUADS;
+import static javax.media.opengl.GL2GL3.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove

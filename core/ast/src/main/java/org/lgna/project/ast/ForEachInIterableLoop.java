@@ -55,6 +55,7 @@ public final class ForEachInIterableLoop extends AbstractForEachLoop implements 
 		this.iterable.setValue( iterable );
 	}
 
+	@Override
 	public ExpressionProperty getIterableProperty() {
 		return this.iterable;
 	}

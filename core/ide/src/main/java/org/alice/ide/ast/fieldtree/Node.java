@@ -71,6 +71,7 @@ public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration> i
 		sb.append( "\n" );
 	}
 
+	@Override
 	public int compareTo( Node<N> other ) {
 		return this.getDeclaration().getName().toLowerCase().compareTo( other.getDeclaration().getName().toLowerCase() );
 	}

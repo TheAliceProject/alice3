@@ -90,18 +90,22 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
 
+	@Override
 	public org.lgna.project.ast.LocalAccess createTransientExpression() {
 		return this.createLocalAccess( new org.alice.ide.ast.CurrentThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.LocalAccess createExpression() {
 		return this.createLocalAccess( new org.lgna.project.ast.ThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.local.getValueType();
 	}
 
+	@Override
 	public String getRepr() {
 		return this.local.getValidName();
 	}

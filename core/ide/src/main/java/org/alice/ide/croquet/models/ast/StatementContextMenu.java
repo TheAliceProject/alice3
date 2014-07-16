@@ -99,6 +99,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 			rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					StringBuilder sb = new StringBuilder();
 					try {

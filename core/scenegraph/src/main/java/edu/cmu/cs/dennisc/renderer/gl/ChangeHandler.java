@@ -135,51 +135,62 @@ public abstract class ChangeHandler {
 	}
 
 	private static edu.cmu.cs.dennisc.property.event.PropertyListener s_propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 
 	private static edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener s_childrenListener = new edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener() {
+		@Override
 		public void componentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 			handleOrBufferEvent( e );
 		}
 
+		@Override
 		public void componentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 	private static edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener s_graphicsListener = new edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener() {
+		@Override
 		public void graphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
 			handleOrBufferEvent( e );
 		}
 
+		@Override
 		public void graphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 	private static edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener s_absoluteTransformationListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 	private static edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener s_hierarchyListener = new edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener() {
+		@Override
 		public void hierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 	private static edu.cmu.cs.dennisc.texture.event.TextureListener s_textureListener = new edu.cmu.cs.dennisc.texture.event.TextureListener() {
+		@Override
 		public void textureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};
 	private static edu.cmu.cs.dennisc.pattern.event.ReleaseListener s_releaseListener = new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
+		@Override
 		public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		}
 
+		@Override
 		public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 			handleOrBufferEvent( e );
 		}

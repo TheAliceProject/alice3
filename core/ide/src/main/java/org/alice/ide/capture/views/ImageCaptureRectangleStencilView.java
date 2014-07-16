@@ -73,6 +73,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.Lay
 		private int xPressed = -1;
 		private int yPressed = -1;
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				this.xPressed = e.getX();
@@ -82,6 +83,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.Lay
 			}
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
@@ -94,12 +96,15 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.Lay
 			}
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
@@ -108,10 +113,12 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.Lay
 			updateWindowLocation( e.getXOnScreen(), e.getYOnScreen() );
 		}
 
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			this.handleMouseMovedOrDragged( e );
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
 				if( isHoleValid() ) {
@@ -128,6 +135,7 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.views.Lay
 
 	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private final java.awt.event.ActionListener escapeKeyListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			if( isHoleValid() ) {
 				invalidateHole();

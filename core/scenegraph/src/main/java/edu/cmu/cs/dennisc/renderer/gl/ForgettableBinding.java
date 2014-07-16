@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.renderer.gl;
 
-
 /**
  * @author alice
  * 

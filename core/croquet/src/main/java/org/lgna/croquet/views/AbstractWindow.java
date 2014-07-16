@@ -185,10 +185,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		}
 	}
 
+	@Override
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( this.getBounds( asSeenBy ), insets );
 	}
 
+	@Override
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
 	}
@@ -205,16 +207,19 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.getAwtComponent().setAlwaysOnTop( isAlwaysOnTop );
 	}
 
+	@Override
 	public ScrollPane getScrollPaneAncestor() {
 		return null;
 	}
 
+	@Override
 	public boolean isInView() {
 		return this.isVisible();
 	}
 
 	public TrackableShape getCloseButtonTrackableShape() {
 		return new TrackableShape() {
+			@Override
 			public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 				java.awt.Rectangle bounds = AbstractWindow.this.getBounds( asSeenBy );
 				if( bounds != null ) {
@@ -226,30 +231,37 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 				}
 			}
 
+			@Override
 			public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 				return this.getShape( asSeenBy, insets );
 			}
 
+			@Override
 			public ScrollPane getScrollPaneAncestor() {
 				return null;
 			}
 
+			@Override
 			public boolean isInView() {
 				return AbstractWindow.this.isInView();
 			}
 
+			@Override
 			public void addComponentListener( java.awt.event.ComponentListener listener ) {
 				AbstractWindow.this.addComponentListener( listener );
 			}
 
+			@Override
 			public void removeComponentListener( java.awt.event.ComponentListener listener ) {
 				AbstractWindow.this.removeComponentListener( listener );
 			}
 
+			@Override
 			public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 				AbstractWindow.this.addHierarchyBoundsListener( listener );
 			}
 
+			@Override
 			public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 				AbstractWindow.this.removeHierarchyBoundsListener( listener );
 			}

@@ -62,10 +62,12 @@ public abstract class AbstractScaledIcon implements javax.swing.Icon {
 		this.factor = factor;
 	}
 
+	@Override
 	public final int getIconWidth() {
 		return Float.isNaN( this.factor ) ? this.width : (int)( this.getSourceWidth() * this.factor );
 	}
 
+	@Override
 	public final int getIconHeight() {
 		return Float.isNaN( this.factor ) ? this.height : (int)( this.getSourceHeight() * this.factor );
 	}
@@ -76,6 +78,7 @@ public abstract class AbstractScaledIcon implements javax.swing.Icon {
 
 	protected abstract void paintSource( java.awt.Component c, java.awt.Graphics g );
 
+	@Override
 	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.getSourceWidth() : this.factor;
 		double yScale = Float.isNaN( this.factor ) ? this.height / (double)this.getSourceHeight() : this.factor;

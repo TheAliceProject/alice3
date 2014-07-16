@@ -73,12 +73,14 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		return m_propertyListeners;
 	}
 
+	@Override
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
 			propertyListener.propertyChanging( e );
 		}
 	}
 
+	@Override
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
 			propertyListener.propertyChanged( e );
@@ -97,54 +99,63 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		return m_listPropertyListeners;
 	}
 
+	@Override
 	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.adding( e );
 		}
 	}
 
+	@Override
 	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.added( e );
 		}
 	}
 
+	@Override
 	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.clearing( e );
 		}
 	}
 
+	@Override
 	public void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.cleared( e );
 		}
 	}
 
+	@Override
 	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.removing( e );
 		}
 	}
 
+	@Override
 	public void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.removed( e );
 		}
 	}
 
+	@Override
 	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.setting( e );
 		}
 	}
 
+	@Override
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.set( e );
 		}
 	}
 
+	@Override
 	public Property<?> getPropertyNamed( String name ) {
 		if( isComposedOfGetterAndSetterProperties() ) {
 			for( Property<?> property : getProperties() ) {
@@ -166,6 +177,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		}
 	}
 
+	@Override
 	public InstanceProperty<?> getInstancePropertyNamed( String name ) {
 		return (InstanceProperty<?>)getPropertyNamed( name );
 	}
@@ -195,6 +207,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	//		}
 	//		return rv;
 	//	}
+	@Override
 	public java.util.List<Property<?>> getProperties() {
 		Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner> cls = getClass();
 		if( isComposedOfGetterAndSetterProperties() ) {
@@ -236,6 +249,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		}
 	}
 
+	@Override
 	public String lookupNameFor( InstanceProperty<?> instanceProperty ) {
 		for( java.lang.reflect.Field field : getClass().getFields() ) {
 			if( Property.class.isAssignableFrom( field.getType() ) ) {
@@ -301,6 +315,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		return rv;
 	}
 
+	@Override
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map ) {
 		while( true ) {
 			String propertyName = binaryDecoder.decodeString();
@@ -416,6 +431,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		}
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		for( Property<?> property : getProperties() ) {
 			// todo?

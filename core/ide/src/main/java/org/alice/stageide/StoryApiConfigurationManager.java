@@ -147,6 +147,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		}
 
+		@Override
 		public int compare( org.lgna.project.ast.AbstractType<?, ?, ?> typeA, org.lgna.project.ast.AbstractType<?, ?, ?> typeB ) {
 			double valueA = getValue( typeA );
 			double valueB = getValue( typeB );

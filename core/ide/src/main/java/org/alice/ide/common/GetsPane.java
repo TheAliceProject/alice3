@@ -68,14 +68,17 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
 		this.setIcon( new javax.swing.Icon() {
+			@Override
 			public int getIconWidth() {
 				return ( this.getIconHeight() * GetsPane.this.length ) + 1;
 			}
 
+			@Override
 			public int getIconHeight() {
 				return (int)( GetsPane.this.getFont().getSize2D() * 1.4f );
 			}
 
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				int width = this.getIconWidth();
 				int height = this.getIconHeight();

@@ -57,6 +57,7 @@ public class EnterProximityAdapter extends AbstractAdapter implements ProximityE
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void proximityEntered( EnterProximityEvent e ) {
 		invokeEntryPoint( e );
 	}

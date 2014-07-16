@@ -57,6 +57,7 @@ public class InstanceProperty<E> implements Property<E> {
 		m_value = value;
 	}
 
+	@Override
 	public String getName() {
 		if( m_name != null ) {
 			//pass
@@ -103,11 +104,13 @@ public class InstanceProperty<E> implements Property<E> {
 		return m_owner;
 	}
 
+	@Override
 	public E getValue( PropertyOwner owner ) {
 		assert m_owner == owner : this;
 		return m_value;
 	}
 
+	@Override
 	public void setValue( PropertyOwner owner, E value ) {
 		assert m_owner == owner;
 		//assert m_isLocked == false;

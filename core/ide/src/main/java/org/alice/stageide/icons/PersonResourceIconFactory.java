@@ -93,6 +93,7 @@ public class PersonResourceIconFactory extends org.lgna.croquet.icon.AbstractIco
 		};
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		if( this.iconFactories.size() > 0 ) {
 			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );

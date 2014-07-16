@@ -58,6 +58,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 		this.expressionProperty = codec.decodeValue( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		org.alice.ide.croquet.codecs.PropertyOfNodeCodec<org.lgna.project.ast.ExpressionProperty> codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
 		codec.encodeValue( binaryEncoder, this.expressionProperty );
@@ -67,6 +68,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 		return this.expressionProperty;
 	}
 
+	@Override
 	public ExpressionPropertyDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.ExpressionProperty replacementExpressionProperty = retargeter.retarget( this.expressionProperty );
 
@@ -75,6 +77,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 		return new ExpressionPropertyDropSite( replacementExpressionProperty );
 	}
 
+	@Override
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
 		org.lgna.project.ast.AbstractCode code = node.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );

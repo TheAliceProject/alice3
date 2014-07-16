@@ -96,6 +96,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 		}
 	}
 
+	@Override
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		java.awt.Container container = (java.awt.Container)c;
 		if( this.isVirtuallyEmpty( container ) ) {
@@ -137,6 +138,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 		return container.getComponentCount() <= this.minimum;
 	}
 
+	@Override
 	public boolean isBorderOpaque() {
 		return false;
 	}
@@ -145,6 +147,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 		return ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 );
 	}
 
+	@Override
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h ) {
 		java.awt.Container container = (java.awt.Container)c;
 		if( this.isVirtuallyEmpty( container ) ) {

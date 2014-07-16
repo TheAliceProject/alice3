@@ -47,6 +47,7 @@ package org.alice.stageide.perspectives;
  */
 public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
 			PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged( e.getNextValue() );
 		}

@@ -55,104 +55,130 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private float volume;
 	private boolean isPrepared;
 
+	@Override
 	public java.awt.Canvas getVideoSurface() {
 		return this.nilVideoCanvas;
 	}
 
+	@Override
 	public java.awt.Dimension getVideoSize() {
 		return new java.awt.Dimension( 0, 0 );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
+	@Override
 	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
 		this.painter = painter;
 	}
 
+	@Override
 	public boolean prepareMedia( java.net.URI uri ) {
 		this.uri = uri;
 		this.isPrepared = true; //?
 		return this.isPrepared;
 	}
 
+	@Override
 	public boolean isPrepared() {
 		return this.isPrepared;
 	}
 
+	@Override
 	public void parse() {
 	}
 
+	@Override
 	public boolean isPlayable() {
 		return false;
 	}
 
+	@Override
 	public boolean isPlaying() {
 		return false;
 	}
 
+	@Override
 	public void playResume() {
 	}
 
+	@Override
 	public void pause() {
 	}
 
+	@Override
 	public void stop() {
 	}
 
+	@Override
 	public long getTimeInMilliseconds() {
 		return this.timeInMilliseconds;
 	}
 
+	@Override
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {
 		this.timeInMilliseconds = timeInMilliseconds;
 	}
 
+	@Override
 	public float getPosition() {
 		return this.position;
 	}
 
+	@Override
 	public void setPosition( float position ) {
 		//todo?
 		this.position = position;
 	}
 
+	@Override
 	public long getLengthInMilliseconds() {
 		return 0;
 	}
 
+	@Override
 	public boolean isMuted() {
 		return this.isMuted;
 	}
 
+	@Override
 	public void setMuted( boolean isMuted ) {
 		//todo?
 		this.isMuted = isMuted;
 	}
 
+	@Override
 	public float getVolume() {
 		return this.volume;
 	}
 
+	@Override
 	public void setVolume( float volume ) {
 		//todo?
 		this.volume = volume;
 	}
 
+	@Override
 	public boolean writeSnapshot( java.io.File file ) {
 		return false;
 	}
 
+	@Override
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 	}
 
+	@Override
 	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 	}
 
+	@Override
 	public void release() {
 	}
 
+	@Override
 	public java.awt.Image getSnapshot() {
 		return null;
 	}

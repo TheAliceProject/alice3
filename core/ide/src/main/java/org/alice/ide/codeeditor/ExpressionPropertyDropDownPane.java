@@ -47,17 +47,21 @@ package org.alice.ide.codeeditor;
  */
 public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropDown<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
 	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		@Override
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 		}
 
+		@Override
 		public void dragStarted( org.lgna.croquet.history.DragStep dragStep ) {
 		}
 
+		@Override
 		public void dragEntered( org.lgna.croquet.history.DragStep dragStep ) {
 			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
 		}
 
+		@Override
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
 			return null;
 		}
@@ -81,18 +85,22 @@ public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropD
 			return rv;
 		}
 
+		@Override
 		public void dragExited( org.lgna.croquet.history.DragStep dragStep, boolean isDropRecipient ) {
 			//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
 			//			source.hideDropProxyIfNecessary();
 		}
 
+		@Override
 		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 		}
 
+		@Override
 		public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 			return ExpressionPropertyDropDownPane.this;
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return ExpressionPropertyDropDownPane.this;
 		}

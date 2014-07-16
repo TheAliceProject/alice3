@@ -89,21 +89,25 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		m_lookingGlassFactory = lookingGlassFactory;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
 		return m_lookingGlassFactory;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.renderer.Picker getPicker() {
 		return this.picker;
 	}
 
 	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
 
+	@Override
 	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture ) {
 		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
 		return textureAdapter.createGraphics();
 	}
 
+	@Override
 	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g, int x, int y, int width, int height ) {
 		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
 		textureAdapter.commitGraphics( g, x, y, width, height );
@@ -112,10 +116,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		//		}
 	}
 
+	@Override
 	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture sgTexture, java.awt.Graphics2D g ) {
 		commitGraphics( sgTexture, g, 0, 0, sgTexture.getWidth(), sgTexture.getHeight() );
 	}
 
+	@Override
 	public java.awt.Image getImage( edu.cmu.cs.dennisc.texture.Texture texture ) {
 		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
 		return textureAdapter.getImage();
@@ -212,14 +218,17 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public String getDescription() {
 		return m_description;
 	}
 
+	@Override
 	public void setDescription( String description ) {
 		m_description = description;
 	}
 
+	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		assert camera != null;
 		synchronized( m_cameras ) {
@@ -233,6 +242,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		assert camera != null;
 		synchronized( m_cameras ) {
@@ -245,6 +255,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public void clearSgCameras() {
 		if( m_cameras.size() > 0 ) {
 			synchronized( m_cameras ) {
@@ -256,14 +267,17 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public int getSgCameraCount() {
 		return m_cameras.size();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
 		return m_cameras.elementAt( index );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv ) {
 		synchronized( m_cameras ) {
 			m_cameras.copyInto( rv );
@@ -271,17 +285,20 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv = new edu.cmu.cs.dennisc.scenegraph.AbstractCamera[ getSgCameraCount() ];
 		return getSgCameras( rv );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
 		synchronized( m_cameras ) {
 			return m_cameras;
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
 		synchronized( m_cameras ) {
 			for( int i = ( m_cameras.size() - 1 ); i >= 0; i-- ) {
@@ -297,26 +314,31 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return null;
 	}
 
+	@Override
 	public void addLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener ) {
 		synchronized( m_lookingGlassListeners ) {
 			m_lookingGlassListeners.add( lookingGlassListener );
 		}
 	}
 
+	@Override
 	public void removeLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener ) {
 		synchronized( m_lookingGlassListeners ) {
 			m_lookingGlassListeners.remove( lookingGlassListener );
 		}
 	}
 
+	@Override
 	public int getLookingGlassListenerCount() {
 		return m_lookingGlassListeners.size();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener getLookingGlassListenerAt( int index ) {
 		return m_lookingGlassListeners.elementAt( index );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] rv ) {
 		synchronized( m_lookingGlassListeners ) {
 			m_lookingGlassListeners.copyInto( rv );
@@ -324,22 +346,26 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners() {
 		edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] rv = new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[ getLookingGlassListenerCount() ];
 		return getLookingGlassListeners( rv );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener> accessLookingGlassListeners() {
 		synchronized( m_lookingGlassListeners ) {
 			return m_lookingGlassListeners;
 		}
 	}
 
+	@Override
 	public final java.awt.Dimension getSize() {
 		return getSize( new java.awt.Dimension() );
 
 	}
 
+	@Override
 	public final int getWidth() {
 		synchronized( s_sizeBufferForReuse ) {
 			getSize( s_sizeBufferForReuse );
@@ -347,6 +373,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public final int getHeight() {
 		synchronized( s_sizeBufferForReuse ) {
 			getSize( s_sizeBufferForReuse );
@@ -354,11 +381,13 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		return cameraAdapter.getSpecifiedViewport();
 	}
 
+	@Override
 	public void setSpecifiedViewport( java.awt.Rectangle viewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setSpecifiedViewport( viewport );
@@ -368,14 +397,17 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return cameraAdapter.getActualViewport( rv, getWidth(), getHeight() );
 	}
 
+	@Override
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		return getActualViewport( rv, AdapterFactory.getAdapterFor( camera ) );
 	}
 
+	@Override
 	public final java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		return getActualViewport( new java.awt.Rectangle(), camera );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
 			AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
@@ -384,10 +416,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		return getActualProjectionMatrix( new edu.cmu.cs.dennisc.math.Matrix4x4(), camera );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
 			OrthographicCameraAdapter orthographicCameraAdapter = AdapterFactory.getAdapterFor( orthographicCamera );
@@ -396,10 +430,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
 		return getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), orthographicCamera );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera frustumPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
 			FrustumPerspectiveCameraAdapter frustumPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( frustumPerspectiveCamera );
@@ -408,10 +444,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera frustumPerspectiveCamera ) {
 		return getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), frustumPerspectiveCamera );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
 			SymmetricPerspectiveCameraAdapter symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
@@ -420,6 +458,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
 			SymmetricPerspectiveCameraAdapter symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
@@ -428,6 +467,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		if( sgCamera != null ) {
 			synchronized( s_actualViewportBufferForReuse ) {
@@ -473,64 +513,79 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return rv;
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		return getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel, sgCamera );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel ) {
 		return getRayAtPixel( rv, xPixel, yPixel, getCameraAtPixel( xPixel, yPixel ) );
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel ) {
 		return getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel );
 	}
 
+	@Override
 	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
 	}
 
+	@Override
 	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
 	}
 
+	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
 		return m_glEventAdapter.createBufferedImageForUseAsColorBuffer();
 	}
 
+	@Override
 	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
 		return m_glEventAdapter.getColorBuffer( rv, atIsUpsideDown );
 	}
 
+	@Override
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
 		return m_glEventAdapter.getColorBuffer( rv, null );
 	}
 
+	@Override
 	public final java.awt.image.BufferedImage getColorBuffer() {
 		return getColorBuffer( createBufferedImageForUseAsColorBuffer() );
 	}
 
+	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return m_glEventAdapter.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 	}
 
+	@Override
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
 		return m_glEventAdapter.createFloatBufferForUseAsDepthBuffer();
 	}
 
+	@Override
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
 		return m_glEventAdapter.getDepthBuffer( rv );
 	}
 
+	@Override
 	public final java.nio.FloatBuffer getDepthBuffer() {
 		return getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
 	}
 
+	@Override
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
 		return m_glEventAdapter.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
 	}
 
+	@Override
 	public final java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
@@ -547,12 +602,14 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		//		return perspectiveCameraAdapter.getActualPlane( rv, size );
 	}
 
+	@Override
 	public boolean isRenderingEnabled() {
 		return m_isRenderingEnabled;
 	}
 
 	protected abstract void repaintIfAppropriate();
 
+	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		if( m_isRenderingEnabled != isRenderingEnabled ) {
 			m_isRenderingEnabled = isRenderingEnabled;
@@ -574,12 +631,14 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 
+	@Override
 	public void forgetAllCachedItems() {
 		if( m_glEventAdapter != null ) {
 			m_glEventAdapter.forgetAllCachedItems();
 		}
 	}
 
+	@Override
 	public void clearUnusedTextures() {
 		if( m_glEventAdapter != null ) {
 			m_glEventAdapter.clearUnusedTextures();

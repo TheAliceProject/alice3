@@ -51,14 +51,17 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 
 	private E[] prevItems;
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		@Override
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 
+		@Override
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 
+		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}

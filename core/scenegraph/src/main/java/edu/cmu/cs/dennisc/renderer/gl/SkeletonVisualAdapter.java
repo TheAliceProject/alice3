@@ -249,6 +249,7 @@ public class SkeletonVisualAdapter extends VisualAdapter<SkeletonVisual> impleme
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
 		initializeDataIfNecessary();
 		if( this.skeletonIsDirty )
@@ -452,6 +453,7 @@ public class SkeletonVisualAdapter extends VisualAdapter<SkeletonVisual> impleme
 	}
 
 	//PropertyListener methods for listening to changes on skeleton transforms
+	@Override
 	public void propertyChanging( PropertyEvent e )
 	{
 		//Do Nothing
@@ -483,6 +485,7 @@ public class SkeletonVisualAdapter extends VisualAdapter<SkeletonVisual> impleme
 		}
 	}
 
+	@Override
 	public void propertyChanged( PropertyEvent e )
 	{
 		handleSkeletonTransformationChange();

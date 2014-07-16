@@ -163,6 +163,7 @@ public class CardPane extends javax.swing.JPanel {
 		} else {
 			showLive();
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					showSnapshot();
 				}

@@ -52,6 +52,7 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
 		return mapToMap.getInitializingIfAbsent( field, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory>() {
+			@Override
 			public ThisFieldAccessMethodInvocationFactory initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 				return new ThisFieldAccessMethodInvocationFactory( field, method );
 			}

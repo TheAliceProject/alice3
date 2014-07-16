@@ -48,9 +48,11 @@ package org.lgna.story.implementation;
 public final class TextureFactory {
 	private static java.util.Map<org.lgna.common.resources.ImageResource, edu.cmu.cs.dennisc.texture.BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		@Override
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
 
+		@Override
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			org.lgna.common.Resource resource = e.getTypedSource();
 			if( resource instanceof org.lgna.common.resources.ImageResource ) {

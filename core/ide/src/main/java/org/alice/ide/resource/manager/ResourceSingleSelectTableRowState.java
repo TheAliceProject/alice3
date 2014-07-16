@@ -47,10 +47,12 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	private org.lgna.common.Resource[] resources;
 	private java.util.Set<org.lgna.common.Resource> referencedResources;
 
+	@Override
 	public int getColumnCount() {
 		return 3;
 	}
 
+	@Override
 	public int getRowCount() {
 		if( this.resources != null ) {
 			return this.resources.length;
@@ -73,6 +75,7 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 		}
 	}
 
+	@Override
 	public Object getValueAt( int rowIndex, int columnIndex ) {
 		switch( columnIndex ) {
 		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:

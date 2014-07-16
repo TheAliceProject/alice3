@@ -52,6 +52,7 @@ public class ScrollUtilities {
 			c.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( c ) );
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					ScrollUtilities.scrollToVisible( c );
 				}

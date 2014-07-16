@@ -52,16 +52,19 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	private java.awt.GridBagConstraints gbc;
 
 	private javax.swing.event.ListDataListener listDataAdapter = new javax.swing.event.ListDataListener() {
+		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			ListUI.this.refresh();
 		}
 
+		@Override
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			for( int i = e.getIndex0(); i <= e.getIndex1(); i++ ) {
 				ListUI.this.add( i );
 			}
 		}
 
+		@Override
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			for( int i = e.getIndex1(); i >= e.getIndex0(); i-- ) {
 				ListUI.this.remove( i );
@@ -69,11 +72,13 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 		}
 	};
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 
 		}
 	};
 	private java.beans.PropertyChangeListener propertyListener = new java.beans.PropertyChangeListener() {
+		@Override
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			if( "model".equals( e.getPropertyName() ) ) {
 				ListUI.this.refresh();
@@ -102,6 +107,7 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 			final E value = (E)model.getElementAt( i );
 			javax.swing.AbstractButton button = this.createComponentFor( i, value );
 			button.addItemListener( new java.awt.event.ItemListener() {
+				@Override
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
 					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 						if( ListUI.this.list != null ) {

@@ -125,10 +125,12 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
 
 	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		@Override
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 		}
 
+		@Override
 		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
 			org.lgna.croquet.DragModel model = step.getModel();
 			DragComponent dragSource = step.getDragSource();
@@ -140,6 +142,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 		}
 
+		@Override
 		public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		}
 
@@ -151,6 +154,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 		private boolean overLookingGlass = false;
 
+		@Override
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
 			if( isDropLocationOverLookingGlass( dragStep ) ) {
 				if( !overLookingGlass ) {
@@ -178,17 +182,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			return null;
 		}
 
+		@Override
 		public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient ) {
 		}
 
+		@Override
 		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 			globalDragAdapter.dragExited( dragStep );
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return StorytellingSceneEditor.this;
 		}
 
+		@Override
 		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return StorytellingSceneEditor.this;
 		}
@@ -217,6 +225,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
@@ -242,12 +251,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> showSnapGridListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			StorytellingSceneEditor.this.setShowSnapGrid( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> snapEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( SnapState.getInstance().isShowSnapGridEnabled() )
 			{
@@ -257,24 +268,28 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Double> snapGridSpacingListener = new org.lgna.croquet.event.ValueListener<Double>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Double> e ) {
 			StorytellingSceneEditor.this.setSnapGridSpacing( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<UserField> cameraMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
 			StorytellingSceneEditor.this.handleCameraMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<UserField> objectMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
 			StorytellingSceneEditor.this.handleObjectMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
 			StorytellingSceneEditor.this.setSelectedInstance( e.getNextValue() );
@@ -308,6 +323,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private View savedSceneEditorViewSelection = null;
 
 	private org.lgna.croquet.event.ValueListener<View> mainCameraViewSelectionObserver = new org.lgna.croquet.event.ValueListener<View>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
 			StorytellingSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( e.getNextValue() ) );
 		}
@@ -770,9 +786,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			initializeCameraMarkers();
 
 			this.globalDragAdapter.addSelectionListener( new org.alice.interact.event.SelectionListener() {
+				@Override
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 				}
 
+				@Override
 				public void selected( org.alice.interact.event.SelectionEvent e ) {
 					StorytellingSceneEditor.this.handleManipulatorSelection( e );
 				}
@@ -780,6 +798,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ) );
 			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+				@Override
 				public void onClick( InputState clickInput ) {
 					showRightClickMenuForModel( clickInput );
 
@@ -1180,22 +1199,27 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	// ######### Begin implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
+	@Override
 	public void initialized( LookingGlassInitializeEvent e ) {
 	}
 
+	@Override
 	public void cleared( LookingGlassRenderEvent e ) {
 	}
 
+	@Override
 	public void rendered( LookingGlassRenderEvent e ) {
 		if( ( this.onscreenLookingGlass.getSgCameraCount() > 0 ) && ( this.onscreenLookingGlass.getSgCameraAt( 0 ) instanceof OrthographicCamera ) ) {
 			paintHorizonLine( e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getSgCameraAt( 0 ) );
 		}
 	}
 
+	@Override
 	public void resized( LookingGlassResizeEvent e ) {
 		// updateCameraMarkers();
 	}
 
+	@Override
 	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
 	}
 

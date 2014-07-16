@@ -55,6 +55,7 @@ public class LogInOutComposite extends CardOwnerComposite {
 	private final LogOutCard logOutCard;
 	private AbstractLoginComposite composite;
 	private final org.lgna.croquet.event.ValueListener<Boolean> isLoggedInListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateLogInOutComposite();
 		}
@@ -96,6 +97,7 @@ public class LogInOutComposite extends CardOwnerComposite {
 		super.handlePreActivation();
 		Thread loginThread = new Thread( new Runnable() {
 
+			@Override
 			public void run() {
 				if( composite.getIsRememberingState().getValue() && ( composite.getUserNameState().getValue().length() > 0 ) && ( composite.getPasswordState().getValue().length() > 0 ) ) {
 					composite.isClearedForCommit();

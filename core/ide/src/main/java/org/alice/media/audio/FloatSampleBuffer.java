@@ -91,7 +91,10 @@ public class FloatSampleBuffer {
 	private float sampleRate = 0;
 	private int originalFormatType = 0;
 
-	/** Constant for setDitherMode: dithering will be enabled if sample size is decreased */
+	/**
+	 * Constant for setDitherMode: dithering will be enabled if sample size is
+	 * decreased
+	 */
 	public static final int DITHER_MODE_AUTOMATIC = 0;
 	/** Constant for setDitherMode: dithering will be done */
 	public static final int DITHER_MODE_ON = 1;
@@ -211,16 +214,16 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * deletes all channels, frees memory...
-	 * This also removes hidden channels by lazy remove.
+	 * deletes all channels, frees memory... This also removes hidden channels
+	 * by lazy remove.
 	 */
 	public void reset() {
 		init( 0, 0, 1, false );
 	}
 
 	/**
-	 * destroys any existing data and creates new channels.
-	 * It also destroys lazy removed channels and samples.
+	 * destroys any existing data and creates new channels. It also destroys
+	 * lazy removed channels and samples.
 	 */
 	public void reset( int channels, int sampleCount, float sampleRate ) {
 		init( channels, sampleCount, sampleRate, false );
@@ -229,8 +232,8 @@ public class FloatSampleBuffer {
 	//////////////////////////////// conversion back to bytes /////////////////////////////////
 
 	/**
-	 * returns the required size of the buffer
-	 * when convertToByteArray(..) is called
+	 * returns the required size of the buffer when convertToByteArray(..) is
+	 * called
 	 */
 	public int getByteArrayBufferSize( AudioFormat format ) {
 		if( !format.getEncoding().equals( AudioFormat.Encoding.PCM_SIGNED ) &&
@@ -243,7 +246,8 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * throws exception when buffer is too small or <code>format</code> doesn't match
+	 * throws exception when buffer is too small or <code>format</code> doesn't
+	 * match
 	 */
 	public void convertToByteArray( byte[] buffer, int offset, AudioFormat format ) {
 		int byteCount = getByteArrayBufferSize( format );
@@ -275,26 +279,26 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * Creates a new byte[] buffer and returns it.
-	 * Throws an exception when sample rate doesn't match.
+	 * Creates a new byte[] buffer and returns it. Throws an exception when
+	 * sample rate doesn't match.
 	 * 
 	 * @see #convertToByteArray(byte[], int, AudioFormat)
 	 * 
-	 *      public byte[] convertToByteArray(AudioFormat format) {
-	 *      // throws exception when sampleRate doesn't match
-	 *      // creates a new byte[] buffer and returns it
-	 *      byte[] res=new byte[getByteArrayBufferSize(format)];
-	 *      convertToByteArray(res, 0, format);
-	 *      return res;
-	 *      }
+	 *      public byte[] convertToByteArray(AudioFormat format) { // throws
+	 *      exception when sampleRate doesn't match // creates a new byte[]
+	 *      buffer and returns it byte[] res=new
+	 *      byte[getByteArrayBufferSize(format)]; convertToByteArray(res, 0,
+	 *      format); return res; }
 	 * 
-	 *      //////////////////////////////// actions /////////////////////////////////
+	 *      //////////////////////////////// actions
+	 *      /////////////////////////////////
 	 * 
-	 *      /**
-	 *      Resizes this buffer.
+	 *      /** Resizes this buffer.
 	 *      <p>
-	 *      If <code>keepOldSamples</code> is true, as much as possible samples are retained. If the buffer is enlarged, silence is added at the end. If <code>keepOldSamples</code> is false, existing
-	 *      samples are discarded and the buffer contains random samples.
+	 *      If <code>keepOldSamples</code> is true, as much as possible samples
+	 *      are retained. If the buffer is enlarged, silence is added at the
+	 *      end. If <code>keepOldSamples</code> is false, existing samples are
+	 *      discarded and the buffer contains random samples.
 	 */
 	public void changeSampleCount( int newSampleCount, boolean keepOldSamples ) {
 		int oldSampleCount = getSampleCount();
@@ -356,10 +360,15 @@ public class FloatSampleBuffer {
 	/**
 	 * Inserts a channel at position <code>index</code>.
 	 * <p>
-	 * If <code>silent</code> is true, the new channel will be silent. Otherwise it will contain random data.
+	 * If <code>silent</code> is true, the new channel will be silent. Otherwise
+	 * it will contain random data.
 	 * <p>
-	 * If <code>lazy</code> is true, hidden channels which have at least getSampleCount() elements will be examined for reusage as inserted channel.<br>
-	 * If <code>lazy</code> is false, still hidden channels are reused, but it is assured that the inserted channel has exactly getSampleCount() elements, thus not wasting memory.
+	 * If <code>lazy</code> is true, hidden channels which have at least
+	 * getSampleCount() elements will be examined for reusage as inserted
+	 * channel.<br>
+	 * If <code>lazy</code> is false, still hidden channels are reused, but it
+	 * is assured that the inserted channel has exactly getSampleCount()
+	 * elements, thus not wasting memory.
 	 */
 	public void insertChannel( int index, boolean silent, boolean lazy ) {
 		int physSize = channels.size();
@@ -394,10 +403,9 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * Removes a channel.
-	 * If lazy is true, the channel is not physically removed, but only hidden.
-	 * These hidden channels are reused by subsequent calls to addChannel
-	 * or insertChannel.
+	 * Removes a channel. If lazy is true, the channel is not physically
+	 * removed, but only hidden. These hidden channels are reused by subsequent
+	 * calls to addChannel or insertChannel.
 	 */
 	public void removeChannel( int channel, boolean lazy ) {
 		if( !lazy ) {
@@ -410,8 +418,8 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * both source and target channel have to exist. targetChannel
-	 * will be overwritten
+	 * both source and target channel have to exist. targetChannel will be
+	 * overwritten
 	 */
 	public void copyChannel( int sourceChannel, int targetChannel ) {
 		float[] source = getChannel( sourceChannel );
@@ -434,8 +442,8 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * Sets the sample rate of this buffer.
-	 * NOTE: no conversion is done. The samples are only re-interpreted.
+	 * Sets the sample rate of this buffer. NOTE: no conversion is done. The
+	 * samples are only re-interpreted.
 	 */
 	public void setSampleRate( float sampleRate ) {
 		if( sampleRate <= 0 ) {
@@ -465,8 +473,8 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * Set the number of bits for dithering.
-	 * Typically, a value between 0.2 and 0.9 gives best results.
+	 * Set the number of bits for dithering. Typically, a value between 0.2 and
+	 * 0.9 gives best results.
 	 * <p>
 	 * Note: this value is only used, when dithering is actually performed.
 	 */
@@ -482,10 +490,10 @@ public class FloatSampleBuffer {
 	}
 
 	/**
-	 * Sets the mode for dithering.
-	 * This can be one of:
+	 * Sets the mode for dithering. This can be one of:
 	 * <ul>
-	 * <li>DITHER_MODE_AUTOMATIC: it is decided automatically, whether dithering is necessary - in general when sample size is decreased.
+	 * <li>DITHER_MODE_AUTOMATIC: it is decided automatically, whether dithering
+	 * is necessary - in general when sample size is decreased.
 	 * <li>DITHER_MODE_ON: dithering will be forced
 	 * <li>DITHER_MODE_OFF: dithering will not be done.
 	 * </ul>

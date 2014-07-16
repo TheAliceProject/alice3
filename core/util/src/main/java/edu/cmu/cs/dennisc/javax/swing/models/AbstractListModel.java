@@ -46,10 +46,12 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel implements ListModel<E> {
+	@Override
 	public E get( int index ) {
 		return (E)this.getElementAt( index );
 	}
 
+	@Override
 	public int indexOf( E element ) {
 		final int N = this.getSize();
 		for( int i = 0; i < N; i++ ) {
@@ -61,6 +63,7 @@ public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel
 		return -1;
 	}
 
+	@Override
 	public int lastIndexOf( E element ) {
 		final int N = this.getSize();
 		for( int i = 0; i < N; i++ ) {
@@ -73,6 +76,7 @@ public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel
 		return -1;
 	}
 
+	@Override
 	public boolean contains( E element ) {
 		return this.indexOf( element ) != -1;
 	}

@@ -71,10 +71,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	private static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 8.0d / 360.0d );
 	private static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
 
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
@@ -83,18 +85,22 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
 		return this.onscreenPicturePlane;
 	}
 
+	@Override
 	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
 		this.onscreenPicturePlane = onscreenPicturePlane;
 	}

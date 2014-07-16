@@ -92,6 +92,7 @@ public final class UserField extends AbstractField implements UserMember {
 		return this.name;
 	}
 
+	@Override
 	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}

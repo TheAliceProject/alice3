@@ -53,22 +53,27 @@ public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.
 		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
 	}
 
+	@Override
 	public final ScreenElement getResolved() {
 		return this;
 	}
 
+	@Override
 	public final void addComponentListener( java.awt.event.ComponentListener listener ) {
 		this.getAwtComponent().addComponentListener( listener );
 	}
 
+	@Override
 	public final void removeComponentListener( java.awt.event.ComponentListener listener ) {
 		this.getAwtComponent().removeComponentListener( listener );
 	}
 
+	@Override
 	public final void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		this.getAwtComponent().addHierarchyBoundsListener( listener );
 	}
 
+	@Override
 	public final void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		this.getAwtComponent().removeHierarchyBoundsListener( listener );
 	}

@@ -55,10 +55,12 @@ public enum FamilyConstant implements FamilyAttribute {
 		m_value = value;
 	}
 
+	@Override
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.FAMILY;
 	}
 
+	@Override
 	public String getValue() {
 		return m_value;
 	}

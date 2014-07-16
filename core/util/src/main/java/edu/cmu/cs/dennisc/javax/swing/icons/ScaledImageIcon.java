@@ -73,10 +73,12 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		this.height = height;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.height;
 	}
@@ -85,6 +87,7 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		return this.sourceImage;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		if( this.sourceImage != null ) {

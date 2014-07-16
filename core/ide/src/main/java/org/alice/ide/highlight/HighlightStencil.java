@@ -54,6 +54,7 @@ public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 	private static final org.lgna.stencil.Painter OUTLINE_PAINTER = new org.lgna.stencil.BasicPainter( new java.awt.BasicStroke( 2.0f ), java.awt.Color.RED );
 
 	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
+		@Override
 		public void eventDispatched( java.awt.AWTEvent event ) {
 			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
 			if( e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
@@ -174,6 +175,7 @@ public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 
 	private static final javax.swing.KeyStroke HIDE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private java.awt.event.ActionListener hideAction = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			hide();
 		}

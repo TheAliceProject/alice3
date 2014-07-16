@@ -62,16 +62,19 @@ public class GetterSetterProperty<E> implements Property<E> {
 		this( PropertyUtilities.getGetter( cls, name ), PropertyUtilities.getSetter( cls, name ) );
 	}
 
+	@Override
 	public String getName() {
 		return m_name;
 	}
 
+	@Override
 	public E getValue( PropertyOwner owner ) {
 		synchronized( s_getterArgs ) {
 			return (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, m_getter, s_getterArgs );
 		}
 	}
 
+	@Override
 	public void setValue( PropertyOwner owner, E value ) {
 		synchronized( s_setterArgs ) {
 			s_setterArgs[ 0 ] = value;

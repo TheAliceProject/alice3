@@ -58,6 +58,7 @@ public class InOrderAnimation extends CompositeAnimation {
 		m_index = 0;
 	}
 
+	@Override
 	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		Animation[] animations = getAnimations();
 		double tRemaining;

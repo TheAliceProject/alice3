@@ -47,18 +47,22 @@ package org.alice.stageide.gallerybrowser.enumconstant.codecs;
  */
 public enum EnumConstantResourceKeyCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.modelresource.EnumConstantResourceKey> {
 	SINGLETON;
+	@Override
 	public Class<org.alice.stageide.modelresource.EnumConstantResourceKey> getValueClass() {
 		return org.alice.stageide.modelresource.EnumConstantResourceKey.class;
 	}
 
+	@Override
 	public org.alice.stageide.modelresource.EnumConstantResourceKey decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
 		sb.append( value );
 	}

@@ -90,6 +90,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	}
 
 	private final ValueListener<String> searchStateListener = new ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			data.refresh();
 			referenceTreeState.refreshWith( searchResultsState.getValue() );
@@ -101,24 +102,28 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	};
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
 		public void projectChanged() {
 			refresh();
 		}
 	};
 
 	private final ValueListener<org.alice.ide.ProjectDocument> projectDocumentChangeListener = new ValueListener<org.alice.ide.ProjectDocument>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
 			refresh();
 		}
 	};
 
 	private final ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.croquet.models.project.find.core.SearchResult> e ) {
 			referenceTreeState.refreshWith( e.getNextValue() );
 		}
 	};
 
 	private final ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<SearchTreeNode> e ) {
 			SearchTreeNode nextValue = e.getNextValue();
 			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
@@ -144,6 +149,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	};
 	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
+		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {

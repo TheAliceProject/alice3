@@ -46,19 +46,24 @@ public class MemoryView extends javax.swing.JComponent {
 	private static final long K = 1024;
 	//private static final long M = K*K;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			MemoryView.this.repaint();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};

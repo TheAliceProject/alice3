@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -142,6 +141,7 @@ public final class TextureBinding implements ForgettableBinding {
 		data.enable();
 	}
 
+	@Override
 	public void forget( RenderContext rc ) {
 		synchronized( this.map ) {
 			Data data = this.map.get( rc );

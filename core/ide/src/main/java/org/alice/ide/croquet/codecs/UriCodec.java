@@ -48,10 +48,12 @@ package org.alice.ide.croquet.codecs;
  */
 public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 	SINGLETON;
+	@Override
 	public Class<java.net.URI> getValueClass() {
 		return java.net.URI.class;
 	}
 
+	@Override
 	public java.net.URI decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -62,6 +64,7 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
@@ -71,6 +74,7 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, java.net.URI value ) {
 		sb.append( value );
 	}

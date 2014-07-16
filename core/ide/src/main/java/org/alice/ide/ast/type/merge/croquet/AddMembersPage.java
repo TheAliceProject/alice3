@@ -69,12 +69,14 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( "actionItemsRemainingError" );
 
 	private final org.lgna.croquet.Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( "acceptAllDifferentImplementationsOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			acceptAllDifferentImplementations();
 			return null;
 		}
 	} );
 	private final org.lgna.croquet.Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( "rejectAllDifferentImplementationsOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			rejectAllDifferentImplementations();
 			return null;

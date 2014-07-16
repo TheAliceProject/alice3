@@ -47,39 +47,49 @@ package org.alice.ide.ast.data;
  */
 public abstract class FilteredListPropertyData<E> extends org.lgna.croquet.data.RefreshableListData<E> {
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
+		@Override
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 		}
 
+		@Override
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
+		@Override
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 		}
 
+		@Override
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
+		@Override
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 		}
 
+		@Override
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
+		@Override
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 		}
 
+		@Override
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 	};
 
 	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			FilteredListPropertyData.this.refresh();
 		}

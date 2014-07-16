@@ -26,8 +26,7 @@ public class ClosedTrashCanSymbolicStyleIcon implements Icon {
 	 * can install a custom transformation on the graphics context to scale the
 	 * image.
 	 * 
-	 * @param g
-	 *            Graphics context.
+	 * @param g Graphics context.
 	 */
 	public void paint( Graphics2D g ) {
 		g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
@@ -294,6 +293,7 @@ public class ClosedTrashCanSymbolicStyleIcon implements Icon {
 	 * 
 	 * @see javax.swing.Icon#getIconHeight()
 	 */
+	@Override
 	public int getIconHeight() {
 		return height;
 	}
@@ -303,6 +303,7 @@ public class ClosedTrashCanSymbolicStyleIcon implements Icon {
 	 * 
 	 * @see javax.swing.Icon#getIconWidth()
 	 */
+	@Override
 	public int getIconWidth() {
 		return width;
 	}
@@ -321,6 +322,7 @@ public class ClosedTrashCanSymbolicStyleIcon implements Icon {
 	 * 
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
 	 */
+	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		Graphics2D g2d = (Graphics2D)g.create();
 		g2d.translate( x, y );

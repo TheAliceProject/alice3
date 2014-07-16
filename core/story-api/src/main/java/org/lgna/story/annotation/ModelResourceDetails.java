@@ -48,10 +48,12 @@ package org.lgna.story.annotation;
  */
 public enum ModelResourceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.resources.JointedModelResource> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.resources.JointedModelResource> getSupportedCls() {
 		return org.lgna.story.resources.JointedModelResource.class;
 	}
 
+	@Override
 	public java.lang.reflect.Field[] getFlds() {
 		return org.lgna.story.resources.biped.OgreResource.class.getFields();
 	}

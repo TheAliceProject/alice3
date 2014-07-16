@@ -50,6 +50,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 
 	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddProcedureComposite>() {
+			@Override
 			public AddProcedureComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
 				return new AddProcedureComposite( declaringType );
 			}

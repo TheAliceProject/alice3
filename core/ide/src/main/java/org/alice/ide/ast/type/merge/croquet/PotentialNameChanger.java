@@ -47,6 +47,7 @@ package org.alice.ide.ast.type.merge.croquet;
  */
 public abstract class PotentialNameChanger<M extends org.lgna.project.ast.Member> {
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+		@Override
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
 			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
 		}
