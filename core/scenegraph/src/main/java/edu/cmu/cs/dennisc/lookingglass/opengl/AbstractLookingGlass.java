@@ -93,7 +93,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return m_lookingGlassFactory;
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.Picker getPicker() {
+	public edu.cmu.cs.dennisc.renderer.Picker getPicker() {
 		return this.picker;
 	}
 

@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 /**
  * @author Dennis Cosgrove
  */
-public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
+public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
 	private static class ActualPicker {
 		private static final int SELECTION_CAPACITY = 256;
 		private final PickContext pickContext = new PickContext();
@@ -73,7 +73,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			this.glShareContext = null;
 		}
 
-		public void setPickParameters( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		public void setPickParameters( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			this.pickParameters = new PickParameters( lookingGlass, sgCamera, x, y, isSubElementRequired, pickObserver );
 		}
 
@@ -81,11 +81,11 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			this.pickParameters = null;
 		}
 
-		public java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> accessAllPickResults() {
+		public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> accessAllPickResults() {
 			return this.pickParameters.accessAllPickResults();
 		}
 
-		public edu.cmu.cs.dennisc.lookingglass.PickResult accessFrontMostPickResult() {
+		public edu.cmu.cs.dennisc.renderer.PickResult accessFrontMostPickResult() {
 			return this.pickParameters.accessFrontMostPickResult();
 		}
 
@@ -111,7 +111,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 
 			if( pickParameters != null ) {
-				edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = pickParameters.getPickObserver();
+				edu.cmu.cs.dennisc.renderer.PickObserver pickObserver = pickParameters.getPickObserver();
 				if( pickObserver != null ) {
 					pickObserver.prePick();
 					ChangeHandler.handleBufferedChanges();
@@ -236,7 +236,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			}
 		}
 
-		private edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		private edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
@@ -250,11 +250,11 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					this.clearPickParameters();
 				}
 			} else {
-				return new edu.cmu.cs.dennisc.lookingglass.PickResult( sgCamera );
+				return new edu.cmu.cs.dennisc.renderer.PickResult( sgCamera );
 			}
 		}
 
-		private java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickAll( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		private java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
@@ -281,23 +281,23 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		this.lookingGlass = lookingGlass;
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy ) {
+	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickAll( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED, pickObserver );
+			return sharedActualPicker.pickAll( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
 		}
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy ) {
+	public edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+	public edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickFrontMost( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED, pickObserver );
+			return sharedActualPicker.pickFrontMost( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
 		}
 	}
 }

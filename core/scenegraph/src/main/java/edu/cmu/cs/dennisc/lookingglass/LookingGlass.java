@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass;
 
+import edu.cmu.cs.dennisc.renderer.Picker;
+
 /**
  * @author Dennis Cosgrove
  */
