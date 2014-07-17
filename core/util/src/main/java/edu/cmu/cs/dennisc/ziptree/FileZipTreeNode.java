@@ -53,6 +53,7 @@ public class FileZipTreeNode extends ZipTreeNode {
 		this.bytes = bytes;
 	}
 
+	@Override
 	public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
 		return new java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			@Override
@@ -72,26 +73,32 @@ public class FileZipTreeNode extends ZipTreeNode {
 		};
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return false;
 	}
 
+	@Override
 	public java.util.Enumeration<ZipTreeNode> children() {
 		return null;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt( int childIndex ) {
 		return null;
 	}
 
+	@Override
 	public int getChildCount() {
 		return 0;
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return true;
 	}
 
+	@Override
 	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return -1;
 	}

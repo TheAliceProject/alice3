@@ -74,10 +74,12 @@ public abstract class ExpressionCascadeManager {
 	}
 
 	private final ExpressionCascadeContext NULL_CONTEXT = new ExpressionCascadeContext() {
+		@Override
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			return null;
 		}
 
+		@Override
 		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}

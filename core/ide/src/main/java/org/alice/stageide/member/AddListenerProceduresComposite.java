@@ -57,6 +57,7 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 
 	private final java.util.Collection<String> names = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" );
 	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		@Override
 		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}

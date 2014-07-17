@@ -55,6 +55,7 @@ public class BottomPieceData extends IngredientListData<org.lgna.story.resources
 		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
 				org.lgna.story.resources.sims2.BottomPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
 				new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.BottomPiece>() {
+					@Override
 					public boolean accept( org.lgna.story.resources.sims2.BottomPiece e ) {
 						return org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
 					}

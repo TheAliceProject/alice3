@@ -122,6 +122,7 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 				this.getAwtComponent().dispose();
 				this.getAwtComponent().setUndecorated( this.getAwtComponent().isUndecorated() == false );
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					@Override
 					public void run() {
 						getAwtComponent().setContentPane( contentPane );
 						pack();

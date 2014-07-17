@@ -100,6 +100,7 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
 		this.weights = binaryDecoder.decodeFloatArray();
 	}
 
+	@Override
 	public void encode( BinaryEncoder binaryEncoder )
 	{
 		binaryEncoder.encode( this.inverseAbsoluteTransformation );

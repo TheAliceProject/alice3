@@ -143,6 +143,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		this.goToParentButton = new JButton( "Go to parent" );
 		this.goToParentButton.addActionListener( new ActionListener()
 		{
+			@Override
 			public void actionPerformed( ActionEvent e )
 			{
 				if( parentHashCode != -1 )
@@ -222,6 +223,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		this.goToVirtualParentButton = new JButton( "Go to parent" );
 		this.goToVirtualParentButton.addActionListener( new ActionListener()
 		{
+			@Override
 			public void actionPerformed( ActionEvent e )
 			{
 				if( virtualParentHashCode != -1 )
@@ -540,6 +542,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		return border;
 	}
 
+	@Override
 	public void valueChanged( TreeSelectionEvent e )
 	{
 		if( e.getNewLeadSelectionPath() != null )

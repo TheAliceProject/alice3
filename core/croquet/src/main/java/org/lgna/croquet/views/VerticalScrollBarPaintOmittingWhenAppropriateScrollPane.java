@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.views;
 
-
 /**
  * @author Dennis Cosgrove
  */

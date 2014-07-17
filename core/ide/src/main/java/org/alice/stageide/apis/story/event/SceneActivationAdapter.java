@@ -51,6 +51,7 @@ public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
 		invokeEntryPoint( e );
 	}

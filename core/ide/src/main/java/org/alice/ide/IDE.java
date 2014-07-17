@@ -65,6 +65,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
 			IDE.this.setPerspective( e.getNextValue() );
 		}
@@ -90,6 +91,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//initialize locale
 
 		org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}
@@ -376,6 +378,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
 			if( nextValue != null ) {

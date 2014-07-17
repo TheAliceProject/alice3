@@ -121,25 +121,32 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 
 	private DefaultCloseOperation defaultCloseOperation = DefaultCloseOperation.HIDE;
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+		@Override
 		public void windowOpened( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowClosing( java.awt.event.WindowEvent e ) {
 			Dialog.this.handleWindowClosing( e );
 		}
 
+		@Override
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowActivated( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowDeactivated( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowIconified( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
 	};

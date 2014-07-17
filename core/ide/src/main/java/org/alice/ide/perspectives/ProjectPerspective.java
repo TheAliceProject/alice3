@@ -57,6 +57,7 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		return this.projectDocumentFrame;
 	}
 
+	@Override
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
 		return this.menuBar;
 	}

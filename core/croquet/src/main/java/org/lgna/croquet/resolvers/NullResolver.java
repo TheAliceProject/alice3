@@ -53,13 +53,16 @@ public final class NullResolver<T> implements Resolver<T> {
 	public NullResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 
+	@Override
 	public T getResolved() {
 		return null;
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
 }

@@ -50,10 +50,12 @@ public class SceneSetupPerspective extends org.alice.ide.perspectives.ProjectPer
 		super( java.util.UUID.fromString( "7b59bece-fa31-4a4c-ac94-5a8f17dfccd3" ), projectDocumentFrame, menuBar );
 	}
 
+	@Override
 	public SceneSetupMainComposite getMainComposite() {
 		return this.mainComposite;
 	}
 
+	@Override
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
 			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();

@@ -104,6 +104,7 @@ public abstract class JHtmlView extends javax.swing.JEditorPane {
 	}
 
 	private final javax.swing.event.HyperlinkListener hyperlinkListener = new javax.swing.event.HyperlinkListener() {
+		@Override
 		public void hyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
 			handleHyperlinkUpdate( e );
 		}

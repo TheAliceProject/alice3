@@ -114,6 +114,7 @@ public class TypeManager {
 			this.superType = superType;
 		}
 
+		@Override
 		public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
 			return userType.superType.getValue() == this.superType;
 		}

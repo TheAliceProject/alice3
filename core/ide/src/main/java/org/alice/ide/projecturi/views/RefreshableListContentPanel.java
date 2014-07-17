@@ -47,6 +47,7 @@ package org.alice.ide.projecturi.views;
  */
 public final class RefreshableListContentPanel extends ListContentPanel {
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			RefreshableListContentPanel.this.handleRefresh();
 		}

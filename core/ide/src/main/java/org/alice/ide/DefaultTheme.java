@@ -63,46 +63,57 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color( 201, 201, 218 );
 
+	@Override
 	public java.awt.Color getTypeColor() {
 		return DEFAULT_TYPE_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getMutedTypeColor() {
 		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.9, 0.9 );
 	}
 
+	@Override
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getFunctionColor() {
 		return DEFAULT_FUNCTION_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getConstructorColor() {
 		return DEFAULT_CONSTRUCTOR_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getFieldColor() {
 		return DEFAULT_FIELD_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getLocalColor() {
 		return getFieldColor();
 	}
 
+	@Override
 	public java.awt.Color getParameterColor() {
 		return getFieldColor();
 	}
 
+	@Override
 	public java.awt.Color getEventColor() {
 		return DEFAULT_EVENT_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getEventBodyColor() {
 		return DEFAULT_EVENT_BODY_COLOR;
 	}
 
+	@Override
 	public java.awt.Paint getPaintFor( Class<? extends org.lgna.project.ast.Statement> cls, int x, int y, int width, int height ) {
 		java.awt.Color color = this.getColorFor( cls );
 		if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
@@ -119,6 +130,7 @@ public class DefaultTheme implements Theme {
 		}
 	}
 
+	@Override
 	public java.awt.Color getColorFor( Class<? extends org.lgna.project.ast.Node> cls ) {
 		if( org.lgna.project.ast.Statement.class.isAssignableFrom( cls ) ) {
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
@@ -163,6 +175,7 @@ public class DefaultTheme implements Theme {
 		}
 	}
 
+	@Override
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
 		if( node != null ) {
 			if( node instanceof org.lgna.project.ast.AbstractMethod ) {
@@ -189,10 +202,12 @@ public class DefaultTheme implements Theme {
 		}
 	}
 
+	@Override
 	public java.awt.Color getCommentForegroundColor() {
 		return new java.awt.Color( 0, 100, 0 );
 	}
 
+	@Override
 	public java.awt.Color getCodeColor( org.lgna.project.ast.Code code ) {
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
@@ -208,18 +223,22 @@ public class DefaultTheme implements Theme {
 		}
 	}
 
+	@Override
 	public java.awt.Color getSelectedColor() {
 		return DEFAULT_SELECTED_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getUnselectedColor() {
 		return DEFAULT_UNSELECTED_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getPrimaryBackgroundColor() {
 		return DEFAULT_PRIMARY_BACKGROUND_COLOR;
 	}
 
+	@Override
 	public java.awt.Color getSecondaryBackgroundColor() {
 		return DEFAULT_SECONDARY_BACKGROUND_COLOR;
 	}

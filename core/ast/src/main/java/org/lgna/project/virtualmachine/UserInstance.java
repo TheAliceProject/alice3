@@ -48,7 +48,6 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.ConstructorBlockStatement;
 import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.ConstructorReflectionProxy;
-import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaConstructor;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.UserField;
@@ -132,7 +131,7 @@ public class UserInstance {
 			for( AbstractField field : this.type.getDeclaredFields() ) {
 				assert field instanceof UserField;
 				UserField userField = (UserField)field;
-				this.createAndSetFieldInstance( vm, userField );
+				vm.createAndSetFieldInstance( this, userField );
 			}
 			try {
 				vm.execute( constructorBlockStatement );
@@ -158,14 +157,6 @@ public class UserInstance {
 				this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
 			}
 		}
-	}
-
-	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
-		Expression expression = field.initializer.getValue();
-		assert expression != null;
-		Object rv = vm.evaluate( expression );
-		this.setFieldValue( field, rv );
-		return rv;
 	}
 
 	public UserType<?> getType() {

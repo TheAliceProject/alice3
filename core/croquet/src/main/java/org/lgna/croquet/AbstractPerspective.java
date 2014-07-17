@@ -72,6 +72,7 @@ public abstract class AbstractPerspective extends AbstractElement implements Per
 		this.name = this.findDefaultLocalizedText();
 	}
 
+	@Override
 	public String getName() {
 		this.initializeIfNecessary();
 		return this.name;

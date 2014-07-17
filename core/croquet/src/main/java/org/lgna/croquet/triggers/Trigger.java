@@ -53,6 +53,7 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 	public Trigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 

@@ -62,14 +62,17 @@ public class LinkScaleIcon implements javax.swing.Icon {
 		this.unselectedIcon = unselectedIcon;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return Math.max( this.selectedIcon.getIconWidth(), this.unselectedIcon.getIconWidth() );
 	}
 
+	@Override
 	public int getIconHeight() {
 		return Math.max( this.selectedIcon.getIconHeight(), this.unselectedIcon.getIconHeight() );
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		if( c instanceof javax.swing.AbstractButton ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;

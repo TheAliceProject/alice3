@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 public abstract class AbstractCompositeIcon implements javax.swing.Icon {
 	protected abstract javax.swing.Icon[] getComponentIcons();
 
+	@Override
 	public int getIconWidth() {
 		int rv = 0;
 		for( javax.swing.Icon icon : this.getComponentIcons() ) {
@@ -56,6 +57,7 @@ public abstract class AbstractCompositeIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public int getIconHeight() {
 		int rv = 0;
 		for( javax.swing.Icon icon : this.getComponentIcons() ) {
@@ -64,6 +66,7 @@ public abstract class AbstractCompositeIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		for( javax.swing.Icon icon : this.getComponentIcons() ) {
 			icon.paintIcon( c, g, x, y );

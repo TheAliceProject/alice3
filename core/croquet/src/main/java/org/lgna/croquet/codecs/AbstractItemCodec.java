@@ -52,10 +52,12 @@ public abstract class AbstractItemCodec<T> implements org.lgna.croquet.ItemCodec
 		this.valueCls = valueCls;
 	}
 
+	@Override
 	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, T value ) {
 		sb.append( value );
 	}

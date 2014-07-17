@@ -54,6 +54,7 @@ import org.lgna.croquet.views.LabeledFormRow;
  */
 public class LoginView extends FormPanel {
 	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			passwordField.setExposed( e.getNextValue() );
 		}

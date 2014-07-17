@@ -63,6 +63,7 @@ class WaitingRunnable implements Runnable {
 		return this.exception;
 	}
 
+	@Override
 	public void run() {
 		try {
 			this.runnable.run();
@@ -196,6 +197,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return rv;
 	}
 
+	@Override
 	public void acquireRenderingLock() {
 		try {
 			this.renderingLock.acquire();
@@ -204,14 +206,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
+	@Override
 	public void releaseRenderingLock() {
 		this.renderingLock.release();
 	}
 
+	@Override
 	public int getAutomaticDisplayCount() {
 		return this.automaticDisplayCount;
 	}
 
+	@Override
 	public synchronized void incrementAutomaticDisplayCount() {
 		this.automaticDisplayCount++;
 		if( this.animator != null ) {
@@ -227,19 +232,23 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
+	@Override
 	public synchronized void decrementAutomaticDisplayCount() {
 		this.automaticDisplayCount--;
 	}
 
+	@Override
 	public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
 	}
 
+	@Override
 	public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
 		synchronized( this.toBeReleased ) {
 			this.toBeReleased.add( releaseEvent.getTypedSource() );
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass() {
 		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
 		lolg.addReleaseListener( this );
@@ -247,6 +256,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return lolg;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass() {
 		HeavyweightOnscreenLookingGlass holg = new HeavyweightOnscreenLookingGlass( this );
 		holg.addReleaseListener( this );
@@ -254,6 +264,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return holg;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
 		assert ( lookingGlassToShareContextWith == null ) || ( lookingGlassToShareContextWith instanceof AbstractLookingGlass );
 		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, width, height, (AbstractLookingGlass)lookingGlassToShareContextWith );
@@ -262,14 +273,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return olg;
 	}
 
+	@Override
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
 
+	@Override
 	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.remove( automaticDisplayListener );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
 		return this.automaticDisplayListeners;
 	}
@@ -284,10 +298,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
+	@Override
 	public void invokeLater( Runnable runnable ) {
 		this.runnables.add( runnable );
 	}
 
+	@Override
 	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		Thread currentThread = Thread.currentThread();
 		WaitingRunnable waitingRunnable = new WaitingRunnable( runnable, currentThread );
@@ -300,6 +316,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
+	@Override
 	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
 		try {
 			invokeAndWait( runnable );
@@ -310,14 +327,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
+	@Override
 	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass> getLightweightOnscreenLookingGlasses() {
 		return this.lightweightOnscreenLookingGlasses;
 	}
 
+	@Override
 	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass> getHeavyweightOnscreenLookingGlasses() {
 		return this.heavyweightOnscreenLookingGlasses;
 	}
 
+	@Override
 	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass> getOffscreenLookingGlasses() {
 		return this.offscreenLookingGlasses;
 	}

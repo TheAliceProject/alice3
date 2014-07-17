@@ -54,6 +54,7 @@ public class FileUtilities {
 				return fileA.getName().compareToIgnoreCase( fileB.getName() );
 			}
 
+			@Override
 			public int compare( java.io.File fileA, java.io.File fileB ) {
 				if( fileA != null ) {
 					if( fileB != null ) {
@@ -288,6 +289,7 @@ public class FileUtilities {
 
 	public static java.io.File[] listDirectories( java.io.File root ) {
 		return listFiles( root, new java.io.FileFilter() {
+			@Override
 			public boolean accept( java.io.File file ) {
 				return file.isDirectory();
 			}
@@ -302,6 +304,7 @@ public class FileUtilities {
 		assert extension.charAt( 0 ) != '.';
 		final String ext = extension;
 		return listFiles( root, new java.io.FileFilter() {
+			@Override
 			public boolean accept( java.io.File file ) {
 				return file.isFile() && ext.equalsIgnoreCase( getExtension( file ) );
 			}
@@ -325,6 +328,7 @@ public class FileUtilities {
 				depth--;
 			}
 			java.io.File[] dirs = dir.listFiles( new java.io.FileFilter() {
+				@Override
 				public boolean accept( java.io.File file ) {
 					return file.isDirectory();
 				}
@@ -360,6 +364,7 @@ public class FileUtilities {
 		assert extension != null;
 		assert extension.charAt( 0 ) != '.';
 		return listDescendants( root, new java.io.FileFilter() {
+			@Override
 			public boolean accept( java.io.File file ) {
 				if( file.isFile() ) {
 					if( extension != null ) {
@@ -397,6 +402,7 @@ public class FileUtilities {
 
 	public static java.io.FilenameFilter createFilenameFilter( final String extension ) {
 		return new java.io.FilenameFilter() {
+			@Override
 			public boolean accept( java.io.File dir, String name ) {
 				return name.endsWith( extension );
 			}
@@ -405,6 +411,7 @@ public class FileUtilities {
 
 	public static java.io.FileFilter createFileWithExtensionFilter( final String extension ) {
 		return new java.io.FileFilter() {
+			@Override
 			public boolean accept( java.io.File file ) {
 				if( file.isFile() ) {
 					return file.getName().endsWith( extension );
@@ -417,6 +424,7 @@ public class FileUtilities {
 
 	public static java.io.FileFilter createDirectoryFilter() {
 		return new java.io.FileFilter() {
+			@Override
 			public boolean accept( java.io.File file ) {
 				return file.isDirectory();
 			}

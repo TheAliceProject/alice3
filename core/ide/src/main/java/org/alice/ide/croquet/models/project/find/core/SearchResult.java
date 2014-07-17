@@ -69,8 +69,7 @@ public class SearchResult {
 	private final AbstractDeclaration declaration;
 	private final List<Expression> references = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 
-	@SuppressWarnings( "unchecked" )
-	private static final List<Class<? extends AbstractDeclaration>> clsList =
+	@SuppressWarnings( "unchecked" ) private static final List<Class<? extends AbstractDeclaration>> clsList =
 			Lists.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
 
 	public SearchResult( AbstractDeclaration object ) {

@@ -72,6 +72,7 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
 		}
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
 		if( imageIcon != null ) {

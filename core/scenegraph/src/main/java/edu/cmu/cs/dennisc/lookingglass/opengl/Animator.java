@@ -91,6 +91,7 @@ abstract class Animator implements Runnable {
 
 	protected abstract ThreadDeferenceAction step();
 
+	@Override
 	public void run() {
 		final long THRESHOLD = 5;
 		long tPrev = System.currentTimeMillis() - THRESHOLD;

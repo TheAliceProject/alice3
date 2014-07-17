@@ -61,10 +61,12 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
 	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
+	@Override
 	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
 		return this.onscreenPicturePlane;
 	}
 
+	@Override
 	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
 		this.onscreenPicturePlane = onscreenPicturePlane;
 	}

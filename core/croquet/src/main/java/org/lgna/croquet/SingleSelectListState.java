@@ -52,18 +52,22 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			this.index = index;
 		}
 
+		@Override
 		public void addListDataListener( javax.swing.event.ListDataListener listDataListener ) {
 			this.data.addListener( listDataListener );
 		}
 
+		@Override
 		public void removeListDataListener( javax.swing.event.ListDataListener listDataListener ) {
 			this.data.removeListener( listDataListener );
 		}
 
+		@Override
 		public int getSize() {
 			return this.data.getItemCount();
 		}
 
+		@Override
 		public T getElementAt( int index ) {
 			if( index != -1 ) {
 				return this.data.getItemAt( index );
@@ -72,6 +76,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			}
 		}
 
+		@Override
 		public T getSelectedItem() {
 			if( this.index != -1 ) {
 				return this.getElementAt( this.index );
@@ -80,6 +85,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			}
 		}
 
+		@Override
 		public void setSelectedItem( Object item ) {
 			int index = this.data.indexOf( (T)item );
 			SingleSelectListState.this.imp.getSwingModel().setSelectionIndex( index );
@@ -235,6 +241,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		return indexOf( item ) != -1;
 	}
 
+	@Override
 	public final java.util.Iterator<T> iterator() {
 		return this.dataIndexPair.data.iterator();
 	}
@@ -479,6 +486,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> imp;
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( isInTheMidstOfSettingSwingValue ) {
 				//pass

@@ -71,17 +71,19 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		fireTreeStructureChanged( oldRoot );
 	}
 
+	@Override
 	public void hierarchyChanged( HierarchyEvent hierarchyEvent ) {
 		System.out.println( hierarchyEvent );
 	}
 
+	@Override
 	public void addTreeModelListener( TreeModelListener l ) {
 		this.treeModelListeners.add( l );
 	}
 
 	/**
-	 * The only event raised by this model is TreeStructureChanged with the
-	 * root as path, i.e. the whole tree has changed.
+	 * The only event raised by this model is TreeStructureChanged with the root
+	 * as path, i.e. the whole tree has changed.
 	 */
 	protected void fireTreeStructureChanged( Component oldRoot ) {
 		TreeModelEvent e = new TreeModelEvent( this,
@@ -91,6 +93,7 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		}
 	}
 
+	@Override
 	public Object getChild( Object parent, int index ) {
 		if( parent instanceof Composite )
 		{
@@ -100,6 +103,7 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		return null;
 	}
 
+	@Override
 	public int getChildCount( Object parent ) {
 		if( parent instanceof Composite )
 		{
@@ -109,6 +113,7 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		return 0;
 	}
 
+	@Override
 	public int getIndexOfChild( Object parent, Object child ) {
 		if( parent instanceof Composite )
 		{
@@ -136,6 +141,7 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		}
 	}
 
+	@Override
 	public Object getRoot() {
 		if( this.rootComponent != null )
 		{
@@ -144,25 +150,30 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		return null;
 	}
 
+	@Override
 	public boolean isLeaf( Object node ) {
 		return getChildCount( node ) == 0;
 	}
 
+	@Override
 	public void removeTreeModelListener( TreeModelListener l ) {
 		this.treeModelListeners.remove( l );
 
 	}
 
+	@Override
 	public void valueForPathChanged( TreePath path, Object newValue ) {
 		System.out.println( "*** valueForPathChanged : "
 				+ path + " --> " + newValue );
 
 	}
 
+	@Override
 	public void propertyChanged( PropertyEvent e ) {
 		System.out.println( e );
 	}
 
+	@Override
 	public void propertyChanging( PropertyEvent e ) {
 		System.out.println( e );
 	}

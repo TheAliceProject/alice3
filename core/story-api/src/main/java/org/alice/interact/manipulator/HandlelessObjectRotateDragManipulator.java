@@ -81,10 +81,12 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		this.rotateAxis = this.rotateAxisDirection.getVector();
 	}
 
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
@@ -92,18 +94,22 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		}
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.ACTIVE_VIEW;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
 		return this.onscreenPicturePlane;
 	}
 
+	@Override
 	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
 		this.onscreenPicturePlane = onscreenPicturePlane;
 	}

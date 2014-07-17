@@ -50,15 +50,18 @@ import org.lgna.croquet.views.PaintUtilities;
  */
 public class JDragProxy extends JProxy {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 		}
 
+		@Override
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
 				JDragProxy.this.getDragComponent().handleCancel( e );
 			}
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};

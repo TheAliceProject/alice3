@@ -48,9 +48,11 @@ package org.alice.ide.ast.sort;
  */
 public enum AlphabeticalMemberSorter implements MemberSorter {
 	SINGLETON {
+		@Override
 		public <T extends org.lgna.project.ast.AbstractMember> java.util.List<T> createSortedList( java.util.List<T> src ) {
 			java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( src );
 			java.util.Collections.sort( rv, new java.util.Comparator<T>() {
+				@Override
 				public int compare( T o1, T o2 ) {
 					//todo: support locale
 					String name1 = o1 != null ? o1.getName() : null;

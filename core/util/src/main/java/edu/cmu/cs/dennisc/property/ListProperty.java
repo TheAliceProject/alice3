@@ -195,6 +195,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	//todo: investigate returning iterator that could allow modification when isLocked 
+	@Override
 	public java.util.Iterator<E> iterator() {
 		return getValue().iterator();
 	}

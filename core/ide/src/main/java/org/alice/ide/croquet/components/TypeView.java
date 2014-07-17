@@ -48,6 +48,7 @@ package org.alice.ide.croquet.components;
  */
 public class TypeView<T extends org.lgna.project.ast.AbstractType<?, ?, ?>> extends org.lgna.croquet.views.ViewController<javax.swing.JLabel, org.lgna.croquet.ItemState<T>> {
 	private final org.lgna.croquet.event.ValueListener<T> valueObserver = new org.lgna.croquet.event.ValueListener<T>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<T> e ) {
 			T nextValue = e.getNextValue();
 			org.lgna.project.ast.AbstractType<?, ?, ?> type;

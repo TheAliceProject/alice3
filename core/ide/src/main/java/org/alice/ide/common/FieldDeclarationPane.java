@@ -106,9 +106,11 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 	}
 
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			updateFinalLabel();
 		}

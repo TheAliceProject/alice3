@@ -68,18 +68,22 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	//	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
 	//		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
 	//	}
+	@Override
 	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}

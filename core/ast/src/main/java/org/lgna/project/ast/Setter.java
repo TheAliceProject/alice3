@@ -50,10 +50,12 @@ public class Setter extends AbstractMethodContainedByUserField {
 		super( field );
 	}
 
+	@Override
 	public AbstractType<?, ?, ?> getReturnType() {
 		return JavaType.VOID_TYPE;
 	}
 
+	@Override
 	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}

@@ -56,16 +56,19 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 	}
 
 	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
+		@Override
 		public void resourceAdded( org.lgna.project.event.ResourceEvent e ) {
 			reloadTableModel();
 		}
 
+		@Override
 		public void resourceRemoved( org.lgna.project.event.ResourceEvent e ) {
 			reloadTableModel();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
 			handleSelection( e.getNextValue() );
 		}

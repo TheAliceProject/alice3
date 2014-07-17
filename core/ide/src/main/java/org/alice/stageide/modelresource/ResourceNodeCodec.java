@@ -47,18 +47,22 @@ package org.alice.stageide.modelresource;
  */
 public enum ResourceNodeCodec implements org.lgna.croquet.ItemCodec<ResourceNode> {
 	SINGLETON;
+	@Override
 	public Class<ResourceNode> getValueClass() {
 		return ResourceNode.class;
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, ResourceNode value ) {
 		throw new AssertionError();
 	}
 
+	@Override
 	public ResourceNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new AssertionError();
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
 		sb.append( value != null ? value.getResourceKey().getDisplayText() : null );
 	}

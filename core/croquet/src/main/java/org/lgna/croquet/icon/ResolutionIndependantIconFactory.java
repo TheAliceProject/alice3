@@ -54,6 +54,7 @@ public abstract class ResolutionIndependantIconFactory extends org.lgna.croquet.
 		this( IsCachingDesired.FALSE );
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}

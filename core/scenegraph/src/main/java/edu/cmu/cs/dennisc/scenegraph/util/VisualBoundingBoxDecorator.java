@@ -71,6 +71,7 @@ public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements 
 		}
 	}
 
+	@Override
 	public void boundChanged( edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = e.getTypedSource();
 		setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );

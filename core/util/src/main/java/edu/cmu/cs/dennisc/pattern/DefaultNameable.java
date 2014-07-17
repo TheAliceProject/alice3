@@ -56,10 +56,12 @@ public class DefaultNameable implements Nameable {
 		setName( name );
 	}
 
+	@Override
 	public String getName() {
 		return m_name;
 	}
 
+	@Override
 	public void setName( String name ) {
 		m_name = name;
 	}

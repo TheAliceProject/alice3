@@ -83,55 +83,67 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		set( right, up, backward );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
 
+	@Override
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
 
+	@Override
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
 
+	@Override
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
 
+	@Override
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public void setValue( OrthogonalMatrix3x3 other ) {
 		super.setValue( other );
 	}
 
+	@Override
 	public void setValue( UnitQuaternion q ) {
 		//todo: assert unit
 
@@ -160,6 +172,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		backward.z = 1 - ( 2 * ( xx + yy ) );
 	}
 
+	@Override
 	public void setValue( AxisRotation aa ) {
 
 		//todo: optimize for special axes
@@ -189,6 +202,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		backward.y = yzt - xs;
 	}
 
+	@Override
 	public void setValue( EulerAngles ea ) {
 		assert ea.order != null;
 		if( ea.order == EulerAngles.Order.YAW_PITCH_ROLL ) {
@@ -216,6 +230,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		}
 	}
 
+	@Override
 	public void setValue( edu.cmu.cs.dennisc.math.ForwardAndUpGuide faug ) {
 		assert faug.forward.isNaN() == false;
 

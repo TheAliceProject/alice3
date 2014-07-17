@@ -7,6 +7,7 @@ public class MouseClickOnScreenAdapter extends AbstractAdapter implements org.lg
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void mouseClicked( MouseClickOnScreenEvent e ) {
 		invokeEntryPoint( e );
 	}

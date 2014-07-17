@@ -51,6 +51,7 @@ public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
 
 	public static FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel>() {
+			@Override
 			public FieldArrayLengthDragModel initialize( org.lgna.project.ast.AbstractField field ) {
 				return new FieldArrayLengthDragModel( field );
 			}

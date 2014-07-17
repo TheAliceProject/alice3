@@ -59,6 +59,7 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 		return button.getModel();
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
 		java.awt.geom.GeneralPath path = this.createPath( x, y, Heading.SOUTH );

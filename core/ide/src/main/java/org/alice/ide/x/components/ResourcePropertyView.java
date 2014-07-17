@@ -62,9 +62,11 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 			//pass
 		} else {
 			this.nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
+				@Override
 				public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
 				}
 
+				@Override
 				public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
 					ResourcePropertyView.this.refreshLater();
 				}

@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.imp.liststate;
 
-
 /**
  * @author Dennis Cosgrove
  */

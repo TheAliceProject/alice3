@@ -65,6 +65,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		this.title = this.findLocalizedText( "title" );
 	}
 
+	@Override
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
 			throw new RuntimeException( "todo" );
@@ -78,6 +79,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		return this.launchOperation;
 	}
 
+	@Override
 	public final void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		java.awt.Component awtComponent = null; //todo
 		//todo: Icon
@@ -85,14 +87,17 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		completionStep.finish();
 	}
 
+	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
 
+	@Override
 	public boolean isSubTransactionHistoryRequired() {
 		return true;
 	}
 
+	@Override
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}

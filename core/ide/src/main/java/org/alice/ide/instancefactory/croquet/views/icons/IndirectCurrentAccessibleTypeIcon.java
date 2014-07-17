@@ -69,6 +69,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public int getIconWidth() {
 		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {
@@ -78,6 +79,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public int getIconHeight() {
 		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {
@@ -87,6 +89,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {

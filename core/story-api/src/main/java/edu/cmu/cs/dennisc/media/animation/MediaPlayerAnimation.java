@@ -65,10 +65,12 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		this.isStarted = false;
 	}
 
+	@Override
 	public void reset() {
 		this.isStarted = false;
 	}
 
+	@Override
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( this.isStarted ) {
 			//pass
@@ -116,6 +118,7 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		return timeRemaining;
 	}
 
+	@Override
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		this.player.stop();
 		if( animationObserver != null ) {

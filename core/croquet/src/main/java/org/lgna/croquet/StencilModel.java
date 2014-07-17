@@ -85,6 +85,7 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.barrier.reset();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				showStencil();
 			}

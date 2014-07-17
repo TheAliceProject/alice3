@@ -126,10 +126,12 @@ public class ModelBuilder {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
 		for( final edu.cmu.cs.dennisc.scenegraph.Geometry geometry : this.geometries ) {
 			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+				@Override
 				public String getName() {
 					return getEntryPath( geometry );
 				}
 
+				@Override
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
@@ -156,20 +158,24 @@ public class ModelBuilder {
 		}
 		for( final edu.cmu.cs.dennisc.texture.BufferedImageTexture texture : this.textures ) {
 			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+				@Override
 				public String getName() {
 					return getEntryPath( texture );
 				}
 
+				@Override
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage() );
 				}
 			} );
 		}
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+			@Override
 			public String getName() {
 				return MAIN_ENTRY_PATH;
 			}
 
+			@Override
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 				encoder.encode( root );

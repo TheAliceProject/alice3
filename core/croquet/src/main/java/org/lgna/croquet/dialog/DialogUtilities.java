@@ -70,29 +70,36 @@ public class DialogUtilities {
 		final org.lgna.croquet.views.Dialog dialog = new org.lgna.croquet.views.Dialog( owner, dialogOwner.isModal() );
 		step.putEphemeralDataFor( DIALOG_KEY, dialog );
 		class DialogWindowListener implements java.awt.event.WindowListener {
+			@Override
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				dialogOwner.handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 
+			@Override
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( dialogOwner.isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
 					dialog.setVisible( false );
 				}
 			}
 
+			@Override
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 				dialogOwner.handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 
+			@Override
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
 		}

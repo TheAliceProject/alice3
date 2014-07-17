@@ -106,11 +106,13 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> typeFeedbackListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter> formatterListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.formatter.Formatter> e ) {
 			CodeEditor.this.header.refreshLater();
 			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
@@ -197,6 +199,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			return this.index;
 		}
 
+		@Override
 		public java.awt.Shape getShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			org.lgna.croquet.views.AwtComponentView<?> src = CodeEditor.this.getAsSeenBy();
 			if( src != null ) {
@@ -208,6 +211,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			}
 		}
 
+		@Override
 		public java.awt.Shape getVisibleShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			org.lgna.croquet.views.AwtComponentView<?> src = CodeEditor.this.getAsSeenBy();
 			if( src != null ) {
@@ -221,6 +225,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			}
 		}
 
+		@Override
 		public boolean isInView() {
 			if( isWarningAlreadyPrinted ) {
 				//pass
@@ -231,22 +236,27 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 			return true;
 		}
 
+		@Override
 		public org.lgna.croquet.views.ScrollPane getScrollPaneAncestor() {
 			return this.statementListPropertyPane.getScrollPaneAncestor();
 		}
 
+		@Override
 		public void addComponentListener( java.awt.event.ComponentListener listener ) {
 			this.statementListPropertyPane.addComponentListener( listener );
 		}
 
+		@Override
 		public void removeComponentListener( java.awt.event.ComponentListener listener ) {
 			this.statementListPropertyPane.removeComponentListener( listener );
 		}
 
+		@Override
 		public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 			this.statementListPropertyPane.addHierarchyBoundsListener( listener );
 		}
 
+		@Override
 		public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 			this.statementListPropertyPane.removeHierarchyBoundsListener( listener );
 		}

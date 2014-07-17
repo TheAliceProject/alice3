@@ -56,15 +56,18 @@ public class Matrix4x4Property extends edu.cmu.cs.dennisc.property.InstancePrope
 		super.setValue( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( new edu.cmu.cs.dennisc.math.Matrix4x4(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Matrix4x4( value ) );

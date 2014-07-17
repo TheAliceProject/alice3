@@ -50,6 +50,7 @@ public class NumeralOperation extends NumberPadOperation {
 
 	public static synchronized NumeralOperation getInstance( NumberModel<?> numberModel, short numeral ) {
 		return mapToMap.getInitializingIfAbsent( numberModel, numeral, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<NumberModel<?>, Short, NumeralOperation>() {
+			@Override
 			public NumeralOperation initialize( NumberModel<?> numberModel, Short numeral ) {
 				return new NumeralOperation( numberModel, numeral );
 			}

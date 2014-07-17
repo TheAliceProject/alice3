@@ -62,6 +62,7 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> sceneTypeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			if( sceneType != null ) {
 				sceneType.fields.removeListPropertyListener( sceneTypeFieldsListener );

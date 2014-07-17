@@ -146,6 +146,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 		org.alice.ide.ProjectStack.pushProject( project );
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
 				composite.setProject( project );

@@ -53,6 +53,7 @@ public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.lookingg
 		texture.doSetup( rc.gl );
 	}
 
+	@Override
 	public void forget( RenderContext rc ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "IMPLEMENT forget" );
 	}

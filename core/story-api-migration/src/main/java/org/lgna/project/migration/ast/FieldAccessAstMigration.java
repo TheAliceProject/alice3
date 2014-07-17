@@ -57,6 +57,7 @@ public abstract class FieldAccessAstMigration extends AstMigration {
 	@Override
 	public final void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable ) {
 		root.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+			@Override
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.FieldAccess ) {
 					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)crawlable;

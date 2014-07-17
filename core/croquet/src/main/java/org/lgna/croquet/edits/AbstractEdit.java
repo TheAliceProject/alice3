@@ -72,6 +72,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		this.completionStep = (org.lgna.croquet.history.CompletionStep<M>)step;
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 

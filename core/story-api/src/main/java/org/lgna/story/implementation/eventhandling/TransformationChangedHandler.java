@@ -67,6 +67,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 
 	protected abstract void check( SThing changedEntity );
 
+	@Override
 	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
 		fireAllTargeted( source );

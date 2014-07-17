@@ -110,6 +110,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	}
 
 	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
 			File videosDirectory = org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
@@ -259,6 +260,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 
 	YouTubeListener listener = new YouTubeListener() {
 
+		@Override
 		public void youTubeEventTriggered( YouTubeEvent event ) {
 			if( event.getType() == EventType.UPLOAD_SUCCESS ) {
 				UploadComposite.this.isUploaded = true;

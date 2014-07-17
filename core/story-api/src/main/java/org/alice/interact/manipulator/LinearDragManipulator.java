@@ -68,10 +68,12 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
  * @author David Culyba
  */
 public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
@@ -79,18 +81,22 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 		}
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
 		return this.onscreenPicturePlane;
 	}
 
+	@Override
 	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
 		this.onscreenPicturePlane = onscreenPicturePlane;
 	}

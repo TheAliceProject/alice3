@@ -52,6 +52,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {
+			@Override
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_TAB ) {
 					e.consume();
@@ -63,9 +64,11 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 				}
 			}
 
+			@Override
 			public void keyReleased( java.awt.event.KeyEvent e ) {
 			}
 
+			@Override
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );

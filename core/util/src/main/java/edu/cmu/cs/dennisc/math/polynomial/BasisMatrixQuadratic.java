@@ -55,10 +55,12 @@ public abstract class BasisMatrixQuadratic implements Quadratic {
 		m_g = g;
 	}
 
+	@Override
 	public boolean isNaN() {
 		return ( m_h == null ) || m_h.isNaN() || ( m_g == null ) || m_g.isNaN();
 	}
 
+	@Override
 	public double evaluate( double t ) {
 		double tt = t * t;
 		return ( ( ( tt * m_h.right.x ) + ( t * m_h.right.y ) + m_h.right.z ) * m_g.x ) +
@@ -66,6 +68,7 @@ public abstract class BasisMatrixQuadratic implements Quadratic {
 				( ( ( tt * m_h.backward.x ) + ( t * m_h.backward.y ) + m_h.backward.z ) * m_g.z );
 	}
 
+	@Override
 	public double evaluateDerivative( double t ) {
 		double t2 = t * 2;
 		return ( ( ( t2 * m_h.right.x ) + m_h.right.y ) * m_g.x ) +

@@ -69,6 +69,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return true;
 	}
 
+	@Override
 	public final java.util.UUID getId() {
 		return this.id;
 	}
@@ -77,6 +78,7 @@ public abstract class AbstractNode extends Element implements Node {
 		this.id = id;
 	}
 
+	@Override
 	public boolean contentEquals( Node other, ContentEqualsStrictness strictness ) {
 		if( other != null ) {
 			Class<?> thisCls = this.getClass();
@@ -87,6 +89,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 	}
 
+	@Override
 	public Node getParent() {
 		return this.parent;
 	}
@@ -102,6 +105,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 	}
 
+	@Override
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node rv;
 		if( isThisIncludedInSearch ) {
@@ -118,6 +122,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return (N)rv;
 	}
 
+	@Override
 	public final <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return getFirstAncestorAssignableTo( cls, false );
 	}
@@ -273,6 +278,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 	}
 
+	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited ) {
 		this.accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
 	}
@@ -325,6 +331,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 	}
 
+	@Override
 	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> criterion ) {
 		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy, criterion );
 	}
@@ -713,6 +720,7 @@ public abstract class AbstractNode extends Element implements Node {
 		localizer.appendText( this.getClass().getSimpleName() );
 	}
 
+	@Override
 	public final String getRepr() {
 		final StringBuilder sb = new StringBuilder();
 		this.appendRepr( astLocalizerFactory.createInstance( sb ) );

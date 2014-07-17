@@ -50,6 +50,7 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
 
 	protected abstract void handleThrowable( Thread thread, Throwable throwable );
 
+	@Override
 	public final void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
 		if( throwable instanceof RuntimeException ) {

@@ -173,6 +173,7 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 		return read;
 	}
 
+	@Override
 	public int compareTo( ScheduledAudioStream arg0 )
 	{
 		return Double.compare( this.startTime, arg0.startTime );

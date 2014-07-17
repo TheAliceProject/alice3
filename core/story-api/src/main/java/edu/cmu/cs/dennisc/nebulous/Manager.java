@@ -99,6 +99,7 @@ public class Manager {
 				}
 			}
 			edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext.addUnusedTexturesListener( new edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext.UnusedTexturesListener() {
+				@Override
 				public void unusedTexturesCleared( javax.media.opengl.GL gl ) {
 					unloadUnusedNebulousTextureData( gl );
 				}

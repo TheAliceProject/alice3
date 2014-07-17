@@ -121,10 +121,12 @@ public class TypeBorder implements javax.swing.border.Border {
 		}
 	}
 
+	@Override
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		return TypeBorder.insets;
 	}
 
+	@Override
 	public boolean isBorderOpaque() {
 		return false;
 	}
@@ -150,6 +152,7 @@ public class TypeBorder implements javax.swing.border.Border {
 		return rv;
 	}
 
+	@Override
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		java.awt.Shape shape = TypeBorder.createShape( x, y, width, height );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

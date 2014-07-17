@@ -48,22 +48,27 @@ package org.lgna.croquet;
  */
 public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
 	private final edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T>() {
+		@Override
 		public int getChildCount( Object parent ) {
 			return CustomSingleSelectTreeState.this.getChildCount( (T)parent );
 		}
 
+		@Override
 		public T getChild( Object parent, int index ) {
 			return CustomSingleSelectTreeState.this.getChild( (T)parent, index );
 		}
 
+		@Override
 		public int getIndexOfChild( Object parent, Object child ) {
 			return CustomSingleSelectTreeState.this.getIndexOfChild( (T)parent, (T)child );
 		}
 
+		@Override
 		public T getRoot() {
 			return CustomSingleSelectTreeState.this.getRoot();
 		}
 
+		@Override
 		public boolean isLeaf( Object node ) {
 			return CustomSingleSelectTreeState.this.isLeaf( (T)node );
 		}
@@ -87,6 +92,7 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
 			return collection.toArray();
 		}
 
+		@Override
 		public javax.swing.tree.TreePath getTreePath( Object node ) {
 			if( node != null ) {
 				Object[] nodes = this.getPathToRoot( (T)node );

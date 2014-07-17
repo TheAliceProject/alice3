@@ -336,19 +336,18 @@ public class AliceResourceUtilties {
 	}
 
 	/**
-	 * Visual and Texture info is encoded into the enumeration like this:
-	 * public enum BaseVisualName {
-	 * TEXTURE_NAME_1,
-	 * TEXTURE_NAME_2,
+	 * Visual and Texture info is encoded into the enumeration like this: public
+	 * enum BaseVisualName { TEXTURE_NAME_1, TEXTURE_NAME_2,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1,
-	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2
-	 * }
+	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2 }
 	 * 
-	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names of visual resources.
-	 * If the resource uses the base visual, then the enum name is just the name of the texture
-	 * (like the entries TEXTURE_NAME_1 and TEXTURE_NAME_2)
-	 * If the resource uses a different visual resource, then the visual resource name is the first half of the enum constant
-	 * (like the entries DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1 and DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
+	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names
+	 * of visual resources. If the resource uses the base visual, then the enum
+	 * name is just the name of the texture (like the entries TEXTURE_NAME_1 and
+	 * TEXTURE_NAME_2) If the resource uses a different visual resource, then
+	 * the visual resource name is the first half of the enum constant (like the
+	 * entries DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1 and
+	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
 	 **/
 
 	private static void findAndStoreResourceNames( Class<?> resourceClass, String resourceName ) {

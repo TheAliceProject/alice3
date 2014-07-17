@@ -49,12 +49,14 @@ public class MemberHubNameLabel extends org.lgna.croquet.views.Label {
 	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
 
 	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
 			updateText();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			updateText();
 		}

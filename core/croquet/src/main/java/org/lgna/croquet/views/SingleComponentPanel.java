@@ -48,9 +48,11 @@ package org.lgna.croquet.views;
  */
 public abstract class SingleComponentPanel extends Panel {
 	protected static abstract class SingleComponentLayoutManager implements java.awt.LayoutManager {
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
 
@@ -62,16 +64,19 @@ public abstract class SingleComponentPanel extends Panel {
 			}
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return this.layoutSize( parent );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			return this.layoutSize( parent );
 		}
 
 		protected abstract void layoutComponent( java.awt.Container parent, java.awt.Component component );
 
+		@Override
 		public final void layoutContainer( java.awt.Container parent ) {
 			if( parent.getComponentCount() > 0 ) {
 				this.layoutComponent( parent, parent.getComponent( 0 ) );

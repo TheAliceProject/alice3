@@ -51,6 +51,7 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 
 	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite>() {
+			@Override
 			public AddUnmanagedFieldComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
 				return new AddUnmanagedFieldComposite( declaringType );
 			}

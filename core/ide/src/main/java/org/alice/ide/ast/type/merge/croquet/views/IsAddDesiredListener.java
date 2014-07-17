@@ -52,6 +52,7 @@ public class IsAddDesiredListener implements org.lgna.croquet.event.ValueListene
 		this.components = components;
 	}
 
+	@Override
 	public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
 		for( org.lgna.croquet.views.AwtComponentView<?> component : this.components ) {
 			synchronized( component.getTreeLock() ) {

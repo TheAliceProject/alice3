@@ -87,6 +87,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			setRecording( e.getNextValue() );
 		}
@@ -94,6 +95,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
+		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
@@ -111,12 +113,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
+		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
 			if( lookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
 				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)lookingGlass;
 				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
+					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {
 							if( isUpSideDown ) {
@@ -154,6 +158,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			}
 		}
 
+		@Override
 		public void complete() {
 		}
 	};

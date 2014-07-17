@@ -82,6 +82,7 @@ public class BooleanStateSwingModel {
 			}
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			boolean isSelected = buttonModel.isSelected();
 			if( isTextVariable() ) {

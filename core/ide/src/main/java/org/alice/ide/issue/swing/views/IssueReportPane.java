@@ -86,6 +86,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	}
 
 	private class SubmitAction extends org.alice.ide.issue.swing.SubmitReportAction {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			IssueReportPane.this.submit();
 		}
@@ -243,11 +244,13 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );

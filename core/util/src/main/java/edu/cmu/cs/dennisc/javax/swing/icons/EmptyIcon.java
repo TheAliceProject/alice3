@@ -55,14 +55,17 @@ public class EmptyIcon implements javax.swing.Icon {
 		this.height = height;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.height;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 	}
 }

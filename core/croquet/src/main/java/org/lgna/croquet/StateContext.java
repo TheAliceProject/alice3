@@ -62,17 +62,20 @@ public class StateContext<T> implements Context {
 		this.value = state.decodeValue( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.stateResolver );
 		State<T> state = this.stateResolver.getResolved();
 		state.encodeValue( binaryEncoder, this.value );
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.stateResolver.retarget( retargeter );
 		this.value = retargeter.retarget( this.value );
 	}
 
+	@Override
 	public boolean isGoodToGo() {
 		T currentValue = this.getState().getValue();
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );

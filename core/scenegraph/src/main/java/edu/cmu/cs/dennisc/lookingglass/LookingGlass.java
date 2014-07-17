@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass;
 
+import edu.cmu.cs.dennisc.renderer.Picker;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,8 +55,10 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public java.awt.Dimension getSize( java.awt.Dimension rv );
 
+	@Override
 	public int getWidth();
 
+	@Override
 	public int getHeight();
 
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer();
@@ -98,6 +102,7 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public int getSgCameraCount();
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv );
@@ -122,8 +127,10 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public Picker getPicker();
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera );
@@ -142,14 +149,18 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel );
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel );
 
+	@Override
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
+	@Override
 	public java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );

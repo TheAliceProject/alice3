@@ -54,10 +54,12 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
@@ -69,6 +71,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) ) {
 			( (CameraInformedManipulator)this.activeManipulator ).setDesiredCameraView( cameraView );
@@ -77,6 +80,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		if( ( this.activeManipulator != null ) && ( this.activeManipulator instanceof CameraInformedManipulator ) ) {
 			return ( (CameraInformedManipulator)this.activeManipulator ).getDesiredCameraView();
@@ -85,10 +89,12 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
 		return this.onscreenPicturePlane;
 	}
 
+	@Override
 	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
 		this.onscreenPicturePlane = onscreenPicturePlane;
 		if( this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator ) {

@@ -58,6 +58,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		super( ideConfiguration, crashDetector );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
+			@Override
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
 				int newState = e.getNewState();
@@ -93,6 +94,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	}
 
 	private final edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter = new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration>() {
+		@Override
 		public boolean accept( org.lgna.project.ast.Declaration declaration ) {
 			return PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( declaration.getName() ) == false;
 		}
@@ -318,6 +320,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		if( type != null ) {
 			//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					final int N = type.fields.size();
 					int i = N;

@@ -47,10 +47,12 @@ package org.alice.ide.croquet.codecs;
  */
 public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> {
 	SINGLETON;
+	@Override
 	public Class<java.util.Locale> getValueClass() {
 		return java.util.Locale.class;
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, java.util.Locale value ) {
 		if( value != null ) {
 			sb.append( value.getDisplayName( value ) );
@@ -59,6 +61,7 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> 
 		}
 	}
 
+	@Override
 	public java.util.Locale decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -71,6 +74,7 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> 
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );

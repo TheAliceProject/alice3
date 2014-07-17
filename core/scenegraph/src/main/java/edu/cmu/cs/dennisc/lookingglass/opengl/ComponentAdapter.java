@@ -59,6 +59,7 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 		handleAbsoluteTransformationChanged();
 	}
 
+	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
 	}

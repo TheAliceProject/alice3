@@ -47,9 +47,11 @@ package org.lgna.croquet.meta;
  */
 public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T> {
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		@Override
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			TransactionHistoryTrackingMetaState.this.checkValueAndFireIfAppropriate();
 		}

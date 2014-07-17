@@ -44,7 +44,6 @@ package org.alice.stageide.sceneeditor.interact.handles;
 
 import org.alice.interact.PickHint;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D.ImageState;
 
 /**
  * @author David Culyba
@@ -74,6 +73,7 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 			this.icon = icon;
 		}
 
+		@Override
 		public javax.swing.Icon getIcon() {
 			return this.icon;
 		}

@@ -55,14 +55,18 @@ public abstract class AbstractItemNode<F, B, M extends org.lgna.croquet.CascadeI
 		super( binaryDecoder );
 	}
 
+	@Override
 	public abstract int getBlankStepCount();
 
+	@Override
 	public abstract BlankNode<B> getBlankStepAt( int index );
 
+	@Override
 	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.getElement().createValue( this, transactionHistory );
 	}
 
+	@Override
 	public F getTransientValue() {
 		return this.getElement().getTransientValue( this );
 	}

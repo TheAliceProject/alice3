@@ -325,6 +325,7 @@ public class ImageUtilities {
 	private static java.awt.MediaTracker s_mediaTracker = new java.awt.MediaTracker( new java.awt.Panel() );
 
 	private static java.awt.image.ImageObserver s_imageObserver = new java.awt.image.ImageObserver() {
+		@Override
 		public boolean imageUpdate( java.awt.Image image, int infoflags, int x, int y, int width, int height ) {
 			return true;
 		}

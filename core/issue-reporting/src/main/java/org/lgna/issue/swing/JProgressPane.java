@@ -51,6 +51,7 @@ public class JProgressPane extends javax.swing.JPanel {
 			super( "run in background" );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			isBackgrounded = true;
 			javax.swing.SwingUtilities.getRoot( JProgressPane.this ).setVisible( false );

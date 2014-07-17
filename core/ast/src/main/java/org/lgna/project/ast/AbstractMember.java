@@ -49,6 +49,7 @@ package org.lgna.project.ast;
 public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
 
+	@Override
 	public AbstractType<?, ?, ?> getDeclaringType() {
 		return this.getFirstAncestorAssignableTo( AbstractType.class );
 	}

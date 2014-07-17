@@ -66,6 +66,7 @@ public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactor
 		return new TrimmedIcon( this.getSourceImageIcon(), size );
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return this.defaultSize;
 	}

@@ -84,6 +84,7 @@ public enum TraditionalStyle implements Style {
 	}
 
 	//todo: this method really should account for how long the animation is
+	@Override
 	public double calculatePortion( double timeElapsed, double timeTotal ) {
 		if( timeTotal != 0 ) {
 			double portion = timeElapsed / timeTotal;

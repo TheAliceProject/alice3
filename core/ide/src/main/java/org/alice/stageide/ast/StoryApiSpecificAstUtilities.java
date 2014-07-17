@@ -149,4 +149,12 @@ public class StoryApiSpecificAstUtilities {
 			return null;
 		}
 	}
+
+	public static boolean isSceneType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		if( type != null ) {
+			return type.isAssignableTo( org.lgna.story.SScene.class );
+		} else {
+			return false;
+		}
+	}
 }

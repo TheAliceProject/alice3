@@ -51,6 +51,7 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 
 	public static LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
 		return map.getInitializingIfAbsent( local, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserLocal, LocalAccessDragModel>() {
+			@Override
 			public LocalAccessDragModel initialize( org.lgna.project.ast.UserLocal local ) {
 				return new LocalAccessDragModel( local );
 			}

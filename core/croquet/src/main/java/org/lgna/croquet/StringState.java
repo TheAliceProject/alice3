@@ -73,14 +73,17 @@ public abstract class StringState extends SimpleValueState<String> {
 			this.ignoreCount--;
 		}
 
+		@Override
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 
+		@Override
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 
+		@Override
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}

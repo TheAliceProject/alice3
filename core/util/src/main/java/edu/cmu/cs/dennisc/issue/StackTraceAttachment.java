@@ -52,14 +52,17 @@ public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment
 		this.throwable = throwable;
 	}
 
+	@Override
 	public byte[] getBytes() {
 		return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
 	}
 
+	@Override
 	public String getMIMEType() {
 		return "text/plain";
 	}
 
+	@Override
 	public String getFileName() {
 		return "stacktrace.txt";
 	}

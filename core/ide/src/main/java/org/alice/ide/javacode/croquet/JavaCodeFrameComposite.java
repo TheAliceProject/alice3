@@ -89,6 +89,7 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 	}
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+		@Override
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			javaCodeView.setDeclaration( nextValue );
 		}

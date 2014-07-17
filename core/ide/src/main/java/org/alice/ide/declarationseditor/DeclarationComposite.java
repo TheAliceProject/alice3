@@ -73,9 +73,11 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
 			edu.cmu.cs.dennisc.property.event.PropertyListener nameListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				@Override
 				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				}
 
+				@Override
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					String nextName = (String)e.getValue();
 					org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );

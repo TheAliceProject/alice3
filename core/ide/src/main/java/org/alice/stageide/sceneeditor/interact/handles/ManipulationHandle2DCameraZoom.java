@@ -44,7 +44,6 @@
 package org.alice.stageide.sceneeditor.interact.handles;
 
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D.ImageState;
 
 public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
 	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
@@ -64,6 +63,7 @@ public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle
 			this.icon = icon;
 		}
 
+		@Override
 		public javax.swing.Icon getIcon() {
 			return this.icon;
 		}

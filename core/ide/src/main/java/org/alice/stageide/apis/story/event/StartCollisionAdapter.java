@@ -12,6 +12,7 @@ public class StartCollisionAdapter extends AbstractAdapter implements CollisionS
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void collisionStarted( StartCollisionEvent e ) {
 		invokeEntryPoint( e );
 	}

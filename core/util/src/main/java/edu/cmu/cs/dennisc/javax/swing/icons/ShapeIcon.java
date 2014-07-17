@@ -72,6 +72,7 @@ public class ShapeIcon implements javax.swing.Icon {
 		this( shape, fillPaint, drawPaint, 0, 0, 0, 0 );
 	}
 
+	@Override
 	public int getIconWidth() {
 		int rv = this.shape.getBounds().width;
 		rv += this.left;
@@ -80,6 +81,7 @@ public class ShapeIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public int getIconHeight() {
 		int rv = this.shape.getBounds().height;
 		rv += this.top;
@@ -88,6 +90,7 @@ public class ShapeIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 

@@ -54,6 +54,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		this.revalidateAndRepaint();
 		if( isScrollDesired ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					javax.swing.JScrollBar verticalScrollBar = getJVerticalScrollBar();
 					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
@@ -105,30 +106,38 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	}
 
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement> statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement>() {
+		@Override
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
 		}
 
+		@Override
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( true );
 		}
 
+		@Override
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
 		}
 
+		@Override
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
+		@Override
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
 		}
 
+		@Override
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
+		@Override
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
 		}
 
+		@Override
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
@@ -136,6 +145,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	};
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
 		public void projectChanged() {
 			revalidateAndRepaint();
 		}

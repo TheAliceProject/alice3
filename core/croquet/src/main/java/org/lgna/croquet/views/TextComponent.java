@@ -52,10 +52,12 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	private final javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
 
 	private final java.awt.event.FocusListener selectAllFocusListener = new java.awt.event.FocusListener() {
+		@Override
 		public void focusGained( java.awt.event.FocusEvent e ) {
 			getAwtComponent().selectAll();
 		}
 
+		@Override
 		public void focusLost( java.awt.event.FocusEvent e ) {
 		}
 	};

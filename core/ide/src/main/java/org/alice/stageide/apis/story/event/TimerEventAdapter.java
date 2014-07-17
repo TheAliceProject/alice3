@@ -57,6 +57,7 @@ public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void timeElapsed( TimeEvent e ) {
 		invokeEntryPoint( e );
 	}

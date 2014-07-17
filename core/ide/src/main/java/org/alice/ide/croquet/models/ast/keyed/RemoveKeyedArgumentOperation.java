@@ -51,6 +51,7 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 
 	public static RemoveKeyedArgumentOperation getInstance( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
 		return mapToMap.getInitializingIfAbsent( argumentListProperty, argument, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
+			@Override
 			public RemoveKeyedArgumentOperation initialize( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
 				return new RemoveKeyedArgumentOperation( argumentListProperty, argument );
 			}

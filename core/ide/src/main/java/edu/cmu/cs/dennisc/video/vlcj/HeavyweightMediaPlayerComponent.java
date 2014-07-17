@@ -93,10 +93,12 @@ package edu.cmu.cs.dennisc.video.vlcj;
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
+	@Override
 	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
 		this.painter = painter;
 	}

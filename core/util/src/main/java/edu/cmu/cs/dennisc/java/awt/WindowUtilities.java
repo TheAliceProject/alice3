@@ -76,6 +76,7 @@ public class WindowUtilities {
 			}
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					WindowUtilities.ensureTopLeftCornerIsOnScreen( window );
 				}

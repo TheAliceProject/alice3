@@ -52,6 +52,7 @@ public class JavaField extends AbstractField {
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( fieldReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
+				@Override
 				public org.lgna.project.ast.JavaField initialize( org.lgna.project.ast.FieldReflectionProxy key ) {
 					return new JavaField( key );
 				}

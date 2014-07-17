@@ -50,6 +50,7 @@ public class FieldDeclarationPropertyState extends org.alice.ide.ast.PropertySta
 
 	public static FieldDeclarationPropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
 		return map.getInitializingIfAbsent( setter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState>() {
+			@Override
 			public FieldDeclarationPropertyState initialize( org.lgna.project.ast.JavaMethod setter ) {
 				return new FieldDeclarationPropertyState( setter );
 			}

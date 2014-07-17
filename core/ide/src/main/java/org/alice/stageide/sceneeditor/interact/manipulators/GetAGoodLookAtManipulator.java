@@ -54,14 +54,17 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator {
+	@Override
 	public AbstractCamera getCamera() {
 		return camera;
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
@@ -69,6 +72,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		}
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be PICK_CAMERA
 	}

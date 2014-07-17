@@ -67,6 +67,7 @@ public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.Binar
 		this.v = binaryDecoder.decodeFloat();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( u );
 		binaryEncoder.encode( v );

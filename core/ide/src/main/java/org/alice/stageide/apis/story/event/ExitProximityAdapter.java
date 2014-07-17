@@ -12,6 +12,7 @@ public class ExitProximityAdapter extends AbstractAdapter implements ProximityEx
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void proximityExited( ExitProximityEvent e ) {
 		invokeEntryPoint( e );
 	}

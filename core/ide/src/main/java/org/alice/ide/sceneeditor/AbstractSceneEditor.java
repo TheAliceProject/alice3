@@ -66,15 +66,18 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 			AbstractSceneEditor.this.handleProjectOpened( nextValue != null ? nextValue.getProject() : null );
 		}
 	};
 
 	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectedSceneObserver = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
 			org.lgna.project.ast.UserField nextValue = e.getNextValue();
 			AbstractSceneEditor.this.setActiveScene( nextValue );
@@ -82,6 +85,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
 			org.alice.ide.perspectives.ProjectPerspective prevValue = e.getPreviousValue();
 			org.alice.ide.perspectives.ProjectPerspective nextValue = e.getNextValue();
@@ -251,6 +255,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 
 	public void setFieldToState( org.lgna.project.ast.UserField field, final org.lgna.project.ast.Statement... statements ) {
 		new ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				executeStatements( statements );
 			}

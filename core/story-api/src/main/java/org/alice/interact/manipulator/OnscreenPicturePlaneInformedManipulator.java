@@ -42,7 +42,6 @@
  */
 package org.alice.interact.manipulator;
 
-
 /**
  * @author David Culyba
  */

@@ -51,6 +51,7 @@ import org.lgna.project.ast.AbstractMethod;
  */
 public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationComposite<?, ?>> {
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();
 		}
@@ -109,6 +110,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 						org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)item.getType();
 						if( namedUserType != null ) {
 							TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, TypeListPair>() {
+								@Override
 								public TypeListPair initialize( org.lgna.project.ast.NamedUserType key ) {
 									return new TypeListPair( key );
 								}
@@ -192,9 +194,11 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 			userMethod.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				@Override
 				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				}
 
+				@Override
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					rv.setName( (String)e.getValue() );
 				}

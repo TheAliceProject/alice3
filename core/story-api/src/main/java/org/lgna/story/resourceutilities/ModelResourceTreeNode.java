@@ -78,6 +78,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getParent() {
 		return this.parent;
 	}
@@ -94,6 +95,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
@@ -112,26 +114,32 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.getSortedChildren();
 	}
 
+	@Override
 	public java.util.Enumeration<? extends ModelResourceTreeNode> children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
 
+	@Override
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getChildAt( int childIndex ) {
 		return this.getSortedChildren().get( childIndex );
 	}
 
+	@Override
 	public int getChildCount() {
 		return this.children.size();
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return this.children.size() == 0;
 	}
 
+	@Override
 	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return this.getSortedChildren().indexOf( node );
 	}
@@ -242,6 +250,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.userType;
 	}
 
+	@Override
 	public JavaType getValue() {
 		return this.resourceJavaType;
 	}
@@ -290,6 +299,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.resourceJavaField;
 	}
 
+	@Override
 	public int compareTo( ModelResourceTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {

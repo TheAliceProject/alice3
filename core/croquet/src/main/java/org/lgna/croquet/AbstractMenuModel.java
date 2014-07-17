@@ -50,6 +50,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
 	private final Class<? extends AbstractElement> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
@@ -131,14 +132,17 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 			this.menuItemContainer = menuItemContainer;
 		}
 
+		@Override
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleShowing( this.menuItemContainer, e );
 		}
 
+		@Override
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleHiding( this.menuItemContainer, e );
 		}
 
+		@Override
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleCanceled( this.menuItemContainer, e );
 		}

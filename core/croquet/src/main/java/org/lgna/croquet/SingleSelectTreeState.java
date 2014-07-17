@@ -63,6 +63,7 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 
 	public static synchronized <T> TreeNodeFillIn<T> getInstance( SingleSelectTreeState<T> model, T node ) {
 		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeFillIn>() {
+			@Override
 			public TreeNodeFillIn<T> initialize( SingleSelectTreeState model, Object node ) {
 				return new TreeNodeFillIn<T>( model, (T)node );
 			}
@@ -109,6 +110,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel<T> {
 
 	public static synchronized <T> TreeNodeMenu<T> getInstance( SingleSelectTreeState<T> model, T node ) {
 		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeMenu>() {
+			@Override
 			public TreeNodeMenu<T> initialize( SingleSelectTreeState model, Object node ) {
 				return new TreeNodeMenu<T>( model, (T)node );
 			}
@@ -157,6 +159,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 
 	public static <T> TreeNodeCascade<T> getInstance( SingleSelectTreeState<T> model, T node ) {
 		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeCascade>() {
+			@Override
 			public TreeNodeCascade<T> initialize( SingleSelectTreeState model, Object node ) {
 				return new TreeNodeCascade<T>( model, (T)node );
 			}
@@ -204,6 +207,7 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 
 	private final SwingModel swingModel = new SwingModel();
 	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
 			SingleSelectTreeState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );

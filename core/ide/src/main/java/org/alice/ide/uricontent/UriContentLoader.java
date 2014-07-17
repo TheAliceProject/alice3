@@ -52,6 +52,7 @@ public abstract class UriContentLoader<T> {
 			observer.completed( content );
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					observer.completed( content );
 				}
@@ -69,6 +70,7 @@ public abstract class UriContentLoader<T> {
 
 		public Worker() {
 			this.futureTask = new java.util.concurrent.FutureTask<T>( new java.util.concurrent.Callable<T>() {
+				@Override
 				public T call() throws java.lang.Exception {
 					return loadContent();
 				}

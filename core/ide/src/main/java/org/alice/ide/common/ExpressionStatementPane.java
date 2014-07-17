@@ -47,11 +47,14 @@ package org.alice.ide.common;
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
 	private edu.cmu.cs.dennisc.property.event.PropertyListener refreshAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					ExpressionStatementPane.this.refresh();
 				}

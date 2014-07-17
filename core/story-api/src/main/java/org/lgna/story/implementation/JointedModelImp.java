@@ -349,6 +349,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public Iterable<JointImp> getJoints() {
 		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.treeWalk( new TreeWalkObserver() {
+			@Override
 			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 				//todo: remove null check?
 				if( joint != null ) {
@@ -356,9 +357,11 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 				}
 			}
 
+			@Override
 			public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			}
 
+			@Override
 			public void popJoint( org.lgna.story.implementation.JointImp joint ) {
 			}
 		} );
@@ -769,15 +772,18 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	private static class StraightenTreeWalkObserver implements TreeWalkObserver {
 		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+		@Override
 		public void pushJoint( JointImp jointImp ) {
 			if( jointImp != null ) {
 				list.add( new JointData( jointImp ) );
 			}
 		}
 
+		@Override
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 		}
 
+		@Override
 		public void popJoint( JointImp joint ) {
 		}
 	};

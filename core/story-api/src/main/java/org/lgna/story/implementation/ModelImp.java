@@ -47,15 +47,18 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.dennisc.scenegraph.scale.Scalable {
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
 		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
 	}
 
+	@Override
 	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
 		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		return this.getScale().x;
 	}
 
+	@Override
 	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
 		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
@@ -136,12 +139,14 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties();
 
+	@Override
 	public final void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
 			property.addPropertyListener( listener );
 		}
 	}
 
+	@Override
 	public final void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
 			property.removePropertyListener( listener );
@@ -418,6 +423,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
 		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
+			@Override
 			public void calculate(
 					java.awt.geom.Point2D.Float out_originOfTail,
 					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,

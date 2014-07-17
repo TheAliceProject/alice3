@@ -48,18 +48,22 @@ package org.lgna.project.annotations;
  */
 public enum ArrayIndexDetails implements IntegerValueDetails {
 	SINGLETON;
+	@Override
 	public Class<Integer> getSupportedCls() {
 		return Integer.class;
 	}
 
+	@Override
 	public Integer getMinimumValue() {
 		return 0;
 	}
 
+	@Override
 	public Integer getMaximumValue() {
 		return null;
 	}
 
+	@Override
 	public int[] getLiterals() {
 		return new int[] { 0, 1, 2, 3, 4 };
 	}

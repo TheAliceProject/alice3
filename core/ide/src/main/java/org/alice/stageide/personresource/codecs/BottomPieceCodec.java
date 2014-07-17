@@ -47,18 +47,22 @@ package org.alice.stageide.personresource.codecs;
  */
 public enum BottomPieceCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.BottomPiece> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.resources.sims2.BottomPiece> getValueClass() {
 		return org.lgna.story.resources.sims2.BottomPiece.class;
 	}
 
+	@Override
 	public org.lgna.story.resources.sims2.BottomPiece decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.BottomPiece value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.BottomPiece value ) {
 		sb.append( value );
 	}

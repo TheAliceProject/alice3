@@ -50,15 +50,18 @@ public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
 	private final org.lgna.croquet.views.List<org.lgna.project.ast.Member> listView;
 
 	private final java.awt.event.FocusListener focusListener = new java.awt.event.FocusListener() {
+		@Override
 		public void focusGained( java.awt.event.FocusEvent e ) {
 		}
 
+		@Override
 		public void focusLost( java.awt.event.FocusEvent e ) {
 			getComposite().getMemberListState().clearSelection();
 		}
 	};
 
 	private final java.awt.event.ActionListener downAction = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
 			if( state.getItemCount() > 0 ) {
@@ -70,6 +73,7 @@ public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
 
 	private final java.awt.event.ActionListener prevUpAction;
 	private final java.awt.event.ActionListener upAction = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
 			if( state.getSelectedIndex() == 0 ) {

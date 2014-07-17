@@ -52,6 +52,7 @@ public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayCo
 	public static synchronized InsertForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
 		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
+			@Override
 			public InsertForEachInArrayLoopComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 				return new InsertForEachInArrayLoopComposite( blockStatementIndexPair, isEnveloping );
 			}

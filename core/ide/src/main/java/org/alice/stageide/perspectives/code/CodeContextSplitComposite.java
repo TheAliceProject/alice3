@@ -132,17 +132,20 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			CodeContextSplitComposite.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
 			CodeContextSplitComposite.this.handleDeclarationStateChanged( e.getNextValue() );
 		}
 	};
 
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+		@Override
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
 				//pass

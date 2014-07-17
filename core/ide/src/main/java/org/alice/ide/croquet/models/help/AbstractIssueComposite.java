@@ -115,6 +115,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		return rv;
@@ -131,6 +132,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );
@@ -144,6 +146,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
+						@Override
 						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
 							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
 						}
@@ -158,6 +161,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
+						@Override
 						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
 							return service.login( accountInformation.getID(), accountInformation.getPassword() );
 						}
@@ -173,6 +177,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	private final org.lgna.croquet.StringState environmentState = createStringState( "environmentState", org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
 	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
 
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			submitBugOperation.setEnabled( false );
 			try {

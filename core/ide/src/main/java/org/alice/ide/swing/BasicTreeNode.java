@@ -197,6 +197,7 @@ public class BasicTreeNode extends DefaultMutableTreeNode implements Comparable 
 		return false;
 	}
 
+	@Override
 	public int compareTo( Object o ) {
 		if( o instanceof BasicTreeNode )
 		{

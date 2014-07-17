@@ -111,6 +111,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		translation.decode( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
@@ -184,6 +185,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return right.isNaN() || up.isNaN() || backward.isNaN() || translation.isNaN();
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;

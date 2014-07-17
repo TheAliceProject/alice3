@@ -53,6 +53,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 
 	public static org.alice.ide.common.TypeComponent getComponentFor( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return mapToMap.getInitializingIfAbsent( cls, type, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent>() {
+			@Override
 			public org.alice.ide.common.TypeComponent initialize( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 				return org.alice.ide.common.TypeComponent.createInstance( type );
 			}
@@ -98,6 +99,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 	private class RecycleBinDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
+		@Override
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 		}
@@ -107,14 +109,17 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			MembersView.this.repaint();
 		}
 
+		@Override
 		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
+		@Override
 		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.ENTERED );
 		}
 
+		@Override
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
 			java.awt.event.MouseEvent e = step.getLatestMouseEvent();
 			java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
@@ -146,19 +151,23 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		}
 
+		@Override
 		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 			//			step.getDragSource().showDragProxy();
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
+		@Override
 		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return MembersView.this;
 		}
 
+		@Override
 		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return MembersView.this;
 		}
@@ -174,6 +183,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			//todo
 		}
 
+		@Override
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			//todo
 		}
@@ -188,10 +198,12 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			return obj instanceof RecycleBinDropSite;
 		}
 
+		@Override
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return RecycleBin.SINGLETON.getDropReceptor();
 		}
 
+		@Override
 		public RecycleBinDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 			return this;
 		}
