@@ -1234,7 +1234,7 @@ public class ModelResourceExporter {
 
 			if( addedRoots )
 			{
-				sb.append( "\n\t@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
+				sb.append( "\n@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
 				sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + ROOT_IDS_FIELD_NAME + " = { " );
 				for( int i = 0; i < rootJoints.size(); i++ ) {
 					sb.append( rootJoints.get( i ) );
@@ -1259,14 +1259,14 @@ public class ModelResourceExporter {
 				}
 				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
 					List<String> arrayElements = arrayEntry.getValue();
-					String arrayName = arrayEntry.getKey() + "_ARRAY";
+					String fullArrayName = arrayEntry.getKey() + "_ARRAY";
 
-					if( declaredArrays.contains( arrayName ) || declaredArrays.contains( arrayEntry.getKey() ) ) {
+					if( declaredArrays.contains( fullArrayName ) || declaredArrays.contains( arrayEntry.getKey() ) ) {
 						//If the array is already declared, skip it and trust that the previous declaration will capture the data
 						continue;
 					}
 
-					boolean needsAccessor = needsAccessorMethodForArray( classData, arrayName );
+					boolean needsAccessor = needsAccessorMethodForArray( classData, fullArrayName );
 
 					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.
 					// The accessor is used to retrieve the array via a parent class and therefore the array itself is essentially already handled
@@ -1276,7 +1276,7 @@ public class ModelResourceExporter {
 					}
 
 					//If the array is one in the "hide all the elements of this array" list, then declare it as an arrayId rather than an array of joint ids
-					if( this.arraysToHideElementsOf.contains( arrayName ) ) {
+					if( this.arraysToHideElementsOf.contains( fullArrayName ) || this.arraysToHideElementsOf.contains( arrayEntry.getKey() ) ) {
 						String firstEntry = arrayElements.get( 0 );
 						String parentString = "null";
 						for( Tuple2<String, String> entry : trimmedSkeleton )
@@ -1287,10 +1287,10 @@ public class ModelResourceExporter {
 							}
 						}
 						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
-						sb.append( "\tpublic static final org.lgna.story.resources.JointArrayId " + arrayName + " = new org.lgna.story.resources.JointArrayId( \"" + arrayEntry.getKey() + "\", " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\tpublic static final org.lgna.story.resources.JointArrayId " + fullArrayName + " = new org.lgna.story.resources.JointArrayId( \"" + arrayEntry.getKey() + "\", " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 					}
 					else {
-						sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + arrayName + " = { " );
+						sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + fullArrayName + " = { " );
 						for( int i = 0; i < arrayElements.size(); i++ ) {
 							sb.append( arrayElements.get( i ) );
 							if( i < ( arrayElements.size() - 1 ) ) {
@@ -1300,9 +1300,9 @@ public class ModelResourceExporter {
 						sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 					}
 					if( needsAccessor ) {
-						String arrayAccessorName = getArrayAccessorMethodName( arrayName );
+						String arrayAccessorName = getArrayAccessorMethodName( fullArrayName );
 						sb.append( "\tpublic org.lgna.story.resources.JointId[] " + arrayAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );
-						sb.append( "\t\treturn " + this.getJavaClassName() + "." + arrayName + ";" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\t\treturn " + this.getJavaClassName() + "." + fullArrayName + ";" + JavaCodeUtilities.LINE_RETURN );
 						sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
 					}
 				}

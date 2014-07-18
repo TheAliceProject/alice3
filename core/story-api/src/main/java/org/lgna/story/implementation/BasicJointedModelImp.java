@@ -55,8 +55,4 @@ public class BasicJointedModelImp extends JointedModelImp<org.lgna.story.SJointe
 		return this.getResource().getRootJointIds();
 	}
 
-	@Override
-	public org.lgna.story.resources.JointArrayId[] getJointArrayIds() {
-		return this.getResource().getJointArrayIds();
-	}
 }

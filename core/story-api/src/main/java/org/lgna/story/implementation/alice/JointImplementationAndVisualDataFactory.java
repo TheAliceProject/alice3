@@ -156,7 +156,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 					sgJoints[ i ].setName( jointName );
 					org.lgna.story.resources.JointId parentJointId;
 					if( i == 0 ) {
-						parentJointId = jointArrayId.getParent();
+						parentJointId = jointArrayId.getRoot();
 					}
 					else {
 						parentJointId = jointImps[ i - 1 ].getJointId();

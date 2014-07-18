@@ -49,10 +49,10 @@ public class JointArrayId {
 
 	private final Class<? extends JointedModelResource> containingClass;
 	private final String elementPattern;
-	private final JointId parent;
+	private final JointId root;
 
-	public JointArrayId( String elementPattern, JointId parent, Class<? extends JointedModelResource> containingClass ) {
-		this.parent = parent;
+	public JointArrayId( String elementPattern, JointId root, Class<? extends JointedModelResource> containingClass ) {
+		this.root = root;
 		this.elementPattern = elementPattern;
 		this.containingClass = containingClass;
 	}
@@ -74,9 +74,9 @@ public class JointArrayId {
 		return false;
 	}
 
-	public JointId getParent()
+	public JointId getRoot()
 	{
-		return this.parent;
+		return this.root;
 	}
 
 	public String getElementNamePattern() {

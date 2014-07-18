@@ -68,10 +68,9 @@ public class SJoint extends STurnable {
 	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
 		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]>() {
 			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
-				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
 				SJoint[] jointArray = new SJoint[ jointIdArray.length ];
 				for( int i = 0; i < jointIdArray.length; i++ ) {
-					jointArray[ i ] = org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointIdArray[ i ] );
+					jointArray[ i ] = getJoint( jointedModel, jointIdArray[ i ] );
 				}
 				return jointArray;
 			}
@@ -79,12 +78,8 @@ public class SJoint extends STurnable {
 	}
 
 	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
-		return mapToArrayIdMap.getInitializingIfAbsent( jointedModel, jointArrayId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointArrayId, SJoint[]>() {
-			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
-				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
-				return jointedModelImplementation.getSJointArray( jointArrayId );
-			}
-		} );
+		org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+		return getJointArray( jointedModel, jointedModelImplementation.getJointIdArray( jointArrayId ) );
 	}
 
 	private static SJoint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {

@@ -143,7 +143,6 @@ public class Joint extends Transformable implements ModelJoint
 	{
 		java.util.List<Joint> joints = new java.util.ArrayList<Joint>();
 		getJoints( this, nameKey, joints );
-		java.util.Collections.sort( joints, JOINT_ARRAY_COMPARATOR );
 		return joints.toArray( new Joint[ joints.size() ] );
 	}
 
