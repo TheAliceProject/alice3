@@ -113,6 +113,7 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
 			updateReturn( e.getNextValue() );
 		}
@@ -135,6 +136,7 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 		boolean isReturnShowing = this.returnHeader.isShowing();
 		if( isReturnDesired != isReturnShowing ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					synchronized( getTreeLock() ) {
 						if( isReturnDesired ) {

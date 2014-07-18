@@ -49,10 +49,12 @@ public class SunIcon implements javax.swing.Icon {
 	//todo
 	private static final int SMALL_ICON_SIZE = 24;
 
+	@Override
 	public int getIconWidth() {
 		return SMALL_ICON_SIZE;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return SMALL_ICON_SIZE;
 	}
@@ -66,6 +68,7 @@ public class SunIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.geom.AffineTransform m = g2.getTransform();

@@ -53,6 +53,7 @@ public enum Texture implements NebulousPaint {
 
 	private NebulousTexture nebulousTexture;
 
+	@Override
 	public NebulousTexture getTexture() {
 		if( this.nebulousTexture == null ) {
 			this.nebulousTexture = new NebulousTexture( this.toString() );

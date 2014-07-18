@@ -107,18 +107,22 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 				this.boundedRangeModel = new CustomBoundedRangeModel( details );
 			}
 
+			@Override
 			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 				return this.boundedRangeModel;
 			}
 
+			@Override
 			public javax.swing.SpinnerNumberModel getSpinnerModel() {
 				return this.spinnerModel;
 			}
 
+			@Override
 			public void setValue( Integer value ) {
 				this.boundedRangeModel.setValue( value );
 			}
 
+			@Override
 			public void setAll( Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting ) {
 				if( value != null ) {
 					//pass

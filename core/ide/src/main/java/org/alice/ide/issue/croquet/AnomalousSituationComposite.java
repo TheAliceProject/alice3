@@ -174,6 +174,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		Thread.sleep( 1000 );
 		final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				composite.getLaunchOperation().fire();
 				//System.exit( 0 );

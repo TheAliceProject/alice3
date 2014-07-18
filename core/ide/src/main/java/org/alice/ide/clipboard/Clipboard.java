@@ -57,6 +57,7 @@ public enum Clipboard {
 			//todo
 		}
 
+		@Override
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			//todo
 		}
@@ -71,10 +72,12 @@ public enum Clipboard {
 			return obj instanceof ClipboardDropSite;
 		}
 
+		@Override
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
 		}
 
+		@Override
 		public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 			return this;
 		}

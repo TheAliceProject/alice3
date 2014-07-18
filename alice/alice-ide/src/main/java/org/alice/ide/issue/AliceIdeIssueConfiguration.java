@@ -46,18 +46,22 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
+	@Override
 	public String getApplicationName() {
 		return "Alice";
 	}
 
+	@Override
 	public String getDownloadUrlSpec() {
 		return "http://www.alice.org/3";
 	}
 
+	@Override
 	public String getDownloadUrlText() {
 		return this.getDownloadUrlSpec();
 	}
 
+	@Override
 	public void submit( org.lgna.issue.swing.JSubmitPane jSubmitPane ) {
 		org.lgna.issue.ApplicationIssueConfiguration config = jSubmitPane.getConfig();
 		int option = javax.swing.JOptionPane.showConfirmDialog( jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );

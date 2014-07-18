@@ -47,18 +47,22 @@ package org.alice.ide.croquet.codecs;
  */
 public enum StringCodec implements org.lgna.croquet.ItemCodec<String> {
 	SINGLETON;
+	@Override
 	public Class<String> getValueClass() {
 		return String.class;
 	}
 
+	@Override
 	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, String value ) {
 		sb.append( value );
 	}

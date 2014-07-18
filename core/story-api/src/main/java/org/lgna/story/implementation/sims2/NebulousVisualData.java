@@ -60,10 +60,12 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
@@ -72,10 +74,12 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 		return this.nebModel;
 	}
 
+	@Override
 	public double getBoundingSphereRadius() {
 		return 1.0;
 	}
 
+	@Override
 	public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
 		nebModel.setSGParent( parent );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
@@ -83,6 +87,7 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 		}
 	}
 
+	@Override
 	public Composite getSGParent() {
 		return nebModel.getSGParent();
 	}

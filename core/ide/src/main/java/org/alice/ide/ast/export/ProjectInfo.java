@@ -72,6 +72,7 @@ public class ProjectInfo {
 		}
 
 		java.util.Collections.sort( this.root.getChildren(), new java.util.Comparator<edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>>() {
+			@Override
 			public int compare( edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o1, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o2 ) {
 				return o1.getValue().getDeclaration().getName().compareTo( o2.getValue().getDeclaration().getName() );
 			}

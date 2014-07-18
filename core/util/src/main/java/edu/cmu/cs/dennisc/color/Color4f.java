@@ -102,6 +102,7 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		return new Color4f( red, green, blue, alpha );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.red );
 		binaryEncoder.encode( this.green );

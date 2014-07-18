@@ -181,10 +181,12 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?, ?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?, ?>>() {
+		@Override
 		public Object getElementAt( int index ) {
 			return cardComposite.getCards().get( index );
 		}
 
+		@Override
 		public int getSize() {
 			return cardComposite.getCards().size();
 		}

@@ -48,15 +48,18 @@ package org.alice.ide.instancefactory.croquet;
  */
 public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
 	private class PropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}

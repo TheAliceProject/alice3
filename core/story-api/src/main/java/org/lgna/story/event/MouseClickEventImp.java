@@ -52,7 +52,7 @@ import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.renderer.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
@@ -101,7 +101,7 @@ public class MouseClickEventImp {
 			if( this.scene != null ) {
 				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
 				if( lg != null ) {
-					edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+					edu.cmu.cs.dennisc.renderer.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 					if( pickResult != null ) {
 						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {

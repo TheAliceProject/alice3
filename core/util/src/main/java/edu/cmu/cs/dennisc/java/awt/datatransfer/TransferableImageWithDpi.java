@@ -67,10 +67,12 @@ public class TransferableImageWithDpi implements java.awt.datatransfer.Transfera
 		this.dpi = dpi;
 	}
 
+	@Override
 	public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() {
 		return this.dpi != null ? DPI_DATA_FLAVORS : IMAGE_ONLY_DATA_FLAVORS;
 	}
 
+	@Override
 	public boolean isDataFlavorSupported( java.awt.datatransfer.DataFlavor flavor ) {
 		return java.util.Arrays.asList( this.getTransferDataFlavors() ).contains( flavor );
 	}
@@ -107,6 +109,7 @@ public class TransferableImageWithDpi implements java.awt.datatransfer.Transfera
 		return new java.io.ByteArrayInputStream( baos.toByteArray() );
 	}
 
+	@Override
 	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
 		if( java.awt.datatransfer.DataFlavor.javaFileListFlavor.equals( flavor ) ) {
 			String ext = "png";

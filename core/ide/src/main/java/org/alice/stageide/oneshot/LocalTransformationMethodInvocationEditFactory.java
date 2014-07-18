@@ -59,6 +59,7 @@ public class LocalTransformationMethodInvocationEditFactory implements MethodInv
 		this.argumentExpressions = argumentExpressions;
 	}
 
+	@Override
 	public org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
 		return new LocalTransformationEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}

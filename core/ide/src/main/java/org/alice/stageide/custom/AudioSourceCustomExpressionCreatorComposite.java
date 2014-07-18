@@ -63,11 +63,13 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( "stopMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
 
 	private org.lgna.croquet.event.ValueListener<Integer> startValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
 			updateStopValueIfNecessary();
 		}
 	};
 	private org.lgna.croquet.event.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Integer> e ) {
 			updateStartValueIfNecessary();
 		}
@@ -143,6 +145,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	}
 
 	private final org.lgna.croquet.Operation testOperation = this.createActionOperation( "test", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.common.resources.AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
 			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );

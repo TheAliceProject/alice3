@@ -68,14 +68,17 @@ public class PaintIcon implements javax.swing.Icon {
 		this.height = height;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.height;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( this.fillPaint );

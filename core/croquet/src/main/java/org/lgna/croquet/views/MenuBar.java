@@ -77,26 +77,32 @@ public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croque
 		super.handleUndisplayable();
 	}
 
+	@Override
 	public ViewController<?, ?> getViewController() {
 		return null;
 	}
 
+	@Override
 	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
 	}
 
+	@Override
 	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
 	}
 
+	@Override
 	public AwtComponentView<?> getMenuComponent( int i ) {
 		return AwtComponentView.lookup( this.getAwtComponent().getMenu( i ) );
 	}
 
+	@Override
 	public int getMenuComponentCount() {
 		return this.getAwtComponent().getMenuCount();
 	}
 
+	@Override
 	public synchronized AwtComponentView<?>[] getMenuComponents() {
 		final int N = this.getMenuComponentCount();
 		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
@@ -106,10 +112,12 @@ public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croque
 		return rv;
 	}
 
+	@Override
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 
+	@Override
 	public void addMenuItem( MenuItem menuItem ) {
 		//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.getAwtComponent().getLayout() );
 		//		menuItem.setMaximumSizeClampedToPreferredSize( true );
@@ -118,35 +126,43 @@ public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croque
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 
+	@Override
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenu );
 	}
 
+	@Override
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenuItem );
 	}
 
+	@Override
 	public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
 		this.addCascadeMenu( cascadeMenu );
 	}
 
+	@Override
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( checkBoxMenuItem );
 	}
 
+	@Override
 	public void addSeparator() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 	}
 
+	@Override
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuTextSeparator );
 	}
 
+	@Override
 	public void forgetAndRemoveAllMenuItems() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 	}
 
+	@Override
 	public void removeAllMenuItems() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 	}

@@ -69,11 +69,13 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 		}
 	}
 
+	@Override
 	public byte[] getBytes() {
 		this.createBytesIfNecessary();
 		return this.bytes;
 	}
 
+	@Override
 	public String getMIMEType() {
 		this.createBytesIfNecessary();
 		if( this.isCreateSuccessful ) {
@@ -83,6 +85,7 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 		}
 	}
 
+	@Override
 	public String getFileName() {
 		this.createBytesIfNecessary();
 		if( this.isCreateSuccessful ) {

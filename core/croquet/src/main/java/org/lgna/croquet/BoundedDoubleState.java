@@ -125,18 +125,22 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 				this.boundedRangeModel = new CustomBoundedRangeModel( details );
 			}
 
+			@Override
 			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 				return this.boundedRangeModel;
 			}
 
+			@Override
 			public javax.swing.SpinnerNumberModel getSpinnerModel() {
 				return this.spinnerModel;
 			}
 
+			@Override
 			public void setValue( Double value ) {
 				this.spinnerModel.setValue( value );
 			}
 
+			@Override
 			public void setAll( Double value, Double minimum, Double maximum, Double stepSize, Double extent, boolean isAdjusting ) {
 				if( minimum != null ) {
 					Number prevMinimum = (Number)this.spinnerModel.getMinimum();

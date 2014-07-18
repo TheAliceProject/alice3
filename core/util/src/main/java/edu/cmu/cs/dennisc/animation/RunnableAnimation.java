@@ -63,14 +63,17 @@ public class RunnableAnimation implements Animation {
 		m_runnable = runnable;
 	}
 
+	@Override
 	public void reset() {
 	}
 
+	@Override
 	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		m_runnable.run();
 		return 0.0;
 	}
 
+	@Override
 	public void complete( AnimationObserver animationObserver ) {
 		//todo?
 	}

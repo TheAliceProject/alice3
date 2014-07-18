@@ -48,10 +48,12 @@ package org.lgna.story.annotation;
  */
 public enum RoomWallAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.ImagePaint> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.ImagePaint> getSupportedCls() {
 		return org.lgna.story.ImagePaint.class;
 	}
 
+	@Override
 	public java.lang.reflect.Field[] getFlds() {
 		return org.lgna.story.SRoom.WallAppearance.class.getFields();
 	}

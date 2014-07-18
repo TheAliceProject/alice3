@@ -95,12 +95,14 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 			RunComposite.this.programContext.initializeInContainer( awtContainerInitializer );
 		}
 
+		@Override
 		public void run() {
 			RunComposite.this.programContext.setActiveScene();
 		}
 	}
 
 	private final class RunAwtContainerInitializer implements org.lgna.story.implementation.ProgramImp.AwtContainerInitializer {
+		@Override
 		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
 			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
@@ -135,6 +137,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	private class RestartAction extends javax.swing.AbstractAction {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			RunComposite.this.stopProgram();
 			RunComposite.this.startProgram();

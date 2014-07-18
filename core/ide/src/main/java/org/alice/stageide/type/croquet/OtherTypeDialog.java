@@ -70,6 +70,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 	private boolean isInTheMidstOfLowestCommonAncestorSetting;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
 			org.alice.stageide.type.croquet.TypeNode nextValue = e.getNextValue();
 			handleTypeChange( nextValue != null ? nextValue.getType() : null );
@@ -77,6 +78,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	};
 
 	private final org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>> sceneFieldListener = new org.lgna.croquet.event.ValueListener<java.util.List<org.lgna.project.ast.UserField>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.List<org.lgna.project.ast.UserField>> e ) {
 			java.util.List<org.lgna.project.ast.UserField> fields = e.getNextValue();
 			TypeNode sharedNode = null;

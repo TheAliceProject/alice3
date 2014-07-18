@@ -124,10 +124,12 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
 
+	@Override
 	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
 		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this );
 	}
 
+	@Override
 	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
 		return new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
 	}

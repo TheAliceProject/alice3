@@ -111,6 +111,7 @@ public abstract class KeyedResolver<T> implements Resolver<T> {
 
 	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments );
 
+	@Override
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.encodeInstanceClass( binaryEncoder, (Class<T>)this.instance.getClass() );
 		this.encodeParameterTypes( binaryEncoder );
@@ -130,6 +131,7 @@ public abstract class KeyedResolver<T> implements Resolver<T> {
 
 	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
 
+	@Override
 	public T getResolved() {
 		if( this.instance != null ) {
 			return this.instance;
@@ -139,6 +141,7 @@ public abstract class KeyedResolver<T> implements Resolver<T> {
 		}
 	}
 
+	@Override
 	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( int i = 0; i < this.arguments.length; i++ ) {
 			this.arguments[ i ] = retargeter.retarget( this.arguments[ i ] );

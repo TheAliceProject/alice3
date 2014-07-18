@@ -57,11 +57,13 @@ public class DeclarationCompositeHistory {
 	private java.util.List<DeclarationComposite<?, ?>> history = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private int index = -1;
 	private final org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<DeclarationComposite<?, ?>> e ) {
 			DeclarationCompositeHistory.this.appendIfAppropriate( e.getNextValue() );
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
 			DeclarationCompositeHistory.this.resetStack();
 		}

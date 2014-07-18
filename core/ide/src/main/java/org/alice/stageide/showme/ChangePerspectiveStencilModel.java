@@ -63,6 +63,7 @@ public abstract class ChangePerspectiveStencilModel extends IdeStencil {
 			public void run() {
 				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					@Override
 					public void run() {
 						perspectiveState.setValueTransactionlessly( perspective );
 					}

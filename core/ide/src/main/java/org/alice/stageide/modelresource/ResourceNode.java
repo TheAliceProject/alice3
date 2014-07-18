@@ -189,6 +189,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		return IdeAliceResourceUtilities.getPlaceOnGround( this.resourceKey );
 	}
 
+	@Override
 	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
 		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
 	}

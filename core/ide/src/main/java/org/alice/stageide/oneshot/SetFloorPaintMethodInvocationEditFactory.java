@@ -56,6 +56,7 @@ public class SetFloorPaintMethodInvocationEditFactory implements MethodInvocatio
 		this.argumentExpressions = argumentExpressions;
 	}
 
+	@Override
 	public org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
 		return new org.alice.stageide.oneshot.edits.SetFloorPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}

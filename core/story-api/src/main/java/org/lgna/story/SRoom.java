@@ -86,6 +86,7 @@ public class SRoom extends SThing implements MutableRider, Visual {
 
 		private NebulousTexture nebulousTexture;
 
+		@Override
 		public NebulousTexture getTexture() {
 			if( this.nebulousTexture == null ) {
 				this.nebulousTexture = new NebulousTexture( this.toString() );
@@ -118,6 +119,7 @@ public class SRoom extends SThing implements MutableRider, Visual {
 
 		private NebulousTexture nebulousTexture;
 
+		@Override
 		public NebulousTexture getTexture() {
 			if( this.nebulousTexture == null ) {
 				this.nebulousTexture = new NebulousTexture( this.toString() );
@@ -150,6 +152,7 @@ public class SRoom extends SThing implements MutableRider, Visual {
 
 		private NebulousTexture nebulousTexture;
 
+		@Override
 		public NebulousTexture getTexture() {
 			if( this.nebulousTexture == null ) {
 				this.nebulousTexture = new NebulousTexture( this.toString() );
@@ -165,16 +168,19 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		return this.implementation;
 	}
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
+	@Override
 	@GetterTemplate( isPersistent = false )
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Paint getPaint() {
 		return this.getImplementation().wallPaint.getValue();
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().wallPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
@@ -234,6 +240,7 @@ public class SRoom extends SThing implements MutableRider, Visual {
 	//		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	//	}
 
+	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
 	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
@@ -241,6 +248,7 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		return (double)this.getImplementation().opacity.getValue();
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );

@@ -68,6 +68,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 			this.initialReportTypeValue = initialReportTypeValue;
 		}
 
+		@Override
 		public void initialize( org.lgna.croquet.OperationOwningComposite value ) {
 			( (ReportIssueComposite)value ).reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 		}
@@ -221,6 +222,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 	private final org.lgna.croquet.Operation suggestImprovementLaunchOperation;
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
 		}

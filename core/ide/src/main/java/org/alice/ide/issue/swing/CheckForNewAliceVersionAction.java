@@ -52,6 +52,7 @@ public class CheckForNewAliceVersionAction extends javax.swing.AbstractAction {
 		this.putValue( javax.swing.Action.NAME, SPEC );
 	}
 
+	@Override
 	public void actionPerformed( java.awt.event.ActionEvent actionEvent ) {
 		try {
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( SPEC );

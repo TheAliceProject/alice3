@@ -57,12 +57,14 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		backward.decode( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
 		backward.encode( binaryEncoder );
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;

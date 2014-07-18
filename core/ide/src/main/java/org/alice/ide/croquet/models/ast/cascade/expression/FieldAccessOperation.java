@@ -53,6 +53,7 @@ public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.casca
 		assert field != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldAccessOperation>() {
+			@Override
 			public FieldAccessOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new FieldAccessOperation( field, expressionProperty );
 			}

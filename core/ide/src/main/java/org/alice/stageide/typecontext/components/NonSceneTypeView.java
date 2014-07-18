@@ -48,6 +48,7 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	private final org.lgna.croquet.views.Label typeLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.views.Label snapshotLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
 		}

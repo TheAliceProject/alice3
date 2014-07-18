@@ -58,6 +58,7 @@ public class ThemeIconFactory extends org.lgna.croquet.icon.AbstractIconFactory 
 		return new ThemeIcon( size, this.key );
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		//todo
 		return sizeIfResolutionIndependent;

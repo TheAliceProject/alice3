@@ -92,6 +92,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		super( id );
 	}
 
+	@Override
 	public Iterable<ContextFactory<?>> getContextFactories() {
 		return this.contextFactories;
 	}
@@ -106,18 +107,22 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		this.contextFactories.remove( contextFactory );
 	}
 
+	@Override
 	public final Model getResolved() {
 		return this;
 	}
 
+	@Override
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
 	private boolean isEnabled = true;
 
+	@Override
 	public boolean isEnabled() {
 		return this.isEnabled;
 	}
 
+	@Override
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;

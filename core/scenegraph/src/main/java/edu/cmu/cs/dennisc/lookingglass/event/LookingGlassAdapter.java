@@ -46,18 +46,23 @@ package edu.cmu.cs.dennisc.lookingglass.event;
  * @author Dennis Cosgrove
  */
 public class LookingGlassAdapter implements LookingGlassListener {
+	@Override
 	public void initialized( LookingGlassInitializeEvent e ) {
 	}
 
+	@Override
 	public void cleared( LookingGlassRenderEvent e ) {
 	}
 
+	@Override
 	public void rendered( LookingGlassRenderEvent e ) {
 	}
 
+	@Override
 	public void resized( LookingGlassResizeEvent e ) {
 	}
 
+	@Override
 	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
 	}
 }

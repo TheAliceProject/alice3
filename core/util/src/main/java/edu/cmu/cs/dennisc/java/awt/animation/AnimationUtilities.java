@@ -74,6 +74,7 @@ public class AnimationUtilities {
 
 		protected abstract void update( double portion );
 
+		@Override
 		public final void actionPerformed( java.awt.event.ActionEvent e ) {
 			if( t0 != null ) {
 				//pass
@@ -167,6 +168,7 @@ public class AnimationUtilities {
 
 	public static void main( String[] args ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setLocation( 0, 0 );

@@ -66,30 +66,37 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return org.lgna.project.annotations.Visibility.PRIME_TIME;
 	}
 
+	@Override
 	public final org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
+	@Override
 	public final NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
+	@Override
 	public final NodeListProperty<UserParameter> getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
 
+	@Override
 	public final AbstractType<?, ?, ?> getReturnType() {
 		return returnType.getValue();
 	}
 
+	@Override
 	public final java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
 
+	@Override
 	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}

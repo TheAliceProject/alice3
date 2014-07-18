@@ -55,6 +55,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 	protected class InternalDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 
+		@Override
 		public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( org.alice.ide.meta.DeclarationMeta.getDeclaration() == getCode() ) {
@@ -86,9 +87,11 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			}
 		}
 
+		@Override
 		public final void dragStarted( org.lgna.croquet.history.DragStep step ) {
 		}
 
+		@Override
 		public final void dragEntered( org.lgna.croquet.history.DragStep step ) {
 			org.lgna.croquet.views.DragComponent source = step.getDragSource();
 			statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( step.getModel(), source );
@@ -161,6 +164,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			return rv;
 		}
 
+		@Override
 		public final BlockStatementIndexPair dragUpdated( org.lgna.croquet.history.DragStep step ) {
 			java.awt.ComponentOrientation componentOrientation = getComponentOrientation();
 			org.lgna.croquet.views.DragComponent source = step.getDragSource();
@@ -390,6 +394,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			return rv;
 		}
 
+		@Override
 		public final void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 			statementListPropertyPaneInfos = null;
 			//todo: listen to step
@@ -397,6 +402,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			repaint();
 		}
 
+		@Override
 		public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
 			if( this.pushedContext != null ) {
 				org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
@@ -404,10 +410,12 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 			}
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return CodePanelWithDropReceptor.this.getTrackableShape( potentialDropSite );
 		}
 
+		@Override
 		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return CodePanelWithDropReceptor.this;
 		}

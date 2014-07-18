@@ -113,6 +113,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+		@Override
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
 			AwtComponentView.this.handleHierarchyChanged( e );
 		}
@@ -487,16 +488,19 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		}
 	}
 
+	@Override
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getBounds( asSeenBy );
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
 	}
 
+	@Override
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
 	}
 
+	@Override
 	public boolean isInView() {
 		if( this.isVisible() ) { //&& this.getAwtComponent().isShowing() && this.getAwtComponent().isDisplayable() && this.getAwtComponent().isValid() ) {
 			java.awt.Rectangle visibleRect = this.getVisibleRectangle();
@@ -520,6 +524,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		}
 	}
 
+	@Override
 	public ScrollPane getScrollPaneAncestor() {
 		return this.getFirstAncestorAssignableTo( ScrollPane.class );
 	}
@@ -561,6 +566,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 
 	public void requestFocusLater() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				requestFocus();
 			}

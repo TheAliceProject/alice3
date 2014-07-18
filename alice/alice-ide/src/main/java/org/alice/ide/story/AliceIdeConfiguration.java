@@ -46,10 +46,12 @@ package org.alice.ide.story;
  * @author Dennis Cosgrove
  */
 public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
+	@Override
 	public org.lgna.croquet.Operation[] createUploadOperations( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		return new org.lgna.croquet.Operation[] { new org.alice.ide.youtube.croquet.UploadOperation( projectDocumentFrame ) };
 	}
 
+	@Override
 	public org.lgna.issue.IssueReportingHub getIssueReportingHub() {
 		return this.issueReportingHub;
 	}

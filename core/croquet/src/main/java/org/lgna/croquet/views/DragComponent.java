@@ -66,46 +66,57 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		super( model );
 		if( model != null ) {
 			this.mouseListener = new java.awt.event.MouseListener() {
+				@Override
 				public void mousePressed( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMousePressed( e );
 				}
 
+				@Override
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseReleased( e );
 				}
 
+				@Override
 				public void mouseClicked( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseClicked( e );
 				}
 
+				@Override
 				public void mouseEntered( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseEntered( e );
 				}
 
+				@Override
 				public void mouseExited( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseExited( e );
 				}
 			};
 			this.mouseMotionListener = new java.awt.event.MouseMotionListener() {
+				@Override
 				public void mouseMoved( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseMoved( e );
 				}
 
+				@Override
 				public void mouseDragged( java.awt.event.MouseEvent e ) {
 					DragComponent.this.handleMouseDragged( e );
 				}
 			};
 			this.componentListener = new java.awt.event.ComponentListener() {
+				@Override
 				public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 				}
 
+				@Override
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
 				}
 
+				@Override
 				public void componentResized( java.awt.event.ComponentEvent e ) {
 					DragComponent.this.updateProxySizes();
 				}
 
+				@Override
 				public void componentShown( java.awt.event.ComponentEvent e ) {
 				}
 			};

@@ -50,6 +50,7 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 		buttonModel.setSelected( true );
 		buttonModel.addChangeListener( new javax.swing.event.ChangeListener() {
+			@Override
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				programImp.getAnimator().setSpeedFactor( buttonModel.isSelected() ? 1.0 : 0.0 );
 			}
@@ -58,14 +59,17 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		javax.swing.JButton playPauseButton = new javax.swing.JButton();
 		playPauseButton.setModel( buttonModel );
 		playPauseButton.setIcon( new javax.swing.Icon() {
+			@Override
 			public int getIconWidth() {
 				return 12;
 			}
 
+			@Override
 			public int getIconHeight() {
 				return 12;
 			}
 
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				javax.swing.AbstractButton toggleButton = (javax.swing.AbstractButton)c;
 				javax.swing.ButtonModel buttonModel = toggleButton.getModel();
@@ -87,6 +91,7 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		boundedRangeModel.setMinimum( 1 );
 		boundedRangeModel.setMaximum( 8 );
 		boundedRangeModel.addChangeListener( new javax.swing.event.ChangeListener() {
+			@Override
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				ProgramControlPanel.this.updateLabel();
 				programImp.handleSpeedChange( boundedRangeModel.getValue() );
@@ -96,9 +101,11 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 
 		javax.swing.JSlider slider = new javax.swing.JSlider( boundedRangeModel );
 		slider.addMouseListener( new java.awt.event.MouseListener() {
+			@Override
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 				if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 					//pass
@@ -107,12 +114,15 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 				}
 			}
 
+			@Override
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 			}
 		} );

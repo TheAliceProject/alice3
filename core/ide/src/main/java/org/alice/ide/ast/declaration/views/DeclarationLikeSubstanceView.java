@@ -128,6 +128,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		super.handleCompositePreActivation();
 		if( this.nameTextField != null ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					nameTextField.requestFocus();
 				}

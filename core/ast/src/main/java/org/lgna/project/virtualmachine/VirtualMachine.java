@@ -42,6 +42,9 @@
  */
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -120,12 +123,20 @@ public abstract class VirtualMachine {
 		}
 	}
 
+	public Object createAndSetFieldInstance( UserInstance userInstance, UserField field ) {
+		Expression expression = field.initializer.getValue();
+		assert expression != null;
+		Object rv = this.evaluate( expression );
+		userInstance.setFieldValue( field, rv );
+		return rv;
+	}
+
 	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( UserInstance instance, org.lgna.project.ast.UserField field ) {
 		//pushCurrentThread( null );
 		//try {
 		this.pushBogusFrame( instance );
 		try {
-			return instance.createAndSetFieldInstance( this, field );
+			return this.createAndSetFieldInstance( instance, field );
 		} finally {
 			this.popFrame();
 		}
@@ -202,6 +213,7 @@ public abstract class VirtualMachine {
 		Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( cls );
 		if( adapterCls != null ) {
 			MethodContext context = new MethodContext() {
+				@Override
 				public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
 					VirtualMachine.this.ENTRY_POINT_invoke( userInstance, method, arguments );
 				}
@@ -832,6 +844,7 @@ public abstract class VirtualMachine {
 			Class<?>[] parameterTypes = { org.lgna.project.virtualmachine.LambdaContext.class, org.lgna.project.ast.Lambda.class, org.lgna.project.virtualmachine.UserInstance.class };
 			Object[] arguments = {
 					new LambdaContext() {
+						@Override
 						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, org.lgna.project.virtualmachine.UserInstance thisInstance, java.lang.Object... arguments ) {
 							assert thisInstance != null;
 							if( lambda instanceof org.lgna.project.ast.UserLambda ) {
@@ -1064,6 +1077,7 @@ public abstract class VirtualMachine {
 				final org.lgna.project.ast.Statement statementI = blockStatement.statements.get( i );
 				runnables[ i ] = new Runnable() {
 					;
+					@Override
 					public void run() {
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementI );
 						pushCurrentThread( owner );
@@ -1082,8 +1096,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeExpressionStatement( org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
-		@SuppressWarnings( "unused" )
-		Object unused = this.evaluate( expressionStatement.expression.getValue() );
+		@SuppressWarnings( "unused" ) Object unused = this.evaluate( expressionStatement.expression.getValue() );
 	}
 
 	protected void excecuteForEachLoop( org.lgna.project.ast.AbstractForEachLoop forEachInLoop, Object[] array, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
@@ -1162,6 +1175,7 @@ public abstract class VirtualMachine {
 		default:
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
 			org.lgna.common.ThreadUtilities.eachInTogether( new org.lgna.common.EachInTogetherRunnable<Object>() {
+				@Override
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {
@@ -1259,45 +1273,47 @@ public abstract class VirtualMachine {
 					virtualMachineListener.statementExecuting( statementEvent );
 				}
 			}
-			//todo: try?
-			if( statement instanceof org.lgna.project.ast.AssertStatement ) {
-				this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
-				this.executeBlockStatement( (org.lgna.project.ast.BlockStatement)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-				this.executeConditionalStatement( (org.lgna.project.ast.ConditionalStatement)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.Comment ) {
-				this.executeComment( (org.lgna.project.ast.Comment)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.CountLoop ) {
-				this.executeCountLoop( (org.lgna.project.ast.CountLoop)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.DoTogether ) {
-				this.executeDoTogether( (org.lgna.project.ast.DoTogether)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.DoInOrder ) {
-				this.executeDoInOrder( (org.lgna.project.ast.DoInOrder)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-				this.executeExpressionStatement( (org.lgna.project.ast.ExpressionStatement)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.ForEachInArrayLoop ) {
-				this.executeForEachInArrayLoop( (org.lgna.project.ast.ForEachInArrayLoop)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.ForEachInIterableLoop ) {
-				this.executeForEachInIterableLoop( (org.lgna.project.ast.ForEachInIterableLoop)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.EachInArrayTogether ) {
-				this.executeEachInArrayTogether( (org.lgna.project.ast.EachInArrayTogether)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.EachInIterableTogether ) {
-				this.executeEachInIterableTogether( (org.lgna.project.ast.EachInIterableTogether)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.ReturnStatement ) {
-				this.executeReturnStatement( (org.lgna.project.ast.ReturnStatement)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.WhileLoop ) {
-				this.executeWhileLoop( (org.lgna.project.ast.WhileLoop)statement, listeners );
-			} else if( statement instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
-				this.executeLocalDeclarationStatement( (org.lgna.project.ast.LocalDeclarationStatement)statement, listeners );
-			} else {
-				throw new RuntimeException();
-			}
 
-			//todo: finally?
-			if( ( statementEvent != null ) && ( listeners != null ) ) {
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
-					virtualMachineListener.statementExecuted( statementEvent );
+			try {
+				if( statement instanceof org.lgna.project.ast.AssertStatement ) {
+					this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
+					this.executeBlockStatement( (org.lgna.project.ast.BlockStatement)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
+					this.executeConditionalStatement( (org.lgna.project.ast.ConditionalStatement)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.Comment ) {
+					this.executeComment( (org.lgna.project.ast.Comment)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.CountLoop ) {
+					this.executeCountLoop( (org.lgna.project.ast.CountLoop)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.DoTogether ) {
+					this.executeDoTogether( (org.lgna.project.ast.DoTogether)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.DoInOrder ) {
+					this.executeDoInOrder( (org.lgna.project.ast.DoInOrder)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+					this.executeExpressionStatement( (org.lgna.project.ast.ExpressionStatement)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.ForEachInArrayLoop ) {
+					this.executeForEachInArrayLoop( (org.lgna.project.ast.ForEachInArrayLoop)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.ForEachInIterableLoop ) {
+					this.executeForEachInIterableLoop( (org.lgna.project.ast.ForEachInIterableLoop)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.EachInArrayTogether ) {
+					this.executeEachInArrayTogether( (org.lgna.project.ast.EachInArrayTogether)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.EachInIterableTogether ) {
+					this.executeEachInIterableTogether( (org.lgna.project.ast.EachInIterableTogether)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.WhileLoop ) {
+					this.executeWhileLoop( (org.lgna.project.ast.WhileLoop)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
+					this.executeLocalDeclarationStatement( (org.lgna.project.ast.LocalDeclarationStatement)statement, listeners );
+				} else if( statement instanceof org.lgna.project.ast.ReturnStatement ) {
+					this.executeReturnStatement( (org.lgna.project.ast.ReturnStatement)statement, listeners );
+					// note: does not return.  throws ReturnException.
+				} else {
+					throw new RuntimeException();
+				}
+			} finally {
+				if( ( statementEvent != null ) && ( listeners != null ) ) {
+					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						virtualMachineListener.statementExecuted( statementEvent );
+					}
 				}
 			}
 		}

@@ -45,6 +45,7 @@ package org.alice.stageide.sceneeditor.side;
 
 public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
 		}

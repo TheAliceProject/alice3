@@ -51,6 +51,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		super( model );
 	}
 
+	@Override
 	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
 		return this;
 	}
@@ -62,10 +63,12 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	//		this.getAwtComponent().getSelectionModel().removeChangeListener( changeListener );
 	//	}
 
+	@Override
 	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().addPopupMenuListener( listener );
 	}
 
+	@Override
 	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().removePopupMenuListener( listener );
 	}
@@ -77,6 +80,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		return rv;
 	}
 
+	@Override
 	public AwtComponentView<?> getMenuComponent( int i ) {
 		javax.swing.MenuElement menuElement = this.getAwtComponent().getSubElements()[ i ];
 		if( menuElement instanceof java.awt.Component ) {
@@ -87,10 +91,12 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		}
 	}
 
+	@Override
 	public int getMenuComponentCount() {
 		return this.getAwtComponent().getSubElements().length;
 	}
 
+	@Override
 	public synchronized AwtComponentView<?>[] getMenuComponents() {
 		final int N = this.getMenuComponentCount();
 		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
@@ -100,35 +106,43 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		return rv;
 	}
 
+	@Override
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 
+	@Override
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 
+	@Override
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
 		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
 	}
 
+	@Override
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
 
+	@Override
 	public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
 		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent(), cascadeMenu.getAwtComponent() );
 	}
 
+	@Override
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
 
+	@Override
 	public void addSeparator() {
 		this.addSeparator( null );
 	}
 
+	@Override
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
 		if( menuTextSeparator != null ) {
 			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
@@ -137,11 +151,13 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		}
 	}
 
+	@Override
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
 		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
 	}
 
+	@Override
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );

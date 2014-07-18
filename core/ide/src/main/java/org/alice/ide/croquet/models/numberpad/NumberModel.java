@@ -46,8 +46,7 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* extends edu.cmu.cs.dennisc.croquet.StringState */{
-	@Deprecated
-	/* package-private */final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
+	@Deprecated/* package-private */final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 
 	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
 	private final javax.swing.JTextField textField = new javax.swing.JTextField();
@@ -69,14 +68,17 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 			}
 		}
 
+		@Override
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
 
+		@Override
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
 
+		@Override
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}

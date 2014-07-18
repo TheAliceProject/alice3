@@ -103,6 +103,7 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	private final SwingModel<N> swingModel;
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			BoundedNumberState.this.handleStateChanged( e );
 		}

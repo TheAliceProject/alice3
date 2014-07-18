@@ -47,16 +47,19 @@ package org.alice.ide.projecturi.views;
  * @author Dennis Cosgrove
  */
 abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
+	@Override
 	public int getIconWidth() {
 		return 160;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return 120;
 	}
 
 	protected abstract String getText();
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		int width = this.getIconWidth();
 		int height = this.getIconHeight();

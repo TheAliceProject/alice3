@@ -53,6 +53,7 @@ public class LocalArrayAccessCascade extends ArrayAccessCascade {
 		assert local != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade>() {
+			@Override
 			public LocalArrayAccessCascade initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new LocalArrayAccessCascade( local, expressionProperty );
 			}

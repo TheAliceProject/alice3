@@ -446,6 +446,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	public abstract void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation );
 
 	private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera ) {
 				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();

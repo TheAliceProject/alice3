@@ -43,18 +43,22 @@
 package org.alice.ide.issue;
 
 public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration {
+	@Override
 	public java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException {
 		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
 	}
 
+	@Override
 	public java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException {
 		return new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
 		return new org.alice.ide.issue.jira.rpc.Authenticator();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
 		return new org.alice.ide.issue.jira.soap.Authenticator();
 	}

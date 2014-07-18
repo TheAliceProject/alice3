@@ -49,9 +49,11 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 	private org.lgna.project.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			DeclarationNameLabel.this.updateText();
 		}

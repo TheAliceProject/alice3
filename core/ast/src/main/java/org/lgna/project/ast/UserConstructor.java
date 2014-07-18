@@ -52,10 +52,12 @@ public abstract class UserConstructor extends AbstractConstructor {
 		return (UserType<?>)super.getDeclaringType();
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}

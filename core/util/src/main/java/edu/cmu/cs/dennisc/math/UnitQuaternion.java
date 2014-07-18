@@ -78,46 +78,56 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		setValue( other );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
 
+	@Override
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
 
+	@Override
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
 
+	@Override
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
 
+	@Override
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
@@ -130,6 +140,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		w = binaryDecoder.decodeDouble();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
@@ -137,6 +148,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		binaryEncoder.encode( w );
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );
@@ -181,10 +193,12 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		return setReturnValueToNaN( new UnitQuaternion() );
 	}
 
+	@Override
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
 
+	@Override
 	public boolean isNaN() {
 		return Double.isNaN( x ) || Double.isNaN( y ) || Double.isNaN( z ) || Double.isNaN( w );
 	}
@@ -207,10 +221,12 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		return setReturnValueToIdentity( UnitQuaternion.createNaN() );
 	}
 
+	@Override
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
 
+	@Override
 	public boolean isIdentity() {
 		return ( x == 0.0 ) && ( y == 0.0 ) && ( z == 0.0 ) && ( w == 1.0 );
 	}
@@ -248,6 +264,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		this.w = w;
 	}
 
+	@Override
 	public void setValue( OrthogonalMatrix3x3 m ) {
 		//todo: convert directly
 		if( m.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
@@ -263,6 +280,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		setValue( new AxisRotation( m ) );
 	}
 
+	@Override
 	public void setValue( UnitQuaternion other ) {
 		this.x = other.x;
 		this.y = other.y;
@@ -270,6 +288,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		this.w = other.w;
 	}
 
+	@Override
 	public void setValue( AxisRotation aa ) {
 		double halfThetaInRadians = aa.angle.getAsRadians() * 0.5;
 		double c = Math.cos( halfThetaInRadians );
@@ -280,11 +299,13 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		z = aa.axis.z * s;
 	}
 
+	@Override
 	public void setValue( EulerAngles ea ) {
 		//todo: convert directly
 		setValue( new AxisRotation( ea ) );
 	}
 
+	@Override
 	public void setValue( ForwardAndUpGuide faug ) {
 		//todo: convert directly
 		setValue( new AxisRotation( faug ) );

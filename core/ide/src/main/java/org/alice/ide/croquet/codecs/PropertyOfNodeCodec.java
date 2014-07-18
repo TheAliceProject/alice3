@@ -65,10 +65,12 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 		this.valueCls = valueCls;
 	}
 
+	@Override
 	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
 
+	@Override
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -85,6 +87,7 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
@@ -97,6 +100,7 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, T value ) {
 		//todo
 		sb.append( value );

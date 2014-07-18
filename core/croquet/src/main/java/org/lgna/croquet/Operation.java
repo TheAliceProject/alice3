@@ -48,6 +48,7 @@ package org.lgna.croquet;
 public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				Operation.this.handleActionPerformed( e );
 			}

@@ -50,8 +50,10 @@ public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
 
 	private final org.lgna.croquet.views.AbstractLabel descriptionLabel;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					descriptionLabel.getAwtComponent().scrollRectToVisible( new java.awt.Rectangle( 0, 0, 1, 1 ) );
 					javax.swing.tree.TreePath treePath = treeView.getSelectionPath();

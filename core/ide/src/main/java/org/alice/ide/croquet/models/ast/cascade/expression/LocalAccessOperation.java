@@ -53,6 +53,7 @@ public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.casca
 		assert local != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation>() {
+			@Override
 			public LocalAccessOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new LocalAccessOperation( local, expressionProperty );
 			}

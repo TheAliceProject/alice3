@@ -56,15 +56,18 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 		super.setValue( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Dimension3( value ) );

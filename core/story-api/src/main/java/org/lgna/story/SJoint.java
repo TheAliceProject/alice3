@@ -58,6 +58,7 @@ public class SJoint extends STurnable {
 
 	/* package-private */static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId, SJoint>() {
+			@Override
 			public SJoint initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
 				return org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );

@@ -51,6 +51,7 @@ public abstract class GlOnscreenRenderTarget<C extends java.awt.Component> exten
 		this.repaint();
 	}
 
+	@Override
 	public void repaint() {
 		this.getAwtComponent().repaint();
 	}

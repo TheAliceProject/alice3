@@ -62,6 +62,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
 				final org.lgna.project.ast.UserMethod getMySceneMethod = type.getDeclaredMethod( "getMyScene" );
 				if( ( mySceneField != null ) && ( getMySceneMethod != null ) ) {
 					node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+						@Override
 						public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 							if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
 								org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;

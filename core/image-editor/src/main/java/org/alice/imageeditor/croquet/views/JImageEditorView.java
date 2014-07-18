@@ -98,6 +98,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 	}
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( e.getButton() == java.awt.event.MouseEvent.BUTTON1 ) {
 				ptPressed = getClampedPoint( e );
@@ -106,6 +107,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 			}
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
 				handleMouseReleased( e );
@@ -115,20 +117,25 @@ public class JImageEditorView extends javax.swing.JComponent {
 			}
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 	};
 
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			if( ptPressed != null ) {
 				ptDragged = e.getPoint();
@@ -138,6 +145,7 @@ public class JImageEditorView extends javax.swing.JComponent {
 	};
 
 	private final java.awt.event.ActionListener escapeListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			ptPressed = null;
 			ptDragged = null;

@@ -103,6 +103,7 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 				//pass
 			} else {
 				java.util.List<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane> list = org.lgna.croquet.views.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane>() {
+					@Override
 					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 						org.lgna.project.ast.AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 						assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();

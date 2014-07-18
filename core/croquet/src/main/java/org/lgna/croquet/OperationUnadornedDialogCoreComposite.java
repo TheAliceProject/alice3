@@ -57,6 +57,7 @@ public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.c
 		return this.imp;
 	}
 
+	@Override
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}

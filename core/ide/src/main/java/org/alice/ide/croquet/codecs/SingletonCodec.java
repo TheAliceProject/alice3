@@ -64,10 +64,12 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 		this.valueCls = valueCls;
 	}
 
+	@Override
 	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
 
+	@Override
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -84,6 +86,7 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
@@ -93,6 +96,7 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, T value ) {
 		sb.append( value );
 	}

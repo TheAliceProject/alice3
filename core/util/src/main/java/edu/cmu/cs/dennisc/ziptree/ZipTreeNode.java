@@ -64,6 +64,7 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
 		return this.parent;
 	}
@@ -80,6 +81,7 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 		}
 	}
 
+	@Override
 	public String getValue() {
 		return this.path;
 	}
@@ -88,6 +90,7 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 		return this.name;
 	}
 
+	@Override
 	public int compareTo( edu.cmu.cs.dennisc.ziptree.ZipTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {

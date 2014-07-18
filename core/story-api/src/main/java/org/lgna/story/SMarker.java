@@ -51,6 +51,7 @@ public abstract class SMarker extends SMovableTurnable implements MutableRider {
 	@Override
 	/* package-private */abstract org.lgna.story.implementation.MarkerImp getImplementation();
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}

@@ -277,19 +277,24 @@ public class HandleManager implements ManipulationListener {
 		handle.setHandleRollover( isRollover );
 	}
 
+	@Override
 	public void activate( ManipulationEvent event ) {
 	}
 
+	@Override
 	public void deactivate( ManipulationEvent event ) {
 	}
 
+	@Override
 	public void addCondition( ManipulationEventCriteria condition ) {
 	}
 
+	@Override
 	public boolean matches( ManipulationEvent event ) {
 		return false;
 	}
 
+	@Override
 	public void removeCondition( ManipulationEventCriteria condition ) {
 	}
 

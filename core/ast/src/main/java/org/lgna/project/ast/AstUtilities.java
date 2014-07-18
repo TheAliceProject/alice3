@@ -703,4 +703,19 @@ public class AstUtilities {
 		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
 		return crawler.getList();
 	}
+
+	public static AbstractType<?, ?, ?> getDeclaringTypeIfMemberOrTypeItselfIfType( AbstractDeclaration declaration ) {
+		if( declaration != null ) {
+			if( declaration instanceof AbstractType ) {
+				return (AbstractType<?, ?, ?>)declaration;
+			} else if( declaration instanceof AbstractMember ) {
+				AbstractMember member = (AbstractMember)declaration;
+				return member.getDeclaringType();
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		} else {
+			return null;
+		}
+	}
 }

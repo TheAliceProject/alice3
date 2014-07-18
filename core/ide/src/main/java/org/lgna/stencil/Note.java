@@ -175,23 +175,29 @@ public class Note extends org.lgna.croquet.views.SwingComponentView<javax.swing.
 		private java.awt.event.MouseEvent ePressed;
 		private java.awt.Point ptPressed;
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			this.ePressed = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			this.ptPressed = Note.this.getAwtComponent().getLocation();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			java.awt.event.MouseEvent eDragged = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			int xDelta = eDragged.getX() - this.ePressed.getX();
@@ -202,6 +208,7 @@ public class Note extends org.lgna.croquet.views.SwingComponentView<javax.swing.
 			Note.this.getAwtComponent().getParent().repaint();
 		}
 
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
 	};
@@ -238,6 +245,7 @@ public class Note extends org.lgna.croquet.views.SwingComponentView<javax.swing.
 	}
 
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+		@Override
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
 			if( ( e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED ) != 0 ) {
 				Note.this.handleShowingChanged( e.getChanged().isShowing() );

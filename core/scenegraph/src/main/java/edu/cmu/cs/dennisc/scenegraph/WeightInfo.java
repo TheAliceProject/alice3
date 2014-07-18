@@ -90,6 +90,7 @@ public class WeightInfo implements BinaryEncodableAndDecodable
 		}
 	}
 
+	@Override
 	public void encode( BinaryEncoder binaryEncoder )
 	{
 		binaryEncoder.encode( this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.size() );

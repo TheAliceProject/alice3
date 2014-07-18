@@ -48,5 +48,6 @@ package edu.cmu.cs.dennisc.lookingglass;
 public interface OffscreenLookingGlass extends LookingGlass {
 	public void clearAndRenderOffscreen();
 
+	@Override
 	public void release();
 }

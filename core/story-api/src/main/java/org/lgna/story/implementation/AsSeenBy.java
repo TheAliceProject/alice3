@@ -48,28 +48,34 @@ package org.lgna.story.implementation;
  */
 public enum AsSeenBy implements ReferenceFrame {
 	SCENE {
+		@Override
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE;
 		}
 
+		@Override
 		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths.getScene();
 		}
 	},
 	PARENT {
+		@Override
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT;
 		}
 
+		@Override
 		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths.getVehicle();
 		}
 	},
 	SELF {
+		@Override
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF;
 		}
 
+		@Override
 		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths;
 		}

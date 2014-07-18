@@ -57,6 +57,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 		private java.awt.Component centerComponent;
 		private javax.swing.AbstractButton lineEndComponent;
 
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 			if( java.awt.BorderLayout.CENTER.equals( name ) ) {
 				this.centerComponent = comp;
@@ -67,6 +68,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			}
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 			if( comp == this.centerComponent ) {
 				this.centerComponent = null;
@@ -77,10 +79,12 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			}
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return this.preferredLayoutSize( parent );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 			if( this.centerComponent != null ) {
@@ -99,6 +103,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			return rv;
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			java.awt.Dimension parentSize = parent.getSize();
 			int x = 0;
@@ -191,6 +196,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			TreePathViewController.this.getInternalPanel().refreshLater();
 		}

@@ -54,6 +54,7 @@ public class ByteArrayDataSource implements DataSource {
 		this.setData( data );
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -70,6 +71,7 @@ public class ByteArrayDataSource implements DataSource {
 		this.data = data;
 	}
 
+	@Override
 	public void write( java.io.OutputStream os ) throws java.io.IOException {
 		os.write( this.data );
 	}

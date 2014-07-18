@@ -56,6 +56,7 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 		this.item.setValue( item );
 	}
 
+	@Override
 	public DeclarationProperty<UserLocal> getItemProperty() {
 		return this.item;
 	}

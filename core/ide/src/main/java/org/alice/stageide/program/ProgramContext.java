@@ -129,6 +129,7 @@ public abstract class ProgramContext {
 
 	public void setActiveScene() {
 		org.lgna.common.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
+			@Override
 			public void run() {
 				org.lgna.project.ast.UserField sceneField = null;
 				for( org.lgna.project.ast.UserField field : programInstance.getType().fields ) {

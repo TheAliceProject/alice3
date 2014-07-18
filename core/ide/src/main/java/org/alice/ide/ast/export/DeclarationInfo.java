@@ -49,11 +49,13 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 	private final ProjectInfo projectInfo;
 	private final D declaration;
 	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 	private final javax.swing.JCheckBox checkBox = new javax.swing.JCheckBox( this.action );
 	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		@Override
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			handleItemStateChanged( e );
 		}

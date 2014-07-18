@@ -63,6 +63,7 @@ public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
 	private final org.lgna.project.ast.Statement statement;
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			IsStatementEnabledState.this.statement.isEnabled.setValue( e.getNextValue() );
 			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();

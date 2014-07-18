@@ -83,6 +83,7 @@ public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSpli
 	private int ignoreDividerChangeCount = 0;
 	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+		@Override
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
 				//pass

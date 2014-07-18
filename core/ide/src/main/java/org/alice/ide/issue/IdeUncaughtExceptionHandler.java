@@ -85,6 +85,7 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 
 			//todo
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					dialog.pack();
 				}

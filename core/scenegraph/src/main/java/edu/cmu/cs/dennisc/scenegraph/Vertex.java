@@ -84,6 +84,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		textureCoordinate0 = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( position );
 		binaryEncoder.encode( normal );

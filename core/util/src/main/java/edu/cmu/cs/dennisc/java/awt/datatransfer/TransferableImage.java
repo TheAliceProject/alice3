@@ -54,14 +54,17 @@ public class TransferableImage implements java.awt.datatransfer.Transferable {
 		this.image = image;
 	}
 
+	@Override
 	public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() {
 		return DATA_FLAVORS;
 	}
 
+	@Override
 	public boolean isDataFlavorSupported( java.awt.datatransfer.DataFlavor flavor ) {
 		return java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor );
 	}
 
+	@Override
 	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
 		if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
 			return this.image;

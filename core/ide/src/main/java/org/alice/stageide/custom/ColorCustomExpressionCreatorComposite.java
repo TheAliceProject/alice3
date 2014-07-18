@@ -57,6 +57,7 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 
 	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 		}

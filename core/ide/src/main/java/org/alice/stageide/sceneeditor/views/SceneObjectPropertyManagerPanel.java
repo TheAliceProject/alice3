@@ -106,9 +106,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	private ShowJointedModelJointAxesState showJointsState;
 
 	private org.lgna.croquet.State.ValueListener<Boolean> showJointsStateObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		@Override
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			assert ( state instanceof ShowJointedModelJointAxesState );
 			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ( (ShowJointedModelJointAxesState)state ).getField(), nextValue );

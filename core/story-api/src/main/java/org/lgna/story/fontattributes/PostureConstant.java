@@ -55,10 +55,12 @@ public enum PostureConstant implements PostureAttribute {
 		m_value = value;
 	}
 
+	@Override
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.POSTURE;
 	}
 
+	@Override
 	public Float getValue() {
 		return m_value;
 	}

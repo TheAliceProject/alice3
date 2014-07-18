@@ -51,9 +51,7 @@ public class YouTubeCategories {
 	}
 
 	/**
-	 * borrowed from dave:
-	 * YouTubeMeddiaGroupEditorPanel
-	 * and then from matt
+	 * borrowed from dave: YouTubeMeddiaGroupEditorPanel and then from matt
 	 */
 	private static final String CATEGORY_URL = "http://gdata.youtube.com/schemas/2007/categories.cat";
 	private static final String TERM_STRING = "term='";

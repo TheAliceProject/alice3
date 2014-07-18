@@ -51,6 +51,7 @@ public class ScrollingPopupMenuUtilities {
 	}
 
 	private static final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		@Override
 		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 			java.awt.Component component = e.getComponent();
 			if( component instanceof javax.swing.JPopupMenu ) {

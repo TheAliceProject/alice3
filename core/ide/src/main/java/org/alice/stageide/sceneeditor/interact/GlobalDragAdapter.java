@@ -597,6 +597,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.interact.handle.HandleStyle> e ) {
 			setInteractionState( e.getNextValue() );
 		}

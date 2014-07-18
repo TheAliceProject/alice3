@@ -50,6 +50,7 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  */
 public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
 	private final org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
+		@Override
 		public String customize( String localization, DifferentImplementationChoice value ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localization, value );
 			return org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
@@ -63,6 +64,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( "selectOneHeader" );
 
 	private final org.lgna.croquet.event.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentImplementationChoice>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
 			handleChanged();
 		}

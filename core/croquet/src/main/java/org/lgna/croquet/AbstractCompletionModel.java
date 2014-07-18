@@ -75,6 +75,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		this.group = group;
 	}
 
+	@Override
 	public Group getGroup() {
 		return this.group;
 	}

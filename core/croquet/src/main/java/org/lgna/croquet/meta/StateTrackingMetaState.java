@@ -61,6 +61,7 @@ public abstract class StateTrackingMetaState<T, ST> extends MetaState<T> {
 
 	private final org.lgna.croquet.State<ST> state;
 	private final org.lgna.croquet.event.ValueListener<ST> valueListener = new org.lgna.croquet.event.ValueListener<ST>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<ST> e ) {
 			checkValueAndFireIfAppropriate();
 		}

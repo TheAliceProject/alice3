@@ -54,6 +54,7 @@ public class KeyAdapter extends AbstractAdapter implements org.lgna.story.event.
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void keyPressed( org.lgna.story.event.KeyEvent e ) {
 		invokeEntryPoint( e );
 	}

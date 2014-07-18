@@ -84,6 +84,7 @@ public abstract class IoUtilities {
 			this.zipFile = zipFile;
 		}
 
+		@Override
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
 			java.util.zip.ZipEntry zipEntry = this.zipFile.getEntry( name );
 			if( zipEntry != null ) {
@@ -105,6 +106,7 @@ public abstract class IoUtilities {
 			}
 		}
 
+		@Override
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
 			byte[] buffer = this.mapZipEntryToBuffer.get( name );
 			if( buffer != null ) {
@@ -310,10 +312,12 @@ public abstract class IoUtilities {
 
 	private static void writeVersion( java.util.zip.ZipOutputStream zos, final String entryName, final org.lgna.project.Version version ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+			@Override
 			public String getName() {
 				return entryName;
 			}
 
+			@Override
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				os.write( version.toString().getBytes() );
 			}
@@ -326,10 +330,12 @@ public abstract class IoUtilities {
 
 	private static void writeXML( final org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, final String entryName ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+			@Override
 			public String getName() {
 				return entryName;
 			}
 
+			@Override
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
 			}
@@ -418,10 +424,12 @@ public abstract class IoUtilities {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+				@Override
 				public String getName() {
 					return PROPERTIES_ENTRY_NAME;
 				}
 
+				@Override
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 					binaryEncoder.encode( org.lgna.project.ProjectVersion.getCurrentVersionText() );

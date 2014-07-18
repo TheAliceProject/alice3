@@ -52,6 +52,7 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	private final org.lgna.croquet.SingleSelectListState<DifferentSignatureChoice> choiceState = this.createSingleSelectListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
 
 	private final org.lgna.croquet.event.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentSignatureChoice>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
 			handleChanged();
 		}

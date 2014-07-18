@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.option;
 
-
 /**
  * @author Dennis Cosgrove
  */

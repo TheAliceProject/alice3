@@ -57,6 +57,7 @@ public class FontChooser extends javax.swing.JPanel {
 			addComponents( new java.awt.GridBagConstraints() );
 
 			m_list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+				@Override
 				public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 					if( e.getValueIsAdjusting() ) {
 						//pass

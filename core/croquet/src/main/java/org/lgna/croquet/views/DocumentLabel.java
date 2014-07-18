@@ -77,14 +77,17 @@ public class DocumentLabel extends AbstractLabel {
 	}
 
 	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+		@Override
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			handleDocumentChanged();
 		}
 
+		@Override
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			handleDocumentChanged();
 		}
 
+		@Override
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			handleDocumentChanged();
 		}

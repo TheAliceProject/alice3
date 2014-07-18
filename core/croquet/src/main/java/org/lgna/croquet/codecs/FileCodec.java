@@ -47,10 +47,12 @@ package org.lgna.croquet.codecs;
  */
 public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
 	SINGLETON;
+	@Override
 	public Class<java.io.File> getValueClass() {
 		return java.io.File.class;
 	}
 
+	@Override
 	public java.io.File decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -60,6 +62,7 @@ public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
@@ -68,6 +71,7 @@ public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, java.io.File value ) {
 		sb.append( value );
 	}

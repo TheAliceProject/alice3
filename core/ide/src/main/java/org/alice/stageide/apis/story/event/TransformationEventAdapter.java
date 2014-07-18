@@ -12,6 +12,7 @@ public class TransformationEventAdapter extends AbstractAdapter implements Point
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void pointOfViewChanged( PointOfViewEvent e ) {
 		invokeEntryPoint( e );
 	}

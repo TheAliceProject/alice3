@@ -47,18 +47,22 @@ package org.alice.stageide.personresource.codecs;
  */
 public enum FullBodyOutfitCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
 		return org.lgna.story.resources.sims2.FullBodyOutfit.class;
 	}
 
+	@Override
 	public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
 		sb.append( value );
 	}

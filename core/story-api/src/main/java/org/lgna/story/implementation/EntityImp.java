@@ -137,10 +137,12 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 		return this.getSgComposite();
 	}
 
+	@Override
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
@@ -313,13 +315,16 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		//todo: select all on focus?
 
 		private final javax.swing.event.AncestorListener ancestorListener = new javax.swing.event.AncestorListener() {
+			@Override
 			public void ancestorAdded( javax.swing.event.AncestorEvent event ) {
 				textField.requestFocusInWindow();
 			}
 
+			@Override
 			public void ancestorMoved( javax.swing.event.AncestorEvent event ) {
 			}
 
+			@Override
 			public void ancestorRemoved( javax.swing.event.AncestorEvent event ) {
 			}
 		};
@@ -523,6 +528,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			this.putValue( NAME, "\u2190" );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.deleteLastCharacter();
 		}
@@ -538,6 +544,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			this.putValue( NAME, Short.toString( this.digit ) );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDigit( digit );
 		}
@@ -551,6 +558,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			this.putValue( NAME, "\u00B1" );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.negate();
 		}
@@ -565,6 +573,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			this.putValue( NAME, "" + decimalFormatSymbols.getDecimalSeparator() );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDecimalPoint();
 		}
@@ -686,6 +695,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
 	public void mendSceneGraphIfNecessary() {
 		edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspectAndMendIfNecessary( this.getSgComposite(), new edu.cmu.cs.dennisc.scenegraph.qa.Mender() {
+			@Override
 			public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getMendTransformationFor( edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
 				EntityImp imp = EntityImp.getInstance( sgJoint );
 				if( imp instanceof JointImp ) {

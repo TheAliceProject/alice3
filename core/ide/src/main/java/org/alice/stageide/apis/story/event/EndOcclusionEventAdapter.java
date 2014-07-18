@@ -12,6 +12,7 @@ public class EndOcclusionEventAdapter extends AbstractAdapter implements Occlusi
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void occlusionEnded( EndOcclusionEvent e ) {
 		invokeEntryPoint( e );
 	}

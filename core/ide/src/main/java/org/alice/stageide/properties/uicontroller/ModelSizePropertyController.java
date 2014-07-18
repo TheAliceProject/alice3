@@ -69,9 +69,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 {
 
 	private org.lgna.croquet.State.ValueListener<Boolean> linkStateValueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		@Override
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ModelSizePropertyController.this.updateUIFromLinkState( state, prevValue, nextValue );
 		}
@@ -125,6 +127,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		super.initializeComponents();
 		this.valueChangeListener = new ActionListener() {
 
+			@Override
 			public void actionPerformed( ActionEvent e )
 			{
 				ModelSizePropertyController.this.updateAdapterFromUI( e );

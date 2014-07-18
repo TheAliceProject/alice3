@@ -74,8 +74,10 @@ public abstract class AbstractCode extends AbstractMember implements Code {
 
 	public abstract AbstractCode getNextShorterInChain();
 
+	@Override
 	public abstract boolean isSignatureLocked();
 
+	@Override
 	public final AbstractParameter[] getAllParameters() {
 		java.util.List<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
 		AbstractParameter variableLengthParameter = this.getVariableLengthParameter();

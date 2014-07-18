@@ -55,6 +55,7 @@ public class SSun extends STurnable implements MutableRider {
 		return this.implementation;
 	}
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}

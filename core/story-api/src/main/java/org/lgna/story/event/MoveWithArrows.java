@@ -46,6 +46,7 @@ public class MoveWithArrows {
 
 	private final ArrowKeyPressListener pressListener = new ArrowKeyPressListener() {
 
+		@Override
 		public void arrowKeyPressed( ArrowKeyEvent e ) {
 			MoveDirection moveDirection = e.getMoveDirection( org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT );
 			pressed.put( moveDirection, true );
@@ -54,6 +55,7 @@ public class MoveWithArrows {
 	};
 	private final ArrowKeyPressListener releaseListener = new ArrowKeyPressListener() {
 
+		@Override
 		public void arrowKeyPressed( ArrowKeyEvent e ) {
 			MoveDirection moveDirection = e.getMoveDirection( org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT );
 			pressed.put( moveDirection, false );

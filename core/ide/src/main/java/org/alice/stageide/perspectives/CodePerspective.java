@@ -51,10 +51,12 @@ public class CodePerspective extends AbstractCodePerspective {
 		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
 	}
 
+	@Override
 	public org.lgna.croquet.Composite<?> getMainComposite() {
 		return this.mainCompositeLazy.get();
 	}
 
+	@Override
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
 			return org.alice.stageide.perspectives.code.CodeToolBarComposite.getInstance();

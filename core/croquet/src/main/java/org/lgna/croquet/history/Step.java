@@ -121,6 +121,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		this.dataMap.remove( key );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
 		binaryEncoder.encode( this.trigger );
