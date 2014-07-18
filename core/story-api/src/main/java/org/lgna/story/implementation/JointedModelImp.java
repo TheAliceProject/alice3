@@ -283,7 +283,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	//JointArrayId support
-	//This is for implicit array support
+	//This is for implicit array support. It iterates through declared joints and puts matching ones into an joint array
 	private void buildJointArrayMapHelper( org.lgna.story.resources.JointId currentJointId, org.lgna.story.resources.JointArrayId jointArrayId, List<org.lgna.story.resources.JointId> arrayList ) {
 		if( jointArrayId.isMemberOf( currentJointId ) ) {
 			arrayList.add( currentJointId );
@@ -301,70 +301,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 	}
 
-	//	private static final Comparator<org.lgna.story.resources.JointId> JOINT_ARRAY_COMPARATOR = new Comparator<org.lgna.story.resources.JointId>() {
-	//		public int compare( org.lgna.story.resources.JointId o1, org.lgna.story.resources.JointId o2 ) {
-	//			return o1.toString().compareTo( o2.toString() );
-	//		}
-	//	};
-
-	//	//Takes a org.lgna.story.resources.JointArrayId and finds all the joints (hidden or otherwise) that form an array for the given Id
-	//	private org.lgna.story.resources.JointId[] buildJointIdArrayForArrayId( org.lgna.story.resources.JointArrayId jointArrayId ) {
-	//		List<org.lgna.story.resources.JointId> jointIdList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	//		this.buildJointArrayMapHelper( jointArrayId.getRoot(), jointArrayId, jointIdList );
-	//		if( jointIdList.isEmpty() ) {
-	//			JointImp[] jointImpArray = this.factory.createJointArrayImplementation( this, jointArrayId );
-	//			for( JointImp jointImp : jointImpArray ) {
-	//				jointIdList.add( jointImp.getJointId() );
-	//			}
-	//		}
-	//		return jointIdList.toArray( new org.lgna.story.resources.JointId[ jointIdList.size() ] );
-	//	}
-	//	
-	//	private void createJointImpsForJointIds( org.lgna.story.resources.JointId[] jointIds, java.util.Map<org.lgna.story.resources.JointId, JointImp> existingJoints ) {
-	//		this.createJointImpsAsNeededForJointIds( jointIds, existingJoints, false );
-	//	}
-
-	//	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
-	//	private void createJointImpsAsNeededForJointIds( org.lgna.story.resources.JointId[] jointIds, java.util.Map<org.lgna.story.resources.JointId, JointImp> jointMap, boolean makeWrappers ) {
-	//		//Go through new jointIds and make joint wrappers for them.
-	//		//We need to cycle through so we can be sure we find the correct parents for all the joints
-	//		List<org.lgna.story.resources.JointId> jointIdsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( jointIds );
-	//		int count = 0;
-	//		while( !jointIdsToAdd.isEmpty() && ( count != jointIdsToAdd.size() ) ) {
-	//			org.lgna.story.resources.JointId currentId = jointIdsToAdd.get( 0 );
-	//			jointIdsToAdd.remove( 0 );
-	//			if( jointMap.containsKey( currentId ) ) {
-	//				continue;
-	//			}
-	//			EntityImp parent;
-	//			if( currentId.getParent() == null ) {
-	//				parent = this;
-	//			}
-	//			else {
-	//				parent = jointMap.get( currentId.getParent() );
-	//			}
-	//			if( parent != null ) {
-	//				JointImp newJoint;
-	//				if( makeWrappers ) {
-	//					newJoint = this.createJointWrapper( currentId, parent );
-	//				}
-	//				else {
-	//					newJoint = this.createAndParentJointImp( currentId, parent );
-	//				}
-	//				jointMap.put( currentId, newJoint );
-	//				count = 0;
-	//			}
-	//			else {
-	//				jointIdsToAdd.add( currentId );
-	//				count++;
-	//			}
-	//		}
-	//	}
-
 	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
 	private <J extends JointImp> void createJointImpsAsNeededForJointArrayIds( org.lgna.story.resources.JointArrayId jointArrayId, java.util.Map<org.lgna.story.resources.JointId, J> jointMap, boolean makeWrappers ) {
 		List<org.lgna.story.resources.JointId> jointIdList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		//Look for declared joints for
 		this.buildJointArrayMapHelper( jointArrayId.getRoot(), jointArrayId, jointIdList );
+		//If there aren't any declared joints, look for hidden joints
 		if( jointIdList.isEmpty() ) {
 			JointImp[] jointImpArray = this.factory.createJointArrayImplementation( this, jointArrayId );
 			for( JointImp jointImp : jointImpArray ) {
@@ -444,38 +386,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 				this.createJointImpsAsNeededForJointArrayIds( arrayId, newJoints, false );
 			}
 
-			//Now add joints that may be in the jointMap, but may not be in the JointId hierarchy
-			//These joints are probably from hidden jointId arrays that are created from JointArrayIds
-			List<org.lgna.story.resources.JointId> jointsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			for( java.util.Map.Entry<org.lgna.story.resources.JointId, JointImpWrapper> entry : this.mapIdToJoint.entrySet() ) {
-				if( !newJoints.containsKey( entry.getKey() ) ) {
-					jointsToAdd.add( entry.getKey() );
-				}
-			}
-			//Create new JointImps for these extra JointIds
-			//The parents not precede the children in the list, so loop through until all JointImps are properly created
-			int count = 0;
-			while( !jointsToAdd.isEmpty() && ( count != jointsToAdd.size() ) ) {
-				org.lgna.story.resources.JointId current = jointsToAdd.get( 0 );
-				jointsToAdd.remove( 0 );
-				EntityImp parent;
-				if( current.getParent() == null ) {
-					parent = this;
-				}
-				else {
-					parent = newJoints.get( current.getParent() );
-				}
-				if( parent != null ) {
-					JointImp newjoint = this.createAndParentJointImp( current, parent );
-					newJoints.put( current, newjoint );
-					count = 0;
-				}
-				else {
-					jointsToAdd.add( current );
-					count++;
-				}
-			}
-
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
 			this.visualData.setSGParent( originalParent );
@@ -527,21 +437,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			if( findJoint( childId, toFind ) )
 			{
 				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean hasJointId( JointId jointId ) {
-		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
-		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
-		if( rootIds.length == 0 ) {
-			return false;
-		} else {
-			for( org.lgna.story.resources.JointId root : rootIds ) {
-				if( findJoint( root, jointId ) ) {
-					return true;
-				}
 			}
 		}
 		return false;
