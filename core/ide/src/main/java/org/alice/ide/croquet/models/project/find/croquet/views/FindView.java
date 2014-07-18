@@ -151,6 +151,7 @@ public class FindView extends BorderPanel {
 
 	private final TreeExpansionListener treeListener = new TreeExpansionListener() {
 
+		@Override
 		public void treeExpanded( TreeExpansionEvent event ) {
 			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
@@ -160,6 +161,7 @@ public class FindView extends BorderPanel {
 			searchResultToExpandParentsMap.get( searchResults.getValue() ).put( ( (SearchTreeNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), true );
 		}
 
+		@Override
 		public void treeCollapsed( TreeExpansionEvent event ) {
 			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
@@ -188,12 +190,15 @@ public class FindView extends BorderPanel {
 			listIsSelected = false;
 		}
 
+		@Override
 		public void keyTyped( KeyEvent e ) {
 		}
 
+		@Override
 		public void keyReleased( KeyEvent e ) {
 		}
 
+		@Override
 		public void keyPressed( KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 

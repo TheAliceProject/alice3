@@ -48,7 +48,6 @@ package org.alice.ide.common;
 public abstract class TypedDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 	public TypedDeclarationPane( org.lgna.croquet.views.AwtComponentView<?>... components ) {
 		super( components );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setForegroundColor( java.awt.Color.GRAY );
 	}
 	//	@Override

@@ -50,6 +50,7 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 
 	public static MethodInvocationFillInWithInstance getInstance( org.lgna.project.ast.JavaMethod code ) {
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance>() {
+			@Override
 			public MethodInvocationFillInWithInstance initialize( org.lgna.project.ast.JavaMethod key ) {
 				org.lgna.project.ast.AbstractType<?, ?, ?> type = key.getDeclaringType();
 				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();

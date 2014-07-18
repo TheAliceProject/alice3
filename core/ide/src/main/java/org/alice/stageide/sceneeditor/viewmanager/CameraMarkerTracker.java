@@ -180,6 +180,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		this.sceneEditor.switchToPerspectiveCamera();
 	}
 
+	@Override
 	public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
 		if( ( this.perspectiveCamera == null ) || ( this.orthographicCamera == null ) )
 		{
@@ -285,6 +286,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		return false;
 	}
 
+	@Override
 	public void propertyChanged( PropertyEvent e ) {
 		if( ( e.getOwner() == this.orthographicCamera ) && ( e.getTypedSource() == this.orthographicCamera.picturePlane ) )
 		{
@@ -295,6 +297,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		}
 	}
 
+	@Override
 	public void propertyChanging( PropertyEvent e )
 	{
 		//Do Nothing

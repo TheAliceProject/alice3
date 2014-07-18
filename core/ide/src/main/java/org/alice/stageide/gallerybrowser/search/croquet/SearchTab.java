@@ -108,6 +108,7 @@ public class SearchTab extends GalleryTab {
 	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );
 	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( "noEntryLabel" );
 	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			SearchTab.this.handleFilterChanged( e.getNextValue() );
 		}

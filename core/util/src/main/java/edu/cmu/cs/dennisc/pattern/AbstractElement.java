@@ -49,10 +49,12 @@ public abstract class AbstractElement extends DefaultReleasable implements Namea
 	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> m_nameListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.event.NameListener>();
 	private String m_name = null;
 
+	@Override
 	public String getName() {
 		return m_name;
 	}
 
+	@Override
 	public void setName( String name ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_name, name ) ) {
 			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
@@ -66,14 +68,17 @@ public abstract class AbstractElement extends DefaultReleasable implements Namea
 		}
 	}
 
+	@Override
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		m_nameListeners.add( nameListener );
 	}
 
+	@Override
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		m_nameListeners.remove( nameListener );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners() {
 		return m_nameListeners;
 	}

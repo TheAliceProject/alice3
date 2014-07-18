@@ -53,6 +53,7 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.views.Comp
 		super( id );
 	}
 
+	@Override
 	public boolean isPotentiallyCloseable() {
 		return this.isCloseable();
 	}
@@ -91,6 +92,7 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.views.Comp
 		return sb.toString();
 	}
 
+	@Override
 	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
 		button.setBackgroundColor( this.getView().getBackgroundColor() );
 	}

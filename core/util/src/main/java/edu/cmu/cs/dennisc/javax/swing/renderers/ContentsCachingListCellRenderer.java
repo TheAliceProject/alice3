@@ -69,6 +69,7 @@ public abstract class ContentsCachingListCellRenderer<E> extends edu.cmu.cs.denn
 		return rv;
 	}
 
+	@Override
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		java.awt.Component component = this.getComponent( (E)value );
 		this.update( component, index, isSelected, cellHasFocus );

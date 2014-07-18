@@ -53,20 +53,24 @@ package org.alice.imageeditor.croquet;
 
 	private final java.util.List<javax.swing.event.ListDataListener> listDataListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
+	@Override
 	public int getSize() {
 		int isWorkingDelta = this.isWorking ? 1 : 0;
 		return this.data != null ? this.data.size() + isWorkingDelta : 0;
 	}
 
+	@Override
 	public Object getElementAt( int index ) {
 		java.io.File file = ( index < this.data.size() ) ? this.data.get( index ) : null;
 		return file != null ? file.getAbsolutePath() : null;
 	}
 
+	@Override
 	public Object getSelectedItem() {
 		return this.selectedItem;
 	}
 
+	@Override
 	public void setSelectedItem( Object selectedItem ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.selectedItem, selectedItem ) ) {
 			//pass
@@ -80,10 +84,12 @@ package org.alice.imageeditor.croquet;
 		}
 	}
 
+	@Override
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.listDataListeners.add( listener );
 	}
 
+	@Override
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
 		this.listDataListeners.remove( listener );
 	}

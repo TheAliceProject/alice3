@@ -86,6 +86,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 	Object waitLock = new Object();
 
 	class StateListener implements ControllerListener {
+		@Override
 		public void controllerUpdate( ControllerEvent ce ) {
 			if( ce instanceof ControllerClosedEvent ) {
 				stateFailed = true;
@@ -139,6 +140,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		return ( !stateFailed );
 	}
 
+	@Override
 	public void dataSinkUpdate( DataSinkEvent event ) {
 		if( event instanceof EndOfStreamEvent ) {
 			closeDataSink();
@@ -174,6 +176,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		}
 	}
 
+	@Override
 	public void controllerUpdate( ControllerEvent event ) {
 		if( event instanceof ControllerErrorEvent ) {
 			if( boolSaving == true ) {

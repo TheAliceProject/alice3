@@ -10,6 +10,7 @@ public class ArrowKeyAdapter extends AbstractAdapter implements org.lgna.story.e
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void arrowKeyPressed( ArrowKeyEvent e ) {
 		invokeEntryPoint( e );
 	}

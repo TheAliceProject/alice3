@@ -50,6 +50,7 @@ public class GlColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
 	private java.awt.image.BufferedImage image;
 	private boolean isRightSideUp;
 
+	@Override
 	public Object getImageLock() {
 		return this.imageLock;
 	}
@@ -75,10 +76,12 @@ public class GlColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
 		this.isRightSideUp = true;
 	}
 
+	@Override
 	public java.awt.image.BufferedImage getImage() {
 		return this.image;
 	}
 
+	@Override
 	public boolean isRightSideUp() {
 		return this.isRightSideUp;
 	}

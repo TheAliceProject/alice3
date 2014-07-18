@@ -60,14 +60,17 @@ public class IsPlayingIcon implements Icon {
 	private static final Color PLAY_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 0.5 );
 	private static final Color PAUSE_COLOR = Color.BLACK;
 
+	@Override
 	public int getIconHeight() {
 		return SIZE;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return SIZE;
 	}
 
+	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		if( c instanceof AbstractButton ) {
 			edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );

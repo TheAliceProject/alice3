@@ -53,6 +53,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( "rootDirectoryState", DEFAULT_ROOT_DIRECTORY_PATH, null );
 
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			String rootDirectoryPath = rootDirectoryState.getValue();
 			javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
@@ -95,6 +96,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final SaveOperation saveOperation = new SaveOperation( this );
 
 	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			clearShapes();
 			//todo
@@ -104,6 +106,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	} );
 
 	private final org.lgna.croquet.Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			crop();
 			return null;
@@ -111,6 +114,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	} );
 
 	private final org.lgna.croquet.Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			uncrop();
 			return null;
@@ -118,6 +122,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	} );
 
 	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			if( isGoodToGoCroppingIfNecessary() ) {
 				copyImageToClipboard( getView().render() );
@@ -133,6 +138,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( "dropShadowState", true );
 
 	private final org.lgna.croquet.SingleSelectListState<Tool> toolState = this.createSingleSelectListStateForEnum( "toolState", Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
+		@Override
 		public String customize( String localization, Tool value ) {
 			if( value == Tool.ADD_RECTANGLE ) {
 				return localization + " (F11)";
@@ -157,18 +163,21 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	private FilenameListWorker worker;
 
 	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropSelectListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
 			handleCropSelectChanged( e );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropCommitListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
 			handleCropCommitChanged( e );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			java.io.File file = new java.io.File( e.getNextValue() );
 			synchronized( filenameComboBoxModel ) {
@@ -205,14 +214,17 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.
 	};
 
 	private final javax.swing.event.DocumentListener editorListener = new javax.swing.event.DocumentListener() {
+		@Override
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			handleEditorChanged( e );
 		}
 
+		@Override
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			handleEditorChanged( e );
 		}
 
+		@Override
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			handleEditorChanged( e );
 		}

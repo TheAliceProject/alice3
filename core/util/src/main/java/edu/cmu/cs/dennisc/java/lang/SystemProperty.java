@@ -54,6 +54,7 @@ public class SystemProperty implements Comparable<SystemProperty> {
 		this.value = value;
 	}
 
+	@Override
 	public int compareTo( SystemProperty other ) {
 		return this.key.compareTo( other.key );
 	}

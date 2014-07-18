@@ -43,6 +43,7 @@ public class StorytellingResources {
 
 	private List<URLClassLoader> resourceClassLoaders;
 	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
+		@Override
 		public boolean accept( java.io.File file ) {
 			return file.isDirectory();
 		}

@@ -132,6 +132,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public static JavaType getInstance( final ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( classReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ClassReflectionProxy, JavaType>() {
+				@Override
 				public org.lgna.project.ast.JavaType initialize( org.lgna.project.ast.ClassReflectionProxy key ) {
 					JavaType rv = new JavaType( classReflectionProxy );
 					mapReflectionProxyToInstance.put( classReflectionProxy, rv );

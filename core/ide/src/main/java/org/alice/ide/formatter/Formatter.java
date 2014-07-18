@@ -50,6 +50,10 @@ public abstract class Formatter {
 		this.repr = repr;
 	}
 
+	public abstract String getHeaderTextForCode( org.lgna.project.ast.UserCode code );
+
+	public abstract String getTrailerTextForCode( org.lgna.project.ast.UserCode code );
+
 	public String getTemplateText( Class<?> cls ) {
 		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", javax.swing.JComponent.getDefaultLocale() );
 	}

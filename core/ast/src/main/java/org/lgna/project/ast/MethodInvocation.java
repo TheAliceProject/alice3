@@ -78,18 +78,22 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		}
 	}
 
+	@Override
 	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.method;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}

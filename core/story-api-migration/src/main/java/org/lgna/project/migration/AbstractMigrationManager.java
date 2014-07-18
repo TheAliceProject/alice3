@@ -58,14 +58,17 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 
 	protected abstract AstMigration[] getAstMigrations();
 
+	@Override
 	public org.lgna.project.Version getCurrentVersion() {
 		return this.currentVersion;
 	}
 
+	@Override
 	public boolean isDevoidOfVersionIndependentMigrations() {
 		return versionIndependentMigrations.size() == 0;
 	}
 
+	@Override
 	public String migrate( String source, org.lgna.project.Version version ) {
 		String rv = source;
 		for( TextMigration textMigration : this.getTextMigrations() ) {
@@ -80,6 +83,7 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		return rv;
 	}
 
+	@Override
 	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable, org.lgna.project.Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
 			if( astMigration != null ) {
@@ -94,10 +98,12 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		}
 	}
 
+	@Override
 	public void addVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.add( migration );
 	}
 
+	@Override
 	public void removeVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.remove( migration );
 	}

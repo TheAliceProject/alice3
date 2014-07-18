@@ -55,10 +55,12 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 		super( directionKeys );
 	}
 
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
@@ -66,10 +68,12 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 		}
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.ACTIVE_VIEW;
 	}

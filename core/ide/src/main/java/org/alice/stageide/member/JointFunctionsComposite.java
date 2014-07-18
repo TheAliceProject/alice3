@@ -55,6 +55,7 @@ public class JointFunctionsComposite extends org.alice.ide.member.FilteredJavaMe
 	}
 
 	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		@Override
 		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}

@@ -66,6 +66,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 			mapDeriveFont.put( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
 		}
 
+		@Override
 		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
 			org.lgna.croquet.SingleSelectListState<T> state = listView.getModel();
 			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();

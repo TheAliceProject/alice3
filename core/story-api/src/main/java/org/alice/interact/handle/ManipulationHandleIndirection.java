@@ -66,6 +66,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		this.nextHandle = this.currentHandle.clone();
 	}
 
+	@Override
 	public void setAnimator( Animator animator ) {
 		this.currentHandle.setAnimator( animator );
 		this.nextHandle.setAnimator( animator );
@@ -79,6 +80,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return newHandle;
 	}
 
+	@Override
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 		if( this.currentHandle != null ) {
@@ -89,6 +91,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		}
 	}
 
+	@Override
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
@@ -96,6 +99,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		}
 	}
 
+	@Override
 	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
 		if( this.currentHandle.getManipulatedObject() != manipulatedObject ) {
 			//			if (this.isHandleVisible())
@@ -132,120 +136,147 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		return this.nextHandle;
 	}
 
+	@Override
 	public void activate( ManipulationEvent event ) {
 		if( this.currentHandle instanceof ManipulationListener ) {
 			( (ManipulationListener)this.currentHandle ).activate( event );
 		}
 	}
 
+	@Override
 	public void deactivate( ManipulationEvent event ) {
 		if( this.currentHandle instanceof ManipulationListener ) {
 			( (ManipulationListener)this.currentHandle ).deactivate( event );
 		}
 	}
 
+	@Override
 	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
+	@Override
 	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
+	@Override
 	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
+	@Override
 	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.currentHandle.addToGroups( groups );
 		this.nextHandle.addToGroups( groups );
 	}
 
+	@Override
 	public void addToGroup( HandleSet.HandleGroup group ) {
 		this.currentHandle.addToGroup( group );
 		this.nextHandle.addToGroup( group );
 	}
 
+	@Override
 	public void addToSet( HandleSet handleSet ) {
 		this.currentHandle.addToSet( handleSet );
 		this.nextHandle.addToSet( handleSet );
 	}
 
+	@Override
 	public HandleManager getHandleManager() {
 		return this.handleManager;
 	}
 
+	@Override
 	public HandleState getHandleStateCopy() {
 		return this.currentHandle.getHandleStateCopy();
 	}
 
+	@Override
 	public AbstractTransformable getManipulatedObject() {
 		return this.currentHandle.getManipulatedObject();
 	}
 
+	@Override
 	public HandleSet getHandleSet() {
 		return this.currentHandle.getHandleSet();
 	}
 
+	@Override
 	public boolean isPickable() {
 		return this.currentHandle.isPickable();
 	}
 
+	@Override
 	public boolean isAlwaysVisible() {
 		return this.currentHandle.isAlwaysVisible();
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet.HandleGroup group ) {
 		return this.currentHandle.isMemberOf( group );
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet set ) {
 		return this.currentHandle.isMemberOf( set );
 	}
 
+	@Override
 	public AbstractManipulator getManipulation( InputState input ) {
 		return this.currentHandle.getManipulation( input );
 	}
 
+	@Override
 	public void setManipulation( AbstractManipulator manipulation ) {
 		this.currentHandle.setManipulation( manipulation );
 		this.nextHandle.setManipulation( manipulation );
 	}
 
+	@Override
 	public boolean isRenderable() {
 		return this.currentHandle.isRenderable();
 	}
 
+	@Override
 	public void setHandleActive( boolean active ) {
 		this.currentHandle.setHandleActive( active );
 	}
 
+	@Override
 	public void setHandleManager( HandleManager handleManager ) {
 		this.handleManager = handleManager;
 		this.currentHandle.setHandleManager( handleManager );
 		this.nextHandle.setHandleManager( handleManager );
 	}
 
+	@Override
 	public void setHandleRollover( boolean rollover ) {
 		this.currentHandle.setHandleRollover( rollover );
 	}
 
+	@Override
 	public boolean isHandleVisible() {
 		return this.currentHandle.isHandleVisible();
 	}
 
+	@Override
 	public void setHandleVisible( boolean visible ) {
 		this.currentHandle.setHandleVisible( visible );
 	}
 
+	@Override
 	public void setVisualsShowing( boolean showing ) {
 		this.currentHandle.setVisualsShowing( showing );
 	}
 
+	@Override
 	public PickHint getPickHint() {
 		return this.currentHandle.getPickHint();
 	}
 
+	@Override
 	public void setCameraPosition( Point3 cameraPosition ) {
 		if( this.currentHandle != null ) {
 			this.currentHandle.setCameraPosition( cameraPosition );
@@ -255,6 +286,7 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		}
 	}
 
+	@Override
 	public void clear() {
 		if( this.currentHandle != null ) {
 			this.currentHandle.clear();

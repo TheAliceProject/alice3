@@ -59,6 +59,7 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 		//this.removeAll();
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
 		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				edu.cmu.cs.dennisc.javax.swing.JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}

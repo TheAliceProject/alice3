@@ -53,6 +53,7 @@ public class FieldArrayLengthOperation extends ArrayLengthOperation {
 		assert field != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation>() {
+			@Override
 			public FieldArrayLengthOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new FieldArrayLengthOperation( field, expressionProperty );
 			}

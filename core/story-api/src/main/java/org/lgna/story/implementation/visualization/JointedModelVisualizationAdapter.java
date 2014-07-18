@@ -74,6 +74,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 
 		protected abstract void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child );
 
+		@Override
 		public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( this.asSeenBy );
@@ -150,6 +151,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			}
 		}
 
+		@Override
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
 			this.preBone( parent, child );
@@ -159,6 +161,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			context.gl.glEnd();
 		}
 
+		@Override
 		public void popJoint( org.lgna.story.implementation.JointImp joint ) {
 			context.gl.glPopMatrix();
 		}

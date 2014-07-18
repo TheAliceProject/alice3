@@ -116,8 +116,8 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		return this.potentialDropReceptorInfos;
 	}
 
-	public org.lgna.croquet.views.DragComponent getDragSource() {
-		return (org.lgna.croquet.views.DragComponent)this.getViewController();
+	public org.lgna.croquet.views.DragComponent<?> getDragSource() {
+		return (org.lgna.croquet.views.DragComponent<?>)this.getViewController();
 	}
 
 	public java.awt.event.MouseEvent getLatestMouseEvent() {

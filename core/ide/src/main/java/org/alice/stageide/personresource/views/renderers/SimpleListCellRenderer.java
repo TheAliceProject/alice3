@@ -59,6 +59,7 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
 
+	@Override
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.label.setText( value.toString() );
 		if( isSelected ) {

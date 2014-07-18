@@ -58,6 +58,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.modelresource.ResourceNode> e ) {
 			handleChanged( e.getPreviousValue(), e.getNextValue() );
 		}
@@ -122,6 +123,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 			nextScrollPosition = 0;
 		}
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				jHorizontalScrollBar.setValue( nextScrollPosition );
 			}

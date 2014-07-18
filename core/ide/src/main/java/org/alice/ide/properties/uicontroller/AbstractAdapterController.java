@@ -51,6 +51,7 @@ public abstract class AbstractAdapterController<P> extends GridBagPanel implemen
 {
 	protected AbstractPropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new AbstractPropertyAdapter.ValueChangeObserver<P>()
 	{
+		@Override
 		public void valueChanged( P newValue )
 		{
 			AbstractAdapterController.this.setValueOnUI( newValue );
@@ -67,6 +68,7 @@ public abstract class AbstractAdapterController<P> extends GridBagPanel implemen
 		this.setPropertyAdapter( this.propertyAdapter );
 	}
 
+	@Override
 	public Class<?> getPropertyType()
 	{
 		return this.propertyAdapter.getPropertyType();
@@ -101,16 +103,19 @@ public abstract class AbstractAdapterController<P> extends GridBagPanel implemen
 	{
 	}
 
+	@Override
 	public Panel getPanel()
 	{
 		return this;
 	}
 
+	@Override
 	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
 	}
 
+	@Override
 	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		if( this.propertyAdapter != null )

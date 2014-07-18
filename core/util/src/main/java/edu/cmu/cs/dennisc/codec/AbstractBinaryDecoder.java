@@ -56,6 +56,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		}
 	}
 
+	@Override
 	public final boolean[] decodeBooleanArray() {
 		boolean[] rv = (boolean[])createArray( Boolean.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -64,6 +65,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final byte[] decodeByteArray() {
 		byte[] rv = (byte[])createArray( Byte.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -72,6 +74,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final char[] decodeCharArray() {
 		char[] rv = (char[])createArray( Character.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -80,6 +83,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final double[] decodeDoubleArray() {
 		double[] rv = (double[])createArray( Double.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -88,6 +92,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final float[] decodeFloatArray() {
 		float[] rv = (float[])createArray( Float.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -96,6 +101,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final int[] decodeIntArray() {
 		int[] rv = (int[])createArray( Integer.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -104,6 +110,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final long[] decodeLongArray() {
 		long[] rv = (long[])createArray( Long.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -112,6 +119,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final short[] decodeShortArray() {
 		short[] rv = (short[])createArray( Short.TYPE );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -120,6 +128,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final String[] decodeStringArray() {
 		String[] rv = (String[])createArray( String.class );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -128,6 +137,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final <E extends Enum<E>> E[] decodeEnumArray( Class<E> cls ) {
 		E[] rv = (E[])createArray( cls );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -136,6 +146,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final java.util.UUID[] decodeIdArray() {
 		java.util.UUID[] rv = (java.util.UUID[])createArray( java.util.UUID.class );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -144,6 +155,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class<E> componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -152,6 +164,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class<E> componentCls, java.util.Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		E[] rv = (E[])createArray( componentCls );
 		for( int i = 0; i < rv.length; i++ ) {
@@ -160,6 +173,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final <E extends Enum<E>> E decodeEnum() {
 		boolean isNotNull = decodeBoolean();
 		if( isNotNull ) {
@@ -179,6 +193,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final java.util.UUID decodeId() {
 		boolean isNotNull = this.decodeBoolean();
 		if( isNotNull ) {
@@ -232,10 +247,12 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	private static final Class<?>[] EMPTY_PARAMETER_TYPES = { BinaryDecoder.class };
 	private static final Class<?>[] OBJECT_PARAMETER_TYPES = { BinaryDecoder.class, Object.class };
 
+	@Override
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
 		return (E)decodeBinaryEncodableAndDecodable( EMPTY_PARAMETER_TYPES, new Object[] { this } );
 	}
 
+	@Override
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Object context ) {
 		return (E)decodeBinaryEncodableAndDecodable( OBJECT_PARAMETER_TYPES, new Object[] { this, context } );
 	}
@@ -276,6 +293,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//			return null;
 	//		}
 	//	}
+	@Override
 	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class<E> componentCls, Object context ) {
 		throw new RuntimeException( "todo" );
 	}
@@ -296,6 +314,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//		}
 	//		return rv;
 	//	}
+	@Override
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
@@ -337,6 +356,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		return rv;
 	}
 
+	@Override
 	public final ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable( ReferenceableBinaryEncodableAndDecodable rv, java.util.Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		String clsName = decodeString();
 		if( rv != null ) {

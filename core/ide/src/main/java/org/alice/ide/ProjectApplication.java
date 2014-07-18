@@ -58,22 +58,28 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	public ProjectApplication() {
 		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
+			@Override
 			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
 
+			@Override
 			public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
 
+			@Override
 			public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			}
 
+			@Override
 			public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
 
+			@Override
 			public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
 
+			@Override
 			public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
 		};
@@ -379,10 +385,12 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 			final byte[] data = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, thumbnailImage );
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+				@Override
 				public String getName() {
 					return "thumbnail.png";
 				}
 
+				@Override
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					os.write( data );
 				}

@@ -297,10 +297,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		}
 	}
 
+	@Override
 	public void propertyChanged( PropertyEvent e ) {
 		this.positionRelativeToObject();
 	}
 
+	@Override
 	public void propertyChanging( PropertyEvent e ) {
 	}
 

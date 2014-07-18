@@ -44,7 +44,7 @@ package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
- *
+ * 
  */
 public class BackwardCascade extends HistoryCascade {
 	private static class SingletonHolder {

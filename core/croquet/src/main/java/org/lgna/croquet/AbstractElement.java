@@ -79,16 +79,19 @@ public abstract class AbstractElement implements Element {
 			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		}
 
+		@Override
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			binaryEncoder.encode( this.resolver );
 		}
 
 		protected abstract D getDirect( I indirect );
 
+		@Override
 		public final D getResolved() {
 			return this.getDirect( this.resolver.getResolved() );
 		}
 
+		@Override
 		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
 			this.resolver.retarget( retargeter );
 		}
@@ -119,6 +122,7 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
+	@Override
 	public java.util.UUID getMigrationId() {
 		return this.migrationId;
 	}
@@ -130,6 +134,7 @@ public abstract class AbstractElement implements Element {
 		this.localize();
 	}
 
+	@Override
 	public final void initializeIfNecessary() {
 		if( this.isInitialized ) {
 			//pass
@@ -148,6 +153,7 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
+	@Override
 	public final void relocalize() {
 		this.localize();
 	}
@@ -322,6 +328,7 @@ public abstract class AbstractElement implements Element {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
 
+	@Override
 	public <M extends Element> org.lgna.croquet.resolvers.Resolver<M> getResolver() {
 		if( this.resolver != null ) {
 			//pass
@@ -343,6 +350,7 @@ public abstract class AbstractElement implements Element {
 		return sb.toString();
 	}
 
+	@Override
 	public void appendUserRepr( StringBuilder sb ) {
 		sb.append( "todo: override appendUserString\n" );
 		sb.append( this );

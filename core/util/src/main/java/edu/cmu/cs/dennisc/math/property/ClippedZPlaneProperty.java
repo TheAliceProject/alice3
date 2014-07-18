@@ -56,15 +56,18 @@ public class ClippedZPlaneProperty extends edu.cmu.cs.dennisc.property.InstanceP
 		super.setValue( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getCopy( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( new edu.cmu.cs.dennisc.math.ClippedZPlane(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.ClippedZPlane value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.ClippedZPlane( value ) );

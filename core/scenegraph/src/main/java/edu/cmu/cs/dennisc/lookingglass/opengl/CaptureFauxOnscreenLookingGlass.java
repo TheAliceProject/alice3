@@ -114,6 +114,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 		this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), size.width, size.height, share );
 	}
 
+	@Override
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
@@ -147,10 +148,12 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	protected void repaintIfAppropriate() {
 	}
 
+	@Override
 	public java.awt.Component getAwtComponent() {
 		return this.jPanel;
 	}
 
+	@Override
 	public void repaint() {
 	}
 }

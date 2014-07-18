@@ -54,4 +54,6 @@ public interface Code extends Member {
 	public AbstractParameter getVariableLengthParameter();
 
 	public AbstractParameter getKeyedParameter();
+
+	public boolean isSignatureLocked();
 }

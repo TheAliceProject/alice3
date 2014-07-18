@@ -63,6 +63,7 @@ public abstract class SnapshotListCellRenderer implements javax.swing.ListCellRe
 
 	protected abstract javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value );
 
+	@Override
 	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.updateLabel( this.label, value );
 		java.awt.Color background;

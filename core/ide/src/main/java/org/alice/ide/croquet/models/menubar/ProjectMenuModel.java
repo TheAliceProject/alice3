@@ -45,19 +45,20 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
+public class ProjectMenuModel extends org.lgna.croquet.StaticMenuModel {
+	public ProjectMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
+	@Override
+	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
+		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
 				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.find.croquet.FindComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+				this.projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(),
+				new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( this.projectDocumentFrame ).getIsFrameShowingState().getMenuItemPrepModel()
+		};
 	}
+
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

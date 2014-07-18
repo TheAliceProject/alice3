@@ -89,6 +89,7 @@ public class UserLocal extends AbstractTransient {
 		}
 	}
 
+	@Override
 	public final String getValidName( Node context ) {
 		String name = this.name.getValue();
 		if( name != null ) {

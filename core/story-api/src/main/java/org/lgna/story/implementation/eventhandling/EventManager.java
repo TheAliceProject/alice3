@@ -137,18 +137,21 @@ public class EventManager {
 	};
 
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
 			inputRecorder.record( e );
 			keyHandler.handleKeyPress( event );
 		}
 
+		@Override
 		public void keyReleased( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
 			inputRecorder.record( e );
 			keyHandler.handleKeyRelease( event );
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};

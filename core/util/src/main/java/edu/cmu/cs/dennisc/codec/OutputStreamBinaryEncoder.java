@@ -56,6 +56,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void write( byte[] data ) {
 		try {
 			m_oos.write( data );
@@ -64,6 +65,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void write( byte[] data, int offset, int length ) {
 		try {
 			m_oos.write( data, offset, length );
@@ -72,6 +74,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( boolean value ) {
 		try {
 			m_oos.writeBoolean( value );
@@ -80,6 +83,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( byte value ) {
 		try {
 			m_oos.writeByte( value );
@@ -88,6 +92,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( char value ) {
 		try {
 			m_oos.writeChar( value );
@@ -96,6 +101,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( double value ) {
 		try {
 			m_oos.writeDouble( value );
@@ -104,6 +110,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( float value ) {
 		try {
 			m_oos.writeFloat( value );
@@ -112,6 +119,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( int value ) {
 		try {
 			m_oos.writeInt( value );
@@ -120,6 +128,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( long value ) {
 		try {
 			m_oos.writeLong( value );
@@ -128,6 +137,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( short value ) {
 		try {
 			m_oos.writeShort( value );
@@ -136,6 +146,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public void encode( String value ) {
 		try {
 			boolean isNotNull = value != null;
@@ -148,6 +159,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 		}
 	}
 
+	@Override
 	public final void flush() {
 		try {
 			m_oos.flush();

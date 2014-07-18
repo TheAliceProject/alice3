@@ -86,6 +86,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		this.sgBoundingBoxDecorator.setParent( this.sgDecoratorOffsetTransformable );
 	}
 
+	@Override
 	public AffineMatrix4x4 getTargetTransformation() {
 		return this.sgBoundingBoxOffsetTransformable.getAbsoluteTransformation();
 	}

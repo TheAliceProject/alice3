@@ -7,6 +7,7 @@ package org.alice.ide.issue.jira.rpc;
  * @author Dennis Cosgrove
  */
 public class Authenticator implements edu.cmu.cs.dennisc.jira.rpc.Authenticator {
+	@Override
 	public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
 		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "iNw6aFRhNia6SirM" } );
 	}

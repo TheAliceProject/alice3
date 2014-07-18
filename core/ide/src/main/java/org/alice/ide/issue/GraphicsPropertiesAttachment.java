@@ -87,14 +87,17 @@ public class GraphicsPropertiesAttachment implements Attachment {
 		return baos;
 	}
 
+	@Override
 	public byte[] getBytes() {
 		return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
 	}
 
+	@Override
 	public String getMIMEType() {
 		return "application/xml";
 	}
 
+	@Override
 	public String getFileName() {
 		return "graphicsProperties.xml";
 	}

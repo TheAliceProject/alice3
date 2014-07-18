@@ -67,6 +67,7 @@ public class AudioResource extends org.lgna.common.Resource {
 
 	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
 		return new java.io.FilenameFilter() {
+			@Override
 			public boolean accept( java.io.File dir, String name ) {
 				java.io.File file = new java.io.File( dir, name );
 				if( file.isDirectory() ) {

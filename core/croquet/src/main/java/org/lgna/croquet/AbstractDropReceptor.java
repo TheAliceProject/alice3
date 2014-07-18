@@ -48,24 +48,29 @@ package org.lgna.croquet;
 public abstract class AbstractDropReceptor implements DropReceptor {
 	private final java.util.List<DropRejector> dropRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
+	@Override
 	public void addDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.add( dropRejector );
 	}
 
+	@Override
 	public void removeDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.remove( dropRejector );
 	}
 
+	@Override
 	public void clearDropRejectors() {
 		this.dropRejectors.clear();
 	}
 
+	@Override
 	public java.util.List<org.lgna.croquet.DropRejector> getDropRejectors() {
 		return java.util.Collections.unmodifiableList( this.dropRejectors );
 	}
 
 	protected abstract Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step );
 
+	@Override
 	public final Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		for( DropRejector rejector : this.dropRejectors ) {
 			if( rejector.isRejected( step ) ) {

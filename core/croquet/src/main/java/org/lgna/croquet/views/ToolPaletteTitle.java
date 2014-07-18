@@ -73,6 +73,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 			super( size );
 		}
 
+		@Override
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
 			javax.swing.ButtonModel buttonModel = button.getModel();
@@ -117,6 +118,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	private static enum ToolPaletteTitleBorder implements javax.swing.border.Border {
 		SINGLETON;
+		@Override
 		public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 			JToolPaletteTitle b = (JToolPaletteTitle)c;
 			if( b.isSuppressed ) {
@@ -130,10 +132,12 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 			}
 		}
 
+		@Override
 		public boolean isBorderOpaque() {
 			return false;
 		}
 
+		@Override
 		public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		}
 	}

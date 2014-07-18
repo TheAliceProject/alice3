@@ -92,6 +92,7 @@ public abstract class ProgramImp {
 	private static class ToggleFullScreenAction extends javax.swing.AbstractAction {
 		private java.awt.Rectangle prevNormalBounds;
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
 			javax.swing.ButtonModel buttonModel = button.getModel();
@@ -113,10 +114,12 @@ public abstract class ProgramImp {
 	};
 
 	private static final class FullScreenIcon implements javax.swing.Icon {
+		@Override
 		public int getIconWidth() {
 			return 24;
 		}
 
+		@Override
 		public int getIconHeight() {
 			return 16;
 		}
@@ -128,6 +131,7 @@ public abstract class ProgramImp {
 			g2.drawRect( x, y, width, height );
 		}
 
+		@Override
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -217,6 +221,7 @@ public abstract class ProgramImp {
 	}
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			ProgramImp.this.getAnimator().update();
 		}
@@ -269,6 +274,7 @@ public abstract class ProgramImp {
 			this.awtContainer = awtContainer;
 		}
 
+		@Override
 		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
 			this.awtContainer.add( onscreenLookingGlass.getAwtComponent() );
 			if( controlPanel != null ) {
@@ -284,6 +290,7 @@ public abstract class ProgramImp {
 		this.addComponents( awtContainerInitializer );
 		this.startAnimator();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				requestFocusInWindow();
 			}
@@ -296,6 +303,7 @@ public abstract class ProgramImp {
 
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				ProgramImp.this.addComponents( new DefaultAwtContainerInitializer( frame.getContentPane() ) );
 				frame.setVisible( true );
@@ -308,6 +316,7 @@ public abstract class ProgramImp {
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
 		this.initializeInFrame( frame, new Runnable() {
+			@Override
 			public void run() {
 				try {
 					barrier.await();

@@ -57,6 +57,7 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 		}
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
 		this.addComponent( component );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 	}
 
 	private void updateFinalLabel() {
@@ -74,9 +75,11 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 	}
 
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			updateFinalLabel();
 		}

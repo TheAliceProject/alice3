@@ -51,10 +51,12 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 		this.projectHistory = historyManager;
 	}
 
+	@Override
 	public int getSize() {
 		return projectHistory.getStack().size() + 1;
 	}
 
+	@Override
 	public Object getElementAt( int index ) {
 		if( index == 0 ) {
 			return null;
@@ -94,24 +96,30 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 
 public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		@Override
 		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 
+		@Override
 		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 
+		@Override
 		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		}
 
+		@Override
 		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
 		}
 
+		@Override
 		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		}
 
+		@Override
 		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( 0 );
@@ -123,6 +131,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	private HistoryStackModel historyStackModel;
 	private UndoHistory projectHistory;
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass
@@ -134,6 +143,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
 			org.alice.ide.ProjectDocument nextValue = e.getNextValue();
 			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue : null );

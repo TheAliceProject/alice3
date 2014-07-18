@@ -79,6 +79,7 @@ public class SGround extends SThing implements MutableRider, Visual {
 			this.resourceName = resourceName;
 		}
 
+		@Override
 		public java.net.URL getResource() {
 			return SGround.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}
@@ -91,10 +92,12 @@ public class SGround extends SThing implements MutableRider, Visual {
 		return this.implementation;
 	}
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
+	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
 	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class )
@@ -102,11 +105,13 @@ public class SGround extends SThing implements MutableRider, Visual {
 		return this.getImplementation().paint.getValue();
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
 	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
@@ -114,6 +119,7 @@ public class SGround extends SThing implements MutableRider, Visual {
 		return (double)this.getImplementation().opacity.getValue();
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );

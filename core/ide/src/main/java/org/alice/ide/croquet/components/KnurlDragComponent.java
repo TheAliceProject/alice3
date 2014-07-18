@@ -200,13 +200,17 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );
 	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
 
+	protected java.awt.Paint getPassiveOutlinePaint() {
+		return java.awt.Color.GRAY;
+	}
+
 	protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		if( shape != null ) {
 			java.awt.Stroke prevStroke = g2.getStroke();
 			if( this.isActive() ) {
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape( g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 			} else {
-				g2.setPaint( java.awt.Color.GRAY );
+				g2.setPaint( this.getPassiveOutlinePaint() );
 				g2.setStroke( PASSIVE_STROKE );
 				g2.draw( shape );
 			}

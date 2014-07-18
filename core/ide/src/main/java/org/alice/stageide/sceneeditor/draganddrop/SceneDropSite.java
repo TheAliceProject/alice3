@@ -60,6 +60,7 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 		this.transform = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.transform );
 	}
@@ -68,6 +69,7 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 		return this.transform;
 	}
 
+	@Override
 	public SceneDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		return this;
 	}
@@ -94,6 +96,7 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 		return rv;
 	}
 
+	@Override
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		//todo
 		return (org.lgna.croquet.DropReceptor)org.alice.ide.IDE.getActiveInstance().getSceneEditor();

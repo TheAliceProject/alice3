@@ -127,18 +127,22 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		this.glPanel.setFocusable( true );
 	}
 
+	@Override
 	public javax.swing.JPanel getJPanel() {
 		return this.glPanel;
 	}
 
+	@Override
 	public java.awt.Component getAwtComponent() {
 		return getJPanel();
 	}
 
+	@Override
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 
+	@Override
 	public void repaint() {
 		this.glPanel.repaint();
 	}

@@ -50,6 +50,7 @@ public class UnmanagedEditFieldComposite extends EditFieldComposite {
 
 	public static synchronized UnmanagedEditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite>() {
+			@Override
 			public UnmanagedEditFieldComposite initialize( org.lgna.project.ast.UserField field ) {
 				return new UnmanagedEditFieldComposite( field );
 			}

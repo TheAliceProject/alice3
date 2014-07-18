@@ -55,6 +55,7 @@ package org.lgna.issue.swing;
 			super( "show all system properties..." );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.util.List<edu.cmu.cs.dennisc.java.lang.SystemProperty> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
 			StringBuilder sb = new StringBuilder();

@@ -57,6 +57,7 @@ package edu.cmu.cs.dennisc.java.lang;
 			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
 		}
 
+		@Override
 		public void appendLine( String line ) {
 			if( this.pw != null ) {
 				this.pw.append( line );
@@ -72,6 +73,7 @@ package edu.cmu.cs.dennisc.java.lang;
 			this.list = list;
 		}
 
+		@Override
 		public void appendLine( String line ) {
 			this.list.add( line );
 		}

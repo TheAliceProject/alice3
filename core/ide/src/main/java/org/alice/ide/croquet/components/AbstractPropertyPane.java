@@ -50,9 +50,11 @@ public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property
 	private final P property;
 	private final int axis;
 	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		@Override
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		};
 
+		@Override
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			AbstractPropertyPane.this.refreshLater();
 		};

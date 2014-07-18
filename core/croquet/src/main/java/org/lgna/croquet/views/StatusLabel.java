@@ -99,14 +99,17 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 		path.lineTo( f0, fA );
 		path.closePath();
 		rv.setIcon( new javax.swing.Icon() {
+			@Override
 			public int getIconWidth() {
 				return SCALE + OFFSET + OFFSET;
 			}
 
+			@Override
 			public int getIconHeight() {
 				return SCALE + OFFSET + OFFSET;
 			}
 
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.geom.AffineTransform m = g2.getTransform();

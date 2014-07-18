@@ -91,14 +91,17 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}
 
+	@Override
 	public org.lgna.project.ast.FieldAccess createTransientExpression() {
 		return this.createFieldAccess( createTransientThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.FieldAccess createExpression() {
 		return this.createFieldAccess( createThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.field.getValueType();
 	}
@@ -113,6 +116,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		}
 	}
 
+	@Override
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "this." );

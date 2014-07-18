@@ -42,7 +42,6 @@
  */
 package org.lgna.project.migration.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */

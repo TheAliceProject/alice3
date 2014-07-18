@@ -128,6 +128,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		this.completionStep.setOwner( this );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( (PrepStep<?>[])edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
@@ -207,6 +208,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	public Iterable<Step<?>> getChildSteps() {
 		return new Iterable<Step<?>>() {
+			@Override
 			public java.util.Iterator<org.lgna.croquet.history.Step<?>> iterator() {
 				return Transaction.this.childStepIterator();
 			}
@@ -215,6 +217,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	public Iterable<Step<?>> getDescendantSteps() {
 		return new Iterable<Step<?>>() {
+			@Override
 			public java.util.Iterator<org.lgna.croquet.history.Step<?>> iterator() {
 				return Transaction.this.descendantStepIterator();
 			}

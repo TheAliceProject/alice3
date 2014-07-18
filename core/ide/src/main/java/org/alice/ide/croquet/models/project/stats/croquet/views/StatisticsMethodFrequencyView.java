@@ -140,9 +140,11 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 
 		private ValueListener<Boolean> booleanListener = new ValueListener<Boolean>() {
 
+			@Override
 			public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 
+			@Override
 			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				update( listSelectionState.getValue() );
 			}
@@ -309,9 +311,11 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 			return ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getCount( method, methodTwo );
 		}
 
+		@Override
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
 			update( nextValue );
 		}

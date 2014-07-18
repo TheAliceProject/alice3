@@ -59,8 +59,7 @@ public class SceneTypeMetaState extends org.lgna.croquet.meta.StateTrackingMetaS
 	}
 
 	@Override
-	public org.lgna.project.ast.NamedUserType getValue() {
-		org.alice.ide.ProjectDocument projectDocument = org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
-		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromDocument( projectDocument );
+	protected org.lgna.project.ast.NamedUserType getValue( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state ) {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromDocument( state.getValue() );
 	}
 }

@@ -61,11 +61,13 @@ public class SBiped extends SJointedModel implements Articulable {
 		return this.implementation;
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void walkTo( SThing entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void touch( SThing entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );

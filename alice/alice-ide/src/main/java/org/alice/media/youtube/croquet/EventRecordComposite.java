@@ -87,6 +87,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
@@ -100,21 +101,25 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 
 	private final EventScriptListener listener = new EventScriptListener() {
 
+		@Override
 		public void eventAdded( EventScriptEvent event ) {
 			getEventList().addItem( event );
 		}
 	};
 	private final FrameObserver frameListener = new FrameObserver() {
 
+		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
 		}
 
+		@Override
 		public void complete() {
 		}
 	};
 	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
 
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			resetData();
@@ -211,6 +216,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private static class RandomUtilitiesMethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 		private boolean containsRandom;
 
+		@Override
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;

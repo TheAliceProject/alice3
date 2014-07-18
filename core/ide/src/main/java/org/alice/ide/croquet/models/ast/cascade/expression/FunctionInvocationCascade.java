@@ -53,6 +53,7 @@ public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.
 		assert method != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( method, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade>() {
+			@Override
 			public FunctionInvocationCascade initialize( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new FunctionInvocationCascade( method, expressionProperty );
 			}

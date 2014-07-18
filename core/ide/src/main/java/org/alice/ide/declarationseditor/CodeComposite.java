@@ -65,6 +65,17 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 
 	private CodeComposite( org.lgna.project.ast.AbstractCode code ) {
 		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( method.isFunction() ) {
+				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
+			} else {
+				this.userFunctionStatusComposite = null;
+			}
+		} else {
+			this.userFunctionStatusComposite = null;
+		}
+		this.handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Override
@@ -72,11 +83,16 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 		return this.getDeclaration().getDeclaringType();
 	}
 
+	public org.alice.ide.code.UserFunctionStatusComposite getUserFunctionStatusComposite() {
+		return this.userFunctionStatusComposite;
+	}
+
 	@Override
 	public boolean isValid() {
 		return this.getDeclaration().isValid();
 	}
 
+	@Override
 	public boolean isCloseable() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -100,4 +116,33 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
 		}
 	}
+
+	public void handleAstChangeThatCouldBeOfInterest() {
+		if( this.userFunctionStatusComposite != null ) {
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
+
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
+			org.lgna.project.ast.AbstractCode code = this.getDeclaration();
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
+				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
+			} else {
+				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
+					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
+						nextErrorStatus = null;
+					} else {
+						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
+					}
+				} else {
+					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
+				}
+			}
+			if( prevErrorStatus != nextErrorStatus ) {
+				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
+				this.getView().revalidateAndRepaint();
+			}
+		}
+	}
+
+	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 }

@@ -122,16 +122,20 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
 				final org.lgna.croquet.views.PopupMenu popupMenu = new org.lgna.croquet.views.PopupMenu( this );
 				popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+					@Override
 					public void componentShown( java.awt.event.ComponentEvent e ) {
 					}
 
+					@Override
 					public void componentMoved( java.awt.event.ComponentEvent e ) {
 					}
 
+					@Override
 					public void componentResized( java.awt.event.ComponentEvent e ) {
 						org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
 					}
 
+					@Override
 					public void componentHidden( java.awt.event.ComponentEvent e ) {
 					}
 				} );

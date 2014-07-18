@@ -122,6 +122,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private static class JFolderTabTitle extends javax.swing.JToggleButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+			@Override
 			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				JFolderTabTitle.this.revalidate();
 			}
@@ -177,6 +178,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 			if( item.isPotentiallyCloseable() ) {
 				java.awt.event.ActionListener closeButtonActionListener = new java.awt.event.ActionListener() {
+					@Override
 					public void actionPerformed( java.awt.event.ActionEvent e ) {
 						FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement( item );
 					}
@@ -482,28 +484,35 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		private Integer pressedLocationX;
 		private Integer pressedViewPositionX;
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			this.pressedLocationX = e.getPoint().x;
 			this.pressedViewPositionX = titlesScrollPane.getAwtComponent().getViewport().getViewPosition().x;
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			this.pressedLocationX = null;
 			this.pressedViewPositionX = null;
 		}
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			if( this.pressedLocationX != null ) {
 				java.awt.Dimension viewSize = titlesScrollPane.getAwtComponent().getViewport().getView().getSize();
@@ -536,14 +545,17 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 		this.titlesScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 		cardOwner.getView().setBorder( new javax.swing.border.Border() {
+			@Override
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1, 1, 0, 0 );
 			}
 
+			@Override
 			public boolean isBorderOpaque() {
 				return true;
 			}
 
+			@Override
 			public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 				if( titlesPanel.getComponentCount() > 0 ) {
 					g.setColor( SELECTED_BORDER_COLOR );

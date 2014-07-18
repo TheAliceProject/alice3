@@ -55,10 +55,12 @@ public abstract class BasisMatrixCubic implements Cubic {
 		m_g = g;
 	}
 
+	@Override
 	public boolean isNaN() {
 		return ( m_h == null ) || m_h.isNaN() || ( m_g == null ) || m_g.isNaN();
 	}
 
+	@Override
 	public double evaluate( double t ) {
 		double ttt = t * t * t;
 		double tt = t * t;
@@ -68,6 +70,7 @@ public abstract class BasisMatrixCubic implements Cubic {
 				( ( ( ttt * m_h.translation.x ) + ( tt * m_h.translation.y ) + ( t * m_h.translation.z ) + m_h.translation.w ) * m_g.w );
 	}
 
+	@Override
 	public double evaluateDerivative( double t ) {
 		double tt3 = t * t * 3;
 		double t2 = t * 2;

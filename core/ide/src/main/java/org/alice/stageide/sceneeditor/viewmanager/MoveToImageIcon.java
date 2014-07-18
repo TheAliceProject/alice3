@@ -136,10 +136,12 @@ public class MoveToImageIcon implements Icon {
 		}
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.getLeftIcon().getIconWidth() + this.arrowImage.getIconWidth() + this.getRightIcon().getIconWidth() + ( HORIZONTAL_OFFSET * 2 );
 	}
 
+	@Override
 	public int getIconHeight() {
 		return Math.max( this.arrowImage.getIconHeight(), Math.max( this.getLeftIcon().getIconHeight(), this.getRightIcon().getIconHeight() ) );
 	}
@@ -185,6 +187,7 @@ public class MoveToImageIcon implements Icon {
 		return source;
 	}
 
+	@Override
 	public synchronized void paintIcon( Component c, Graphics g, int x, int y ) {
 		int xPos = HORIZONTAL_OFFSET;
 		int yOffset = (int)( ( this.getIconHeight() - this.getLeftIcon().getIconHeight() ) * .5 );

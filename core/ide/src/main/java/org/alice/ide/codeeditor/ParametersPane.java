@@ -99,22 +99,14 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	@Override
 	protected void addPostfixComponents() {
 		super.addPostfixComponents();
-		if( this.getFactory() instanceof org.alice.ide.x.PreviewAstI18nFactory ) {
+		org.alice.ide.x.AstI18nFactory factory = this.getFactory();
+		if( factory.isSignatureLocked( this.getCode() ) ) {
 			//pass
 		} else {
-			org.lgna.project.ast.UserCode code = getCode();
-			if( code instanceof org.lgna.project.ast.UserMethod ) {
-				org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-				if( org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( method ) ) {
-					//pass
-				} else {
-					this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( method ).getLaunchOperation().createButton() );
-				}
-			}
+			this.addComponent( org.alice.ide.ast.declaration.AddParameterComposite.getInstance( this.getCode() ).getLaunchOperation().createButton() );
 		}
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
 			this.addComponent( new org.lgna.croquet.views.Label( " )" ) );
 		}
-		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 }

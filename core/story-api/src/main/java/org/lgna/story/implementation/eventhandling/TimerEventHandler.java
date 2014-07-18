@@ -72,6 +72,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 	private boolean isActivated = false;
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 			currentTime = scene.getProgram().getAnimator().getCurrentTime();
 			update();
@@ -123,6 +124,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() + ( currentTime - mostRecentFire.get( listener ) ) ) );
 	}
 
+	@Override
 	public void sceneActivated( SceneActivationEvent e ) {
 		this.isActivated = true;
 	}

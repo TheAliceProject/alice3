@@ -48,21 +48,26 @@ package edu.cmu.cs.dennisc.java.awt.event;
 public abstract class AltTriggerMouseAdapter implements java.awt.event.MouseListener {
 	protected abstract void altTriggered( java.awt.event.MouseEvent e );
 
+	@Override
 	public void mouseEntered( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			this.altTriggered( e );
 		}
 	}
 
+	@Override
 	public void mouseReleased( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
 }

@@ -58,6 +58,7 @@ public abstract class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern
 
 	protected abstract boolean isAcceptable( T e );
 
+	@Override
 	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 		if( crawlable != null ) {
 			if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {

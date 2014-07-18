@@ -48,9 +48,11 @@ package edu.cmu.cs.dennisc.media.jmf;
 public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 	private java.util.Map<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource> audioResourceToDataSourceMap = new java.util.HashMap<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource>();
 	private org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		@Override
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
 
+		@Override
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			MediaFactory.this.forget( (org.lgna.common.resources.AudioResource)e.getTypedSource() );
 		}
@@ -83,6 +85,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		if( contentType != null ) {
 			final org.lgna.common.resources.AudioResource rv = new org.lgna.common.resources.AudioResource( file, contentType );
 			Runnable runnable = new Runnable() {
+				@Override
 				public void run() {
 					Player player = new Player( createJMFPlayer( rv ), 1.0, 0.0, Double.NaN, rv );
 					player.realize();

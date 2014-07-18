@@ -84,12 +84,15 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 		}
 	}
 
+	@Override
 	public final void mouseEntered( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mousePressed( java.awt.event.MouseEvent e ) {
 		this.updateStillUnclick( e );
 		if( this.isStillUnclick ) {
@@ -101,6 +104,7 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 		this.ePressed = e;
 	}
 
+	@Override
 	public final void mouseReleased( java.awt.event.MouseEvent e ) {
 		this.updateStillClick( e );
 		if( this.isStillClick ) {
@@ -113,13 +117,16 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 		this.eReleased = e;
 	}
 
+	@Override
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
 		this.updateStillUnclick( e );
 	}
 
+	@Override
 	public final void mouseDragged( java.awt.event.MouseEvent e ) {
 		this.updateStillClick( e );
 	}

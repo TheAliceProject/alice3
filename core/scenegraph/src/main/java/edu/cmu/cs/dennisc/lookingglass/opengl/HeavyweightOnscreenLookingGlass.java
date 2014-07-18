@@ -55,15 +55,19 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
+			@Override
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
 
+			@Override
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
 
+			@Override
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
 
+			@Override
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 				m_glCanvas.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
 				m_glCanvas.repaint();
@@ -71,14 +75,17 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		} );
 	}
 
+	@Override
 	public void repaint() {
 		getAwtComponent().repaint();
 	}
 
+	@Override
 	public java.awt.Component getAwtComponent() {
 		return m_glCanvas;
 	}
 
+	@Override
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return getAwtComponent().getSize( rv );
 	}

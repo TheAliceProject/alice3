@@ -82,6 +82,7 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 		this.audioMuxer = new org.alice.media.audio.AudioMuxer();
 	}
 
+	@Override
 	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
 		assert this.audioMuxer != null;
 		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();

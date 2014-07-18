@@ -51,6 +51,7 @@ public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 	private final org.lgna.croquet.history.event.Listener historyListener = new org.lgna.croquet.history.event.Listener() {
 		private void reload() {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					treeModel.reload();
 					collapseDesiredRows();
@@ -60,9 +61,11 @@ public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 			} );
 		}
 
+		@Override
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			if( ( e instanceof org.lgna.croquet.history.event.AddStepEvent ) || ( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) ) {
 				this.reload();

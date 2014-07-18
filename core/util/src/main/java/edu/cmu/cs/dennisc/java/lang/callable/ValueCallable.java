@@ -70,6 +70,7 @@ public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
 		return this.value != null ? this.value.hashCode() : 0;
 	}
 
+	@Override
 	public T call() throws java.lang.Exception {
 		return this.value;
 	}

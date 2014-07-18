@@ -64,6 +64,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
 		}
@@ -116,6 +117,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	}
 
 	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+		@Override
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			//todo: investigate
 			//org.lgna.project.ast.UserField field = getPreviewValue();
@@ -124,6 +126,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 			//return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
 		}
 
+		@Override
 		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
@@ -132,20 +135,24 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
 		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 
+		@Override
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
 			return null;
 		}
 
+		@Override
 		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 			this.pushedContext = new InitializerContext();
 			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}
 
+		@Override
 		public void epilogue() {
 			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 
+		@Override
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.Expression initializer = getInitializer();
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {

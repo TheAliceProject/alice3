@@ -47,10 +47,12 @@ package org.lgna.croquet.codecs;
  */
 public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
 	SINGLETON;
+	@Override
 	public Class<java.awt.Color> getValueClass() {
 		return java.awt.Color.class;
 	}
 
+	@Override
 	public java.awt.Color decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -64,6 +66,7 @@ public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.awt.Color value ) {
 		boolean isNotNull = value != null;
 		binaryEncoder.encode( isNotNull );
@@ -75,6 +78,7 @@ public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, java.awt.Color value ) {
 		sb.append( value );
 	}

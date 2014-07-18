@@ -79,6 +79,7 @@ abstract class BarrierControllerListener implements javax.media.ControllerListen
 //}
 
 class PrefetchControllerListener extends BarrierControllerListener {
+	@Override
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		if( e instanceof javax.media.PrefetchCompleteEvent ) {
 			this.await();
@@ -87,6 +88,7 @@ class PrefetchControllerListener extends BarrierControllerListener {
 }
 
 class RealizeControllerListener extends BarrierControllerListener {
+	@Override
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		if( e instanceof javax.media.RealizeCompleteEvent ) {
 			this.await();
@@ -95,6 +97,7 @@ class RealizeControllerListener extends BarrierControllerListener {
 }
 
 class StopControllerListener extends BarrierControllerListener {
+	@Override
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		//todo?
 		if( e instanceof javax.media.StopEvent ) {

@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.renderer.gl;
 public class GlLightweightOnscreenRenderTarget extends GlOnscreenRenderTarget<javax.swing.JComponent> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 	private final javax.media.opengl.awt.GLJPanel glJPanel = new javax.media.opengl.awt.GLJPanel();
 
+	@Override
 	public javax.swing.JComponent getAwtComponent() {
 		return this.glJPanel;
 	}

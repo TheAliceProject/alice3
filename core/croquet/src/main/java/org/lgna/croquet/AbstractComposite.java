@@ -124,6 +124,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 			this.localizationKey = binaryDecoder.decodeString();
 		}
 
+		@Override
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			binaryEncoder.encode( this.compositeResolver );
 			binaryEncoder.encode( this.localizationKey );
@@ -131,12 +132,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 		protected abstract M getResolved( Key key );
 
+		@Override
 		public final M getResolved() {
 			AbstractComposite<?> composite = this.compositeResolver.getResolved();
 			Key key = new Key( composite, this.localizationKey );
 			return this.getResolved( key );
 		}
 
+		@Override
 		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 			this.compositeResolver.retarget( retargeter );
 		}
@@ -787,6 +790,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		Manager.registerComposite( this );
 	}
 
+	@Override
 	public synchronized java.util.UUID getCardId() {
 		if( this.cardId != null ) {
 
@@ -804,6 +808,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return this.view;
 	}
 
+	@Override
 	public synchronized final V getView() {
 		if( this.view != null ) {
 			//pass
@@ -817,10 +822,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return this.view;
 	}
 
+	@Override
 	public final org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists() {
 		return this.scrollPane;
 	}
 
+	@Override
 	public final org.lgna.croquet.views.SwingComponentView<?> getRootComponent() {
 		V view = this.getView();
 		if( this.scrollPane != null ) {
@@ -830,6 +837,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
+	@Override
 	public void releaseView() {
 		this.view = null;
 	}
@@ -853,6 +861,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		this.registeredTabStates.remove( tabState );
 	}
 
+	@Override
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
 		this.getView().handleCompositePreActivation();
@@ -867,6 +876,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
+	@Override
 	public void handlePostDeactivation() {
 		this.getView().handleCompositePostDeactivation();
 		for( TabState<?> tabSelectionState : this.registeredTabStates ) {
@@ -959,6 +969,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 				this.mapKeyToStringState );
 	}
 
+	@Override
 	public boolean contains( Model model ) {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState state = this.mapKeyToBooleanState.get( key );

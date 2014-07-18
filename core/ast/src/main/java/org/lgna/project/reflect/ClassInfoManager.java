@@ -46,7 +46,7 @@ package org.lgna.project.reflect;
  * @author Dennis Cosgrove
  */
 public class ClassInfoManager {
-	private static java.util.Map<String, edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>> s_map = new java.util.HashMap<String, edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>>();
+	private static java.util.Map<String, edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo>> s_map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private ClassInfoManager() {
 	}
@@ -61,9 +61,9 @@ public class ClassInfoManager {
 				} else {
 					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
 					final byte[] data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes( zis, zipEntry );
-					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>() {
+					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo>() {
 						@Override
-						protected ClassInfo initialize() {
+						protected ClassInfo create() {
 							ClassInfo rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
 							//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
 							return rv;
@@ -82,7 +82,7 @@ public class ClassInfoManager {
 
 	public static ClassInfo getInstance( String clsName ) {
 		if( clsName != null ) {
-			edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo> lazyClassInfo = s_map.get( clsName );
+			edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo> lazyClassInfo = s_map.get( clsName );
 			if( lazyClassInfo != null ) {
 				try {
 					return lazyClassInfo.get();

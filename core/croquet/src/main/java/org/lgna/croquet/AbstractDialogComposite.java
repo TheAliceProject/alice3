@@ -55,50 +55,62 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 			this.composite = composite;
 		}
 
+		@Override
 		public boolean isModal() {
 			return this.composite.isModal;
 		}
 
+		@Override
 		public org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
+		@Override
 		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
 			this.composite.releaseView( step, view );
 		}
 
+		@Override
 		public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.getDialogTitle( step );
 		}
 
+		@Override
 		public java.awt.Point getDesiredDialogLocation() {
 			return this.composite.getDesiredWindowLocation();
 		}
 
+		@Override
 		public void updateDialogSize( org.lgna.croquet.views.Dialog dialog ) {
 			this.composite.updateWindowSize( dialog );
 		}
 
+		@Override
 		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 			return this.composite.isWindowClosingEnabled( trigger );
 		}
 
+		@Override
 		public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 			this.composite.handleDialogOpened( trigger );
 		}
 
+		@Override
 		public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 			this.composite.handleDialogClosed( trigger );
 		}
 
+		@Override
 		public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 			this.composite.handlePreShowDialog( step );
 		}
 
+		@Override
 		public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 			this.composite.handlePostHideDialog( step );
 		}
 
+		@Override
 		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 			this.composite.handleFinally( step, dialog );
 		}

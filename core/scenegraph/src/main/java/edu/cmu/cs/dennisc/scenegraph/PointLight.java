@@ -48,8 +48,10 @@ package edu.cmu.cs.dennisc.scenegraph;
  * the position is inherent from absolute transformation of its composite.<br>
  * useful in simulating a light bulb.<br>
  * <p>
- * when calculating a light's contribution to the illumination of a vertex, that light's color is multiplied a polynomial function of distance.<br>
- * this polynomial is controllable via constant, linear, and quadratic attenuation properties.<br>
+ * when calculating a light's contribution to the illumination of a vertex, that
+ * light's color is multiplied a polynomial function of distance.<br>
+ * this polynomial is controllable via constant, linear, and quadratic
+ * attenuation properties.<br>
  * 
  * <pre>
  *    d = distance from light to vertex position
@@ -62,7 +64,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  *                         c + ld + qdd
  * </pre>
  * 
- * note: the default values of ( constant=1, linear=0, quadratic=0 ) reduce the attenuation factor to 1.
+ * note: the default values of ( constant=1, linear=0, quadratic=0 ) reduce the
+ * attenuation factor to 1.
  * 
  * @author Dennis Cosgrove
  */

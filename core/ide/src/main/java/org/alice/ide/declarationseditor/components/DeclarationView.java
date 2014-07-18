@@ -82,6 +82,7 @@ public abstract class DeclarationView extends org.lgna.croquet.views.BorderPanel
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> isJavaCodeOnTheSideListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			synchronized( getTreeLock() ) {
 				boolean isFirstTime = getCenterComponent() == null;

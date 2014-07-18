@@ -12,6 +12,7 @@ public class EndCollisionAdapter extends AbstractAdapter implements CollisionEnd
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void collisionEnded( EndCollisionEvent e ) {
 		invokeEntryPoint( e );
 	}

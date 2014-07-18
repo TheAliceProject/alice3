@@ -80,6 +80,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 
 	private final ActionOperation logOutOperation = createActionOperation( "logOutOperation", new Action() {
 
+		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			internalLogout();
 			isLoggedIn.setValueTransactionlessly( false );

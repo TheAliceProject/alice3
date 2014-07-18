@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.renderer.gl;
 public class GlHeavyweightOnscreenRenderTarget extends GlOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget {
 	private final javax.media.opengl.awt.GLCanvas glCanvas = new javax.media.opengl.awt.GLCanvas();
 
+	@Override
 	public java.awt.Component getAwtComponent() {
 		return this.glCanvas;
 	}

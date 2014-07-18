@@ -82,14 +82,17 @@ class CloseIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public int getIconWidth() {
 		return 14;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return getIconWidth();
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x0, int y0 ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
@@ -178,18 +181,22 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 			TabbedPaneUI.this.repaintTab( this.getTabIndex( e ) );
 		}
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			updateRollover( e );
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			closeIcon.setPressed( isWithinCloseIcon( e ) );
 			tabPane.repaint();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			if( closeIcon.isPressed() && isWithinCloseIcon( e ) ) {
 				closeTab( getTabIndex( e ), e );
@@ -198,13 +205,16 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 			tabPane.repaint();
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			updateRollover( e );
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 		}
 	}

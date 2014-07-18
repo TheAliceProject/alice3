@@ -58,14 +58,17 @@ public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
 	}
 
+	@Override
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
 		return MenuBarComposite.getInstance();
 	}
 
+	@Override
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
 		return null;
 	}
 
+	@Override
 	public org.lgna.croquet.Composite<?> getMainComposite() {
 		return MainComposite.getInstance();
 	}

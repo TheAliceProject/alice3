@@ -51,6 +51,7 @@ public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.
 
 	public static JointExpressionFillIn getInstance( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		return mapToMap.getInitializingIfAbsent( expression, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn>() {
+			@Override
 			public JointExpressionFillIn initialize( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 				return new JointExpressionFillIn( expression, method );
 			}

@@ -59,6 +59,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 			return this.joint.getOriginalOrientation().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( this.orientation.createUnitQuaternion() ) == false;
 		}
 
+		@Override
 		public void run() {
 			this.joint.animateLocalOrientationOnly( this.orientation, 1.0, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}

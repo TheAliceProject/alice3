@@ -54,6 +54,7 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			animator.update();
 		}

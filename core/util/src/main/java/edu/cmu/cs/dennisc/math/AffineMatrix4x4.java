@@ -116,6 +116,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		translation.decode( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		orientation.encode( binaryEncoder );
 		translation.encode( binaryEncoder );
@@ -169,6 +170,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return true;
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;

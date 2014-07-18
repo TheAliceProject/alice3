@@ -67,12 +67,14 @@ public abstract class Tuple3 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 		z = binaryDecoder.decodeDouble();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
 		binaryEncoder.encode( z );
 	}
 
+	@Override
 	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );

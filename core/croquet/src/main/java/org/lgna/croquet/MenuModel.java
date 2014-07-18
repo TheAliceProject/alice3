@@ -126,10 +126,12 @@ public abstract class MenuModel extends AbstractMenuModel {
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				private javax.swing.event.PopupMenuEvent cancelEvent = null;
 
+				@Override
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 					this.cancelEvent = null;
 				}
 
+				@Override
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 					if( this.cancelEvent != null ) {
 						System.err.println( "todo: cancel" );
@@ -145,28 +147,33 @@ public abstract class MenuModel extends AbstractMenuModel {
 					//					performObserver.handleFinally();
 				}
 
+				@Override
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 					this.cancelEvent = e;
 				}
 			} );
 
 			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+				@Override
 				public void componentShown( java.awt.event.ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
 
+				@Override
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
 
+				@Override
 				public void componentResized( java.awt.event.ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 					step.handleResized( e );
 				}
 
+				@Override
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );

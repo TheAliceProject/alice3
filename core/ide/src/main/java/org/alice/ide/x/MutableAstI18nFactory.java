@@ -57,6 +57,14 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 		return null;
 	}
 
+	public boolean isStatementListPropertyMutable( org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		return true;
+	}
+
+	public boolean isKeyedArgumentListMutable( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
+		return true;
+	}
+
 	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
 		org.lgna.project.ast.ArgumentOwner owner = argumentListProperty.getOwner();
@@ -76,20 +84,14 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return org.alice.ide.common.TypeComponent.createInstance( type );
-	}
-
-	@Override
 	protected org.lgna.croquet.views.SwingComponentView<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 
 	@Override
 	public org.lgna.croquet.views.SwingComponentView<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
-		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.views.SwingComponentView<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
-		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
+		if( this.isDropDownDesiredFor( expressionProperty ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
 			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;

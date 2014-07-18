@@ -55,6 +55,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			repaint();
 			//			if( e.getValueIsAdjusting() ) {
@@ -106,13 +107,16 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
+		@Override
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
 
+		@Override
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 		}
 
+		@Override
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
@@ -172,11 +176,13 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 			return null;
 		}
 
+		@Override
 		public org.lgna.croquet.views.ScrollPane getScrollPaneAncestor() {
 			//todo
 			return null;
 		}
 
+		@Override
 		public java.awt.Shape getShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			java.awt.Component view = this.getView();
 			if( view != null ) {
@@ -218,10 +224,12 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 			return null;
 		}
 
+		@Override
 		public java.awt.Shape getVisibleShape( org.lgna.croquet.views.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			return getShape( asSeenBy, insets );
 		}
 
+		@Override
 		public boolean isInView() {
 			java.awt.Component view = this.getView();
 			if( view != null ) {
@@ -231,15 +239,19 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 			}
 		}
 
+		@Override
 		public void addComponentListener( java.awt.event.ComponentListener listener ) {
 		}
 
+		@Override
 		public void removeComponentListener( java.awt.event.ComponentListener listener ) {
 		}
 
+		@Override
 		public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		}
 
+		@Override
 		public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		}
 	}

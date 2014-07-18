@@ -62,6 +62,7 @@ public final class HairColorNameHairCombo implements Comparable<HairColorNameHai
 		return this.hair;
 	}
 
+	@Override
 	public int compareTo( HairColorNameHairCombo other ) {
 		return this.hairColorName.compareTo( other.hairColorName );
 	}

@@ -77,10 +77,12 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 	private static final double COEFFICIENT = .1;
 	private static final double FLATTENING_FACTOR = .3;
 
+	@Override
 	public Animator getAnimator() {
 		return this.animator;
 	}
 
+	@Override
 	public void setAnimator( Animator animator ) {
 		this.animator = animator;
 	}

@@ -60,6 +60,7 @@ public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel imple
 		return (TreeNode<E>)super.getRoot();
 	}
 
+	@Override
 	public javax.swing.tree.TreePath getTreePath( TreeNode<E> e ) {
 		Object[] nodes = this.getPathToRoot( e );
 		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );

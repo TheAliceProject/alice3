@@ -49,6 +49,7 @@ public class ThisPane extends AccessiblePane {
 	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
 	private org.lgna.project.ast.AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
 	private org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
 			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> nextValue = e.getNextValue();
 			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );

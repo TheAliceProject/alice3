@@ -48,6 +48,7 @@ package org.lgna.croquet.views;
  */
 public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass

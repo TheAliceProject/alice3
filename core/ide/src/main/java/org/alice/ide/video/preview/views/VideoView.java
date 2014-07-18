@@ -95,14 +95,17 @@ class PlayCanvasIcon implements javax.swing.Icon {
 		this.stroke = new java.awt.BasicStroke( size / 25.0f );
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.height;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		if( c instanceof javax.swing.AbstractButton ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
@@ -119,14 +122,17 @@ class PlayButtonIcon implements javax.swing.Icon {
 		this.size = size;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.size.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.size.width;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
 		javax.swing.ButtonModel model = b.getModel();
@@ -151,14 +157,17 @@ class PauseButtonIcon implements javax.swing.Icon {
 		this.size = size;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.size.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.size.width;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
 		javax.swing.ButtonModel model = b.getModel();
@@ -187,6 +196,7 @@ public class VideoView extends org.lgna.croquet.views.BorderPanel {
 	private static final int SIZE = 64;
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( SIZE / 25.0f );
 	private final edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter = new edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer>() {
+		@Override
 		public void paint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int width, int height ) {
 			if( videoPlayer != null ) {
 				if( videoPlayer.isPlaying() ) {
@@ -201,77 +211,94 @@ public class VideoView extends org.lgna.croquet.views.BorderPanel {
 	};
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
+		@Override
 		public void mediaChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 		}
 
+		@Override
 		public void newMedia( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					jSlider.setPortion( 0.0f );
 				}
 			} );
 		}
 
+		@Override
 		public void videoOutput( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int count ) {
 			if( count > 0 ) {
 				java.awt.Dimension dimension = videoPlayer.getVideoSize();
 			}
 		}
 
+		@Override
 		public void positionChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, final float f ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					jSlider.setPortion( f );
 				}
 			} );
 		}
 
+		@Override
 		public void lengthChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, long lengthInMsec ) {
 			java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
 			calendar.setTimeInMillis( lengthInMsec );
 			durationLabel.setText( FORMAT.format( calendar.getTime() ) );
 		}
 
+		@Override
 		public void opening( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 		}
 
+		@Override
 		public void playing( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPause();
 		}
 
+		@Override
 		public void paused( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 		}
 
+		@Override
 		public void finished( final edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					videoPlayer.stop();
 				}
 			} );
 		}
 
+		@Override
 		public void stopped( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 		}
 
+		@Override
 		public void error( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			handleError();
 		}
 	};
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			buttonModel.setRollover( true );
 			getVideoPlayer().getVideoSurface().repaint();
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 			buttonModel.setRollover( false );
 			getVideoPlayer().getVideoSurface().repaint();
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( isErrorFreeSinceLastPrepareMedia ) {
 				edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getVideoPlayer();
@@ -287,11 +314,13 @@ public class VideoView extends org.lgna.croquet.views.BorderPanel {
 			getVideoPlayer().getVideoSurface().repaint();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			buttonModel.setPressed( false );
 			getVideoPlayer().getVideoSurface().repaint();
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};
@@ -299,15 +328,18 @@ public class VideoView extends org.lgna.croquet.views.BorderPanel {
 	private final org.alice.ide.video.preview.views.events.ThumbListener thumbListener = new org.alice.ide.video.preview.views.events.ThumbListener() {
 		private boolean wasPlaying;
 
+		@Override
 		public void thumbPressed( float position ) {
 			this.wasPlaying = getVideoPlayer().isPlaying();
 			pause();
 		}
 
+		@Override
 		public void thumbDragged( float position ) {
 			setPosition( position );
 		}
 
+		@Override
 		public void thumbReleased( float position ) {
 			setPosition( position );
 			if( this.wasPlaying ) {

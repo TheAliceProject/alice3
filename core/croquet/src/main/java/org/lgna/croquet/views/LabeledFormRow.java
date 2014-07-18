@@ -108,6 +108,7 @@ public class LabeledFormRow implements FormRow {
 		}
 	}
 
+	@Override
 	public void addComponents( org.lgna.croquet.views.FormPanel formPanel ) {
 		SwingComponentView<?> leadingComponent;
 		if( this.label != null ) {

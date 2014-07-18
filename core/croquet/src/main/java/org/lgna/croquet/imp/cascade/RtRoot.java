@@ -120,14 +120,17 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		return new javax.swing.event.PopupMenuListener() {
+			@Override
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 				RtRoot.this.addNextNodeMenuItems( menuItemContainer );
 			}
 
+			@Override
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 				RtRoot.this.removeAll( menuItemContainer );
 			}
 
+			@Override
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				//todo
 				org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();

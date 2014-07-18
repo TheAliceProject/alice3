@@ -50,6 +50,7 @@ public final class AddFunctionComposite extends AddMethodComposite {
 
 	public static AddFunctionComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddFunctionComposite>() {
+			@Override
 			public AddFunctionComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
 				return new AddFunctionComposite( declaringType );
 			}

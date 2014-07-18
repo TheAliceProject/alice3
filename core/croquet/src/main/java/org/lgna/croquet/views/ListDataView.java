@@ -47,14 +47,17 @@ package org.lgna.croquet.views;
  */
 public abstract class ListDataView<T> extends Panel {
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			refreshLater();
 		}
 
+		@Override
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			refreshLater();
 		}
 
+		@Override
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			refreshLater();
 		}

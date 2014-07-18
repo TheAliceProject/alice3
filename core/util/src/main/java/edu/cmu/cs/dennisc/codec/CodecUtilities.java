@@ -59,8 +59,7 @@ public abstract class CodecUtilities {
 	//		return getPublicDecodeConstructor( (Class<T>)instance.getClass() );
 	//	}
 
-	@Deprecated
-	public static boolean isDebugDesired = false;
+	@Deprecated public static boolean isDebugDesired = false;
 	private static final String DEFAULT_ZIP_ENTRY_NAME = "edu.cmu.cs.dennisc.codec.CodecUtilities.DEFAULT_ZIP_ENTRY_NAME";
 
 	private CodecUtilities() {

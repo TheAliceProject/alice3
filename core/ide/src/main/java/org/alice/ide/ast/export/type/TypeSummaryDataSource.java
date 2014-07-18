@@ -53,10 +53,12 @@ public class TypeSummaryDataSource implements edu.cmu.cs.dennisc.java.util.zip.D
 		this.typeSummary = typeSummary;
 	}
 
+	@Override
 	public String getName() {
 		return FILENAME;
 	}
 
+	@Override
 	public void write( java.io.OutputStream os ) throws java.io.IOException {
 		org.w3c.dom.Document xmlDocument = TypeXmlUtitlities.encode( this.typeSummary );
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );

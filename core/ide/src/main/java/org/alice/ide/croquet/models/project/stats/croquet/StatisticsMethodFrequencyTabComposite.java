@@ -174,6 +174,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	private void sort( List<? extends AbstractMethod> a ) {
 		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
 
+			@Override
 			public int compare( AbstractMethod o1, AbstractMethod o2 ) {
 				return o1.getName().compareTo( o2.getName() );
 			}
@@ -208,6 +209,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
 
+		@Override
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
@@ -319,6 +321,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		private void sort() {
 			java.util.Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
 
+				@Override
 				public int compare( MethodCountPair o1, MethodCountPair o2 ) {
 					return o1.getMethod().getName().compareTo( o2.getMethod().getName() );
 				}

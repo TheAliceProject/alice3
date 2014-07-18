@@ -48,19 +48,23 @@ package org.alice.ide.instancefactory.croquet.codecs;
  */
 public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.instancefactory.InstanceFactory> {
 	SINGLETON;
+	@Override
 	public Class<org.alice.ide.instancefactory.InstanceFactory> getValueClass() {
 		return org.alice.ide.instancefactory.InstanceFactory.class;
 	}
 
+	@Override
 	public org.alice.ide.instancefactory.InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.ide.instancefactory.InstanceFactory value ) {
 		sb.append( value );
 	}

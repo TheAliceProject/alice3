@@ -49,16 +49,20 @@ package org.lgna.croquet.views;
 public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPanel> {
 
 	private class MutableListLayout implements java.awt.LayoutManager {
+		@Override
 		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return new java.awt.Dimension( 0, 0 );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			final int M = data.getItemCount();
 			java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
@@ -71,6 +75,7 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 			return rv;
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			java.awt.Dimension parentSize = parent.getSize();
 			int y = 0;
@@ -160,14 +165,17 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup buttonGroup = new edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup();
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		@Override
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
 
+		@Override
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
 
+		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
@@ -228,17 +236,20 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 	private static final javax.swing.KeyStroke DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 );
 	private static final javax.swing.KeyStroke KEYPAD_DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_KP_DOWN, 0 );
 	private final java.awt.event.ActionListener removeSelectedListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			System.out.println( "removeSelectedItem" );
 			//MutableList.this.removeSelectedItem();
 		}
 	};
 	private final java.awt.event.ActionListener moveSelectionUpListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			System.out.println( "moveSelectionUp" );
 		}
 	};
 	private final java.awt.event.ActionListener moveSelectionDownListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			System.out.println( "moveSelectionDown" );
 		}

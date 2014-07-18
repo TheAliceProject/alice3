@@ -60,14 +60,17 @@ public class IsRecordingIcon implements Icon {
 	private static final Color RECORD_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
 	private static final Color STOP_COLOR = Color.BLACK;
 
+	@Override
 	public int getIconHeight() {
 		return SIZE;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return SIZE;
 	}
 
+	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Paint prevPaint = g2.getPaint();

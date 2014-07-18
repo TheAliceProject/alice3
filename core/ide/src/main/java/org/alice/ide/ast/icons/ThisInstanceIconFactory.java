@@ -61,16 +61,19 @@ public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionInd
 	@Override
 	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
+			@Override
 			public int getIconWidth() {
 				return size.width;
 			}
 
+			@Override
 			public int getIconHeight() {
 				return size.height;
 			}
 
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 				if( type != null ) {
 					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {

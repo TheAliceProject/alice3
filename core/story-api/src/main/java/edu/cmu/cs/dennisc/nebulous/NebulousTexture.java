@@ -94,6 +94,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		this.setup( gl );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		assert m_textureKey != null;
 		binaryEncoder.encode( m_textureKey );
@@ -142,14 +143,17 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 
+	@Override
 	public boolean isAnimated() {
 		return false;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
 		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
 
+	@Override
 	public void paint( java.awt.Graphics2D g, int width, int height ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}

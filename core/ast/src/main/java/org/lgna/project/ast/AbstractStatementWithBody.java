@@ -54,6 +54,7 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 		this.body.setValue( body );
 	}
 
+	@Override
 	public org.lgna.project.ast.NodeProperty<org.lgna.project.ast.BlockStatement> getBodyProperty() {
 		return this.body;
 	}

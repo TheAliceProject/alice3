@@ -52,6 +52,7 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 		private final java.util.List<MethodInfo> methodInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		private final java.util.List<ConstructorInfo> constructorInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+		@Override
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable == MemberInfo.this.getDeclaration() ) {
 				//pass

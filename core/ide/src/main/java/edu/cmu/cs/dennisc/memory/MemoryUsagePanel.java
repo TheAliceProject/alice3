@@ -127,6 +127,7 @@ public class MemoryUsagePanel extends org.lgna.croquet.views.BorderPanel {
 	private GarbageCollectAction garbageCollectAction = new GarbageCollectAction();
 	private MemoryUsageGraph memoryUsageGraph = new MemoryUsageGraph();
 	private javax.swing.Timer timer = new javax.swing.Timer( 500, new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.lang.management.MemoryMXBean memory = java.lang.management.ManagementFactory.getMemoryMXBean();
 			java.lang.management.MemoryUsage heapUsage = memory.getHeapMemoryUsage();
