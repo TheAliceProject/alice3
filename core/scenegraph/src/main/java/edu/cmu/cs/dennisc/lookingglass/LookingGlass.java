@@ -56,10 +56,6 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.renderer.RenderTarget, 
 	//todo
 	public java.awt.Image getImage( edu.cmu.cs.dennisc.texture.Texture texture );
 
-	public String getDescription();
-
-	public void setDescription( String description );
-
 	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
 
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera );

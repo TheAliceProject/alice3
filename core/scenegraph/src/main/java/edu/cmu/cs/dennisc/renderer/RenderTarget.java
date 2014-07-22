@@ -54,6 +54,10 @@ public interface RenderTarget {
 
 	java.awt.Dimension getSize();
 
+	String getDescription();
+
+	void setDescription( String description );
+
 	void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );

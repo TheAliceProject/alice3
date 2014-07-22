@@ -79,6 +79,16 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	@Override
+	public void setDescription( String description ) {
+		this.description = description;
+	}
+
+	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		this.sgCameras.add( sgCamera );
 		if( this.sgCameras.size() == 1 ) {
@@ -307,5 +317,6 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.Map<edu.cmu.cs.dennisc.scenegraph.AbstractCamera, java.awt.Rectangle> mapSgCameraToViewport = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
+	private String description;
 	private boolean isRenderingEnabled = true;
 }
