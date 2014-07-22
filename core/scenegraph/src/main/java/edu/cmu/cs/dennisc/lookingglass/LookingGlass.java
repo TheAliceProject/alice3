@@ -47,13 +47,4 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface LookingGlass extends edu.cmu.cs.dennisc.renderer.RenderTarget, edu.cmu.cs.dennisc.pattern.Releasable {
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
-
-	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void forgetAllCachedItems();
-
-	public void clearUnusedTextures();
 }
