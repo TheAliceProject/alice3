@@ -57,11 +57,11 @@ public interface RenderFactory {
 
 	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
 
-	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenLookingGlasses();
+	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
 
-	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenLookingGlasses();
+	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
 
-	Iterable<OffscreenRenderTarget> getOffscreenLookingGlasses();
+	Iterable<OffscreenRenderTarget> getOffscreenRenderTargets();
 
 	void acquireRenderingLock();
 
