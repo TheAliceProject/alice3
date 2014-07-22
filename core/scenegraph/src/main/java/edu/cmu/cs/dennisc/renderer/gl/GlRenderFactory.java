@@ -195,23 +195,23 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
 	}
 
-	//@Override
+	@Override
 	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
 		this.heavyweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
-	//@Override
+	@Override
 	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
 		this.lightweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
-	//@Override
-	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height ) {
-		edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlOffscreenRenderTarget( width, height );
+	@Override
+	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.renderer.RenderTarget renderTargetToShareContextWith ) {
+		edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlOffscreenRenderTarget( width, height, renderTargetToShareContextWith );
 		this.offscreenRenderTargets.add( rv );
 		return rv;
 	}

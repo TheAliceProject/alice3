@@ -65,13 +65,13 @@ public class IsInViewDetector {
 		for( int i = 0; i < points.length; ++i ) {
 			awtPoints[ i ] = implementation.transformToAwt( points[ i ], camera );
 		}
-		camera.getScene().getProgram().getOnscreenLookingGlass();
+		camera.getScene().getProgram().getOnscreenRenderTarget();
 		return isInView( camera, awtPoints, relativeToCamera );
 	}
 
 	private static boolean isInView( CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera ) {
-		int width = camera.getScene().getProgram().getOnscreenLookingGlass().getWidth();
-		int height = camera.getScene().getProgram().getOnscreenLookingGlass().getWidth();
+		int width = camera.getScene().getProgram().getOnscreenRenderTarget().getWidth();
+		int height = camera.getScene().getProgram().getOnscreenRenderTarget().getWidth();
 		boolean leftOf = false;
 		boolean rightOf = false;
 		boolean above = false;

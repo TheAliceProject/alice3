@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface LookingGlassFactory extends edu.cmu.cs.dennisc.renderer.RenderFactory {
-	public LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass();
-
-	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
-
-	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
+	//	public LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass();
+	//
+	//	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
+	//
+	//	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
 }

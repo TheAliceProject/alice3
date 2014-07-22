@@ -52,12 +52,12 @@ public interface RenderFactory {
 	//
 	//	ColorAndDepthBuffers createColorAndDepthBuffers();
 	//
-	//	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
-	//
-	//	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
-	//
-	//	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
-	//
+	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
+
+	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
+
+	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith );
+
 	Iterable<? extends HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
 
 	Iterable<? extends LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();

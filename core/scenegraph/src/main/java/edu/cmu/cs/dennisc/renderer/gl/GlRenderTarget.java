@@ -42,9 +42,6 @@
  */
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractCameraAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
-
 /**
  * @author Dennis Cosgrove
  */

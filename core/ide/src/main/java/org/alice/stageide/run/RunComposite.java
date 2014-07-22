@@ -103,11 +103,11 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 
 	private final class RunAwtContainerInitializer implements org.lgna.story.implementation.ProgramImp.AwtContainerInitializer {
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
+		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
 			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
 
-			org.lgna.croquet.views.AwtComponentView<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenLookingGlass.getAwtComponent() );
+			org.lgna.croquet.views.AwtComponentView<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenRenderTarget.getAwtComponent() );
 			org.lgna.croquet.views.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.views.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
 			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
 			if( controlPanel != null ) {
@@ -162,7 +162,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		if( this.size != null ) {
 			frame.setSize( this.size );
 		} else {
-			this.programContext.getOnscreenLookingGlass().getAwtComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
+			this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
 			frame.pack();
 		}
 		if( this.location != null ) {

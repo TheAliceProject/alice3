@@ -249,15 +249,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass() {
-		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
-		lolg.addReleaseListener( this );
-		this.lightweightOnscreenLookingGlasses.add( lolg );
-		return lolg;
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass() {
+	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
 		HeavyweightOnscreenLookingGlass holg = new HeavyweightOnscreenLookingGlass( this );
 		holg.addReleaseListener( this );
 		this.heavyweightOnscreenLookingGlasses.add( holg );
@@ -265,9 +257,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
-		assert ( lookingGlassToShareContextWith == null ) || ( lookingGlassToShareContextWith instanceof AbstractLookingGlass );
-		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, width, height, (AbstractLookingGlass)lookingGlassToShareContextWith );
+	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
+		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
+		lolg.addReleaseListener( this );
+		this.lightweightOnscreenLookingGlasses.add( lolg );
+		return lolg;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.renderer.RenderTarget renderTargetToShareContextWith ) {
+		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof AbstractLookingGlass );
+		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, width, height, (AbstractLookingGlass)renderTargetToShareContextWith );
 		olg.addReleaseListener( this );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;

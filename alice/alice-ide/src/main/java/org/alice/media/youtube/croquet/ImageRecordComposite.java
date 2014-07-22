@@ -116,9 +116,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
-			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( lookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
-				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)lookingGlass;
+			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+			if( renderTarget instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
+				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)renderTarget;
 				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
 					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
@@ -131,17 +131,17 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					}
 				} );
 			} else {
-				if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
+				if( ( renderTarget.getWidth() > 0 ) && ( renderTarget.getHeight() > 0 ) ) {
 					if( image != null ) {
 						//pass
 					} else {
-						image = lookingGlass.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
+						image = renderTarget.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
 					}
 					if( image != null ) {
 						boolean[] atIsUpsideDown = { false };
 						synchronized( image ) {
-							image = lookingGlass.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+							image = renderTarget.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
 							if( atIsUpsideDown[ 0 ] ) {
 								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
 							} else {
@@ -153,7 +153,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", renderTarget.getWidth(), "height:", renderTarget.getHeight() );
 				}
 			}
 		}
@@ -261,7 +261,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		getView().updateTime( 0 );
 		encoder = new WebmRecordingAdapter();
 		frameRateState.setEnabled( true );
-		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
+		encoder.setDimension( programContext.getOnscreenRenderTarget().getSize() );
 		this.encoder.initializeAudioRecording();
 	}
 
