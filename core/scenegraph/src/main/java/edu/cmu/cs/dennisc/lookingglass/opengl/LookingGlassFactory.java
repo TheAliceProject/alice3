@@ -274,6 +274,21 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	@Override
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.heavyweightOnscreenLookingGlasses );
+	}
+
+	@Override
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.lightweightOnscreenLookingGlasses );
+	}
+
+	@Override
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.offscreenLookingGlasses );
+	}
+
+	@Override
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
@@ -325,20 +340,5 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		} catch( java.lang.reflect.InvocationTargetException ie ) {
 			throw new RuntimeException( ie );
 		}
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.heavyweightOnscreenLookingGlasses );
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.lightweightOnscreenLookingGlasses );
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.offscreenLookingGlasses );
 	}
 }

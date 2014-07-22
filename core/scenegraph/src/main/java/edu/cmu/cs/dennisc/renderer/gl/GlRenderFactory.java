@@ -217,16 +217,19 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 	}
 
 	//@Override
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.heavyweightOnscreenRenderTargets );
 	}
 
 	//@Override
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.lightweightOnscreenRenderTargets );
 	}
 
 	//@Override
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.offscreenRenderTargets );
 	}

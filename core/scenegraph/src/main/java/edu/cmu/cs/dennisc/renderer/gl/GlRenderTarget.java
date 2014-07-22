@@ -264,16 +264,6 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
-	public void forgetAllCachedItems() {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	public void clearUnusedTextures() {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
@@ -290,6 +280,21 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void forgetAllCachedItems() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void clearUnusedTextures() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void release() {
 		throw new RuntimeException( "todo" );
 	}
 

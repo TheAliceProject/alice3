@@ -126,4 +126,7 @@ public interface RenderTarget {
 
 	//todo: remove?
 	Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
+
+	//todo: remove?
+	void release();
 }
