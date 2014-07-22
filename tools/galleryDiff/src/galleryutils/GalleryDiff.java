@@ -13,6 +13,7 @@ import org.lgna.project.Version;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 
 /*
@@ -689,11 +690,20 @@ public class GalleryDiff {
 		File jarDir = new File(curDir);
 		jarDir = jarDir.getParentFile().getParentFile();
 		jarDir = new File(jarDir, "ide/lib/alice");
-
+		File aliceJarDir = new File("C:/Users/alice/.m2/repository/org/alice/alice-model-source/2014.05.27");
+		File nebulousJarDir = new File("C:/Users/alice/.m2/repository/org/alice/nonfree/nebulous-model-source/2013.08.08");
 		System.out.println(jarDir);
 
-		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
-				.listDescendants(jarDir, "jar");
+//		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+//				.listDescendants(jarDir, "jar");
+		
+		File[] aliceJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(aliceJarDir, "jar");
+		File[] nebulousJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(nebulousJarDir, "jar");
+		
+		File[] jarFiles = ArrayUtilities.concatArrays(File.class, aliceJarFiles, nebulousJarFiles);
+		
 		final String DATA_LOCATIONS = "C:\\batchOutput\\galleryVersionData\\";
 		final String FILE_NAME = "\\galleryData.txt";
 		
