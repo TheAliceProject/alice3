@@ -280,7 +280,7 @@ public abstract class BareBonesDragAdapter {
 	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
-		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenLookingGlass.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
 		return pickResult;
 	}
 

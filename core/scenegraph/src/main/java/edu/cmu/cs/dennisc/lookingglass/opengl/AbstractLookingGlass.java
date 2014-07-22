@@ -83,7 +83,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	private boolean m_isRenderingEnabled = true;
 
-	private final Picker picker = new Picker( this );
+	private final SynchronousPicker picker = new SynchronousPicker( this );
 
 	protected AbstractLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
@@ -95,7 +95,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.Picker getPicker() {
+	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		return this.picker;
 	}
 

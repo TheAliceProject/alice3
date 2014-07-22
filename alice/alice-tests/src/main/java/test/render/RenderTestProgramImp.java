@@ -90,7 +90,7 @@ public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramI
 	private void handleMousePressed( java.awt.event.MouseEvent e ) {
 		java.awt.Component awtComponent = e.getComponent();
 		try {
-			edu.cmu.cs.dennisc.renderer.PickResult pickResult = this.getOnscreenLookingGlass().getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+			edu.cmu.cs.dennisc.renderer.PickResult pickResult = this.getOnscreenLookingGlass().getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 			if( sgVisual != null ) {
