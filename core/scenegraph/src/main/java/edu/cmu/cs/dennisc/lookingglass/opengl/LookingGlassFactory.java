@@ -102,7 +102,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
 
-	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent {
+	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent {
 		public ReusableAutomaticDisplayEvent( LookingGlassFactory lookingGlassFactory ) {
 			super( lookingGlassFactory );
 		}
@@ -114,7 +114,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	};
 
 	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
-	private final java.util.List<edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private Animator animator = null;
 
@@ -274,22 +274,22 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	@Override
-	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener ) {
+	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
 
 	@Override
-	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener ) {
+	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.remove( automaticDisplayListener );
 	}
 
 	@Override
-	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
+	public Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
 		return this.automaticDisplayListeners;
 	}
 
 	private void handleDisplayed() {
-		for( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
+		for( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
 			automaticDisplayListener.automaticDisplayCompleted( reusableAutomaticDisplayEvent );
 		}
 		while( this.runnables.isEmpty() == false ) {

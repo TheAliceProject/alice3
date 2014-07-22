@@ -421,11 +421,11 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+	private final edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};

@@ -185,48 +185,48 @@ public enum GlRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory
 		}
 	};
 
-	@Override
+	//@Override
 	public edu.cmu.cs.dennisc.renderer.ColorBuffer createColorBuffer() {
 		return new edu.cmu.cs.dennisc.renderer.gl.GlColorBuffer();
 	}
 
-	@Override
+	//@Override
 	public edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers createColorAndDepthBuffers() {
 		return new edu.cmu.cs.dennisc.renderer.gl.GlColorAndDepthBuffers();
 	}
 
-	@Override
+	//@Override
 	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlHeavyweightOnscreenRenderTarget();
 		this.heavyweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
-	@Override
+	//@Override
 	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
 		edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlLightweightOnscreenRenderTarget();
 		this.lightweightOnscreenRenderTargets.add( rv );
 		return rv;
 	}
 
-	@Override
+	//@Override
 	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height ) {
 		edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget rv = new edu.cmu.cs.dennisc.renderer.gl.GlOffscreenRenderTarget( width, height );
 		this.offscreenRenderTargets.add( rv );
 		return rv;
 	}
 
-	@Override
+	//@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.heavyweightOnscreenRenderTargets );
 	}
 
-	@Override
+	//@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.lightweightOnscreenRenderTargets );
 	}
 
-	@Override
+	//@Override
 	public Iterable<edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
 		return java.util.Collections.unmodifiableList( this.offscreenRenderTargets );
 	}

@@ -46,39 +46,16 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface LookingGlassFactory {
-	public void acquireRenderingLock();
-
-	public void releaseRenderingLock();
-
+public interface LookingGlassFactory extends edu.cmu.cs.dennisc.renderer.RenderFactory {
 	public LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass();
 
 	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
 
 	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
-
-	//todo:
+	
 	public Iterable<? extends LightweightOnscreenLookingGlass> getLightweightOnscreenLookingGlasses();
 
 	public Iterable<? extends HeavyweightOnscreenLookingGlass> getHeavyweightOnscreenLookingGlasses();
 
 	public Iterable<? extends OffscreenLookingGlass> getOffscreenLookingGlasses();
-
-	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
-
-	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
-
-	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	public int getAutomaticDisplayCount();
-
-	public void incrementAutomaticDisplayCount();
-
-	public void decrementAutomaticDisplayCount();
-
-	public void invokeLater( Runnable runnable );
-
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
 }

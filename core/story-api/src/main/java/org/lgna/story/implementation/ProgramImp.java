@@ -220,9 +220,9 @@ public abstract class ProgramImp {
 		this.simulationSpeedFactor = simulationSpeedFactor;
 	}
 
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			ProgramImp.this.getAnimator().update();
 		}
 	};

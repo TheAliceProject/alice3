@@ -224,9 +224,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};

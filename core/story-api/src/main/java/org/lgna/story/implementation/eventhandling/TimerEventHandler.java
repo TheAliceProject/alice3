@@ -54,9 +54,9 @@ import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
+import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener;
 
 /**
  * @author Matt May

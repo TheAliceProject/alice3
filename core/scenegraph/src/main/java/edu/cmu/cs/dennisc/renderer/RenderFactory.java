@@ -47,21 +47,22 @@ package edu.cmu.cs.dennisc.renderer;
  */
 
 public interface RenderFactory {
-	ColorBuffer createColorBuffer();
-
-	ColorAndDepthBuffers createColorAndDepthBuffers();
-
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
-
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
-
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
-
-	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
-
-	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
-
-	Iterable<OffscreenRenderTarget> getOffscreenRenderTargets();
+	//todo:
+	//	ColorBuffer createColorBuffer();
+	//
+	//	ColorAndDepthBuffers createColorAndDepthBuffers();
+	//
+	//	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
+	//
+	//	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
+	//
+	//	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
+	//
+	//	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
+	//
+	//	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
+	//
+	//	Iterable<OffscreenRenderTarget> getOffscreenRenderTargets();
 
 	void acquireRenderingLock();
 
