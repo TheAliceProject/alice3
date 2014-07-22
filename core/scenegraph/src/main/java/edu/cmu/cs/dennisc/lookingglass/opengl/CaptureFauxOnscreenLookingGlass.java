@@ -115,7 +115,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	}
 
 	@Override
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
 	}

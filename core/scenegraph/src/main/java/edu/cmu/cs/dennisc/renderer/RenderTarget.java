@@ -52,6 +52,8 @@ public interface RenderTarget {
 
 	int getHeight();
 
+	java.awt.Dimension getSize();
+
 	void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );

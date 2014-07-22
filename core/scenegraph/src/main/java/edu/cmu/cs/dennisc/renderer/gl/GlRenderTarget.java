@@ -73,6 +73,12 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
+	public java.awt.Dimension getSize() {
+		javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGlAutoDrawable();
+		return new java.awt.Dimension( glAutoDrawable.getWidth(), glAutoDrawable.getHeight() );
+	}
+
+	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		this.sgCameras.add( sgCamera );
 		if( this.sgCameras.size() == 1 ) {

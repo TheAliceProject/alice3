@@ -138,7 +138,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 	}
 
 	@Override
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 

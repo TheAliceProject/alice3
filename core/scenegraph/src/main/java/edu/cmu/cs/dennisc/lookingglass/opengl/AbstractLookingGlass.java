@@ -344,6 +344,8 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return java.util.Collections.unmodifiableList( m_lookingGlassListeners );
 	}
 
+	protected abstract java.awt.Dimension getSize( java.awt.Dimension rv );
+
 	@Override
 	public final java.awt.Dimension getSize() {
 		return getSize( new java.awt.Dimension() );
