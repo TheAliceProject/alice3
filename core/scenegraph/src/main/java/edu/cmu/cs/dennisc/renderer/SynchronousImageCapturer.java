@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.sceneeditor;
+package edu.cmu.cs.dennisc.renderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ThumbnailGenerator {
-	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+public interface SynchronousImageCapturer {
+	java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer();
 
-	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( width, height, null );
-	}
+	java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown );
 
-	public java.awt.image.BufferedImage createThumbnail() {
-		synchronized( this.offscreenLookingGlass ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
-			if( sgCamera != null ) {
-				sceneEditor.preScreenCapture();
+	java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv );
 
-				boolean isClearingAndAddingRequired;
-				if( offscreenLookingGlass.getSgCameraCount() == 1 ) {
-					if( offscreenLookingGlass.getSgCameraAt( 0 ) == sgCamera ) {
-						isClearingAndAddingRequired = false;
-					} else {
-						isClearingAndAddingRequired = true;
-					}
-				} else {
-					isClearingAndAddingRequired = true;
-				}
-				if( isClearingAndAddingRequired ) {
-					offscreenLookingGlass.clearSgCameras();
-					offscreenLookingGlass.addSgCamera( sgCamera );
-				}
-				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getSynchronousImageCapturer().getColorBuffer();
+	java.awt.image.BufferedImage getColorBuffer();
 
-				sceneEditor.postScreenCapture();
-				return thumbImage;
-			} else {
-				return null;
-			}
-		}
-	}
+	java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 
+	java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer();
+
+	java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv );
+
+	java.nio.FloatBuffer getDepthBuffer();
+
+	java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer );
+
+	java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
 }

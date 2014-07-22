@@ -264,7 +264,7 @@ public abstract class AbstractThumbnailMaker {
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, java.awt.Color colorKey ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
-		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.awt.image.BufferedImage rv = offscreenLookingGlass.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
 
 		writeDebugImageIfAppropriate( "rawFinal.png", rv );
 

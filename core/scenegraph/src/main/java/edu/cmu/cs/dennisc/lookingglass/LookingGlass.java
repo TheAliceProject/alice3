@@ -59,25 +59,7 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	@Override
 	public int getHeight();
 
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer();
-
-	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown );
-
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv );
-
-	public java.awt.image.BufferedImage getColorBuffer();
-
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-
-	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer();
-
-	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv );
-
-	public java.nio.FloatBuffer getDepthBuffer();
-
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer );
-
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
+	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer();
 
 	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture );
 

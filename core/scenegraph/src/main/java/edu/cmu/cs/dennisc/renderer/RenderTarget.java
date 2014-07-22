@@ -73,10 +73,6 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners();
 
-	void captureColorBuffer( ColorBuffer colorBuffer, Observer<ColorBuffer> observer );
-
-	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
-
 	@Override
 	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
@@ -117,4 +113,8 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	SynchronousPicker getSynchronousPicker();
 
 	AsynchronousPicker getAsynchronousPicker();
+
+	SynchronousImageCapturer getSynchronousImageCapturer();
+
+	AsynchronousImageCapturer getAsynchronousImageCapturer();
 }

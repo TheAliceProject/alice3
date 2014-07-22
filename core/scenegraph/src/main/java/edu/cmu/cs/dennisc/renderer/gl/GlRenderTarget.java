@@ -126,16 +126,6 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		return java.util.Collections.unmodifiableList( this.listeners );
 	}
 
-	@Override
-	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		throw new RuntimeException( "todo" );
-	}
-
 	private java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
 		return cameraAdapter.getActualViewport( rv, getWidth(), getHeight() );
 	}
@@ -244,6 +234,16 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
 		throw new RuntimeException( "todo" );
 	}
 

@@ -83,10 +83,15 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	private boolean m_isRenderingEnabled = true;
 
-	private final SynchronousPicker picker = new SynchronousPicker( this );
+	private final SynchronousPicker synchronousPicker = new SynchronousPicker( this );
+	private final SynchronousImageCapturer synchronousImageCapturer = new SynchronousImageCapturer( this );
 
 	protected AbstractLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
+	}
+
+	/*package-private*/GLEventAdapter getGlEventAdapter() {
+		return m_glEventAdapter;
 	}
 
 	@Override
@@ -96,7 +101,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
-		return this.picker;
+		return this.synchronousPicker;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
+		return this.synchronousImageCapturer;
 	}
 
 	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
@@ -529,56 +539,6 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
-	}
-
-	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		return m_glEventAdapter.createBufferedImageForUseAsColorBuffer();
-	}
-
-	@Override
-	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
-		return m_glEventAdapter.getColorBuffer( rv, atIsUpsideDown );
-	}
-
-	@Override
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		return m_glEventAdapter.getColorBuffer( rv, null );
-	}
-
-	@Override
-	public final java.awt.image.BufferedImage getColorBuffer() {
-		return getColorBuffer( createBufferedImageForUseAsColorBuffer() );
-	}
-
-	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return m_glEventAdapter.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-	}
-
-	@Override
-	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return m_glEventAdapter.createFloatBufferForUseAsDepthBuffer();
-	}
-
-	@Override
-	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
-		return m_glEventAdapter.getDepthBuffer( rv );
-	}
-
-	@Override
-	public final java.nio.FloatBuffer getDepthBuffer() {
-		return getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
-	}
-
-	@Override
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		return m_glEventAdapter.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
-	}
-
-	@Override
-	public final java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 
 	public double[] getActualPlane( double[] rv, java.awt.Dimension size, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {

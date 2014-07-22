@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,48 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.sceneeditor;
+package edu.cmu.cs.dennisc.renderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ThumbnailGenerator {
-	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+public interface AsynchronousImageCapturer {
+	void captureColorBuffer( ColorBuffer colorBuffer, Observer<ColorBuffer> observer );
 
-	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( width, height, null );
-	}
-
-	public java.awt.image.BufferedImage createThumbnail() {
-		synchronized( this.offscreenLookingGlass ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
-			if( sgCamera != null ) {
-				sceneEditor.preScreenCapture();
-
-				boolean isClearingAndAddingRequired;
-				if( offscreenLookingGlass.getSgCameraCount() == 1 ) {
-					if( offscreenLookingGlass.getSgCameraAt( 0 ) == sgCamera ) {
-						isClearingAndAddingRequired = false;
-					} else {
-						isClearingAndAddingRequired = true;
-					}
-				} else {
-					isClearingAndAddingRequired = true;
-				}
-				if( isClearingAndAddingRequired ) {
-					offscreenLookingGlass.clearSgCameras();
-					offscreenLookingGlass.addSgCamera( sgCamera );
-				}
-				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getSynchronousImageCapturer().getColorBuffer();
-
-				sceneEditor.postScreenCapture();
-				return thumbImage;
-			} else {
-				return null;
-			}
-		}
-	}
-
+	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
 }
